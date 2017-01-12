@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Client &mdash; google-cloud f4c3025 documentation</title>
+  <title>Speech Client &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="index.html"/>
         <link rel="next" title="Speech Encoding" href="speech-encoding.html"/>
         <link rel="prev" title="Using the API" href="speech-usage.html"/> 
 
@@ -321,19 +321,20 @@ variable</li>
 </table>
 <dl class="method">
 <dt id="google.cloud.speech.client.Client.sample">
-<code class="descname">sample</code><span class="sig-paren">(</span><em>content=None</em>, <em>source_uri=None</em>, <em>encoding=None</em>, <em>sample_rate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/client.html#Client.sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.client.Client.sample" title="Permalink to this definition">#</a></dt>
+<code class="descname">sample</code><span class="sig-paren">(</span><em>content=None</em>, <em>source_uri=None</em>, <em>stream=None</em>, <em>encoding=None</em>, <em>sample_rate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/client.html#Client.sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.client.Client.sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct Sample to use when making recognize requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>content</strong> (<em>bytes</em>) &#8211; (Optional) Byte stream of audio.</li>
+<li><strong>content</strong> (<em>bytes</em>) &#8211; (Optional) Bytes containing audio data.</li>
 <li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) URI that points to a file that contains
 audio data bytes as specified in RecognitionConfig.
 Currently, only Google Cloud Storage URIs are
 supported, which must be specified in the following
 format: <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>.</li>
+<li><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; (Optional) File like object to stream.</li>
 <li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; encoding of audio data sent in all RecognitionAudio
 messages, can be one of: <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.LINEAR16" title="google.cloud.speech.encoding.Encoding.LINEAR16"><code class="xref py py-attr docutils literal"><span class="pre">LINEAR16</span></code></a>,
 <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.FLAC" title="google.cloud.speech.encoding.Encoding.FLAC"><code class="xref py py-attr docutils literal"><span class="pre">FLAC</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.MULAW" title="google.cloud.speech.encoding.Encoding.MULAW"><code class="xref py py-attr docutils literal"><span class="pre">MULAW</span></code></a>,
@@ -443,7 +444,7 @@ re-sampling).</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

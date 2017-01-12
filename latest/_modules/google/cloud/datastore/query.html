@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.query &mdash; google-cloud f4c3025 documentation</title>
+  <title>google.cloud.datastore.query &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -307,7 +307,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Iterator</span> <span class="k">as</span> <span class="n">BaseIterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Page</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.datastore._generated</span> <span class="k">import</span> <span class="n">query_pb2</span> <span class="k">as</span> <span class="n">_query_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.grpc.datastore.v1</span> <span class="k">import</span> <span class="n">query_pb2</span> <span class="k">as</span> <span class="n">_query_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore</span> <span class="k">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.key</span> <span class="k">import</span> <span class="n">Key</span>
 
@@ -704,7 +704,7 @@
 <span class="sd">        Relies on the current state of the iterator.</span>
 
 <span class="sd">        :rtype:</span>
-<span class="sd">            :class:`google.cloud.datastore._generated.query_pb2.Query`</span>
+<span class="sd">            :class:`.query_pb2.Query`</span>
 <span class="sd">        :returns: The query protobuf object for the current</span>
 <span class="sd">                  state of the iterator.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -739,7 +739,7 @@
 <span class="sd">        :param cursor_as_bytes: The end cursor of the query.</span>
 
 <span class="sd">        :type more_results_enum:</span>
-<span class="sd">            :class:`._generated.query_pb2.QueryResultBatch.MoreResultsType`</span>
+<span class="sd">            :class:`.query_pb2.QueryResultBatch.MoreResultsType`</span>
 <span class="sd">        :param more_results_enum: Enum indicating if there are more results.</span>
 
 <span class="sd">        :type skipped_results: int</span>
@@ -795,7 +795,7 @@
 <span class="sd">    :type query: :class:`Query`</span>
 <span class="sd">    :param query: The source query.</span>
 
-<span class="sd">    :rtype: :class:`google.cloud.datastore._generated.query_pb2.Query`</span>
+<span class="sd">    :rtype: :class:`.query_pb2.Query`</span>
 <span class="sd">    :returns: A protobuf that can be sent to the protobuf API.  N.b. that</span>
 <span class="sd">              it does not contain &quot;in-flight&quot; fields for ongoing query</span>
 <span class="sd">              executions (cursors, offset, limit).</span>
@@ -862,7 +862,7 @@
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type entity_pb:</span>
-<span class="sd">        :class:`google.cloud.datastore._generated.entity_pb2.Entity`</span>
+<span class="sd">        :class:`.entity_pb2.Entity`</span>
 <span class="sd">    :param entity_pb: An entity protobuf to convert to a native entity.</span>
 
 <span class="sd">    :rtype: :class:`~google.cloud.datastore.entity.Entity`</span>
@@ -903,7 +903,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

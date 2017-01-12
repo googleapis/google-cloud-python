@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.helpers &mdash; google-cloud f4c3025 documentation</title>
+  <title>google.cloud.datastore.helpers &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -313,17 +313,15 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_pb_timestamp</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_pb_timestamp_to_datetime</span>
-<span class="kn">from</span> <span class="nn">google.cloud.datastore._generated</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.grpc.datastore.v1</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.entity</span> <span class="k">import</span> <span class="n">Entity</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.key</span> <span class="k">import</span> <span class="n">Key</span>
-
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;entity_from_protobuf&#39;</span><span class="p">,</span> <span class="s1">&#39;key_from_protobuf&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_get_meaning</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the meaning from a protobuf value.</span>
 
-<span class="sd">    :type value_pb: :class:`google.cloud.datastore._generated.entity_pb2.Value`</span>
+<span class="sd">    :type value_pb: :class:`.entity_pb2.Value`</span>
 <span class="sd">    :param value_pb: The protobuf value to be checked for an</span>
 <span class="sd">                     associated meaning.</span>
 
@@ -364,13 +362,13 @@
 <span class="k">def</span> <span class="nf">_new_value_pb</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add (by name) a new ``Value`` protobuf to an entity protobuf.</span>
 
-<span class="sd">    :type entity_pb: :class:`.datastore._generated.entity_pb2.Entity`</span>
+<span class="sd">    :type entity_pb: :class:`.entity_pb2.Entity`</span>
 <span class="sd">    :param entity_pb: An entity protobuf to add a new property to.</span>
 
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name: The name of the new property.</span>
 
-<span class="sd">    :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Value`</span>
+<span class="sd">    :rtype: :class:`.entity_pb2.Value`</span>
 <span class="sd">    :returns: The new ``Value`` protobuf that was added to the entity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">entity_pb</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -379,7 +377,7 @@
 <span class="k">def</span> <span class="nf">_property_tuples</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Iterator of name, ``Value`` tuples from entity properties.</span>
 
-<span class="sd">    :type entity_pb: :class:`.datastore._generated.entity_pb2.Entity`</span>
+<span class="sd">    :type entity_pb: :class:`.entity_pb2.Entity`</span>
 <span class="sd">    :param entity_pb: An entity protobuf to add a new property to.</span>
 
 <span class="sd">    :rtype: :class:`generator`</span>
@@ -395,7 +393,7 @@
 <span class="sd">    The protobuf should be one returned from the Cloud Datastore</span>
 <span class="sd">    Protobuf API.</span>
 
-<span class="sd">    :type pb: :class:`google.cloud.datastore._generated.entity_pb2.Entity`</span>
+<span class="sd">    :type pb: :class:`.entity_pb2.Entity`</span>
 <span class="sd">    :param pb: The Protobuf representing the entity.</span>
 
 <span class="sd">    :rtype: :class:`google.cloud.datastore.entity.Entity`</span>
@@ -455,7 +453,7 @@
 <span class="sd">    :type value: object</span>
 <span class="sd">    :param value: The current value stored as property ``name``.</span>
 
-<span class="sd">    :type value_pb: :class:`google.cloud.datastore._generated.entity_pb2.Value`</span>
+<span class="sd">    :type value_pb: :class:`.entity_pb2.Value`</span>
 <span class="sd">    :param value_pb: The protobuf value to add meaning / meanings to.</span>
 
 <span class="sd">    :type is_list: bool</span>
@@ -484,13 +482,13 @@
         <span class="n">value_pb</span><span class="o">.</span><span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span>
 
 
-<span class="k">def</span> <span class="nf">entity_to_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
+<div class="viewcode-block" id="entity_to_protobuf"><a class="viewcode-back" href="../../../../datastore-helpers.html#google.cloud.datastore.helpers.entity_to_protobuf">[docs]</a><span class="k">def</span> <span class="nf">entity_to_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts an entity into a protobuf.</span>
 
 <span class="sd">    :type entity: :class:`google.cloud.datastore.entity.Entity`</span>
 <span class="sd">    :param entity: The entity to be turned into a protobuf.</span>
 
-<span class="sd">    :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Entity`</span>
+<span class="sd">    :rtype: :class:`.entity_pb2.Entity`</span>
 <span class="sd">    :returns: The protobuf representing the entity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">entity_pb</span> <span class="o">=</span> <span class="n">_entity_pb2</span><span class="o">.</span><span class="n">Entity</span><span class="p">()</span>
@@ -519,7 +517,7 @@
         <span class="n">_set_pb_meaning_from_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span>
                                     <span class="n">is_list</span><span class="o">=</span><span class="n">value_is_list</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">entity_pb</span>
+    <span class="k">return</span> <span class="n">entity_pb</span></div>
 
 
 <div class="viewcode-block" id="key_from_protobuf"><a class="viewcode-back" href="../../../../datastore-helpers.html#google.cloud.datastore.helpers.key_from_protobuf">[docs]</a><span class="k">def</span> <span class="nf">key_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="p">):</span>
@@ -528,7 +526,7 @@
 <span class="sd">    The protobuf should be one returned from the Cloud Datastore</span>
 <span class="sd">    Protobuf API.</span>
 
-<span class="sd">    :type pb: :class:`google.cloud.datastore._generated.entity_pb2.Key`</span>
+<span class="sd">    :type pb: :class:`.entity_pb2.Key`</span>
 <span class="sd">    :param pb: The Protobuf representing the key.</span>
 
 <span class="sd">    :rtype: :class:`google.cloud.datastore.key.Key`</span>
@@ -626,7 +624,7 @@
 <span class="sd">    Some work is done to coerce the return value into a more useful type</span>
 <span class="sd">    (particularly in the case of a timestamp value, or a key value).</span>
 
-<span class="sd">    :type value_pb: :class:`google.cloud.datastore._generated.entity_pb2.Value`</span>
+<span class="sd">    :type value_pb: :class:`.entity_pb2.Value`</span>
 <span class="sd">    :param value_pb: The Value Protobuf.</span>
 
 <span class="sd">    :rtype: object</span>
@@ -686,7 +684,7 @@
 <span class="sd">    Some value types (entities, keys, lists) cannot be directly</span>
 <span class="sd">    assigned; this function handles them correctly.</span>
 
-<span class="sd">    :type value_pb: :class:`google.cloud.datastore._generated.entity_pb2.Value`</span>
+<span class="sd">    :type value_pb: :class:`.entity_pb2.Value`</span>
 <span class="sd">    :param value_pb: The value protobuf to which the value is being assigned.</span>
 
 <span class="sd">    :type val: :class:`datetime.datetime`, boolean, float, integer, string,</span>
@@ -713,7 +711,7 @@
         <span class="nb">setattr</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">GeoPoint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="GeoPoint"><a class="viewcode-back" href="../../../../datastore-helpers.html#google.cloud.datastore.helpers.GeoPoint">[docs]</a><span class="k">class</span> <span class="nc">GeoPoint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Simple container for a geo point value.</span>
 
 <span class="sd">    :type latitude: float</span>
@@ -727,14 +725,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">latitude</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">longitude</span>
 
-    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GeoPoint.to_protobuf"><a class="viewcode-back" href="../../../../datastore-helpers.html#google.cloud.datastore.helpers.GeoPoint.to_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the current object to protobuf.</span>
 
 <span class="sd">        :rtype: :class:`google.type.latlng_pb2.LatLng`.</span>
 <span class="sd">        :returns: The current point as a protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">latlng_pb2</span><span class="o">.</span><span class="n">LatLng</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-                                 <span class="n">longitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+                                 <span class="n">longitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare two geo points for equality.</span>
@@ -754,7 +752,7 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: False if the points compare equal, else True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -788,7 +786,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

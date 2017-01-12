@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Client &mdash; google-cloud f4c3025 documentation</title>
+  <title>Vision Client &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="index.html"/>
         <link rel="next" title="Vision Image Properties" href="vision-color.html"/>
         <link rel="prev" title="Vision Annotations" href="vision-annotations.html"/> 
 
@@ -296,7 +296,7 @@
 <p>Client for interacting with the Google Cloud Vision API.</p>
 <dl class="class">
 <dt id="google.cloud.vision.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.vision.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.vision.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em>, <em>use_gax=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.JSONClient" title="google.cloud.client.JSONClient"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.JSONClient</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -316,6 +316,10 @@ that defines <code class="docutils literal"><span class="pre">request()</span></
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
+<li><strong>use_gax</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
+to use the gRPC transport (via GAX) or HTTP. If unset,
+falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code> environment
+variable</li>
 </ul>
 </td>
 </tr>
@@ -442,7 +446,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

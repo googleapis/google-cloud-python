@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.batch &mdash; google-cloud f4c3025 documentation</title>
+  <title>google.cloud.datastore.batch &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -309,7 +309,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.datastore</span> <span class="k">import</span> <span class="n">helpers</span>
-<span class="kn">from</span> <span class="nn">google.cloud.datastore._generated</span> <span class="k">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.grpc.datastore.v1</span> <span class="k">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
 
 
 <div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../../datastore-batches.html#google.cloud.datastore.batch.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -393,7 +393,7 @@
     <span class="k">def</span> <span class="nf">_add_partial_key_entity_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds a new mutation for an entity with a partial key.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Entity`</span>
+<span class="sd">        :rtype: :class:`.entity_pb2.Entity`</span>
 <span class="sd">        :returns: The newly created entity protobuf that will be</span>
 <span class="sd">                  updated and sent with a commit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -403,7 +403,7 @@
     <span class="k">def</span> <span class="nf">_add_complete_key_entity_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds a new mutation for an entity with a completed key.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Entity`</span>
+<span class="sd">        :rtype: :class:`.entity_pb2.Entity`</span>
 <span class="sd">        :returns: The newly created entity protobuf that will be</span>
 <span class="sd">                  updated and sent with a commit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -416,7 +416,7 @@
     <span class="k">def</span> <span class="nf">_add_delete_key_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds a new mutation for a key to be deleted.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Key`</span>
+<span class="sd">        :rtype: :class:`.entity_pb2.Key`</span>
 <span class="sd">        :returns: The newly created key protobuf that will be</span>
 <span class="sd">                  deleted when sent with a commit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -434,7 +434,7 @@
 <span class="sd">        built-up so far.</span>
 
 <span class="sd">        :rtype: iterable</span>
-<span class="sd">        :returns: The list of :class:`._generated.datastore_pb2.Mutation`</span>
+<span class="sd">        :returns: The list of :class:`.datastore_pb2.Mutation`</span>
 <span class="sd">                  protobufs to be sent in the commit request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commit_request</span><span class="o">.</span><span class="n">mutations</span>
@@ -589,7 +589,7 @@
 
 <span class="sd">    Helper method for ``Batch.put``.</span>
 
-<span class="sd">    :type entity_pb: :class:`._generated.entity_pb2.Entity`</span>
+<span class="sd">    :type entity_pb: :class:`.entity_pb2.Entity`</span>
 <span class="sd">    :param entity_pb: The entity owned by a mutation.</span>
 
 <span class="sd">    :type entity: :class:`google.cloud.datastore.entity.Entity`</span>
@@ -631,7 +631,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.client &mdash; google-cloud f4c3025 documentation</title>
+  <title>google.cloud.pubsub.client &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -378,7 +378,12 @@
         <span class="sd">&quot;&quot;&quot;Helper for publisher-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
-                <span class="n">generated</span> <span class="o">=</span> <span class="n">make_gax_publisher_api</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">in_emulator</span><span class="p">:</span>
+                    <span class="n">generated</span> <span class="o">=</span> <span class="n">make_gax_publisher_api</span><span class="p">(</span>
+                        <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">generated</span> <span class="o">=</span> <span class="n">make_gax_publisher_api</span><span class="p">(</span>
+                        <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span> <span class="o">=</span> <span class="n">GAXPublisherAPI</span><span class="p">(</span><span class="n">generated</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span> <span class="o">=</span> <span class="n">JSONPublisherAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -389,7 +394,12 @@
         <span class="sd">&quot;&quot;&quot;Helper for subscriber-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
-                <span class="n">generated</span> <span class="o">=</span> <span class="n">make_gax_subscriber_api</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">in_emulator</span><span class="p">:</span>
+                    <span class="n">generated</span> <span class="o">=</span> <span class="n">make_gax_subscriber_api</span><span class="p">(</span>
+                        <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">generated</span> <span class="o">=</span> <span class="n">make_gax_subscriber_api</span><span class="p">(</span>
+                        <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span> <span class="o">=</span> <span class="n">GAXSubscriberAPI</span><span class="p">(</span><span class="n">generated</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span> <span class="o">=</span> <span class="n">JSONSubscriberAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -399,7 +409,7 @@
     <span class="k">def</span> <span class="nf">iam_policy_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for IAM policy-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span> <span class="o">=</span> <span class="n">_IAMPolicyAPI</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span> <span class="o">=</span> <span class="n">_IAMPolicyAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span>
 
 <div class="viewcode-block" id="Client.list_topics"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client.list_topics">[docs]</a>    <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -513,7 +523,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

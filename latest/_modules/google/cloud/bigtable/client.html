@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigtable.client &mdash; google-cloud f4c3025 documentation</title>
+  <title>google.cloud.bigtable.client &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -352,6 +352,14 @@
 <span class="n">READ_ONLY_SCOPE</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/bigtable.data.readonly&#39;</span>
 <span class="sd">&quot;&quot;&quot;Scope for reading table data.&quot;&quot;&quot;</span>
 
+<span class="c1"># NOTE: &#39;grpc.max_message_length&#39; will no longer be recognized in</span>
+<span class="c1">#       grpcio 1.1 and later.</span>
+<span class="n">_MAX_MSG_LENGTH_100MB</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
+<span class="n">_GRPC_MAX_LENGTH_OPTIONS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;grpc.max_message_length&#39;</span><span class="p">,</span> <span class="n">_MAX_MSG_LENGTH_100MB</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;grpc.max_receive_message_length&#39;</span><span class="p">,</span> <span class="n">_MAX_MSG_LENGTH_100MB</span><span class="p">),</span>
+<span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">_make_data_stub</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates gRPC stub to make requests to the Data API.</span>
@@ -364,7 +372,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">emulator_host</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">make_secure_stub</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
-                                <span class="n">bigtable_pb2</span><span class="o">.</span><span class="n">BigtableStub</span><span class="p">,</span> <span class="n">DATA_API_HOST</span><span class="p">)</span>
+                                <span class="n">bigtable_pb2</span><span class="o">.</span><span class="n">BigtableStub</span><span class="p">,</span> <span class="n">DATA_API_HOST</span><span class="p">,</span>
+                                <span class="n">extra_options</span><span class="o">=</span><span class="n">_GRPC_MAX_LENGTH_OPTIONS</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">make_insecure_stub</span><span class="p">(</span><span class="n">bigtable_pb2</span><span class="o">.</span><span class="n">BigtableStub</span><span class="p">,</span>
                                   <span class="n">client</span><span class="o">.</span><span class="n">emulator_host</span><span class="p">)</span>
@@ -675,7 +684,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

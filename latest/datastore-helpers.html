@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Helpers &mdash; google-cloud f4c3025 documentation</title>
+  <title>Helpers &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="index.html"/>
         <link rel="next" title="Storage Client" href="storage-client.html"/>
         <link rel="prev" title="Batches" href="datastore-batches.html"/> 
 
@@ -289,6 +289,41 @@
 <span id="helpers"></span><h1>Helpers<a class="headerlink" href="#module-google.cloud.datastore.helpers" title="Permalink to this headline">#</a></h1>
 <p>Helper functions for dealing with Cloud Datastore&#8217;s Protobuf API.</p>
 <p>The non-private functions are part of the API.</p>
+<dl class="class">
+<dt id="google.cloud.datastore.helpers.GeoPoint">
+<em class="property">class </em><code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">GeoPoint</code><span class="sig-paren">(</span><em>latitude</em>, <em>longitude</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/helpers.html#GeoPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.GeoPoint" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Simple container for a geo point value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>latitude</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Latitude of a point.</li>
+<li><strong>longitude</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Longitude of a point.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.datastore.helpers.GeoPoint.to_protobuf">
+<code class="descname">to_protobuf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/helpers.html#GeoPoint.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.GeoPoint.to_protobuf" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert the current object to protobuf.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">google.type.latlng_pb2.LatLng</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current point as a protobuf.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="google.cloud.datastore.helpers.entity_from_protobuf">
 <code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">entity_from_protobuf</code><span class="sig-paren">(</span><em>pb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/helpers.html#entity_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.entity_from_protobuf" title="Permalink to this definition">#</a></dt>
@@ -299,11 +334,29 @@ Protobuf API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore._generated.entity_pb2.Entity</span></code>) &#8211; The Protobuf representing the entity.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">entity_pb2.Entity</span></code>) &#8211; The Protobuf representing the entity.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The entity derived from the protobuf.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.datastore.helpers.entity_to_protobuf">
+<code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">entity_to_protobuf</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/helpers.html#entity_to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.entity_to_protobuf" title="Permalink to this definition">#</a></dt>
+<dd><p>Converts an entity into a protobuf.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) &#8211; The entity to be turned into a protobuf.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">entity_pb2.Entity</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The protobuf representing the entity.</td>
 </tr>
 </tbody>
 </table>
@@ -319,7 +372,7 @@ Protobuf API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore._generated.entity_pb2.Key</span></code>) &#8211; The Protobuf representing the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">entity_pb2.Key</span></code>) &#8211; The Protobuf representing the key.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a></td>
 </tr>
@@ -372,7 +425,7 @@ Protobuf API.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

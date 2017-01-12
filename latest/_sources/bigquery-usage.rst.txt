@@ -250,7 +250,7 @@ Background a query, loading the results into a table:
    >>> table = dataset.table(name='person_ages')
    >>> job = client.run_async_query('fullname-age-query-job', query)
    >>> job.destination = table
-   >>> job.write_disposition= 'truncate'
+   >>> job.write_disposition= 'WRITE_TRUNCATE'
    >>> job.name
    'fullname-age-query-job'
    >>> job.job_type
@@ -325,7 +325,7 @@ the job locally:
    ...     'load-from-storage-job', table, 'gs://bucket-name/object-prefix*')
    >>> job.source_format = 'CSV'
    >>> job.skip_leading_rows = 1  # count of skipped header rows
-   >>> job.write_disposition = 'truncate'
+   >>> job.write_disposition = 'WRITE_TRUNCATE'
    >>> job.name
    'load-from-storage-job'
    >>> job.job_type
@@ -383,7 +383,7 @@ located on Google Cloud Storage.  First, create the job locally:
    ...     'gs://bucket-name/export-prefix*.csv')
    ... job.destination_format = 'CSV'
    ... job.print_header = True
-   ... job.write_disposition = 'truncate'
+   ... job.write_disposition = 'WRITE_TRUNCATE'
    >>> job.name
    'extract-person-ages-job'
    >>> job.job_type

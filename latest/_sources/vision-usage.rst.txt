@@ -272,7 +272,7 @@ image and determine the dominant colors in the image.
     >>> with open('./image.jpg', 'rb') as image_file:
     ...     image = client.image(content=image_file.read())
     >>> results = image.detect_properties()
-    >>> colors = results[0]
+    >>> colors = results[0].colors
     >>> first_color = colors[0]
     >>> first_color.red
     244

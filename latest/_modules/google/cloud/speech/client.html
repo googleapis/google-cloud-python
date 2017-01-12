@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.client &mdash; google-cloud f4c3025 documentation</title>
+  <title>google.cloud.speech.client &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -353,12 +353,12 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
 
-<div class="viewcode-block" id="Client.sample"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.sample"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">sample_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct Sample to use when making recognize requests.</span>
 
 <span class="sd">        :type content: bytes</span>
-<span class="sd">        :param content: (Optional) Byte stream of audio.</span>
+<span class="sd">        :param content: (Optional) Bytes containing audio data.</span>
 
 <span class="sd">        :type source_uri: str</span>
 <span class="sd">        :param source_uri: (Optional) URI that points to a file that contains</span>
@@ -366,6 +366,9 @@
 <span class="sd">                           Currently, only Google Cloud Storage URIs are</span>
 <span class="sd">                           supported, which must be specified in the following</span>
 <span class="sd">                           format: ``gs://bucket_name/object_name``.</span>
+
+<span class="sd">        :type stream: file</span>
+<span class="sd">        :param stream: (Optional) File like object to stream.</span>
 
 <span class="sd">        :type encoding: str</span>
 <span class="sd">        :param encoding: encoding of audio data sent in all RecognitionAudio</span>
@@ -384,7 +387,7 @@
 <span class="sd">        :rtype: :class:`~google.cloud.speech.sample.Sample`</span>
 <span class="sd">        :returns: Instance of ``Sample``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="n">source_uri</span><span class="p">,</span>
+        <span class="k">return</span> <span class="n">Sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="n">source_uri</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
                       <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -617,7 +620,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

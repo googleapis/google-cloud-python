@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud f4c3025 documentation</title>
+  <title>Using the API &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="index.html"/>
         <link rel="next" title="Translation Client" href="translate-client.html"/>
         <link rel="prev" title="Label Descriptors" href="monitoring-label.html"/> 
 
@@ -301,11 +301,8 @@ paid service. See the <a class="reference external" href="https://cloud.google.c
 <ul class="simple">
 <li>Use <a class="reference internal" href="translate-client.html#google.cloud.translate.client.Client" title="google.cloud.translate.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
 your applications.</li>
-<li><a class="reference internal" href="translate-client.html#google.cloud.translate.client.Client" title="google.cloud.translate.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">key</span></code>
-and a connection to the Cloud Translation service.</li>
-<li><strong>An API key is required for Google Cloud Translation.</strong> See
-<a class="reference external" href="https://cloud.google.com/translation/docs/translating-text">Identifying your application to Google</a> for details. This is
-significantly different than the other clients in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>.</li>
+<li><a class="reference internal" href="translate-client.html#google.cloud.translate.client.Client" title="google.cloud.translate.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold
+a connection to the Cloud Translation service.</li>
 </ul>
 </div>
 <div class="section" id="methods">
@@ -313,7 +310,7 @@ significantly different than the other clients in <code class="docutils literal"
 <p>To create a client:</p>
 <blockquote>
 <div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">translate</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -322,7 +319,7 @@ and translations, but a non-default value can be used as
 well:</p>
 <blockquote>
 <div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">translate</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s1">&#39;es&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">target_language</span><span class="o">=</span><span class="s1">&#39;es&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -334,7 +331,7 @@ map to three methods on a client:
 <p>To get a list of languages supported by the Google Cloud Translation API</p>
 <blockquote>
 <div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">translate</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get_languages</span><span class="p">()</span>
 <span class="go">[</span>
 <span class="go">    {</span>
@@ -349,7 +346,7 @@ map to three methods on a client:
 <p>To detect the language that some given text is written in:</p>
 <blockquote>
 <div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">translate</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">detect_language</span><span class="p">([</span><span class="s1">&#39;Me llamo&#39;</span><span class="p">,</span> <span class="s1">&#39;I am&#39;</span><span class="p">])</span>
 <span class="go">[</span>
 <span class="go">    {</span>
@@ -371,7 +368,7 @@ language detection. This member is not always available.</p>
 <p>To translate text:</p>
 <blockquote>
 <div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">translate</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;koszula&#39;</span><span class="p">)</span>
 <span class="go">{</span>
 <span class="go">    &#39;translatedText&#39;: &#39;shirt&#39;,</span>
@@ -384,7 +381,7 @@ language detection. This member is not always available.</p>
 <p>or to use a non-default target language:</p>
 <blockquote>
 <div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">translate</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">([</span><span class="s1">&#39;Me llamo Jeff&#39;</span><span class="p">,</span> <span class="s1">&#39;My name is Jeff&#39;</span><span class="p">],</span>
 <span class="gp">... </span>                 <span class="n">target_language</span><span class="o">=</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
 <span class="go">[</span>
@@ -445,7 +442,7 @@ language detection. This member is not always available.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

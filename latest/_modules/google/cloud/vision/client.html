@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.client &mdash; google-cloud f4c3025 documentation</title>
+  <title>google.cloud.vision.client &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -301,10 +301,18 @@
 
 <span class="sd">&quot;&quot;&quot;Client for interacting with the Google Cloud Vision API.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
+<span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.vision._gax</span> <span class="k">import</span> <span class="n">_GAPICVisionAPI</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.image</span> <span class="k">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision._http</span> <span class="k">import</span> <span class="n">_HTTPVisionAPI</span>
+
+
+<span class="n">_USE_GAX</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
@@ -327,14 +335,25 @@
 <span class="sd">                 :meth:`~httplib2.Http.request`. If not passed, an</span>
 <span class="sd">                 ``http`` object is created that is bound to the</span>
 <span class="sd">                 ``credentials`` for the current object.</span>
+
+<span class="sd">    :type use_gax: bool</span>
+<span class="sd">    :param use_gax: (Optional) Explicitly specifies whether</span>
+<span class="sd">                    to use the gRPC transport (via GAX) or HTTP. If unset,</span>
+<span class="sd">                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment</span>
+<span class="sd">                    variable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">use_gax</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span>
             <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_gax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">_USE_GAX</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
 
 <div class="viewcode-block" id="Client.image"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.Client.image">[docs]</a>    <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get instance of Image using current client.</span>
@@ -358,11 +377,16 @@
     <span class="k">def</span> <span class="nf">_vision_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy method that handles which transport call Vision Annotate.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.vision._rest._HTTPVisionAPI`</span>
-<span class="sd">        :returns: Instance of ``_HTTPVisionAPI`` used to make requests.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.vision._http._HTTPVisionAPI`</span>
+<span class="sd">                or :class:`~google.cloud.vision._gax._GAPICVisionAPI`</span>
+<span class="sd">        :returns: Instance of ``_HTTPVisionAPI`` or ``_GAPICVisionAPI`` used to</span>
+<span class="sd">                  make requests.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="n">_HTTPVisionAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="n">_GAPICVisionAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="n">_HTTPVisionAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span></div>
 </pre></div>
 
@@ -397,7 +421,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

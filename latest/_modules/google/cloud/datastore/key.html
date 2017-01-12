@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.key &mdash; google-cloud f4c3025 documentation</title>
+  <title>google.cloud.datastore.key &mdash; google-cloud 87879d0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 87879d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -304,7 +304,7 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.datastore._generated</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.grpc.datastore.v1</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
 
 
 <div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../../datastore-keys.html#google.cloud.datastore.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -548,7 +548,7 @@
 <div class="viewcode-block" id="Key.to_protobuf"><a class="viewcode-back" href="../../../../datastore-keys.html#google.cloud.datastore.key.Key.to_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a protobuf corresponding to the key.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Key`</span>
+<span class="sd">        :rtype: :class:`.entity_pb2.Key`</span>
 <span class="sd">        :returns: The protobuf representing the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">_entity_pb2</span><span class="o">.</span><span class="n">Key</span><span class="p">()</span>
@@ -747,7 +747,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f4c3025',
+            VERSION:'87879d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
