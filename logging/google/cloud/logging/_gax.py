@@ -532,7 +532,7 @@ def make_gax_logging_api(client):
     :returns: A metrics API instance with the proper credentials.
     """
     channel = make_secure_channel(
-        client._credentials, DEFAULT_USER_AGENT,
+        client._connection.credentials, DEFAULT_USER_AGENT,
         LoggingServiceV2Client.SERVICE_ADDRESS)
     generated = LoggingServiceV2Client(channel=channel)
     return _LoggingAPI(generated, client)
@@ -548,7 +548,7 @@ def make_gax_metrics_api(client):
     :returns: A metrics API instance with the proper credentials.
     """
     channel = make_secure_channel(
-        client._credentials, DEFAULT_USER_AGENT,
+        client._connection.credentials, DEFAULT_USER_AGENT,
         MetricsServiceV2Client.SERVICE_ADDRESS)
     generated = MetricsServiceV2Client(channel=channel)
     return _MetricsAPI(generated, client)
@@ -564,7 +564,7 @@ def make_gax_sinks_api(client):
     :returns: A metrics API instance with the proper credentials.
     """
     channel = make_secure_channel(
-        client._credentials, DEFAULT_USER_AGENT,
+        client._connection.credentials, DEFAULT_USER_AGENT,
         ConfigServiceV2Client.SERVICE_ADDRESS)
     generated = ConfigServiceV2Client(channel=channel)
     return _SinksAPI(generated, client)
