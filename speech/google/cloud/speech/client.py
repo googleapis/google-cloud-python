@@ -66,12 +66,12 @@ class Client(BaseClient):
         else:
             self._use_gax = use_gax
 
-    def sample(self, content=None, source_uri=None, encoding=None,
+    def sample(self, content=None, source_uri=None, stream=None, encoding=None,
                sample_rate=None):
         """Factory: construct Sample to use when making recognize requests.
 
         :type content: bytes
-        :param content: (Optional) Byte stream of audio.
+        :param content: (Optional) Bytes containing audio data.
 
         :type source_uri: str
         :param source_uri: (Optional) URI that points to a file that contains
@@ -79,6 +79,9 @@ class Client(BaseClient):
                            Currently, only Google Cloud Storage URIs are
                            supported, which must be specified in the following
                            format: ``gs://bucket_name/object_name``.
+
+        :type stream: file
+        :param stream: (Optional) File like object to stream.
 
         :type encoding: str
         :param encoding: encoding of audio data sent in all RecognitionAudio
@@ -97,7 +100,7 @@ class Client(BaseClient):
         :rtype: :class:`~google.cloud.speech.sample.Sample`
         :returns: Instance of ``Sample``.
         """
-        return Sample(content=content, source_uri=source_uri,
+        return Sample(content=content, source_uri=source_uri, stream=stream,
                       encoding=encoding, sample_rate=sample_rate, client=self)
 
     @property
