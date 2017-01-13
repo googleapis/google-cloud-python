@@ -946,7 +946,6 @@ class Blob(_PropertyMixin):
         if value is not None:
             return _rfc3339_to_datetime(value)
 
-
     @property
     def updated(self):
         """Retrieve the timestamp at which the object was updated.
