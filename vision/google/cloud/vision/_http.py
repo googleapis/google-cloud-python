@@ -14,6 +14,7 @@
 
 """HTTP Client for interacting with the Google Cloud Vision API."""
 
+from google.cloud.vision.annotations import Annotations
 from google.cloud.vision.feature import Feature
 
 
@@ -48,8 +49,12 @@ class _HTTPVisionAPI(object):
         data = {'requests': [request]}
         api_response = self._connection.api_request(
             method='POST', path='/images:annotate', data=data)
-        responses = api_response.get('responses')
-        return responses[0]
+        images = api_response.get('responses')
+        if len(images) == 1:
+            return Annotations.from_api_repr(images[0])
+        elif len(images) > 1:
+            raise NotImplementedError(
+                'Multiple image processing is not yet supported.')
 
 
 def _make_request(image, features):

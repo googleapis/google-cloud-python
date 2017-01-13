@@ -19,6 +19,8 @@ from google.cloud.grpc.vision.v1 import image_annotator_pb2
 
 from google.cloud._helpers import _to_bytes
 
+from google.cloud.vision.annotations import Annotations
+
 
 class _GAPICVisionAPI(object):
     """Vision API for interacting with the gRPC version of Vision.
@@ -28,7 +30,32 @@ class _GAPICVisionAPI(object):
     """
     def __init__(self, client=None):
         self._client = client
-        self._api = image_annotator_client.ImageAnnotatorClient()
+        self._annotator_client = image_annotator_client.ImageAnnotatorClient()
+
+    def annotate(self, image, features):
+        """Annotate images through GAX.
+
+        :type image: :class:`~google.cloud.vision.image.Image`
+        :param image: Instance of ``Image``.
+
+        :type features: list
+        :param features: List of :class:`~google.cloud.vision.feature.Feature`.
+
+        :rtype: :class:`~google.cloud.vision.annotations.Annotations`
+        :returns: Instance of ``Annotations`` with results or ``None``.
+        """
+        gapic_features = [_to_gapic_feature(feature) for feature in features]
+        gapic_image = _to_gapic_image(image)
+        request = image_annotator_pb2.AnnotateImageRequest(
+            image=gapic_image, features=gapic_features)
+        requests = [request]
+        annotator_client = self._annotator_client
+        images = annotator_client.batch_annotate_images(requests)
+        if len(images.responses) == 1:
+            return Annotations.from_pb(images.responses[0])
+        elif len(images.responses) > 1:
+            raise NotImplementedError(
+                'Multiple image processing is not yet supported.')
 
 
 def _to_gapic_feature(feature):
