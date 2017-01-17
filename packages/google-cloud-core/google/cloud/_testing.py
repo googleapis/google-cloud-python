@@ -79,12 +79,12 @@ class _GAXBaseAPI(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
-    def _make_grpc_error(self, status_code):
+    def _make_grpc_error(self, status_code, trailing=None):
         from grpc._channel import _RPCState
         from google.cloud.exceptions import GrpcRendezvous
 
         details = 'Some error details.'
-        exc_state = _RPCState((), None, None, status_code, details)
+        exc_state = _RPCState((), None, trailing, status_code, details)
         return GrpcRendezvous(exc_state, None, None, None)
 
     def _make_grpc_not_found(self):
