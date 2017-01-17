@@ -202,6 +202,7 @@ class Unknown(RPCServerError):
 
 class DataLoss(RPCServerError):
     """Exception mapping a '15 DATA LOSS' RPC error."""
+    code = 15
 
 
 def make_exception(response, content, error_info=None, use_json=True):
