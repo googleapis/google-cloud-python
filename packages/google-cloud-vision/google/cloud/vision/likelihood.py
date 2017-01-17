@@ -17,6 +17,21 @@
 
 from enum import Enum
 
+from google.cloud.grpc.vision.v1 import image_annotator_pb2
+
+
+def _get_pb_likelihood(likelihood):
+    """Convert protobuf Likelihood integer value to Likelihood enum.
+
+    :type likelihood: int
+    :param likelihood: Protobuf integer representing ``Likelihood``.
+
+    :rtype: :class:`~google.cloud.vision.likelihood.Likelihood`
+    :returns: Enum ``Likelihood`` converted from protobuf value.
+    """
+    likelihood_pb = image_annotator_pb2.Likelihood.Name(likelihood)
+    return Likelihood[likelihood_pb]
+
 
 class Likelihood(Enum):
     """A representation of likelihood to give stable results across upgrades.

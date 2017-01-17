@@ -17,24 +17,10 @@
 
 from enum import Enum
 
-from google.cloud.grpc.vision.v1 import image_annotator_pb2
-
 from google.cloud.vision.geometry import BoundsBase
+from google.cloud.vision.likelihood import _get_pb_likelihood
 from google.cloud.vision.likelihood import Likelihood
 from google.cloud.vision.geometry import Position
-
-
-def _get_pb_likelihood(likelihood):
-    """Convert protobuf Likelihood integer value to Likelihood instance.
-
-    :type likelihood: int
-    :param likelihood: Protobuf integer representing ``Likelihood``.
-
-    :rtype: :class:`~google.cloud.vision.likelihood.Likelihood`
-    :returns: Instance of ``Likelihood`` converted from protobuf value.
-    """
-    likelihood_pb = image_annotator_pb2.Likelihood.Name(likelihood)
-    return Likelihood[likelihood_pb]
 
 
 class Angles(object):

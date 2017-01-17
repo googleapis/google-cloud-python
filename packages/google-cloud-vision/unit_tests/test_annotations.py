@@ -67,6 +67,8 @@ class TestAnnotations(unittest.TestCase):
         self.assertEqual(annotations.texts, [True])
 
     def test_from_pb(self):
+        from google.cloud.vision.likelihood import Likelihood
+        from google.cloud.vision.safe_search import SafeSearchAnnotation
         from google.cloud.grpc.vision.v1 import image_annotator_pb2
 
         image_response = image_annotator_pb2.AnnotateImageResponse()
@@ -76,8 +78,15 @@ class TestAnnotations(unittest.TestCase):
         self.assertEqual(annotations.faces, [])
         self.assertEqual(annotations.landmarks, [])
         self.assertEqual(annotations.texts, [])
-        self.assertEqual(annotations.safe_searches, ())
         self.assertIsNone(annotations.properties)
+
+        self.assertIsInstance(annotations.safe_searches, SafeSearchAnnotation)
+        safe_search = annotations.safe_searches
+        unknown = Likelihood.UNKNOWN
+        self.assertIs(safe_search.adult, unknown)
+        self.assertIs(safe_search.spoof, unknown)
+        self.assertIs(safe_search.medical, unknown)
+        self.assertIs(safe_search.violence, unknown)
 
 
 class Test__make_entity_from_pb(unittest.TestCase):
