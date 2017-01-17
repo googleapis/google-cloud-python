@@ -63,27 +63,26 @@ class TestClient(unittest.TestCase):
         self.assertEquals(target.service, self.SERVICE)
         self.assertEquals(target.version, self.VERSION)
 
-    def test_report_exception(self):
+    def test_report_exception_with_gax(self):
         CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
-        logger = _Logger()
-        target.logging_client.logger = lambda _: logger
-
-        try:
-            raise NameError
-        except NameError:
-            target.report_exception()
-
-        payload = logger.log_struct_called_with
+        patch = mock.patch(
+            'google.cloud.error_reporting.client.make_report_error_api')
+        with patch as make_api:
+            try:
+                raise NameError
+            except NameError:
+                target.report_exception()
+            payload = make_api.return_value.report_error_event.call_args[0][0]
         self.assertEquals(payload['serviceContext'], {
             'service': target.DEFAULT_SERVICE,
         })
         self.assertIn('test_report', payload['message'])
         self.assertIn('test_client.py', payload['message'])
 
-    def test_report_exception_with_service_version_in_constructor(self):
+    def test_build_report_with_service_version_in_constructor(self):
         CREDENTIALS = _make_credentials()
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"
@@ -92,9 +91,7 @@ class TestClient(unittest.TestCase):
                                 service=SERVICE,
                                 version=VERSION)
 
-        logger = _Logger()
-        target.logging_client.logger = lambda _: logger
-
+        MESSAGE = 'this is an error'
         http_context = self._makeHTTP(method="GET", response_status_code=500)
         USER = "user@gmail.com"
 
@@ -103,7 +100,7 @@ class TestClient(unittest.TestCase):
         except NameError:
             target.report_exception(http_context=http_context, user=USER)
 
-        payload = logger.log_struct_called_with
+        payload = target.build_error_report(MESSAGE)
         self.assertEquals(payload['serviceContext'], {
             'service': SERVICE,
             'version': VERSION
@@ -118,18 +115,14 @@ class TestClient(unittest.TestCase):
             payload['context']['httpContext']['method'], 'GET')
         self.assertEquals(payload['context']['user'], USER)
 
-    def test_report(self):
+    def test_build_report(self):
         CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
-        logger = _Logger()
-        target.logging_client.logger = lambda _: logger
-
         MESSAGE = 'this is an error'
-        target.report(MESSAGE)
+        payload = target._build_error_report(MESSAGE)
 
-        payload = logger.log_struct_called_with
         self.assertEquals(payload['message'], MESSAGE)
         report_location = payload['context']['reportLocation']
         self.assertIn('test_client.py', report_location['filePath'])
@@ -138,6 +131,7 @@ class TestClient(unittest.TestCase):
         self.assertLess(report_location['lineNumber'], 150)
 
 
+"""
 class _Logger(object):
 
     def log_struct(self, payload,  # pylint: disable=unused-argument
@@ -147,3 +141,4 @@ class _Logger(object):
                    severity=None,   # pylint: disable=unused-argument
                    http_request=None):  # pylint: disable=unused-argument
         self.log_struct_called_with = payload
+"""

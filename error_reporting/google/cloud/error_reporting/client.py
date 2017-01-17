@@ -160,7 +160,6 @@ class Client(object):
                     self._project, self._credentials, self._http)
         return self._report_errors_api
 
-
     def _build_error_report(self, message,
                             report_location=None, http_context=None, user=None):
         """Builds the Error Reporting object to report.
