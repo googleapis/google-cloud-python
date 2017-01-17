@@ -410,7 +410,7 @@ class TestClient(unittest.TestCase):
 
     def test_safe_search_detection_from_source(self):
         from google.cloud.vision.likelihood import Likelihood
-        from google.cloud.vision.safe import SafeSearchAnnotation
+        from google.cloud.vision.safe_search import SafeSearchAnnotation
         from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
         RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
@@ -420,15 +420,16 @@ class TestClient(unittest.TestCase):
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
-        safe_search = image.detect_safe_search()[0]
+        safe_search = image.detect_safe_search()
         self.assertIsInstance(safe_search, SafeSearchAnnotation)
         image_request = client._connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual(safe_search.adult, Likelihood.VERY_UNLIKELY)
-        self.assertEqual(safe_search.spoof, Likelihood.UNLIKELY)
-        self.assertEqual(safe_search.medical, Likelihood.POSSIBLE)
-        self.assertEqual(safe_search.violence, Likelihood.VERY_UNLIKELY)
+
+        self.assertIs(safe_search.adult, Likelihood.VERY_UNLIKELY)
+        self.assertIs(safe_search.spoof, Likelihood.UNLIKELY)
+        self.assertIs(safe_search.medical, Likelihood.POSSIBLE)
+        self.assertIs(safe_search.violence, Likelihood.VERY_UNLIKELY)
 
     def test_safe_search_no_results(self):
         RETURNED = {
