@@ -22,6 +22,7 @@ PROJECT = 'my-project'
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -30,6 +31,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.client import Client
+
         return Client
 
     def _make_one(self, *args, **kwargs):
@@ -198,6 +200,7 @@ class TestClient(unittest.TestCase):
     def test_timeseries_factory_gauge(self):
         import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
+
         METRIC_TYPE = 'custom.googleapis.com/my_metric'
         METRIC_LABELS = {
             'status': 'successful'
@@ -243,6 +246,7 @@ class TestClient(unittest.TestCase):
     def test_timeseries_factory_cumulative(self):
         import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
+
         MY_CUMULATIVE_METRIC = 'custom.googleapis.com/my_cumulative_metric'
         METRIC_LABELS = {
             'status': 'successful'
@@ -615,6 +619,7 @@ class TestClient(unittest.TestCase):
 
     def test_write_point(self):
         import datetime
+
         PATH = '/projects/{project}/timeSeries/'.format(project=PROJECT)
         client = self._make_one(
             project=PROJECT, credentials=_make_credentials())
@@ -654,6 +659,7 @@ class _Connection(object):
 
     def api_request(self, **kwargs):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

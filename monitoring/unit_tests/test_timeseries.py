@@ -36,6 +36,7 @@ class TestTimeSeries(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.timeseries import TimeSeries
+
         return TimeSeries
 
     def _make_one(self, *args, **kwargs):
@@ -184,6 +185,7 @@ class TestPoint(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.timeseries import Point
+
         return Point
 
     def _make_one(self, *args, **kwargs):
@@ -232,6 +234,7 @@ class TestPoint(unittest.TestCase):
     def test_to_dict_int64(self):
         import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
+
         VALUE = 42
         end_time = datetime.datetime.now()
         end_time_str = _datetime_to_rfc3339(end_time, ignore_zone=False)
@@ -248,6 +251,7 @@ class TestPoint(unittest.TestCase):
     def test_to_dict_float_with_start_time(self):
         import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
+
         VALUE = 1.6180339
         start_time = datetime.datetime.now()
         start_time_str = _datetime_to_rfc3339(start_time, ignore_zone=False)
