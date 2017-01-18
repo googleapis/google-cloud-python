@@ -33,6 +33,7 @@ class TestInstance(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.instance import Instance
+
         return Instance
 
     def _make_one(self, *args, **kwargs):
@@ -516,6 +517,7 @@ class Test__prepare_create_request(unittest.TestCase):
 
     def _call_fut(self, instance, **kw):
         from google.cloud.bigtable.instance import _prepare_create_request
+
         return _prepare_create_request(instance, **kw)
 
     def test_w_defaults(self):
@@ -551,6 +553,7 @@ class Test__prepare_create_request(unittest.TestCase):
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from google.cloud.bigtable.instance import Instance
+
         DISPLAY_NAME = u'DISPLAY_NAME'
         SERVE_NODES = 5
         client = _Client(self.PROJECT)
@@ -582,6 +585,7 @@ class _Client(object):
 
     def copy(self):
         from copy import deepcopy
+
         return deepcopy(self)
 
     def __eq__(self, other):
