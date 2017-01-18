@@ -20,6 +20,7 @@ class Test_GoogleCloudError(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.exceptions import GoogleCloudError
+
         return GoogleCloudError
 
     def _make_one(self, message, errors=()):
@@ -51,11 +52,13 @@ class Test_make_exception(unittest.TestCase):
 
     def _call_fut(self, response, content, error_info=None, use_json=True):
         from google.cloud.exceptions import make_exception
+
         return make_exception(response, content, error_info=error_info,
                               use_json=use_json)
 
     def test_hit_w_content_as_str(self):
         from google.cloud.exceptions import NotFound
+
         response = _Response(404)
         content = b'{"error": {"message": "Not Found"}}'
         exception = self._call_fut(response, content)
@@ -67,6 +70,7 @@ class Test_make_exception(unittest.TestCase):
         import six
         from google.cloud._helpers import _to_bytes
         from google.cloud.exceptions import NotFound
+
         error_message = u'That\u2019s not found.'
         expected = u'404 %s' % (error_message,)
 
@@ -88,6 +92,7 @@ class Test_make_exception(unittest.TestCase):
         import six
         from google.cloud._testing import _Monkey
         from google.cloud.exceptions import NotFound
+
         error_message = u'That is not found.'
         expected = u'404 %s' % (error_message,)
 
@@ -103,6 +108,7 @@ class Test_make_exception(unittest.TestCase):
 
     def test_miss_w_content_as_dict(self):
         from google.cloud.exceptions import GoogleCloudError
+
         ERROR = {
             'domain': 'global',
             'location': 'test',
@@ -119,6 +125,7 @@ class Test_make_exception(unittest.TestCase):
 
     def test_html_when_json_expected(self):
         from google.cloud.exceptions import NotFound
+
         response = _Response(NotFound.code)
         content = '<html><body>404 Not Found</body></html>'
         exception = self._call_fut(response, content, use_json=True)
