@@ -19,6 +19,7 @@ class Test_Bucket(unittest.TestCase):
 
     def _make_one(self, client=None, name=None, properties=None):
         from google.cloud.storage.bucket import Bucket
+
         if client is None:
             connection = _Connection()
             client = _Client(connection)
@@ -164,6 +165,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_acl_property(self):
         from google.cloud.storage.acl import BucketACL
+
         bucket = self._make_one()
         acl = bucket.acl
         self.assertIsInstance(acl, BucketACL)
@@ -171,6 +173,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_default_object_acl_property(self):
         from google.cloud.storage.acl import DefaultObjectACL
+
         bucket = self._make_one()
         acl = bucket.default_object_acl
         self.assertIsInstance(acl, DefaultObjectACL)
@@ -276,6 +279,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         NAME = 'name'
         connection = _Connection()
         client = _Client(connection)
@@ -369,6 +373,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_delete_blob_miss(self):
         from google.cloud.exceptions import NotFound
+
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
@@ -413,6 +418,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_delete_blobs_miss_no_on_error(self):
         from google.cloud.exceptions import NotFound
+
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
@@ -469,6 +475,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
+
         SOURCE = 'source'
         DEST = 'dest'
         BLOB_NAME = 'blob-name'
@@ -778,6 +785,7 @@ class Test_Bucket(unittest.TestCase):
         import datetime
         from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud._helpers import UTC
+
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
         TIME_CREATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'timeCreated': TIME_CREATED}
@@ -832,6 +840,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_make_public_defaults(self):
         from google.cloud.storage.acl import _ACLEntity
+
         NAME = 'name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
@@ -852,6 +861,7 @@ class Test_Bucket(unittest.TestCase):
 
     def _make_public_w_future_helper(self, default_object_acl_loaded=True):
         from google.cloud.storage.acl import _ACLEntity
+
         NAME = 'name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after1 = {'acl': permissive, 'defaultObjectAcl': []}
@@ -1074,6 +1084,7 @@ class _Connection(object):
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kw)
 
         method = kw.get('method')
