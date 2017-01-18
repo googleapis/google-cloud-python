@@ -58,6 +58,7 @@ class Project(object):
         self.number = None
         self.labels = labels or {}
         self.status = None
+        self.parent = None
 
     def __repr__(self):
         return '<Project: %r (%r)>' % (self.name, self.project_id)
@@ -85,6 +86,8 @@ class Project(object):
         self.number = resource['projectNumber']
         self.labels = resource.get('labels', {})
         self.status = resource['lifecycleState']
+        if 'parent' in resource:
+            self.parent = resource['parent']
 
     @property
     def full_name(self):
@@ -202,7 +205,12 @@ class Project(object):
         """
         client = self._require_client(client)
 
-        data = {'name': self.name, 'labels': self.labels}
+        data = {
+            'name': self.name,
+            'labels': self.labels,
+            'parent': self.parent,
+        }
+
         resp = client._connection.api_request(
             method='PUT', path=self.path, data=data)
         self.set_properties_from_api_repr(resp)
