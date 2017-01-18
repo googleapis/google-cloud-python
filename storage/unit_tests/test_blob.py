@@ -14,11 +14,14 @@
 
 import unittest
 
+import mock
+
 
 class Test_Blob(unittest.TestCase):
 
     def _make_one(self, *args, **kw):
         from google.cloud.storage.blob import Blob
+
         properties = kw.pop('properties', None)
         blob = Blob(*args, **kw)
         blob._properties = properties or {}
@@ -45,6 +48,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
+
         BLOB_NAME = 'blob-name'
         BUCKET = object()
         chunk_size = 10 * Blob._CHUNK_SIZE_MULTIPLE
@@ -80,6 +84,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_acl_property(self):
         from google.cloud.storage.acl import ObjectACL
+
         FAKE_BUCKET = _Bucket()
         blob = self._make_one(None, bucket=FAKE_BUCKET)
         acl = blob.acl
@@ -126,8 +131,6 @@ class Test_Blob(unittest.TestCase):
             'https://storage.googleapis.com/name/parent%2Fchild')
 
     def _basic_generate_signed_url_helper(self, credentials=None):
-        import mock
-
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
@@ -165,8 +168,6 @@ class Test_Blob(unittest.TestCase):
         self._basic_generate_signed_url_helper()
 
     def test_generate_signed_url_w_content_type(self):
-        import mock
-
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
@@ -203,8 +204,6 @@ class Test_Blob(unittest.TestCase):
         self._basic_generate_signed_url_helper(credentials=credentials)
 
     def test_generate_signed_url_w_slash_in_name(self):
-        import mock
-
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
@@ -234,8 +233,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_generate_signed_url_w_method_arg(self):
-        import mock
-
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
@@ -267,6 +264,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_exists_miss(self):
         from six.moves.http_client import NOT_FOUND
+
         NONESUCH = 'nonesuch'
         not_found_response = ({'status': NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
@@ -277,6 +275,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_exists_hit(self):
         from six.moves.http_client import OK
+
         BLOB_NAME = 'blob-name'
         found_response = ({'status': OK}, b'')
         connection = _Connection(found_response)
@@ -300,9 +299,10 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
 
     def test_download_to_file_wo_media_link(self):
+        from io import BytesIO
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
-        from io import BytesIO
+
         BLOB_NAME = 'blob-name'
         MEDIA_LINK = 'http://example.com/media/'
         chunk1_response = {'status': PARTIAL_CONTENT,
@@ -326,9 +326,10 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.media_link, MEDIA_LINK)
 
     def _download_to_file_helper(self, chunk_size=None):
+        from io import BytesIO
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
-        from io import BytesIO
+
         BLOB_NAME = 'blob-name'
         chunk1_response = {'status': PARTIAL_CONTENT,
                            'content-range': 'bytes 0-2/6'}
@@ -440,6 +441,7 @@ class Test_Blob(unittest.TestCase):
     def test_download_as_string(self):
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
+
         BLOB_NAME = 'blob-name'
         chunk1_response = {'status': PARTIAL_CONTENT,
                            'content-range': 'bytes 0-2/6'}
@@ -618,6 +620,7 @@ class Test_Blob(unittest.TestCase):
     def test_upload_from_file_simple_not_found(self):
         from six.moves.http_client import NOT_FOUND
         from google.cloud.exceptions import NotFound
+
         with self.assertRaises(NotFound):
             self._upload_from_file_simple_test_helper(status=NOT_FOUND)
 
@@ -647,7 +650,6 @@ class Test_Blob(unittest.TestCase):
             expected_content_type=EXPECTED_CONTENT_TYPE)
 
     def test_upload_from_file_resumable(self):
-        import mock
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
@@ -734,7 +736,6 @@ class Test_Blob(unittest.TestCase):
         })
 
     def test_upload_from_file_resumable_w_error(self):
-        import mock
         from six.moves.http_client import NOT_FOUND
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
@@ -974,6 +975,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from google.cloud.streaming import http_wrapper
+
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = b'ABCDEF'
@@ -1013,6 +1015,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from google.cloud.streaming import http_wrapper
+
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = u'ABCDEF\u1234'
@@ -1053,6 +1056,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from google.cloud.streaming import http_wrapper
+
         BLOB_NAME = 'blob-name'
         KEY = b'aa426195405adee2c8081bb9e7e74b19'
         HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
@@ -1099,6 +1103,7 @@ class Test_Blob(unittest.TestCase):
     def test_make_public(self):
         from six.moves.http_client import OK
         from google.cloud.storage.acl import _ACLEntity
+
         BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = ({'status': OK}, {'acl': permissive})
@@ -1132,6 +1137,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_compose_minimal(self):
         from six.moves.http_client import OK
+
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
         DESTINATION = 'destinaton'
@@ -1168,6 +1174,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_compose_w_additional_property_changes(self):
         from six.moves.http_client import OK
+
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
         DESTINATION = 'destinaton'
@@ -1210,6 +1217,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_rewrite_other_bucket_other_name_no_encryption_partial(self):
         from six.moves.http_client import OK
+
         SOURCE_BLOB = 'source'
         DEST_BLOB = 'dest'
         DEST_BUCKET = 'other-bucket'
@@ -1258,6 +1266,7 @@ class Test_Blob(unittest.TestCase):
         import base64
         import hashlib
         from six.moves.http_client import OK
+
         KEY = b'01234567890123456789012345678901'  # 32 bytes
         KEY_B64 = base64.b64encode(KEY).rstrip().decode('ascii')
         KEY_HASH = hashlib.sha256(KEY).digest()
@@ -1305,6 +1314,7 @@ class Test_Blob(unittest.TestCase):
         import base64
         import hashlib
         from six.moves.http_client import OK
+
         SOURCE_KEY = b'01234567890123456789012345678901'  # 32 bytes
         SOURCE_KEY_B64 = base64.b64encode(SOURCE_KEY).rstrip().decode('ascii')
         SOURCE_KEY_HASH = hashlib.sha256(SOURCE_KEY).digest()
@@ -1631,6 +1641,7 @@ class Test_Blob(unittest.TestCase):
         import datetime
         from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud._helpers import UTC
+
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
@@ -1648,6 +1659,7 @@ class Test_Blob(unittest.TestCase):
         import datetime
         from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud._helpers import UTC
+
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
@@ -1665,6 +1677,7 @@ class Test_Blob(unittest.TestCase):
         import datetime
         from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud._helpers import UTC
+
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
@@ -1705,6 +1718,7 @@ class _Connection(_Responder):
     def api_request(self, **kw):
         from six.moves.http_client import NOT_FOUND
         from google.cloud.exceptions import NotFound
+
         info, content = self._respond(**kw)
         if info.get('status') == NOT_FOUND:
             raise NotFound(info)
@@ -1715,6 +1729,7 @@ class _Connection(_Responder):
         from six.moves.urllib.parse import urlencode
         from six.moves.urllib.parse import urlsplit
         from six.moves.urllib.parse import urlunsplit
+
         # Mimic the build_api_url interface.
         qs = urlencode(query_params or {})
         scheme, netloc, _, _, _ = urlsplit(api_base_url)
@@ -1776,6 +1791,7 @@ class _Stream(object):
 
     def __init__(self, to_read=b''):
         import io
+
         self._written = []
         self._to_read = io.BytesIO(to_read)
 

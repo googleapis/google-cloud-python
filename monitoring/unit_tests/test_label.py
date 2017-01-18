@@ -20,6 +20,7 @@ class TestLabelValueType(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.label import LabelValueType
+
         return LabelValueType
 
     def test_one(self):
@@ -36,6 +37,7 @@ class TestLabelDescriptor(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.label import LabelDescriptor
+
         return LabelDescriptor
 
     def _make_one(self, *args, **kwargs):

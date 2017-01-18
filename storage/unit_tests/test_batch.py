@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -27,6 +28,7 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.batch import MIMEApplicationHTTP
+
         return MIMEApplicationHTTP
 
     def _make_one(self, *args, **kw):
@@ -79,6 +81,7 @@ class TestBatch(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.batch import Batch
+
         return Batch
 
     def _make_one(self, *args, **kw):
@@ -95,6 +98,7 @@ class TestBatch(unittest.TestCase):
 
     def test_current(self):
         from google.cloud.storage.client import Client
+
         project = 'PROJECT'
         credentials = _make_credentials()
         client = Client(project=project, credentials=credentials)
@@ -110,6 +114,7 @@ class TestBatch(unittest.TestCase):
 
     def test__make_request_GET_normal(self):
         from google.cloud.storage.batch import _FutureDict
+
         URL = 'http://example.com/api'
         expected = _Response()
         http = _HTTP((expected, ''))
@@ -136,6 +141,7 @@ class TestBatch(unittest.TestCase):
 
     def test__make_request_POST_normal(self):
         from google.cloud.storage.batch import _FutureDict
+
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
@@ -161,6 +167,7 @@ class TestBatch(unittest.TestCase):
 
     def test__make_request_PATCH_normal(self):
         from google.cloud.storage.batch import _FutureDict
+
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
@@ -186,6 +193,7 @@ class TestBatch(unittest.TestCase):
 
     def test__make_request_DELETE_normal(self):
         from google.cloud.storage.batch import _FutureDict
+
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
@@ -241,6 +249,7 @@ class TestBatch(unittest.TestCase):
 
     def _check_subrequest_payload(self, chunk, method, url, payload):
         import json
+
         lines = chunk.splitlines()
         # blank + 2 headers + blank + request + 2 headers + blank + body
         payload_str = json.dumps(payload)
@@ -262,6 +271,7 @@ class TestBatch(unittest.TestCase):
 
     def test_finish_nonempty(self):
         import httplib2
+
         URL = 'http://api.example.com/other_api'
         expected = _Response()
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
@@ -325,6 +335,7 @@ class TestBatch(unittest.TestCase):
 
     def test_finish_nonempty_with_status_failure(self):
         from google.cloud.exceptions import NotFound
+
         URL = 'http://api.example.com/other_api'
         expected = _Response()
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
@@ -380,6 +391,7 @@ class TestBatch(unittest.TestCase):
 
     def test_as_context_mgr_wo_error(self):
         from google.cloud.storage.client import Client
+
         URL = 'http://example.com/api'
         expected = _Response()
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
@@ -417,6 +429,7 @@ class TestBatch(unittest.TestCase):
     def test_as_context_mgr_w_error(self):
         from google.cloud.storage.batch import _FutureDict
         from google.cloud.storage.client import Client
+
         URL = 'http://example.com/api'
         http = _HTTP()
         connection = _Connection(http=http)
@@ -457,10 +470,12 @@ class Test__unpack_batch_response(unittest.TestCase):
 
     def _call_fut(self, response, content):
         from google.cloud.storage.batch import _unpack_batch_response
+
         return _unpack_batch_response(response, content)
 
     def _unpack_helper(self, response, content):
         import httplib2
+
         result = list(self._call_fut(response, content))
         self.assertEqual(len(result), 3)
         response0 = httplib2.Response({
@@ -548,6 +563,7 @@ class Test__FutureDict(unittest.TestCase):
 
     def _make_one(self, *args, **kw):
         from google.cloud.storage.batch import _FutureDict
+
         return _FutureDict(*args, **kw)
 
     def test_get(self):
@@ -580,14 +596,12 @@ class _Connection(object):
 
 
 class _Response(dict):
-
     def __init__(self, status=200, **kw):
         self.status = status
         super(_Response, self).__init__(**kw)
 
 
 class _HTTP(object):
-
     def __init__(self, *responses):
         self._requests = []
         self._responses = list(responses)

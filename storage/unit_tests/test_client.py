@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -27,6 +28,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -89,6 +91,7 @@ class TestClient(unittest.TestCase):
 
     def test__connection_getter_with_batch(self):
         from google.cloud.storage.batch import Batch
+
         PROJECT = 'PROJECT'
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
@@ -303,6 +306,7 @@ class TestClient(unittest.TestCase):
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlencode
         from six.moves.urllib.parse import urlparse
+
         PROJECT = 'PROJECT'
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
@@ -419,6 +423,7 @@ class _Http(object):
 
     def __init__(self, headers, content):
         from httplib2 import Response
+
         self._response = Response(headers)
         self._content = content
 

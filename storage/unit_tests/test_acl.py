@@ -20,6 +20,7 @@ class Test_ACLEntity(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.acl import _ACLEntity
+
         return _ACLEntity
 
     def _make_one(self, *args, **kw):
@@ -130,6 +131,7 @@ class Test_ACL(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.acl import ACL
+
         return ACL
 
     def _make_one(self, *args, **kw):
@@ -270,6 +272,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_has_entity_miss_entity(self):
         from google.cloud.storage.acl import _ACLEntity
+
         TYPE = 'type'
         ID = 'id'
         entity = _ACLEntity(TYPE, ID)
@@ -310,6 +313,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_get_entity_miss_entity_no_default(self):
         from google.cloud.storage.acl import _ACLEntity
+
         TYPE = 'type'
         ID = 'id'
         entity = _ACLEntity(TYPE, ID)
@@ -325,6 +329,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_get_entity_miss_entity_w_default(self):
         from google.cloud.storage.acl import _ACLEntity
+
         DEFAULT = object()
         TYPE = 'type'
         ID = 'id'
@@ -351,6 +356,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_add_entity_miss_eager(self):
         from google.cloud.storage.acl import _ACLEntity
+
         TYPE = 'type'
         ID = 'id'
         ROLE = 'role'
@@ -366,6 +372,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_add_entity_miss_lazy(self):
         from google.cloud.storage.acl import _ACLEntity
+
         TYPE = 'type'
         ID = 'id'
         ROLE = 'role'
@@ -386,6 +393,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_add_entity_hit(self):
         from google.cloud.storage.acl import _ACLEntity
+
         TYPE = 'type'
         ID = 'id'
         ENTITY_VAL = '%s-%s' % (TYPE, ID)
@@ -715,6 +723,7 @@ class Test_BucketACL(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.acl import BucketACL
+
         return BucketACL
 
     def _make_one(self, *args, **kw):
@@ -736,6 +745,7 @@ class Test_DefaultObjectACL(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.acl import DefaultObjectACL
+
         return DefaultObjectACL
 
     def _make_one(self, *args, **kw):
@@ -757,6 +767,7 @@ class Test_ObjectACL(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.acl import ObjectACL
+
         return ObjectACL
 
     def _make_one(self, *args, **kw):
