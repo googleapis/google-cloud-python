@@ -22,6 +22,7 @@ class TestOperation(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.speech.operation import Operation
+
         return Operation
 
     def _make_one(self, *args, **kwargs):
