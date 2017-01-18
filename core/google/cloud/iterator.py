@@ -46,7 +46,7 @@ At any point, you may check the number of items consumed by referencing the
 ``num_results`` property of the iterator::
 
     >>> my_iterator = Iterator(...)
-    ... for my_item in my_iterator:
+    >>> for my_item in my_iterator:
     ...     if my_iterator.num_results >= 10:
     ...         break
 
