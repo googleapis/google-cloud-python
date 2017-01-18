@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -30,6 +31,7 @@ class TestTopic(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub.topic import Topic
+
         return Topic
 
     def _make_one(self, *args, **kw):
@@ -306,6 +308,7 @@ class TestTopic(unittest.TestCase):
 
     def test_subscription(self):
         from google.cloud.pubsub.subscription import Subscription
+
         client = _Client(project=self.PROJECT)
         topic = self._make_one(self.TOPIC_NAME, client=client)
 
@@ -447,6 +450,7 @@ class TestTopic(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -513,6 +517,7 @@ class TestTopic(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
+
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'
@@ -568,6 +573,7 @@ class TestTopic(unittest.TestCase):
 
     def test_set_iam_policy_w_alternate_client(self):
         from google.cloud.pubsub.iam import Policy
+
         RESPONSE = {'etag': 'ACAB'}
 
         client1 = _Client(project=self.PROJECT)
@@ -629,6 +635,7 @@ class TestBatch(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub.topic import Batch
+
         return Batch
 
     def _make_one(self, *args, **kwargs):
@@ -782,6 +789,7 @@ class _FauxPublisherAPI(object):
 
     def topic_get(self, topic_path):
         from google.cloud.exceptions import NotFound
+
         self._topic_got = topic_path
         try:
             return self._topic_get_response

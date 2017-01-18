@@ -32,6 +32,7 @@ def _make_credentials():
     # pylint: disable=redefined-outer-name
     import google.auth.credentials
     # pylint: enable=redefined-outer-name
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -55,6 +56,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub._gax import _PublisherAPI
+
         return _PublisherAPI
 
     def test_ctor(self):
@@ -137,6 +139,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_create_already_exists(self):
         from google.cloud.exceptions import Conflict
+
         gax_api = _GAXPublisherAPI(_create_topic_conflict=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -150,6 +153,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_create_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -176,6 +180,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_get_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXPublisherAPI()
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -189,6 +194,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_get_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -213,6 +219,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXPublisherAPI(_delete_topic_ok=False)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -226,6 +233,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_delete_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -239,6 +247,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_publish_hit(self):
         import base64
+
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
@@ -261,6 +270,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_publish_miss_w_attrs_w_bytes_payload(self):
         import base64
         from google.cloud.exceptions import NotFound
+
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
         MESSAGE = {'data': B64, 'attributes': {'foo': 'bar'}}
@@ -281,6 +291,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_publish_error(self):
         import base64
         from google.gax.errors import GaxError
+
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MESSAGE = {'data': B64, 'attributes': {}}
@@ -539,6 +550,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_create_already_exists(self):
         from google.cloud.exceptions import Conflict
+
         DEADLINE = 600
         gax_api = _GAXSubscriberAPI(_create_subscription_conflict=True)
         client = _Client(self.PROJECT)
@@ -558,6 +570,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_create_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -600,6 +613,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_get_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -613,6 +627,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_get_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -637,6 +652,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXSubscriberAPI(_delete_subscription_ok=False)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -650,6 +666,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_delete_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -675,6 +692,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_modify_push_config_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -690,6 +708,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_modify_push_config_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -744,6 +763,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_pull_defaults_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -760,6 +780,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_pull_defaults_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
@@ -808,6 +829,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_acknowledge_miss(self):
         from google.cloud.exceptions import NotFound
+
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI()
@@ -824,6 +846,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_acknowledge_error(self):
         from google.gax.errors import GaxError
+
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
@@ -858,6 +881,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_modify_ack_deadline_miss(self):
         from google.cloud.exceptions import NotFound
+
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         NEW_DEADLINE = 90
@@ -878,6 +902,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_modify_ack_deadline_error(self):
         from google.gax.errors import GaxError
+
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         NEW_DEADLINE = 90
@@ -902,6 +927,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud.pubsub._gax import make_gax_publisher_api
+
         return make_gax_publisher_api(*args, **kwargs)
 
     def test_live_api(self):
@@ -968,6 +994,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud.pubsub._gax import make_gax_subscriber_api
+
         return make_gax_subscriber_api(*args, **kwargs)
 
     def test_live_api(self):
@@ -1039,6 +1066,7 @@ class _GAXPublisherAPI(_GAXBaseAPI):
 
     def create_topic(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._create_topic_called_with = name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1048,6 +1076,7 @@ class _GAXPublisherAPI(_GAXBaseAPI):
 
     def get_topic(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._get_topic_called_with = name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1058,6 +1087,7 @@ class _GAXPublisherAPI(_GAXBaseAPI):
 
     def delete_topic(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._delete_topic_called_with = name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1066,6 +1096,7 @@ class _GAXPublisherAPI(_GAXBaseAPI):
 
     def publish(self, topic, messages, options=None):
         from google.gax.errors import GaxError
+
         self._publish_called_with = topic, messages, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1076,6 +1107,7 @@ class _GAXPublisherAPI(_GAXBaseAPI):
 
     def list_topic_subscriptions(self, topic, page_size, options=None):
         from google.gax.errors import GaxError
+
         self._list_topic_subscriptions_called_with = topic, page_size, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1101,6 +1133,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
                             push_config, ack_deadline_seconds,
                             options=None):
         from google.gax.errors import GaxError
+
         self._create_subscription_called_with = (
             name, topic, push_config, ack_deadline_seconds, options)
         if self._random_gax_error:
@@ -1111,6 +1144,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
 
     def get_subscription(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._get_subscription_called_with = name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1121,6 +1155,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
 
     def delete_subscription(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._delete_subscription_called_with = name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1129,6 +1164,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
 
     def modify_push_config(self, name, push_config, options=None):
         from google.gax.errors import GaxError
+
         self._modify_push_config_called_with = name, push_config, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1137,6 +1173,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
 
     def pull(self, name, max_messages, return_immediately, options=None):
         from google.gax.errors import GaxError
+
         self._pull_called_with = (
             name, max_messages, return_immediately, options)
         if self._random_gax_error:
@@ -1151,6 +1188,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
 
     def acknowledge(self, name, ack_ids, options=None):
         from google.gax.errors import GaxError
+
         self._acknowledge_called_with = name, ack_ids, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1159,6 +1197,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
 
     def modify_ack_deadline(self, name, ack_ids, deadline, options=None):
         from google.gax.errors import GaxError
+
         self._modify_ack_deadline_called_with = (
             name, ack_ids, deadline, options)
         if self._random_gax_error:
