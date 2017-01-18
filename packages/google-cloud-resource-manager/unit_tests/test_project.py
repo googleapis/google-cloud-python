@@ -20,6 +20,7 @@ class TestProject(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.resource_manager.project import Project
+
         return Project
 
     def _make_one(self, *args, **kw):
@@ -325,6 +326,7 @@ class _Connection(object):
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kw)
 
         try:
