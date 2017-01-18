@@ -24,6 +24,7 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
                   profanity_filter, speech_context, single_utterance,
                   interim_results):
         from google.cloud.speech._gax import _make_streaming_request
+
         return _make_streaming_request(sample=sample,
                                        language_code=language_code,
                                        max_alternatives=max_alternatives,
@@ -89,6 +90,7 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
                   profanity_filter, speech_context, single_utterance,
                   interim_results):
         from google.cloud.speech._gax import _stream_requests
+
         return _stream_requests(sample=sample,
                                 language_code=language_code,
                                 max_alternatives=max_alternatives,

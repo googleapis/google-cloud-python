@@ -46,6 +46,7 @@ class TestAligner(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.query import Aligner
+
         return Aligner
 
     def test_one(self):
@@ -62,6 +63,7 @@ class TestReducer(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.query import Reducer
+
         return Reducer
 
     def test_one(self):
@@ -79,6 +81,7 @@ class TestQuery(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.query import Query
+
         return Query
 
     def _make_one(self, *args, **kwargs):
@@ -87,6 +90,7 @@ class TestQuery(unittest.TestCase):
     @staticmethod
     def _make_timestamp(value):
         from google.cloud._helpers import _datetime_to_rfc3339
+
         return _datetime_to_rfc3339(value)
 
     def test_constructor_minimal(self):
@@ -149,6 +153,7 @@ class TestQuery(unittest.TestCase):
 
     def test_constructor_nonzero_duration_illegal(self):
         import datetime
+
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 30)
         client = _Client(project=PROJECT, connection=_Connection())
         with self.assertRaises(ValueError):
@@ -506,6 +511,7 @@ class Test_Filter(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.query import _Filter
+
         return _Filter
 
     def _make_one(self, metric_type):
@@ -540,6 +546,7 @@ class Test__build_label_filter(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud.monitoring.query import _build_label_filter
+
         return _build_label_filter(*args, **kwargs)
 
     def test_no_labels(self):
@@ -636,6 +643,7 @@ class _Connection(object):
 
     def api_request(self, **kwargs):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)
