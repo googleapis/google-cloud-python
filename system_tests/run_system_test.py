@@ -23,6 +23,7 @@ import language
 import logging_
 import monitoring
 import pubsub
+import resource_manager
 import speech
 import storage
 import system_test_utils
@@ -41,6 +42,7 @@ TEST_MODULES = {
     'language': language,
     'logging': logging_,
     'monitoring': monitoring,
+    'resource_manager': resource_manager,
     'translate': translate,
 }
 

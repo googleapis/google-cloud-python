@@ -15,10 +15,12 @@
 """Utility for managing projects via the Cloud Resource Manager API."""
 
 
-from google.cloud.exceptions import NotFound
+from google.cloud.exceptions import Forbidden, NotFound
+from google.cloud.resource_manager._helpers import _PropertyMixin
+from google.cloud.resource_manager.operation import Operation
 
 
-class Project(object):
+class Project(_PropertyMixin):
     """Projects are containers for your work on Google Cloud Platform.
 
     .. note::
@@ -37,7 +39,7 @@ class Project(object):
         >>> project.update()
 
     See:
-    https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects
+    https://cloud.google.com/resource-manager/reference/rest/v1/projects
 
     :type project_id: str
     :param project_id: The globally unique ID of the project.
@@ -50,17 +52,25 @@ class Project(object):
 
     :type labels: dict
     :param labels: A list of labels associated with the project.
+
+    :type parent:
+          :class:`google.cloud.resource_manager.resource.OrganizationResource`
+    :param parent: The parent resource for the project.
     """
-    def __init__(self, project_id, client, name=None, labels=None):
+    def __init__(self, project_id, client, name=None, labels=None,
+                 parent=None):
+        super(Project, self).__init__(name=name)
         self._client = client
         self.project_id = project_id
         self.name = name
         self.number = None
         self.labels = labels or {}
         self.status = None
+        self.parent = parent
+        self.create_operation = None
 
     def __repr__(self):
-        return '<Project: %r (%r)>' % (self.name, self.project_id)
+        return '<Project: %r (%r)>' % (str(self.name), self.project_id)
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -86,6 +96,10 @@ class Project(object):
         self.labels = resource.get('labels', {})
         self.status = resource['lifecycleState']
 
+    def _set_create_operation(self, resource):
+        """Set the create operation when projects.create() is called."""
+        self.create_operation = Operation.from_api_repr(resource, self._client)
+
     @property
     def full_name(self):
         """Fully-qualified name (ie, ``'projects/purple-spaceship-123'``)."""
@@ -98,26 +112,16 @@ class Project(object):
         """URL for the project (ie, ``'/projects/purple-spaceship-123'``)."""
         return '/%s' % (self.full_name)
 
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`google.cloud.resource_manager.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current project.
-
-        :rtype: :class:`google.cloud.resource_manager.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self._client
-        return client
+    @property
+    def client(self):
+        """Returns the client."""
+        return self._client
 
     def create(self, client=None):
         """API call:  create the project via a ``POST`` request.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/create
 
         :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
@@ -131,9 +135,14 @@ class Project(object):
             'name': self.name,
             'labels': self.labels,
         }
+        if self.parent:
+            data['parent'] = {
+                'type': self.parent.resource_type,
+                'id': self.parent.resource_id
+            }
         resp = client._connection.api_request(method='POST', path='/projects',
                                               data=data)
-        self.set_properties_from_api_repr(resource=resp)
+        self._set_create_operation(resource=resp)
 
     def reload(self, client=None):
         """API call:  reload the project via a ``GET`` request.
@@ -150,7 +159,7 @@ class Project(object):
             via :meth:`update`.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/get
 
         :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
@@ -168,7 +177,7 @@ class Project(object):
         """API call:  test the existence of a project via a ``GET`` request.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/get
 
         :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
@@ -184,7 +193,7 @@ class Project(object):
             # Note that we have to request the entire resource as the API
             # doesn't provide a way tocheck for existence only.
             client._connection.api_request(method='GET', path=self.path)
-        except NotFound:
+        except (Forbidden, NotFound):
             return False
         else:
             return True
@@ -193,7 +202,7 @@ class Project(object):
         """API call:  update the project via a ``PUT`` request.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/update
 
         :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
@@ -203,6 +212,11 @@ class Project(object):
         client = self._require_client(client)
 
         data = {'name': self.name, 'labels': self.labels}
+        if self.parent:
+            data['parent'] = {
+                'type': self.parent.resource_type,
+                'id': self.parent.resource_id
+            }
         resp = client._connection.api_request(
             method='PUT', path=self.path, data=data)
         self.set_properties_from_api_repr(resp)
@@ -211,7 +225,7 @@ class Project(object):
         """API call:  delete the project via a ``DELETE`` request.
 
         See:
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/delete
 
         This actually changes the status (``lifecycleState``) from ``ACTIVE``
         to ``DELETE_REQUESTED``.
@@ -242,7 +256,7 @@ class Project(object):
         """API call:  undelete the project via a ``POST`` request.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/undelete
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/undelete
 
         This actually changes the project status (``lifecycleState``) from
         ``DELETE_REQUESTED`` to ``ACTIVE``.
