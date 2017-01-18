@@ -25,6 +25,7 @@ class TestVariable(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.runtimeconfig.variable import Variable
+
         return Variable
 
     def _make_one(self, *args, **kw):
