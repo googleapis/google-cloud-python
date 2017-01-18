@@ -20,6 +20,7 @@ class TestAlternative(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.speech.alternative import Alternative
+
         return Alternative
 
     def _make_one(self, *args, **kwargs):
