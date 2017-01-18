@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -27,6 +28,7 @@ class Test_ClientFactoryMixin(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.client import _ClientFactoryMixin
+
         return _ClientFactoryMixin
 
     def test_virtual(self):
@@ -39,6 +41,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -106,6 +109,7 @@ class TestJSONClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.client import JSONClient
+
         return JSONClient
 
     def _make_one(self, *args, **kw):

@@ -25,6 +25,7 @@ class TestMetric(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging.metric import Metric
+
         return Metric
 
     def _make_one(self, *args, **kw):
@@ -238,6 +239,7 @@ class _DummyMetricsAPI(object):
 
     def metric_get(self, project, metric_name):
         from google.cloud.exceptions import NotFound
+
         self._metric_get_called_with = (project, metric_name)
         try:
             return self._metric_get_response

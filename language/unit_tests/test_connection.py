@@ -20,6 +20,7 @@ class TestConnection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.language.connection import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):

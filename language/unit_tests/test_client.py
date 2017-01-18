@@ -28,6 +28,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.language.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):

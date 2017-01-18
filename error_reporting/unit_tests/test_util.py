@@ -19,6 +19,7 @@ class Test_build_flask_context(unittest.TestCase):
 
     def _call_fut(self, request):
         from google.cloud.error_reporting.util import build_flask_context
+
         return build_flask_context(request)
 
     def test_flask_helper(self):

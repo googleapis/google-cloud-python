@@ -21,6 +21,7 @@ class Test_SetDeleteRow(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row import _SetDeleteRow
+
         return _SetDeleteRow
 
     def _make_one(self, *args, **kwargs):
@@ -37,6 +38,7 @@ class TestDirectRow(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row import DirectRow
+
         return DirectRow
 
     def _make_one(self, *args, **kwargs):
@@ -77,6 +79,7 @@ class TestDirectRow(unittest.TestCase):
                          timestamp_micros=-1):
         import six
         import struct
+
         row_key = b'row_key'
         column_family_id = u'column_family_id'
         if column is None:
@@ -381,6 +384,7 @@ class TestConditionalRow(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row import ConditionalRow
+
         return ConditionalRow
 
     def _make_one(self, *args, **kwargs):
@@ -523,6 +527,7 @@ class TestAppendRow(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row import AppendRow
+
         return AppendRow
 
     def _make_one(self, *args, **kwargs):
@@ -667,10 +672,12 @@ class Test__parse_rmw_row_response(unittest.TestCase):
 
     def _call_fut(self, row_response):
         from google.cloud.bigtable.row import _parse_rmw_row_response
+
         return _parse_rmw_row_response(row_response)
 
     def test_it(self):
         from google.cloud._helpers import _datetime_from_microseconds
+
         col_fam1 = u'col-fam-id'
         col_fam2 = u'col-fam-id2'
         col_name1 = b'col-name1'
@@ -752,10 +759,12 @@ class Test__parse_family_pb(unittest.TestCase):
 
     def _call_fut(self, family_pb):
         from google.cloud.bigtable.row import _parse_family_pb
+
         return _parse_family_pb(family_pb)
 
     def test_it(self):
         from google.cloud._helpers import _datetime_from_microseconds
+
         col_fam1 = u'col-fam-id'
         col_name1 = b'col-name1'
         col_name2 = b'col-name2'
@@ -808,90 +817,105 @@ class Test__parse_family_pb(unittest.TestCase):
 def _CheckAndMutateRowRequestPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
+
     return messages_v2_pb2.CheckAndMutateRowRequest(*args, **kw)
 
 
 def _CheckAndMutateRowResponsePB(*args, **kw):
     from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
+
     return messages_v2_pb2.CheckAndMutateRowResponse(*args, **kw)
 
 
 def _MutateRowRequestPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
+
     return messages_v2_pb2.MutateRowRequest(*args, **kw)
 
 
 def _ReadModifyWriteRowRequestPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
+
     return messages_v2_pb2.ReadModifyWriteRowRequest(*args, **kw)
 
 
 def _ReadModifyWriteRowResponsePB(*args, **kw):
     from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
+
     return messages_v2_pb2.ReadModifyWriteRowResponse(*args, **kw)
 
 
 def _CellPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Cell(*args, **kw)
 
 
 def _ColumnPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Column(*args, **kw)
 
 
 def _FamilyPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Family(*args, **kw)
 
 
 def _MutationPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Mutation(*args, **kw)
 
 
 def _MutationSetCellPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Mutation.SetCell(*args, **kw)
 
 
 def _MutationDeleteFromColumnPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Mutation.DeleteFromColumn(*args, **kw)
 
 
 def _MutationDeleteFromFamilyPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Mutation.DeleteFromFamily(*args, **kw)
 
 
 def _MutationDeleteFromRowPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Mutation.DeleteFromRow(*args, **kw)
 
 
 def _RowPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.Row(*args, **kw)
 
 
 def _ReadModifyWriteRulePB(*args, **kw):
     from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
+
     return data_v2_pb2.ReadModifyWriteRule(*args, **kw)
 
 

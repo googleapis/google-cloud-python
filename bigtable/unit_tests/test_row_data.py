@@ -21,6 +21,7 @@ class TestCell(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row_data import Cell
+
         return Cell
 
     def _make_one(self, *args, **kwargs):
@@ -97,6 +98,7 @@ class TestPartialRowData(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row_data import PartialRowData
+
         return PartialRowData
 
     def _make_one(self, *args, **kwargs):
@@ -189,6 +191,7 @@ class TestPartialRowsData(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row_data import PartialRowsData
+
         return PartialRowsData
 
     def _getDoNothingClass(self):
@@ -387,6 +390,7 @@ class TestPartialRowsData(unittest.TestCase):
 
     def test_invalid_last_scanned_row_key_on_start(self):
         from google.cloud.bigtable.row_data import InvalidReadRowsResponse
+
         response = _ReadRowsResponseV2(chunks=(), last_scanned_row_key='ABC')
         iterator = _MockCancellableIterator(response)
         prd = self._make_one(iterator)
@@ -404,6 +408,7 @@ class TestPartialRowsData(unittest.TestCase):
 
     def test_invalid_empty_chunk(self):
         from google.cloud.bigtable.row_data import InvalidChunk
+
         chunks = _generate_cell_chunks([''])
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
@@ -413,6 +418,7 @@ class TestPartialRowsData(unittest.TestCase):
 
     def test_invalid_empty_second_chunk(self):
         from google.cloud.bigtable.row_data import InvalidChunk
+
         chunks = _generate_cell_chunks(['', ''])
         first = chunks[0]
         first.row_key = b'RK'
@@ -432,6 +438,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row_data import PartialRowsData
+
         return PartialRowsData
 
     def _make_one(self, *args, **kwargs):
@@ -439,6 +446,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     def _load_json_test(self, test_name):
         import os
+
         if self.__class__._json_tests is None:
             dirname = os.path.dirname(__file__)
             filename = os.path.join(dirname, 'read-rows-acceptance-test.json')
@@ -452,6 +460,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     def _fail_during_consume(self, testcase_name):
         from google.cloud.bigtable.row_data import InvalidChunk
+
         chunks, results = self._load_json_test(testcase_name)
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
@@ -504,6 +513,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     def _sort_flattend_cells(self, flattened):
         import operator
+
         key_func = operator.itemgetter('rk', 'fm', 'qual')
         return sorted(flattened, key=key_func)
 
@@ -643,6 +653,7 @@ def _flatten_cells(prd):
     # Doesn't handle error cases.
     from google.cloud._helpers import _bytes_to_unicode
     from google.cloud._helpers import _microseconds_from_datetime
+
     for row_key, row in prd.rows.items():
         for family_name, family in row.cells.items():
             for qualifier, column in family.items():

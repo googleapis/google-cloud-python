@@ -20,6 +20,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.streaming.http_wrapper import _httplib2_debug_level
+
         return _httplib2_debug_level
 
     def _make_one(self, *args, **kw):
@@ -80,6 +81,7 @@ class Test_Request(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.streaming.http_wrapper import Request
+
         return Request
 
     def _make_one(self, *args, **kw):
@@ -95,6 +97,7 @@ class Test_Request(unittest.TestCase):
 
     def test_loggable_body_setter_w_body_None(self):
         from google.cloud.streaming.exceptions import RequestError
+
         request = self._make_one(body=None)
         with self.assertRaises(RequestError):
             request.loggable_body = 'abc'
@@ -121,6 +124,7 @@ class Test_Response(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.streaming.http_wrapper import Response
+
         return Response
 
     def _make_one(self, *args, **kw):
@@ -217,10 +221,12 @@ class Test__check_response(unittest.TestCase):
 
     def _call_fut(self, *args, **kw):
         from google.cloud.streaming.http_wrapper import _check_response
+
         return _check_response(*args, **kw)
 
     def test_w_none(self):
         from google.cloud.streaming.exceptions import RequestError
+
         with self.assertRaises(RequestError):
             self._call_fut(None)
 
@@ -254,6 +260,7 @@ class Test__reset_http_connections(unittest.TestCase):
 
     def _call_fut(self, *args, **kw):
         from google.cloud.streaming.http_wrapper import _reset_http_connections
+
         return _reset_http_connections(*args, **kw)
 
     def test_wo_connections(self):
@@ -289,6 +296,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
     def test_defaults_wo_connections(self):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
+
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         _http = _Http((INFO, CONTENT))
@@ -309,6 +317,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
     def test_w_http_connections_miss(self):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
+
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         CONN_TYPE = object()
@@ -331,6 +340,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
     def test_w_http_connections_hit(self):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
+
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         CONN_TYPE = object()
@@ -354,6 +364,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
         from google.cloud.streaming.exceptions import RequestError
+
         INFO = None
         CONTENT = None
         CONN_TYPE = object()
@@ -371,6 +382,7 @@ class Test_make_api_request(unittest.TestCase):
 
     def _call_fut(self, *args, **kw):
         from google.cloud.streaming.http_wrapper import make_api_request
+
         return make_api_request(*args, **kw)
 
     def test_wo_exception(self):
@@ -424,6 +436,7 @@ class Test_make_api_request(unittest.TestCase):
     def test_w_exceptions_gt_max_retries(self):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
+
         HTTP = object()
         REQUEST = _Request()
         _created, _checked = [], []
