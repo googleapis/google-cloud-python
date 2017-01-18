@@ -211,7 +211,7 @@ class TestProject(unittest.TestCase):
             'data': {
                 'name': PROJECT_NAME,
                 'labels': LABELS,
-                'parent': None
+                'parent': None,
             },
             'path': project.path,
         }
