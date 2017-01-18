@@ -55,6 +55,7 @@ ARRAY = [VALUES] * DIMENSIONS[0]
 def parse_timestamps():  # pragma: NO COVER
     import datetime
     from google.cloud._helpers import _RFC3339_MICROS
+
     return [datetime.datetime.strptime(t, _RFC3339_MICROS)
             for t in TIMESTAMPS]
 
@@ -88,6 +89,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud.monitoring._dataframe import _build_dataframe
+
         return _build_dataframe(*args, **kwargs)
 
     def test_both_label_and_labels_illegal(self):
@@ -209,6 +211,7 @@ class Test__sorted_resource_labels(unittest.TestCase):
 
     def _call_fut(self, labels):
         from google.cloud.monitoring._dataframe import _sorted_resource_labels
+
         return _sorted_resource_labels(labels)
 
     def test_empty(self):
@@ -216,11 +219,13 @@ class Test__sorted_resource_labels(unittest.TestCase):
 
     def test_sorted(self):
         from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
+
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         self.assertSequenceEqual(self._call_fut(EXPECTED), EXPECTED)
 
     def test_reversed(self):
         from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
+
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         INPUT = list(reversed(EXPECTED))
         self.assertSequenceEqual(self._call_fut(INPUT), EXPECTED)
