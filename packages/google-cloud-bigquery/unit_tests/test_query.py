@@ -26,6 +26,7 @@ class TestQueryResults(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.query import QueryResults
+
         return QueryResults
 
     def _make_one(self, *args, **kw):
@@ -75,6 +76,7 @@ class TestQueryResults(unittest.TestCase):
 
     def _verifySchema(self, query, resource):
         from google.cloud.bigquery.schema import SchemaField
+
         if 'schema' in resource:
             fields = resource['schema']['fields']
             self.assertEqual(len(query.schema), len(fields))
@@ -162,6 +164,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         client = _Client(self.PROJECT)
@@ -170,6 +173,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_ctor_w_query_parameters(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
         client = _Client(self.PROJECT)
         query = self._make_one(self.QUERY, client,
@@ -180,6 +184,7 @@ class TestQueryResults(unittest.TestCase):
         from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.job import QueryJob
         from google.cloud.bigquery._helpers import UDFResource
+
         DS_NAME = 'DATASET'
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         client = _Client(self.PROJECT)
@@ -205,6 +210,7 @@ class TestQueryResults(unittest.TestCase):
     def test_from_query_job_wo_default_dataset(self):
         from google.cloud.bigquery.job import QueryJob
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         client = _Client(self.PROJECT)
         job = QueryJob(
@@ -229,6 +235,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_job_w_jobid(self):
         from google.cloud.bigquery.job import QueryJob
+
         SERVER_GENERATED = 'SERVER_GENERATED'
         client = _Client(self.PROJECT)
         query = self._make_one(self.QUERY, client)
@@ -327,6 +334,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_run_w_inline_udf(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
@@ -352,6 +360,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_run_w_udf_resource_uri(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
@@ -377,6 +386,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_run_w_mixed_udfs(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT
@@ -409,6 +419,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_run_w_named_query_paramter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
         RESOURCE['parameterMode'] = 'NAMED'
@@ -444,6 +455,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_run_w_positional_query_paramter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
         RESOURCE['parameterMode'] = 'POSITIONAL'
@@ -560,6 +572,7 @@ class _Client(object):
 
     def dataset(self, name):
         from google.cloud.bigquery.dataset import Dataset
+
         return Dataset(name, client=self)
 
 

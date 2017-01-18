@@ -19,6 +19,7 @@ class Test_not_null(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _not_null
+
         return _not_null(value, field)
 
     def test_w_none_nullable(self):
@@ -35,6 +36,7 @@ class Test_int_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _int_from_json
+
         return _int_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -57,6 +59,7 @@ class Test_float_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _float_from_json
+
         return _float_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -79,6 +82,7 @@ class Test_bool_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _bool_from_json
+
         return _bool_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -109,6 +113,7 @@ class Test_string_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _string_from_json
+
         return _string_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -126,6 +131,7 @@ class Test_bytes_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _bytes_from_json
+
         return _bytes_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -137,6 +143,7 @@ class Test_bytes_from_json(unittest.TestCase):
 
     def test_w_base64_encoded_bytes(self):
         import base64
+
         expected = b'Wonderful!'
         encoded = base64.encodestring(expected)
         coerced = self._call_fut(encoded, object())
@@ -144,6 +151,7 @@ class Test_bytes_from_json(unittest.TestCase):
 
     def test_w_base64_encoded_text(self):
         import base64
+
         expected = b'Wonderful!'
         encoded = base64.encodestring(expected).decode('ascii')
         coerced = self._call_fut(encoded, object())
@@ -154,6 +162,7 @@ class Test_timestamp_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _timestamp_from_json
+
         return _timestamp_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -166,6 +175,7 @@ class Test_timestamp_from_json(unittest.TestCase):
     def test_w_string_value(self):
         import datetime
         from google.cloud._helpers import _EPOCH
+
         coerced = self._call_fut('1.234567', object())
         self.assertEqual(
             coerced,
@@ -174,6 +184,7 @@ class Test_timestamp_from_json(unittest.TestCase):
     def test_w_float_value(self):
         import datetime
         from google.cloud._helpers import _EPOCH
+
         coerced = self._call_fut(1.234567, object())
         self.assertEqual(
             coerced,
@@ -184,6 +195,7 @@ class Test_datetime_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _datetime_from_json
+
         return _datetime_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -195,6 +207,7 @@ class Test_datetime_from_json(unittest.TestCase):
 
     def test_w_string_value(self):
         import datetime
+
         coerced = self._call_fut('2016-12-02T18:51:33', object())
         self.assertEqual(
             coerced,
@@ -205,6 +218,7 @@ class Test_date_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _date_from_json
+
         return _date_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -216,6 +230,7 @@ class Test_date_from_json(unittest.TestCase):
 
     def test_w_string_value(self):
         import datetime
+
         coerced = self._call_fut('1987-09-22', object())
         self.assertEqual(
             coerced,
@@ -226,6 +241,7 @@ class Test_time_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _time_from_json
+
         return _time_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -237,6 +253,7 @@ class Test_time_from_json(unittest.TestCase):
 
     def test_w_string_value(self):
         import datetime
+
         coerced = self._call_fut('12:12:27', object())
         self.assertEqual(
             coerced,
@@ -247,6 +264,7 @@ class Test_record_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _record_from_json
+
         return _record_from_json(value, field)
 
     def test_w_none_nullable(self):
@@ -308,6 +326,7 @@ class Test_row_from_json(unittest.TestCase):
 
     def _call_fut(self, row, schema):
         from google.cloud.bigquery._helpers import _row_from_json
+
         return _row_from_json(row, schema)
 
     def test_w_single_scalar_column(self):
@@ -399,6 +418,7 @@ class Test_rows_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
         from google.cloud.bigquery._helpers import _rows_from_json
+
         return _rows_from_json(value, field)
 
     def test_w_record_subfield(self):
@@ -485,6 +505,7 @@ class Test_int_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _int_to_json
+
         return _int_to_json(value)
 
     def test_w_int(self):
@@ -498,6 +519,7 @@ class Test_float_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _float_to_json
+
         return _float_to_json(value)
 
     def test_w_float(self):
@@ -508,6 +530,7 @@ class Test_bool_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _bool_to_json
+
         return _bool_to_json(value)
 
     def test_w_true(self):
@@ -524,6 +547,7 @@ class Test_bytes_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _bytes_to_json
+
         return _bytes_to_json(value)
 
     def test_w_non_bytes(self):
@@ -541,6 +565,7 @@ class Test_timestamp_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _timestamp_to_json
+
         return _timestamp_to_json(value)
 
     def test_w_float(self):
@@ -552,6 +577,7 @@ class Test_timestamp_to_json(unittest.TestCase):
 
     def test_w_datetime_wo_zone(self):
         import datetime
+
         ZULU = '2016-12-20 15:58:27.339328+00:00'
         when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328)
         self.assertEqual(self._call_fut(when), ZULU)
@@ -572,6 +598,7 @@ class Test_timestamp_to_json(unittest.TestCase):
     def test_w_datetime_w_utc_zone(self):
         import datetime
         from google.cloud._helpers import UTC
+
         ZULU = '2016-12-20 15:58:27.339328+00:00'
         when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
         self.assertEqual(self._call_fut(when), ZULU)
@@ -581,6 +608,7 @@ class Test_datetime_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _datetime_to_json
+
         return _datetime_to_json(value)
 
     def test_w_string(self):
@@ -590,6 +618,7 @@ class Test_datetime_to_json(unittest.TestCase):
     def test_w_datetime(self):
         import datetime
         from google.cloud._helpers import UTC
+
         when = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=UTC)
         self.assertEqual(self._call_fut(when), '2016-12-03T14:11:27.123456Z')
 
@@ -598,6 +627,7 @@ class Test_date_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _date_to_json
+
         return _date_to_json(value)
 
     def test_w_string(self):
@@ -606,6 +636,7 @@ class Test_date_to_json(unittest.TestCase):
 
     def test_w_datetime(self):
         import datetime
+
         when = datetime.date(2016, 12, 3)
         self.assertEqual(self._call_fut(when), '2016-12-03')
 
@@ -614,6 +645,7 @@ class Test_time_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud.bigquery._helpers import _time_to_json
+
         return _time_to_json(value)
 
     def test_w_string(self):
@@ -622,6 +654,7 @@ class Test_time_to_json(unittest.TestCase):
 
     def test_w_datetime(self):
         import datetime
+
         when = datetime.time(12, 13, 41)
         self.assertEqual(self._call_fut(when), '12:13:41')
 
@@ -631,6 +664,7 @@ class Test_ConfigurationProperty(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import _ConfigurationProperty
+
         return _ConfigurationProperty
 
     def _make_one(self, *args, **kw):
@@ -667,6 +701,7 @@ class Test_TypedProperty(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import _TypedProperty
+
         return _TypedProperty
 
     def _make_one(self, *args, **kw):
@@ -701,6 +736,7 @@ class Test_EnumProperty(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import _EnumProperty
+
         return _EnumProperty
 
     def test_it(self):
@@ -735,6 +771,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import UDFResourcesProperty
+
         return UDFResourcesProperty
 
     def _make_one(self, *args, **kw):
@@ -760,6 +797,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
 
     def test_instance_getter_w_non_empty_list(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         _, klass = self._descriptor_and_klass()
@@ -770,6 +808,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
 
     def test_instance_setter_w_empty_list(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         _, klass = self._descriptor_and_klass()
@@ -782,6 +821,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
 
     def test_instance_setter_w_valid_udf(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         _, klass = self._descriptor_and_klass()
@@ -806,6 +846,7 @@ class Test_AbstractQueryParameter(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import AbstractQueryParameter
+
         return AbstractQueryParameter
 
     def _make_one(self, *args, **kw):
@@ -827,6 +868,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         return ScalarQueryParameter
 
     def _make_one(self, *args, **kw):
@@ -931,6 +973,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
     def test_to_api_repr_w_timestamp_datetime(self):
         from google.cloud._helpers import UTC
         import datetime
+
         STAMP = '2016-12-20 15:58:27.339328+00:00'
         when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
         EXPECTED = {
@@ -948,6 +991,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
     def test_to_api_repr_w_timestamp_micros(self):
         import datetime
         from google.cloud._helpers import _microseconds_from_datetime
+
         now = datetime.datetime.utcnow()
         seconds = _microseconds_from_datetime(now) / 1.0e6
         EXPECTED = {
@@ -965,6 +1009,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
     def test_to_api_repr_w_datetime_datetime(self):
         import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
+
         now = datetime.datetime.utcnow()
         EXPECTED = {
             'parameterType': {
@@ -981,6 +1026,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
     def test_to_api_repr_w_datetime_string(self):
         import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
+
         now = datetime.datetime.utcnow()
         now_str = _datetime_to_rfc3339(now)
         EXPECTED = {
@@ -997,6 +1043,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
 
     def test_to_api_repr_w_date_date(self):
         import datetime
+
         today = datetime.date.today()
         EXPECTED = {
             'parameterType': {
@@ -1012,6 +1059,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
 
     def test_to_api_repr_w_date_string(self):
         import datetime
+
         today = datetime.date.today()
         today_str = today.isoformat(),
         EXPECTED = {
@@ -1045,6 +1093,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import ArrayQueryParameter
+
         return ArrayQueryParameter
 
     def _make_one(self, *args, **kw):
@@ -1186,6 +1235,7 @@ class Test_StructQueryParameter(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import StructQueryParameter
+
         return StructQueryParameter
 
     def _make_one(self, *args, **kw):
@@ -1194,6 +1244,7 @@ class Test_StructQueryParameter(unittest.TestCase):
     @staticmethod
     def _make_subparam(name, type_, value):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         return ScalarQueryParameter(name, type_, value)
 
     def test_ctor(self):
@@ -1308,6 +1359,7 @@ class Test_QueryParametersProperty(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._helpers import QueryParametersProperty
+
         return QueryParametersProperty
 
     def _make_one(self, *args, **kw):
@@ -1333,6 +1385,7 @@ class Test_QueryParametersProperty(unittest.TestCase):
 
     def test_instance_getter_w_non_empty_list(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
         _, klass = self._descriptor_and_klass()
         instance = klass()
@@ -1342,6 +1395,7 @@ class Test_QueryParametersProperty(unittest.TestCase):
 
     def test_instance_setter_w_empty_list(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
         _, klass = self._descriptor_and_klass()
         instance = klass()
@@ -1353,6 +1407,7 @@ class Test_QueryParametersProperty(unittest.TestCase):
 
     def test_instance_setter_w_valid_udf(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
         _, klass = self._descriptor_and_klass()
         instance = klass()
