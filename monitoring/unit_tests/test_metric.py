@@ -20,6 +20,7 @@ class TestMetricKind(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.metric import MetricKind
+
         return MetricKind
 
     def test_one(self):
@@ -36,6 +37,7 @@ class TestValueType(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.metric import ValueType
+
         return ValueType
 
     def test_one(self):
@@ -52,6 +54,7 @@ class TestMetricDescriptor(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.metric import MetricDescriptor
+
         return MetricDescriptor
 
     def _make_one(self, *args, **kwargs):
@@ -500,6 +503,7 @@ class TestMetric(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.metric import Metric
+
         return Metric
 
     def _make_one(self, *args, **kwargs):
@@ -555,6 +559,7 @@ class _Connection(object):
 
     def api_request(self, **kwargs):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

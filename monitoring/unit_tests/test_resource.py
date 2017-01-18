@@ -20,6 +20,7 @@ class TestResourceDescriptor(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.resource import ResourceDescriptor
+
         return ResourceDescriptor
 
     def _make_one(self, *args, **kwargs):
@@ -280,6 +281,7 @@ class TestResource(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.resource import Resource
+
         return Resource
 
     def _make_one(self, *args, **kwargs):
@@ -340,6 +342,7 @@ class _Connection(object):
 
     def api_request(self, **kwargs):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

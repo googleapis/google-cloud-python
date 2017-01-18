@@ -19,6 +19,7 @@ class Test_group_id_from_name(unittest.TestCase):
 
     def _call_fut(self, path, project):
         from google.cloud.monitoring.group import _group_id_from_name
+
         return _group_id_from_name(path, project)
 
     def test_w_empty_name(self):
@@ -87,6 +88,7 @@ class TestGroup(unittest.TestCase):
 
     def _setUpResources(self):
         from google.cloud.monitoring.resource import Resource
+
         info1 = {
             'type': 'gce_instance',
             'labels': {
@@ -110,6 +112,7 @@ class TestGroup(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.group import Group
+
         return Group
 
     def _make_one(self, *args, **kwargs):
@@ -534,6 +537,7 @@ class _Connection(object):
 
     def api_request(self, **kwargs):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

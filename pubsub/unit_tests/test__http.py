@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -41,6 +42,7 @@ class TestConnection(_Base):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub._http import Connection
+
         return Connection
 
     def test_default_url(self):
@@ -73,6 +75,7 @@ class TestConnection(_Base):
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
+
         conn = self._make_one()
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
         scheme, netloc, path, qs, _ = urlsplit(uri)
@@ -101,6 +104,7 @@ class Test_PublisherAPI(_Base):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub._http import _PublisherAPI
+
         return _PublisherAPI
 
     def _make_one(self, *args, **kw):
@@ -204,6 +208,7 @@ class Test_PublisherAPI(_Base):
 
     def test_topic_create_already_exists(self):
         from google.cloud.exceptions import Conflict
+
         connection = _Connection()
         connection._no_response_error = Conflict
         client = _Client(connection, self.PROJECT)
@@ -231,6 +236,7 @@ class Test_PublisherAPI(_Base):
 
     def test_topic_get_miss(self):
         from google.cloud.exceptions import NotFound
+
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
         api = self._make_one(client)
@@ -256,6 +262,7 @@ class Test_PublisherAPI(_Base):
 
     def test_topic_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
         api = self._make_one(client)
@@ -269,6 +276,7 @@ class Test_PublisherAPI(_Base):
 
     def test_topic_publish_hit(self):
         import base64
+
         PAYLOAD = b'This is the message text'
         B64_PAYLOAD = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
@@ -440,6 +448,7 @@ class Test_SubscriberAPI(_Base):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub._http import _SubscriberAPI
+
         return _SubscriberAPI
 
     def _make_one(self, *args, **kw):
@@ -645,6 +654,7 @@ class Test_SubscriberAPI(_Base):
 
     def test_subscription_pull_defaults(self):
         import base64
+
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         ACK_ID = 'DEADBEEF'
@@ -672,6 +682,7 @@ class Test_SubscriberAPI(_Base):
 
     def test_subscription_pull_explicit(self):
         import base64
+
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         ACK_ID = 'DEADBEEF'
@@ -743,6 +754,7 @@ class Test_IAMPolicyAPI(_Base):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub._http import _IAMPolicyAPI
+
         return _IAMPolicyAPI
 
     def test_ctor(self):
@@ -861,22 +873,26 @@ class Test_IAMPolicyAPI(_Base):
 class Test__transform_messages_base64_empty(unittest.TestCase):
     def _call_fut(self, messages, transform, key=None):
         from google.cloud.pubsub._http import _transform_messages_base64
+
         return _transform_messages_base64(messages, transform, key)
 
     def test__transform_messages_base64_empty_message(self):
         from base64 import b64decode
+
         DATA = [{'message': {}}]
         self._call_fut(DATA, b64decode, 'message')
         self.assertEqual(DATA, [{'message': {}}])
 
     def test__transform_messages_base64_empty_data(self):
         from base64 import b64decode
+
         DATA = [{'message': {'data': b''}}]
         self._call_fut(DATA, b64decode, 'message')
         self.assertEqual(DATA, [{'message': {'data': b''}}])
 
     def test__transform_messages_base64_pull(self):
         from base64 import b64encode
+
         DATA = [{'message': {'data': b'testing 1 2 3'}}]
         self._call_fut(DATA, b64encode, 'message')
         self.assertEqual(DATA[0]['message']['data'],
@@ -884,6 +900,7 @@ class Test__transform_messages_base64_empty(unittest.TestCase):
 
     def test__transform_messages_base64_publish(self):
         from base64 import b64encode
+
         DATA = [{'data': b'testing 1 2 3'}]
         self._call_fut(DATA, b64encode)
         self.assertEqual(DATA[0]['data'], b64encode(b'testing 1 2 3'))
@@ -899,6 +916,7 @@ class _Connection(object):
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
+
         self._called_with = kw
         try:
             response, self._responses = self._responses[0], self._responses[1:]

@@ -20,6 +20,7 @@ class Test_config_name_from_full_name(unittest.TestCase):
     def _call_fut(self, full_name):
         from google.cloud.runtimeconfig._helpers import (
             config_name_from_full_name)
+
         return config_name_from_full_name(full_name)
 
     def test_w_simple_name(self):
@@ -47,6 +48,7 @@ class Test_variable_name_from_full_name(unittest.TestCase):
     def _call_fut(self, full_name):
         from google.cloud.runtimeconfig._helpers import (
             variable_name_from_full_name)
+
         return variable_name_from_full_name(full_name)
 
     def test_w_simple_name(self):
