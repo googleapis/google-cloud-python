@@ -205,15 +205,11 @@ class Project(object):
         """
         client = self._require_client(client)
 
-        data = {}
-        if self.name:
-            data['name'] = self.name
-
-        if self.labels:
-            data['labels'] = self.labels
-
-        if self.parent:
-            data['parent'] = self.parent
+        data = {
+            'name': self.name,
+            'labels': self.labels,
+            'parent': self.parent
+        }
 
         resp = client._connection.api_request(
             method='PUT', path=self.path, data=data)
