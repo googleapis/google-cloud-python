@@ -22,6 +22,7 @@ class TestKey(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.key import Key
+
         return Key
 
     def _make_one(self, *args, **kwargs):

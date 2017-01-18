@@ -22,6 +22,7 @@ class TestQuery(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.query import Query
+
         return Query
 
     def _make_one(self, *args, **kw):
@@ -47,6 +48,7 @@ class TestQuery(unittest.TestCase):
 
     def test_ctor_explicit(self):
         from google.cloud.datastore.key import Key
+
         _PROJECT = 'OTHER_PROJECT'
         _KIND = 'KIND'
         _NAMESPACE = 'OTHER_NAMESPACE'
@@ -145,6 +147,7 @@ class TestQuery(unittest.TestCase):
 
     def test_ancestor_setter_w_key(self):
         from google.cloud.datastore.key import Key
+
         _NAME = u'NAME'
         key = Key('KIND', 123, project=self._PROJECT)
         query = self._make_one(self._makeClient())
@@ -154,6 +157,7 @@ class TestQuery(unittest.TestCase):
 
     def test_ancestor_deleter_w_key(self):
         from google.cloud.datastore.key import Key
+
         key = Key('KIND', 123, project=self._PROJECT)
         query = self._make_one(client=self._makeClient(), ancestor=key)
         del query.ancestor
@@ -185,6 +189,7 @@ class TestQuery(unittest.TestCase):
 
     def test_add_filter_w_known_operator_and_entity(self):
         from google.cloud.datastore.entity import Entity
+
         query = self._make_one(self._makeClient())
         other = Entity()
         other['firstname'] = u'John'
@@ -200,6 +205,7 @@ class TestQuery(unittest.TestCase):
 
     def test_add_filter___key__valid_key(self):
         from google.cloud.datastore.key import Key
+
         query = self._make_one(self._makeClient())
         key = Key('Foo', project=self._PROJECT)
         query.add_filter('__key__', '=', key)
@@ -207,6 +213,7 @@ class TestQuery(unittest.TestCase):
 
     def test_filter___key__not_equal_operator(self):
         from google.cloud.datastore.key import Key
+
         key = Key('Foo', project=self._PROJECT)
         query = self._make_one(self._makeClient())
         query.add_filter('__key__', '<', key)
@@ -343,6 +350,7 @@ class TestIterator(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.query import Iterator
+
         return Iterator
 
     def _make_one(self, *args, **kw):
@@ -519,6 +527,7 @@ class Test__item_to_entity(unittest.TestCase):
 
     def _call_fut(self, iterator, entity_pb):
         from google.cloud.datastore.query import _item_to_entity
+
         return _item_to_entity(iterator, entity_pb)
 
     def test_it(self):
@@ -543,6 +552,7 @@ class Test__pb_from_query(unittest.TestCase):
 
     def _call_fut(self, query):
         from google.cloud.datastore.query import _pb_from_query
+
         return _pb_from_query(query)
 
     def test_empty(self):

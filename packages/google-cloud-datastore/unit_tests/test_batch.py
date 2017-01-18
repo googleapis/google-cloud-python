@@ -28,6 +28,7 @@ class TestBatch(unittest.TestCase):
 
     def test_ctor(self):
         from google.cloud.grpc.datastore.v1 import datastore_pb2
+
         _PROJECT = 'PROJECT'
         _NAMESPACE = 'NAMESPACE'
         connection = _Connection()
@@ -417,6 +418,7 @@ class _Key(object):
 
     def to_protobuf(self):
         from google.cloud.grpc.datastore.v1 import entity_pb2
+
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.project_id = self.project

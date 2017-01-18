@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 from google.cloud.datastore._http import _HAVE_GRPC
 
 
@@ -22,6 +24,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore._http import _DatastoreAPIOverHttp
+
         return _DatastoreAPIOverHttp
 
     def _make_one(self, *args, **kw):
@@ -112,6 +115,7 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
 
     def _call_fut(self):
         from google.cloud.datastore._http import _grpc_catch_rendezvous
+
         return _grpc_catch_rendezvous()
 
     @staticmethod
@@ -178,11 +182,10 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore._http import _DatastoreAPIOverGRPC
+
         return _DatastoreAPIOverGRPC
 
     def _make_one(self, stub, connection=None, secure=True, mock_args=None):
-        import mock
-
         if connection is None:
             connection = _Connection(None)
             connection.credentials = object()
@@ -364,6 +367,7 @@ class TestConnection(unittest.TestCase):
 
     def _make_key_pb(self, project, id_=1234):
         from google.cloud.datastore.key import Key
+
         path_args = ('Kind',)
         if id_ is not None:
             path_args += (id_,)
@@ -371,13 +375,12 @@ class TestConnection(unittest.TestCase):
 
     def _make_query_pb(self, kind):
         from google.cloud.grpc.datastore.v1 import query_pb2
+
         pb = query_pb2.Query()
         pb.kind.add().name = kind
         return pb
 
     def _make_one(self, credentials=None, http=None, use_grpc=False):
-        import mock
-
         with mock.patch('google.cloud.datastore._http._USE_GRPC',
                         new=use_grpc):
             return self._get_target_class()(credentials=credentials, http=http)
@@ -396,7 +399,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
-        import mock
         from google.cloud._http import API_BASE_URL
         from google.cloud.environment_vars import GCD_HOST
 
@@ -414,8 +416,6 @@ class TestConnection(unittest.TestCase):
         self.assertIsNone(conn.credentials)
 
     def test_ctor_without_grpc(self):
-        import mock
-
         connections = []
         return_val = object()
 
@@ -434,8 +434,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(connections, [conn])
 
     def test_ctor_with_grpc(self):
-        import mock
-
         api_args = []
         return_val = object()
 
@@ -917,7 +915,6 @@ class TestConnection(unittest.TestCase):
         request.ParseFromString(cw['body'])
 
     def test_commit_wo_transaction(self):
-        import mock
         from google.cloud.grpc.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
@@ -965,7 +962,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
-        import mock
         from google.cloud.grpc.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
@@ -1014,6 +1010,7 @@ class TestConnection(unittest.TestCase):
 
     def test_rollback_ok(self):
         from google.cloud.grpc.datastore.v1 import datastore_pb2
+
         PROJECT = 'PROJECT'
         TRANSACTION = b'xact'
 
@@ -1094,6 +1091,7 @@ class Test__parse_commit_response(unittest.TestCase):
 
     def _call_fut(self, commit_response_pb):
         from google.cloud.datastore._http import _parse_commit_response
+
         return _parse_commit_response(commit_response_pb)
 
     def test_it(self):
@@ -1135,6 +1133,7 @@ class Http(object):
 
     def __init__(self, headers, content):
         from httplib2 import Response
+
         self._response = Response(headers)
         self._content = content
 
