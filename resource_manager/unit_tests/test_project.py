@@ -59,7 +59,7 @@ class TestProject(unittest.TestCase):
         PROJECT_NUMBER = 12345678
         PROJECT_LABELS = {'env': 'prod'}
         PROJECT_LIFECYCLE_STATE = 'ACTIVE'
-        PARENT = {'type': 'organization', 'id': 433637338579}
+        PARENT = {'type': 'organization', 'id': '433637338579'}
 
         resource = {'projectId': PROJECT_ID,
                     'name': PROJECT_NAME,
@@ -102,7 +102,7 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': 433637338589
+                'id': '433637338589'
             }
         }
         connection = _Connection(PROJECT_RESOURCE)
@@ -135,7 +135,7 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': 433637338579
+                'id': '433637338579'
             }
         }
         connection = _Connection(PROJECT_RESOURCE)
@@ -199,7 +199,7 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': 433637338589
+                'id': '433637338589'
             }
         }
         connection = _Connection(PROJECT_RESOURCE)
@@ -231,7 +231,7 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': 433637338579
+                'id': '433637338579'
             }
         }
         connection = _Connection(PROJECT_RESOURCE)
@@ -258,7 +258,7 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': 433637338579
+                'id': '433637338579'
             }
         }
         DELETING_PROJECT = PROJECT_RESOURCE.copy()
@@ -296,7 +296,7 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'DELETE_REQUESTED',
             'parent': {
                 'type': 'organization',
-                'id': 433637338579
+                'id': '433637338579'
             }
         }
         connection = _Connection(PROJECT_RESOURCE)
@@ -323,7 +323,7 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'DELETE_REQUESTED',
             'parent': {
                 'type': 'organization',
-                'id': 433637338579
+                'id': '433637338579'
             }
         }
         UNDELETED_PROJECT = PROJECT_RESOURCE.copy()
