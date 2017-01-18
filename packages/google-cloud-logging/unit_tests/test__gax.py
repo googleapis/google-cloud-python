@@ -32,6 +32,7 @@ def _make_credentials():
     # pylint: disable=redefined-outer-name
     import google.auth.credentials
     # pylint: enable=redefined-outer-name
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -333,6 +334,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
     def test_write_entries_single(self):
         from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
+
         TEXT = 'TEXT'
         ENTRY = {
             'logName': self.LOG_PATH,
@@ -367,6 +369,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.logging.type.log_severity_pb2 import WARNING
         from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
         from google.cloud._helpers import UTC, _pb_timestamp_to_datetime
+
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TEXT = 'TEXT'
         SEVERITY = 'WARNING'
@@ -462,7 +465,9 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.logging.type.log_severity_pb2 import WARNING
         from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
         from google.protobuf.any_pb2 import Any
-        from google.cloud._helpers import _datetime_to_rfc3339, UTC
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import UTC
+
         TEXT = 'TEXT'
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP_TYPE_URL = 'type.googleapis.com/google.protobuf.Timestamp'
@@ -616,6 +621,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging._gax import _SinksAPI
+
         return _SinksAPI
 
     def test_ctor(self):
@@ -700,6 +706,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_create_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._make_one(gax_api, None)
 
@@ -710,6 +717,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_create_conflict(self):
         from google.cloud.exceptions import Conflict
+
         gax_api = _GAXSinksAPI(_create_sink_conflict=True)
         api = self._make_one(gax_api, None)
 
@@ -720,6 +728,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_create_ok(self):
         from google.cloud.grpc.logging.v2.logging_config_pb2 import LogSink
+
         gax_api = _GAXSinksAPI()
         api = self._make_one(gax_api, None)
 
@@ -737,6 +746,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_get_error(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXSinksAPI()
         api = self._make_one(gax_api, None)
 
@@ -745,6 +755,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_get_miss(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._make_one(gax_api, None)
 
@@ -775,6 +786,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_update_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._make_one(gax_api, None)
 
@@ -785,6 +797,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_update_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXSinksAPI()
         api = self._make_one(gax_api, None)
 
@@ -816,6 +829,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_delete_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._make_one(gax_api, None)
 
@@ -824,6 +838,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXSinksAPI(_sink_not_found=True)
         api = self._make_one(gax_api, None)
 
@@ -850,6 +865,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging._gax import _MetricsAPI
+
         return _MetricsAPI
 
     def test_ctor(self):
@@ -932,6 +948,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_create_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._make_one(gax_api, None)
 
@@ -942,6 +959,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_create_conflict(self):
         from google.cloud.exceptions import Conflict
+
         gax_api = _GAXMetricsAPI(_create_log_metric_conflict=True)
         api = self._make_one(gax_api, None)
 
@@ -952,6 +970,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_create_ok(self):
         from google.cloud.grpc.logging.v2.logging_metrics_pb2 import LogMetric
+
         gax_api = _GAXMetricsAPI()
         api = self._make_one(gax_api, None)
 
@@ -969,6 +988,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_get_error(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXMetricsAPI()
         api = self._make_one(gax_api, None)
 
@@ -977,6 +997,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_get_miss(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._make_one(gax_api, None)
 
@@ -1007,6 +1028,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_update_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._make_one(gax_api, None)
 
@@ -1017,6 +1039,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_update_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXMetricsAPI()
         api = self._make_one(gax_api, None)
 
@@ -1048,6 +1071,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_delete_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._make_one(gax_api, None)
 
@@ -1056,6 +1080,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _GAXMetricsAPI(_log_metric_not_found=True)
         api = self._make_one(gax_api, None)
 
@@ -1078,6 +1103,7 @@ class Test_make_gax_logging_api(unittest.TestCase):
 
     def _call_fut(self, client):
         from google.cloud.logging._gax import make_gax_logging_api
+
         return make_gax_logging_api(client)
 
     def test_it(self):
@@ -1124,6 +1150,7 @@ class Test_make_gax_metrics_api(unittest.TestCase):
 
     def _call_fut(self, client):
         from google.cloud.logging._gax import make_gax_metrics_api
+
         return make_gax_metrics_api(client)
 
     def test_it(self):
@@ -1170,6 +1197,7 @@ class Test_make_gax_sinks_api(unittest.TestCase):
 
     def _call_fut(self, client):
         from google.cloud.logging._gax import make_gax_sinks_api
+
         return make_gax_sinks_api(client)
 
     def test_it(self):
@@ -1230,6 +1258,7 @@ class _GAXLoggingAPI(_GAXBaseAPI):
 
     def delete_log(self, log_name, options):
         from google.gax.errors import GaxError
+
         self._delete_log_called_with = log_name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1248,6 +1277,7 @@ class _GAXSinksAPI(_GAXBaseAPI):
 
     def create_sink(self, parent, sink, options):
         from google.gax.errors import GaxError
+
         self._create_sink_called_with = parent, sink, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1256,6 +1286,7 @@ class _GAXSinksAPI(_GAXBaseAPI):
 
     def get_sink(self, sink_name, options):
         from google.gax.errors import GaxError
+
         self._get_sink_called_with = sink_name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1266,6 +1297,7 @@ class _GAXSinksAPI(_GAXBaseAPI):
 
     def update_sink(self, sink_name, sink, options=None):
         from google.gax.errors import GaxError
+
         self._update_sink_called_with = sink_name, sink, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1276,6 +1308,7 @@ class _GAXSinksAPI(_GAXBaseAPI):
 
     def delete_sink(self, sink_name, options=None):
         from google.gax.errors import GaxError
+
         self._delete_sink_called_with = sink_name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1294,6 +1327,7 @@ class _GAXMetricsAPI(_GAXBaseAPI):
 
     def create_log_metric(self, parent, metric, options):
         from google.gax.errors import GaxError
+
         self._create_log_metric_called_with = parent, metric, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1302,6 +1336,7 @@ class _GAXMetricsAPI(_GAXBaseAPI):
 
     def get_log_metric(self, metric_name, options):
         from google.gax.errors import GaxError
+
         self._get_log_metric_called_with = metric_name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1312,6 +1347,7 @@ class _GAXMetricsAPI(_GAXBaseAPI):
 
     def update_log_metric(self, metric_name, metric, options=None):
         from google.gax.errors import GaxError
+
         self._update_log_metric_called_with = metric_name, metric, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1322,6 +1358,7 @@ class _GAXMetricsAPI(_GAXBaseAPI):
 
     def delete_log_metric(self, metric_name, options=None):
         from google.gax.errors import GaxError
+
         self._delete_log_metric_called_with = metric_name, options
         if self._random_gax_error:
             raise GaxError('error')

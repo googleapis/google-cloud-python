@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -36,6 +37,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -182,6 +184,7 @@ class TestClient(unittest.TestCase):
 
     def test_logger(self):
         from google.cloud.logging.logger import Logger
+
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         logger = client.logger(self.LOGGER_NAME)
@@ -322,6 +325,7 @@ class TestClient(unittest.TestCase):
 
     def test_sink_defaults(self):
         from google.cloud.logging.sink import Sink
+
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         sink = client.sink(self.SINK_NAME)
@@ -334,6 +338,7 @@ class TestClient(unittest.TestCase):
 
     def test_sink_explicit(self):
         from google.cloud.logging.sink import Sink
+
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         sink = client.sink(self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
@@ -440,6 +445,7 @@ class TestClient(unittest.TestCase):
 
     def test_metric_defaults(self):
         from google.cloud.logging.metric import Metric
+
         creds = _make_credentials()
 
         client_obj = self._make_one(project=self.PROJECT, credentials=creds)
@@ -453,6 +459,7 @@ class TestClient(unittest.TestCase):
 
     def test_metric_explicit(self):
         from google.cloud.logging.metric import Metric
+
         creds = _make_credentials()
 
         client_obj = self._make_one(project=self.PROJECT, credentials=creds)
