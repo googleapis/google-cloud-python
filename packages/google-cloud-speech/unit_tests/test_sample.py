@@ -22,6 +22,7 @@ class TestSample(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.speech.sample import Sample
+
         return Sample
 
     def _make_one(self, *args, **kw):
