@@ -21,6 +21,7 @@ class Test__Transfer(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.streaming.transfer import _Transfer
+
         return _Transfer
 
     def _make_one(self, *args, **kw):
@@ -28,6 +29,7 @@ class Test__Transfer(unittest.TestCase):
 
     def test_ctor_defaults(self):
         from google.cloud.streaming.transfer import _DEFAULT_CHUNKSIZE
+
         stream = _Stream()
         xfer = self._make_one(stream)
         self.assertIs(xfer.stream, stream)
@@ -96,6 +98,7 @@ class Test__Transfer(unittest.TestCase):
 
     def test__initialize_not_already_initialized_wo_http(self):
         from httplib2 import Http
+
         stream = _Stream()
         xfer = self._make_one(stream)
         xfer._initialize(None, self.URL)
@@ -114,6 +117,7 @@ class Test__Transfer(unittest.TestCase):
 
     def test__initialize_already_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         URL_2 = 'http://example.com/other'
         HTTP_1, HTTP_2 = object(), object()
         stream = _Stream()
@@ -131,6 +135,7 @@ class Test__Transfer(unittest.TestCase):
 
     def test__ensure_initialized_miss(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         stream = _Stream()
         xfer = self._make_one(stream)
         with self.assertRaises(TransferInvalidError):
@@ -143,6 +148,7 @@ class Test__Transfer(unittest.TestCase):
 
     def test__ensure_uninitialized_miss(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         stream = _Stream()
         HTTP = object()
         xfer = self._make_one(stream)
@@ -166,6 +172,7 @@ class Test_Download(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.streaming.transfer import Download
+
         return Download
 
     def _make_one(self, *args, **kw):
@@ -197,6 +204,7 @@ class Test_Download(unittest.TestCase):
     def test_from_file_w_existing_file_no_override(self):
         import os
         from google.cloud._testing import _tempdir
+
         klass = self._get_target_class()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
@@ -208,6 +216,7 @@ class Test_Download(unittest.TestCase):
     def test_from_file_w_existing_file_w_override_wo_auto_transfer(self):
         import os
         from google.cloud._testing import _tempdir
+
         klass = self._get_target_class()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
@@ -277,6 +286,7 @@ class Test_Download(unittest.TestCase):
 
     def test_initialize_download_already_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         request = _Request()
         download = self._make_one(_Stream())
         download._initialize(None, self.URL)
@@ -296,6 +306,7 @@ class Test_Download(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import HttpError
+
         request = _Request()
         http = object()
         download = self._make_one(_Stream(), auto_transfer=True)
@@ -314,6 +325,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         REDIRECT_URL = 'http://example.com/other'
         request = _Request()
         http = object()
@@ -335,6 +347,7 @@ class Test_Download(unittest.TestCase):
 
     def test__normalize_start_end_w_end_w_start_lt_0(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         download = self._make_one(_Stream())
 
         with self.assertRaises(TransferInvalidError):
@@ -342,6 +355,7 @@ class Test_Download(unittest.TestCase):
 
     def test__normalize_start_end_w_end_w_start_gt_total(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         download = self._make_one(_Stream())
         download._set_total({'content-range': 'bytes 0-1/2'})
 
@@ -350,6 +364,7 @@ class Test_Download(unittest.TestCase):
 
     def test__normalize_start_end_w_end_lt_start(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         download = self._make_one(_Stream())
         download._set_total({'content-range': 'bytes 0-1/2'})
 
@@ -422,6 +437,7 @@ class Test_Download(unittest.TestCase):
 
     def test__get_chunk_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         download = self._make_one(_Stream())
 
         with self.assertRaises(TransferInvalidError):
@@ -431,6 +447,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         http = object()
         download = self._make_one(_Stream())
         download._initialize(http, self.URL)
@@ -450,6 +467,7 @@ class Test_Download(unittest.TestCase):
     def test__process_response_w_FORBIDDEN(self):
         from google.cloud.streaming.exceptions import HttpError
         from six.moves import http_client
+
         download = self._make_one(_Stream())
         response = _makeResponse(http_client.FORBIDDEN)
         with self.assertRaises(HttpError):
@@ -458,6 +476,7 @@ class Test_Download(unittest.TestCase):
     def test__process_response_w_NOT_FOUND(self):
         from google.cloud.streaming.exceptions import HttpError
         from six.moves import http_client
+
         download = self._make_one(_Stream())
         response = _makeResponse(http_client.NOT_FOUND)
         with self.assertRaises(HttpError):
@@ -466,6 +485,7 @@ class Test_Download(unittest.TestCase):
     def test__process_response_w_other_error(self):
         from google.cloud.streaming.exceptions import TransferRetryError
         from six.moves import http_client
+
         download = self._make_one(_Stream())
         response = _makeResponse(http_client.BAD_REQUEST)
         with self.assertRaises(TransferRetryError):
@@ -473,6 +493,7 @@ class Test_Download(unittest.TestCase):
 
     def test__process_response_w_OK_wo_encoding(self):
         from six.moves import http_client
+
         stream = _Stream()
         download = self._make_one(stream)
         response = _makeResponse(http_client.OK, content='OK')
@@ -484,6 +505,7 @@ class Test_Download(unittest.TestCase):
 
     def test__process_response_w_PARTIAL_CONTENT_w_encoding(self):
         from six.moves import http_client
+
         stream = _Stream()
         download = self._make_one(stream)
         info = {'content-encoding': 'blah'}
@@ -496,6 +518,7 @@ class Test_Download(unittest.TestCase):
 
     def test__process_response_w_REQUESTED_RANGE_NOT_SATISFIABLE(self):
         from six.moves import http_client
+
         stream = _Stream()
         download = self._make_one(stream)
         response = _makeResponse(
@@ -508,6 +531,7 @@ class Test_Download(unittest.TestCase):
 
     def test__process_response_w_NO_CONTENT(self):
         from six.moves import http_client
+
         stream = _Stream()
         download = self._make_one(stream)
         response = _makeResponse(status_code=http_client.NO_CONTENT)
@@ -519,6 +543,7 @@ class Test_Download(unittest.TestCase):
 
     def test_get_range_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         download = self._make_one(_Stream())
         with self.assertRaises(TransferInvalidError):
             download.get_range(0, 10)
@@ -527,6 +552,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         REQ_RANGE = 'bytes=0-%d' % (LEN,)
@@ -554,6 +580,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         START = 5
@@ -583,6 +610,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         PARTIAL_LEN = 5
@@ -613,6 +641,7 @@ class Test_Download(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import TransferRetryError
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         START = 5
@@ -643,6 +672,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         CHUNK_SIZE = 3
@@ -671,6 +701,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         CONTENT = b'ABCDE'
         LEN = len(CONTENT)
         CHUNK_SIZE = 3
@@ -705,6 +736,7 @@ class Test_Download(unittest.TestCase):
 
     def test_stream_file_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         download = self._make_one(_Stream())
 
         with self.assertRaises(TransferInvalidError):
@@ -712,6 +744,7 @@ class Test_Download(unittest.TestCase):
 
     def test_stream_file_w_initial_response_complete(self):
         from six.moves import http_client
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         RESP_RANGE = 'bytes 0-%d/%d' % (LEN - 1, LEN,)
@@ -732,6 +765,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         CHUNK_SIZE = 3
         CONTENT = b'ABCDEF'
         LEN = len(CONTENT)
@@ -769,6 +803,7 @@ class Test_Download(unittest.TestCase):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         CHUNK_SIZE = 123
@@ -804,6 +839,7 @@ class Test_Upload(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.streaming.transfer import Upload
+
         return Upload
 
     def _make_one(self, stream, mime_type=MIME_TYPE, *args, **kw):
@@ -811,6 +847,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_ctor_defaults(self):
         from google.cloud.streaming.transfer import _DEFAULT_CHUNKSIZE
+
         stream = _Stream()
         upload = self._make_one(stream)
         self.assertIs(upload.stream, stream)
@@ -840,6 +877,7 @@ class Test_Upload(unittest.TestCase):
     def test_from_file_wo_mimetype_w_unguessable_filename(self):
         import os
         from google.cloud._testing import _tempdir
+
         klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ UNGUESSABLE MIMETYPE'
         with _tempdir() as tempdir:
@@ -852,6 +890,7 @@ class Test_Upload(unittest.TestCase):
     def test_from_file_wo_mimetype_w_guessable_filename(self):
         import os
         from google.cloud._testing import _tempdir
+
         klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ GUESSABLE MIMETYPE'
         with _tempdir() as tempdir:
@@ -867,6 +906,7 @@ class Test_Upload(unittest.TestCase):
     def test_from_file_w_mimetype_w_auto_transfer_w_kwds(self):
         import os
         from google.cloud._testing import _tempdir
+
         klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ GUESSABLE MIMETYPE'
         CHUNK_SIZE = 3
@@ -924,18 +964,21 @@ class Test_Upload(unittest.TestCase):
 
     def test_strategy_setter_SIMPLE_UPLOAD(self):
         from google.cloud.streaming.transfer import SIMPLE_UPLOAD
+
         upload = self._make_one(_Stream())
         upload.strategy = SIMPLE_UPLOAD
         self.assertEqual(upload.strategy, SIMPLE_UPLOAD)
 
     def test_strategy_setter_RESUMABLE_UPLOAD(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         upload = self._make_one(_Stream())
         upload.strategy = RESUMABLE_UPLOAD
         self.assertEqual(upload.strategy, RESUMABLE_UPLOAD)
 
     def test_total_size_setter_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         SIZE = 123
         upload = self._make_one(_Stream)
         http = object()
@@ -951,6 +994,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__set_default_strategy_w_existing_strategy(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         config = _Dummy(
             resumable_path='/resumable/endpoint',
             simple_multipart=True,
@@ -964,6 +1008,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__set_default_strategy_wo_resumable_path(self):
         from google.cloud.streaming.transfer import SIMPLE_UPLOAD
+
         config = _Dummy(
             resumable_path=None,
             simple_multipart=True,
@@ -977,6 +1022,7 @@ class Test_Upload(unittest.TestCase):
     def test__set_default_strategy_w_total_size_gt_threshhold(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD_THRESHOLD
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         config = _UploadConfig()
         request = _Request()
         upload = self._make_one(
@@ -986,6 +1032,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__set_default_strategy_w_body_wo_multipart(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         config = _UploadConfig()
         config.simple_multipart = False
@@ -996,6 +1043,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__set_default_strategy_w_body_w_multipart_wo_simple_path(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         config = _UploadConfig()
         config.simple_path = None
@@ -1006,6 +1054,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__set_default_strategy_w_body_w_multipart_w_simple_path(self):
         from google.cloud.streaming.transfer import SIMPLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         config = _UploadConfig()
         request = _Request(body=CONTENT)
@@ -1034,6 +1083,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_configure_request_w_simple_wo_body(self):
         from google.cloud.streaming.transfer import SIMPLE_UPLOAD
+
         CONTENT = b'CONTENT'
         config = _UploadConfig()
         request = _Request()
@@ -1053,6 +1103,7 @@ class Test_Upload(unittest.TestCase):
     def test_configure_request_w_simple_w_body(self):
         from google.cloud._helpers import _to_bytes
         from google.cloud.streaming.transfer import SIMPLE_UPLOAD
+
         CONTENT = b'CONTENT'
         BODY = b'BODY'
         config = _UploadConfig()
@@ -1095,6 +1146,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_configure_request_w_resumable_wo_total_size(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'CONTENT'
         config = _UploadConfig()
         request = _Request()
@@ -1112,6 +1164,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_configure_request_w_resumable_w_total_size(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'CONTENT'
         LEN = len(CONTENT)
         config = _UploadConfig()
@@ -1132,6 +1185,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_refresh_upload_state_w_simple_strategy(self):
         from google.cloud.streaming.transfer import SIMPLE_UPLOAD
+
         upload = self._make_one(_Stream())
         upload.strategy = SIMPLE_UPLOAD
         upload.refresh_upload_state()  # no-op
@@ -1139,6 +1193,7 @@ class Test_Upload(unittest.TestCase):
     def test_refresh_upload_state_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         upload = self._make_one(_Stream())
         upload.strategy = RESUMABLE_UPLOAD
         with self.assertRaises(TransferInvalidError):
@@ -1149,6 +1204,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         RESP_RANGE = 'bytes 0-%d/%d' % (LEN - 1, LEN,)
@@ -1176,6 +1232,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         RESP_RANGE = 'bytes 0-%d/%d' % (LEN - 1, LEN,)
@@ -1203,6 +1260,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from google.cloud._testing import _Monkey
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         LAST = 5
@@ -1230,6 +1288,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from google.cloud._testing import _Monkey
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         http = object()
@@ -1256,6 +1315,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import HttpError
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         http = object()
@@ -1295,6 +1355,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_initialize_upload_simple_w_http(self):
         from google.cloud.streaming.transfer import SIMPLE_UPLOAD
+
         request = _Request()
         upload = self._make_one(_Stream())
         upload.strategy = SIMPLE_UPLOAD
@@ -1303,6 +1364,7 @@ class Test_Upload(unittest.TestCase):
     def test_initialize_upload_resumable_already_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         request = _Request()
         upload = self._make_one(_Stream())
         upload.strategy = RESUMABLE_UPLOAD
@@ -1316,6 +1378,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import HttpError
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         request = _Request()
         upload = self._make_one(_Stream())
         upload.strategy = RESUMABLE_UPLOAD
@@ -1331,6 +1394,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         request = _Request()
         upload = self._make_one(_Stream(), auto_transfer=False)
         upload.strategy = RESUMABLE_UPLOAD
@@ -1352,6 +1416,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         request = _Request()
@@ -1400,6 +1465,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_stream_file_w_simple_strategy(self):
         from google.cloud.streaming.transfer import SIMPLE_UPLOAD
+
         upload = self._make_one(_Stream())
         upload.strategy = SIMPLE_UPLOAD
         with self.assertRaises(ValueError):
@@ -1407,6 +1473,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_stream_file_w_use_chunks_invalid_chunk_size(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         upload = self._make_one(_Stream(), chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 100
@@ -1416,6 +1483,7 @@ class Test_Upload(unittest.TestCase):
     def test_stream_file_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         upload = self._make_one(_Stream(), chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 128
@@ -1424,6 +1492,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_stream_file_already_complete_w_unseekable_stream(self):
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         http = object()
         stream = object()
         response = object()
@@ -1438,6 +1507,7 @@ class Test_Upload(unittest.TestCase):
     def test_stream_file_already_complete_w_seekable_stream_unsynced(self):
         from google.cloud.streaming.exceptions import CommunicationError
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         stream = _Stream(CONTENT)
@@ -1454,6 +1524,7 @@ class Test_Upload(unittest.TestCase):
     def test_stream_file_already_complete_wo_seekable_method_synced(self):
         import os
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         stream = _Stream(CONTENT)
@@ -1470,6 +1541,7 @@ class Test_Upload(unittest.TestCase):
     def test_stream_file_already_complete_w_seekable_method_true_synced(self):
         import os
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         stream = _StreamWithSeekableMethod(CONTENT, True)
@@ -1486,6 +1558,7 @@ class Test_Upload(unittest.TestCase):
     def test_stream_file_already_complete_w_seekable_method_false(self):
         import os
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         stream = _StreamWithSeekableMethod(CONTENT, False)
@@ -1505,6 +1578,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         stream = _Stream(CONTENT)
@@ -1550,6 +1624,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud.streaming.exceptions import CommunicationError
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         stream = _Stream(CONTENT)
@@ -1586,6 +1661,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
+
         CONTENT = b'ABCDEFGHIJ'
         bytes_http = object()
         stream = _Stream(CONTENT)
@@ -1616,6 +1692,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud.streaming.exceptions import HttpError
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+
         CONTENT = b'ABCDEFGHIJ'
         bytes_http = object()
         http = object()
@@ -1652,12 +1729,14 @@ class Test_Upload(unittest.TestCase):
 
     def test__send_media_body_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         upload = self._make_one(_Stream())
         with self.assertRaises(TransferInvalidError):
             upload._send_media_body(0)
 
     def test__send_media_body_wo_total_size(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         http = object()
         upload = self._make_one(_Stream())
         upload._initialize(http, _Request.URL)
@@ -1666,6 +1745,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__send_media_body_start_lt_total_size(self):
         from google.cloud.streaming.stream_slice import StreamSlice
+
         SIZE = 1234
         http = object()
         stream = _Stream()
@@ -1693,6 +1773,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__send_media_body_start_eq_total_size(self):
         from google.cloud.streaming.stream_slice import StreamSlice
+
         SIZE = 1234
         http = object()
         stream = _Stream()
@@ -1720,6 +1801,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__send_chunk_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
+
         upload = self._make_one(_Stream())
         with self.assertRaises(TransferInvalidError):
             upload._send_chunk(0)
@@ -1779,6 +1861,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__send_chunk_w_total_size_stream_not_exhausted(self):
         from google.cloud.streaming.stream_slice import StreamSlice
+
         CONTENT = b'ABCDEFGHIJ'
         SIZE = len(CONTENT)
         CHUNK_SIZE = SIZE - 5
@@ -1810,6 +1893,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__send_chunk_w_total_size_stream_exhausted(self):
         from google.cloud.streaming.stream_slice import StreamSlice
+
         CONTENT = b'ABCDEFGHIJ'
         SIZE = len(CONTENT)
         CHUNK_SIZE = 1000
@@ -1840,12 +1924,15 @@ class Test_Upload(unittest.TestCase):
 
 def _email_chunk_parser():
     import six
+
     if six.PY3:  # pragma: NO COVER  Python3
         from email.parser import BytesParser
+
         parser = BytesParser()
         return parser.parsebytes
     else:
         from email.parser import Parser
+
         parser = Parser()
         return parser.parsestr
 
@@ -1868,6 +1955,7 @@ class _Stream(object):
 
     def __init__(self, to_read=b''):
         import io
+
         self._written = []
         self._to_read = io.BytesIO(to_read)
 

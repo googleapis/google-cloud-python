@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -30,6 +31,7 @@ class TestConnection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging._http import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):
@@ -52,6 +54,7 @@ class Test_LoggingAPI(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging._http import _LoggingAPI
+
         return _LoggingAPI
 
     def _make_one(self, *args, **kw):
@@ -302,6 +305,7 @@ class Test_SinksAPI(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging._http import _SinksAPI
+
         return _SinksAPI
 
     def _make_one(self, *args, **kw):
@@ -400,6 +404,7 @@ class Test_SinksAPI(unittest.TestCase):
 
     def test_sink_create_conflict(self):
         from google.cloud.exceptions import Conflict
+
         SENT = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
@@ -440,6 +445,7 @@ class Test_SinksAPI(unittest.TestCase):
 
     def test_sink_get_miss(self):
         from google.cloud.exceptions import NotFound
+
         conn = _Connection()
         client = _Client(conn)
         api = self._make_one(client)
@@ -470,6 +476,7 @@ class Test_SinksAPI(unittest.TestCase):
 
     def test_sink_update_miss(self):
         from google.cloud.exceptions import NotFound
+
         SENT = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
@@ -509,6 +516,7 @@ class Test_SinksAPI(unittest.TestCase):
 
     def test_sink_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         conn = _Connection()
         client = _Client(conn)
         api = self._make_one(client)
@@ -544,6 +552,7 @@ class Test_MetricsAPI(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging._http import _MetricsAPI
+
         return _MetricsAPI
 
     def _make_one(self, *args, **kw):
@@ -633,6 +642,7 @@ class Test_MetricsAPI(unittest.TestCase):
 
     def test_metric_create_conflict(self):
         from google.cloud.exceptions import Conflict
+
         SENT = {
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
@@ -673,6 +683,7 @@ class Test_MetricsAPI(unittest.TestCase):
 
     def test_metric_get_miss(self):
         from google.cloud.exceptions import NotFound
+
         conn = _Connection()
         client = _Client(conn)
         api = self._make_one(client)
@@ -703,6 +714,7 @@ class Test_MetricsAPI(unittest.TestCase):
 
     def test_metric_update_miss(self):
         from google.cloud.exceptions import NotFound
+
         SENT = {
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
@@ -742,6 +754,7 @@ class Test_MetricsAPI(unittest.TestCase):
 
     def test_metric_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         conn = _Connection()
         client = _Client(conn)
         api = self._make_one(client)
@@ -776,6 +789,7 @@ class _Connection(object):
     def api_request(self, **kw):
         from google.cloud.exceptions import Conflict
         from google.cloud.exceptions import NotFound
+
         self._called_with = kw
         if self._raise_conflict:
             raise Conflict('oops')
@@ -788,6 +802,7 @@ class _Connection(object):
 
 def _datetime_to_rfc3339_w_nanos(value):
     from google.cloud._helpers import _RFC3339_NO_FRACTION
+
     no_fraction = value.strftime(_RFC3339_NO_FRACTION)
     return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)
 

@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -42,6 +43,7 @@ class Test__get_gcd_project(unittest.TestCase):
 
     def _call_fut(self):
         from google.cloud.datastore.client import _get_gcd_project
+
         return _get_gcd_project()
 
     def test_no_value(self):
@@ -65,6 +67,7 @@ class Test__determine_default_project(unittest.TestCase):
     def _call_fut(self, project=None):
         from google.cloud.datastore.client import (
             _determine_default_project)
+
         return _determine_default_project(project=project)
 
     def _determine_default_helper(self, gcd=None, fallback=None,
@@ -131,6 +134,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.client import Client
+
         return Client
 
     def _make_one(self, project=PROJECT, namespace=None,
@@ -952,6 +956,7 @@ class _NoCommitBatch(object):
 
     def __init__(self, client):
         from google.cloud.datastore.batch import Batch
+
         self._client = client
         self._batch = Batch(client)
         self._batch.begin()
@@ -969,6 +974,7 @@ class _NoCommitTransaction(object):
     def __init__(self, client, transaction_id='TRANSACTION'):
         from google.cloud.datastore.batch import Batch
         from google.cloud.datastore.transaction import Transaction
+
         self._client = client
         xact = self._transaction = Transaction(client)
         xact._id = transaction_id
@@ -1005,6 +1011,7 @@ class _Key(object):
 
     def to_protobuf(self):
         from google.cloud.grpc.datastore.v1 import entity_pb2
+
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.project_id = self.project

@@ -125,6 +125,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.job import LoadTableFromStorageJob
+
         return LoadTableFromStorageJob
 
     def _setUpConstants(self):
@@ -264,6 +265,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.schema import SchemaField
+
         client = _Client(self.PROJECT)
         table = _Table()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
@@ -281,6 +283,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
     def test_schema_setter_invalid_field(self):
         from google.cloud.bigquery.schema import SchemaField
+
         client = _Client(self.PROJECT)
         table = _Table()
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
@@ -290,6 +293,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
     def test_schema_setter(self):
         from google.cloud.bigquery.schema import SchemaField
+
         client = _Client(self.PROJECT)
         table = _Table()
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
@@ -465,6 +469,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.schema import SchemaField
+
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource(ended=True)
         LOAD_CONFIGURATION = {
@@ -646,6 +651,7 @@ class TestCopyJob(unittest.TestCase, _Base):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.job import CopyJob
+
         return CopyJob
 
     def _makeResource(self, started=False, ended=False):
@@ -998,6 +1004,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.job import ExtractTableToStorageJob
+
         return ExtractTableToStorageJob
 
     def _makeResource(self, started=False, ended=False):
@@ -1292,6 +1299,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.job import QueryJob
+
         return QueryJob
 
     def _makeResource(self, started=False, ended=False):
@@ -1431,6 +1439,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         client = _Client(self.PROJECT)
@@ -1440,6 +1449,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_ctor_w_query_parameters(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
         client = _Client(self.PROJECT)
         job = self._make_one(self.JOB_NAME, self.QUERY, client,
@@ -1501,6 +1511,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_results(self):
         from google.cloud.bigquery.query import QueryResults
+
         client = _Client(self.PROJECT)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
         results = job.results()
@@ -1542,6 +1553,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.dataset import Table
+
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         TABLE = 'TABLE'
         DS_NAME = 'DATASET'
@@ -1612,6 +1624,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_begin_w_udf(self):
         from google.cloud.bigquery._helpers import UDFResource
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1661,6 +1674,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_begin_w_named_query_parameter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
@@ -1712,6 +1726,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_begin_w_positional_query_parameter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+
         query_parameters = [ScalarQueryParameter.positional('INT64', 123)]
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
@@ -1794,6 +1809,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_reload_w_bound_client(self):
         from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.dataset import Table
+
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         DS_NAME = 'DATASET'
         DEST_TABLE = 'dest_table'
@@ -1851,6 +1867,7 @@ class _Client(object):
 
     def dataset(self, name):
         from google.cloud.bigquery.dataset import Dataset
+
         return Dataset(name, client=self)
 
 
@@ -1882,6 +1899,7 @@ class _Connection(object):
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kw)
 
         try:

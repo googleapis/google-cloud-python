@@ -20,6 +20,7 @@ class TestSchemaField(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.schema import SchemaField
+
         return SchemaField
 
     def _make_one(self, *args, **kw):

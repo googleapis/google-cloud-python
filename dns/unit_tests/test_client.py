@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -30,6 +31,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.dns.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -37,6 +39,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor(self):
         from google.cloud.dns.connection import Connection
+
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds,
@@ -116,6 +119,7 @@ class TestClient(unittest.TestCase):
     def test_list_zones_defaults(self):
         import six
         from google.cloud.dns.zone import ManagedZone
+
         ID_1 = '123'
         ZONE_1 = 'zone_one'
         DNS_1 = 'one.example.com'
@@ -162,6 +166,7 @@ class TestClient(unittest.TestCase):
     def test_list_zones_explicit(self):
         import six
         from google.cloud.dns.zone import ManagedZone
+
         ID_1 = '123'
         ZONE_1 = 'zone_one'
         DNS_1 = 'one.example.com'
@@ -208,6 +213,7 @@ class TestClient(unittest.TestCase):
 
     def test_zone_explicit(self):
         from google.cloud.dns.zone import ManagedZone
+
         DESCRIPTION = 'DESCRIPTION'
         DNS_NAME = 'test.example.com'
         creds = _make_credentials()
@@ -221,6 +227,7 @@ class TestClient(unittest.TestCase):
 
     def test_zone_w_dns_name_wo_description(self):
         from google.cloud.dns.zone import ManagedZone
+
         DNS_NAME = 'test.example.com'
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
@@ -233,6 +240,7 @@ class TestClient(unittest.TestCase):
 
     def test_zone_wo_dns_name(self):
         from google.cloud.dns.zone import ManagedZone
+
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME)

@@ -62,6 +62,7 @@ class TestConnection(unittest.TestCase):
 
     def test_http_wo_creds(self):
         import httplib2
+
         conn = self._make_one()
         self.assertIsInstance(conn.http, httplib2.Http)
 
@@ -78,6 +79,7 @@ class TestConnection(unittest.TestCase):
 
     def test_user_agent_format(self):
         from pkg_resources import get_distribution
+
         expected_ua = 'gcloud-python/{0}'.format(
             get_distribution('google-cloud-core').version)
         conn = self._make_one()
@@ -123,6 +125,7 @@ class TestJSONConnection(unittest.TestCase):
 
     def test_http_wo_creds(self):
         import httplib2
+
         conn = self._make_one()
         self.assertIsInstance(conn.http, httplib2.Http)
 
@@ -151,6 +154,7 @@ class TestJSONConnection(unittest.TestCase):
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
+
         conn = self._makeMockOne()
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
 
@@ -271,6 +275,7 @@ class TestJSONConnection(unittest.TestCase):
     def test_api_request_w_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
+
         conn = self._makeMockOne()
         http = conn._http = _Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -301,6 +306,7 @@ class TestJSONConnection(unittest.TestCase):
 
     def test_api_request_w_headers(self):
         from six.moves.urllib.parse import urlsplit
+
         conn = self._makeMockOne()
         http = conn._http = _Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -332,6 +338,7 @@ class TestJSONConnection(unittest.TestCase):
 
     def test_api_request_w_data(self):
         import json
+
         DATA = {'foo': 'bar'}
         DATAJ = json.dumps(DATA)
         conn = self._makeMockOne()
@@ -360,6 +367,7 @@ class TestJSONConnection(unittest.TestCase):
 
     def test_api_request_w_404(self):
         from google.cloud.exceptions import NotFound
+
         conn = self._makeMockOne()
         conn._http = _Http(
             {'status': '404', 'content-type': 'text/plain'},
@@ -369,6 +377,7 @@ class TestJSONConnection(unittest.TestCase):
 
     def test_api_request_w_500(self):
         from google.cloud.exceptions import InternalServerError
+
         conn = self._makeMockOne()
         conn._http = _Http(
             {'status': '500', 'content-type': 'text/plain'},
@@ -408,6 +417,7 @@ class _Http(object):
 
     def __init__(self, headers, content):
         from httplib2 import Response
+
         self._response = Response(headers)
         self._content = content
 

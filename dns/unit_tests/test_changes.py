@@ -23,6 +23,7 @@ class TestChanges(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.dns.changes import Changes
+
         return Changes
 
     def _make_one(self, *args, **kw):
@@ -31,10 +32,12 @@ class TestChanges(unittest.TestCase):
     def _setUpConstants(self):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _NOW
+
         self.WHEN = _NOW().replace(tzinfo=UTC)
 
     def _makeResource(self):
         from google.cloud._helpers import _datetime_to_rfc3339
+
         when_str = _datetime_to_rfc3339(self.WHEN)
         return {
             'kind': 'dns#change',
@@ -57,6 +60,7 @@ class TestChanges(unittest.TestCase):
 
     def _verifyResourceProperties(self, changes, resource, zone):
         from google.cloud._helpers import _rfc3339_to_datetime
+
         self.assertEqual(changes.name, resource['id'])
         started = _rfc3339_to_datetime(resource['startTime'])
         self.assertEqual(changes.started, started)
@@ -135,6 +139,7 @@ class TestChanges(unittest.TestCase):
 
     def test_add_record_set(self):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         zone = _Zone()
         changes = self._make_one(zone)
         rrs = ResourceRecordSet('test.example.com', 'CNAME', 3600,
@@ -151,6 +156,7 @@ class TestChanges(unittest.TestCase):
 
     def test_delete_record_set(self):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         zone = _Zone()
         changes = self._make_one(zone)
         rrs = ResourceRecordSet('test.example.com', 'CNAME', 3600,
@@ -173,6 +179,7 @@ class TestChanges(unittest.TestCase):
 
     def test_create_w_bound_client(self):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         self._setUpConstants()
         RESOURCE = self._makeResource()
         PATH = 'projects/%s/managedZones/%s/changes' % (
@@ -201,6 +208,7 @@ class TestChanges(unittest.TestCase):
 
     def test_create_w_alternate_client(self):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         self._setUpConstants()
         RESOURCE = self._makeResource()
         PATH = 'projects/%s/managedZones/%s/changes' % (
@@ -334,6 +342,7 @@ class _Connection(object):
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kw)
 
         try:

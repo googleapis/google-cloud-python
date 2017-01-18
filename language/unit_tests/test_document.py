@@ -110,6 +110,7 @@ class TestDocument(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.language.document import Document
+
         return Document
 
     def _make_one(self, *args, **kw):

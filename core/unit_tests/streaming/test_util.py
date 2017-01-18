@@ -19,17 +19,20 @@ class Test_calculate_wait_for_retry(unittest.TestCase):
 
     def _call_fut(self, *args, **kw):
         from google.cloud.streaming.util import calculate_wait_for_retry
+
         return calculate_wait_for_retry(*args, **kw)
 
     def test_w_negative_jitter_lt_max_wait(self):
         import random
         from google.cloud._testing import _Monkey
+
         with _Monkey(random, uniform=lambda lower, upper: lower):
             self.assertEqual(self._call_fut(1), 1.5)
 
     def test_w_positive_jitter_gt_max_wait(self):
         import random
         from google.cloud._testing import _Monkey
+
         with _Monkey(random, uniform=lambda lower, upper: upper):
             self.assertEqual(self._call_fut(4), 20)
 
@@ -38,6 +41,7 @@ class Test_acceptable_mime_type(unittest.TestCase):
 
     def _call_fut(self, *args, **kw):
         from google.cloud.streaming.util import acceptable_mime_type
+
         return acceptable_mime_type(*args, **kw)
 
     def test_pattern_wo_slash(self):
