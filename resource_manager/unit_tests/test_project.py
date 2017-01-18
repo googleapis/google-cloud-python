@@ -35,6 +35,7 @@ class TestProject(unittest.TestCase):
         self.assertIsNone(project.number)
         self.assertEqual(project.labels, {})
         self.assertIsNone(project.status)
+        self.assertIsNone(project.parent)
 
     def test_constructor_explicit(self):
         client = object()
@@ -49,6 +50,7 @@ class TestProject(unittest.TestCase):
         self.assertIsNone(project.number)
         self.assertEqual(project.labels, LABELS)
         self.assertIsNone(project.status)
+        self.assertIsNone(project.parent)
 
     def test_from_api_repr(self):
         client = object()
@@ -57,11 +59,14 @@ class TestProject(unittest.TestCase):
         PROJECT_NUMBER = 12345678
         PROJECT_LABELS = {'env': 'prod'}
         PROJECT_LIFECYCLE_STATE = 'ACTIVE'
+        PARENT = {'type': 'organization', 'id': '433637338579'}
+
         resource = {'projectId': PROJECT_ID,
                     'name': PROJECT_NAME,
                     'projectNumber': PROJECT_NUMBER,
                     'labels': PROJECT_LABELS,
-                    'lifecycleState': PROJECT_LIFECYCLE_STATE}
+                    'lifecycleState': PROJECT_LIFECYCLE_STATE,
+                    'parent': PARENT}
         project = self._get_target_class().from_api_repr(resource, client)
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project._client, client)
@@ -69,6 +74,7 @@ class TestProject(unittest.TestCase):
         self.assertEqual(project.number, PROJECT_NUMBER)
         self.assertEqual(project.labels, PROJECT_LABELS)
         self.assertEqual(project.status, PROJECT_LIFECYCLE_STATE)
+        self.assertEqual(project.parent, PARENT)
 
     def test_full_name(self):
         PROJECT_ID = 'project-id'
@@ -94,6 +100,10 @@ class TestProject(unittest.TestCase):
             'name': 'Project Name',
             'labels': {},
             'lifecycleState': 'ACTIVE',
+            'parent': {
+                'type': 'organization',
+                'id': '433637338589',
+            },
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -123,6 +133,10 @@ class TestProject(unittest.TestCase):
             'name': 'Project Name',
             'labels': {'env': 'prod'},
             'lifecycleState': 'ACTIVE',
+            'parent': {
+                'type': 'organization',
+                'id': '433637338579',
+            },
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -197,6 +211,7 @@ class TestProject(unittest.TestCase):
             'data': {
                 'name': PROJECT_NAME,
                 'labels': LABELS,
+                'parent': None,
             },
             'path': project.path,
         }
@@ -211,6 +226,10 @@ class TestProject(unittest.TestCase):
             'name': 'Project Name',
             'labels': {'env': 'prod'},
             'lifecycleState': 'ACTIVE',
+            'parent': {
+                'type': 'organization',
+                'id': '433637338579',
+            },
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -234,6 +253,10 @@ class TestProject(unittest.TestCase):
             'name': 'Project Name',
             'labels': {'env': 'prod'},
             'lifecycleState': 'ACTIVE',
+            'parent': {
+                'type': 'organization',
+                'id': '433637338579',
+            },
         }
         DELETING_PROJECT = PROJECT_RESOURCE.copy()
         DELETING_PROJECT['lifecycleState'] = NEW_STATE = 'DELETE_REQUESTED'
@@ -268,6 +291,10 @@ class TestProject(unittest.TestCase):
             'name': 'Project Name',
             'labels': {'env': 'prod'},
             'lifecycleState': 'DELETE_REQUESTED',
+            'parent': {
+                'type': 'organization',
+                'id': '433637338579',
+            },
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -291,6 +318,10 @@ class TestProject(unittest.TestCase):
             'name': 'Project Name',
             'labels': {'env': 'prod'},
             'lifecycleState': 'DELETE_REQUESTED',
+            'parent': {
+                'type': 'organization',
+                'id': '433637338579',
+            },
         }
         UNDELETED_PROJECT = PROJECT_RESOURCE.copy()
         UNDELETED_PROJECT['lifecycleState'] = NEW_STATE = 'ACTIVE'
