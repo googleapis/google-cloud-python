@@ -29,6 +29,7 @@ class TestSubscription(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub.subscription import Subscription
+
         return Subscription
 
     def _make_one(self, *args, **kw):
@@ -72,6 +73,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_from_api_repr_no_topics(self):
         from google.cloud.pubsub.topic import Topic
+
         resource = {'topic': self.TOPIC_PATH,
                     'name': self.SUB_PATH,
                     'ackDeadlineSeconds': self.DEADLINE,
@@ -103,6 +105,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_from_api_repr_w_topics_no_topic_match(self):
         from google.cloud.pubsub.topic import Topic
+
         resource = {'topic': self.TOPIC_PATH,
                     'name': self.SUB_PATH,
                     'ackDeadlineSeconds': self.DEADLINE,
@@ -148,6 +151,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_autoack_defaults(self):
         from google.cloud.pubsub.subscription import AutoAck
+
         client = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._make_one(self.SUB_NAME, topic)
@@ -160,6 +164,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_autoack_explicit(self):
         from google.cloud.pubsub.subscription import AutoAck
+
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -326,6 +331,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_pull_wo_return_immediately_max_messages_w_bound_client(self):
         from google.cloud.pubsub.message import Message
+
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
@@ -351,6 +357,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_pull_w_return_immediately_w_max_messages_w_alt_client(self):
         from google.cloud.pubsub.message import Message
+
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
@@ -457,6 +464,7 @@ class TestSubscription(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -523,6 +531,7 @@ class TestSubscription(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
+
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'
@@ -573,6 +582,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_set_iam_policy_w_alternate_client(self):
         from google.cloud.pubsub.iam import Policy
+
         RESPONSE = {'etag': 'ACAB'}
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
@@ -639,6 +649,7 @@ class _FauxSubscribererAPI(object):
 
     def subscription_get(self, subscription_path):
         from google.cloud.exceptions import NotFound
+
         self._subscription_got = subscription_path
         try:
             return self._subscription_get_response
@@ -677,6 +688,7 @@ class TestAutoAck(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub.subscription import AutoAck
+
         return AutoAck
 
     def _make_one(self, *args, **kw):
@@ -792,6 +804,7 @@ class _Client(object):
 
     def topic(self, name, timestamp_messages=False):
         from google.cloud.pubsub.topic import Topic
+
         return Topic(name, client=self, timestamp_messages=timestamp_messages)
 
 

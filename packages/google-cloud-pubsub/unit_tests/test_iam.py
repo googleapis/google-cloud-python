@@ -20,6 +20,7 @@ class TestPolicy(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub.iam import Policy
+
         return Policy
 
     def _make_one(self, *args, **kw):
@@ -99,6 +100,7 @@ class TestPolicy(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -158,6 +160,7 @@ class TestPolicy(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
+
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'

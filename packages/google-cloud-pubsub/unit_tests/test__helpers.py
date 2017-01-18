@@ -19,6 +19,7 @@ class Test_topic_name_from_path(unittest.TestCase):
 
     def _call_fut(self, path, project):
         from google.cloud.pubsub._helpers import topic_name_from_path
+
         return topic_name_from_path(path, project)
 
     def test_w_simple_name(self):
@@ -40,6 +41,7 @@ class Test_subscription_name_from_path(unittest.TestCase):
 
     def _call_fut(self, path, project):
         from google.cloud.pubsub._helpers import subscription_name_from_path
+
         return subscription_name_from_path(path, project)
 
     def test_w_simple_name(self):
