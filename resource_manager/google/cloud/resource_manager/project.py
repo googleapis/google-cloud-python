@@ -208,7 +208,7 @@ class Project(object):
         data = {
             'name': self.name,
             'labels': self.labels,
-            'parent': self.parent
+            'parent': self.parent,
         }
 
         resp = client._connection.api_request(

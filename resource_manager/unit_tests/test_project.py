@@ -102,8 +102,8 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': '433637338589'
-            }
+                'id': '433637338589',
+            },
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -135,8 +135,8 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': '433637338579'
-            }
+                'id': '433637338579',
+            },
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -197,10 +197,6 @@ class TestProject(unittest.TestCase):
             'name': PROJECT_NAME,
             'labels': LABELS,
             'lifecycleState': 'ACTIVE',
-            'parent': {
-                'type': 'organization',
-                'id': '433637338589'
-            }
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -215,6 +211,7 @@ class TestProject(unittest.TestCase):
             'data': {
                 'name': PROJECT_NAME,
                 'labels': LABELS,
+                'parent': None
             },
             'path': project.path,
         }
@@ -231,8 +228,8 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': '433637338579'
-            }
+                'id': '433637338579',
+            },
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -258,8 +255,8 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
             'parent': {
                 'type': 'organization',
-                'id': '433637338579'
-            }
+                'id': '433637338579',
+            },
         }
         DELETING_PROJECT = PROJECT_RESOURCE.copy()
         DELETING_PROJECT['lifecycleState'] = NEW_STATE = 'DELETE_REQUESTED'
@@ -296,8 +293,8 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'DELETE_REQUESTED',
             'parent': {
                 'type': 'organization',
-                'id': '433637338579'
-            }
+                'id': '433637338579',
+            },
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
@@ -323,8 +320,8 @@ class TestProject(unittest.TestCase):
             'lifecycleState': 'DELETE_REQUESTED',
             'parent': {
                 'type': 'organization',
-                'id': '433637338579'
-            }
+                'id': '433637338579',
+            },
         }
         UNDELETED_PROJECT = PROJECT_RESOURCE.copy()
         UNDELETED_PROJECT['lifecycleState'] = NEW_STATE = 'ACTIVE'
