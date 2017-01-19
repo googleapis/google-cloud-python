@@ -51,6 +51,7 @@ class Test__UTC(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud._helpers import _UTC
+
         return _UTC
 
     def _make_one(self):
@@ -58,6 +59,7 @@ class Test__UTC(unittest.TestCase):
 
     def test_module_property(self):
         from google.cloud import _helpers as MUT
+
         klass = self._get_target_class()
         try:
             import pytz
@@ -104,6 +106,7 @@ class Test__ensure_tuple_or_list(unittest.TestCase):
 
     def _call_fut(self, arg_name, tuple_or_list):
         from google.cloud._helpers import _ensure_tuple_or_list
+
         return _ensure_tuple_or_list(arg_name, tuple_or_list)
 
     def test_valid_tuple(self):
@@ -131,6 +134,7 @@ class Test__determine_default_project(unittest.TestCase):
 
     def _call_fut(self, project=None):
         from google.cloud._helpers import _determine_default_project
+
         return _determine_default_project(project=project)
 
     def test_it(self):
@@ -154,6 +158,7 @@ class Test__millis(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud._helpers import _millis
+
         return _millis(value)
 
     def test_one_second_from_epoch(self):
@@ -168,6 +173,7 @@ class Test__microseconds_from_datetime(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud._helpers import _microseconds_from_datetime
+
         return _microseconds_from_datetime(value)
 
     def test_it(self):
@@ -185,6 +191,7 @@ class Test__millis_from_datetime(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud._helpers import _millis_from_datetime
+
         return _millis_from_datetime(value)
 
     def test_w_none(self):
@@ -240,6 +247,7 @@ class Test__datetime_from_microseconds(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud._helpers import _datetime_from_microseconds
+
         return _datetime_from_microseconds(value)
 
     def test_it(self):
@@ -257,10 +265,12 @@ class Test___date_from_iso8601_date(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud._helpers import _date_from_iso8601_date
+
         return _date_from_iso8601_date(value)
 
     def test_todays_date(self):
         import datetime
+
         TODAY = datetime.date.today()
         self.assertEqual(self._call_fut(TODAY.strftime("%Y-%m-%d")), TODAY)
 
@@ -269,10 +279,12 @@ class Test___time_from_iso8601_time_naive(unittest.TestCase):
 
     def _call_fut(self, value):
         from google.cloud._helpers import _time_from_iso8601_time_naive
+
         return _time_from_iso8601_time_naive(value)
 
     def test_todays_date(self):
         import datetime
+
         WHEN = datetime.time(12, 9, 42)
         self.assertEqual(self._call_fut(("12:09:42")), WHEN)
 
@@ -281,6 +293,7 @@ class Test__rfc3339_to_datetime(unittest.TestCase):
 
     def _call_fut(self, dt_str):
         from google.cloud._helpers import _rfc3339_to_datetime
+
         return _rfc3339_to_datetime(dt_str)
 
     def test_w_bogus_zone(self):
@@ -335,6 +348,7 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
 
     def _call_fut(self, dt_str):
         from google.cloud._helpers import _rfc3339_nanos_to_datetime
+
         return _rfc3339_nanos_to_datetime(dt_str)
 
     def test_w_bogus_zone(self):
@@ -423,6 +437,7 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud._helpers import _datetime_to_rfc3339
+
         return _datetime_to_rfc3339(*args, **kwargs)
 
     @staticmethod
@@ -471,6 +486,7 @@ class Test__to_bytes(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud._helpers import _to_bytes
+
         return _to_bytes(*args, **kwargs)
 
     def test_with_bytes(self):
@@ -498,6 +514,7 @@ class Test__bytes_to_unicode(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud._helpers import _bytes_to_unicode
+
         return _bytes_to_unicode(*args, **kwargs)
 
     def test_with_bytes(self):
@@ -519,6 +536,7 @@ class Test__pb_timestamp_to_datetime(unittest.TestCase):
 
     def _call_fut(self, timestamp):
         from google.cloud._helpers import _pb_timestamp_to_datetime
+
         return _pb_timestamp_to_datetime(timestamp)
 
     def test_it(self):
@@ -540,6 +558,7 @@ class Test__pb_timestamp_to_rfc3339(unittest.TestCase):
 
     def _call_fut(self, timestamp):
         from google.cloud._helpers import _pb_timestamp_to_rfc3339
+
         return _pb_timestamp_to_rfc3339(timestamp)
 
     def test_it(self):
@@ -557,6 +576,7 @@ class Test__datetime_to_pb_timestamp(unittest.TestCase):
 
     def _call_fut(self, when):
         from google.cloud._helpers import _datetime_to_pb_timestamp
+
         return _datetime_to_pb_timestamp(when)
 
     def test_it(self):
@@ -603,6 +623,7 @@ class Test__name_from_project_path(unittest.TestCase):
 
     def test_w_valid_data_w_compiled_regex(self):
         import re
+
         template = re.compile(self.TEMPLATE)
         PATH = 'projects/%s/things/%s' % (self.PROJECT, self.THING_NAME)
         name = self._call_fut(PATH, self.PROJECT, template)
@@ -620,6 +641,7 @@ class Test_make_secure_channel(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud._helpers import make_secure_channel
+
         return make_secure_channel(*args, **kwargs)
 
     def test_it(self):
@@ -676,6 +698,7 @@ class Test_make_secure_stub(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud._helpers import make_secure_stub
+
         return make_secure_stub(*args, **kwargs)
 
     def test_it(self):
@@ -714,6 +737,7 @@ class Test_make_insecure_stub(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud._helpers import make_insecure_stub
+
         return make_insecure_stub(*args, **kwargs)
 
     def _helper(self, target, host, port=None):

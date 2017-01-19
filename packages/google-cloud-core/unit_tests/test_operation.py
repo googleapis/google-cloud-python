@@ -19,6 +19,7 @@ class Test__compute_type_url(unittest.TestCase):
 
     def _call_fut(self, klass, prefix=None):
         from google.cloud.operation import _compute_type_url
+
         if prefix is None:
             return _compute_type_url(klass)
         return _compute_type_url(klass, prefix)
@@ -35,6 +36,7 @@ class Test__compute_type_url(unittest.TestCase):
 
     def test_w_prefix(self):
         from google.protobuf.struct_pb2 import Struct
+
         PREFIX = 'test.google-cloud-python.com'
 
         type_url = self._call_fut(Struct, PREFIX)
@@ -48,6 +50,7 @@ class Test_register_type(unittest.TestCase):
 
     def _call_fut(self, klass, type_url=None):
         from google.cloud.operation import register_type
+
         register_type(klass, type_url=type_url)
 
     def test_explicit(self):
@@ -110,6 +113,7 @@ class TestOperation(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.operation import Operation
+
         return Operation
 
     def _make_one(self, *args, **kw):
@@ -144,6 +148,7 @@ class TestOperation(unittest.TestCase):
 
     def test_from_pb_wo_metadata_or_kw(self):
         from google.longrunning import operations_pb2
+
         client = _Client()
         operation_pb = operations_pb2.Operation(name=self.OPERATION_NAME)
         klass = self._get_target_class()
@@ -345,7 +350,6 @@ class TestOperation(unittest.TestCase):
     def test__update_state_error(self):
         from google.longrunning import operations_pb2
         from google.rpc.status_pb2 import Status
-        from google.cloud._testing import _Monkey
 
         operation = self._make_one(None, None)
         self.assertIsNone(operation.error)
