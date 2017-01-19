@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Iterators &mdash; google-cloud e9b503a documentation</title>
+  <title>Iterators &mdash; google-cloud e06ec83 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud e9b503a documentation" href="index.html"/>
+    <link rel="top" title="google-cloud e06ec83 documentation" href="index.html"/>
         <link rel="next" title="Long-Running Operations" href="operation-api.html"/>
         <link rel="prev" title="Authentication" href="google-cloud-auth.html"/> 
 
@@ -312,6 +312,14 @@ requests):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">my_item</span> <span class="ow">in</span> <span class="n">Iterator</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">my_item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">my_item</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">break</span>
+</pre></div>
+</div>
+<p>At any point, you may check the number of items consumed by referencing the
+<code class="docutils literal"><span class="pre">num_results</span></code> property of the iterator:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_iterator</span> <span class="o">=</span> <span class="n">Iterator</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">my_item</span> <span class="ow">in</span> <span class="n">my_iterator</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">my_iterator</span><span class="o">.</span><span class="n">num_results</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">break</span>
 </pre></div>
 </div>
@@ -597,7 +605,7 @@ raw API response with a single item.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e9b503a',
+            VERSION:'e06ec83',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
