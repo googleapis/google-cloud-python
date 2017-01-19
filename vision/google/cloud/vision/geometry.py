@@ -32,7 +32,7 @@ class BoundsBase(object):
         :param vertices: List of vertices.
 
         :rtype: :class:`~google.cloud.vision.geometry.BoundsBase` or None
-        :returns: Instance of BoundsBase with populated verticies or None.
+        :returns: Instance of ``BoundsBase`` with populated verticies or None.
         """
         if vertices is None:
             return None
@@ -41,7 +41,7 @@ class BoundsBase(object):
 
     @classmethod
     def from_pb(cls, vertices):
-        """Factory: construct BoundsBase instance from Vision gRPC response.
+        """Factory: construct BoundsBase instance from a protobuf response.
 
         :type vertices: :class:`~google.cloud.grpc.vision.v1.\
                                  geometry_pb2.BoundingPoly`
@@ -102,10 +102,10 @@ class LocationInformation(object):
 
     @classmethod
     def from_pb(cls, location_info):
-        """Factory: construct location information from Vision gRPC response.
+        """Factory: construct location information from a protobuf response.
 
         :type location_info: :class:`~google.cloud.vision.v1.LocationInfo`
-        :param location_info: gRPC response of ``LocationInfo``.
+        :param location_info: Protobuf response with ``LocationInfo``.
 
         :rtype: :class:`~google.cloud.vision.geometry.LocationInformation`
         :returns: ``LocationInformation`` with populated latitude and
@@ -148,7 +148,8 @@ class Position(object):
     :type z_coordinate: float
     :param z_coordinate: Z position coordinate.
     """
-    def __init__(self, x_coordinate, y_coordinate, z_coordinate):
+    def __init__(self, x_coordinate=None, y_coordinate=None,
+                 z_coordinate=None):
         self._x_coordinate = x_coordinate
         self._y_coordinate = y_coordinate
         self._z_coordinate = z_coordinate
@@ -161,11 +162,23 @@ class Position(object):
         :param position: Dictionary with 3 axis position data.
 
         :rtype: :class:`~google.cloud.vision.geometry.Position`
-        :returns: `Position` constructed with 3D points from API response.
+        :returns: ``Position`` constructed with 3D points from API response.
         """
         x_coordinate = position['x']
         y_coordinate = position['y']
         z_coordinate = position['z']
+        return cls(x_coordinate, y_coordinate, z_coordinate)
+
+    @classmethod
+    def from_pb(cls, response_position):
+        """Factory: construct 3D position from API response.
+
+        :rtype: :class:`~google.cloud.vision.geometry.Position`
+        :returns: ``Position`` constructed with 3D points from API response.
+        """
+        x_coordinate = response_position.x
+        y_coordinate = response_position.y
+        z_coordinate = response_position.z
         return cls(x_coordinate, y_coordinate, z_coordinate)
 
     @property
@@ -208,7 +221,7 @@ class Vertex(object):
     :type y_coordinate: float
     :param y_coordinate: Y position coordinate.
     """
-    def __init__(self, x_coordinate, y_coordinate):
+    def __init__(self, x_coordinate=None, y_coordinate=None):
         self._x_coordinate = x_coordinate
         self._y_coordinate = y_coordinate
 

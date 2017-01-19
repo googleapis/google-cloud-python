@@ -73,7 +73,7 @@ class TestAnnotations(unittest.TestCase):
         annotations = self._make_one().from_pb(image_response)
         self.assertEqual(annotations.labels, [])
         self.assertEqual(annotations.logos, [])
-        self.assertEqual(annotations.faces, ())
+        self.assertEqual(annotations.faces, [])
         self.assertEqual(annotations.landmarks, [])
         self.assertEqual(annotations.texts, [])
         self.assertEqual(annotations.safe_searches, ())
@@ -105,6 +105,21 @@ class Test__make_entity_from_pb(unittest.TestCase):
         self.assertEqual(len(entity.locations), 1)
         self.assertEqual(entity.locations[0].latitude, 1.0)
         self.assertEqual(entity.locations[0].longitude, 2.0)
+
+
+class Test__make_faces_from_pb(unittest.TestCase):
+    def _call_fut(self, annotations):
+        from google.cloud.vision.annotations import _make_faces_from_pb
+        return _make_faces_from_pb(annotations)
+
+    def test_it(self):
+        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.vision.face import Face
+
+        faces_pb = [image_annotator_pb2.FaceAnnotation()]
+
+        faces = self._call_fut(faces_pb)
+        self.assertIsInstance(faces[0], Face)
 
 
 class Test__process_image_annotations(unittest.TestCase):

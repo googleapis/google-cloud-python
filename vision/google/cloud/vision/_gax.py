@@ -17,8 +17,6 @@
 from google.cloud.gapic.vision.v1 import image_annotator_client
 from google.cloud.grpc.vision.v1 import image_annotator_pb2
 
-from google.cloud._helpers import _to_bytes
-
 from google.cloud.vision.annotations import Annotations
 
 
@@ -85,7 +83,7 @@ def _to_gapic_image(image):
               :class:`~google.cloud.vision.image.Image`.
     """
     if image.content is not None:
-        return image_annotator_pb2.Image(content=_to_bytes(image.content))
+        return image_annotator_pb2.Image(content=image.content)
     if image.source is not None:
         return image_annotator_pb2.Image(
             source=image_annotator_pb2.ImageSource(
