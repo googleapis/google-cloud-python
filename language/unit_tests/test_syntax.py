@@ -20,6 +20,7 @@ class TestPartOfSpeech(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.language.syntax import PartOfSpeech
+
         return PartOfSpeech
 
     def test_reverse(self):
@@ -39,6 +40,7 @@ class TestToken(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.language.syntax import Token
+
         return Token
 
     def _make_one(self, *args, **kw):
@@ -100,6 +102,7 @@ class TestSentence(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.language.syntax import Sentence
+
         return Sentence
 
     def _make_one(self, *args, **kw):
@@ -129,6 +132,7 @@ class TestSentence(unittest.TestCase):
 
     def test_from_api_repr_with_sentiment(self):
         from google.cloud.language.sentiment import Sentiment
+
         klass = self._get_target_class()
         content = 'All the pretty horses.'
         begin = -1

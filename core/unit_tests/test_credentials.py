@@ -21,6 +21,7 @@ class Test_get_credentials(unittest.TestCase):
 
     def _call_fut(self):
         from google.cloud import credentials
+
         return credentials.get_credentials()
 
     def test_it(self):
@@ -37,6 +38,7 @@ class Test_generate_signed_url(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud.credentials import generate_signed_url
+
         return generate_signed_url(*args, **kwargs)
 
     def _generate_helper(self, response_type=None, response_disposition=None,
@@ -108,6 +110,7 @@ class Test_generate_signed_url_exception(unittest.TestCase):
         import time
         import google.auth.credentials
         from google.cloud.credentials import generate_signed_url
+
         RESOURCE = '/name/path'
 
         credentials = mock.Mock(spec=google.auth.credentials.Credentials)
@@ -120,6 +123,7 @@ class Test__get_signed_query_params(unittest.TestCase):
 
     def _call_fut(self, credentials, expiration, string_to_sign):
         from google.cloud.credentials import _get_signed_query_params
+
         return _get_signed_query_params(credentials, expiration,
                                         string_to_sign)
 
@@ -149,10 +153,12 @@ class Test__get_expiration_seconds(unittest.TestCase):
 
     def _call_fut(self, expiration):
         from google.cloud.credentials import _get_expiration_seconds
+
         return _get_expiration_seconds(expiration)
 
     def _utc_seconds(self, when):
         import calendar
+
         return int(calendar.timegm(when.timetuple()))
 
     def test_w_invalid(self):

@@ -424,6 +424,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub._gax import _SubscriberAPI
+
         return _SubscriberAPI
 
     def test_ctor(self):

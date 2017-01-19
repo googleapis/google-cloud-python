@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -27,6 +28,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -34,6 +36,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor(self):
         from google.cloud.bigquery._http import Connection
+
         PROJECT = 'PROJECT'
         creds = _make_credentials()
         http = object()
@@ -45,6 +48,7 @@ class TestClient(unittest.TestCase):
     def test_list_projects_defaults(self):
         import six
         from google.cloud.bigquery.client import Project
+
         PROJECT_1 = 'PROJECT_ONE'
         PROJECT_2 = 'PROJECT_TWO'
         PATH = 'projects'
@@ -115,6 +119,7 @@ class TestClient(unittest.TestCase):
     def test_list_datasets_defaults(self):
         import six
         from google.cloud.bigquery.dataset import Dataset
+
         PROJECT = 'PROJECT'
         DATASET_1 = 'dataset_one'
         DATASET_2 = 'dataset_two'
@@ -185,6 +190,7 @@ class TestClient(unittest.TestCase):
 
     def test_dataset(self):
         from google.cloud.bigquery.dataset import Dataset
+
         PROJECT = 'PROJECT'
         DATASET = 'dataset_name'
         creds = _make_credentials()
@@ -208,6 +214,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.job import CopyJob
         from google.cloud.bigquery.job import ExtractTableToStorageJob
         from google.cloud.bigquery.job import QueryJob
+
         PROJECT = 'PROJECT'
         DATASET = 'test_dataset'
         SOURCE_TABLE = 'source_table'
@@ -336,6 +343,7 @@ class TestClient(unittest.TestCase):
     def test_list_jobs_load_job_wo_sourceUris(self):
         import six
         from google.cloud.bigquery.job import LoadTableFromStorageJob
+
         PROJECT = 'PROJECT'
         DATASET = 'test_dataset'
         SOURCE_TABLE = 'source_table'
@@ -391,6 +399,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_jobs_explicit_missing(self):
         import six
+
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/jobs' % PROJECT
         DATA = {}
@@ -421,6 +430,7 @@ class TestClient(unittest.TestCase):
 
     def test_load_table_from_storage(self):
         from google.cloud.bigquery.job import LoadTableFromStorageJob
+
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         DATASET = 'dataset_name'
@@ -440,6 +450,7 @@ class TestClient(unittest.TestCase):
 
     def test_copy_table(self):
         from google.cloud.bigquery.job import CopyJob
+
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         DATASET = 'dataset_name'
@@ -460,6 +471,7 @@ class TestClient(unittest.TestCase):
 
     def test_extract_table_to_storage(self):
         from google.cloud.bigquery.job import ExtractTableToStorageJob
+
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         DATASET = 'dataset_name'
@@ -479,6 +491,7 @@ class TestClient(unittest.TestCase):
 
     def test_run_async_query_defaults(self):
         from google.cloud.bigquery.job import QueryJob
+
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
@@ -496,6 +509,7 @@ class TestClient(unittest.TestCase):
     def test_run_async_w_udf_resources(self):
         from google.cloud.bigquery._helpers import UDFResource
         from google.cloud.bigquery.job import QueryJob
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PROJECT = 'PROJECT'
         JOB = 'job_name'
@@ -515,6 +529,7 @@ class TestClient(unittest.TestCase):
     def test_run_async_w_query_parameters(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery.job import QueryJob
+
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
@@ -533,6 +548,7 @@ class TestClient(unittest.TestCase):
 
     def test_run_sync_query_defaults(self):
         from google.cloud.bigquery.query import QueryResults
+
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
         creds = _make_credentials()
@@ -549,6 +565,7 @@ class TestClient(unittest.TestCase):
     def test_run_sync_query_w_udf_resources(self):
         from google.cloud.bigquery._helpers import UDFResource
         from google.cloud.bigquery.query import QueryResults
+
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
@@ -567,6 +584,7 @@ class TestClient(unittest.TestCase):
     def test_run_sync_query_w_query_parameters(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery.query import QueryResults
+
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
         creds = _make_credentials()

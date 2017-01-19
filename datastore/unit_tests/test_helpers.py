@@ -19,6 +19,7 @@ class Test__new_value_pb(unittest.TestCase):
 
     def _call_fut(self, entity_pb, name):
         from google.cloud.datastore.helpers import _new_value_pb
+
         return _new_value_pb(entity_pb, name)
 
     def test_it(self):
@@ -37,6 +38,7 @@ class Test__property_tuples(unittest.TestCase):
 
     def _call_fut(self, entity_pb):
         from google.cloud.datastore.helpers import _property_tuples
+
         return _property_tuples(entity_pb)
 
     def test_it(self):
@@ -60,6 +62,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
 
     def _call_fut(self, val):
         from google.cloud.datastore.helpers import entity_from_protobuf
+
         return entity_from_protobuf(val)
 
     def test_it(self):
@@ -193,6 +196,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
 
     def _call_fut(self, entity):
         from google.cloud.datastore.helpers import entity_to_protobuf
+
         return entity_to_protobuf(entity)
 
     def _compareEntityProto(self, entity_pb1, entity_pb2):
@@ -377,6 +381,7 @@ class Test_key_from_protobuf(unittest.TestCase):
 
     def _makePB(self, project=None, namespace=None, path=()):
         from google.cloud.grpc.datastore.v1 import entity_pb2
+
         pb = entity_pb2.Key()
         if project is not None:
             pb.partition_id.project_id = project
@@ -485,6 +490,7 @@ class Test__pb_attr_value(unittest.TestCase):
 
     def test_native_str(self):
         import six
+
         name, value = self._call_fut('str')
         if six.PY2:
             self.assertEqual(name, 'blob_value')
@@ -504,6 +510,7 @@ class Test__pb_attr_value(unittest.TestCase):
 
     def test_entity(self):
         from google.cloud.datastore.entity import Entity
+
         entity = Entity()
         name, value = self._call_fut(entity)
         self.assertEqual(name, 'entity_value')
@@ -718,6 +725,7 @@ class Test_set_protobuf_value(unittest.TestCase):
 
     def test_native_str(self):
         import six
+
         pb = self._makePB()
         self._call_fut(pb, 'str')
         if six.PY2:
@@ -796,6 +804,7 @@ class Test__get_meaning(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud.datastore.helpers import _get_meaning
+
         return _get_meaning(*args, **kwargs)
 
     def test_no_meaning(self):
@@ -877,6 +886,7 @@ class TestGeoPoint(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.helpers import GeoPoint
+
         return GeoPoint
 
     def _make_one(self, *args, **kwargs):
