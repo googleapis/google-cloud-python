@@ -24,6 +24,7 @@ class TestEntity(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.entity import Entity
+
         return Entity
 
     def _make_one(self, key=None, exclude_from_indexes=()):
@@ -53,6 +54,7 @@ class TestEntity(unittest.TestCase):
 
     def test___eq_____ne___w_non_entity(self):
         from google.cloud.datastore.key import Key
+
         key = Key(_KIND, _ID, project=_PROJECT)
         entity = self._make_one(key=key)
         self.assertFalse(entity == object())
@@ -60,6 +62,7 @@ class TestEntity(unittest.TestCase):
 
     def test___eq_____ne___w_different_keys(self):
         from google.cloud.datastore.key import Key
+
         _ID1 = 1234
         _ID2 = 2345
         key1 = Key(_KIND, _ID1, project=_PROJECT)
@@ -91,6 +94,7 @@ class TestEntity(unittest.TestCase):
 
     def test___eq_____ne___w_same_keys_different_props(self):
         from google.cloud.datastore.key import Key
+
         key1 = Key(_KIND, _ID, project=_PROJECT)
         entity1 = self._make_one(key=key1)
         entity1['foo'] = 'Foo'
@@ -102,6 +106,7 @@ class TestEntity(unittest.TestCase):
 
     def test___eq_____ne___w_same_keys_props_w_equiv_keys_as_value(self):
         from google.cloud.datastore.key import Key
+
         key1 = Key(_KIND, _ID, project=_PROJECT)
         key2 = Key(_KIND, _ID, project=_PROJECT)
         entity1 = self._make_one(key=key1)
@@ -113,6 +118,7 @@ class TestEntity(unittest.TestCase):
 
     def test___eq_____ne___w_same_keys_props_w_diff_keys_as_value(self):
         from google.cloud.datastore.key import Key
+
         _ID1 = 1234
         _ID2 = 2345
         key1 = Key(_KIND, _ID1, project=_PROJECT)
@@ -126,6 +132,7 @@ class TestEntity(unittest.TestCase):
 
     def test___eq_____ne___w_same_keys_props_w_equiv_entities_as_value(self):
         from google.cloud.datastore.key import Key
+
         key = Key(_KIND, _ID, project=_PROJECT)
         entity1 = self._make_one(key=key)
         sub1 = self._make_one()
@@ -140,6 +147,7 @@ class TestEntity(unittest.TestCase):
 
     def test___eq_____ne___w_same_keys_props_w_diff_entities_as_value(self):
         from google.cloud.datastore.key import Key
+
         key = Key(_KIND, _ID, project=_PROJECT)
         entity1 = self._make_one(key=key)
         sub1 = self._make_one()

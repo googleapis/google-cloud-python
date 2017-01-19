@@ -71,7 +71,7 @@ TEST_RC_ADDITIONS = {
 }
 TEST_RC_REPLACEMENTS = {
     'FORMAT': {
-        'max-module-lines': 2000,
+        'max-module-lines': 2050,
     },
 }
 

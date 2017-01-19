@@ -19,6 +19,7 @@ class Test_logger_name_from_path(unittest.TestCase):
 
     def _call_fut(self, path):
         from google.cloud.logging.entries import logger_name_from_path
+
         return logger_name_from_path(path)
 
     def test_w_simple_name(self):
@@ -67,6 +68,7 @@ class Test_BaseEntry(unittest.TestCase):
 
     def test_ctor_explicit(self):
         import datetime
+
         PAYLOAD = 'PAYLOAD'
         IID = 'IID'
         TIMESTAMP = datetime.datetime.now()
@@ -120,6 +122,7 @@ class Test_BaseEntry(unittest.TestCase):
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
+
         klass = self._get_target_class()
         client = _Client(self.PROJECT)
         PAYLOAD = 'PAYLOAD'
@@ -164,6 +167,7 @@ class Test_BaseEntry(unittest.TestCase):
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
+
         client = _Client(self.PROJECT)
         PAYLOAD = 'PAYLOAD'
         IID = 'IID'
@@ -197,6 +201,7 @@ class TestProtobufEntry(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging.entries import ProtobufEntry
+
         return ProtobufEntry
 
     def _make_one(self, *args, **kw):
@@ -206,6 +211,7 @@ class TestProtobufEntry(unittest.TestCase):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
+
         LOGGER = object()
         message = Struct(fields={'foo': Value(bool_value=False)})
         with_true = Struct(fields={'foo': Value(bool_value=True)})
@@ -217,6 +223,7 @@ class TestProtobufEntry(unittest.TestCase):
 
 def _datetime_to_rfc3339_w_nanos(value):
     from google.cloud._helpers import _RFC3339_NO_FRACTION
+
     no_fraction = value.strftime(_RFC3339_NO_FRACTION)
     return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)
 

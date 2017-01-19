@@ -20,6 +20,7 @@ class Test_BufferedStream(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.streaming.buffered_stream import BufferedStream
+
         return BufferedStream
 
     def _make_one(self, *args, **kw):
@@ -41,6 +42,7 @@ class Test_BufferedStream(unittest.TestCase):
 
     def test_ctor_start_zero_longer_than_buffer(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4
@@ -56,6 +58,7 @@ class Test_BufferedStream(unittest.TestCase):
 
     def test_ctor_start_nonzero_shorter_than_buffer(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         START = 8
         BUFSIZE = 10
@@ -72,6 +75,7 @@ class Test_BufferedStream(unittest.TestCase):
 
     def test__bytes_remaining_start_zero_longer_than_buffer(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4
@@ -81,6 +85,7 @@ class Test_BufferedStream(unittest.TestCase):
 
     def test__bytes_remaining_start_zero_shorter_than_buffer(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         START = 8
         BUFSIZE = 10
@@ -91,6 +96,7 @@ class Test_BufferedStream(unittest.TestCase):
 
     def test_read_w_none(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4
@@ -101,6 +107,7 @@ class Test_BufferedStream(unittest.TestCase):
 
     def test_read_w_negative_size(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4
@@ -111,6 +118,7 @@ class Test_BufferedStream(unittest.TestCase):
 
     def test_read_from_start(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4
@@ -120,6 +128,7 @@ class Test_BufferedStream(unittest.TestCase):
 
     def test_read_exhausted(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         START = len(CONTENT)
         BUFSIZE = 10

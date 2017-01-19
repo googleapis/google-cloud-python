@@ -24,6 +24,7 @@ class TestManagedZone(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.dns.zone import ManagedZone
+
         return ManagedZone
 
     def _make_one(self, *args, **kw):
@@ -62,7 +63,6 @@ class TestManagedZone(unittest.TestCase):
         }
 
     def _verifyReadonlyResourceProperties(self, zone, resource):
-
         self.assertEqual(zone.zone_id, resource.get('id'))
 
         if 'creationTime' in resource:
@@ -76,7 +76,6 @@ class TestManagedZone(unittest.TestCase):
             self.assertIsNone(zone.name_servers)
 
     def _verifyResourceProperties(self, zone, resource):
-
         self._verifyReadonlyResourceProperties(zone, resource)
 
         self.assertEqual(zone.name, resource.get('name'))
@@ -186,6 +185,7 @@ class TestManagedZone(unittest.TestCase):
 
     def test_resource_record_set(self):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         RRS_NAME = 'other.example.com'
         RRS_TYPE = 'CNAME'
         TTL = 3600
@@ -202,6 +202,7 @@ class TestManagedZone(unittest.TestCase):
 
     def test_changes(self):
         from google.cloud.dns.changes import Changes
+
         client = _Client(self.PROJECT)
         zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
         changes = zone.changes()
@@ -262,6 +263,7 @@ class TestManagedZone(unittest.TestCase):
 
     def test_create_wo_dns_name_or_description(self):
         from google.cloud.exceptions import BadRequest
+
         PATH = 'projects/%s/managedZones' % self.PROJECT
 
         _requested = []
@@ -412,6 +414,7 @@ class TestManagedZone(unittest.TestCase):
     def test_list_resource_record_sets_defaults(self):
         import six
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         PATH = 'projects/%s/managedZones/%s/rrsets' % (
             self.PROJECT, self.ZONE_NAME)
         TOKEN = 'TOKEN'
@@ -465,6 +468,7 @@ class TestManagedZone(unittest.TestCase):
     def test_list_resource_record_sets_explicit(self):
         import six
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         PATH = 'projects/%s/managedZones/%s/rrsets' % (
             self.PROJECT, self.ZONE_NAME)
         TOKEN = 'TOKEN'
@@ -684,6 +688,7 @@ class _Connection(object):
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kw)
 
         try:

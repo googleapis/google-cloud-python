@@ -25,6 +25,7 @@ class TestSink(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging.sink import Sink
+
         return Sink
 
     def _make_one(self, *args, **kw):
@@ -260,6 +261,7 @@ class _DummySinksAPI(object):
 
     def sink_get(self, project, sink_name):
         from google.cloud.exceptions import NotFound
+
         self._sink_get_called_with = (project, sink_name)
         try:
             return self._sink_get_response

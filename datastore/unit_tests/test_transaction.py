@@ -20,6 +20,7 @@ class TestTransaction(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.transaction import Transaction
+
         return Transaction
 
     def _make_one(self, client, **kw):
@@ -220,6 +221,7 @@ class _Entity(dict):
     def __init__(self):
         super(_Entity, self).__init__()
         from google.cloud.datastore.key import Key
+
         self.key = Key('KIND', project='PROJECT')
 
 
@@ -246,6 +248,7 @@ class _NoCommitBatch(object):
 
     def __init__(self, client):
         from google.cloud.datastore.batch import Batch
+
         self._client = client
         self._batch = Batch(client)
 
