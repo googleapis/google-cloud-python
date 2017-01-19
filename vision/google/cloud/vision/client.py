@@ -58,7 +58,7 @@ class Client(JSONClient):
     _vision_api_internal = None
 
     def __init__(self, project=None, credentials=None, http=None,
-                 use_gax=False):
+                 use_gax=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
         self._connection = Connection(
