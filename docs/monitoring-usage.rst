@@ -343,7 +343,7 @@ See `Monitored resource types`_ for more information about particular monitored 
   ...     'zone': 'us-central1-f'
   ... })
   >>> # Create a Metric object, specifying the metric type as well as values for any metric labels.
-  >>> metric = client.metric(type='custom.googleapis.com/my_metric', labels={
+  >>> metric = client.metric(type_='custom.googleapis.com/my_metric', labels={
   ...      'status': 'successful'
   ... })
 
