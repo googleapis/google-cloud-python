@@ -455,7 +455,7 @@ class TestClient(unittest.TestCase):
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
-        image_properties = image.detect_properties()[0]
+        image_properties = image.detect_properties()
         self.assertIsInstance(image_properties, ImagePropertiesAnnotation)
         image_request = client._connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,

@@ -14,6 +14,7 @@
 
 """Annotations management for Vision API responses."""
 
+import six
 
 from google.cloud.vision.color import ImagePropertiesAnnotation
 from google.cloud.vision.entity import EntityAnnotation
@@ -86,11 +87,11 @@ class Annotations(object):
         :rtype: :class:`~google.cloud.vision.annotations.Annotations`
         :returns: An instance of ``Annotations`` with detection types loaded.
         """
-        annotations = {}
-        for feature_type, annotation in response.items():
-            curr_feature = annotations.setdefault(_KEY_MAP[feature_type], [])
-            curr_feature.extend(
-                _entity_from_response_type(feature_type, annotation))
+        annotations = {
+            _KEY_MAP[feature_type]: _entity_from_response_type(
+                feature_type, annotation)
+            for feature_type, annotation in six.iteritems(response)
+        }
         return cls(**annotations)
 
     @classmethod
@@ -123,12 +124,14 @@ def _process_image_annotations(image):
         'labels': _make_entity_from_pb(image.label_annotations),
         'landmarks': _make_entity_from_pb(image.landmark_annotations),
         'logos': _make_entity_from_pb(image.logo_annotations),
+        'properties': _make_image_properties_from_pb(
+            image.image_properties_annotation),
         'texts': _make_entity_from_pb(image.text_annotations),
     }
 
 
 def _make_entity_from_pb(annotations):
-    """Create an entity from a gRPC response.
+    """Create an entity from a protobuf response.
 
     :type annotations:
     :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.EntityAnnotation`
@@ -141,7 +144,7 @@ def _make_entity_from_pb(annotations):
 
 
 def _make_faces_from_pb(faces):
-    """Create face objects from a gRPC response.
+    """Create face objects from a protobuf response.
 
     :type faces:
     :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.FaceAnnotation`
@@ -151,6 +154,20 @@ def _make_faces_from_pb(faces):
     :returns: List of ``Face``.
     """
     return [Face.from_pb(face) for face in faces]
+
+
+def _make_image_properties_from_pb(image_properties):
+    """Create ``ImageProperties`` object from a protobuf response.
+
+    :type image_properties: :class:`~google.cloud.grpc.vision.v1.\
+                            image_annotator_pb2.ImagePropertiesAnnotation`
+    :param image_properties: Protobuf instance of
+                             ``ImagePropertiesAnnotation``.
+
+    :rtype: list or ``None``
+    :returns: List of ``ImageProperties`` or ``None``.
+    """
+    return ImagePropertiesAnnotation.from_pb(image_properties)
 
 
 def _entity_from_response_type(feature_type, results):
@@ -168,8 +185,7 @@ def _entity_from_response_type(feature_type, results):
         detected_objects.extend(
             Face.from_api_repr(face) for face in results)
     elif feature_type == _IMAGE_PROPERTIES_ANNOTATION:
-        detected_objects.append(
-            ImagePropertiesAnnotation.from_api_repr(results))
+        return ImagePropertiesAnnotation.from_api_repr(results)
     elif feature_type == _SAFE_SEARCH_ANNOTATION:
         detected_objects.append(SafeSearchAnnotation.from_api_repr(results))
     else:
