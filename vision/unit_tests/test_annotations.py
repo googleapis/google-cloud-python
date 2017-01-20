@@ -77,7 +77,7 @@ class TestAnnotations(unittest.TestCase):
         self.assertEqual(annotations.landmarks, [])
         self.assertEqual(annotations.texts, [])
         self.assertEqual(annotations.safe_searches, ())
-        self.assertEqual(annotations.properties, ())
+        self.assertIsNone(annotations.properties)
 
 
 class Test__make_entity_from_pb(unittest.TestCase):
@@ -120,6 +120,37 @@ class Test__make_faces_from_pb(unittest.TestCase):
 
         faces = self._call_fut(faces_pb)
         self.assertIsInstance(faces[0], Face)
+
+
+class Test__make_image_properties_from_pb(unittest.TestCase):
+    def _call_fut(self, annotations):
+        from google.cloud.vision.annotations import (
+            _make_image_properties_from_pb)
+        return _make_image_properties_from_pb(annotations)
+
+    def test_it(self):
+        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.protobuf.wrappers_pb2 import FloatValue
+        from google.type.color_pb2 import Color
+
+        alpha = FloatValue(value=1.0)
+        color_pb = Color(red=1.0, green=2.0, blue=3.0, alpha=alpha)
+        color_info_pb = image_annotator_pb2.ColorInfo(color=color_pb,
+                                                      score=1.0,
+                                                      pixel_fraction=1.0)
+        dominant_colors = image_annotator_pb2.DominantColorsAnnotation(
+            colors=[color_info_pb])
+
+        image_properties_pb = image_annotator_pb2.ImageProperties(
+            dominant_colors=dominant_colors)
+
+        image_properties = self._call_fut(image_properties_pb)
+        self.assertEqual(image_properties.colors[0].pixel_fraction, 1.0)
+        self.assertEqual(image_properties.colors[0].score, 1.0)
+        self.assertEqual(image_properties.colors[0].color.red, 1.0)
+        self.assertEqual(image_properties.colors[0].color.green, 2.0)
+        self.assertEqual(image_properties.colors[0].color.blue, 3.0)
+        self.assertEqual(image_properties.colors[0].color.alpha, 1.0)
 
 
 class Test__process_image_annotations(unittest.TestCase):
