@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.geometry &mdash; google-cloud 4f5f782 documentation</title>
+  <title>google.cloud.vision.geometry &mdash; google-cloud 5a42aca documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 4f5f782 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5a42aca documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -319,7 +319,7 @@
 <span class="sd">        :param vertices: List of vertices.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.BoundsBase` or None</span>
-<span class="sd">        :returns: Instance of BoundsBase with populated verticies or None.</span>
+<span class="sd">        :returns: Instance of ``BoundsBase`` with populated verticies or None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">vertices</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -328,7 +328,7 @@
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="BoundsBase.from_pb"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.geometry.BoundsBase.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct BoundsBase instance from Vision gRPC response.</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct BoundsBase instance from a protobuf response.</span>
 
 <span class="sd">        :type vertices: :class:`~google.cloud.grpc.vision.v1.\</span>
 <span class="sd">                                 geometry_pb2.BoundingPoly`</span>
@@ -389,10 +389,10 @@
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="LocationInformation.from_pb"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.geometry.LocationInformation.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">location_info</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct location information from Vision gRPC response.</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct location information from a protobuf response.</span>
 
 <span class="sd">        :type location_info: :class:`~google.cloud.vision.v1.LocationInfo`</span>
-<span class="sd">        :param location_info: gRPC response of ``LocationInfo``.</span>
+<span class="sd">        :param location_info: Protobuf response with ``LocationInfo``.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.LocationInformation`</span>
 <span class="sd">        :returns: ``LocationInformation`` with populated latitude and</span>
@@ -435,7 +435,8 @@
 <span class="sd">    :type z_coordinate: float</span>
 <span class="sd">    :param z_coordinate: Z position coordinate.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_coordinate</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="p">,</span> <span class="n">z_coordinate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">z_coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x_coordinate</span> <span class="o">=</span> <span class="n">x_coordinate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y_coordinate</span> <span class="o">=</span> <span class="n">y_coordinate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_z_coordinate</span> <span class="o">=</span> <span class="n">z_coordinate</span>
@@ -448,11 +449,23 @@
 <span class="sd">        :param position: Dictionary with 3 axis position data.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.Position`</span>
-<span class="sd">        :returns: `Position` constructed with 3D points from API response.</span>
+<span class="sd">        :returns: ``Position`` constructed with 3D points from API response.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x_coordinate</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
         <span class="n">y_coordinate</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
         <span class="n">z_coordinate</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">x_coordinate</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="p">,</span> <span class="n">z_coordinate</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Position.from_pb"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.geometry.Position.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response_position</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct 3D position from API response.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.Position`</span>
+<span class="sd">        :returns: ``Position`` constructed with 3D points from API response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x_coordinate</span> <span class="o">=</span> <span class="n">response_position</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">y_coordinate</span> <span class="o">=</span> <span class="n">response_position</span><span class="o">.</span><span class="n">y</span>
+        <span class="n">z_coordinate</span> <span class="o">=</span> <span class="n">response_position</span><span class="o">.</span><span class="n">z</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">x_coordinate</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="p">,</span> <span class="n">z_coordinate</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -495,7 +508,7 @@
 <span class="sd">    :type y_coordinate: float</span>
 <span class="sd">    :param y_coordinate: Y position coordinate.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_coordinate</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x_coordinate</span> <span class="o">=</span> <span class="n">x_coordinate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y_coordinate</span> <span class="o">=</span> <span class="n">y_coordinate</span>
 
@@ -549,7 +562,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'4f5f782',
+            VERSION:'5a42aca',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

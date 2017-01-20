@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.face &mdash; google-cloud 4f5f782 documentation</title>
+  <title>google.cloud.vision.face &mdash; google-cloud 5a42aca documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 4f5f782 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5a42aca documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -304,9 +304,24 @@
 
 <span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud.grpc.vision.v1</span> <span class="k">import</span> <span class="n">image_annotator_pb2</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud.vision.geometry</span> <span class="k">import</span> <span class="n">BoundsBase</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.likelihood</span> <span class="k">import</span> <span class="n">Likelihood</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.geometry</span> <span class="k">import</span> <span class="n">Position</span>
+
+
+<span class="k">def</span> <span class="nf">_get_pb_likelihood</span><span class="p">(</span><span class="n">likelihood</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert protobuf Likelihood integer value to Likelihood instance.</span>
+
+<span class="sd">    :type likelihood: int</span>
+<span class="sd">    :param likelihood: Protobuf integer representing ``Likelihood``.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.vision.likelihood.Likelihood`</span>
+<span class="sd">    :returns: Instance of ``Likelihood`` converted from protobuf value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">likelihood_pb</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">Likelihood</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="n">likelihood</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">likelihood_pb</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Angles"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles">[docs]</a><span class="k">class</span> <span class="nc">Angles</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -317,15 +332,35 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_tilt</span> <span class="o">=</span> <span class="n">tilt</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Angles.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<div class="viewcode-block" id="Angles.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct the angles from an Vision API response.</span>
+
+<span class="sd">        :type angle: dict</span>
+<span class="sd">        :param angle: Dictionary representation of an angle.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.face.Angles`</span>
 <span class="sd">        :returns: An `Angles` instance with data parsed from `response`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">roll</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;rollAngle&#39;</span><span class="p">]</span>
-        <span class="n">pan</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;panAngle&#39;</span><span class="p">]</span>
-        <span class="n">tilt</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;tiltAngle&#39;</span><span class="p">]</span>
+        <span class="n">roll</span> <span class="o">=</span> <span class="n">angle</span><span class="p">[</span><span class="s1">&#39;rollAngle&#39;</span><span class="p">]</span>
+        <span class="n">pan</span> <span class="o">=</span> <span class="n">angle</span><span class="p">[</span><span class="s1">&#39;panAngle&#39;</span><span class="p">]</span>
+        <span class="n">tilt</span> <span class="o">=</span> <span class="n">angle</span><span class="p">[</span><span class="s1">&#39;tiltAngle&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">roll</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">tilt</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Angles.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: convert protobuf Angle object to local Angle object.</span>
+
+<span class="sd">        :type angle: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">                     image_annotator_pb2.FaceAnnotation`</span>
+<span class="sd">        :param angle: Protobuf ``FaceAnnotation`` response with angle data.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.face.Angles`</span>
+<span class="sd">        :returns: Instance of ``Angles``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">roll</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">roll_angle</span>
+        <span class="n">pan</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">pan_angle</span>
+        <span class="n">tilt</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">tilt_angle</span>
 
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">roll</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">tilt</span><span class="p">)</span></div>
 
@@ -371,19 +406,38 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_anger_likelihood</span> <span class="o">=</span> <span class="n">anger_likelihood</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Emotions.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Emotions.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct `Emotions` from Vision API response.</span>
+<div class="viewcode-block" id="Emotions.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Emotions.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">emotions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct ``Emotions`` from Vision API response.</span>
 
-<span class="sd">        :type response: dict</span>
-<span class="sd">        :param response: Response dictionary representing a face.</span>
+<span class="sd">        :type emotions: dict</span>
+<span class="sd">        :param emotions: Response dictionary representing a face.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.face.Emotions`</span>
-<span class="sd">        :returns: Populated instance of `Emotions`.</span>
+<span class="sd">        :returns: Populated instance of ``Emotions``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">joy_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;joyLikelihood&#39;</span><span class="p">]]</span>
-        <span class="n">sorrow_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;sorrowLikelihood&#39;</span><span class="p">]]</span>
-        <span class="n">surprise_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;surpriseLikelihood&#39;</span><span class="p">]]</span>
-        <span class="n">anger_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;angerLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">joy_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">emotions</span><span class="p">[</span><span class="s1">&#39;joyLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">sorrow_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">emotions</span><span class="p">[</span><span class="s1">&#39;sorrowLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">surprise_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">emotions</span><span class="p">[</span><span class="s1">&#39;surpriseLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">anger_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">emotions</span><span class="p">[</span><span class="s1">&#39;angerLikelihood&#39;</span><span class="p">]]</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">joy_likelihood</span><span class="p">,</span> <span class="n">sorrow_likelihood</span><span class="p">,</span> <span class="n">surprise_likelihood</span><span class="p">,</span>
+                   <span class="n">anger_likelihood</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Emotions.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Emotions.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">emotions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct ``Emotions`` from Vision API response.</span>
+
+<span class="sd">        :type emotions: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">                        image_annotator_pb2.FaceAnnotation`</span>
+<span class="sd">        :param emotions: Response dictionary representing a face with emotions.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.face.Emotions`</span>
+<span class="sd">        :returns: Populated instance of ``Emotions``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">joy_likelihood</span> <span class="o">=</span> <span class="n">_get_pb_likelihood</span><span class="p">(</span><span class="n">emotions</span><span class="o">.</span><span class="n">joy_likelihood</span><span class="p">)</span>
+        <span class="n">sorrow_likelihood</span> <span class="o">=</span> <span class="n">_get_pb_likelihood</span><span class="p">(</span><span class="n">emotions</span><span class="o">.</span><span class="n">sorrow_likelihood</span><span class="p">)</span>
+        <span class="n">surprise_likelihood</span> <span class="o">=</span> <span class="n">_get_pb_likelihood</span><span class="p">(</span><span class="n">emotions</span><span class="o">.</span><span class="n">surprise_likelihood</span><span class="p">)</span>
+        <span class="n">anger_likelihood</span> <span class="o">=</span> <span class="n">_get_pb_likelihood</span><span class="p">(</span><span class="n">emotions</span><span class="o">.</span><span class="n">anger_likelihood</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">joy_likelihood</span><span class="p">,</span> <span class="n">sorrow_likelihood</span><span class="p">,</span> <span class="n">surprise_likelihood</span><span class="p">,</span>
                    <span class="n">anger_likelihood</span><span class="p">)</span></div>
@@ -446,28 +500,52 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_image_properties</span> <span class="o">=</span> <span class="n">image_properties</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Face.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<div class="viewcode-block" id="Face.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Face from an API response</span>
 
-<span class="sd">        :type response: dict</span>
-<span class="sd">        :param response: Face annotation dict returned from the Vision API.</span>
+<span class="sd">        :type face: dict</span>
+<span class="sd">        :param face: Face annotation dict returned from the Vision API.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.face.Face`</span>
 <span class="sd">        :returns: A instance of `Face` with data parsed from `response`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">angles</span> <span class="o">=</span> <span class="n">Angles</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-        <span class="n">bounds</span> <span class="o">=</span> <span class="n">Bounds</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;boundingPoly&#39;</span><span class="p">])</span>
-        <span class="n">detection_confidence</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;detectionConfidence&#39;</span><span class="p">]</span>
-        <span class="n">emotions</span> <span class="o">=</span> <span class="n">Emotions</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-        <span class="n">fd_bounds</span> <span class="o">=</span> <span class="n">FDBounds</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;fdBoundingPoly&#39;</span><span class="p">])</span>
-        <span class="n">headwear_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;headwearLikelihood&#39;</span><span class="p">]]</span>
-        <span class="n">image_properties</span> <span class="o">=</span> <span class="n">FaceImageProperties</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-        <span class="n">landmarks</span> <span class="o">=</span> <span class="n">Landmarks</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;landmarks&#39;</span><span class="p">])</span>
-        <span class="n">landmarking_confidence</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;landmarkingConfidence&#39;</span><span class="p">]</span>
+        <span class="n">face_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;angles&#39;</span><span class="p">:</span> <span class="n">Angles</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+            <span class="s1">&#39;bounds&#39;</span><span class="p">:</span> <span class="n">Bounds</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;boundingPoly&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;detection_confidence&#39;</span><span class="p">:</span> <span class="n">face</span><span class="p">[</span><span class="s1">&#39;detectionConfidence&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;emotions&#39;</span><span class="p">:</span> <span class="n">Emotions</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+            <span class="s1">&#39;fd_bounds&#39;</span><span class="p">:</span> <span class="n">FDBounds</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;fdBoundingPoly&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;headwear_likelihood&#39;</span><span class="p">:</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;headwearLikelihood&#39;</span><span class="p">]],</span>
+            <span class="s1">&#39;image_properties&#39;</span><span class="p">:</span> <span class="n">FaceImageProperties</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+            <span class="s1">&#39;landmarks&#39;</span><span class="p">:</span> <span class="n">Landmarks</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;landmarks&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;landmarking_confidence&#39;</span><span class="p">:</span> <span class="n">face</span><span class="p">[</span><span class="s1">&#39;landmarkingConfidence&#39;</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">face_data</span><span class="p">)</span></div>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">detection_confidence</span><span class="p">,</span> <span class="n">emotions</span><span class="p">,</span> <span class="n">fd_bounds</span><span class="p">,</span>
-                   <span class="n">headwear_likelihood</span><span class="p">,</span> <span class="n">image_properties</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">,</span>
-                   <span class="n">landmarking_confidence</span><span class="p">)</span></div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Face.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Face from an protobuf response</span>
+
+<span class="sd">        :type face: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">                       image_annotator_pb2.AnnotateImageResponse`</span>
+<span class="sd">        :param face: ``AnnotateImageResponse`` from gRPC call.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.face.Face`</span>
+<span class="sd">        :returns: A instance of `Face` with data parsed from ``response``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">face_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;angles&#39;</span><span class="p">:</span> <span class="n">Angles</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+            <span class="s1">&#39;bounds&#39;</span><span class="p">:</span> <span class="n">Bounds</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">bounding_poly</span><span class="p">),</span>
+            <span class="s1">&#39;detection_confidence&#39;</span><span class="p">:</span> <span class="n">face</span><span class="o">.</span><span class="n">detection_confidence</span><span class="p">,</span>
+            <span class="s1">&#39;emotions&#39;</span><span class="p">:</span> <span class="n">Emotions</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+            <span class="s1">&#39;fd_bounds&#39;</span><span class="p">:</span> <span class="n">FDBounds</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">fd_bounding_poly</span><span class="p">),</span>
+            <span class="s1">&#39;headwear_likelihood&#39;</span><span class="p">:</span> <span class="n">_get_pb_likelihood</span><span class="p">(</span>
+                <span class="n">face</span><span class="o">.</span><span class="n">headwear_likelihood</span><span class="p">),</span>
+            <span class="s1">&#39;image_properties&#39;</span><span class="p">:</span> <span class="n">FaceImageProperties</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+            <span class="s1">&#39;landmarks&#39;</span><span class="p">:</span> <span class="n">Landmarks</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">landmarks</span><span class="p">),</span>
+            <span class="s1">&#39;landmarking_confidence&#39;</span><span class="p">:</span> <span class="n">face</span><span class="o">.</span><span class="n">landmarking_confidence</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">face_data</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">anger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -602,14 +680,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_underexposed_likelihood</span> <span class="o">=</span> <span class="n">underexposed_likelihood</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="FaceImageProperties.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<div class="viewcode-block" id="FaceImageProperties.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct image properties from image.</span>
+
+<span class="sd">        :type face: dict</span>
+<span class="sd">        :param face: Dictionary representation of a ``Face``.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.face.FaceImageProperties`</span>
 <span class="sd">        :returns: Instance populated with image property data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">blurred</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;blurredLikelihood&#39;</span><span class="p">]]</span>
-        <span class="n">underexposed</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;underExposedLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">blurred</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;blurredLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">underexposed</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="s1">&#39;underExposedLikelihood&#39;</span><span class="p">]]</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">blurred</span><span class="p">,</span> <span class="n">underexposed</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="FaceImageProperties.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct image properties from image.</span>
+
+<span class="sd">        :type face: :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.\</span>
+<span class="sd">                    FaceAnnotation`</span>
+<span class="sd">        :param face: Protobuf instace of `Face`.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.face.FaceImageProperties`</span>
+<span class="sd">        :returns: Instance populated with image property data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blurred</span> <span class="o">=</span> <span class="n">_get_pb_likelihood</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">blurred_likelihood</span><span class="p">)</span>
+        <span class="n">underexposed</span> <span class="o">=</span> <span class="n">_get_pb_likelihood</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">under_exposed_likelihood</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">blurred</span><span class="p">,</span> <span class="n">underexposed</span><span class="p">)</span></div>
 
@@ -640,41 +737,41 @@
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type_1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">UNKNOWN_LANDMARK</span> <span class="o">=</span> <span class="s1">&#39;UNKNOWN_LANDMARK&#39;</span>
-    <span class="n">LEFT_EYE</span> <span class="o">=</span> <span class="s1">&#39;LEFT_EYE&#39;</span>
-    <span class="n">RIGHT_EYE</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_EYE&#39;</span>
-    <span class="n">LEFT_OF_LEFT_EYEBROW</span> <span class="o">=</span> <span class="s1">&#39;LEFT_OF_LEFT_EYEBROW&#39;</span>
-    <span class="n">RIGHT_OF_LEFT_EYEBROW</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_OF_LEFT_EYEBROW&#39;</span>
-    <span class="n">LEFT_OF_RIGHT_EYEBROW</span> <span class="o">=</span> <span class="s1">&#39;LEFT_OF_RIGHT_EYEBROW&#39;</span>
-    <span class="n">RIGHT_OF_RIGHT_EYEBROW</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_OF_RIGHT_EYEBROW&#39;</span>
-    <span class="n">MIDPOINT_BETWEEN_EYES</span> <span class="o">=</span> <span class="s1">&#39;MIDPOINT_BETWEEN_EYES&#39;</span>
-    <span class="n">NOSE_TIP</span> <span class="o">=</span> <span class="s1">&#39;NOSE_TIP&#39;</span>
-    <span class="n">UPPER_LIP</span> <span class="o">=</span> <span class="s1">&#39;UPPER_LIP&#39;</span>
-    <span class="n">LOWER_LIP</span> <span class="o">=</span> <span class="s1">&#39;LOWER_LIP&#39;</span>
-    <span class="n">MOUTH_LEFT</span> <span class="o">=</span> <span class="s1">&#39;MOUTH_LEFT&#39;</span>
-    <span class="n">MOUTH_RIGHT</span> <span class="o">=</span> <span class="s1">&#39;MOUTH_RIGHT&#39;</span>
-    <span class="n">MOUTH_CENTER</span> <span class="o">=</span> <span class="s1">&#39;MOUTH_CENTER&#39;</span>
-    <span class="n">NOSE_BOTTOM_RIGHT</span> <span class="o">=</span> <span class="s1">&#39;NOSE_BOTTOM_RIGHT&#39;</span>
-    <span class="n">NOSE_BOTTOM_LEFT</span> <span class="o">=</span> <span class="s1">&#39;NOSE_BOTTOM_LEFT&#39;</span>
-    <span class="n">NOSE_BOTTOM_CENTER</span> <span class="o">=</span> <span class="s1">&#39;NOSE_BOTTOM_CENTER&#39;</span>
-    <span class="n">LEFT_EYE_TOP_BOUNDARY</span> <span class="o">=</span> <span class="s1">&#39;LEFT_EYE_TOP_BOUNDARY&#39;</span>
-    <span class="n">LEFT_EYE_RIGHT_CORNER</span> <span class="o">=</span> <span class="s1">&#39;LEFT_EYE_RIGHT_CORNER&#39;</span>
-    <span class="n">LEFT_EYE_BOTTOM_BOUNDARY</span> <span class="o">=</span> <span class="s1">&#39;LEFT_EYE_BOTTOM_BOUNDARY&#39;</span>
-    <span class="n">LEFT_EYE_LEFT_CORNER</span> <span class="o">=</span> <span class="s1">&#39;LEFT_EYE_LEFT_CORNER&#39;</span>
-    <span class="n">RIGHT_EYE_TOP_BOUNDARY</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_EYE_TOP_BOUNDARY&#39;</span>
-    <span class="n">RIGHT_EYE_RIGHT_CORNER</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_EYE_RIGHT_CORNER&#39;</span>
-    <span class="n">RIGHT_EYE_BOTTOM_BOUNDARY</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_EYE_BOTTOM_BOUNDARY&#39;</span>
-    <span class="n">RIGHT_EYE_LEFT_CORNER</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_EYE_LEFT_CORNER&#39;</span>
-    <span class="n">LEFT_EYEBROW_UPPER_MIDPOINT</span> <span class="o">=</span> <span class="s1">&#39;LEFT_EYEBROW_UPPER_MIDPOINT&#39;</span>
-    <span class="n">RIGHT_EYEBROW_UPPER_MIDPOINT</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_EYEBROW_UPPER_MIDPOINT&#39;</span>
-    <span class="n">LEFT_EAR_TRAGION</span> <span class="o">=</span> <span class="s1">&#39;LEFT_EAR_TRAGION&#39;</span>
-    <span class="n">RIGHT_EAR_TRAGION</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_EAR_TRAGION&#39;</span>
-    <span class="n">LEFT_EYE_PUPIL</span> <span class="o">=</span> <span class="s1">&#39;LEFT_EYE_PUPIL&#39;</span>
-    <span class="n">RIGHT_EYE_PUPIL</span> <span class="o">=</span> <span class="s1">&#39;RIGHT_EYE_PUPIL&#39;</span>
-    <span class="n">FOREHEAD_GLABELLA</span> <span class="o">=</span> <span class="s1">&#39;FOREHEAD_GLABELLA&#39;</span>
-    <span class="n">CHIN_GNATHION</span> <span class="o">=</span> <span class="s1">&#39;CHIN_GNATHION&#39;</span>
-    <span class="n">CHIN_LEFT_GONION</span> <span class="o">=</span> <span class="s1">&#39;CHIN_LEFT_GONION&#39;</span>
-    <span class="n">CHIN_RIGHT_GONION</span> <span class="o">=</span> <span class="s1">&#39;CHIN_RIGHT_GONION&#39;</span></div>
+    <span class="n">UNKNOWN_LANDMARK</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">LEFT_EYE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">RIGHT_EYE</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">LEFT_OF_LEFT_EYEBROW</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">RIGHT_OF_LEFT_EYEBROW</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">LEFT_OF_RIGHT_EYEBROW</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">RIGHT_OF_RIGHT_EYEBROW</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">MIDPOINT_BETWEEN_EYES</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">NOSE_TIP</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">UPPER_LIP</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">LOWER_LIP</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">MOUTH_LEFT</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="n">MOUTH_RIGHT</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">MOUTH_CENTER</span> <span class="o">=</span> <span class="mi">13</span>
+    <span class="n">NOSE_BOTTOM_RIGHT</span> <span class="o">=</span> <span class="mi">14</span>
+    <span class="n">NOSE_BOTTOM_LEFT</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="n">NOSE_BOTTOM_CENTER</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">LEFT_EYE_TOP_BOUNDARY</span> <span class="o">=</span> <span class="mi">17</span>
+    <span class="n">LEFT_EYE_RIGHT_CORNER</span> <span class="o">=</span> <span class="mi">18</span>
+    <span class="n">LEFT_EYE_BOTTOM_BOUNDARY</span> <span class="o">=</span> <span class="mi">19</span>
+    <span class="n">LEFT_EYE_LEFT_CORNER</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">RIGHT_EYE_TOP_BOUNDARY</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="n">RIGHT_EYE_RIGHT_CORNER</span> <span class="o">=</span> <span class="mi">22</span>
+    <span class="n">RIGHT_EYE_BOTTOM_BOUNDARY</span> <span class="o">=</span> <span class="mi">23</span>
+    <span class="n">RIGHT_EYE_LEFT_CORNER</span> <span class="o">=</span> <span class="mi">24</span>
+    <span class="n">LEFT_EYEBROW_UPPER_MIDPOINT</span> <span class="o">=</span> <span class="mi">25</span>
+    <span class="n">RIGHT_EYEBROW_UPPER_MIDPOINT</span> <span class="o">=</span> <span class="mi">26</span>
+    <span class="n">LEFT_EAR_TRAGION</span> <span class="o">=</span> <span class="mi">27</span>
+    <span class="n">RIGHT_EAR_TRAGION</span> <span class="o">=</span> <span class="mi">28</span>
+    <span class="n">LEFT_EYE_PUPIL</span> <span class="o">=</span> <span class="mi">29</span>
+    <span class="n">RIGHT_EYE_PUPIL</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">FOREHEAD_GLABELLA</span> <span class="o">=</span> <span class="mi">31</span>
+    <span class="n">CHIN_GNATHION</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="n">CHIN_LEFT_GONION</span> <span class="o">=</span> <span class="mi">33</span>
+    <span class="n">CHIN_RIGHT_GONION</span> <span class="o">=</span> <span class="mi">34</span></div>
 
 
 <div class="viewcode-block" id="FDBounds"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FDBounds">[docs]</a><span class="k">class</span> <span class="nc">FDBounds</span><span class="p">(</span><span class="n">BoundsBase</span><span class="p">):</span>
@@ -682,23 +779,45 @@
 
 
 <div class="viewcode-block" id="Landmark"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark">[docs]</a><span class="k">class</span> <span class="nc">Landmark</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A face-specific landmark (for example, a face feature, left eye).&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A face-specific landmark (for example, a face feature, left eye).</span>
+
+<span class="sd">    :type landmark_type: :class:`~google.cloud.vision.face.LandmarkTypes`</span>
+<span class="sd">    :param landmark_type: Instance of ``LandmarkTypes``.</span>
+
+<span class="sd">    :type position: :class:`~google.cloud.vision.face.Position`</span>
+<span class="sd">    :param position:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">landmark_type</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">position</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_landmark_type</span> <span class="o">=</span> <span class="n">landmark_type</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Landmark.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response_landmark</span><span class="p">):</span>
+<div class="viewcode-block" id="Landmark.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">landmark</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Landmark from a response.</span>
 
-<span class="sd">        :type response_landmark: dict</span>
-<span class="sd">        :param response_landmark: Landmark representation from Vision API.</span>
+<span class="sd">        :type landmark: dict</span>
+<span class="sd">        :param landmark: Landmark representation from Vision API.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.face.Landmark`</span>
-<span class="sd">        :returns: Populated instance of `Landmark`.</span>
+<span class="sd">        :returns: Populated instance of ``Landmark``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">position</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response_landmark</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">])</span>
-        <span class="n">landmark_type</span> <span class="o">=</span> <span class="n">LandmarkTypes</span><span class="p">[</span><span class="n">response_landmark</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]]</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">landmark</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">])</span>
+        <span class="n">landmark_type</span> <span class="o">=</span> <span class="n">LandmarkTypes</span><span class="p">[</span><span class="n">landmark</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">landmark_type</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Landmark.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">landmark</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Landmark from a response.</span>
+
+<span class="sd">        :type landmark: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">                        image_annotator_pb.FaceAnnotation.Landmark`</span>
+<span class="sd">        :param landmark: Landmark representation from Vision API.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.face.Landmark`</span>
+<span class="sd">        :returns: Populated instance of ``Landmark``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">landmark</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="n">landmark_type</span> <span class="o">=</span> <span class="n">LandmarkTypes</span><span class="p">(</span><span class="n">landmark</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">landmark_type</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -721,11 +840,40 @@
 
 
 <div class="viewcode-block" id="Landmarks"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmarks">[docs]</a><span class="k">class</span> <span class="nc">Landmarks</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Landmarks detected on a face represented as properties.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Landmarks detected on a face represented as properties.</span>
+
+<span class="sd">    :type landmarks: list</span>
+<span class="sd">    :param landmarks: List of :class:`~google.cloud.vision.face.Landmark`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">landmark_response</span> <span class="ow">in</span> <span class="n">landmarks</span><span class="p">:</span>
-            <span class="n">landmark</span> <span class="o">=</span> <span class="n">Landmark</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">landmark_response</span><span class="p">)</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landmark</span><span class="o">.</span><span class="n">landmark_type</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">landmark</span><span class="p">)</span></div>
+        <span class="k">for</span> <span class="n">landmark</span> <span class="ow">in</span> <span class="n">landmarks</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landmark</span><span class="o">.</span><span class="n">landmark_type</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">landmark</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Landmarks.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmarks.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct facial landmarks from Vision API response.</span>
+
+<span class="sd">        :type landmarks: dict</span>
+<span class="sd">        :param landmarks: JSON face annotation.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.face.Landmarks`</span>
+<span class="sd">        :returns: Instance of ``Landmarks`` populated with facial landmarks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">([</span><span class="n">Landmark</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">landmark</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">landmark</span> <span class="ow">in</span> <span class="n">landmarks</span><span class="p">])</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Landmarks.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmarks.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct facial landmarks from Vision gRPC response.</span>
+
+<span class="sd">        :type landmarks: :class:`~google.protobuf.internal.containers.\</span>
+<span class="sd">                         RepeatedCompositeFieldContainer`</span>
+<span class="sd">        :param landmarks: List of facial landmarks.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.face.Landmarks`</span>
+<span class="sd">        :returns: Instance of ``Landmarks`` populated with facial landmarks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">([</span><span class="n">Landmark</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">landmark</span><span class="p">)</span> <span class="k">for</span> <span class="n">landmark</span> <span class="ow">in</span> <span class="n">landmarks</span><span class="p">])</span></div></div>
 </pre></div>
 
            </div>
@@ -759,7 +907,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'4f5f782',
+            VERSION:'5a42aca',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

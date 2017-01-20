@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Image &mdash; google-cloud 4f5f782 documentation</title>
+  <title>Vision Image &mdash; google-cloud 5a42aca documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 4f5f782 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5a42aca documentation" href="index.html"/>
         <link rel="next" title="Vision Safe Search" href="vision-safe-search.html"/>
         <link rel="prev" title="Vision Face" href="vision-face.html"/> 
 
@@ -551,7 +551,7 @@ annotation to perform.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.geometry.BoundsBase" title="google.cloud.vision.geometry.BoundsBase"><code class="xref py py-class docutils literal"><span class="pre">BoundsBase</span></code></a> or None</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of BoundsBase with populated verticies or None.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">BoundsBase</span></code> with populated verticies or None.</td>
 </tr>
 </tbody>
 </table>
@@ -560,7 +560,7 @@ annotation to perform.</td>
 <dl class="classmethod">
 <dt id="google.cloud.vision.geometry.BoundsBase.from_pb">
 <em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#BoundsBase.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.BoundsBase.from_pb" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory: construct BoundsBase instance from Vision gRPC response.</p>
+<dd><p>Factory: construct BoundsBase instance from a protobuf response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -639,12 +639,12 @@ longitude.</td>
 <dl class="classmethod">
 <dt id="google.cloud.vision.geometry.LocationInformation.from_pb">
 <em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>location_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#LocationInformation.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.LocationInformation.from_pb" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory: construct location information from Vision gRPC response.</p>
+<dd><p>Factory: construct location information from a protobuf response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location_info</strong> (<code class="xref py py-class docutils literal"><span class="pre">LocationInfo</span></code>) &#8211; gRPC response of <code class="docutils literal"><span class="pre">LocationInfo</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location_info</strong> (<code class="xref py py-class docutils literal"><span class="pre">LocationInfo</span></code>) &#8211; Protobuf response with <code class="docutils literal"><span class="pre">LocationInfo</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.geometry.LocationInformation" title="google.cloud.vision.geometry.LocationInformation"><code class="xref py py-class docutils literal"><span class="pre">LocationInformation</span></code></a></td>
 </tr>
@@ -691,7 +691,7 @@ longitude.</td>
 
 <dl class="class">
 <dt id="google.cloud.vision.geometry.Position">
-<em class="property">class </em><code class="descclassname">google.cloud.vision.geometry.</code><code class="descname">Position</code><span class="sig-paren">(</span><em>x_coordinate</em>, <em>y_coordinate</em>, <em>z_coordinate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#Position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.Position" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.vision.geometry.</code><code class="descname">Position</code><span class="sig-paren">(</span><em>x_coordinate=None</em>, <em>y_coordinate=None</em>, <em>z_coordinate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#Position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.Position" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A 3D position in the image.</p>
 <p>See:
@@ -721,7 +721,23 @@ longitude.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.geometry.Position" title="google.cloud.vision.geometry.Position"><code class="xref py py-class docutils literal"><span class="pre">Position</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><cite>Position</cite> constructed with 3D points from API response.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">Position</span></code> constructed with 3D points from API response.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.geometry.Position.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>response_position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#Position.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.Position.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct 3D position from API response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.geometry.Position" title="google.cloud.vision.geometry.Position"><code class="xref py py-class docutils literal"><span class="pre">Position</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">Position</span></code> constructed with 3D points from API response.</td>
 </tr>
 </tbody>
 </table>
@@ -779,7 +795,7 @@ longitude.</td>
 
 <dl class="class">
 <dt id="google.cloud.vision.geometry.Vertex">
-<em class="property">class </em><code class="descclassname">google.cloud.vision.geometry.</code><code class="descname">Vertex</code><span class="sig-paren">(</span><em>x_coordinate</em>, <em>y_coordinate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#Vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.Vertex" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.vision.geometry.</code><code class="descname">Vertex</code><span class="sig-paren">(</span><em>x_coordinate=None</em>, <em>y_coordinate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#Vertex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.Vertex" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A vertex represents a 2D point in the image.</p>
 <p>See:
@@ -917,7 +933,7 @@ longitude.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4f5f782',
+            VERSION:'5a42aca',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

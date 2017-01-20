@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.annotations &mdash; google-cloud 4f5f782 documentation</title>
+  <title>google.cloud.vision.annotations &mdash; google-cloud 5a42aca documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 4f5f782 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5a42aca documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -406,6 +406,7 @@
 <span class="sd">    :returns: Dictionary populated with entities from response.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;faces&#39;</span><span class="p">:</span> <span class="n">_make_faces_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">face_annotations</span><span class="p">),</span>
         <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">label_annotations</span><span class="p">),</span>
         <span class="s1">&#39;landmarks&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">landmark_annotations</span><span class="p">),</span>
         <span class="s1">&#39;logos&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">logo_annotations</span><span class="p">),</span>
@@ -424,6 +425,19 @@
 <span class="sd">    :returns: List of ``EntityAnnotation``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">EntityAnnotation</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span> <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_make_faces_from_pb</span><span class="p">(</span><span class="n">faces</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create face objects from a gRPC response.</span>
+
+<span class="sd">    :type faces:</span>
+<span class="sd">    :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.FaceAnnotation`</span>
+<span class="sd">    :param faces: Protobuf instance of ``FaceAnnotation``.</span>
+
+<span class="sd">    :rtype: list</span>
+<span class="sd">    :returns: List of ``Face``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Face</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_entity_from_response_type</span><span class="p">(</span><span class="n">feature_type</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
@@ -482,7 +496,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'4f5f782',
+            VERSION:'5a42aca',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

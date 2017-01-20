@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Face &mdash; google-cloud 4f5f782 documentation</title>
+  <title>Vision Face &mdash; google-cloud 5a42aca documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 4f5f782 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5a42aca documentation" href="index.html"/>
         <link rel="next" title="Vision Image" href="vision-image.html"/>
         <link rel="prev" title="Vision Feature" href="vision-feature.html"/> 
 
@@ -300,15 +300,35 @@
 <p>Angles representing the positions of a face.</p>
 <dl class="classmethod">
 <dt id="google.cloud.vision.face.Angles.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Angles.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Angles.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Angles.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Angles.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct the angles from an Vision API response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Angles" title="google.cloud.vision.face.Angles"><code class="xref py py-class docutils literal"><span class="pre">Angles</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary representation of an angle.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An <cite>Angles</cite> instance with data parsed from <cite>response</cite>.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Angles" title="google.cloud.vision.face.Angles"><code class="xref py py-class docutils literal"><span class="pre">Angles</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An <cite>Angles</cite> instance with data parsed from <cite>response</cite>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.face.Angles.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>angle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Angles.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Angles.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: convert protobuf Angle object to local Angle object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>angle</strong> (<code class="xref py py-class docutils literal"><span class="pre">FaceAnnotation</span></code>) &#8211; Protobuf <code class="docutils literal"><span class="pre">FaceAnnotation</span></code> response with angle data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Angles" title="google.cloud.vision.face.Angles"><code class="xref py py-class docutils literal"><span class="pre">Angles</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Angles</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -395,17 +415,35 @@
 
 <dl class="classmethod">
 <dt id="google.cloud.vision.face.Emotions.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Emotions.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Emotions.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory: construct <cite>Emotions</cite> from Vision API response.</p>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>emotions</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Emotions.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Emotions.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct <code class="docutils literal"><span class="pre">Emotions</span></code> from Vision API response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Response dictionary representing a face.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>emotions</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Response dictionary representing a face.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Emotions" title="google.cloud.vision.face.Emotions"><code class="xref py py-class docutils literal"><span class="pre">Emotions</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Populated instance of <cite>Emotions</cite>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Populated instance of <code class="docutils literal"><span class="pre">Emotions</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.face.Emotions.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>emotions</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Emotions.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Emotions.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct <code class="docutils literal"><span class="pre">Emotions</span></code> from Vision API response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>emotions</strong> (<code class="xref py py-class docutils literal"><span class="pre">FaceAnnotation</span></code>) &#8211; Response dictionary representing a face with emotions.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Emotions" title="google.cloud.vision.face.Emotions"><code class="xref py py-class docutils literal"><span class="pre">Emotions</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Populated instance of <code class="docutils literal"><span class="pre">Emotions</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -576,17 +614,35 @@ likelihood.</td>
 
 <dl class="classmethod">
 <dt id="google.cloud.vision.face.Face.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Face.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Face.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>face</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Face.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Face.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct an instance of a Face from an API response</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Face annotation dict returned from the Vision API.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>face</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Face annotation dict returned from the Vision API.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Face" title="google.cloud.vision.face.Face"><code class="xref py py-class docutils literal"><span class="pre">Face</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A instance of <cite>Face</cite> with data parsed from <cite>response</cite>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.face.Face.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>face</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Face.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Face.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct an instance of a Face from an protobuf response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>face</strong> (<code class="xref py py-class docutils literal"><span class="pre">AnnotateImageResponse</span></code>) &#8211; <code class="docutils literal"><span class="pre">AnnotateImageResponse</span></code> from gRPC call.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Face" title="google.cloud.vision.face.Face"><code class="xref py py-class docutils literal"><span class="pre">Face</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A instance of <cite>Face</cite> with data parsed from <code class="docutils literal"><span class="pre">response</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -735,15 +791,35 @@ determining the landmarks on a face.</td>
 
 <dl class="classmethod">
 <dt id="google.cloud.vision.face.FaceImageProperties.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#FaceImageProperties.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.FaceImageProperties.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>face</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#FaceImageProperties.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.FaceImageProperties.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct image properties from image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.FaceImageProperties" title="google.cloud.vision.face.FaceImageProperties"><code class="xref py py-class docutils literal"><span class="pre">FaceImageProperties</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>face</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary representation of a <code class="docutils literal"><span class="pre">Face</span></code>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Instance populated with image property data.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.FaceImageProperties" title="google.cloud.vision.face.FaceImageProperties"><code class="xref py py-class docutils literal"><span class="pre">FaceImageProperties</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance populated with image property data.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.face.FaceImageProperties.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>face</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#FaceImageProperties.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.FaceImageProperties.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct image properties from image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>face</strong> (<code class="xref py py-class docutils literal">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">FaceAnnotation</span></code>) &#8211; Protobuf instace of <cite>Face</cite>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.FaceImageProperties" title="google.cloud.vision.face.FaceImageProperties"><code class="xref py py-class docutils literal"><span class="pre">FaceImageProperties</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance populated with image property data.</td>
 </tr>
 </tbody>
 </table>
@@ -773,19 +849,49 @@ determining the landmarks on a face.</td>
 <em class="property">class </em><code class="descclassname">google.cloud.vision.face.</code><code class="descname">Landmark</code><span class="sig-paren">(</span><em>position</em>, <em>landmark_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Landmark"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Landmark" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A face-specific landmark (for example, a face feature, left eye).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>landmark_type</strong> (<a class="reference internal" href="#google.cloud.vision.face.LandmarkTypes" title="google.cloud.vision.face.LandmarkTypes"><code class="xref py py-class docutils literal"><span class="pre">LandmarkTypes</span></code></a>) &#8211; Instance of <code class="docutils literal"><span class="pre">LandmarkTypes</span></code>.</li>
+<li><strong>position</strong> (<code class="xref py py-class docutils literal"><span class="pre">Position</span></code>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="classmethod">
 <dt id="google.cloud.vision.face.Landmark.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response_landmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Landmark.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Landmark.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>landmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Landmark.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Landmark.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct an instance of a Landmark from a response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_landmark</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Landmark representation from Vision API.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landmark</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Landmark representation from Vision API.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Landmark" title="google.cloud.vision.face.Landmark"><code class="xref py py-class docutils literal"><span class="pre">Landmark</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Populated instance of <cite>Landmark</cite>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Populated instance of <code class="docutils literal"><span class="pre">Landmark</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.face.Landmark.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>landmark</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Landmark.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Landmark.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct an instance of a Landmark from a response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landmark</strong> (<code class="xref py py-class docutils literal"><span class="pre">Landmark</span></code>) &#8211; Landmark representation from Vision API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Landmark" title="google.cloud.vision.face.Landmark"><code class="xref py py-class docutils literal"><span class="pre">Landmark</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Populated instance of <code class="docutils literal"><span class="pre">Landmark</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -834,177 +940,177 @@ determining the landmarks on a face.</td>
 <a class="reference external" href="https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type_1">https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type_1</a></p>
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.CHIN_GNATHION">
-<code class="descname">CHIN_GNATHION</code><em class="property"> = 'CHIN_GNATHION'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.CHIN_GNATHION" title="Permalink to this definition">#</a></dt>
+<code class="descname">CHIN_GNATHION</code><em class="property"> = 32</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.CHIN_GNATHION" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.CHIN_LEFT_GONION">
-<code class="descname">CHIN_LEFT_GONION</code><em class="property"> = 'CHIN_LEFT_GONION'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.CHIN_LEFT_GONION" title="Permalink to this definition">#</a></dt>
+<code class="descname">CHIN_LEFT_GONION</code><em class="property"> = 33</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.CHIN_LEFT_GONION" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.CHIN_RIGHT_GONION">
-<code class="descname">CHIN_RIGHT_GONION</code><em class="property"> = 'CHIN_RIGHT_GONION'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.CHIN_RIGHT_GONION" title="Permalink to this definition">#</a></dt>
+<code class="descname">CHIN_RIGHT_GONION</code><em class="property"> = 34</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.CHIN_RIGHT_GONION" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.FOREHEAD_GLABELLA">
-<code class="descname">FOREHEAD_GLABELLA</code><em class="property"> = 'FOREHEAD_GLABELLA'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.FOREHEAD_GLABELLA" title="Permalink to this definition">#</a></dt>
+<code class="descname">FOREHEAD_GLABELLA</code><em class="property"> = 31</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.FOREHEAD_GLABELLA" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_EAR_TRAGION">
-<code class="descname">LEFT_EAR_TRAGION</code><em class="property"> = 'LEFT_EAR_TRAGION'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EAR_TRAGION" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_EAR_TRAGION</code><em class="property"> = 27</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EAR_TRAGION" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_EYE">
-<code class="descname">LEFT_EYE</code><em class="property"> = 'LEFT_EYE'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_EYE</code><em class="property"> = 1</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_EYEBROW_UPPER_MIDPOINT">
-<code class="descname">LEFT_EYEBROW_UPPER_MIDPOINT</code><em class="property"> = 'LEFT_EYEBROW_UPPER_MIDPOINT'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYEBROW_UPPER_MIDPOINT" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_EYEBROW_UPPER_MIDPOINT</code><em class="property"> = 25</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYEBROW_UPPER_MIDPOINT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_EYE_BOTTOM_BOUNDARY">
-<code class="descname">LEFT_EYE_BOTTOM_BOUNDARY</code><em class="property"> = 'LEFT_EYE_BOTTOM_BOUNDARY'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_BOTTOM_BOUNDARY" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_EYE_BOTTOM_BOUNDARY</code><em class="property"> = 19</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_BOTTOM_BOUNDARY" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_EYE_LEFT_CORNER">
-<code class="descname">LEFT_EYE_LEFT_CORNER</code><em class="property"> = 'LEFT_EYE_LEFT_CORNER'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_LEFT_CORNER" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_EYE_LEFT_CORNER</code><em class="property"> = 20</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_LEFT_CORNER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_EYE_PUPIL">
-<code class="descname">LEFT_EYE_PUPIL</code><em class="property"> = 'LEFT_EYE_PUPIL'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_PUPIL" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_EYE_PUPIL</code><em class="property"> = 29</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_PUPIL" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_EYE_RIGHT_CORNER">
-<code class="descname">LEFT_EYE_RIGHT_CORNER</code><em class="property"> = 'LEFT_EYE_RIGHT_CORNER'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_RIGHT_CORNER" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_EYE_RIGHT_CORNER</code><em class="property"> = 18</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_RIGHT_CORNER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_EYE_TOP_BOUNDARY">
-<code class="descname">LEFT_EYE_TOP_BOUNDARY</code><em class="property"> = 'LEFT_EYE_TOP_BOUNDARY'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_TOP_BOUNDARY" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_EYE_TOP_BOUNDARY</code><em class="property"> = 17</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_EYE_TOP_BOUNDARY" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_OF_LEFT_EYEBROW">
-<code class="descname">LEFT_OF_LEFT_EYEBROW</code><em class="property"> = 'LEFT_OF_LEFT_EYEBROW'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_OF_LEFT_EYEBROW" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_OF_LEFT_EYEBROW</code><em class="property"> = 3</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_OF_LEFT_EYEBROW" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LEFT_OF_RIGHT_EYEBROW">
-<code class="descname">LEFT_OF_RIGHT_EYEBROW</code><em class="property"> = 'LEFT_OF_RIGHT_EYEBROW'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_OF_RIGHT_EYEBROW" title="Permalink to this definition">#</a></dt>
+<code class="descname">LEFT_OF_RIGHT_EYEBROW</code><em class="property"> = 5</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LEFT_OF_RIGHT_EYEBROW" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.LOWER_LIP">
-<code class="descname">LOWER_LIP</code><em class="property"> = 'LOWER_LIP'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LOWER_LIP" title="Permalink to this definition">#</a></dt>
+<code class="descname">LOWER_LIP</code><em class="property"> = 10</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.LOWER_LIP" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.MIDPOINT_BETWEEN_EYES">
-<code class="descname">MIDPOINT_BETWEEN_EYES</code><em class="property"> = 'MIDPOINT_BETWEEN_EYES'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.MIDPOINT_BETWEEN_EYES" title="Permalink to this definition">#</a></dt>
+<code class="descname">MIDPOINT_BETWEEN_EYES</code><em class="property"> = 7</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.MIDPOINT_BETWEEN_EYES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.MOUTH_CENTER">
-<code class="descname">MOUTH_CENTER</code><em class="property"> = 'MOUTH_CENTER'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.MOUTH_CENTER" title="Permalink to this definition">#</a></dt>
+<code class="descname">MOUTH_CENTER</code><em class="property"> = 13</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.MOUTH_CENTER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.MOUTH_LEFT">
-<code class="descname">MOUTH_LEFT</code><em class="property"> = 'MOUTH_LEFT'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.MOUTH_LEFT" title="Permalink to this definition">#</a></dt>
+<code class="descname">MOUTH_LEFT</code><em class="property"> = 11</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.MOUTH_LEFT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.MOUTH_RIGHT">
-<code class="descname">MOUTH_RIGHT</code><em class="property"> = 'MOUTH_RIGHT'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.MOUTH_RIGHT" title="Permalink to this definition">#</a></dt>
+<code class="descname">MOUTH_RIGHT</code><em class="property"> = 12</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.MOUTH_RIGHT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_CENTER">
-<code class="descname">NOSE_BOTTOM_CENTER</code><em class="property"> = 'NOSE_BOTTOM_CENTER'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_CENTER" title="Permalink to this definition">#</a></dt>
+<code class="descname">NOSE_BOTTOM_CENTER</code><em class="property"> = 16</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_CENTER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_LEFT">
-<code class="descname">NOSE_BOTTOM_LEFT</code><em class="property"> = 'NOSE_BOTTOM_LEFT'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_LEFT" title="Permalink to this definition">#</a></dt>
+<code class="descname">NOSE_BOTTOM_LEFT</code><em class="property"> = 15</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_LEFT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_RIGHT">
-<code class="descname">NOSE_BOTTOM_RIGHT</code><em class="property"> = 'NOSE_BOTTOM_RIGHT'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_RIGHT" title="Permalink to this definition">#</a></dt>
+<code class="descname">NOSE_BOTTOM_RIGHT</code><em class="property"> = 14</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.NOSE_BOTTOM_RIGHT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.NOSE_TIP">
-<code class="descname">NOSE_TIP</code><em class="property"> = 'NOSE_TIP'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.NOSE_TIP" title="Permalink to this definition">#</a></dt>
+<code class="descname">NOSE_TIP</code><em class="property"> = 8</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.NOSE_TIP" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_EAR_TRAGION">
-<code class="descname">RIGHT_EAR_TRAGION</code><em class="property"> = 'RIGHT_EAR_TRAGION'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EAR_TRAGION" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_EAR_TRAGION</code><em class="property"> = 28</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EAR_TRAGION" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_EYE">
-<code class="descname">RIGHT_EYE</code><em class="property"> = 'RIGHT_EYE'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_EYE</code><em class="property"> = 2</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_EYEBROW_UPPER_MIDPOINT">
-<code class="descname">RIGHT_EYEBROW_UPPER_MIDPOINT</code><em class="property"> = 'RIGHT_EYEBROW_UPPER_MIDPOINT'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYEBROW_UPPER_MIDPOINT" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_EYEBROW_UPPER_MIDPOINT</code><em class="property"> = 26</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYEBROW_UPPER_MIDPOINT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_BOTTOM_BOUNDARY">
-<code class="descname">RIGHT_EYE_BOTTOM_BOUNDARY</code><em class="property"> = 'RIGHT_EYE_BOTTOM_BOUNDARY'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_BOTTOM_BOUNDARY" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_EYE_BOTTOM_BOUNDARY</code><em class="property"> = 23</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_BOTTOM_BOUNDARY" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_LEFT_CORNER">
-<code class="descname">RIGHT_EYE_LEFT_CORNER</code><em class="property"> = 'RIGHT_EYE_LEFT_CORNER'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_LEFT_CORNER" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_EYE_LEFT_CORNER</code><em class="property"> = 24</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_LEFT_CORNER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_PUPIL">
-<code class="descname">RIGHT_EYE_PUPIL</code><em class="property"> = 'RIGHT_EYE_PUPIL'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_PUPIL" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_EYE_PUPIL</code><em class="property"> = 30</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_PUPIL" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_RIGHT_CORNER">
-<code class="descname">RIGHT_EYE_RIGHT_CORNER</code><em class="property"> = 'RIGHT_EYE_RIGHT_CORNER'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_RIGHT_CORNER" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_EYE_RIGHT_CORNER</code><em class="property"> = 22</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_RIGHT_CORNER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_TOP_BOUNDARY">
-<code class="descname">RIGHT_EYE_TOP_BOUNDARY</code><em class="property"> = 'RIGHT_EYE_TOP_BOUNDARY'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_TOP_BOUNDARY" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_EYE_TOP_BOUNDARY</code><em class="property"> = 21</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_EYE_TOP_BOUNDARY" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_OF_LEFT_EYEBROW">
-<code class="descname">RIGHT_OF_LEFT_EYEBROW</code><em class="property"> = 'RIGHT_OF_LEFT_EYEBROW'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_OF_LEFT_EYEBROW" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_OF_LEFT_EYEBROW</code><em class="property"> = 4</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_OF_LEFT_EYEBROW" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.RIGHT_OF_RIGHT_EYEBROW">
-<code class="descname">RIGHT_OF_RIGHT_EYEBROW</code><em class="property"> = 'RIGHT_OF_RIGHT_EYEBROW'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_OF_RIGHT_EYEBROW" title="Permalink to this definition">#</a></dt>
+<code class="descname">RIGHT_OF_RIGHT_EYEBROW</code><em class="property"> = 6</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.RIGHT_OF_RIGHT_EYEBROW" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.UNKNOWN_LANDMARK">
-<code class="descname">UNKNOWN_LANDMARK</code><em class="property"> = 'UNKNOWN_LANDMARK'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.UNKNOWN_LANDMARK" title="Permalink to this definition">#</a></dt>
+<code class="descname">UNKNOWN_LANDMARK</code><em class="property"> = 0</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.UNKNOWN_LANDMARK" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.face.LandmarkTypes.UPPER_LIP">
-<code class="descname">UPPER_LIP</code><em class="property"> = 'UPPER_LIP'</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.UPPER_LIP" title="Permalink to this definition">#</a></dt>
+<code class="descname">UPPER_LIP</code><em class="property"> = 9</em><a class="headerlink" href="#google.cloud.vision.face.LandmarkTypes.UPPER_LIP" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1014,6 +1120,50 @@ determining the landmarks on a face.</td>
 <em class="property">class </em><code class="descclassname">google.cloud.vision.face.</code><code class="descname">Landmarks</code><span class="sig-paren">(</span><em>landmarks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Landmarks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Landmarks" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Landmarks detected on a face represented as properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landmarks</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="#google.cloud.vision.face.Landmark" title="google.cloud.vision.face.Landmark"><code class="xref py py-class docutils literal"><span class="pre">Landmark</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="google.cloud.vision.face.Landmarks.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>landmarks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Landmarks.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Landmarks.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct facial landmarks from Vision API response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landmarks</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; JSON face annotation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Landmarks" title="google.cloud.vision.face.Landmarks"><code class="xref py py-class docutils literal"><span class="pre">Landmarks</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Landmarks</span></code> populated with facial landmarks.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.face.Landmarks.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>landmarks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Landmarks.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Landmarks.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct facial landmarks from Vision gRPC response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>landmarks</strong> (<code class="xref py py-class docutils literal">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">RepeatedCompositeFieldContainer</span></code>) &#8211; List of facial landmarks.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.Landmarks" title="google.cloud.vision.face.Landmarks"><code class="xref py py-class docutils literal"><span class="pre">Landmarks</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Landmarks</span></code> populated with facial landmarks.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -1060,7 +1210,7 @@ determining the landmarks on a face.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4f5f782',
+            VERSION:'5a42aca',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
