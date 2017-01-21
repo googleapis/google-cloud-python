@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigtable.column_family &mdash; google-cloud 5a42aca documentation</title>
+  <title>google.cloud.bigtable.column_family &mdash; google-cloud 6eed70a documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5a42aca documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -302,60 +302,11 @@
 <span class="sd">&quot;&quot;&quot;User friendly container for Google Cloud Bigtable Column Family.&quot;&quot;&quot;</span>
 
 
-<span class="kn">import</span> <span class="nn">datetime</span>
-
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">duration_pb2</span>
-
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">table_pb2</span> <span class="k">as</span> <span class="n">table_v2_pb2</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">bigtable_table_admin_pb2</span> <span class="k">as</span> <span class="n">table_admin_v2_pb2</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_timedelta_to_duration_pb</span><span class="p">(</span><span class="n">timedelta_val</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a Python timedelta object to a duration protobuf.</span>
-
-<span class="sd">    .. note::</span>
-
-<span class="sd">        The Python timedelta has a granularity of microseconds while</span>
-<span class="sd">        the protobuf duration type has a duration of nanoseconds.</span>
-
-<span class="sd">    :type timedelta_val: :class:`datetime.timedelta`</span>
-<span class="sd">    :param timedelta_val: A timedelta object.</span>
-
-<span class="sd">    :rtype: :class:`google.protobuf.duration_pb2.Duration`</span>
-<span class="sd">    :returns: A duration object equivalent to the time delta.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">seconds_decimal</span> <span class="o">=</span> <span class="n">timedelta_val</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
-    <span class="c1"># Truncate the parts other than the integer.</span>
-    <span class="n">seconds</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">seconds_decimal</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">seconds_decimal</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">signed_micros</span> <span class="o">=</span> <span class="n">timedelta_val</span><span class="o">.</span><span class="n">microseconds</span> <span class="o">-</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">signed_micros</span> <span class="o">=</span> <span class="n">timedelta_val</span><span class="o">.</span><span class="n">microseconds</span>
-    <span class="c1"># Convert nanoseconds to microseconds.</span>
-    <span class="n">nanos</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">signed_micros</span>
-    <span class="k">return</span> <span class="n">duration_pb2</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">seconds</span><span class="p">,</span> <span class="n">nanos</span><span class="o">=</span><span class="n">nanos</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_duration_pb_to_timedelta</span><span class="p">(</span><span class="n">duration_pb</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a duration protobuf to a Python timedelta object.</span>
-
-<span class="sd">    .. note::</span>
-
-<span class="sd">        The Python timedelta has a granularity of microseconds while</span>
-<span class="sd">        the protobuf duration type has a duration of nanoseconds.</span>
-
-<span class="sd">    :type duration_pb: :class:`google.protobuf.duration_pb2.Duration`</span>
-<span class="sd">    :param duration_pb: A protobuf duration object.</span>
-
-<span class="sd">    :rtype: :class:`datetime.timedelta`</span>
-<span class="sd">    :returns: The converted timedelta object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
-        <span class="n">seconds</span><span class="o">=</span><span class="n">duration_pb</span><span class="o">.</span><span class="n">seconds</span><span class="p">,</span>
-        <span class="n">microseconds</span><span class="o">=</span><span class="p">(</span><span class="n">duration_pb</span><span class="o">.</span><span class="n">nanos</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">),</span>
-    <span class="p">)</span>
 
 
 <div class="viewcode-block" id="GarbageCollectionRule"><a class="viewcode-back" href="../../../../bigtable-column-family.html#google.cloud.bigtable.column_family.GarbageCollectionRule">[docs]</a><span class="k">class</span> <span class="nc">GarbageCollectionRule</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -424,7 +375,7 @@
 <span class="sd">        :rtype: :class:`.table_v2_pb2.GcRule`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">max_age</span> <span class="o">=</span> <span class="n">_timedelta_to_duration_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_age</span><span class="p">)</span>
+        <span class="n">max_age</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_timedelta_to_duration_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_age</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">GcRule</span><span class="p">(</span><span class="n">max_age</span><span class="o">=</span><span class="n">max_age</span><span class="p">)</span></div></div>
 
 
@@ -612,7 +563,7 @@
     <span class="k">if</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s1">&#39;max_num_versions&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">MaxVersionsGCRule</span><span class="p">(</span><span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">max_num_versions</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s1">&#39;max_age&#39;</span><span class="p">:</span>
-        <span class="n">max_age</span> <span class="o">=</span> <span class="n">_duration_pb_to_timedelta</span><span class="p">(</span><span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">max_age</span><span class="p">)</span>
+        <span class="n">max_age</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_duration_pb_to_timedelta</span><span class="p">(</span><span class="n">gc_rule_pb</span><span class="o">.</span><span class="n">max_age</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">MaxAgeGCRule</span><span class="p">(</span><span class="n">max_age</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">rule_name</span> <span class="o">==</span> <span class="s1">&#39;union&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">GCRuleUnion</span><span class="p">([</span><span class="n">_gc_rule_from_pb</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
@@ -656,7 +607,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5a42aca',
+            VERSION:'6eed70a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

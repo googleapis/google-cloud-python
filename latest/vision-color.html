@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Image Properties &mdash; google-cloud 5a42aca documentation</title>
+  <title>Vision Image Properties &mdash; google-cloud 6eed70a documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5a42aca documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6eed70a documentation" href="index.html"/>
         <link rel="next" title="Vision Entity" href="vision-entity.html"/>
         <link rel="prev" title="Vision Client" href="vision-client.html"/> 
 
@@ -303,12 +303,12 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>red</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The amount of red in the color as a value in the interval
-[0, 255].</li>
-<li><strong>green</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The amount of green in the color as a value in the interval
-[0, 255].</li>
-<li><strong>blue</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The amount of blue in the color as a value in the interval
-[0, 255].</li>
+<li><strong>red</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The amount of red in the color as a value in the interval
+[0.0, 255.0].</li>
+<li><strong>green</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The amount of green in the color as a value in the interval
+[0.0, 255.0].</li>
+<li><strong>blue</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The amount of blue in the color as a value in the interval
+[0.0, 255.0].</li>
 <li><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The fraction of this color that should be applied to the
 pixel.</li>
 </ul>
@@ -357,6 +357,24 @@ pixel.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Color from API Response.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.color.Color" title="google.cloud.vision.color.Color"><code class="xref py py-class docutils literal"><span class="pre">Color</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <a class="reference internal" href="#google.cloud.vision.color.Color" title="google.cloud.vision.color.Color"><code class="xref py py-class docutils literal"><span class="pre">Color</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.color.Color.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/color.html#Color.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.color.Color.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct a <code class="docutils literal"><span class="pre">Color</span></code> from a protobuf response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>color</strong> &#8211; <code class="docutils literal"><span class="pre">Color</span></code> from API Response.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.color.Color" title="google.cloud.vision.color.Color"><code class="xref py py-class docutils literal"><span class="pre">Color</span></code></a></td>
 </tr>
@@ -437,13 +455,31 @@ the image. Value in range [0, 1].</li>
 
 <dl class="classmethod">
 <dt id="google.cloud.vision.color.ColorInformation.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/color.html#ColorInformation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.color.ColorInformation.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory: construct <code class="docutils literal"><span class="pre">ColorInformation</span></code> for a color found.</p>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>color_information</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/color.html#ColorInformation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.color.ColorInformation.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct <code class="docutils literal"><span class="pre">ColorInformation</span></code> for a color.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Color data with extra meta information.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>color_information</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Color data with extra meta information.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.color.ColorInformation" title="google.cloud.vision.color.ColorInformation"><code class="xref py py-class docutils literal"><span class="pre">ColorInformation</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">ColorInformation</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.color.ColorInformation.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>color_information</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/color.html#ColorInformation.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.color.ColorInformation.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct <code class="docutils literal"><span class="pre">ColorInformation</span></code> for a color.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>color_information</strong> (<code class="xref py py-class docutils literal"><span class="pre">ColorInfo</span></code>) &#8211; Color data with extra meta information.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.color.ColorInformation" title="google.cloud.vision.color.ColorInformation"><code class="xref py py-class docutils literal"><span class="pre">ColorInformation</span></code></a></td>
 </tr>
@@ -519,18 +555,39 @@ the image. Value in range [0, 1].</li>
 
 <dl class="classmethod">
 <dt id="google.cloud.vision.color.ImagePropertiesAnnotation.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/color.html#ImagePropertiesAnnotation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.color.ImagePropertiesAnnotation.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>image_properties</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/color.html#ImagePropertiesAnnotation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.color.ImagePropertiesAnnotation.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct <code class="docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code> from a response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from Vision API with image
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image_properties</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from Vision API with image
 properties data.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.color.ImagePropertiesAnnotation" title="google.cloud.vision.color.ImagePropertiesAnnotation"><code class="xref py py-class docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code></a>.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of
+<a class="reference internal" href="#google.cloud.vision.color.ImagePropertiesAnnotation" title="google.cloud.vision.color.ImagePropertiesAnnotation"><code class="xref py py-class docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code></a>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Populated instance of <code class="docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of <code class="docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.color.ImagePropertiesAnnotation.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>image_properties</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/color.html#ImagePropertiesAnnotation.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.color.ImagePropertiesAnnotation.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct <code class="docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code> from a response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image_properties</strong> (<code class="xref py py-class docutils literal"><span class="pre">ImageProperties</span></code>) &#8211; Protobuf response from Vision API with image
+properties data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of
+<a class="reference internal" href="#google.cloud.vision.color.ImagePropertiesAnnotation" title="google.cloud.vision.color.ImagePropertiesAnnotation"><code class="xref py py-class docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of <code class="docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -582,7 +639,7 @@ properties data.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5a42aca',
+            VERSION:'6eed70a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

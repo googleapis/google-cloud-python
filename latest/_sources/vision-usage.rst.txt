@@ -271,13 +271,13 @@ image and determine the dominant colors in the image.
     >>> client = vision.Client()
     >>> with open('./image.jpg', 'rb') as image_file:
     ...     image = client.image(content=image_file.read())
-    >>> results = image.detect_properties()
-    >>> colors = results[0].colors
+    >>> properties = image.detect_properties()
+    >>> colors = properties.colors
     >>> first_color = colors[0]
     >>> first_color.red
-    244
+    244.0
     >>> first_color.blue
-    134
+    134.0
     >>> first_color.score
     0.65519291
     >>> first_color.pixel_fraction

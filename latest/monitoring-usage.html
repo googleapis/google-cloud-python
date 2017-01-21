@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 5a42aca documentation</title>
+  <title>Using the API &mdash; google-cloud 6eed70a documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5a42aca documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6eed70a documentation" href="index.html"/>
         <link rel="next" title="Stackdriver Monitoring Client" href="monitoring-client.html"/>
         <link rel="prev" title="Error Reporting Utilities" href="error-reporting-util.html"/> 
 
@@ -545,14 +545,20 @@ use the <code class="docutils literal"><span class="pre">global</span></code> mo
 <p>See <a class="reference external" href="https://cloud.google.com/monitoring/api/resources">Monitored resource types</a> for more information about particular monitored resource types.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">monitoring</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a Resource object for the desired monitored resource type.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;gce_instance&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s1">&#39;instance_id&#39;</span><span class="p">:</span> <span class="s1">&#39;1234567890123456789&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s1">&#39;zone&#39;</span><span class="p">:</span> <span class="s1">&#39;us-central1-f&#39;</span>
-<span class="gp">... </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;gce_instance&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;instance_id&#39;</span><span class="p">:</span> <span class="s1">&#39;1234567890123456789&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s1">&#39;zone&#39;</span><span class="p">:</span> <span class="s1">&#39;us-central1-f&#39;</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a Metric object, specifying the metric type as well as values for any metric labels.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
-<span class="gp">... </span>     <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;successful&#39;</span>
-<span class="gp">... </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">type_</span><span class="o">=</span><span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;successful&#39;</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 <p>With a <code class="docutils literal"><span class="pre">Metric</span></code> and <code class="docutils literal"><span class="pre">Resource</span></code> in hand, the <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
@@ -636,7 +642,7 @@ the API must only include a single point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5a42aca',
+            VERSION:'6eed70a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
