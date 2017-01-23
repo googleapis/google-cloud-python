@@ -415,8 +415,8 @@ class TestVisionClientText(unittest.TestCase):
     def _assert_text(self, text):
         self.assertIsInstance(text, EntityAnnotation)
         self.assertIn(text.description, self.DESCRIPTIONS)
-        self.assertIn(text.locale, (None, 'en'))
-        self.assertNotEqual(text.score, 0.0)
+        self.assertIn(text.locale, (None, '', 'en'))
+        self.assertIsInstance(text.score, (type(None), float))
 
     def test_detect_text_content(self):
         client = Config.CLIENT
