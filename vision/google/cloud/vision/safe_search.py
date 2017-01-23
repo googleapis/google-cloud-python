@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 """Safe search class for information returned from annotating an image."""
 
-
+from google.cloud.vision.likelihood import _get_pb_likelihood
 from google.cloud.vision.likelihood import Likelihood
 
 
@@ -51,16 +51,31 @@ class SafeSearchAnnotation(object):
         :param response: Dictionary response from Vision API with safe search
                          data.
 
-        :rtype: :class:`~google.cloud.vision.safe.SafeSearchAnnotation`
+        :rtype: :class:`~google.cloud.vision.safe_search.SafeSearchAnnotation`
         :returns: Instance of ``SafeSearchAnnotation``.
         """
-        adult_likelihood = getattr(Likelihood, response['adult'])
-        spoof_likelihood = getattr(Likelihood, response['spoof'])
-        medical_likelihood = getattr(Likelihood, response['medical'])
-        violence_likelihood = getattr(Likelihood, response['violence'])
+        adult_likelihood = Likelihood[response['adult']]
+        spoof_likelihood = Likelihood[response['spoof']]
+        medical_likelihood = Likelihood[response['medical']]
+        violence_likelihood = Likelihood[response['violence']]
 
         return cls(adult_likelihood, spoof_likelihood, medical_likelihood,
                    violence_likelihood)
+
+    @classmethod
+    def from_pb(cls, image):
+        """Factory: construct SafeSearchAnnotation from Vision API response.
+
+        :type image: :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.\
+                      SafeSearchAnnotation`
+        :param image: Protobuf response from Vision API with safe search data.
+
+        :rtype: :class:`~google.cloud.vision.safe_search.SafeSearchAnnotation`
+        :returns: Instance of ``SafeSearchAnnotation``.
+        """
+        values = [image.adult, image.spoof, image.medical, image.violence]
+        classifications = map(_get_pb_likelihood, values)
+        return cls(*classifications)
 
     @property
     def adult(self):
