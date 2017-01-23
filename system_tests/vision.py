@@ -355,7 +355,7 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
             value.delete()
 
     def _assert_safe_search(self, safe_search):
-        from google.cloud.vision.safe import SafeSearchAnnotation
+        from google.cloud.vision.safe_search import SafeSearchAnnotation
 
         self.assertIsInstance(safe_search, SafeSearchAnnotation)
         self._assert_likelihood(safe_search.adult)
@@ -364,19 +364,13 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
         self._assert_likelihood(safe_search.violence)
 
     def test_detect_safe_search_content(self):
-        self._pb_not_implemented_skip(
-            'gRPC not implemented for safe search detection.')
         client = Config.CLIENT
         with open(FACE_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
-        safe_searches = image.detect_safe_search()
-        self.assertEqual(len(safe_searches), 1)
-        safe_search = safe_searches[0]
+        safe_search = image.detect_safe_search()
         self._assert_safe_search(safe_search)
 
     def test_detect_safe_search_gcs(self):
-        self._pb_not_implemented_skip(
-            'gRPC not implemented for safe search detection.')
         bucket_name = Config.TEST_BUCKET.name
         blob_name = 'faces.jpg'
         blob = Config.TEST_BUCKET.blob(blob_name)
@@ -388,19 +382,13 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
 
         client = Config.CLIENT
         image = client.image(source_uri=source_uri)
-        safe_searches = image.detect_safe_search()
-        self.assertEqual(len(safe_searches), 1)
-        safe_search = safe_searches[0]
+        safe_search = image.detect_safe_search()
         self._assert_safe_search(safe_search)
 
     def test_detect_safe_search_filename(self):
-        self._pb_not_implemented_skip(
-            'gRPC not implemented for safe search detection.')
         client = Config.CLIENT
         image = client.image(filename=FACE_FILE)
-        safe_searches = image.detect_safe_search()
-        self.assertEqual(len(safe_searches), 1)
-        safe_search = safe_searches[0]
+        safe_search = image.detect_safe_search()
         self._assert_safe_search(safe_search)
 
 
