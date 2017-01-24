@@ -87,13 +87,11 @@ class Annotations(object):
         :rtype: :class:`~google.cloud.vision.annotations.Annotations`
         :returns: An instance of ``Annotations`` with detection types loaded.
         """
-        for feature_type in response.keys():
-            if feature_type not in _KEY_MAP:
-                del response[feature_type]
         annotations = {
             _KEY_MAP[feature_type]: _entity_from_response_type(
                 feature_type, annotation)
             for feature_type, annotation in six.iteritems(response)
+            if feature_type in _KEY_MAP
         }
         return cls(**annotations)
 
