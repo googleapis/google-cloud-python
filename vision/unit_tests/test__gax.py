@@ -102,9 +102,9 @@ class TestGAXClient(unittest.TestCase):
         gax_api._annotator_client = mock.Mock(
             spec_set=['batch_annotate_images'], **mock_response)
         with mock.patch('google.cloud.vision._gax.Annotations'):
-            with self.assertRaises(NotImplementedError):
-                gax_api.annotate(image, [feature])
+            responses = gax_api.annotate(image, [feature])
 
+        self.assertEqual(len(responses), 2)
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
 
