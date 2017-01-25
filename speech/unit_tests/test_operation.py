@@ -44,7 +44,7 @@ class TestOperation(unittest.TestCase):
 
     @staticmethod
     def _make_result(transcript, confidence):
-        from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
 
         return cloud_speech_pb2.SpeechRecognitionResult(
             alternatives=[
@@ -56,7 +56,7 @@ class TestOperation(unittest.TestCase):
         )
 
     def _make_operation_pb(self, *results):
-        from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
 
@@ -86,31 +86,48 @@ class TestOperation(unittest.TestCase):
 
     def test__update_state_with_response(self):
         from google.cloud.speech.alternative import Alternative
+        from google.cloud.speech.result import Result
 
         client = object()
         operation = self._make_one(
             self.OPERATION_NAME, client)
 
-        text = 'hi mom'
-        confidence = 0.75
-        result = self._make_result(text, confidence)
-        operation_pb = self._make_operation_pb(result)
+        results = [
+            self._make_result('hi mom', 0.75),
+            self._make_result('hi dad', 0.75),
+        ]
+        operation_pb = self._make_operation_pb(*results)
         operation._update_state(operation_pb)
         self.assertIsNotNone(operation.response)
 
-        self.assertEqual(len(operation.results), 1)
-        alternative = operation.results[0]
-        self.assertIsInstance(alternative, Alternative)
-        self.assertEqual(alternative.transcript, text)
-        self.assertEqual(alternative.confidence, confidence)
+        self.assertEqual(len(operation.results), 2)
+        for result, text in zip(operation.results, ['hi mom', 'hi dad']):
+            self.assertIsInstance(result, Result)
+            self.assertEqual(result.transcript, text)
+            self.assertEqual(result.confidence, 0.75)
+            self.assertIsInstance(result.alternatives, list)
+            self.assertIsInstance(result.alternatives[0], Alternative)
 
-    def test__update_state_bad_response(self):
+    def test__update_state_with_empty_response(self):
+        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+
+        # Simulate an empty response (rather than no response yet, which
+        # is distinct).
+        response = cloud_speech_pb2.AsyncRecognizeResponse(results=[])
+        type_url = 'type.googleapis.com/%s' % response.DESCRIPTOR.full_name
+        any_pb = Any(
+            type_url=type_url,
+            value=response.SerializeToString(),
+        )
+        operation_pb = operations_pb2.Operation(
+            name=self.OPERATION_NAME,
+            response=any_pb,
+        )
+
+        # Establish that we raise ValueError at state update time.
         client = object()
-        operation = self._make_one(
-            self.OPERATION_NAME, client)
-
-        result1 = self._make_result('is this ok?', 0.625)
-        result2 = self._make_result('ease is ok', None)
-        operation_pb = self._make_operation_pb(result1, result2)
+        operation = self._make_one(self.OPERATION_NAME, client)
         with self.assertRaises(ValueError):
             operation._update_state(operation_pb)

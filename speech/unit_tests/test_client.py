@@ -24,7 +24,7 @@ def _make_credentials():
 
 
 def _make_result(alternatives=()):
-    from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+    from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
 
     return cloud_speech_pb2.SpeechRecognitionResult(
         alternatives=[
@@ -37,7 +37,7 @@ def _make_result(alternatives=()):
 
 
 def _make_streaming_result(alternatives=(), is_final=True, stability=1.0):
-    from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+    from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
 
     return cloud_speech_pb2.StreamingRecognitionResult(
         alternatives=[
@@ -52,7 +52,7 @@ def _make_streaming_result(alternatives=(), is_final=True, stability=1.0):
 
 
 def _make_streaming_response(*results):
-    from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+    from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
 
     response = cloud_speech_pb2.StreamingRecognizeResponse(
         results=results,
@@ -61,7 +61,7 @@ def _make_streaming_response(*results):
 
 
 def _make_sync_response(*results):
-    from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+    from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
 
     response = cloud_speech_pb2.SyncRecognizeResponse(
         results=results,
@@ -202,7 +202,7 @@ class TestClient(unittest.TestCase):
         sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
                                encoding=encoding, sample_rate=self.SAMPLE_RATE)
 
-        response = sample.sync_recognize()
+        response = [i for i in sample.sync_recognize()]
 
         self.assertEqual(len(client._connection._requested), 1)
         req = client._connection._requested[0]
@@ -231,7 +231,7 @@ class TestClient(unittest.TestCase):
                                sample_rate=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            sample.sync_recognize()
+            next(sample.sync_recognize())
 
     def test_sync_recognize_with_empty_results_gax(self):
         from google.cloud._testing import _Monkey
@@ -274,7 +274,7 @@ class TestClient(unittest.TestCase):
                                sample_rate=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            sample.sync_recognize()
+            next(sample.sync_recognize())
 
     def test_sync_recognize_with_gax(self):
         from google.cloud._testing import _Monkey
@@ -326,16 +326,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual(
             channel_args, [(creds, _gax.DEFAULT_USER_AGENT, host)])
 
-        results = sample.sync_recognize()
+        results = [i for i in sample.sync_recognize()]
 
-        self.assertEqual(len(results), 2)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(len(results[0].alternatives), 2)
         self.assertEqual(results[0].transcript,
+                         results[0].alternatives[0].transcript,
                          alternatives[0]['transcript'])
         self.assertEqual(results[0].confidence,
+                         results[0].alternatives[0].confidence,
                          alternatives[0]['confidence'])
-        self.assertEqual(results[1].transcript,
+        self.assertEqual(results[0].alternatives[1].transcript,
                          alternatives[1]['transcript'])
-        self.assertEqual(results[1].confidence,
+        self.assertEqual(results[0].alternatives[1].confidence,
                          alternatives[1]['confidence'])
 
     def test_async_supported_encodings(self):
@@ -535,9 +538,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results[0].stability, 0.122435)
         self.assertEqual(results[1].stability, 0.1432343)
         self.assertFalse(results[1].is_final)
-        self.assertEqual(results[1].alternatives[0].transcript,
+        self.assertEqual(results[1].transcript,
+                         results[1].alternatives[0].transcript,
                          alternatives[0]['transcript'])
-        self.assertEqual(results[1].alternatives[0].confidence,
+        self.assertEqual(results[1].confidence,
+                         results[1].alternatives[0].confidence,
                          alternatives[0]['confidence'])
         self.assertEqual(results[1].alternatives[1].transcript,
                          alternatives[1]['transcript'])
@@ -545,9 +550,11 @@ class TestClient(unittest.TestCase):
                          alternatives[1]['confidence'])
         self.assertTrue(results[2].is_final)
         self.assertEqual(results[2].stability, 0.9834534)
-        self.assertEqual(results[2].alternatives[0].transcript,
+        self.assertEqual(results[2].transcript,
+                         results[2].alternatives[0].transcript,
                          alternatives[0]['transcript'])
-        self.assertEqual(results[2].alternatives[0].confidence,
+        self.assertEqual(results[2].confidence,
+                         results[2].alternatives[0].confidence,
                          alternatives[0]['confidence'])
 
     def test_stream_recognize(self):
