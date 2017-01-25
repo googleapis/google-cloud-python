@@ -14,10 +14,10 @@
 
 """Long running operation representation for Google Speech API"""
 
-from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
 
 from google.cloud import operation
-from google.cloud.speech.alternative import Alternative
+from google.cloud.speech.result import Result
 
 
 operation.register_type(cloud_speech_pb2.AsyncRecognizeMetadata)
@@ -58,11 +58,13 @@ class Operation(operation.Operation):
         if result_type != 'response':
             return
 
+        # Retrieve the results.
+        # If there were no results at all, raise an exception.
         pb_results = self.response.results
-        if len(pb_results) != 1:
-            raise ValueError('Expected exactly one result, found:',
-                             pb_results)
+        if len(pb_results) == 0:
+            raise ValueError('Speech API returned no results.')
 
-        result = pb_results[0]
-        self.results = [Alternative.from_pb(alternative)
-                        for alternative in result.alternatives]
+        # Save the results to the Operation object.
+        self.results = []
+        for pb_result in pb_results:
+            self.results.append(Result.from_pb(pb_result))
