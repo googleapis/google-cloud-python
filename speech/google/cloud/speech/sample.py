@@ -53,7 +53,6 @@ class Sample(object):
     :param client: (Optional) The client that owns this instance of sample.
     """
     default_encoding = Encoding.FLAC
-    default_sample_rate = 16000
 
     def __init__(self, content=None, source_uri=None, stream=None,
                  encoding=None, sample_rate=None, client=None):
@@ -72,7 +71,7 @@ class Sample(object):
         if sample_rate is not None and not 8000 <= sample_rate <= 48000:
             raise ValueError('The value of sample_rate must be between 8000'
                              ' and 48000.')
-        self._sample_rate = sample_rate or self.default_sample_rate
+        self._sample_rate = sample_rate
 
         if encoding is not None and getattr(Encoding, encoding, False):
             self._encoding = getattr(Encoding, encoding)
