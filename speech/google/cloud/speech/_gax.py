@@ -16,13 +16,9 @@
 
 
 from google.cloud.gapic.speech.v1beta1.speech_client import SpeechClient
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import RecognitionConfig
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import SpeechContext
 from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
-    StreamingRecognitionConfig)
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
-    StreamingRecognizeRequest)
+    RecognitionAudio, RecognitionConfig, SpeechContext,
+    StreamingRecognitionConfig, StreamingRecognizeRequest)
 from google.longrunning import operations_grpc
 
 from google.cloud._helpers import make_secure_channel
