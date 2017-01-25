@@ -155,6 +155,7 @@
 
   vision-usage
   vision-annotations
+  vision-batch
   vision-client
   vision-color
   vision-entity

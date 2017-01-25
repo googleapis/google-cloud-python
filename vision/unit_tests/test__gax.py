@@ -54,7 +54,8 @@ class TestGAXClient(unittest.TestCase):
             spec_set=['batch_annotate_images'], **mock_response)
 
         with mock.patch('google.cloud.vision._gax.Annotations') as mock_anno:
-            gax_api.annotate(image, [feature])
+            images = ((image, [feature]),)
+            gax_api.annotate(images)
             mock_anno.from_pb.assert_called_with('mock response data')
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
@@ -78,7 +79,8 @@ class TestGAXClient(unittest.TestCase):
         gax_api._annotator_client = mock.Mock(
             spec_set=['batch_annotate_images'], **mock_response)
         with mock.patch('google.cloud.vision._gax.Annotations'):
-            response = gax_api.annotate(image, [feature])
+            images = ((image, [feature]),)
+            response = gax_api.annotate(images)
         self.assertEqual(len(response), 0)
         self.assertIsInstance(response, list)
 
@@ -109,7 +111,8 @@ class TestGAXClient(unittest.TestCase):
         gax_api._annotator_client = mock.Mock(
             spec_set=['batch_annotate_images'])
         gax_api._annotator_client.batch_annotate_images.return_value = response
-        responses = gax_api.annotate(image, [feature])
+        images = ((image, [feature]),)
+        responses = gax_api.annotate(images)
 
         self.assertEqual(len(responses), 2)
         self.assertIsInstance(responses[0], Annotations)

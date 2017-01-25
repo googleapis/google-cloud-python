@@ -29,24 +29,19 @@ class _HTTPVisionAPI(object):
         self._client = client
         self._connection = client._connection
 
-    def annotate(self, image, features):
+    def annotate(self, images):
         """Annotate an image to discover it's attributes.
 
-        :type image: :class:`~google.cloud.vision.image.Image`
-        :param image: A instance of ``Image``.
+        :type images: list of :class:`~google.cloud.vision.image.Image`
+        :param images: A list of ``Image``.
 
-        :type features:  list of :class:`~google.cloud.vision.feature.Feature`
-        :param features: The type of detection that the Vision API should
-                         use to determine image attributes. Pricing is
-                         based on the number of Feature Types.
-
-                         See: https://cloud.google.com/vision/docs/pricing
         :rtype: list
         :returns: List of :class:`~googe.cloud.vision.annotations.Annotations`.
         """
-        request = _make_request(image, features)
-
-        data = {'requests': [request]}
+        requests = []
+        for image, features in images:
+            requests.append(_make_request(image, features))
+        data = {'requests': requests}
         api_response = self._connection.api_request(
             method='POST', path='/images:annotate', data=data)
         responses = api_response.get('responses')
