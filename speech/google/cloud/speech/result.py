@@ -41,9 +41,7 @@ class Result(object):
         :rtype: :class:`~google.cloud.speech.result.SpeechRecognitionResult`
         :returns: Instance of ``SpeechRecognitionResult``.
         """
-        alternatives = []
-        for alt in result.alternatives:
-            alternatives.append(Alternative.from_pb(alt))
+        alternatives = [Alternative.from_pb(i) for i in result.alternatives]
         return cls(alternatives=alternatives)
 
     @property
@@ -94,9 +92,7 @@ class StreamingSpeechResult(object):
         :rtype: :class:`~google.cloud.speech.result.StreamingSpeechResult`
         :returns: Instance of ``StreamingSpeechResult``.
         """
-        alternatives = []
-        for alternative in response.alternatives:
-            alternatives.append(Alternative.from_pb(alternative))
+        alternatives = [Alternative.from_pb(i) for i in response.alternatives]
         is_final = response.is_final
         stability = response.stability
         return cls(alternatives=alternatives, is_final=is_final,

@@ -230,7 +230,8 @@ class GAPICSpeechAPI(object):
                                and phrases. This can also be used to add new
                                words to the vocabulary of the recognizer.
 
-        :yields: :class:`google.cloud.speech.result.Result` objects.
+        :rtype: list
+        :returns: List of :class:`google.cloud.speech.result.Result` objects.
 
         :raises: ValueError if there are no results.
         """
@@ -249,8 +250,7 @@ class GAPICSpeechAPI(object):
             raise ValueError('No results returned from the Speech API.')
 
         # Iterate over any results that came back.
-        for result in api_response.results:
-            yield Result.from_pb(result)
+        return [Result.from_pb(i) for i in api_response.results]
 
 
 def _stream_requests(sample, language_code=None, max_alternatives=None,
