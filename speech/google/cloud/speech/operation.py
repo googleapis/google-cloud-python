@@ -66,5 +66,5 @@ class Operation(operation.Operation):
 
         # Save the results to the Operation object.
         self.results = []
-        for r in pb_results:
-            self.results.append(Result.from_pb(r))
+        for pb_result in pb_results:
+            self.results.append(Result.from_pb(pb_result))

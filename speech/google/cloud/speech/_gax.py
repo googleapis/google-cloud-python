@@ -25,7 +25,6 @@ from google.cloud._helpers import make_secure_channel
 from google.cloud._helpers import make_secure_stub
 from google.cloud._http import DEFAULT_USER_AGENT
 
-from google.cloud.speech.alternative import Alternative
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.result import Result
 
