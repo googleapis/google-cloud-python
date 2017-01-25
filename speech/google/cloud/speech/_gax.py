@@ -16,12 +16,12 @@
 
 
 from google.cloud.gapic.speech.v1beta1.speech_client import SpeechClient
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionConfig
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import SpeechContext
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import RecognitionConfig
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import SpeechContext
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
     StreamingRecognitionConfig)
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
     StreamingRecognizeRequest)
 from google.longrunning import operations_grpc
 
@@ -31,6 +31,7 @@ from google.cloud._http import DEFAULT_USER_AGENT
 
 from google.cloud.speech.alternative import Alternative
 from google.cloud.speech.operation import Operation
+from google.cloud.speech.result import Result
 
 OPERATIONS_API_HOST = 'speech.googleapis.com'
 
@@ -254,13 +255,14 @@ class GAPICSpeechAPI(object):
                                  uri=sample.source_uri)
         api = self._gapic_api
         api_response = api.sync_recognize(config=config, audio=audio)
-        if len(api_response.results) == 1:
-            results = api_response.results.pop()
-            alternatives = results.alternatives
-            return [Alternative.from_pb(alternative)
-                    for alternative in alternatives]
-        else:
-            raise ValueError('More than one result or none returned from API.')
+
+        # Sanity check: If we got no results back, raise an error.
+        if len(api_response.results) == 0:
+            raise ValueError('No results returned from the Speecn API.')
+
+        # Iterate over any results that came back.
+        for result in api_response.results:
+            yield Result.from_pb(result)
 
 
 def _stream_requests(sample, language_code=None, max_alternatives=None,
