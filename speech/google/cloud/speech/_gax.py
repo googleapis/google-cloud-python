@@ -250,7 +250,7 @@ class GAPICSpeechAPI(object):
             raise ValueError('No results returned from the Speech API.')
 
         # Iterate over any results that came back.
-        return [Result.from_pb(i) for i in api_response.results]
+        return [Result.from_pb(result) for result in api_response.results]
 
 
 def _stream_requests(sample, language_code=None, max_alternatives=None,
