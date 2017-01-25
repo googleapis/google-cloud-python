@@ -93,10 +93,6 @@ class TestSample(unittest.TestCase):
         self.assertEqual(sample.sample_rate, self.SAMPLE_RATE)
         self.assertEqual(sample.encoding, Encoding.FLAC)
 
-        sample = self._make_one(source_uri=self.AUDIO_SOURCE_URI,
-                                encoding=Encoding.FLAC)
-        self.assertEqual(sample.sample_rate, self.SAMPLE_RATE)
-
     def test_encoding(self):
         from google.cloud.speech.encoding import Encoding
 
