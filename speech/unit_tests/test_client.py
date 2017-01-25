@@ -231,7 +231,7 @@ class TestClient(unittest.TestCase):
                                sample_rate=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            [i for i in sample.sync_recognize()]
+            next(sample.sync_recognize())
 
     def test_sync_recognize_with_empty_results_gax(self):
         from google.cloud._testing import _Monkey
@@ -274,7 +274,7 @@ class TestClient(unittest.TestCase):
                                sample_rate=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            [i for i in sample.sync_recognize()]
+            next(sample.sync_recognize())
 
     def test_sync_recognize_with_gax(self):
         from google.cloud._testing import _Monkey

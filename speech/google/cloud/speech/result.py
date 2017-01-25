@@ -19,6 +19,7 @@ from google.cloud.speech.alternative import Alternative
 
 class Result(object):
     """Speech recognition result representation.
+
     This is the object that comes back on sync or async requests
     (but not streaming requests).
 
@@ -94,8 +95,8 @@ class StreamingSpeechResult(object):
         :returns: Instance of ``StreamingSpeechResult``.
         """
         alternatives = []
-        for alt in response.alternatives:
-            alternatives.append(Alternative.from_pb(alt))
+        for alternative in response.alternatives:
+            alternatives.append(Alternative.from_pb(alternative))
         is_final = response.is_final
         stability = response.stability
         return cls(alternatives=alternatives, is_final=is_final,

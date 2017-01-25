@@ -230,16 +230,9 @@ class GAPICSpeechAPI(object):
                                and phrases. This can also be used to add new
                                words to the vocabulary of the recognizer.
 
-        :rtype: list
-        :returns: A list of dictionaries. One dict for each alternative. Each
-                  dictionary typically contains two keys (though not
-                  all will be present in all cases)
+        :yields: :class:`google.cloud.speech.result.Result` objects.
 
-                  * ``transcript``: The detected text from the audio recording.
-                  * ``confidence``: The confidence in language detection, float
-                    between 0 and 1.
-
-        :raises: ValueError if more than one result is returned or no results.
+        :raises: ValueError if there are no results.
         """
         config = RecognitionConfig(
             encoding=sample.encoding, sample_rate=sample.sample_rate,
@@ -253,7 +246,7 @@ class GAPICSpeechAPI(object):
 
         # Sanity check: If we got no results back, raise an error.
         if len(api_response.results) == 0:
-            raise ValueError('No results returned from the Speecn API.')
+            raise ValueError('No results returned from the Speech API.')
 
         # Iterate over any results that came back.
         for result in api_response.results:
