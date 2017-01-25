@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Bigtable Row Filters &mdash; google-cloud 6eed70a documentation</title>
+  <title>Bigtable Row Filters &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="index.html"/>
         <link rel="next" title="Row Data" href="bigtable-row-data.html"/>
         <link rel="prev" title="Bigtable Row" href="bigtable-row.html"/> 
 
@@ -322,18 +322,18 @@ are provided:</p>
 <p>These rules can be nested arbitrarily, with a basic filter at the lowest
 level. For example:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Filter in a specified column (matching any column family).</span>
-<span class="n">col1_filter</span> <span class="o">=</span> <span class="n">ColumnQualifierRegexFilter</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;columnbia&#39;</span><span class="p">)</span>
+<span class="n">col1_filter</span> <span class="o">=</span> <span class="n">ColumnQualifierRegexFilter</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;columnbia&#39;</span><span class="p">)</span>
 
 <span class="c1"># Create a filter to label results.</span>
-<span class="n">label1</span> <span class="o">=</span> <span class="s1">u&#39;label-red&#39;</span>
+<span class="n">label1</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;label-red&#39;</span>
 <span class="n">label1_filter</span> <span class="o">=</span> <span class="n">ApplyLabelFilter</span><span class="p">(</span><span class="n">label1</span><span class="p">)</span>
 
 <span class="c1"># Combine the filters to label all the cells in columnbia.</span>
 <span class="n">chain1</span> <span class="o">=</span> <span class="n">RowFilterChain</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">col1_filter</span><span class="p">,</span> <span class="n">label1_filter</span><span class="p">])</span>
 
 <span class="c1"># Create a similar filter to label cells blue.</span>
-<span class="n">col2_filter</span> <span class="o">=</span> <span class="n">ColumnQualifierRegexFilter</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;columnseeya&#39;</span><span class="p">)</span>
-<span class="n">label2</span> <span class="o">=</span> <span class="s1">u&#39;label-blue&#39;</span>
+<span class="n">col2_filter</span> <span class="o">=</span> <span class="n">ColumnQualifierRegexFilter</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;columnseeya&#39;</span><span class="p">)</span>
+<span class="n">label2</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;label-blue&#39;</span>
 <span class="n">label2_filter</span> <span class="o">=</span> <span class="n">ApplyLabelFilter</span><span class="p">(</span><span class="n">label2</span><span class="p">)</span>
 <span class="n">chain2</span> <span class="o">=</span> <span class="n">RowFilterChain</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">col2_filter</span><span class="p">,</span> <span class="n">label2_filter</span><span class="p">])</span>
 
@@ -1169,7 +1169,7 @@ match this regex.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

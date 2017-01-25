@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.iam &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.pubsub.iam &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -470,7 +470,7 @@
         <span class="k">return</span> <span class="s1">&#39;allAuthenticatedUsers&#39;</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Policy.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+<div class="viewcode-block" id="Policy.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a policy from the resource returned from the API.</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -481,7 +481,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">version</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">)</span>
         <span class="n">etag</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
-        <span class="n">policy</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">etag</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        <span class="n">policy</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">etag</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bindings&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="n">role</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span>
             <span class="n">members</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">binding</span><span class="p">[</span><span class="s1">&#39;members&#39;</span><span class="p">])</span>
@@ -577,7 +577,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.operation &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.operation &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -432,7 +432,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_complete</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Operation.from_pb"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">operation_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">):</span>
+<div class="viewcode-block" id="Operation.from_pb"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">operation_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct an instance from a protobuf.</span>
 
 <span class="sd">        :type operation_pb:</span>
@@ -448,13 +448,13 @@
 <span class="sd">        :rtype: :class:`Operation`</span>
 <span class="sd">        :returns: new instance, with attributes based on the protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_update_state</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_from_grpc</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Operation.from_dict"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">):</span>
+<div class="viewcode-block" id="Operation.from_dict"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance from a dictionary.</span>
 
 <span class="sd">        :type operation: dict</span>
@@ -471,7 +471,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">operation_pb</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
             <span class="n">operation</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_update_state</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_from_grpc</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">result</span></div>
@@ -588,7 +588,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

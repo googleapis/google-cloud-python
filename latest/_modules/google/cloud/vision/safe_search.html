@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.safe &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.vision.safe_search &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -272,7 +272,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.vision.safe</li>
+    <li>google.cloud.vision.safe_search</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -284,8 +284,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.vision.safe</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2016 Google Inc.</span>
+  <h1>Source code for google.cloud.vision.safe_search</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017 Google Inc.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -301,11 +301,11 @@
 
 <span class="sd">&quot;&quot;&quot;Safe search class for information returned from annotating an image.&quot;&quot;&quot;</span>
 
-
+<span class="kn">from</span> <span class="nn">google.cloud.vision.likelihood</span> <span class="k">import</span> <span class="n">_get_pb_likelihood</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.likelihood</span> <span class="k">import</span> <span class="n">Likelihood</span>
 
 
-<div class="viewcode-block" id="SafeSearchAnnotation"><a class="viewcode-back" href="../../../../vision-safe-search.html#google.cloud.vision.safe.SafeSearchAnnotation">[docs]</a><span class="k">class</span> <span class="nc">SafeSearchAnnotation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SafeSearchAnnotation"><a class="viewcode-back" href="../../../../vision-safe-search.html#google.cloud.vision.safe_search.SafeSearchAnnotation">[docs]</a><span class="k">class</span> <span class="nc">SafeSearchAnnotation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Representation of a SafeSearchAnnotation.</span>
 
 <span class="sd">    :type adult_likelihood: :class:`~google.cloud.vision.likelihood.Likelihood`</span>
@@ -331,23 +331,38 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_violence_likelihood</span> <span class="o">=</span> <span class="n">violence_likelihood</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="SafeSearchAnnotation.from_api_repr"><a class="viewcode-back" href="../../../../vision-safe-search.html#google.cloud.vision.safe.SafeSearchAnnotation.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<div class="viewcode-block" id="SafeSearchAnnotation.from_api_repr"><a class="viewcode-back" href="../../../../vision-safe-search.html#google.cloud.vision.safe_search.SafeSearchAnnotation.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct SafeSearchAnnotation from Vision API response.</span>
 
 <span class="sd">        :type response: dict</span>
 <span class="sd">        :param response: Dictionary response from Vision API with safe search</span>
 <span class="sd">                         data.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.vision.safe.SafeSearchAnnotation`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.vision.safe_search.SafeSearchAnnotation`</span>
 <span class="sd">        :returns: Instance of ``SafeSearchAnnotation``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">adult_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;adult&#39;</span><span class="p">])</span>
-        <span class="n">spoof_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;spoof&#39;</span><span class="p">])</span>
-        <span class="n">medical_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;medical&#39;</span><span class="p">])</span>
-        <span class="n">violence_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;violence&#39;</span><span class="p">])</span>
+        <span class="n">adult_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;adult&#39;</span><span class="p">]]</span>
+        <span class="n">spoof_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;spoof&#39;</span><span class="p">]]</span>
+        <span class="n">medical_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;medical&#39;</span><span class="p">]]</span>
+        <span class="n">violence_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;violence&#39;</span><span class="p">]]</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">adult_likelihood</span><span class="p">,</span> <span class="n">spoof_likelihood</span><span class="p">,</span> <span class="n">medical_likelihood</span><span class="p">,</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">adult_likelihood</span><span class="p">,</span> <span class="n">spoof_likelihood</span><span class="p">,</span> <span class="n">medical_likelihood</span><span class="p">,</span>
                    <span class="n">violence_likelihood</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SafeSearchAnnotation.from_pb"><a class="viewcode-back" href="../../../../vision-safe-search.html#google.cloud.vision.safe_search.SafeSearchAnnotation.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct SafeSearchAnnotation from Vision API response.</span>
+
+<span class="sd">        :type image: :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.\</span>
+<span class="sd">                      SafeSearchAnnotation`</span>
+<span class="sd">        :param image: Protobuf response from Vision API with safe search data.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.safe_search.SafeSearchAnnotation`</span>
+<span class="sd">        :returns: Instance of ``SafeSearchAnnotation``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span><span class="o">.</span><span class="n">adult</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">spoof</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">medical</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">violence</span><span class="p">]</span>
+        <span class="n">classifications</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">_get_pb_likelihood</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">classifications</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">adult</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -419,7 +434,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

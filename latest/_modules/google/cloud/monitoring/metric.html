@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.metric &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.monitoring.metric &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -457,7 +457,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_fetch</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">metric_type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_fetch</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">metric_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Look up a metric descriptor by type.</span>
 
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
@@ -476,10 +476,10 @@
             <span class="n">project</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="n">metric_type</span><span class="p">)</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_list</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">filter_string</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">type_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">filter_string</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">type_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List all metric descriptors for the project.</span>
 
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
@@ -526,7 +526,7 @@
             <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
                 <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metricDescriptors&#39;</span><span class="p">,</span> <span class="p">()):</span>
-                <span class="n">descriptors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">info</span><span class="p">))</span>
+                <span class="n">descriptors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">info</span><span class="p">))</span>
 
             <span class="n">page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">page_token</span><span class="p">:</span>
@@ -535,7 +535,7 @@
         <span class="k">return</span> <span class="n">descriptors</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a metric descriptor from the parsed JSON representation.</span>
 
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
@@ -548,7 +548,7 @@
 <span class="sd">        :rtype: :class:`MetricDescriptor`</span>
 <span class="sd">        :returns: A metric descriptor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">descriptor</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">descriptor</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">descriptor</span><span class="o">.</span><span class="n">_init_from_dict</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">descriptor</span>
 
@@ -601,7 +601,7 @@
             <span class="s1">&#39; labels=</span><span class="si">{labels!r}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">&#39;</span>
             <span class="s1">&#39; display_name=</span><span class="si">{display_name!r}</span><span class="s1">, unit=</span><span class="si">{unit!r}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">&#39;</span>
             <span class="s1">&#39; description=</span><span class="si">{description!r}</span><span class="s1">&gt;&#39;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">)</span></div>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Metric"><a class="viewcode-back" href="../../../../monitoring-metric.html#google.cloud.monitoring.metric.Metric">[docs]</a><span class="k">class</span> <span class="nc">Metric</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Metric&#39;</span><span class="p">,</span> <span class="s1">&#39;type labels&#39;</span><span class="p">)):</span>
@@ -618,10 +618,10 @@
 <span class="sd">    :param labels: A mapping from label names to values for all labels</span>
 <span class="sd">                   enumerated in the associated :class:`MetricDescriptor`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a metric object from the parsed JSON representation.</span>
 
 <span class="sd">        :type info: dict</span>
@@ -631,7 +631,7 @@
 <span class="sd">        :rtype: :class:`Metric`</span>
 <span class="sd">        :returns: A metric object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="nb">type</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span>
             <span class="n">labels</span><span class="o">=</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="p">)</span>
@@ -680,7 +680,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

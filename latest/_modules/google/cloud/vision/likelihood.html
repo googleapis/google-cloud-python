@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.likelihood &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.vision.likelihood &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -304,6 +304,21 @@
 
 <span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud.grpc.vision.v1</span> <span class="k">import</span> <span class="n">image_annotator_pb2</span>
+
+
+<span class="k">def</span> <span class="nf">_get_pb_likelihood</span><span class="p">(</span><span class="n">likelihood</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert protobuf Likelihood integer value to Likelihood enum.</span>
+
+<span class="sd">    :type likelihood: int</span>
+<span class="sd">    :param likelihood: Protobuf integer representing ``Likelihood``.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.vision.likelihood.Likelihood`</span>
+<span class="sd">    :returns: Enum ``Likelihood`` converted from protobuf value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">likelihood_pb</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">Likelihood</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="n">likelihood</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">likelihood_pb</span><span class="p">]</span>
+
 
 <div class="viewcode-block" id="Likelihood"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.likelihood.Likelihood">[docs]</a><span class="k">class</span> <span class="nc">Likelihood</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A representation of likelihood to give stable results across upgrades.</span>
@@ -350,7 +365,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

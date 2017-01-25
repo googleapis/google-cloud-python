@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.job &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.bigquery.job &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -416,7 +416,7 @@
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
     <span class="nd">@property</span>
@@ -561,7 +561,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cleaned</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_resource_config</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_resource_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`from_api_repr`</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -579,10 +579,10 @@
                            <span class="s1">&#39;[&quot;jobReference&quot;][&quot;jobId&quot;]&#39;</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">][</span><span class="s1">&#39;jobId&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;configuration&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
-                <span class="n">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]):</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required configuration: &#39;</span>
-                           <span class="s1">&#39;[&quot;configuration&quot;][&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="n">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">)</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="n">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">]</span>
+                           <span class="s1">&#39;[&quot;configuration&quot;][&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span>
 
     <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -709,7 +709,7 @@
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;load&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="p">()):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">LoadTableFromStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LoadTableFromStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span> <span class="o">=</span> <span class="n">source_uris</span>
         <span class="c1"># Let the @property do validation.</span>
@@ -896,7 +896,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="LoadTableFromStorageJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="LoadTableFromStorageJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
 
 <span class="sd">        .. note:</span>
@@ -914,12 +914,12 @@
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`</span>
 <span class="sd">        :returns: Job parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">dest_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;destinationTable&#39;</span><span class="p">]</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">],</span> <span class="n">client</span><span class="p">)</span>
         <span class="n">destination</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">)</span>
         <span class="n">source_urls</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sourceUris&#39;</span><span class="p">,</span> <span class="p">())</span>
-        <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source_urls</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source_urls</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span></div></div>
 
@@ -953,7 +953,7 @@
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;copy&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">CopyJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CopyJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="n">sources</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">_CopyConfiguration</span><span class="p">()</span>
@@ -1006,7 +1006,7 @@
         <span class="k">return</span> <span class="n">resource</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="CopyJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.CopyJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="CopyJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.CopyJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
 
 <span class="sd">        .. note:</span>
@@ -1024,7 +1024,7 @@
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.job.CopyJob`</span>
 <span class="sd">        :returns: Job parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">dest_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;destinationTable&#39;</span><span class="p">]</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">],</span> <span class="n">client</span><span class="p">)</span>
         <span class="n">destination</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">)</span>
@@ -1039,7 +1039,7 @@
         <span class="k">for</span> <span class="n">source_config</span> <span class="ow">in</span> <span class="n">source_configs</span><span class="p">:</span>
             <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">],</span> <span class="n">client</span><span class="p">)</span>
             <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Table</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">))</span>
-        <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span></div></div>
 
@@ -1076,7 +1076,7 @@
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;extract&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ExtractTableToStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ExtractTableToStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination_uris</span> <span class="o">=</span> <span class="n">destination_uris</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">_ExtractConfiguration</span><span class="p">()</span>
@@ -1139,7 +1139,7 @@
         <span class="k">return</span> <span class="n">resource</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="ExtractTableToStorageJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="ExtractTableToStorageJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
 
 <span class="sd">        .. note:</span>
@@ -1157,12 +1157,12 @@
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`</span>
 <span class="sd">        :returns: Job parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">source_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;sourceTable&#39;</span><span class="p">]</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">],</span> <span class="n">client</span><span class="p">)</span>
         <span class="n">source</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">)</span>
         <span class="n">destination_uris</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;destinationUris&#39;</span><span class="p">]</span>
-        <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span></div></div>
 
@@ -1216,7 +1216,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span>
                  <span class="n">udf_resources</span><span class="o">=</span><span class="p">(),</span> <span class="n">query_parameters</span><span class="o">=</span><span class="p">()):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">udf_resources</span> <span class="o">=</span> <span class="n">udf_resources</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">query_parameters</span>
@@ -1393,7 +1393,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">dest_remote</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">])</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="QueryJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.QueryJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.QueryJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -1406,9 +1406,9 @@
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.job.RunAsyncQueryJob`</span>
 <span class="sd">        :returns: Job parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span>
-        <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span></div>
 
@@ -1453,7 +1453,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

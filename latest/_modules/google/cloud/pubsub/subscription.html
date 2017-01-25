@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.subscription &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.pubsub.subscription &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -360,7 +360,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_endpoint</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a topic given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -381,7 +381,7 @@
         <span class="k">if</span> <span class="n">topics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">topics</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">topic_path</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;topic&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">topic_path</span> <span class="o">==</span> <span class="n">cls</span><span class="o">.</span><span class="n">_DELETED_TOPIC_PATH</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">topic_path</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_DELETED_TOPIC_PATH</span><span class="p">:</span>
             <span class="n">topic</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">topic_path</span><span class="p">)</span>
@@ -395,9 +395,9 @@
         <span class="n">push_config</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="n">ack_deadline</span><span class="p">,</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="n">ack_deadline</span><span class="p">,</span>
                        <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -783,7 +783,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span>
                  <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">AutoAck</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AutoAck</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_subscription</span> <span class="o">=</span> <span class="n">subscription</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_return_immediately</span> <span class="o">=</span> <span class="n">return_immediately</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_messages</span> <span class="o">=</span> <span class="n">max_messages</span>
@@ -831,7 +831,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

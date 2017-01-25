@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.result &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.speech.result &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -304,6 +304,53 @@
 <span class="kn">from</span> <span class="nn">google.cloud.speech.alternative</span> <span class="k">import</span> <span class="n">Alternative</span>
 
 
+<div class="viewcode-block" id="Result"><a class="viewcode-back" href="../../../../speech-result.html#google.cloud.speech.result.Result">[docs]</a><span class="k">class</span> <span class="nc">Result</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Speech recognition result representation.</span>
+
+<span class="sd">    This is the object that comes back on sync or async requests</span>
+<span class="sd">    (but not streaming requests).</span>
+
+<span class="sd">    :type alternatives: list</span>
+<span class="sd">    :param alternatives: List of</span>
+<span class="sd">        :class:`~google.cloud.speech.alternative.Alternative`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alternatives</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alternatives</span> <span class="o">=</span> <span class="n">alternatives</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Result.from_pb"><a class="viewcode-back" href="../../../../speech-result.html#google.cloud.speech.result.Result.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct instance of ``SpeechRecognitionResult``.</span>
+
+<span class="sd">        :type result: :class:`~google.cloud.grpc.speech.v1beta1\</span>
+<span class="sd">                               .cloud_speech_pb2.StreamingRecognizeResult`</span>
+<span class="sd">        :param result: Instance of ``StreamingRecognizeResult`` protobuf.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.speech.result.SpeechRecognitionResult`</span>
+<span class="sd">        :returns: Instance of ``SpeechRecognitionResult``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">for</span> <span class="n">result</span>
+                        <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">alternatives</span><span class="o">=</span><span class="n">alternatives</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the confidence for the most probable alternative.</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :returns: Confidence value, between 0 and 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">confidence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the transcript for the most probable alternative.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: Speech transcript.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span></div>
+
+
 <div class="viewcode-block" id="StreamingSpeechResult"><a class="viewcode-back" href="../../../../speech-result.html#google.cloud.speech.result.StreamingSpeechResult">[docs]</a><span class="k">class</span> <span class="nc">StreamingSpeechResult</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Streaming speech result representation.</span>
 
@@ -323,7 +370,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stability</span> <span class="o">=</span> <span class="n">stability</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="StreamingSpeechResult.from_pb"><a class="viewcode-back" href="../../../../speech-result.html#google.cloud.speech.result.StreamingSpeechResult.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamingSpeechResult.from_pb"><a class="viewcode-back" href="../../../../speech-result.html#google.cloud.speech.result.StreamingSpeechResult.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct instance of ``StreamingSpeechResult``.</span>
 
 <span class="sd">        :type response: :class:`~google.cloud.grpc.speech.v1beta1\</span>
@@ -333,12 +380,30 @@
 <span class="sd">        :rtype: :class:`~google.cloud.speech.result.StreamingSpeechResult`</span>
 <span class="sd">        :returns: Instance of ``StreamingSpeechResult``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">alternative</span><span class="p">)</span>
-                        <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">alternatives</span><span class="p">]</span>
+        <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">for</span> <span class="n">result</span>
+                        <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">alternatives</span><span class="p">]</span>
         <span class="n">is_final</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">is_final</span>
         <span class="n">stability</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">stability</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">alternatives</span><span class="o">=</span><span class="n">alternatives</span><span class="p">,</span> <span class="n">is_final</span><span class="o">=</span><span class="n">is_final</span><span class="p">,</span>
-                   <span class="n">stability</span><span class="o">=</span><span class="n">stability</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">alternatives</span><span class="o">=</span><span class="n">alternatives</span><span class="p">,</span> <span class="n">is_final</span><span class="o">=</span><span class="n">is_final</span><span class="p">,</span>
+                   <span class="n">stability</span><span class="o">=</span><span class="n">stability</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the confidence for the most probable alternative.</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :returns: Confidence value, between 0 and 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">confidence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the transcript for the most probable alternative.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: Speech transcript.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span></div>
 </pre></div>
 
            </div>
@@ -372,7 +437,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

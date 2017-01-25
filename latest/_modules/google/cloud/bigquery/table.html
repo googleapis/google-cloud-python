@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.table &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.bigquery.table &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -675,7 +675,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">rows</span><span class="p">]</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Table.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-table.html#google.cloud.bigquery.table.Table.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-table.html#google.cloud.bigquery.table.Table.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a table given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -692,7 +692,7 @@
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required identity information:&#39;</span>
                            <span class="s1">&#39;[&quot;tableReference&quot;][&quot;tableId&quot;]&#39;</span><span class="p">)</span>
         <span class="n">table_name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">table</span></div>
 
@@ -1406,9 +1406,9 @@
     <span class="n">accept</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*/*&#39;</span><span class="p">]</span>
     <span class="n">max_size</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">resumable_multipart</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">resumable_path</span> <span class="o">=</span> <span class="s1">u&#39;/upload/bigquery/v2/projects/</span><span class="si">{project}</span><span class="s1">/jobs&#39;</span>
+    <span class="n">resumable_path</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;/upload/bigquery/v2/projects/</span><span class="si">{project}</span><span class="s1">/jobs&#39;</span>
     <span class="n">simple_multipart</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">simple_path</span> <span class="o">=</span> <span class="s1">u&#39;/upload/bigquery/v2/projects/</span><span class="si">{project}</span><span class="s1">/jobs&#39;</span>
+    <span class="n">simple_path</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;/upload/bigquery/v2/projects/</span><span class="si">{project}</span><span class="s1">/jobs&#39;</span>
 
 
 <span class="k">class</span> <span class="nc">_UrlBuilder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -1421,7 +1421,7 @@
 <span class="k">def</span> <span class="nf">_convert_timestamp</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper for :meth:`Table.insert_data`.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">_microseconds_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">_microseconds_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span>
     <span class="k">return</span> <span class="n">value</span>
 </pre></div>
 
@@ -1456,7 +1456,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

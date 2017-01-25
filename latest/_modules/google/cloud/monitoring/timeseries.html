@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.timeseries &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.monitoring.timeseries &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -395,7 +395,7 @@
         <span class="k">return</span> <span class="n">info</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a time series from the parsed JSON representation.</span>
 
 <span class="sd">        :type info: dict</span>
@@ -410,7 +410,7 @@
         <span class="n">metric_kind</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;metricKind&#39;</span><span class="p">]</span>
         <span class="n">value_type</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;valueType&#39;</span><span class="p">]</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;points&#39;</span><span class="p">,</span> <span class="p">())]</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">metric_kind</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">metric_kind</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a representation string with the points elided.&quot;&quot;&quot;</span>
@@ -472,10 +472,10 @@
 <span class="sd">    :type value: object</span>
 <span class="sd">    :param value: The metric value. This can be a scalar or a distribution.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a Point from the parsed JSON representation.</span>
 
 <span class="sd">        :type info: dict</span>
@@ -491,7 +491,7 @@
         <span class="k">if</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;int64Value&#39;</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>  <span class="c1"># Convert from string.</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">end_time</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">end_time</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build a dictionary ready to be serialized to the JSON wire format.</span>
@@ -546,7 +546,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

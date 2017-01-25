@@ -224,8 +224,7 @@ categorize the entire contents of the image under four categories.
     >>> client = vision.Client()
     >>> with open('./image.jpg', 'rb') as image_file:
     ...     image = client.image(content=image_file.read())
-    >>> safe_search_results = image.detect_safe_search()
-    >>> safe_search = safe_search_results[0]
+    >>> safe_search = image.detect_safe_search()
     >>> safe_search.adult
     <Likelihood.VERY_UNLIKELY: 'VERY_UNLIKELY'>
     >>> safe_search.spoof

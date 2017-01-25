@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Safe Search &mdash; google-cloud 6eed70a documentation</title>
+  <title>Vision Safe Search &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="language-usage.html"/>
         <link rel="prev" title="Vision Image" href="vision-image.html"/> 
 
@@ -210,7 +210,7 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vision Safe Search</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.safe">Safe Search Annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.safe_search">Safe Search Annotation</a></li>
 </ul>
 </li>
 </ul>
@@ -290,12 +290,12 @@
             
   <div class="section" id="vision-safe-search">
 <h1>Vision Safe Search<a class="headerlink" href="#vision-safe-search" title="Permalink to this headline">#</a></h1>
-<div class="section" id="module-google.cloud.vision.safe">
-<span id="safe-search-annotation"></span><h2>Safe Search Annotation<a class="headerlink" href="#module-google.cloud.vision.safe" title="Permalink to this headline">#</a></h2>
+<div class="section" id="module-google.cloud.vision.safe_search">
+<span id="safe-search-annotation"></span><h2>Safe Search Annotation<a class="headerlink" href="#module-google.cloud.vision.safe_search" title="Permalink to this headline">#</a></h2>
 <p>Safe search class for information returned from annotating an image.</p>
 <dl class="class">
-<dt id="google.cloud.vision.safe.SafeSearchAnnotation">
-<em class="property">class </em><code class="descclassname">google.cloud.vision.safe.</code><code class="descname">SafeSearchAnnotation</code><span class="sig-paren">(</span><em>adult_likelihood</em>, <em>spoof_likelihood</em>, <em>medical_likelihood</em>, <em>violence_likelihood</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/safe.html#SafeSearchAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.safe_search.SafeSearchAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.vision.safe_search.</code><code class="descname">SafeSearchAnnotation</code><span class="sig-paren">(</span><em>adult_likelihood</em>, <em>spoof_likelihood</em>, <em>medical_likelihood</em>, <em>violence_likelihood</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/safe_search.html#SafeSearchAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.safe_search.SafeSearchAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of a SafeSearchAnnotation.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -313,8 +313,8 @@
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="google.cloud.vision.safe.SafeSearchAnnotation.adult">
-<code class="descname">adult</code><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.adult" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.safe_search.SafeSearchAnnotation.adult">
+<code class="descname">adult</code><a class="headerlink" href="#google.cloud.vision.safe_search.SafeSearchAnnotation.adult" title="Permalink to this definition">#</a></dt>
 <dd><p>Represents the adult contents likelihood for the image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -329,8 +329,8 @@
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="google.cloud.vision.safe.SafeSearchAnnotation.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/safe.html#SafeSearchAnnotation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.safe_search.SafeSearchAnnotation.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/safe_search.html#SafeSearchAnnotation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.safe_search.SafeSearchAnnotation.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory: construct SafeSearchAnnotation from Vision API response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -339,7 +339,25 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from Vision API with safe search
 data.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.safe.SafeSearchAnnotation" title="google.cloud.vision.safe.SafeSearchAnnotation"><code class="xref py py-class docutils literal"><span class="pre">SafeSearchAnnotation</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.safe_search.SafeSearchAnnotation" title="google.cloud.vision.safe_search.SafeSearchAnnotation"><code class="xref py py-class docutils literal"><span class="pre">SafeSearchAnnotation</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">SafeSearchAnnotation</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.vision.safe_search.SafeSearchAnnotation.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/safe_search.html#SafeSearchAnnotation.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.safe_search.SafeSearchAnnotation.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct SafeSearchAnnotation from Vision API response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<code class="xref py py-class docutils literal">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SafeSearchAnnotation</span></code>) &#8211; Protobuf response from Vision API with safe search data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.safe_search.SafeSearchAnnotation" title="google.cloud.vision.safe_search.SafeSearchAnnotation"><code class="xref py py-class docutils literal"><span class="pre">SafeSearchAnnotation</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">SafeSearchAnnotation</span></code>.</td>
 </tr>
@@ -348,8 +366,8 @@ data.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.vision.safe.SafeSearchAnnotation.medical">
-<code class="descname">medical</code><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.medical" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.safe_search.SafeSearchAnnotation.medical">
+<code class="descname">medical</code><a class="headerlink" href="#google.cloud.vision.safe_search.SafeSearchAnnotation.medical" title="Permalink to this definition">#</a></dt>
 <dd><p>Likelihood this is a medical image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -364,8 +382,8 @@ data.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.vision.safe.SafeSearchAnnotation.spoof">
-<code class="descname">spoof</code><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.spoof" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.safe_search.SafeSearchAnnotation.spoof">
+<code class="descname">spoof</code><a class="headerlink" href="#google.cloud.vision.safe_search.SafeSearchAnnotation.spoof" title="Permalink to this definition">#</a></dt>
 <dd><p>The likelihood that an obvious modification was made to the image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -382,8 +400,8 @@ offensive.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.vision.safe.SafeSearchAnnotation.violence">
-<code class="descname">violence</code><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.violence" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.safe_search.SafeSearchAnnotation.violence">
+<code class="descname">violence</code><a class="headerlink" href="#google.cloud.vision.safe_search.SafeSearchAnnotation.violence" title="Permalink to this definition">#</a></dt>
 <dd><p>Likeliehood that this image contains violence.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -443,7 +461,7 @@ offensive.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

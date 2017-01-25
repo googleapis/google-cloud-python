@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.query &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.datastore.query &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -688,7 +688,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">start_cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Iterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Iterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_entity</span><span class="p">,</span>
             <span class="n">page_token</span><span class="o">=</span><span class="n">start_cursor</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_query</span> <span class="o">=</span> <span class="n">query</span>
@@ -751,7 +751,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_skipped_results</span> <span class="o">=</span> <span class="n">skipped_results</span>
 
-        <span class="k">if</span> <span class="n">cursor_as_bytes</span> <span class="o">==</span> <span class="n">b</span><span class="s1">&#39;&#39;</span><span class="p">:</span>  <span class="c1"># Empty-value for bytes.</span>
+        <span class="k">if</span> <span class="n">cursor_as_bytes</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">:</span>  <span class="c1"># Empty-value for bytes.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">cursor_as_bytes</span><span class="p">)</span>
@@ -903,7 +903,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

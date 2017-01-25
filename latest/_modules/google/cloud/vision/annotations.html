@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.annotations &mdash; google-cloud 6eed70a documentation</title>
+  <title>google.cloud.vision.annotations &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -306,7 +306,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.vision.color</span> <span class="k">import</span> <span class="n">ImagePropertiesAnnotation</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.entity</span> <span class="k">import</span> <span class="n">EntityAnnotation</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.face</span> <span class="k">import</span> <span class="n">Face</span>
-<span class="kn">from</span> <span class="nn">google.cloud.vision.safe</span> <span class="k">import</span> <span class="n">SafeSearchAnnotation</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.safe_search</span> <span class="k">import</span> <span class="n">SafeSearchAnnotation</span>
 
 
 <span class="n">_FACE_ANNOTATIONS</span> <span class="o">=</span> <span class="s1">&#39;faceAnnotations&#39;</span>
@@ -348,7 +348,7 @@
 
 <span class="sd">    :type safe_searches: list</span>
 <span class="sd">    :param safe_searches:</span>
-<span class="sd">        List of :class:`~google.cloud.vision.safe.SafeSearchAnnotation`</span>
+<span class="sd">        List of :class:`~google.cloud.vision.safe_search.SafeSearchAnnotation`</span>
 
 <span class="sd">    :type texts: list</span>
 <span class="sd">    :param texts: List of</span>
@@ -365,7 +365,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">texts</span> <span class="o">=</span> <span class="n">texts</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Annotations.from_api_repr"><a class="viewcode-back" href="../../../../vision-annotations.html#google.cloud.vision.annotations.Annotations.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<div class="viewcode-block" id="Annotations.from_api_repr"><a class="viewcode-back" href="../../../../vision-annotations.html#google.cloud.vision.annotations.Annotations.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of ``Annotations`` from a response.</span>
 
 <span class="sd">        :type response: dict</span>
@@ -379,10 +379,10 @@
                 <span class="n">feature_type</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">feature_type</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
         <span class="p">}</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">annotations</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">annotations</span><span class="p">)</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Annotations.from_pb"><a class="viewcode-back" href="../../../../vision-annotations.html#google.cloud.vision.annotations.Annotations.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<div class="viewcode-block" id="Annotations.from_pb"><a class="viewcode-back" href="../../../../vision-annotations.html#google.cloud.vision.annotations.Annotations.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of ``Annotations`` from protobuf.</span>
 
 <span class="sd">        :type response: :class:`~google.cloud.grpc.vision.v1.\</span>
@@ -393,7 +393,7 @@
 <span class="sd">        :returns: ``Annotations`` instance populated from gRPC response.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">annotations</span> <span class="o">=</span> <span class="n">_process_image_annotations</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">annotations</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">annotations</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_process_image_annotations</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
@@ -413,6 +413,8 @@
         <span class="s1">&#39;logos&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">logo_annotations</span><span class="p">),</span>
         <span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="n">_make_image_properties_from_pb</span><span class="p">(</span>
             <span class="n">image</span><span class="o">.</span><span class="n">image_properties_annotation</span><span class="p">),</span>
+        <span class="s1">&#39;safe_searches&#39;</span><span class="p">:</span> <span class="n">_make_safe_search_from_pb</span><span class="p">(</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">safe_search_annotation</span><span class="p">),</span>
         <span class="s1">&#39;texts&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">text_annotations</span><span class="p">),</span>
     <span class="p">}</span>
 
@@ -457,15 +459,31 @@
     <span class="k">return</span> <span class="n">ImagePropertiesAnnotation</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">image_properties</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">_make_safe_search_from_pb</span><span class="p">(</span><span class="n">safe_search</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create ``SafeSearchAnnotation`` object from a protobuf response.</span>
+
+<span class="sd">    :type safe_search: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">                            image_annotator_pb2.SafeSearchAnnotation`</span>
+<span class="sd">    :param safe_search: Protobuf instance of ``SafeSearchAnnotation``.</span>
+
+<span class="sd">    :rtype: :class: `~google.cloud.vision.safe_search.SafeSearchAnnotation`</span>
+<span class="sd">    :returns: Instance of ``SafeSearchAnnotation``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">safe_search</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">_entity_from_response_type</span><span class="p">(</span><span class="n">feature_type</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON result to an entity type based on the feature.</span>
 
 <span class="sd">    :rtype: list</span>
 <span class="sd">    :returns: List containing any of</span>
-<span class="sd">              :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,</span>
 <span class="sd">              :class:`~google.cloud.vision.entity.EntityAnnotation`,</span>
-<span class="sd">              :class:`~google.cloud.vision.face.Face`,</span>
-<span class="sd">              :class:`~google.cloud.vision.safe.SafeSearchAnnotation`.</span>
+<span class="sd">              :class:`~google.cloud.vision.face.Face`</span>
+
+<span class="sd">              or one of</span>
+
+<span class="sd">              :class:`~google.cloud.vision.safe_search.SafeSearchAnnotation`,</span>
+<span class="sd">              :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">detected_objects</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_FACE_ANNOTATIONS</span><span class="p">:</span>
@@ -474,7 +492,7 @@
     <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_IMAGE_PROPERTIES_ANNOTATION</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ImagePropertiesAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_SAFE_SEARCH_ANNOTATION</span><span class="p">:</span>
-        <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
             <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EntityAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
@@ -512,7 +530,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

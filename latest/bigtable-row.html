@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Bigtable Row &mdash; google-cloud 6eed70a documentation</title>
+  <title>Bigtable Row &mdash; google-cloud a70815d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 6eed70a documentation" href="index.html"/>
+    <link rel="top" title="google-cloud a70815d documentation" href="index.html"/>
         <link rel="next" title="Bigtable Row Filters" href="bigtable-row-filters.html"/>
         <link rel="prev" title="Column Families" href="bigtable-column-family.html"/> 
 
@@ -459,9 +459,9 @@ the row, otherwise the <a class="reference external" href="https://docs.python.o
 <li><a class="reference internal" href="#google.cloud.bigtable.row.ConditionalRow.delete_cells" title="google.cloud.bigtable.row.ConditionalRow.delete_cells"><code class="xref py py-meth docutils literal"><span class="pre">delete_cells()</span></code></a></li>
 </ul>
 <p>with the only change the extra <code class="docutils literal"><span class="pre">state</span></code> parameter:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;row-key2&#39;</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">row_filter</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="s1">u&#39;fam&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s1">&#39;cell-val&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="s1">u&#39;fam&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;row-key2&#39;</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">row_filter</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;fam&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;cell-val&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row_cond</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;fam&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;col&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -659,9 +659,9 @@ applied in. Defaults to <a class="reference external" href="https://docs.python.
 <li><a class="reference internal" href="#google.cloud.bigtable.row.DirectRow.delete_cells" title="google.cloud.bigtable.row.DirectRow.delete_cells"><code class="xref py py-meth docutils literal"><span class="pre">delete_cells()</span></code></a></li>
 </ul>
 <p>These methods can be used directly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;row-key1&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="s1">u&#39;fam&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s1">&#39;col1&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s1">&#39;cell-val&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="s1">u&#39;fam&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s1">&#39;col2&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;row-key1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;fam&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;col1&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;cell-val&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;fam&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;col2&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -897,7 +897,7 @@ RPC methods for sending row mutations:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'6eed70a',
+            VERSION:'a70815d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
