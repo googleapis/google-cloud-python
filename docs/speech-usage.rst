@@ -64,9 +64,10 @@ See: `Speech Asynchronous Recognize`_
     >>> operation.complete
     True
     >>> for result in operation.results:
-    ...     print('=' * 20)
-    ...     print(result.transcript)
-    ...     print(result.confidence)
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print(alternative.transcript)
+    ...         print(alternative.confidence)
     ====================
     'how old is the Brooklyn Bridge'
     0.98267895
@@ -93,9 +94,10 @@ Great Britian.
     ...     source_uri='gs://my-bucket/recording.flac', language_code='en-GB',
     ...     max_alternatives=2)
     >>> for result in results:
-    ...     print('=' * 20)
-    ...     print('transcript: ' + result.transcript)
-    ...     print('confidence: ' + result.confidence)
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a test
     confidence: 0.81
@@ -115,9 +117,10 @@ Example of using the profanity filter.
     >>> results = sample.sync_recognize(max_alternatives=1,
     ...                                 profanity_filter=True)
     >>> for result in results:
-    ...     print('=' * 20)
-    ...     print('transcript: ' + result.transcript)
-    ...     print('confidence: ' + result.confidence)
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a f****** test
     confidence: 0.81
@@ -137,9 +140,10 @@ words to the vocabulary of the recognizer.
     >>> results = sample.sync_recognize(max_alternatives=2,
     ...                                 speech_context=hints)
     >>> for result in results:
-    ...     print('=' * 20)
-    ...     print('transcript: ' + result.transcript)
-    ...     print('confidence: ' + result.confidence)
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a test
     confidence: 0.81
