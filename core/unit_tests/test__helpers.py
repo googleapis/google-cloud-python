@@ -789,7 +789,7 @@ class Test_make_secure_stub(unittest.TestCase):
         credentials = object()
         user_agent = 'you-sir-age-int'
         host = 'localhost'
-        extra_options = {'extra_options': None}
+        extra_options = {'extra_options': ()}
         with _Monkey(MUT, make_secure_channel=mock_channel):
             stub = self._call_fut(credentials, user_agent,
                                   stub_class, host)

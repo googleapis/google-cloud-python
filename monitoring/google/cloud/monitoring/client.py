@@ -31,7 +31,7 @@ and monitored resource descriptors.
 import datetime
 
 from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.monitoring.connection import Connection
 from google.cloud.monitoring.group import Group
 from google.cloud.monitoring.metric import Metric
@@ -47,7 +47,7 @@ from google.cloud.monitoring.timeseries import TimeSeries
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
