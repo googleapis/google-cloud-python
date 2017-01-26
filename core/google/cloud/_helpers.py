@@ -512,7 +512,7 @@ def _name_from_project_path(path, project, template):
     return match.group('name')
 
 
-def make_secure_channel(credentials, user_agent, host, extra_options=None):
+def make_secure_channel(credentials, user_agent, host, extra_options=()):
     """Makes a secure channel for an RPC service.
 
     Uses / depends on gRPC.
@@ -538,10 +538,7 @@ def make_secure_channel(credentials, user_agent, host, extra_options=None):
     http_request = google_auth_httplib2.Request(http=httplib2.Http())
 
     user_agent_option = ('grpc.primary_user_agent', user_agent)
-    if extra_options is not None:
-        options = (user_agent_option,) + extra_options
-    else:
-        options = (user_agent_option,)
+    options = (user_agent_option,) + extra_options
     return google.auth.transport.grpc.secure_authorized_channel(
         credentials,
         http_request,
@@ -550,7 +547,7 @@ def make_secure_channel(credentials, user_agent, host, extra_options=None):
 
 
 def make_secure_stub(credentials, user_agent, stub_class, host,
-                     extra_options=None):
+                     extra_options=()):
     """Makes a secure stub for an RPC service.
 
     Uses / depends on gRPC.
