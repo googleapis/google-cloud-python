@@ -15,12 +15,12 @@
 """Client for interacting with the Google Cloud RuntimeConfig API."""
 
 
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.runtimeconfig.connection import Connection
 from google.cloud.runtimeconfig.config import Config
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
