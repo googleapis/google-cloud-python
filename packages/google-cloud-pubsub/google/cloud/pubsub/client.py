@@ -16,7 +16,7 @@
 
 import os
 
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.pubsub._http import Connection
 from google.cloud.pubsub._http import _PublisherAPI as JSONPublisherAPI
@@ -43,7 +43,7 @@ _DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
 _USE_GAX = _HAVE_GAX and not _DISABLE_GAX
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
