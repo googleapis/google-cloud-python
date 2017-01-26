@@ -18,8 +18,7 @@ import os
 from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import (
     _determine_default_project as _base_default_project)
-from google.cloud.client import _ClientProjectMixin
-from google.cloud.client import Client as _BaseClient
+from google.cloud.client import ClientWithProject
 from google.cloud.datastore._http import Connection
 from google.cloud.datastore import helpers
 from google.cloud.datastore.batch import Batch
@@ -143,7 +142,7 @@ def _extended_lookup(connection, project, key_pbs,
     return results
 
 
-class Client(_BaseClient, _ClientProjectMixin):
+class Client(ClientWithProject):
     """Convenience wrapper for invoking APIs/factories w/ a project.
 
     .. doctest::
@@ -171,13 +170,14 @@ class Client(_BaseClient, _ClientProjectMixin):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/datastore',)
+    """The scopes required for authenticating as a Cloud Datastore consumer."""
+
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
-        _ClientProjectMixin.__init__(self, project=project)
-        _BaseClient.__init__(self, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
-
+        super(Client, self).__init__(
+            project=project, credentials=credentials, http=http)
+        self._connection = Connection(self)
         self.namespace = namespace
         self._batch_stack = _LocalStack()
 

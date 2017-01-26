@@ -109,7 +109,7 @@ class Client(_ClientFactoryMixin):
                  ``credentials`` for the current object.
     """
 
-    _SCOPE = None
+    SCOPE = None
     """The scopes required for authenticating with a service.
 
     Needs to be set by subclasses.
@@ -123,7 +123,7 @@ class Client(_ClientFactoryMixin):
         if credentials is None and http is None:
             credentials = get_credentials()
         self._credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, self._SCOPE)
+            credentials, self.SCOPE)
         self._http_internal = http
 
     @property

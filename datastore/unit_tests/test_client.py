@@ -168,16 +168,17 @@ class TestClient(unittest.TestCase):
             new=fallback_mock)
         patch2 = mock.patch(
             'google.cloud.client.get_credentials',
-            new=lambda: creds)
+            return_value=creds)
 
         with patch1:
             with patch2:
                 client = klass()
+
         self.assertEqual(client.project, OTHER)
         self.assertIsNone(client.namespace)
         self.assertIsInstance(client._connection, _MockConnection)
-        self.assertIs(client._connection.credentials, creds)
-        self.assertIsNone(client._connection.http)
+        self.assertIs(client._credentials, creds)
+        self.assertIsNone(client._http_internal)
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
         self.assertEqual(default_called, [None])
@@ -194,8 +195,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
         self.assertIsInstance(client._connection, _MockConnection)
-        self.assertIs(client._connection.credentials, creds)
-        self.assertIs(client._connection.http, http)
+        self.assertIs(client._credentials, creds)
+        self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
