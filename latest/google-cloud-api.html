@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Shared Core Modules &mdash; google-cloud a70815d documentation</title>
+  <title>Shared Core Modules &mdash; google-cloud 9e6f2df documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud a70815d documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 9e6f2df documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="google-cloud-config.html"/>
         <link rel="prev" title="Getting started" href="index.html"/> 
 
@@ -359,12 +359,10 @@ and the credentials created by the factory.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.client.JSONClient">
-<em class="property">class </em><code class="descclassname">google.cloud.client.</code><code class="descname">JSONClient</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/client.html#JSONClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.client.JSONClient" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.client.ClientWithProject">
+<em class="property">class </em><code class="descclassname">google.cloud.client.</code><code class="descname">ClientWithProject</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/client.html#ClientWithProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.client.ClientWithProject" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.Client</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientProjectMixin</span></code></p>
-<p>Client for Google JSON-based API.</p>
-<p>Assumes such APIs use the <code class="docutils literal"><span class="pre">project</span></code> and the client needs to store this
-value.</p>
+<p>Client that also stores a project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -392,8 +390,8 @@ set in the environment.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.client.JSONClient.from_service_account_json">
-<code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.client.JSONClient.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.client.ClientWithProject.from_service_account_json">
+<code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.client.ClientWithProject.from_service_account_json" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory to retrieve JSON credentials while creating client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -816,7 +814,7 @@ exist.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'a70815d',
+            VERSION:'9e6f2df',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

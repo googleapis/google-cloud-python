@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.client &mdash; google-cloud a70815d documentation</title>
+  <title>google.cloud.pubsub.client &mdash; google-cloud 9e6f2df documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud a70815d documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 9e6f2df documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -303,7 +303,7 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
+<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub._http</span> <span class="k">import</span> <span class="n">_PublisherAPI</span> <span class="k">as</span> <span class="n">JSONPublisherAPI</span>
@@ -330,7 +330,7 @@
 <span class="n">_USE_GAX</span> <span class="o">=</span> <span class="n">_HAVE_GAX</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GAX</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
 <span class="sd">    :type project: str</span>
@@ -523,7 +523,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'a70815d',
+            VERSION:'9e6f2df',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

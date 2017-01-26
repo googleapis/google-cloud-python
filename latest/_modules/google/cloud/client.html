@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.client &mdash; google-cloud a70815d documentation</title>
+  <title>google.cloud.client &mdash; google-cloud 9e6f2df documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud a70815d documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 9e6f2df documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -416,11 +416,8 @@
         <span class="k">return</span> <span class="n">_determine_default_project</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="JSONClient"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.client.JSONClient">[docs]</a><span class="k">class</span> <span class="nc">JSONClient</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="n">_ClientProjectMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Client for Google JSON-based API.</span>
-
-<span class="sd">    Assumes such APIs use the ``project`` and the client needs to store this</span>
-<span class="sd">    value.</span>
+<div class="viewcode-block" id="ClientWithProject"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.client.ClientWithProject">[docs]</a><span class="k">class</span> <span class="nc">ClientWithProject</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="n">_ClientProjectMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Client that also stores a project.</span>
 
 <span class="sd">    :type project: str</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. If not</span>
@@ -480,7 +477,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'a70815d',
+            VERSION:'9e6f2df',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
