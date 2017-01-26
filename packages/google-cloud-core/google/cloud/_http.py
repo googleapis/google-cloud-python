@@ -36,7 +36,7 @@ class Connection(object):
     """A generic connection to Google Cloud Platform.
 
     :type client: :class:`~google.cloud.client.Client`
-    :param client: The client that owns the credentials.
+    :param client: The client that owns the current connection.
     """
 
     USER_AGENT = DEFAULT_USER_AGENT
