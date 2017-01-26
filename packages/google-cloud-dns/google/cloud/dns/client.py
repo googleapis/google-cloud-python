@@ -15,13 +15,13 @@
 """Client for interacting with the Google Cloud DNS API."""
 
 
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.dns.connection import Connection
 from google.cloud.dns.zone import ManagedZone
 from google.cloud.iterator import HTTPIterator
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
