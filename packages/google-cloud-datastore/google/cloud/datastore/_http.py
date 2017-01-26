@@ -397,11 +397,8 @@ class Connection(connection_module.Connection):
     in method arguments, however it should be capable of returning advanced
     types.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
-    :param credentials: The OAuth2 Credentials to use for this connection.
-
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests.
+    :type client: :class:`~google.cloud.datastore.client.Client`
+    :param client: The client that owns the current connection.
     """
 
     API_BASE_URL = 'https://' + DATASTORE_API_HOST
@@ -414,11 +411,8 @@ class Connection(connection_module.Connection):
                         '/{project}:{method}')
     """A template for the URL of a particular API call."""
 
-    SCOPE = ('https://www.googleapis.com/auth/datastore',)
-    """The scopes required for authenticating as a Cloud Datastore consumer."""
-
-    def __init__(self, credentials=None, http=None):
-        super(Connection, self).__init__(credentials=credentials, http=http)
+    def __init__(self, client):
+        super(Connection, self).__init__(client)
         try:
             self.host = os.environ[GCD_HOST]
             self.api_base_url = 'http://' + self.host
