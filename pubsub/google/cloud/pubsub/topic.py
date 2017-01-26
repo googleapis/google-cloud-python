@@ -14,6 +14,8 @@
 
 """Define API Topics."""
 
+import time
+
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud.exceptions import NotFound
@@ -408,14 +410,39 @@ class Batch(object):
     :type topic: :class:`google.cloud.pubsub.topic.Topic`
     :param topic: the topic being published
 
-    :type client: :class:`google.cloud.pubsub.client.Client`
     :param client: The client to use.
+    :type client: :class:`google.cloud.pubsub.client.Client`
+
+    :param max_interval: The maximum interval, in seconds, before the batch
+                         will automatically commit. Note that this does not
+                         run a background loop; it just checks when each
+                         message is published. Therefore, this is intended
+                         for situations where messages are published at
+                         reasonably regular intervals. Defaults to infinity
+                         (off).
+    :type max_interval: float
+
+    :param max_messages: The maximum number of messages to hold in the batch
+                         before automatically commiting. Defaults to infinity
+                         (off).
+    :type max_messages: float
     """
-    def __init__(self, topic, client):
+    INFINITY = float('inf')
+
+    def __init__(self, topic, client, max_interval=INFINITY,
+                 max_messages=INFINITY):
         self.topic = topic
         self.messages = []
         self.message_ids = []
         self.client = client
+
+        # Set the autocommit rules. If the interval or number of messages
+        # is exceeded, then the .publish() method will imply a commit.
+        self._max_interval = max_interval
+        self._max_messages = max_messages
+
+        # Set the initial starting timestamp (used against the interval).
+        self._start_timestamp = float(time.time())
 
     def __enter__(self):
         return self
@@ -435,11 +462,26 @@ class Batch(object):
 
         :type attrs: dict (string -> string)
         :param attrs: key-value pairs to send as message attributes
+
+        :rtype: None
+        :returns: None
         """
         self.topic._timestamp_message(attrs)
         self.messages.append(
             {'data': message,
              'attributes': attrs})
+
+        # If too much time has elapsed since the first message
+        # was added, autocommit.
+        if self._max_interval < self.INFINITY:
+            if float(time.time()) - self._start_timestamp > self._max_interval:
+                self._start_timestamp = float(time.time())
+                return self.commit()
+
+        # If the number of messages on the list is greater than the
+        # maximum allowed, autocommit (with the batch's client).
+        if len(self.messages) >= self._max_messages:
+            return self.commit()
 
     def commit(self, client=None):
         """Send saved messages as a single API call.
