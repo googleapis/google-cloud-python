@@ -129,11 +129,8 @@ class _ClientProjectMixin(object):
         return _determine_default_project(project)
 
 
-class JSONClient(Client, _ClientProjectMixin):
-    """Client for Google JSON-based API.
-
-    Assumes such APIs use the ``project`` and the client needs to store this
-    value.
+class ClientWithProject(Client, _ClientProjectMixin):
+    """Client that also stores a project.
 
     :type project: str
     :param project: the project which the client acts on behalf of. If not

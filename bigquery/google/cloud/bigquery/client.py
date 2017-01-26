@@ -15,7 +15,7 @@
 """Client for interacting with the Google BigQuery API."""
 
 
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import CopyJob
@@ -50,7 +50,7 @@ class Project(object):
             resource['id'], resource['numericId'], resource['friendlyName'])
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str

@@ -104,13 +104,13 @@ class TestClient(unittest.TestCase):
                 mock.sentinel.filename, credentials=mock.sentinel.credentials)
 
 
-class TestJSONClient(unittest.TestCase):
+class TestClientWithProject(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.client import JSONClient
+        from google.cloud.client import ClientWithProject
 
-        return JSONClient
+        return ClientWithProject
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
