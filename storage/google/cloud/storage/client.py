@@ -16,7 +16,7 @@
 
 
 from google.cloud._helpers import _LocalStack
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import HTTPIterator
 from google.cloud.storage._http import Connection
@@ -24,7 +24,7 @@ from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str

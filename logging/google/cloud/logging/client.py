@@ -29,7 +29,7 @@ except ImportError:  # pragma: NO COVER
 else:
     _HAVE_GAX = True
 
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.logging._http import Connection
 from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
@@ -59,7 +59,7 @@ _CONTAINER_ENGINE_ENV = 'KUBERNETES_SERVICE'
 """Environment variable set in a Google Container Engine environment."""
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
