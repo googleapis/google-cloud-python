@@ -16,7 +16,7 @@
 
 import os
 
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
 
 from google.cloud.vision._gax import _GAPICVisionAPI
@@ -28,7 +28,7 @@ from google.cloud.vision._http import _HTTPVisionAPI
 _USE_GAX = not os.getenv(DISABLE_GRPC, False)
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
