@@ -20,8 +20,6 @@ import six
 from six.moves.urllib.parse import urlencode
 
 import google.auth.credentials
-import google_auth_httplib2
-import httplib2
 
 from google.cloud.exceptions import make_exception
 
@@ -37,50 +35,14 @@ DEFAULT_USER_AGENT = 'gcloud-python/{0}'.format(
 class Connection(object):
     """A generic connection to Google Cloud Platform.
 
-    Subclasses should understand only the basic types in method arguments,
-    however they should be capable of returning advanced types.
-
-    If no value is passed in for ``http``, a :class:`httplib2.Http` object
-    will be created and authorized with the ``credentials``. If not, the
-    ``credentials`` and ``http`` need not be related.
-
-    Subclasses may seek to use the private key from ``credentials`` to sign
-    data.
-
-    A custom (non-``httplib2``) HTTP object must have a ``request`` method
-    which accepts the following arguments:
-
-    * ``uri``
-    * ``method``
-    * ``body``
-    * ``headers``
-
-    In addition, ``redirections`` and ``connection_type`` may be used.
-
-    Without the use of ``credentials.authorize(http)``, a custom ``http``
-    object will also need to be able to add a bearer token to API
-    requests and handle token refresh on 401 errors.
-
-    :type credentials: :class:`google.auth.credentials.Credentials` or
-                       :class:`NoneType`
-    :param credentials: The credentials to use for this connection.
-
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests.
+    :type client: :class:`~google.cloud.client.Client`
+    :param client: The client that owns the credentials.
     """
 
     USER_AGENT = DEFAULT_USER_AGENT
 
-    SCOPE = None
-    """The scopes required for authenticating with a service.
-
-    Needs to be set by subclasses.
-    """
-
-    def __init__(self, credentials=None, http=None):
-        self._http = http
-        self._credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, self.SCOPE)
+    def __init__(self, client):
+        self._client = client
 
     @property
     def credentials(self):
@@ -90,7 +52,7 @@ class Connection(object):
                 :class:`NoneType`
         :returns: The credentials object associated with this connection.
         """
-        return self._credentials
+        return self._client._credentials
 
     @property
     def http(self):
@@ -99,13 +61,7 @@ class Connection(object):
         :rtype: :class:`httplib2.Http`
         :returns: A Http object used to transport data.
         """
-        if self._http is None:
-            if self._credentials:
-                self._http = google_auth_httplib2.AuthorizedHttp(
-                    self._credentials)
-            else:
-                self._http = httplib2.Http()
-        return self._http
+        return self._client._http
 
 
 class JSONConnection(Connection):
