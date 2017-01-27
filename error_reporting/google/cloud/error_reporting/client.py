@@ -229,7 +229,7 @@ class Client(object):
             payload['context']['httpContext'] = {
                 key: value for key, value in six.iteritems(http_context_dict)
                 if value is not None
-                }
+            }
 
         if user:
             payload['context']['user'] = user
