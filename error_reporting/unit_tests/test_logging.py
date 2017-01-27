@@ -11,3 +11,41 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import unittest
+
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
+
+class Test_ErrorReportingLoggingAPI(unittest.TestCase):
+
+    PROJECT = 'PROJECT'
+    SERVICE = 'SERVICE'
+    VERSION = 'myversion'
+
+    def _call_fut(self, project, credentials):
+        from google.cloud.error_reporting._logging import (
+            _ErrorReportingLoggingAPI)
+        return _ErrorReportingLoggingAPI(project, credentials)
+
+    def test_constructor(self):
+        credentials = _make_credentials()
+        logger_client = self._call_fut(self.PROJECT, credentials)
+
+        self.assertEqual(logger_client.logging_client._connection.credentials,
+                         credentials)
+        self.assertEqual(logger_client.logging_client.project, self.PROJECT)
+
+    @mock.patch('google.cloud.logging.client')
+    def test_report_error_event(self, logging_client):
+        credentials = _make_credentials()
+        logger_client = self._call_fut(self.PROJECT, credentials)
+        payload = mock.Mock()
+        logger_client.report_error_event(payload)
+        logger_mock = mock.Mock()
+        self.assertTrue(logger_mock.log_struct.called_with, payload)

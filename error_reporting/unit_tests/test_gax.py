@@ -11,3 +11,33 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import unittest
+
+import mock
+
+
+class Test_ErrorReportingGaxApi(unittest.TestCase):
+
+    PROJECT = 'PROJECT'
+
+    def _call_fut(self, gax_api, project):
+        from google.cloud.error_reporting._gax import _ErrorReportingGaxApi
+        return _ErrorReportingGaxApi(gax_api, project)
+
+    def test_constructor(self):
+        gax_api = mock.Mock()
+        gax_client_wrapper = self._call_fut(gax_api, self.PROJECT)
+
+        self.assertEqual(gax_client_wrapper._project, self.PROJECT)
+        self.assertEqual(gax_client_wrapper._gax_api, gax_api)
+
+    @mock.patch("google.cloud.error_reporting._gax.ParseDict")
+    def test_report_error_event(self, parse_dict):
+        gax_api = mock.Mock()
+        gax_client_wrapper = self._call_fut(gax_api, self.PROJECT)
+
+        mock_error_report = mock.Mock()
+        gax_client_wrapper.report_error_event(mock_error_report)
+        self.assertTrue(gax_api.report_error_event.called_with,
+                        mock_error_report)
