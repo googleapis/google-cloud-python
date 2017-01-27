@@ -33,7 +33,7 @@ class Test_ErrorReportingGaxApi(unittest.TestCase):
         self.assertEqual(gax_client_wrapper._gax_api, gax_api)
 
     @mock.patch("google.cloud.error_reporting._gax.ParseDict")
-    def test_report_error_event(self, parse_dict):
+    def test_report_error_event(self, _):
         gax_api = mock.Mock()
         gax_client_wrapper = self._call_fut(gax_api, self.PROJECT)
 

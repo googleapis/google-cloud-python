@@ -85,24 +85,23 @@ class TestClient(unittest.TestCase):
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS,
                                 use_gax=False)
-
         patch = mock.patch(
             'google.cloud.error_reporting.client._ErrorReportingLoggingAPI'
         )
-        with patch as _ErrorReportingLogging:
+        with patch as _error_api:
             try:
                 raise NameError
             except NameError:
                 target.report_exception()
-            mock_report = _ErrorReportingLogging.return_value.report_error_event
+            mock_report = _error_api.return_value.report_error_event
             payload = mock_report.call_args[0][0]
 
         self.assertEquals(payload['serviceContext'], {
             'service': target.DEFAULT_SERVICE,
-         })
+        })
         self.assertIn('test_report', payload['message'])
         self.assertIn('test_client.py', payload['message'])
-
+        self.assertIsNotNone(target.report_errors_api)
 
     @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
     def test_report_exception_with_service_version_in_constructor(

@@ -14,6 +14,9 @@
 
 """GAX wrapper for Error Reporting API requests."""
 
+from google.cloud._helpers import make_secure_channel
+from google.cloud._http import DEFAULT_USER_AGENT
+
 from google.cloud.gapic.errorreporting.v1beta1 import (
     report_errors_service_client)
 from google.cloud.grpc.devtools.clouderrorreporting.v1beta1 import (
@@ -21,10 +24,22 @@ from google.cloud.grpc.devtools.clouderrorreporting.v1beta1 import (
 from google.protobuf.json_format import ParseDict
 
 
-def make_report_error_api(project):
-    """Create an instance of the GAX Logging API."""
-    client = report_errors_service_client.ReportErrorsServiceClient()
-    return _ErrorReportingGaxApi(client, project)
+def make_report_error_api(client):
+    """Create an instance of the GAX Logging API.
+
+    :type client::class:`google.cloud.error_reporting.Client`
+    :param client: Error Reporting client
+
+    :rtype: :class:_ErrorReportingGaxApi
+    :returns: An Error Reporting API instane
+    """
+    channel = make_secure_channel(
+        client._connection.credentials,
+        DEFAULT_USER_AGENT,
+        report_errors_service_client.ReportErrorsServiceClient.SERVICE_ADDRESS)
+    gax_client = report_errors_service_client.ReportErrorsServiceClient(
+        channel=channel)
+    return _ErrorReportingGaxApi(gax_client, client.project)
 
 
 class _ErrorReportingGaxApi(object):
@@ -37,6 +52,7 @@ class _ErrorReportingGaxApi(object):
     :type project: str
     :param project: Google Cloud Project ID
     """
+
     def __init__(self, gax_api, project):
         self._gax_api = gax_api
         self._project = project

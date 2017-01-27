@@ -42,7 +42,7 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
         self.assertEqual(logger_client.logging_client.project, self.PROJECT)
 
     @mock.patch('google.cloud.logging.client')
-    def test_report_error_event(self, logging_client):
+    def test_report_error_event(self, _):
         credentials = _make_credentials()
         logger_client = self._call_fut(self.PROJECT, credentials)
         payload = mock.Mock()
