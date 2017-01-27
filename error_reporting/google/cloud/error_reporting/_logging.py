@@ -23,7 +23,25 @@ import google.cloud.logging.client
 
 
 class _ErrorReportingLoggingAPI(object):
-    """Report to Stackdriver Error Reporting via Logging API"""
+    """Report to Stackdriver Error Reporting via Logging API
+
+    :type project: str
+    :param project: the project which the client acts on behalf of. If not
+                    passed falls back to the default inferred from the
+                    environment.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                       :class:`NoneType`
+    :param credentials: The OAuth2 Credentials to use for the connection
+                        owned by this client. If not passed (and if no ``http``
+                        object is passed), falls back to the default inferred
+                        from the environment.
+
+    :type http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param http: An optional HTTP object to make requests. If not passed, an
+                 ``http`` object is created that is bound to the
+                 ``credentials`` for the current object.
+    """
     def __init__(self, project, credentials=None, http=None):
         self.logging_client = google.cloud.logging.client.Client(
             project, credentials, http)

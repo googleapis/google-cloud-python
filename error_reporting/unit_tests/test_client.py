@@ -48,9 +48,7 @@ class TestClient(unittest.TestCase):
     VERSION = 'myversion'
 
     def test_ctor_default(self):
-        CREDENTIALS = _make_credentials()
-        target = self._make_one(project=self.PROJECT,
-                                credentials=CREDENTIALS)
+        target = self._make_one()
         self.assertEquals(target.service, target.DEFAULT_SERVICE)
         self.assertEquals(target.version, None)
 
@@ -81,6 +79,30 @@ class TestClient(unittest.TestCase):
         })
         self.assertIn('test_report', payload['message'])
         self.assertIn('test_client.py', payload['message'])
+
+    def test_report_exception_wo_gax(self):
+        CREDENTIALS = _make_credentials()
+        target = self._make_one(project=self.PROJECT,
+                                credentials=CREDENTIALS,
+                                use_gax=False)
+
+        patch = mock.patch(
+            'google.cloud.error_reporting.client._ErrorReportingLoggingAPI'
+        )
+        with patch as _ErrorReportingLogging:
+            try:
+                raise NameError
+            except NameError:
+                target.report_exception()
+            mock_report = _ErrorReportingLogging.return_value.report_error_event
+            payload = mock_report.call_args[0][0]
+
+        self.assertEquals(payload['serviceContext'], {
+            'service': target.DEFAULT_SERVICE,
+         })
+        self.assertIn('test_report', payload['message'])
+        self.assertIn('test_client.py', payload['message'])
+
 
     @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
     def test_report_exception_with_service_version_in_constructor(
@@ -139,4 +161,4 @@ class TestClient(unittest.TestCase):
         self.assertIn('test_client.py', report_location['filePath'])
         self.assertEqual(report_location['functionName'], 'test_report')
         self.assertGreater(report_location['lineNumber'], 100)
-        self.assertLess(report_location['lineNumber'], 150)
+        self.assertLess(report_location['lineNumber'], 250)
