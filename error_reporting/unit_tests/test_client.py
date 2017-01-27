@@ -47,6 +47,8 @@ class TestClient(unittest.TestCase):
     SERVICE = 'SERVICE'
     VERSION = 'myversion'
 
+    @mock.patch(
+        'google.cloud.error_reporting.client._determine_default_project')
     def test_ctor_default(self):
         CREDENTIALS = _make_credentials()
         target = self._make_one(credentials=CREDENTIALS)
