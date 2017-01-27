@@ -427,10 +427,10 @@ class Batch(object):
                          (off).
     :type max_messages: float
     """
-    INFINITY = float('inf')
+    _INFINITY = float('inf')
 
-    def __init__(self, topic, client, max_interval=INFINITY,
-                 max_messages=INFINITY):
+    def __init__(self, topic, client, max_interval=_INFINITY,
+                 max_messages=_INFINITY):
         self.topic = topic
         self.messages = []
         self.message_ids = []
