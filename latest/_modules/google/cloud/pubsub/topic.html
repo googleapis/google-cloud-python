@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.topic &mdash; google-cloud 9e6f2df documentation</title>
+  <title>google.cloud.pubsub.topic &mdash; google-cloud 50c8e88 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 9e6f2df documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 50c8e88 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -300,6 +300,8 @@
 <span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Define API Topics.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_NOW</span>
@@ -695,14 +697,39 @@
 <span class="sd">    :type topic: :class:`google.cloud.pubsub.topic.Topic`</span>
 <span class="sd">    :param topic: the topic being published</span>
 
-<span class="sd">    :type client: :class:`google.cloud.pubsub.client.Client`</span>
 <span class="sd">    :param client: The client to use.</span>
+<span class="sd">    :type client: :class:`google.cloud.pubsub.client.Client`</span>
+
+<span class="sd">    :param max_interval: The maximum interval, in seconds, before the batch</span>
+<span class="sd">                         will automatically commit. Note that this does not</span>
+<span class="sd">                         run a background loop; it just checks when each</span>
+<span class="sd">                         message is published. Therefore, this is intended</span>
+<span class="sd">                         for situations where messages are published at</span>
+<span class="sd">                         reasonably regular intervals. Defaults to infinity</span>
+<span class="sd">                         (off).</span>
+<span class="sd">    :type max_interval: float</span>
+
+<span class="sd">    :param max_messages: The maximum number of messages to hold in the batch</span>
+<span class="sd">                         before automatically commiting. Defaults to infinity</span>
+<span class="sd">                         (off).</span>
+<span class="sd">    :type max_messages: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+    <span class="n">_INFINITY</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">max_interval</span><span class="o">=</span><span class="n">_INFINITY</span><span class="p">,</span>
+                 <span class="n">max_messages</span><span class="o">=</span><span class="n">_INFINITY</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">topic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message_ids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+
+        <span class="c1"># Set the autocommit rules. If the interval or number of messages</span>
+        <span class="c1"># is exceeded, then the .publish() method will imply a commit.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_interval</span> <span class="o">=</span> <span class="n">max_interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_messages</span> <span class="o">=</span> <span class="n">max_messages</span>
+
+        <span class="c1"># Set the initial starting timestamp (used against the interval).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -726,7 +753,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">_timestamp_message</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
-             <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">})</span></div>
+             <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">})</span>
+
+        <span class="c1"># If too much time has elapsed since the first message</span>
+        <span class="c1"># was added, autocommit.</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_timestamp</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_interval</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_timestamp</span> <span class="o">=</span> <span class="n">now</span>
+            <span class="k">return</span>
+
+        <span class="c1"># If the number of messages on the list is greater than the</span>
+        <span class="c1"># maximum allowed, autocommit (with the batch&#39;s client).</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_messages</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">return</span></div>
 
 <div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../../pubsub-topic.html#google.cloud.pubsub.topic.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send saved messages as a single API call.</span>
@@ -778,7 +819,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'9e6f2df',
+            VERSION:'50c8e88',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
