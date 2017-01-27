@@ -32,4 +32,4 @@ from google.cloud.dns.zone import ManagedZone
 from google.cloud.dns.resource_record_set import ResourceRecordSet
 
 
-SCOPE = Connection.SCOPE
+SCOPE = Client.SCOPE

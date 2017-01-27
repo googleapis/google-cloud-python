@@ -28,6 +28,3 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/dns/{api_version}{path}'
     """A template for the URL of a particular API call."""
-
-    SCOPE = ('https://www.googleapis.com/auth/ndev.clouddns.readwrite',)
-    """The scopes required for authenticating as a Cloud DNS consumer."""
