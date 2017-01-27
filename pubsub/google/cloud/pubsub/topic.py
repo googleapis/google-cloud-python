@@ -442,7 +442,7 @@ class Batch(object):
         self._max_messages = max_messages
 
         # Set the initial starting timestamp (used against the interval).
-        self._start_timestamp = float(time.time())
+        self._start_timestamp = time.time()
 
     def __enter__(self):
         return self
@@ -462,9 +462,6 @@ class Batch(object):
 
         :type attrs: dict (string -> string)
         :param attrs: key-value pairs to send as message attributes
-
-        :rtype: None
-        :returns: None
         """
         self.topic._timestamp_message(attrs)
         self.messages.append(
@@ -474,14 +471,17 @@ class Batch(object):
         # If too much time has elapsed since the first message
         # was added, autocommit.
         if self._max_interval < self.INFINITY:
-            if float(time.time()) - self._start_timestamp > self._max_interval:
-                self._start_timestamp = float(time.time())
-                return self.commit()
+            now = time.time()
+            if now - self._start_timestamp > self._max_interval:
+                self.commit()
+                self._start_timestamp = now
+                return
 
         # If the number of messages on the list is greater than the
         # maximum allowed, autocommit (with the batch's client).
         if len(self.messages) >= self._max_messages:
-            return self.commit()
+            self.commit()
+            return
 
     def commit(self, client=None):
         """Send saved messages as a single API call.

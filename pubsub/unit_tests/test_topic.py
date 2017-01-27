@@ -790,14 +790,14 @@ class TestBatch(unittest.TestCase):
         Batch = self._get_target_class()
         with mock.patch.object(Batch, 'commit') as commit:
             with self._make_one(topic, client=client, max_messages=5) as batch:
-                self.assertIsInstance(batch, self._get_target_class())
+                self.assertIsInstance(batch, Batch)
 
                 # Publish four messages and establish that the batch does
                 # not commit.
                 for i in range(0, 4):
                     batch.publish({
                         'attributes': {},
-                        'data': 'Batch message %d.' % i,
+                        'data': 'Batch message %d.' % (i,),
                     })
                     commit.assert_not_called()
 
@@ -825,14 +825,14 @@ class TestBatch(unittest.TestCase):
         with mock.patch.object(Batch, 'commit') as commit:
             mock_time.return_value = 0.0
             with self._make_one(topic, client=client, max_interval=5) as batch:
-                self.assertIsInstance(batch, self._get_target_class())
+                self.assertIsInstance(batch, Batch)
 
                 # Publish some messages and establish that the batch does
                 # not commit.
                 for i in range(0, 10):
                     batch.publish({
                         'attributes': {},
-                        'data': 'Batch message %d.' % i,
+                        'data': 'Batch message %d.' % (i,),
                     })
                     commit.assert_not_called()
 
