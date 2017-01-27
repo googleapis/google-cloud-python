@@ -151,6 +151,12 @@ class Client(object):
         See:
         https://cloud.google.com/logging/docs/api/reference/rest/v2/entries
         https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs
+
+        :rtype:
+            :class:`_gax._ErrorReportingGaxApi`
+            or
+            :class:`._logging._ErrorReportingLoggingAPI`
+        :returns: A class that implements the report errors API.
         """
         if self._report_errors_api is None:
             if self._use_gax:
@@ -160,8 +166,11 @@ class Client(object):
                     self._project, self._credentials, self._http)
         return self._report_errors_api
 
-    def _build_error_report(self, message,
-                            report_location=None, http_context=None, user=None):
+    def _build_error_report(self,
+                            message,
+                            report_location=None,
+                            http_context=None,
+                            user=None):
         """Builds the Error Reporting object to report.
 
         This builds the object according to
@@ -194,6 +203,9 @@ class Client(object):
                      logged in. In this  case the Error Reporting system will
                      use other data, such as remote IP address,
                      to distinguish affected users.
+        :rtype: dict
+        :returns: A dict payload ready to be serialized to JSON and sent to
+                  the API.
          """
         payload = {
             'serviceContext': {
@@ -223,8 +235,11 @@ class Client(object):
             payload['context']['user'] = user
         return payload
 
-    def _send_error_report(self, message,
-                   report_location=None, http_context=None, user=None):
+    def _send_error_report(self,
+                           message,
+                           report_location=None,
+                           http_context=None,
+                           user=None):
         """Makes the call to the Error Reporting API.
 
         This is the lower-level interface to build and send the payload,

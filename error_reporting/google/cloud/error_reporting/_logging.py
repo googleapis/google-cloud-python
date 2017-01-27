@@ -23,12 +23,20 @@ import google.cloud.logging.client
 
 
 class _ErrorReportingLoggingAPI(object):
-    """Report to Stackdriver Error Reporting via Logging API
-    """
-    def __init__(self, project, credentials, http):
+    """Report to Stackdriver Error Reporting via Logging API"""
+    def __init__(self, project, credentials=None, http=None):
         self.logging_client = google.cloud.logging.client.Client(
             project, credentials, http)
 
-    def report_error_event(self, project, error_report):
+    def report_error_event(self, error_report):
+        """Report error payload.
+
+        :type error_report: dict
+        :param: error_report:
+            dict payload of the error report formatted according to
+            https://cloud.google.com/error-reporting/docs/formatting-error-messages
+            This object should be built using
+            :meth:~`google.cloud.error_reporting.client._build_error_report`
+        """
         logger = self.logging_client.logger('errors')
         logger.log_struct(error_report)

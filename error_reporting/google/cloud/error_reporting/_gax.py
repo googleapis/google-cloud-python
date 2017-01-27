@@ -14,24 +14,28 @@
 
 """GAX wrapper for Error Reporting API requests."""
 
-from google.cloud.gapic.errorreporting.v1beta1 import report_errors_service_api
-from google.devtools.clouderrorreporting.v1beta1 import report_errors_service_pb2
+from google.cloud.gapic.errorreporting.v1beta1 import (
+    report_errors_service_client)
+from google.cloud.grpc.devtools.clouderrorreporting.v1beta1 import (
+    report_errors_service_pb2)
 from google.protobuf.json_format import ParseDict
 
 
 def make_report_error_api(project):
     """Create an instance of the GAX Logging API."""
-    api = report_errors_service_api.ReportErrorsServiceApi()
-    return _ErrorReportingGaxApi(api, project)
+    client = report_errors_service_client.ReportErrorsServiceClient()
+    return _ErrorReportingGaxApi(client, project)
 
 
 class _ErrorReportingGaxApi(object):
     """Helper mapping Error Reporting-related APIs
 
     :type gax_api:
-        :class:`google.cloud.gapic.errorreporting.v1beta1
-        .report_errors_service_api.report_errors_service_api`
+        :class:`v1beta1.report_errors_service_client.ReportErrorsServiceClient`
     :param gax_api: API object used to make GAX requests.
+
+    :type project: str
+    :param project: Google Cloud Project ID
     """
     def __init__(self, gax_api, project):
         self._gax_api = gax_api
@@ -40,15 +44,13 @@ class _ErrorReportingGaxApi(object):
     def report_error_event(self, error_report):
         """Uses the GAX client to report the error.
 
-        :type project: str
-        :param: project: Project ID to report the error to
-
-        :type error: dict:
-        :param: error: dict payload of the error report formatted
-                       according to
-                       https://cloud.google.com/error-reporting/docs/formatting-error-messages
-                       This object should be built using
-                       Use :meth:~`google.cloud.error_reporting.client._build_error_report`
+        :type error_report: dict
+        :param error_report:
+            payload of the error report formatted according to
+            https://cloud.google.com/error-reporting/docs/formatting-error-messages
+            This object should be built using
+            Use
+            :meth:~`google.cloud.error_reporting.client._build_error_report`
         """
         project_name = self._gax_api.project_path(self._project)
         error_report_payload = report_errors_service_pb2.ReportedErrorEvent()

@@ -82,7 +82,10 @@ class TestClient(unittest.TestCase):
         self.assertIn('test_report', payload['message'])
         self.assertIn('test_client.py', payload['message'])
 
-    def test_build_report_with_service_version_in_constructor(self):
+    @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
+    def test_report_exception_with_service_version_in_constructor(
+            self,
+            make_client):
         CREDENTIALS = _make_credentials()
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"
@@ -91,16 +94,18 @@ class TestClient(unittest.TestCase):
                                 service=SERVICE,
                                 version=VERSION)
 
-        MESSAGE = 'this is an error'
         http_context = self._makeHTTP(method="GET", response_status_code=500)
         USER = "user@gmail.com"
+
+        client = mock.Mock()
+        make_client.return_value = client
 
         try:
             raise NameError
         except NameError:
             target.report_exception(http_context=http_context, user=USER)
 
-        payload = target.build_error_report(MESSAGE)
+        payload = client.report_error_event.call_args[0][0]
         self.assertEquals(payload['serviceContext'], {
             'service': SERVICE,
             'version': VERSION
@@ -115,13 +120,19 @@ class TestClient(unittest.TestCase):
             payload['context']['httpContext']['method'], 'GET')
         self.assertEquals(payload['context']['user'], USER)
 
-    def test_build_report(self):
+    @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
+    def test_report(self, make_client):
         CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
+        client = mock.Mock()
+        make_client.return_value = client
+
         MESSAGE = 'this is an error'
-        payload = target._build_error_report(MESSAGE)
+        target.report(MESSAGE)
+
+        payload = client.report_error_event.call_args[0][0]
 
         self.assertEquals(payload['message'], MESSAGE)
         report_location = payload['context']['reportLocation']
@@ -129,16 +140,3 @@ class TestClient(unittest.TestCase):
         self.assertEqual(report_location['functionName'], 'test_report')
         self.assertGreater(report_location['lineNumber'], 100)
         self.assertLess(report_location['lineNumber'], 150)
-
-
-"""
-class _Logger(object):
-
-    def log_struct(self, payload,  # pylint: disable=unused-argument
-                   client=None,  # pylint: disable=unused-argument
-                   labels=None,   # pylint: disable=unused-argument
-                   insert_id=None,   # pylint: disable=unused-argument
-                   severity=None,   # pylint: disable=unused-argument
-                   http_request=None):  # pylint: disable=unused-argument
-        self.log_struct_called_with = payload
-"""
