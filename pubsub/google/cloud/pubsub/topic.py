@@ -470,12 +470,11 @@ class Batch(object):
 
         # If too much time has elapsed since the first message
         # was added, autocommit.
-        if self._max_interval < self.INFINITY:
-            now = time.time()
-            if now - self._start_timestamp > self._max_interval:
-                self.commit()
-                self._start_timestamp = now
-                return
+        now = time.time()
+        if now - self._start_timestamp > self._max_interval:
+            self.commit()
+            self._start_timestamp = now
+            return
 
         # If the number of messages on the list is greater than the
         # maximum allowed, autocommit (with the batch's client).
