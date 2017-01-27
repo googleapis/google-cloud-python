@@ -36,8 +36,13 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
     def test_ctor(self):
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
-        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
-            RecognitionConfig, SpeechContext, StreamingRecognitionConfig,
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+            SpeechContext)
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+            RecognitionConfig)
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+            StreamingRecognitionConfig)
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
             StreamingRecognizeRequest)
 
         sample = Sample(content=self.AUDIO_CONTENT,
@@ -98,8 +103,10 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         from io import BytesIO
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
-        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
-            StreamingRecognitionConfig, StreamingRecognizeRequest)
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+            StreamingRecognitionConfig)
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+            StreamingRecognizeRequest)
 
         sample = Sample(stream=BytesIO(self.AUDIO_CONTENT),
                         encoding=speech.Encoding.FLAC,
