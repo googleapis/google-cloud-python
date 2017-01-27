@@ -75,12 +75,15 @@ class Client(ClientWithProject):
     _subscriber_api = None
     _iam_policy_api = None
 
+    SCOPE = ('https://www.googleapis.com/auth/pubsub',
+             'https://www.googleapis.com/auth/cloud-platform')
+    """The scopes required for authenticating as a Cloud Pub/Sub consumer."""
+
     def __init__(self, project=None, credentials=None,
                  http=None, use_gax=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
         if use_gax is None:
             self._use_gax = _USE_GAX
         else:
@@ -96,7 +99,7 @@ class Client(ClientWithProject):
                         host=self._connection.host)
                 else:
                     generated = make_gax_publisher_api(
-                        credentials=self._connection._credentials)
+                        credentials=self._credentials)
                 self._publisher_api = GAXPublisherAPI(generated, self)
             else:
                 self._publisher_api = JSONPublisherAPI(self)
@@ -112,7 +115,7 @@ class Client(ClientWithProject):
                         host=self._connection.host)
                 else:
                     generated = make_gax_subscriber_api(
-                        credentials=self._connection._credentials)
+                        credentials=self._credentials)
                 self._subscriber_api = GAXSubscriberAPI(generated, self)
             else:
                 self._subscriber_api = JSONSubscriberAPI(self)
