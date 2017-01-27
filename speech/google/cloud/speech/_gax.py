@@ -106,7 +106,7 @@ class GAPICSpeechAPI(object):
         api = self._gapic_api
         operation_future = api.async_recognize(config=config, audio=audio)
 
-        return Operation.from_pb(operation_future._operation, self)
+        return Operation.from_pb(operation_future.last_operation_data(), self)
 
     def streaming_recognize(self, sample, language_code=None,
                             max_alternatives=None, profanity_filter=None,

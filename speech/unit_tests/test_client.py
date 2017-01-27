@@ -725,13 +725,16 @@ class _MockGAPICSpeechAPI(object):
         self._channel = channel
 
     def async_recognize(self, config, audio):
+        from google.gapic.longrunning.operations_client import OperationsClient
         from google.gax import _OperationFuture
         from google.longrunning.operations_pb2 import Operation
+        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+            AsyncRecognizeResponse)
 
         self.config = config
         self.audio = audio
-        operation_future = mock.Mock(spec=_OperationFuture)
-        operation_future._operation = Operation()
+        operation_future = _OperationFuture(Operation(), OperationsClient(),
+                                            AsyncRecognizeResponse, {})
         return operation_future
 
     def sync_recognize(self, config, audio):
