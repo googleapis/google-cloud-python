@@ -46,12 +46,16 @@ class Client(ClientWithProject):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
+             'https://www.googleapis.com/auth/devstorage.read_only',
+             'https://www.googleapis.com/auth/devstorage.read_write')
+    """The scopes required for authenticating as a Cloud Storage consumer."""
+
     def __init__(self, project=None, credentials=None, http=None):
         self._base_connection = None
         super(Client, self).__init__(project=project, credentials=credentials,
                                      http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
         self._batch_stack = _LocalStack()
 
     @property

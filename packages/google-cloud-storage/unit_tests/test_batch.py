@@ -399,7 +399,7 @@ class TestBatch(unittest.TestCase):
         project = 'PROJECT'
         credentials = _make_credentials()
         client = Client(project=project, credentials=credentials)
-        client._base_connection._http = http
+        client._http_internal = http
 
         self.assertEqual(list(client._batch_stack), [])
 

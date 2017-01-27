@@ -20,12 +20,8 @@ from google.cloud import _http
 class Connection(_http.JSONConnection):
     """A connection to Google Cloud Storage via the JSON REST API.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        connection.
-
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: (Optional) HTTP object to make requests.
+    :type client: :class:`~google.cloud.storage.client.Client`
+    :param client: The client that owns the current connection.
     """
 
     API_BASE_URL = _http.API_BASE_URL
@@ -36,8 +32,3 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/storage/{api_version}{path}'
     """A template for the URL of a particular API call."""
-
-    SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
-             'https://www.googleapis.com/auth/devstorage.read_only',
-             'https://www.googleapis.com/auth/devstorage.read_write')
-    """The scopes required for authenticating as a Cloud Storage consumer."""
