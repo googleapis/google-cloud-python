@@ -37,11 +37,13 @@ class Client(client_module.Client):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating as an API consumer."""
+
     def __init__(self, credentials=None, http=None):
         super(Client, self).__init__(
             credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
 
     def document_from_text(self, content, **kwargs):
         """Create a plain text document bound to this client.

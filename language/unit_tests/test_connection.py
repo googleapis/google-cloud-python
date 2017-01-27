@@ -27,7 +27,7 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_build_api_url(self):
-        conn = self._make_one()
+        conn = self._make_one(object())
         uri = '/'.join([
             conn.API_BASE_URL,
             conn.API_VERSION,
