@@ -68,11 +68,15 @@ class Client(ClientWithProject):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/monitoring.read',
+             'https://www.googleapis.com/auth/monitoring',
+             'https://www.googleapis.com/auth/cloud-platform')
+    """The scopes required for authenticating as a Monitoring consumer."""
+
     def __init__(self, project=None, credentials=None, http=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
 
     def query(self,
               metric_type=Query.DEFAULT_METRIC_TYPE,
