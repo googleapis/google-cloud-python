@@ -26,16 +26,8 @@ from google.cloud.logging.metric import Metric
 class Connection(_http.JSONConnection):
     """A connection to Google Stackdriver Logging via the JSON REST API.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        connection.
-
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: (Optional) HTTP object to make requests.
-
-    :type api_base_url: str
-    :param api_base_url: The base of the API call URL. Defaults to the value
-                         :attr:`Connection.API_BASE_URL`.
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client that owns the current connection.
     """
 
     API_BASE_URL = 'https://logging.googleapis.com'
@@ -46,12 +38,6 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
     """A template for the URL of a particular API call."""
-
-    SCOPE = ('https://www.googleapis.com/auth/logging.read',
-             'https://www.googleapis.com/auth/logging.write',
-             'https://www.googleapis.com/auth/logging.admin',
-             'https://www.googleapis.com/auth/cloud-platform')
-    """The scopes required for authenticating as a Logging consumer."""
 
 
 class _LoggingAPI(object):
