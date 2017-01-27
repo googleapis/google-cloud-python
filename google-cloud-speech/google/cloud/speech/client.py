@@ -55,14 +55,14 @@ class Client(BaseClient):
                     variable
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating as an API consumer."""
+
     _speech_api = None
 
     def __init__(self, credentials=None, http=None, use_gax=None):
         super(Client, self).__init__(credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials,
-            http=self._http,
-        )
+        self._connection = Connection(self)
 
         # Save on the actual client class whether we use GAX or not.
         if use_gax is None:
