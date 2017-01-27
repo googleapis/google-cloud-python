@@ -19,8 +19,6 @@ from pkg_resources import get_distribution
 import six
 from six.moves.urllib.parse import urlencode
 
-import google.auth.credentials
-
 from google.cloud.exceptions import make_exception
 
 
