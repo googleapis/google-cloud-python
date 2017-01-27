@@ -22,16 +22,8 @@ from google.cloud import _http
 class Connection(_http.JSONConnection):
     """A connection to Google Cloud Vision via the JSON REST API.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        connection.
-
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: (Optional) HTTP object to make requests.
-
-    :type api_base_url: str
-    :param api_base_url: The base of the API call URL. Defaults to the value
-                         :attr:`Connection.API_BASE_URL`.
+    :type client: :class:`~google.cloud.vision.client.Client`
+    :param client: The client that owns the current connection.
     """
 
     API_BASE_URL = 'https://vision.googleapis.com'

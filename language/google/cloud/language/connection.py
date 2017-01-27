@@ -18,7 +18,11 @@ from google.cloud import _http
 
 
 class Connection(_http.JSONConnection):
-    """A connection to Google Cloud Natural Language JSON REST API."""
+    """A connection to Google Cloud Natural Language JSON REST API.
+
+    :type client: :class:`~google.cloud.language.client.Client`
+    :param client: The client that owns the current connection.
+    """
 
     API_BASE_URL = 'https://language.googleapis.com'
     """The base of the API call URL."""
