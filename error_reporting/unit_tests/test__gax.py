@@ -17,6 +17,16 @@ import unittest
 import mock
 
 
+class Test_make_report_error_api(unittest.TestCase):
+
+    def test_make_report_error_api(self):
+        from google.cloud.error_reporting._gax import make_report_error_api
+        client = mock.Mock()
+        client.project = mock.Mock()
+        report_error_client = make_report_error_api(client)
+        self.assertEqual(report_error_client._project, client.project)
+
+
 class Test_ErrorReportingGaxApi(unittest.TestCase):
 
     PROJECT = 'PROJECT'
