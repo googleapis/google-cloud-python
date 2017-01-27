@@ -48,7 +48,8 @@ class TestClient(unittest.TestCase):
     VERSION = 'myversion'
 
     def test_ctor_default(self):
-        target = self._make_one()
+        CREDENTIALS = _make_credentials()
+        target = self._make_one(credentials=CREDENTIALS)
         self.assertEquals(target.service, target.DEFAULT_SERVICE)
         self.assertEquals(target.version, None)
 
