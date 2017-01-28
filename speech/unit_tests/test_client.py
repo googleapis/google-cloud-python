@@ -733,7 +733,8 @@ class _MockGAPICSpeechAPI(object):
 
         self.config = config
         self.audio = audio
-        operation_future = _OperationFuture(Operation(), OperationsClient(),
+        operations_client = mock.Mock(spec=OperationsClient)
+        operation_future = _OperationFuture(Operation(), operations_client,
                                             AsyncRecognizeResponse, {})
         return operation_future
 
