@@ -1688,6 +1688,39 @@ FACE_DETECTION_RESPONSE = {
 }
 
 
+MULTIPLE_RESPONSE = {
+    'responses': [
+        {
+            'labelAnnotations': [
+                {
+                    'mid': '/m/0k4j',
+                    'description': 'automobile',
+                    'score': 0.9776855
+                },
+                {
+                    'mid': '/m/07yv9',
+                    'description': 'vehicle',
+                    'score': 0.947987
+                },
+                {
+                    'mid': '/m/07r04',
+                    'description': 'truck',
+                    'score': 0.88429511
+                },
+            ],
+        },
+        {
+            'safeSearchAnnotation': {
+                'adult': 'VERY_UNLIKELY',
+                'spoof': 'UNLIKELY',
+                'medical': 'POSSIBLE',
+                'violence': 'VERY_UNLIKELY'
+            },
+        },
+    ],
+}
+
+
 SAFE_SEARCH_DETECTION_RESPONSE = {
     'responses': [
         {

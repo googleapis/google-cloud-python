@@ -104,8 +104,10 @@ class TestClient(unittest.TestCase):
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
         image = client.image(content=IMAGE_CONTENT)
-        response = client._vision_api.annotate(image, features)
+        api_response = client._vision_api.annotate(image, features)
 
+        self.assertEqual(len(api_response), 1)
+        response = api_response[0]
         self.assertEqual(REQUEST,
                          client._connection._requested[0]['data'])
         self.assertIsInstance(response, Annotations)
@@ -166,8 +168,10 @@ class TestClient(unittest.TestCase):
         logo_feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
         features = [label_feature, logo_feature]
         image = client.image(content=IMAGE_CONTENT)
-        items = image.detect(features)
+        detected_items = image.detect(features)
 
+        self.assertEqual(len(detected_items), 1)
+        items = detected_items[0]
         self.assertEqual(len(items.logos), 2)
         self.assertEqual(len(items.labels), 3)
         first_logo = items.logos[0]

@@ -78,11 +78,15 @@ class TestGAXClient(unittest.TestCase):
         gax_api._annotator_client = mock.Mock(
             spec_set=['batch_annotate_images'], **mock_response)
         with mock.patch('google.cloud.vision._gax.Annotations'):
-            self.assertIsNone(gax_api.annotate(image, [feature]))
+            response = gax_api.annotate(image, [feature])
+        self.assertEqual(len(response), 0)
+        self.assertIsInstance(response, list)
 
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
     def test_annotate_multiple_results(self):
+        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.vision.annotations import Annotations
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
@@ -95,16 +99,21 @@ class TestGAXClient(unittest.TestCase):
                         'ImageAnnotatorClient'):
             gax_api = self._make_one(client)
 
-        mock_response = {
-            'batch_annotate_images.return_value': mock.Mock(responses=[1, 2]),
-        }
+        responses = [
+            image_annotator_pb2.AnnotateImageResponse(),
+            image_annotator_pb2.AnnotateImageResponse(),
+        ]
+        response = image_annotator_pb2.BatchAnnotateImagesResponse(
+            responses=responses)
 
         gax_api._annotator_client = mock.Mock(
-            spec_set=['batch_annotate_images'], **mock_response)
-        with mock.patch('google.cloud.vision._gax.Annotations'):
-            with self.assertRaises(NotImplementedError):
-                gax_api.annotate(image, [feature])
+            spec_set=['batch_annotate_images'])
+        gax_api._annotator_client.batch_annotate_images.return_value = response
+        responses = gax_api.annotate(image, [feature])
 
+        self.assertEqual(len(responses), 2)
+        self.assertIsInstance(responses[0], Annotations)
+        self.assertIsInstance(responses[1], Annotations)
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
 

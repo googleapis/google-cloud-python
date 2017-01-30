@@ -41,20 +41,16 @@ class _HTTPVisionAPI(object):
                          based on the number of Feature Types.
 
                          See: https://cloud.google.com/vision/docs/pricing
-        :rtype: dict
-        :returns: List of annotations.
+        :rtype: list
+        :returns: List of :class:`~googe.cloud.vision.annotations.Annotations`.
         """
         request = _make_request(image, features)
 
         data = {'requests': [request]}
         api_response = self._connection.api_request(
             method='POST', path='/images:annotate', data=data)
-        images = api_response.get('responses')
-        if len(images) == 1:
-            return Annotations.from_api_repr(images[0])
-        elif len(images) > 1:
-            raise NotImplementedError(
-                'Multiple image processing is not yet supported.')
+        responses = api_response.get('responses')
+        return [Annotations.from_api_repr(response) for response in responses]
 
 
 def _make_request(image, features):
