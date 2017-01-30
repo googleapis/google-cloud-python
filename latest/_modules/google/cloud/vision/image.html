@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.image &mdash; google-cloud 50c8e88 documentation</title>
+  <title>google.cloud.vision.image &mdash; google-cloud f8ceb94 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 50c8e88 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f8ceb94 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -421,7 +421,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">FACE_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
         <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">faces</span></div>
+        <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">faces</span></div>
 
 <div class="viewcode-block" id="Image.detect_labels"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_labels">[docs]</a>    <span class="k">def</span> <span class="nf">detect_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect labels that describe objects in an image.</span>
@@ -434,7 +434,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LABEL_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
         <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">labels</span></div>
+        <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span></div>
 
 <div class="viewcode-block" id="Image.detect_landmarks"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_landmarks">[docs]</a>    <span class="k">def</span> <span class="nf">detect_landmarks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect landmarks in an image.</span>
@@ -448,7 +448,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LANDMARK_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
         <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">landmarks</span></div>
+        <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span></div>
 
 <div class="viewcode-block" id="Image.detect_logos"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_logos">[docs]</a>    <span class="k">def</span> <span class="nf">detect_logos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect logos in an image.</span>
@@ -462,7 +462,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LOGO_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
         <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">logos</span></div>
+        <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">logos</span></div>
 
 <div class="viewcode-block" id="Image.detect_properties"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_properties">[docs]</a>    <span class="k">def</span> <span class="nf">detect_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect the color properties of an image.</span>
@@ -476,7 +476,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">IMAGE_PROPERTIES</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
         <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">properties</span></div>
+        <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">properties</span></div>
 
 <div class="viewcode-block" id="Image.detect_safe_search"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_safe_search">[docs]</a>    <span class="k">def</span> <span class="nf">detect_safe_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retreive safe search properties from an image.</span>
@@ -490,7 +490,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">SAFE_SEARCH_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
         <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">safe_searches</span></div>
+        <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">safe_searches</span></div>
 
 <div class="viewcode-block" id="Image.detect_text"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_text">[docs]</a>    <span class="k">def</span> <span class="nf">detect_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect text in an image.</span>
@@ -504,7 +504,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">TEXT_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
         <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">texts</span></div></div>
+        <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">texts</span></div></div>
 </pre></div>
 
            </div>
@@ -538,7 +538,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'50c8e88',
+            VERSION:'f8ceb94',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
