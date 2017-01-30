@@ -55,14 +55,17 @@ class Client(ClientWithProject):
                     falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
                     variable
     """
+
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating as a Cloud Vision consumer."""
+
     _vision_api_internal = None
 
     def __init__(self, project=None, credentials=None, http=None,
                  use_gax=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
         if use_gax is None:
             self._use_gax = _USE_GAX
         else:

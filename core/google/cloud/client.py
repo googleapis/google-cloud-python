@@ -16,6 +16,7 @@
 
 import google.auth.credentials
 from google.oauth2 import service_account
+import google_auth_httplib2
 import six
 
 from google.cloud._helpers import _determine_default_project
@@ -74,6 +75,26 @@ class Client(_ClientFactoryMixin):
     Stores ``credentials`` and ``http`` object so that subclasses
     can pass them along to a connection class.
 
+    If no value is passed in for ``http``, a :class:`httplib2.Http` object
+    will be created and authorized with the ``credentials``. If not, the
+    ``credentials`` and ``http`` need not be related.
+
+    Callers and subclasses may seek to use the private key from
+    ``credentials`` to sign data.
+
+    A custom (non-``httplib2``) HTTP object must have a ``request`` method
+    which accepts the following arguments:
+
+    * ``uri``
+    * ``method``
+    * ``body``
+    * ``headers``
+
+    In addition, ``redirections`` and ``connection_type`` may be used.
+
+    A custom ``http`` object will also need to be able to add a bearer token
+    to API requests and handle token refresh on 401 errors.
+
     :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
                         client. If not passed (and if no ``http`` object is
@@ -88,6 +109,12 @@ class Client(_ClientFactoryMixin):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = None
+    """The scopes required for authenticating with a service.
+
+    Needs to be set by subclasses.
+    """
+
     def __init__(self, credentials=None, http=None):
         if (credentials is not None and
                 not isinstance(
@@ -95,8 +122,21 @@ class Client(_ClientFactoryMixin):
             raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
         if credentials is None and http is None:
             credentials = get_credentials()
-        self._credentials = credentials
-        self._http = http
+        self._credentials = google.auth.credentials.with_scopes_if_required(
+            credentials, self.SCOPE)
+        self._http_internal = http
+
+    @property
+    def _http(self):
+        """Getter for object used for HTTP transport.
+
+        :rtype: :class:`~httplib2.Http`
+        :returns: An HTTP object.
+        """
+        if self._http_internal is None:
+            self._http_internal = google_auth_httplib2.AuthorizedHttp(
+                self._credentials)
+        return self._http_internal
 
 
 class _ClientProjectMixin(object):

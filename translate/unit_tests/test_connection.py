@@ -27,7 +27,7 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_build_api_url_no_extra_query_params(self):
-        conn = self._make_one()
+        conn = self._make_one(object())
         URI = '/'.join([
             conn.API_BASE_URL,
             'language',
@@ -41,7 +41,7 @@ class TestConnection(unittest.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
 
-        conn = self._make_one()
+        conn = self._make_one(object())
         query_params = [('q', 'val1'), ('q', 'val2')]
         uri = conn.build_api_url('/foo', query_params=query_params)
         scheme, netloc, path, qs, _ = urlsplit(uri)

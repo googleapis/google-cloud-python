@@ -91,12 +91,17 @@ class Client(ClientWithProject):
     _sinks_api = None
     _metrics_api = None
 
+    SCOPE = ('https://www.googleapis.com/auth/logging.read',
+             'https://www.googleapis.com/auth/logging.write',
+             'https://www.googleapis.com/auth/logging.admin',
+             'https://www.googleapis.com/auth/cloud-platform')
+    """The scopes required for authenticating as a Logging consumer."""
+
     def __init__(self, project=None, credentials=None,
                  http=None, use_gax=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
         if use_gax is None:
             self._use_gax = _USE_GAX
         else:

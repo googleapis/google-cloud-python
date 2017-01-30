@@ -140,7 +140,7 @@ class TestClient(unittest.TestCase):
             'b',
             'nonesuch?projection=noAcl',
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '404', 'content-type': 'application/json'},
             b'{}',
         )
@@ -163,7 +163,7 @@ class TestClient(unittest.TestCase):
             'b',
             '%s?projection=noAcl' % (BLOB_NAME,),
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -187,7 +187,7 @@ class TestClient(unittest.TestCase):
             'b',
             'nonesuch?projection=noAcl',
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '404', 'content-type': 'application/json'},
             b'{}',
         )
@@ -211,7 +211,7 @@ class TestClient(unittest.TestCase):
             'b',
             '%s?projection=noAcl' % (BLOB_NAME,),
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -236,7 +236,7 @@ class TestClient(unittest.TestCase):
             client._connection.API_VERSION,
             'b?project=%s' % (PROJECT,),
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '409', 'content-type': 'application/json'},
             '{"error": {"message": "Conflict"}}',
         )
@@ -259,7 +259,7 @@ class TestClient(unittest.TestCase):
             client._connection.API_VERSION,
             'b?project=%s' % (PROJECT,),
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -282,7 +282,7 @@ class TestClient(unittest.TestCase):
             'project': [PROJECT],
             'projection': ['noAcl'],
         }
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             b'{}',
         )
@@ -319,7 +319,7 @@ class TestClient(unittest.TestCase):
             client._connection.API_VERSION,
         ])
         URI = '/'.join([BASE_URI, 'b?%s' % (query_params,)])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME)
             .encode('utf-8'),
@@ -354,7 +354,7 @@ class TestClient(unittest.TestCase):
             'fields': [FIELDS],
         }
 
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{"items": []}',
         )
