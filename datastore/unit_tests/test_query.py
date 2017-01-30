@@ -68,7 +68,7 @@ class TestQuery(unittest.TestCase):
             projection=PROJECTION,
             order=ORDER,
             distinct_on=DISTINCT_ON,
-            )
+        )
         self.assertIs(query._client, client)
         self.assertEqual(query.project, _PROJECT)
         self.assertEqual(query.kind, _KIND)

@@ -1051,11 +1051,11 @@ class TestConnection(unittest.TestCase):
         before_key_pbs = [
             self._make_key_pb(PROJECT, id_=None),
             self._make_key_pb(PROJECT, id_=None),
-            ]
+        ]
         after_key_pbs = [
             self._make_key_pb(PROJECT),
             self._make_key_pb(PROJECT, id_=2345),
-            ]
+        ]
         rsp_pb = datastore_pb2.AllocateIdsResponse()
         rsp_pb.keys.add().CopyFrom(after_key_pbs[0])
         rsp_pb.keys.add().CopyFrom(after_key_pbs[1])
