@@ -186,7 +186,7 @@ class Transaction(Batch):
         try:
             self._id = self._client._connection.begin_transaction(
                 self.project)
-        except:
+        except:  # noqa: E722
             self._status = self._ABORTED
             raise
 
