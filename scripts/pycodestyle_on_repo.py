@@ -40,7 +40,8 @@ def main():
     if not python_files:
         print('No Python files to lint, exiting.')
     else:
-        pycodestyle_command = ['pycodestyle'] + python_files
+        pycodestyle_command = ['pycodestyle',
+                               '--ignore=E306,E123,E722'] + python_files
         status_code = subprocess.call(pycodestyle_command)
         sys.exit(status_code)
 
