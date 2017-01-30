@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.client &mdash; google-cloud f8ceb94 documentation</title>
+  <title>google.cloud.client &mdash; google-cloud 3584917 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud f8ceb94 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 3584917 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -303,6 +303,7 @@
 
 <span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
+<span class="kn">import</span> <span class="nn">google_auth_httplib2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_determine_default_project</span>
@@ -361,6 +362,26 @@
 <span class="sd">    Stores ``credentials`` and ``http`` object so that subclasses</span>
 <span class="sd">    can pass them along to a connection class.</span>
 
+<span class="sd">    If no value is passed in for ``http``, a :class:`httplib2.Http` object</span>
+<span class="sd">    will be created and authorized with the ``credentials``. If not, the</span>
+<span class="sd">    ``credentials`` and ``http`` need not be related.</span>
+
+<span class="sd">    Callers and subclasses may seek to use the private key from</span>
+<span class="sd">    ``credentials`` to sign data.</span>
+
+<span class="sd">    A custom (non-``httplib2``) HTTP object must have a ``request`` method</span>
+<span class="sd">    which accepts the following arguments:</span>
+
+<span class="sd">    * ``uri``</span>
+<span class="sd">    * ``method``</span>
+<span class="sd">    * ``body``</span>
+<span class="sd">    * ``headers``</span>
+
+<span class="sd">    In addition, ``redirections`` and ``connection_type`` may be used.</span>
+
+<span class="sd">    A custom ``http`` object will also need to be able to add a bearer token</span>
+<span class="sd">    to API requests and handle token refresh on 401 errors.</span>
+
 <span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
 <span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
 <span class="sd">                        client. If not passed (and if no ``http`` object is</span>
@@ -375,6 +396,12 @@
 <span class="sd">                 ``credentials`` for the current object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">SCOPE</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating with a service.</span>
+
+<span class="sd">    Needs to be set by subclasses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
                 <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
@@ -382,8 +409,21 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_GOOGLE_AUTH_CREDENTIALS_HELP</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">http</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">credentials</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_http</span> <span class="o">=</span> <span class="n">http</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">with_scopes_if_required</span><span class="p">(</span>
+            <span class="n">credentials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SCOPE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span> <span class="o">=</span> <span class="n">http</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_http</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Getter for object used for HTTP transport.</span>
+
+<span class="sd">        :rtype: :class:`~httplib2.Http`</span>
+<span class="sd">        :returns: An HTTP object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span> <span class="o">=</span> <span class="n">google_auth_httplib2</span><span class="o">.</span><span class="n">AuthorizedHttp</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span></div>
 
 
 <span class="k">class</span> <span class="nc">_ClientProjectMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -477,7 +517,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'f8ceb94',
+            VERSION:'3584917',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

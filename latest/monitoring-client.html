@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stackdriver Monitoring Client &mdash; google-cloud f8ceb94 documentation</title>
+  <title>Stackdriver Monitoring Client &mdash; google-cloud 3584917 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f8ceb94 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 3584917 documentation" href="index.html"/>
         <link rel="next" title="Metric Descriptors" href="monitoring-metric.html"/>
         <link rel="prev" title="Using the API" href="monitoring-usage.html"/> 
 
@@ -326,6 +326,12 @@ that defines <code class="docutils literal"><span class="pre">request()</span></
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.cloud.monitoring.client.Client.SCOPE">
+<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/monitoring.read', 'https://www.googleapis.com/auth/monitoring', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#google.cloud.monitoring.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<dd><p>The scopes required for authenticating as a Monitoring consumer.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.monitoring.client.Client.fetch_group">
 <code class="descname">fetch_group</code><span class="sig-paren">(</span><em>group_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/client.html#Client.fetch_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.fetch_group" title="Permalink to this definition">#</a></dt>
@@ -852,21 +858,14 @@ to the API. Each time series must contain exactly one point.</td>
 <p>Create / interact with Stackdriver Monitoring connections.</p>
 <dl class="class">
 <dt id="google.cloud.monitoring.connection.Connection">
-<em class="property">class </em><code class="descclassname">google.cloud.monitoring.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.connection.Connection" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud._http.JSONConnection</span></code></p>
 <p>A connection to Google Stackdriver Monitoring via the JSON REST API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
-connection.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>) &#8211; (Optional) HTTP object to make requests.</li>
-<li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The base of the API call URL. Defaults to the value
-<a class="reference internal" href="#google.cloud.monitoring.connection.Connection.API_BASE_URL" title="google.cloud.monitoring.connection.Connection.API_BASE_URL"><code class="xref py py-attr docutils literal"><span class="pre">Connection.API_BASE_URL</span></code></a>.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client that owns the current connection.</td>
 </tr>
 </tbody>
 </table>
@@ -886,12 +885,6 @@ connection.</li>
 <dt id="google.cloud.monitoring.connection.Connection.API_VERSION">
 <code class="descname">API_VERSION</code><em class="property"> = 'v3'</em><a class="headerlink" href="#google.cloud.monitoring.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
 <dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.monitoring.connection.Connection.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/monitoring.read', 'https://www.googleapis.com/auth/monitoring', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#google.cloud.monitoring.connection.Connection.SCOPE" title="Permalink to this definition">#</a></dt>
-<dd><p>The scopes required for authenticating as a Monitoring consumer.</p>
 </dd></dl>
 
 </dd></dl>
@@ -940,7 +933,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f8ceb94',
+            VERSION:'3584917',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

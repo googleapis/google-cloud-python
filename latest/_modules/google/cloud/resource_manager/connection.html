@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.resource_manager.connection &mdash; google-cloud f8ceb94 documentation</title>
+  <title>google.cloud.resource_manager.connection &mdash; google-cloud 3584917 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f8ceb94 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 3584917 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -308,12 +308,8 @@
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../../resource-manager-client.html#google.cloud.resource_manager.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">_http</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Resource Manager via the JSON REST API.</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials`</span>
-<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        connection.</span>
-
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests.</span>
+<span class="sd">    :type client: :class:`~google.cloud.resource_manager.client.Client`</span>
+<span class="sd">    :param client: The client that owns the current connection.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://cloudresourcemanager.googleapis.com&#39;</span>
@@ -323,10 +319,7 @@
     <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
 
     <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{api_base_url}</span><span class="s1">/</span><span class="si">{api_version}{path}</span><span class="s1">&#39;</span>
-    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
-
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
-    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Resouce Manager consumer.&quot;&quot;&quot;</span></div>
+    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span></div>
 </pre></div>
 
            </div>
@@ -360,7 +353,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f8ceb94',
+            VERSION:'3584917',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

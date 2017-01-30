@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>DNS Client &mdash; google-cloud f8ceb94 documentation</title>
+  <title>DNS Client &mdash; google-cloud 3584917 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f8ceb94 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 3584917 documentation" href="index.html"/>
         <link rel="next" title="Managed Zones" href="dns-zone.html"/>
         <link rel="prev" title="Using the API" href="dns-usage.html"/> 
 
@@ -318,6 +318,12 @@ that defines <code class="docutils literal"><span class="pre">request()</span></
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.cloud.dns.client.Client.SCOPE">
+<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/ndev.clouddns.readwrite',)</em><a class="headerlink" href="#google.cloud.dns.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<dd><p>The scopes required for authenticating as a Cloud DNS consumer.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.dns.client.Client.list_zones">
 <code class="descname">list_zones</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/client.html#Client.list_zones"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.client.Client.list_zones" title="Permalink to this definition">#</a></dt>
@@ -401,9 +407,17 @@ to the value of &#8216;dns_name&#8217;.</li>
 <p>Create / interact with Google Cloud DNS connections.</p>
 <dl class="class">
 <dt id="google.cloud.dns.connection.Connection">
-<em class="property">class </em><code class="descclassname">google.cloud.dns.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.connection.Connection" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.dns.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud._http.JSONConnection</span></code></p>
 <p>A connection to Google Cloud DNS via the JSON REST API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client that owns the current connection.</td>
+</tr>
+</tbody>
+</table>
 <dl class="attribute">
 <dt id="google.cloud.dns.connection.Connection.API_BASE_URL">
 <code class="descname">API_BASE_URL</code><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#google.cloud.dns.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
@@ -420,12 +434,6 @@ to the value of &#8216;dns_name&#8217;.</li>
 <dt id="google.cloud.dns.connection.Connection.API_VERSION">
 <code class="descname">API_VERSION</code><em class="property"> = 'v1'</em><a class="headerlink" href="#google.cloud.dns.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
 <dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dns.connection.Connection.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/ndev.clouddns.readwrite',)</em><a class="headerlink" href="#google.cloud.dns.connection.Connection.SCOPE" title="Permalink to this definition">#</a></dt>
-<dd><p>The scopes required for authenticating as a Cloud DNS consumer.</p>
 </dd></dl>
 
 </dd></dl>
@@ -474,7 +482,7 @@ to the value of &#8216;dns_name&#8217;.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f8ceb94',
+            VERSION:'3584917',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
