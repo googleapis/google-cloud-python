@@ -54,12 +54,14 @@ class Client(BaseClient):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating."""
+
     def __init__(self, target_language=ENGLISH_ISO_639,
                  credentials=None, http=None):
         self.target_language = target_language
         super(Client, self).__init__(credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
 
     def get_languages(self, target_language=None):
         """Get list of supported languages for translation.

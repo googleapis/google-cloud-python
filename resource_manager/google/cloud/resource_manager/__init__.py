@@ -20,4 +20,4 @@ from google.cloud.resource_manager.connection import Connection
 from google.cloud.resource_manager.project import Project
 
 
-SCOPE = Connection.SCOPE
+SCOPE = Client.SCOPE

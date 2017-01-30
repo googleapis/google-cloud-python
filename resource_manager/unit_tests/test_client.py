@@ -41,8 +41,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials, http=http)
         self.assertIsInstance(client._connection, Connection)
-        self.assertEqual(client._connection._credentials, credentials)
-        self.assertEqual(client._connection._http, http)
+        self.assertIs(client._credentials, credentials)
+        self.assertIs(client._http_internal, http)
 
     def test_new_project_factory(self):
         from google.cloud.resource_manager.project import Project

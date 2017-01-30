@@ -72,11 +72,14 @@ class Client(ClientWithProject):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/bigquery',
+             'https://www.googleapis.com/auth/cloud-platform')
+    """The scopes required for authenticating as a BigQuery consumer."""
+
     def __init__(self, project=None, credentials=None, http=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
 
     def list_projects(self, max_results=None, page_token=None):
         """List projects for the project associated with this client.

@@ -18,7 +18,11 @@ from google.cloud import _http
 
 
 class Connection(_http.JSONConnection):
-    """A connection to Google BigQuery via the JSON REST API."""
+    """A connection to Google BigQuery via the JSON REST API.
+
+    :type client: :class:`~google.cloud.bigquery.client.Client`
+    :param client: The client that owns the current connection.
+    """
 
     API_BASE_URL = 'https://www.googleapis.com'
     """The base of the API call URL."""
@@ -28,7 +32,3 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/bigquery/{api_version}{path}'
     """A template for the URL of a particular API call."""
-
-    SCOPE = ('https://www.googleapis.com/auth/bigquery',
-             'https://www.googleapis.com/auth/cloud-platform')
-    """The scopes required for authenticating as a BigQuery consumer."""
