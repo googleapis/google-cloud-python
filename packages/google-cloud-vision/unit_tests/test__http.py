@@ -44,12 +44,16 @@ class Test_HTTPVisionAPI(unittest.TestCase):
         http_api = self._make_one(client)
         http_api._connection = mock.Mock(spec_set=['api_request'])
         http_api._connection.api_request.return_value = {'responses': []}
-        self.assertIsNone(http_api.annotate(image, [feature]))
+        response = http_api.annotate(image, [feature])
+        self.assertEqual(len(response), 0)
+        self.assertIsInstance(response, list)
 
     def test_call_annotate_with_more_than_one_result(self):
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
+        from google.cloud.vision.likelihood import Likelihood
+        from unit_tests._fixtures import MULTIPLE_RESPONSE
 
         client = mock.Mock(spec_set=['_connection'])
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
@@ -58,9 +62,17 @@ class Test_HTTPVisionAPI(unittest.TestCase):
 
         http_api = self._make_one(client)
         http_api._connection = mock.Mock(spec_set=['api_request'])
-        http_api._connection.api_request.return_value = {'responses': [1, 2]}
-        with self.assertRaises(NotImplementedError):
-            http_api.annotate(image, [feature])
+        http_api._connection.api_request.return_value = MULTIPLE_RESPONSE
+        responses = http_api.annotate(image, [feature])
+
+        self.assertEqual(len(responses), 2)
+        image_one = responses[0]
+        image_two = responses[1]
+        self.assertEqual(len(image_one.labels), 3)
+        self.assertIsInstance(image_one.safe_searches, tuple)
+        self.assertEqual(image_two.safe_searches.adult,
+                         Likelihood.VERY_UNLIKELY)
+        self.assertEqual(len(image_two.labels), 0)
 
 
 class TestVisionRequest(unittest.TestCase):

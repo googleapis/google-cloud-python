@@ -134,7 +134,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.FACE_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.faces
+        return annotations[0].faces
 
     def detect_labels(self, limit=10):
         """Detect labels that describe objects in an image.
@@ -147,7 +147,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.LABEL_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.labels
+        return annotations[0].labels
 
     def detect_landmarks(self, limit=10):
         """Detect landmarks in an image.
@@ -161,7 +161,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.LANDMARK_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.landmarks
+        return annotations[0].landmarks
 
     def detect_logos(self, limit=10):
         """Detect logos in an image.
@@ -175,7 +175,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.LOGO_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.logos
+        return annotations[0].logos
 
     def detect_properties(self, limit=10):
         """Detect the color properties of an image.
@@ -189,7 +189,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.IMAGE_PROPERTIES, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.properties
+        return annotations[0].properties
 
     def detect_safe_search(self, limit=10):
         """Retreive safe search properties from an image.
@@ -203,7 +203,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.SAFE_SEARCH_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.safe_searches
+        return annotations[0].safe_searches
 
     def detect_text(self, limit=10):
         """Detect text in an image.
@@ -217,4 +217,4 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.TEXT_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.texts
+        return annotations[0].texts
