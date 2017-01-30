@@ -44,7 +44,9 @@ class Test_HTTPVisionAPI(unittest.TestCase):
         http_api = self._make_one(client)
         http_api._connection = mock.Mock(spec_set=['api_request'])
         http_api._connection.api_request.return_value = {'responses': []}
-        self.assertIsNone(http_api.annotate(image, [feature]))
+        response = http_api.annotate(image, [feature])
+        self.assertEqual(len(response), 0)
+        self.assertIsInstance(response, list)
 
     def test_call_annotate_with_more_than_one_result(self):
         from google.cloud.vision.feature import Feature

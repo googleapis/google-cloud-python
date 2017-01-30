@@ -39,8 +39,9 @@ class _GAPICVisionAPI(object):
         :type features: list
         :param features: List of :class:`~google.cloud.vision.feature.Feature`.
 
-        :rtype: :class:`~google.cloud.vision.annotations.Annotations` or list
-        :returns: Instance of ``Annotations`` or list of ``Annotations``.
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.annotations.Annotations`.
         """
         gapic_features = [_to_gapic_feature(feature) for feature in features]
         gapic_image = _to_gapic_image(image)
@@ -49,11 +50,7 @@ class _GAPICVisionAPI(object):
         requests = [request]
         annotator_client = self._annotator_client
         responses = annotator_client.batch_annotate_images(requests).responses
-        if len(responses) == 1:
-            return Annotations.from_pb(responses[0])
-        elif len(responses) > 1:
-            return [Annotations.from_pb(response)
-                    for response in responses]
+        return [Annotations.from_pb(response) for response in responses]
 
 
 def _to_gapic_feature(feature):

@@ -41,8 +41,8 @@ class _HTTPVisionAPI(object):
                          based on the number of Feature Types.
 
                          See: https://cloud.google.com/vision/docs/pricing
-        :rtype: list or class:`~googe.cloud.vision.annotations.Annotations`
-        :returns: Instance of ``Annotations`` or List of ``Annotations``.
+        :rtype: list
+        :returns: List of :class:`~googe.cloud.vision.annotations.Annotations`.
         """
         request = _make_request(image, features)
 
@@ -50,11 +50,7 @@ class _HTTPVisionAPI(object):
         api_response = self._connection.api_request(
             method='POST', path='/images:annotate', data=data)
         responses = api_response.get('responses')
-        if len(responses) == 1:
-            return Annotations.from_api_repr(responses[0])
-        elif len(responses) > 1:
-            return [Annotations.from_api_repr(response)
-                    for response in responses]
+        return [Annotations.from_api_repr(response) for response in responses]
 
 
 def _make_request(image, features):
