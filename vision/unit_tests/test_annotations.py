@@ -66,6 +66,15 @@ class TestAnnotations(unittest.TestCase):
         self.assertEqual(annotations.safe_searches, [True])
         self.assertEqual(annotations.texts, [True])
 
+    def test_unsupported_http_annotation(self):
+        returned = {
+            'responses': [
+                {'someMadeUpAnnotation': None},
+            ],
+        }
+        annotation = self._get_target_class().from_api_repr(returned)
+        self.assertIsInstance(annotation, self._get_target_class())
+
     def test_from_pb(self):
         from google.cloud.vision.likelihood import Likelihood
         from google.cloud.vision.safe_search import SafeSearchAnnotation
