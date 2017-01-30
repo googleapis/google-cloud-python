@@ -34,12 +34,8 @@ PUBSUB_API_HOST = 'pubsub.googleapis.com'
 class Connection(_http.JSONConnection):
     """A connection to Google Cloud Pub/Sub via the JSON REST API.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        connection.
-
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: (Optional) HTTP object to make requests.
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client: The client that owns the current connection.
     """
 
     API_BASE_URL = 'https://' + PUBSUB_API_HOST
@@ -51,12 +47,8 @@ class Connection(_http.JSONConnection):
     API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
     """A template for the URL of a particular API call."""
 
-    SCOPE = ('https://www.googleapis.com/auth/pubsub',
-             'https://www.googleapis.com/auth/cloud-platform')
-    """The scopes required for authenticating as a Cloud Pub/Sub consumer."""
-
-    def __init__(self, credentials=None, http=None):
-        super(Connection, self).__init__(credentials=credentials, http=http)
+    def __init__(self, client):
+        super(Connection, self).__init__(client)
         emulator_host = os.getenv(PUBSUB_EMULATOR)
         if emulator_host is None:
             self.host = self.__class__.API_BASE_URL

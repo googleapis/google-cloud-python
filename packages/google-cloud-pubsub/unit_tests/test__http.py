@@ -46,7 +46,7 @@ class TestConnection(_Base):
         return Connection
 
     def test_default_url(self):
-        conn = self._make_one()
+        conn = self._make_one(object())
         klass = self._get_target_class()
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
@@ -57,14 +57,14 @@ class TestConnection(_Base):
         fake_environ = {PUBSUB_EMULATOR: HOST}
 
         with mock.patch('os.environ', new=fake_environ):
-            conn = self._make_one()
+            conn = self._make_one(object())
 
         klass = self._get_target_class()
         self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
         self.assertEqual(conn.api_base_url, 'http://' + HOST)
 
     def test_build_api_url_no_extra_query_params(self):
-        conn = self._make_one()
+        conn = self._make_one(object())
         URI = '/'.join([
             conn.API_BASE_URL,
             conn.API_VERSION,
@@ -76,7 +76,7 @@ class TestConnection(_Base):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
 
-        conn = self._make_one()
+        conn = self._make_one(object())
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
@@ -88,7 +88,7 @@ class TestConnection(_Base):
     def test_build_api_url_w_base_url_override(self):
         base_url1 = 'api-base-url1'
         base_url2 = 'api-base-url2'
-        conn = self._make_one()
+        conn = self._make_one(object())
         conn.api_base_url = base_url1
         URI = '/'.join([
             base_url2,
