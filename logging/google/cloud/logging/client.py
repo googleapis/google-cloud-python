@@ -31,15 +31,20 @@ else:
 
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
+from google.cloud.logging.environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
+from google.cloud.logging.environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
+from google.cloud.logging.environment_vars import _CONTAINER_ENGINE_ENV
 from google.cloud.logging._http import Connection
 from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging._http import _MetricsAPI as JSONMetricsAPI
 from google.cloud.logging._http import _SinksAPI as JSONSinksAPI
+from google.cloud.logging._shutdown import setup_shutdown_stacktrace_reporting
 from google.cloud.logging.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers import AppEngineHandler
 from google.cloud.logging.handlers import ContainerEngineHandler
 from google.cloud.logging.handlers import setup_logging
 from google.cloud.logging.handlers.handlers import EXCLUDED_LOGGER_DEFAULTS
+
 
 from google.cloud.logging.logger import Logger
 from google.cloud.logging.metric import Metric
@@ -48,15 +53,6 @@ from google.cloud.logging.sink import Sink
 
 _DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
 _USE_GAX = _HAVE_GAX and not _DISABLE_GAX
-
-_APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
-"""Environment variable set in App Engine when vm:true is set."""
-
-_APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
-"""Environment variable set in App Engine when env:flex is set."""
-
-_CONTAINER_ENGINE_ENV = 'KUBERNETES_SERVICE'
-"""Environment variable set in a Google Container Engine environment."""
 
 
 class Client(ClientWithProject):
@@ -327,3 +323,19 @@ class Client(ClientWithProject):
         handler = self.get_default_handler()
         setup_logging(handler, log_level=log_level,
                       excluded_loggers=excluded_loggers)
+
+    def enable_shutdown_logging(self, thread_dump=True):
+        """Enable shutdown report logging.
+
+        This method installs a SIGTERM handler that will report various
+        application metrics to Stackdriver Logging.
+
+        Currently the only supported option is stacktrace logging.
+
+        :type log_level: bool
+        :param log_level: (Optional) When true, on SIGTERM the application
+                          will log the stacktrace of all running threads.
+        """
+        if thread_dump:
+            setup_shutdown_stacktrace_reporting(self)
+
