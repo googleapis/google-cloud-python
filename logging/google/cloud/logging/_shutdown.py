@@ -32,7 +32,9 @@ def _fetch_metadata(metdata_path):
     url = 'http://{}/computeMetadata/v1/{}'.format(_METADATA_SERVICE_ADDR,
                                                    metdata_path)
     h = httplib2.Http()
+    headers = {'Metadata-Flavor': 'Google'}
     resp, content = h.request(url, 'GET')
+
     return content
 
 
@@ -48,12 +50,12 @@ def _get_gae_version():
     return _fetch_metadata('instance/attributes/gae_backend_version')
 
 
-def _write_stacktrace_log(client, line):
+def _write_stacktrace_log(client, traces):
     gae_version = _get_gae_version()
     gae_backend = _get_gae_backend()
     gae_instance = _get_gae_instance()
 
-    text_payload = '{}\nThread traces\n{}'.format(gae_instance, line)
+    text_payload = '{}\nThread traces\n{}'.format(gae_instance, traces)
     logger_name = 'projects/{}/logs/'
     'appengine.googleapis.com%2Fapp.shutdown'.format(client.project)
 
