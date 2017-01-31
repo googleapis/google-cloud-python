@@ -40,7 +40,7 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
         LINES = [
             "DELETE /path/to/api HTTP/1.1",
             "",
-            ]
+        ]
         mah = self._make_one(METHOD, PATH, {}, None)
         self.assertEqual(mah.get_content_type(), 'application/http')
         self.assertEqual(mah.get_payload().splitlines(), LINES)
@@ -56,7 +56,7 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
             "Content-Type: text/plain",
             "",
             "ABC",
-            ]
+        ]
         mah = self._make_one(METHOD, PATH, HEADERS, BODY)
         self.assertEqual(mah.get_payload().splitlines(), LINES)
 
@@ -71,7 +71,7 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
             'Content-Type: application/json',
             '',
             '{"foo": "bar"}',
-            ]
+        ]
         mah = self._make_one(METHOD, PATH, HEADERS, BODY)
         self.assertEqual(mah.get_payload().splitlines(), LINES)
 
