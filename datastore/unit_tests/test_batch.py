@@ -121,7 +121,7 @@ class TestBatch(unittest.TestCase):
             'baz': 'qux',
             'spam': [1, 2, 3],
             'frotz': [],  # will be ignored
-            }
+        }
         connection = _Connection()
         client = _Client(_PROJECT, connection)
         batch = self._make_one(client)

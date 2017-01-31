@@ -254,8 +254,8 @@ class TestInstance(unittest.TestCase):
             metadata=Any(
                 type_url=type_url,
                 value=metadata.SerializeToString(),
-                )
             )
+        )
 
         # Patch the stub used by the API method.
         client._instance_stub = stub = _FakeStub(response_pb)
