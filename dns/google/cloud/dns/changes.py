@@ -188,14 +188,14 @@ class Changes(object):
             'type': added.record_type,
             'ttl': str(added.ttl),
             'rrdatas': added.rrdatas,
-            } for added in self.additions]
+        } for added in self.additions]
 
         deletions = [{
             'name': deleted.name,
             'type': deleted.record_type,
             'ttl': str(deleted.ttl),
             'rrdatas': deleted.rrdatas,
-            } for deleted in self.deletions]
+        } for deleted in self.deletions]
 
         return {
             'additions': additions,

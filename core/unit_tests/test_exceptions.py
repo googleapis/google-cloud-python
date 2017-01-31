@@ -40,7 +40,7 @@ class Test_GoogleCloudError(unittest.TestCase):
             'locationType': 'testing',
             'message': 'Testing',
             'reason': 'test',
-            }
+        }
         e = self._make_one('Testing', [ERROR])
         e.code = 600
         self.assertEqual(str(e), '600 Testing')
@@ -115,7 +115,7 @@ class Test_make_exception(unittest.TestCase):
             'locationType': 'testing',
             'message': 'Testing',
             'reason': 'test',
-            }
+        }
         response = _Response(600)
         content = {"error": {"message": "Unknown Error", "errors": [ERROR]}}
         exception = self._call_fut(response, content)

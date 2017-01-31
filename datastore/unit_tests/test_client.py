@@ -853,7 +853,7 @@ class TestClient(unittest.TestCase):
                 projection=PROJECTION,
                 order=ORDER,
                 distinct_on=DISTINCT_ON,
-                )
+            )
 
         self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
