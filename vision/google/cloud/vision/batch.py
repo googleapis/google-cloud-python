@@ -52,4 +52,6 @@ class Batch(object):
         :returns: List of
                   :class:`~google.cloud.vision.annotations.Annotations`.
         """
-        return self._client._vision_api.annotate(self.images)
+        results = self._client._vision_api.annotate(self.images)
+        self._images = []
+        return results

@@ -70,8 +70,8 @@ class TestBatch(unittest.TestCase):
         batch = client.batch()
         batch.add_image(image_one, [face_feature])
         batch.add_image(image_two, [logo_feature, face_feature])
-
-        self.assertEqual(len(batch.images), 2)
-
+        images = batch.images
+        self.assertEqual(len(images), 2)
         self.assertTrue(batch.detect())
-        client._vision_api_internal.annotate.assert_called_with(batch.images)
+        self.assertEqual(len(batch.images), 0)
+        client._vision_api_internal.annotate.assert_called_with(images)
