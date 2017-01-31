@@ -21,7 +21,7 @@ Installing
 
 You can install using `pip`_::
 
-    $ pip install google-auth-httlib2
+    $ pip install google-auth-httplib2
 
 .. _pip: https://pip.pypa.io/en/stable/
 
