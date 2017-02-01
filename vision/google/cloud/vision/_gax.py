@@ -34,7 +34,10 @@ class _GAPICVisionAPI(object):
         """Annotate images through GAX.
 
         :type images: list
-        :param images: List of :class:`~google.cloud.vision.image.Image`.
+        :param images: List containing pairs of
+                       :class:`~google.cloud.vision.image.Image` and
+                       :class:`~google.cloud.vision.feature.Feature`.
+                       e.g. [(image, [feature_one, feature_two]),]
 
         :rtype: list
         :returns: List of

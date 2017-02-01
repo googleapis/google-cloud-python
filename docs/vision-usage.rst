@@ -287,8 +287,9 @@ image and determine the dominant colors in the image.
 Batch image detection
 *********************
 
-Multiple images can be processed with a single request by passing ``Image``s to
-``Client.batch(images)``.
+Multiple images can be processed with a single request by passing
+:class:`~google.cloud.vision.image.Image` to
+:meth:`~google.cloud.vision.client.Client.batch()`.
 
 .. code-block:: python
 
@@ -306,9 +307,10 @@ Multiple images can be processed with a single request by passing ``Image``s to
     >>> batch.add_image(image_one, [face_feature, logo_feature])
     >>> batch.add_image(image_two, [logo_feature])
     >>> results = batch.detect()
-    >>> for face in results[0].faces:
-    ...     print('=' * 40)
-    ...     print(face.joy)
+    >>> for image in results:
+    ...     for face in image.faces:
+    ...         print('=' * 40)
+    ...         print(face.joy)
     ========================================
     <Likelihood.VERY_LIKELY: 'VERY_LIKELY'>
     ========================================

@@ -73,7 +73,7 @@ class Client(ClientWithProject):
             self._use_gax = use_gax
 
     def batch(self):
-        """Batch image processing.
+        """Batch multiple images into a single API request.
 
         :rtype: :class:`google.cloud.vision.batch.Batch`
         :returns: Instance of ``Batch``.
