@@ -129,6 +129,7 @@ class TestClient(unittest.TestCase):
 
         from google.cloud import speech
         from google.cloud.speech.alternative import Alternative
+        from google.cloud.speech.result import Result
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         _B64_AUDIO_CONTENT = _bytes_to_unicode(b64encode(self.AUDIO_CONTENT))
@@ -174,13 +175,16 @@ class TestClient(unittest.TestCase):
         alternative = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives'][0]
         expected = Alternative.from_api_repr(alternative)
         self.assertEqual(len(response), 1)
-        self.assertIsInstance(response[0], Alternative)
-        self.assertEqual(response[0].transcript, expected.transcript)
-        self.assertEqual(response[0].confidence, expected.confidence)
+        self.assertIsInstance(response[0], Result)
+        self.assertEqual(len(response[0].alternatives), 1)
+        alternative = response[0].alternatives[0]
+        self.assertEqual(alternative.transcript, expected.transcript)
+        self.assertEqual(alternative.confidence, expected.confidence)
 
     def test_sync_recognize_source_uri_without_optional_params_no_gax(self):
         from google.cloud import speech
         from google.cloud.speech.alternative import Alternative
+        from google.cloud.speech.result import Result
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         RETURNED = SYNC_RECOGNIZE_RESPONSE
@@ -214,9 +218,12 @@ class TestClient(unittest.TestCase):
         expected = Alternative.from_api_repr(
             SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives'][0])
         self.assertEqual(len(response), 1)
-        self.assertIsInstance(response[0], Alternative)
-        self.assertEqual(response[0].transcript, expected.transcript)
-        self.assertEqual(response[0].confidence, expected.confidence)
+        self.assertIsInstance(response[0], Result)
+        self.assertEqual(len(response[0].alternatives), 1)
+        alternative = response[0].alternatives[0]
+
+        self.assertEqual(alternative.transcript, expected.transcript)
+        self.assertEqual(alternative.confidence, expected.confidence)
 
     def test_sync_recognize_with_empty_results_no_gax(self):
         from google.cloud import speech
@@ -710,6 +717,7 @@ class _MockGAPICSpeechAPI(object):
     _requests = None
     _response = None
     _results = None
+
     SERVICE_ADDRESS = 'foo.apis.invalid'
 
     def __init__(self, response=None, channel=None):
@@ -717,12 +725,18 @@ class _MockGAPICSpeechAPI(object):
         self._channel = channel
 
     def async_recognize(self, config, audio):
+        from google.gapic.longrunning.operations_client import OperationsClient
+        from google.gax import _OperationFuture
         from google.longrunning.operations_pb2 import Operation
+        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+            AsyncRecognizeResponse)
 
         self.config = config
         self.audio = audio
-        operation = Operation()
-        return operation
+        operations_client = mock.Mock(spec=OperationsClient)
+        operation_future = _OperationFuture(Operation(), operations_client,
+                                            AsyncRecognizeResponse, {})
+        return operation_future
 
     def sync_recognize(self, config, audio):
         self.config = config
