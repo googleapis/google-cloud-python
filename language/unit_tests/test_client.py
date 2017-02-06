@@ -14,9 +14,10 @@
 
 import unittest
 
+import mock
+
 
 def make_mock_credentials():
-    import mock
     from google.auth import credentials
 
     credentials = mock.Mock(spec=credentials.Credentials)
@@ -92,21 +93,21 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.document_from_html('abc', doc_type='foo')
 
-    def test_document_from_url_factory(self):
+    def test_document_from_gcs_url_factory(self):
         from google.cloud.language.document import Document
 
         creds = make_mock_credentials()
         client = self._make_one(credentials=creds, http=object())
 
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
-        document = client.document_from_url(gcs_url)
+        document = client.document_from_gcs_url(gcs_url)
         self.assertIsInstance(document, Document)
         self.assertIs(document.client, client)
         self.assertIsNone(document.content)
         self.assertEqual(document.gcs_url, gcs_url)
         self.assertEqual(document.doc_type, Document.PLAIN_TEXT)
 
-    def test_document_from_url_factory_explicit(self):
+    def test_document_from_gcs_url_factory_explicit(self):
         from google.cloud.language.document import Document
         from google.cloud.language.document import Encoding
 
@@ -115,11 +116,31 @@ class TestClient(unittest.TestCase):
 
         encoding = Encoding.UTF32
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
-        document = client.document_from_url(gcs_url, doc_type=Document.HTML,
-                                            encoding=encoding)
+        document = client.document_from_gcs_url(gcs_url,
+                                                doc_type=Document.HTML,
+                                                encoding=encoding)
         self.assertIsInstance(document, Document)
         self.assertIs(document.client, client)
         self.assertIsNone(document.content)
         self.assertEqual(document.gcs_url, gcs_url)
         self.assertEqual(document.doc_type, Document.HTML)
         self.assertEqual(document.encoding, encoding)
+
+    def test_document_from_url_deprecation(self):
+        import warnings
+
+        creds = make_mock_credentials()
+        client = self._make_one(credentials=creds, http=object())
+
+        Client = self._get_target_class()
+        with mock.patch.object(Client, 'document_from_gcs_url') as dfgu:
+            with mock.patch.object(warnings, 'warn') as warn:
+                client.document_from_url(gcs_url='gs://bogus')
+
+                # Establish that the warning happened and sent a
+                # DeprecationWarning.
+                self.assertEqual(warn.call_count, 1)
+                self.assertEqual(warn.mock_calls[0][1][1], DeprecationWarning)
+
+                # Establish that the new (renamed) method is called.
+                dfgu.assert_called_once_with(gcs_url='gs://bogus')
