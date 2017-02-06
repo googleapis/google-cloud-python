@@ -25,10 +25,6 @@ from google.cloud.language.syntax import Sentence
 from google.cloud.language.syntax import Token
 
 
-DEFAULT_LANGUAGE = 'en-US'
-"""Default document language, English."""
-
-
 Annotations = collections.namedtuple(
     'Annotations',
     'sentences tokens sentiment entities')
@@ -93,7 +89,7 @@ class Document(object):
 
     :type language: str
     :param language: (Optional) The language of the document text.
-                     Defaults to :data:`DEFAULT_LANGUAGE`.
+                     Defaults to None (auto-detect).
 
     :type encoding: str
     :param encoding: (Optional) The encoding of the document text.
@@ -115,7 +111,7 @@ class Document(object):
     """HTML document type."""
 
     def __init__(self, client, content=None, gcs_url=None, doc_type=PLAIN_TEXT,
-                 language=DEFAULT_LANGUAGE, encoding=Encoding.UTF8):
+                 language=None, encoding=Encoding.UTF8):
         if content is not None and gcs_url is not None:
             raise ValueError('A Document cannot contain both local text and '
                              'a link to text in a Google Cloud Storage object')
@@ -139,8 +135,9 @@ class Document(object):
         """
         info = {
             'type': self.doc_type,
-            'language': self.language,
         }
+        if self.language is not None:
+            info['language'] = self.language
         if self.content is not None:
             info['content'] = self.content
         elif self.gcs_url is not None:
