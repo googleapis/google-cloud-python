@@ -147,8 +147,6 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(document.encoding, MUT.Encoding.UTF32)
 
     def test_constructor_explicit_language(self):
-        import google.cloud.language.document as MUT
-
         client = object()
         content = 'abc'
         document = self._make_one(client, content, language='en-US')
