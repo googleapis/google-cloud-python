@@ -32,17 +32,32 @@ class Result(object):
 
     @classmethod
     def from_pb(cls, result):
-        """Factory: construct instance of ``SpeechRecognitionResult``.
+        """Factory: construct instance of ``Result``.
 
         :type result: :class:`~google.cloud.grpc.speech.v1beta1\
-                               .cloud_speech_pb2.StreamingRecognizeResult`
-        :param result: Instance of ``StreamingRecognizeResult`` protobuf.
+                               .cloud_speech_pb2.SpeechRecognitionResult`
+        :param result: Instance of ``SpeechRecognitionResult`` protobuf.
 
-        :rtype: :class:`~google.cloud.speech.result.SpeechRecognitionResult`
-        :returns: Instance of ``SpeechRecognitionResult``.
+        :rtype: :class:`~google.cloud.speech.result.Result`
+        :returns: Instance of ``Result``.
         """
-        alternatives = [Alternative.from_pb(result) for result
+        alternatives = [Alternative.from_pb(alternative) for alternative
                         in result.alternatives]
+        return cls(alternatives=alternatives)
+
+    @classmethod
+    def from_api_repr(cls, result):
+        """Factory: construct instance of ``Result``.
+
+        :type result: dict
+        :param result: Dictionary of a :class:`~google.cloud.grpc.speech.\
+            v1beta1.cloud_speech_pb2.SpeechRecognitionResult`
+
+        :rtype: :class:`~google.cloud.speech.result.Result`
+        :returns: Instance of ``Result``.
+        """
+        alternatives = [Alternative.from_api_repr(alternative) for alternative
+                        in result['alternatives']]
         return cls(alternatives=alternatives)
 
     @property
