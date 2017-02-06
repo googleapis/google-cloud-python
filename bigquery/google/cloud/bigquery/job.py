@@ -983,7 +983,7 @@ class QueryJob(_AsyncJob):
     dry_run = _TypedProperty('dry_run', bool)
     """See:
     https://cloud.google.com/bigquery/docs/\
-    reference/v2/jobs#configuration.query.dryRun
+    reference/rest/v2/jobs#configuration.dryRun
     """
 
     write_disposition = WriteDisposition('write_disposition')
@@ -1024,8 +1024,6 @@ class QueryJob(_AsyncJob):
             configuration['useQueryCache'] = self.use_query_cache
         if self.use_legacy_sql is not None:
             configuration['useLegacySql'] = self.use_legacy_sql
-        if self.dry_run is not None:
-            configuration['dryRun'] = self.dry_run
 
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
@@ -1078,6 +1076,10 @@ class QueryJob(_AsyncJob):
                 },
             },
         }
+
+        if self.dry_run is not None:
+            resource['configuration']['dryRun'] = self.dry_run
+
         configuration = resource['configuration'][self._JOB_TYPE]
         self._populate_config_resource(configuration)
 
