@@ -116,7 +116,7 @@ class Client(client_module.Client):
     @functools.wraps(document_from_gcs_url)
     def document_from_url(self, *args, **kwargs):
         """Deprecated equivalent to document_from_gcs_url.
-        
+
         (Deprecated on 2017-02-06.)
         """
 
