@@ -1331,11 +1331,6 @@ class TestQueryJob(unittest.TestCase, _Base):
                              config['useLegacySql'])
         else:
             self.assertIsNone(job.use_legacy_sql)
-        if 'dryRun' in config:
-            self.assertEqual(job.dry_run,
-                             config['dryRun'])
-        else:
-            self.assertIsNone(job.dry_run)
 
     def _verifyIntegerResourceProperties(self, job, config):
         if 'maximumBillingTier' in config:
@@ -1366,48 +1361,58 @@ class TestQueryJob(unittest.TestCase, _Base):
         for found, expected in zip(job.query_parameters, query_parameters):
             self.assertEqual(found.to_api_repr(), expected)
 
+    def _verify_configuration_properties(self, job, configuration):
+        if 'dryRun' in configuration:
+            self.assertEqual(job.dry_run,
+                             configuration['dryRun'])
+        else:
+            self.assertIsNone(job.dry_run)
+
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
 
-        config = resource.get('configuration', {}).get('query')
-        self._verifyBooleanResourceProperties(job, config)
-        self._verifyIntegerResourceProperties(job, config)
-        self._verify_udf_resources(job, config)
-        self._verifyQueryParameters(job, config)
+        configuration = resource.get('configuration', {})
+        self._verify_configuration_properties(job, configuration)
 
-        self.assertEqual(job.query, config['query'])
-        if 'createDisposition' in config:
+        query_config = resource.get('configuration', {}).get('query')
+        self._verifyBooleanResourceProperties(job, query_config)
+        self._verifyIntegerResourceProperties(job, query_config)
+        self._verify_udf_resources(job, query_config)
+        self._verifyQueryParameters(job, query_config)
+
+        self.assertEqual(job.query, query_config['query'])
+        if 'createDisposition' in query_config:
             self.assertEqual(job.create_disposition,
-                             config['createDisposition'])
+                             query_config['createDisposition'])
         else:
             self.assertIsNone(job.create_disposition)
-        if 'defaultDataset' in config:
+        if 'defaultDataset' in query_config:
             dataset = job.default_dataset
             ds_ref = {
                 'projectId': dataset.project,
                 'datasetId': dataset.name,
             }
-            self.assertEqual(ds_ref, config['defaultDataset'])
+            self.assertEqual(ds_ref, query_config['defaultDataset'])
         else:
             self.assertIsNone(job.default_dataset)
-        if 'destinationTable' in config:
+        if 'destinationTable' in query_config:
             table = job.destination
             tb_ref = {
                 'projectId': table.project,
                 'datasetId': table.dataset_name,
                 'tableId': table.name
             }
-            self.assertEqual(tb_ref, config['destinationTable'])
+            self.assertEqual(tb_ref, query_config['destinationTable'])
         else:
             self.assertIsNone(job.destination)
-        if 'priority' in config:
+        if 'priority' in query_config:
             self.assertEqual(job.priority,
-                             config['priority'])
+                             query_config['priority'])
         else:
             self.assertIsNone(job.priority)
-        if 'writeDisposition' in config:
+        if 'writeDisposition' in query_config:
             self.assertEqual(job.write_disposition,
-                             config['writeDisposition'])
+                             query_config['writeDisposition'])
         else:
             self.assertIsNone(job.write_disposition)
 
@@ -1575,7 +1580,6 @@ class TestQueryJob(unittest.TestCase, _Base):
             'priority': 'INTERACTIVE',
             'useQueryCache': True,
             'useLegacySql': True,
-            'dryRun': True,
             'writeDisposition': 'WRITE_TRUNCATE',
             'maximumBillingTier': 4,
             'maximumBytesBilled': 123456
@@ -1599,6 +1603,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job.use_query_cache = True
         job.use_legacy_sql = True
         job.dry_run = True
+        RESOURCE['configuration']['dryRun'] = True
         job.write_disposition = 'WRITE_TRUNCATE'
         job.maximum_billing_tier = 4
         job.maximum_bytes_billed = 123456
@@ -1616,6 +1621,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             },
             'configuration': {
+                'dryRun': True,
                 'query': QUERY_CONFIGURATION,
             },
         }
@@ -1770,6 +1776,41 @@ class TestQueryJob(unittest.TestCase, _Base):
                     'parameterMode': 'POSITIONAL',
                     'queryParameters': config['queryParameters'],
                 },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_dry_run_query(self):
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        job.dry_run = True
+        RESOURCE['configuration']['dryRun'] = True
+
+        job.begin()
+        self.assertEqual(job.udf_resources, [])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.QUERY
+                },
+                'dryRun': True,
             },
         }
         self.assertEqual(req['data'], SENT)
