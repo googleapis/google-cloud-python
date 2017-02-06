@@ -125,8 +125,8 @@ class TestDocument(unittest.TestCase):
         self.assertIs(document.client, client)
         self.assertEqual(document.content, content)
         self.assertIsNone(document.gcs_url)
+        self.assertIsNone(document.language)
         self.assertEqual(document.doc_type, MUT.Document.PLAIN_TEXT)
-        self.assertEqual(document.language, MUT.DEFAULT_LANGUAGE)
         self.assertEqual(document.encoding, MUT.Encoding.UTF8)
 
     def test_constructor_explicit(self):
@@ -146,6 +146,13 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(document.language, language)
         self.assertEqual(document.encoding, MUT.Encoding.UTF32)
 
+    def test_constructor_explicit_language(self):
+        client = object()
+        content = 'abc'
+        document = self._make_one(client, content, language='en-US')
+        self.assertEqual(document.language, 'en-US')
+        self.assertEqual(document._to_dict()['language'], 'en-US')
+
     def test_constructor_no_text(self):
         with self.assertRaises(ValueError):
             self._make_one(None, content=None, gcs_url=None)
@@ -162,7 +169,6 @@ class TestDocument(unittest.TestCase):
         info = document._to_dict()
         self.assertEqual(info, {
             'content': content,
-            'language': document.language,
             'type': klass.PLAIN_TEXT,
         })
 
@@ -173,7 +179,6 @@ class TestDocument(unittest.TestCase):
         info = document._to_dict()
         self.assertEqual(info, {
             'gcsContentUri': gcs_url,
-            'language': document.language,
             'type': klass.PLAIN_TEXT,
         })
 
@@ -183,7 +188,6 @@ class TestDocument(unittest.TestCase):
         document.content = None  # Manually unset the content.
         info = document._to_dict()
         self.assertEqual(info, {
-            'language': document.language,
             'type': klass.PLAIN_TEXT,
         })
 
@@ -203,12 +207,10 @@ class TestDocument(unittest.TestCase):
                        extract_sentiment=False,
                        extract_entities=False,
                        extract_syntax=False):
-        from google.cloud.language.document import DEFAULT_LANGUAGE
         from google.cloud.language.document import Document
 
         expected = {
             'document': {
-                'language': DEFAULT_LANGUAGE,
                 'type': Document.PLAIN_TEXT,
                 'content': content,
             },
