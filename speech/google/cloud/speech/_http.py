@@ -19,7 +19,7 @@ from base64 import b64encode
 from google.cloud._helpers import _bytes_to_unicode
 from google.cloud._helpers import _to_bytes
 
-from google.cloud.speech.alternative import Alternative
+from google.cloud.speech.result import Result
 from google.cloud.speech.operation import Operation
 
 
@@ -140,12 +140,11 @@ class HTTPSpeechAPI(object):
         api_response = self._connection.api_request(
             method='POST', path='speech:syncrecognize', data=data)
 
-        if len(api_response['results']) == 1:
-            result = api_response['results'][0]
-            return [Alternative.from_api_repr(alternative)
-                    for alternative in result['alternatives']]
+        if len(api_response['results']) > 0:
+            results = api_response['results']
+            return [Result.from_api_repr(result) for result in results]
         else:
-            raise ValueError('More than one result or none returned from API.')
+            raise ValueError('No results were returned from the API')
 
 
 def _build_request_data(sample, language_code=None, max_alternatives=None,
