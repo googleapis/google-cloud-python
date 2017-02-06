@@ -696,12 +696,12 @@ class TestClient(unittest.TestCase):
 
     def test_speech_api_without_gax(self):
         from google.cloud._http import Connection
-        from google.cloud.speech.client import _JSONSpeechAPI
+        from google.cloud.speech._http import HTTPSpeechAPI
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds, use_gax=False)
         self.assertIsNone(client._speech_api)
-        self.assertIsInstance(client.speech_api, _JSONSpeechAPI)
+        self.assertIsInstance(client.speech_api, HTTPSpeechAPI)
         self.assertIsInstance(client.speech_api._connection, Connection)
 
     def test_speech_api_preset(self):
