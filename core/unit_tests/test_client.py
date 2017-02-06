@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -27,6 +28,7 @@ class Test_ClientFactoryMixin(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.client import _ClientFactoryMixin
+
         return _ClientFactoryMixin
 
     def test_virtual(self):
@@ -39,6 +41,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -59,7 +62,7 @@ class TestClient(unittest.TestCase):
             client_obj = self._make_one()
 
         self.assertIs(client_obj._credentials, CREDENTIALS)
-        self.assertIsNone(client_obj._http)
+        self.assertIsNone(client_obj._http_internal)
         self.assertEqual(FUNC_CALLS, ['get_credentials'])
 
     def test_ctor_explicit(self):
@@ -68,7 +71,7 @@ class TestClient(unittest.TestCase):
         client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
 
         self.assertIs(client_obj._credentials, CREDENTIALS)
-        self.assertIs(client_obj._http, HTTP)
+        self.assertIs(client_obj._http_internal, HTTP)
 
     def test_ctor_bad_credentials(self):
         CREDENTIALS = object()
@@ -90,7 +93,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(
             client_obj._credentials, constructor.return_value)
-        self.assertIsNone(client_obj._http)
+        self.assertIsNone(client_obj._http_internal)
         constructor.assert_called_once_with(mock.sentinel.filename)
 
     def test_from_service_account_json_bad_args(self):
@@ -100,13 +103,38 @@ class TestClient(unittest.TestCase):
             KLASS.from_service_account_json(
                 mock.sentinel.filename, credentials=mock.sentinel.credentials)
 
+    def test__http_property_existing(self):
+        credentials = _make_credentials()
+        http = object()
+        client = self._make_one(credentials=credentials, http=http)
+        self.assertIs(client._http_internal, http)
+        self.assertIs(client._http, http)
 
-class TestJSONClient(unittest.TestCase):
+    def test__http_property_new(self):
+        credentials = _make_credentials()
+        client = self._make_one(credentials=credentials)
+        self.assertIsNone(client._http_internal)
+
+        patch = mock.patch('google_auth_httplib2.AuthorizedHttp',
+                           return_value=mock.sentinel.http)
+        with patch as mocked:
+            self.assertIs(client._http, mock.sentinel.http)
+            # Check the mock.
+            mocked.assert_called_once_with(credentials)
+            self.assertEqual(mocked.call_count, 1)
+            # Make sure the cached value is used on subsequent access.
+            self.assertIs(client._http_internal, mock.sentinel.http)
+            self.assertIs(client._http, mock.sentinel.http)
+            self.assertEqual(mocked.call_count, 1)
+
+
+class TestClientWithProject(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.client import JSONClient
-        return JSONClient
+        from google.cloud.client import ClientWithProject
+
+        return ClientWithProject
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -133,7 +161,7 @@ class TestJSONClient(unittest.TestCase):
 
         self.assertEqual(client_obj.project, PROJECT)
         self.assertIs(client_obj._credentials, CREDENTIALS)
-        self.assertIsNone(client_obj._http)
+        self.assertIsNone(client_obj._http_internal)
         self.assertEqual(
             FUNC_CALLS,
             [(None, '_determine_default_project'), 'get_credentials'])
@@ -174,7 +202,7 @@ class TestJSONClient(unittest.TestCase):
         else:
             self.assertEqual(client_obj.project, project)
         self.assertIs(client_obj._credentials, CREDENTIALS)
-        self.assertIs(client_obj._http, HTTP)
+        self.assertIs(client_obj._http_internal, HTTP)
 
     def test_ctor_explicit_bytes(self):
         PROJECT = b'PROJECT'

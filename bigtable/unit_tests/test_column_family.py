@@ -16,78 +16,12 @@
 import unittest
 
 
-class Test__timedelta_to_duration_pb(unittest.TestCase):
-
-    def _call_fut(self, *args, **kwargs):
-        from google.cloud.bigtable.column_family import (
-            _timedelta_to_duration_pb)
-        return _timedelta_to_duration_pb(*args, **kwargs)
-
-    def test_it(self):
-        import datetime
-        from google.protobuf import duration_pb2
-
-        seconds = microseconds = 1
-        timedelta_val = datetime.timedelta(seconds=seconds,
-                                           microseconds=microseconds)
-        result = self._call_fut(timedelta_val)
-        self.assertIsInstance(result, duration_pb2.Duration)
-        self.assertEqual(result.seconds, seconds)
-        self.assertEqual(result.nanos, 1000 * microseconds)
-
-    def test_with_negative_microseconds(self):
-        import datetime
-        from google.protobuf import duration_pb2
-
-        seconds = 1
-        microseconds = -5
-        timedelta_val = datetime.timedelta(seconds=seconds,
-                                           microseconds=microseconds)
-        result = self._call_fut(timedelta_val)
-        self.assertIsInstance(result, duration_pb2.Duration)
-        self.assertEqual(result.seconds, seconds - 1)
-        self.assertEqual(result.nanos, 10**9 + 1000 * microseconds)
-
-    def test_with_negative_seconds(self):
-        import datetime
-        from google.protobuf import duration_pb2
-
-        seconds = -1
-        microseconds = 5
-        timedelta_val = datetime.timedelta(seconds=seconds,
-                                           microseconds=microseconds)
-        result = self._call_fut(timedelta_val)
-        self.assertIsInstance(result, duration_pb2.Duration)
-        self.assertEqual(result.seconds, seconds + 1)
-        self.assertEqual(result.nanos, -(10**9 - 1000 * microseconds))
-
-
-class Test__duration_pb_to_timedelta(unittest.TestCase):
-
-    def _call_fut(self, *args, **kwargs):
-        from google.cloud.bigtable.column_family import (
-            _duration_pb_to_timedelta)
-        return _duration_pb_to_timedelta(*args, **kwargs)
-
-    def test_it(self):
-        import datetime
-        from google.protobuf import duration_pb2
-
-        seconds = microseconds = 1
-        duration_pb = duration_pb2.Duration(seconds=seconds,
-                                            nanos=1000 * microseconds)
-        timedelta_val = datetime.timedelta(seconds=seconds,
-                                           microseconds=microseconds)
-        result = self._call_fut(duration_pb)
-        self.assertIsInstance(result, datetime.timedelta)
-        self.assertEqual(result, timedelta_val)
-
-
 class TestMaxVersionsGCRule(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
+
         return MaxVersionsGCRule
 
     def _make_one(self, *args, **kwargs):
@@ -122,6 +56,7 @@ class TestMaxAgeGCRule(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import MaxAgeGCRule
+
         return MaxAgeGCRule
 
     def _make_one(self, *args, **kwargs):
@@ -162,6 +97,7 @@ class TestGCRuleUnion(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import GCRuleUnion
+
         return GCRuleUnion
 
     def _make_one(self, *args, **kwargs):
@@ -249,6 +185,7 @@ class TestGCRuleIntersection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import GCRuleIntersection
+
         return GCRuleIntersection
 
     def _make_one(self, *args, **kwargs):
@@ -339,6 +276,7 @@ class TestColumnFamily(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.column_family import ColumnFamily
+
         return ColumnFamily
 
     def _make_one(self, *args, **kwargs):
@@ -466,6 +404,7 @@ class TestColumnFamily(unittest.TestCase):
 
     def test_create_with_gc_rule(self):
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
+
         gc_rule = MaxVersionsGCRule(1337)
         self._create_test_helper(gc_rule=gc_rule)
 
@@ -524,6 +463,7 @@ class TestColumnFamily(unittest.TestCase):
 
     def test_update_with_gc_rule(self):
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
+
         gc_rule = MaxVersionsGCRule(1337)
         self._update_test_helper(gc_rule=gc_rule)
 
@@ -577,6 +517,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
         from google.cloud.bigtable.column_family import _gc_rule_from_pb
+
         return _gc_rule_from_pb(*args, **kwargs)
 
     def test_empty(self):
@@ -649,24 +590,28 @@ class Test__gc_rule_from_pb(unittest.TestCase):
 def _GcRulePB(*args, **kw):
     from google.cloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
+
     return table_v2_pb2.GcRule(*args, **kw)
 
 
 def _GcRuleIntersectionPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
+
     return table_v2_pb2.GcRule.Intersection(*args, **kw)
 
 
 def _GcRuleUnionPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
+
     return table_v2_pb2.GcRule.Union(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
+
     return table_v2_pb2.ColumnFamily(*args, **kw)
 
 

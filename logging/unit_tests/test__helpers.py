@@ -21,6 +21,7 @@ class Test_entry_from_resource(unittest.TestCase):
     @staticmethod
     def _call_fut(resource, client, loggers):
         from google.cloud.logging._helpers import entry_from_resource
+
         return entry_from_resource(resource, client, loggers)
 
     def test_unknown_type(self):

@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -27,6 +28,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.storage.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -89,6 +91,7 @@ class TestClient(unittest.TestCase):
 
     def test__connection_getter_with_batch(self):
         from google.cloud.storage.batch import Batch
+
         PROJECT = 'PROJECT'
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
@@ -137,7 +140,7 @@ class TestClient(unittest.TestCase):
             'b',
             'nonesuch?projection=noAcl',
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '404', 'content-type': 'application/json'},
             b'{}',
         )
@@ -160,7 +163,7 @@ class TestClient(unittest.TestCase):
             'b',
             '%s?projection=noAcl' % (BLOB_NAME,),
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -184,7 +187,7 @@ class TestClient(unittest.TestCase):
             'b',
             'nonesuch?projection=noAcl',
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '404', 'content-type': 'application/json'},
             b'{}',
         )
@@ -208,7 +211,7 @@ class TestClient(unittest.TestCase):
             'b',
             '%s?projection=noAcl' % (BLOB_NAME,),
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -233,7 +236,7 @@ class TestClient(unittest.TestCase):
             client._connection.API_VERSION,
             'b?project=%s' % (PROJECT,),
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '409', 'content-type': 'application/json'},
             '{"error": {"message": "Conflict"}}',
         )
@@ -256,7 +259,7 @@ class TestClient(unittest.TestCase):
             client._connection.API_VERSION,
             'b?project=%s' % (PROJECT,),
         ])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -279,7 +282,7 @@ class TestClient(unittest.TestCase):
             'project': [PROJECT],
             'projection': ['noAcl'],
         }
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             b'{}',
         )
@@ -303,6 +306,7 @@ class TestClient(unittest.TestCase):
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlencode
         from six.moves.urllib.parse import urlparse
+
         PROJECT = 'PROJECT'
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
@@ -315,7 +319,7 @@ class TestClient(unittest.TestCase):
             client._connection.API_VERSION,
         ])
         URI = '/'.join([BASE_URI, 'b?%s' % (query_params,)])
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME)
             .encode('utf-8'),
@@ -350,7 +354,7 @@ class TestClient(unittest.TestCase):
             'fields': [FIELDS],
         }
 
-        http = client._connection._http = _Http(
+        http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{"items": []}',
         )
@@ -419,6 +423,7 @@ class _Http(object):
 
     def __init__(self, headers, content):
         from httplib2 import Response
+
         self._response = Response(headers)
         self._content = content
 

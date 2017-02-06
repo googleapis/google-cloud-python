@@ -55,7 +55,28 @@ class TestClient(unittest.TestCase):
         client._vision_api.annotate()
         api.annotate.assert_called_once_with()
 
+    def test_make_gax_client(self):
+        from google.cloud.vision._gax import _GAPICVisionAPI
+
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=None)
+        client._connection = _Connection()
+        with mock.patch('google.cloud.vision.client._GAPICVisionAPI',
+                        spec=True):
+            self.assertIsInstance(client._vision_api, _GAPICVisionAPI)
+
+    def test_make_http_client(self):
+        from google.cloud.vision._http import _HTTPVisionAPI
+
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
+        client._connection = _Connection()
+        self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
+
     def test_face_annotation(self):
+        from google.cloud.vision.annotations import Annotations
         from google.cloud.vision.feature import Feature, FeatureTypes
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
 
@@ -76,17 +97,20 @@ class TestClient(unittest.TestCase):
             ]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
         image = client.image(content=IMAGE_CONTENT)
-        response = client._vision_api.annotate(image, features)
+        api_response = client._vision_api.annotate(image, features)
 
+        self.assertEqual(len(api_response), 1)
+        response = api_response[0]
         self.assertEqual(REQUEST,
                          client._connection._requested[0]['data'])
-        self.assertTrue('faceAnnotations' in response)
+        self.assertIsInstance(response, Annotations)
 
     def test_image_with_client_gcs_source(self):
         from google.cloud.vision.image import Image
@@ -102,11 +126,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.image import Image
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT,
-                                credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         raw_image = client.image(content=IMAGE_CONTENT)
         self.assertIsInstance(raw_image, Image)
-        self.assertEqual(raw_image.content, B64_IMAGE_CONTENT)
+        self.assertEqual(raw_image.content, IMAGE_CONTENT)
 
     def test_image_with_client_filename(self):
         from mock import mock_open
@@ -114,14 +138,14 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.image import Image
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT,
-                                credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         with patch('google.cloud.vision.image.open',
                    mock_open(read_data=IMAGE_CONTENT)) as m:
             file_image = client.image(filename='my_image.jpg')
         m.assert_called_once_with('my_image.jpg', 'rb')
         self.assertIsInstance(file_image, Image)
-        self.assertEqual(file_image.content, B64_IMAGE_CONTENT)
+        self.assertEqual(file_image.content, IMAGE_CONTENT)
 
     def test_multiple_detection_from_content(self):
         import copy
@@ -135,7 +159,8 @@ class TestClient(unittest.TestCase):
         returned['responses'][0]['logoAnnotations'] = logos['logoAnnotations']
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(returned)
 
         limit = 2
@@ -143,8 +168,10 @@ class TestClient(unittest.TestCase):
         logo_feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
         features = [label_feature, logo_feature]
         image = client.image(content=IMAGE_CONTENT)
-        items = image.detect(features)
+        detected_items = image.detect(features)
 
+        self.assertEqual(len(detected_items), 1)
+        items = detected_items[0]
         self.assertEqual(len(items.logos), 2)
         self.assertEqual(len(items.labels), 3)
         first_logo = items.logos[0]
@@ -182,7 +209,8 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -199,7 +227,8 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -217,7 +246,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -236,7 +266,8 @@ class TestClient(unittest.TestCase):
             LABEL_DETECTION_RESPONSE as RETURNED)
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -257,7 +288,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -271,7 +303,8 @@ class TestClient(unittest.TestCase):
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -293,7 +326,8 @@ class TestClient(unittest.TestCase):
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -310,7 +344,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -323,7 +358,8 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -340,7 +376,8 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -358,7 +395,8 @@ class TestClient(unittest.TestCase):
             TEXT_DETECTION_RESPONSE as RETURNED)
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -376,31 +414,34 @@ class TestClient(unittest.TestCase):
 
     def test_safe_search_detection_from_source(self):
         from google.cloud.vision.likelihood import Likelihood
-        from google.cloud.vision.safe import SafeSearchAnnotation
+        from google.cloud.vision.safe_search import SafeSearchAnnotation
         from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
         RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
-        safe_search = image.detect_safe_search()[0]
+        safe_search = image.detect_safe_search()
         self.assertIsInstance(safe_search, SafeSearchAnnotation)
         image_request = client._connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual(safe_search.adult, Likelihood.VERY_UNLIKELY)
-        self.assertEqual(safe_search.spoof, Likelihood.UNLIKELY)
-        self.assertEqual(safe_search.medical, Likelihood.POSSIBLE)
-        self.assertEqual(safe_search.violence, Likelihood.VERY_UNLIKELY)
+
+        self.assertIs(safe_search.adult, Likelihood.VERY_UNLIKELY)
+        self.assertIs(safe_search.spoof, Likelihood.UNLIKELY)
+        self.assertIs(safe_search.medical, Likelihood.POSSIBLE)
+        self.assertIs(safe_search.violence, Likelihood.VERY_UNLIKELY)
 
     def test_safe_search_no_results(self):
         RETURNED = {
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -414,11 +455,12 @@ class TestClient(unittest.TestCase):
 
         RETURNED = IMAGE_PROPERTIES_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
-        image_properties = image.detect_properties()[0]
+        image_properties = image.detect_properties()
         self.assertIsInstance(image_properties, ImagePropertiesAnnotation)
         image_request = client._connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
@@ -436,7 +478,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)

@@ -25,6 +25,7 @@ class TestVariable(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.runtimeconfig.variable import Variable
+
         return Variable
 
     def _make_one(self, *args, **kw):
@@ -197,7 +198,7 @@ class _Connection(object):
 
         try:
             response, self._responses = self._responses[0], self._responses[1:]
-        except:
+        except IndexError:
             raise NotFound('miss')
         else:
             return response

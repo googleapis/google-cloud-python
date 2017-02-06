@@ -19,7 +19,6 @@ from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
-from google.cloud.vision.annotations import Annotations
 from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
 
@@ -55,7 +54,7 @@ class Image(object):
                 content = file_obj.read()
 
         if content is not None:
-            content = _bytes_to_unicode(b64encode(_to_bytes(content)))
+            content = _to_bytes(content)
 
         self._content = content
         self._source = source_uri
@@ -68,7 +67,7 @@ class Image(object):
         """
         if self.content:
             return {
-                'content': self.content
+                'content': _bytes_to_unicode(b64encode(self.content))
             }
         else:
             return {
@@ -109,8 +108,7 @@ class Image(object):
                   :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,
                   :class:`~google.cloud.vision.sage.SafeSearchAnnotation`,
         """
-        results = self.client._vision_api.annotate(self, features)
-        return Annotations.from_api_repr(results)
+        return self.client._vision_api.annotate(self, features)
 
     def detect(self, features):
         """Detect multiple feature types.
@@ -136,7 +134,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.FACE_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.faces
+        return annotations[0].faces
 
     def detect_labels(self, limit=10):
         """Detect labels that describe objects in an image.
@@ -149,7 +147,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.LABEL_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.labels
+        return annotations[0].labels
 
     def detect_landmarks(self, limit=10):
         """Detect landmarks in an image.
@@ -163,7 +161,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.LANDMARK_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.landmarks
+        return annotations[0].landmarks
 
     def detect_logos(self, limit=10):
         """Detect logos in an image.
@@ -177,7 +175,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.LOGO_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.logos
+        return annotations[0].logos
 
     def detect_properties(self, limit=10):
         """Detect the color properties of an image.
@@ -191,7 +189,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.IMAGE_PROPERTIES, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.properties
+        return annotations[0].properties
 
     def detect_safe_search(self, limit=10):
         """Retreive safe search properties from an image.
@@ -205,7 +203,7 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.SAFE_SEARCH_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.safe_searches
+        return annotations[0].safe_searches
 
     def detect_text(self, limit=10):
         """Detect text in an image.
@@ -219,4 +217,4 @@ class Image(object):
         """
         features = [Feature(FeatureTypes.TEXT_DETECTION, limit)]
         annotations = self._detect_annotation(features)
-        return annotations.texts
+        return annotations[0].texts

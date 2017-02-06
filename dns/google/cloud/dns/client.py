@@ -15,13 +15,13 @@
 """Client for interacting with the Google Cloud DNS API."""
 
 
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.dns.connection import Connection
 from google.cloud.dns.zone import ManagedZone
 from google.cloud.iterator import HTTPIterator
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
@@ -43,11 +43,13 @@ class Client(JSONClient):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/ndev.clouddns.readwrite',)
+    """The scopes required for authenticating as a Cloud DNS consumer."""
+
     def __init__(self, project=None, credentials=None, http=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
 
     def quotas(self):
         """Return DNS quotas for the project associated with this client.

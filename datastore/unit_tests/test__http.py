@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 from google.cloud.datastore._http import _HAVE_GRPC
 
 
@@ -22,6 +24,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore._http import _DatastoreAPIOverHttp
+
         return _DatastoreAPIOverHttp
 
     def _make_one(self, *args, **kw):
@@ -112,6 +115,7 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
 
     def _call_fut(self):
         from google.cloud.datastore._http import _grpc_catch_rendezvous
+
         return _grpc_catch_rendezvous()
 
     @staticmethod
@@ -178,11 +182,10 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore._http import _DatastoreAPIOverGRPC
+
         return _DatastoreAPIOverGRPC
 
     def _make_one(self, stub, connection=None, secure=True, mock_args=None):
-        import mock
-
         if connection is None:
             connection = _Connection(None)
             connection.credentials = object()
@@ -364,6 +367,7 @@ class TestConnection(unittest.TestCase):
 
     def _make_key_pb(self, project, id_=1234):
         from google.cloud.datastore.key import Key
+
         path_args = ('Kind',)
         if id_ is not None:
             path_args += (id_,)
@@ -371,16 +375,15 @@ class TestConnection(unittest.TestCase):
 
     def _make_query_pb(self, kind):
         from google.cloud.grpc.datastore.v1 import query_pb2
+
         pb = query_pb2.Query()
         pb.kind.add().name = kind
         return pb
 
-    def _make_one(self, credentials=None, http=None, use_grpc=False):
-        import mock
-
+    def _make_one(self, client, use_grpc=False):
         with mock.patch('google.cloud.datastore._http._USE_GRPC',
                         new=use_grpc):
-            return self._get_target_class()(credentials=credentials, http=http)
+            return self._get_target_class()(client)
 
     def _verifyProtobufCall(self, called_with, URI, conn):
         self.assertEqual(called_with['uri'], URI)
@@ -392,11 +395,10 @@ class TestConnection(unittest.TestCase):
 
     def test_default_url(self):
         klass = self._get_target_class()
-        conn = self._make_one()
+        conn = self._make_one(object())
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
-        import mock
         from google.cloud._http import API_BASE_URL
         from google.cloud.environment_vars import GCD_HOST
 
@@ -404,19 +406,19 @@ class TestConnection(unittest.TestCase):
         fake_environ = {GCD_HOST: HOST}
 
         with mock.patch('os.environ', new=fake_environ):
-            conn = self._make_one()
+            conn = self._make_one(object())
 
         self.assertNotEqual(conn.api_base_url, API_BASE_URL)
         self.assertEqual(conn.api_base_url, 'http://' + HOST)
 
-    def test_ctor_defaults(self):
-        conn = self._make_one()
-        self.assertIsNone(conn.credentials)
+    def test_constructor(self):
+        client = object()
+        conn = self._make_one(client)
+        self.assertIs(conn._client, client)
 
-    def test_ctor_without_grpc(self):
-        import mock
-
+    def test_constructor_without_grpc(self):
         connections = []
+        client = object()
         return_val = object()
 
         def mock_api(connection):
@@ -427,16 +429,15 @@ class TestConnection(unittest.TestCase):
             'google.cloud.datastore._http._DatastoreAPIOverHttp',
             new=mock_api)
         with patch:
-            conn = self._make_one(use_grpc=False)
+            conn = self._make_one(client, use_grpc=False)
 
-        self.assertIsNone(conn.credentials)
+        self.assertIs(conn._client, client)
         self.assertIs(conn._datastore_api, return_val)
         self.assertEqual(connections, [conn])
 
-    def test_ctor_with_grpc(self):
-        import mock
-
+    def test_constructor_with_grpc(self):
         api_args = []
+        client = object()
         return_val = object()
 
         def mock_api(connection, secure):
@@ -447,43 +448,16 @@ class TestConnection(unittest.TestCase):
             'google.cloud.datastore._http._DatastoreAPIOverGRPC',
             new=mock_api)
         with patch:
-            conn = self._make_one(use_grpc=True)
+            conn = self._make_one(client, use_grpc=True)
 
-        self.assertIsNone(conn.credentials)
+        self.assertIs(conn._client, client)
         self.assertIs(conn._datastore_api, return_val)
         self.assertEqual(api_args, [(conn, True)])
-
-    def test_ctor_explicit(self):
-        class Creds(object):
-            pass
-
-        creds = Creds()
-        conn = self._make_one(creds)
-        self.assertIs(conn.credentials, creds)
-
-    def test_http_w_existing(self):
-        conn = self._make_one()
-        conn._http = http = object()
-        self.assertIs(conn.http, http)
-
-    def test_http_wo_creds(self):
-        import httplib2
-
-        conn = self._make_one()
-        self.assertIsInstance(conn.http, httplib2.Http)
-
-    def test_http_w_creds(self):
-        class Creds(object):
-            pass
-
-        creds = Creds()
-        conn = self._make_one(creds)
-        self.assertIs(conn.http.credentials, creds)
 
     def test_build_api_url_w_default_base_version(self):
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
-        conn = self._make_one()
+        conn = self._make_one(object())
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -497,7 +471,7 @@ class TestConnection(unittest.TestCase):
         VER = '3.1415926'
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
-        conn = self._make_one()
+        conn = self._make_one(object())
         URI = '/'.join([
             BASE,
             VER,
@@ -513,14 +487,15 @@ class TestConnection(unittest.TestCase):
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found, missing, deferred = conn.lookup(PROJECT, [key_pb])
         self.assertEqual(len(found), 0)
         self.assertEqual(len(missing), 0)
@@ -540,14 +515,15 @@ class TestConnection(unittest.TestCase):
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found, missing, deferred = conn.lookup(PROJECT, [key_pb],
                                                eventual=True)
         self.assertEqual(len(found), 0)
@@ -569,7 +545,7 @@ class TestConnection(unittest.TestCase):
         PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
         key_pb = self._make_key_pb(PROJECT)
-        conn = self._make_one()
+        conn = self._make_one(object())
         self.assertRaises(ValueError, conn.lookup, PROJECT, key_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
@@ -580,14 +556,15 @@ class TestConnection(unittest.TestCase):
         TRANSACTION = b'TRANSACTION'
         key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found, missing, deferred = conn.lookup(PROJECT, [key_pb],
                                                transaction_id=TRANSACTION)
         self.assertEqual(len(found), 0)
@@ -613,14 +590,15 @@ class TestConnection(unittest.TestCase):
         entity = entity_pb2.Entity()
         entity.key.CopyFrom(key_pb)
         rsp_pb.found.add(entity=entity)
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         (found,), missing, deferred = conn.lookup(PROJECT, [key_pb])
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
@@ -642,14 +620,15 @@ class TestConnection(unittest.TestCase):
         key_pb1 = self._make_key_pb(PROJECT)
         key_pb2 = self._make_key_pb(PROJECT, id_=2345)
         rsp_pb = datastore_pb2.LookupResponse()
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
         self.assertEqual(len(found), 0)
         self.assertEqual(len(missing), 0)
@@ -675,14 +654,15 @@ class TestConnection(unittest.TestCase):
         er_1.entity.key.CopyFrom(key_pb1)
         er_2 = rsp_pb.missing.add()
         er_2.entity.key.CopyFrom(key_pb2)
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
         self.assertEqual(result, [])
         self.assertEqual(len(deferred), 0)
@@ -707,14 +687,15 @@ class TestConnection(unittest.TestCase):
         rsp_pb = datastore_pb2.LookupResponse()
         rsp_pb.deferred.add().CopyFrom(key_pb1)
         rsp_pb.deferred.add().CopyFrom(key_pb2)
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
         self.assertEqual(result, [])
         self.assertEqual(len(missing), 0)
@@ -747,14 +728,15 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(PROJECT, q_pb,
                                                  eventual=True)
         self.assertEqual(pbs, [])
@@ -786,14 +768,15 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(
             PROJECT, q_pb, transaction_id=TRANSACTION)
         self.assertEqual(pbs, [])
@@ -826,7 +809,7 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._make_one()
+        conn = self._make_one(object())
         self.assertRaises(ValueError, conn.run_query, PROJECT, q_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
@@ -843,14 +826,15 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(PROJECT, q_pb)
         self.assertEqual(pbs, [])
         self.assertEqual(end, CURSOR)
@@ -876,14 +860,15 @@ class TestConnection(unittest.TestCase):
         rsp_pb.batch.entity_results.add(entity=entity)
         rsp_pb.batch.entity_result_type = 1  # FULL
         rsp_pb.batch.more_results = 3  # NO_MORE_RESULTS
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs = conn.run_query(PROJECT, q_pb, 'NS')[0]
         self.assertEqual(len(pbs), 1)
         cw = http._called_with
@@ -901,14 +886,15 @@ class TestConnection(unittest.TestCase):
         TRANSACTION = b'TRANSACTION'
         rsp_pb = datastore_pb2.BeginTransactionResponse()
         rsp_pb.transaction = TRANSACTION
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':beginTransaction',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(PROJECT), TRANSACTION)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
@@ -917,7 +903,6 @@ class TestConnection(unittest.TestCase):
         request.ParseFromString(cw['body'])
 
     def test_commit_wo_transaction(self):
-        import mock
         from google.cloud.grpc.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
@@ -930,14 +915,15 @@ class TestConnection(unittest.TestCase):
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':commit',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
 
         # Set up mock for parsing the response.
         expected_result = object()
@@ -965,7 +951,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
-        import mock
         from google.cloud.grpc.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
@@ -978,14 +963,15 @@ class TestConnection(unittest.TestCase):
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':commit',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
 
         # Set up mock for parsing the response.
         expected_result = object()
@@ -1014,18 +1000,20 @@ class TestConnection(unittest.TestCase):
 
     def test_rollback_ok(self):
         from google.cloud.grpc.datastore.v1 import datastore_pb2
+
         PROJECT = 'PROJECT'
         TRANSACTION = b'xact'
 
         rsp_pb = datastore_pb2.RollbackResponse()
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':rollback',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertIsNone(conn.rollback(PROJECT, TRANSACTION))
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
@@ -1039,14 +1027,15 @@ class TestConnection(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         rsp_pb = datastore_pb2.AllocateIdsResponse()
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':allocateIds',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.allocate_ids(PROJECT, []), [])
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
@@ -1062,22 +1051,23 @@ class TestConnection(unittest.TestCase):
         before_key_pbs = [
             self._make_key_pb(PROJECT, id_=None),
             self._make_key_pb(PROJECT, id_=None),
-            ]
+        ]
         after_key_pbs = [
             self._make_key_pb(PROJECT),
             self._make_key_pb(PROJECT, id_=2345),
-            ]
+        ]
         rsp_pb = datastore_pb2.AllocateIdsResponse()
         rsp_pb.keys.add().CopyFrom(after_key_pbs[0])
         rsp_pb.keys.add().CopyFrom(after_key_pbs[1])
-        conn = self._make_one()
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(_http=http, spec=['_http'])
+        conn = self._make_one(client)
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
             PROJECT + ':allocateIds',
         ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.allocate_ids(PROJECT, before_key_pbs),
                          after_key_pbs)
         cw = http._called_with
@@ -1094,6 +1084,7 @@ class Test__parse_commit_response(unittest.TestCase):
 
     def _call_fut(self, commit_response_pb):
         from google.cloud.datastore._http import _parse_commit_response
+
         return _parse_commit_response(commit_response_pb)
 
     def test_it(self):
@@ -1135,6 +1126,7 @@ class Http(object):
 
     def __init__(self, headers, content):
         from httplib2 import Response
+
         self._response = Response(headers)
         self._content = content
 

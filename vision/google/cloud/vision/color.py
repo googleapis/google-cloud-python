@@ -26,20 +26,37 @@ class ImagePropertiesAnnotation(object):
         self._colors = colors
 
     @classmethod
-    def from_api_repr(cls, response):
+    def from_api_repr(cls, image_properties):
         """Factory: construct ``ImagePropertiesAnnotation`` from a response.
 
-        :type response: dict
-        :param response: Dictionary response from Vision API with image
-                         properties data.
+        :type image_properties: dict
+        :param image_properties: Dictionary response from Vision API with image
+                                 properties data.
 
-        :rtype: :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.
-        :returns: Populated instance of ``ImagePropertiesAnnotation``.
+        :rtype: list of
+                :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.
+        :returns: List of ``ImagePropertiesAnnotation``.
         """
-        raw_colors = response.get('dominantColors', {}).get('colors', ())
-        colors = [ColorInformation.from_api_repr(color)
-                  for color in raw_colors]
-        return cls(colors)
+        colors = image_properties.get('dominantColors', {}).get('colors', ())
+        return cls([ColorInformation.from_api_repr(color)
+                    for color in colors])
+
+    @classmethod
+    def from_pb(cls, image_properties):
+        """Factory: construct ``ImagePropertiesAnnotation`` from a response.
+
+        :type image_properties: :class:`~google.cloud.grpc.vision.v1.\
+                                image_annotator_pb2.ImageProperties`
+        :param image_properties: Protobuf response from Vision API with image
+                                 properties data.
+
+        :rtype: list of
+                :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`
+        :returns: List of ``ImagePropertiesAnnotation``.
+        """
+        colors = getattr(image_properties.dominant_colors, 'colors', ())
+        if len(colors) > 0:
+            return cls([ColorInformation.from_pb(color) for color in colors])
 
     @property
     def colors(self):
@@ -54,17 +71,17 @@ class ImagePropertiesAnnotation(object):
 class Color(object):
     """Representation of RGBA color information.
 
-    :type red: int
+    :type red: float
     :param red: The amount of red in the color as a value in the interval
-                [0, 255].
+                [0.0, 255.0].
 
-    :type green: int
+    :type green: float
     :param green: The amount of green in the color as a value in the interval
-                  [0, 255].
+                  [0.0, 255.0].
 
-    :type blue: int
+    :type blue: float
     :param blue: The amount of blue in the color as a value in the interval
-                 [0, 255].
+                 [0.0, 255.0].
 
     :type alpha: float
     :param alpha: The fraction of this color that should be applied to the
@@ -86,12 +103,24 @@ class Color(object):
         :rtype: :class:`~google.cloud.vision.color.Color`
         :returns: Instance of :class:`~google.cloud.vision.color.Color`.
         """
-        red = response.get('red', 0)
-        green = response.get('green', 0)
-        blue = response.get('blue', 0)
+        red = float(response.get('red', 0.0))
+        green = float(response.get('green', 0.0))
+        blue = float(response.get('blue', 0.0))
         alpha = response.get('alpha', 0.0)
 
         return cls(red, green, blue, alpha)
+
+    @classmethod
+    def from_pb(cls, color):
+        """Factory: construct a ``Color`` from a protobuf response.
+
+        :type color: :module: `google.type.color_pb2`
+        :param color: ``Color`` from API Response.
+
+        :rtype: :class:`~google.cloud.vision.color.Color`
+        :returns: Instance of :class:`~google.cloud.vision.color.Color`.
+        """
+        return cls(color.red, color.green, color.blue, color.alpha.value)
 
     @property
     def red(self):
@@ -149,19 +178,34 @@ class ColorInformation(object):
         self._pixel_fraction = pixel_fraction
 
     @classmethod
-    def from_api_repr(cls, response):
-        """Factory: construct ``ColorInformation`` for a color found.
+    def from_api_repr(cls, color_information):
+        """Factory: construct ``ColorInformation`` for a color.
 
-        :type response: dict
-        :param response: Color data with extra meta information.
+        :type color_information: dict
+        :param color_information: Color data with extra meta information.
 
         :rtype: :class:`~google.cloud.vision.color.ColorInformation`
         :returns: Instance of ``ColorInformation``.
         """
-        color = Color.from_api_repr(response.get('color'))
-        score = response.get('score')
-        pixel_fraction = response.get('pixelFraction')
+        color = Color.from_api_repr(color_information.get('color', {}))
+        score = color_information.get('score')
+        pixel_fraction = color_information.get('pixelFraction')
+        return cls(color, score, pixel_fraction)
 
+    @classmethod
+    def from_pb(cls, color_information):
+        """Factory: construct ``ColorInformation`` for a color.
+
+        :type color_information: :class:`~google.cloud.grpc.vision.v1.\
+                                 image_annotator_pb2.ColorInfo`
+        :param color_information: Color data with extra meta information.
+
+        :rtype: :class:`~google.cloud.vision.color.ColorInformation`
+        :returns: Instance of ``ColorInformation``.
+        """
+        color = Color.from_pb(color_information.color)
+        score = color_information.score
+        pixel_fraction = color_information.pixel_fraction
         return cls(color, score, pixel_fraction)
 
     @property

@@ -20,12 +20,13 @@ class TestConnection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.runtimeconfig.connection import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_default_url(self):
-        creds = object()
-        conn = self._make_one(creds)
-        self.assertEqual(conn.credentials, creds)
+        client = object()
+        conn = self._make_one(client)
+        self.assertIs(conn._client, client)

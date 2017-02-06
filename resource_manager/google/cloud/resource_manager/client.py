@@ -47,11 +47,13 @@ class Client(BaseClient):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating as a Resouce Manager consumer."""
+
     def __init__(self, credentials=None, http=None):
         super(Client, self).__init__(
             credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
 
     def new_project(self, project_id, name=None, labels=None):
         """Create a project bound to the current client.

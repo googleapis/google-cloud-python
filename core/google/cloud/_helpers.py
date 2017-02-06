@@ -27,6 +27,7 @@ import re
 from threading import local as Local
 
 import google.auth
+from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
 import google_auth_httplib2
 
@@ -424,6 +425,52 @@ def _datetime_to_pb_timestamp(when):
     return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
 
 
+def _timedelta_to_duration_pb(timedelta_val):
+    """Convert a Python timedelta object to a duration protobuf.
+
+    .. note::
+
+        The Python timedelta has a granularity of microseconds while
+        the protobuf duration type has a duration of nanoseconds.
+
+    :type timedelta_val: :class:`datetime.timedelta`
+    :param timedelta_val: A timedelta object.
+
+    :rtype: :class:`google.protobuf.duration_pb2.Duration`
+    :returns: A duration object equivalent to the time delta.
+    """
+    seconds_decimal = timedelta_val.total_seconds()
+    # Truncate the parts other than the integer.
+    seconds = int(seconds_decimal)
+    if seconds_decimal < 0:
+        signed_micros = timedelta_val.microseconds - 10**6
+    else:
+        signed_micros = timedelta_val.microseconds
+    # Convert nanoseconds to microseconds.
+    nanos = 1000 * signed_micros
+    return duration_pb2.Duration(seconds=seconds, nanos=nanos)
+
+
+def _duration_pb_to_timedelta(duration_pb):
+    """Convert a duration protobuf to a Python timedelta object.
+
+    .. note::
+
+        The Python timedelta has a granularity of microseconds while
+        the protobuf duration type has a duration of nanoseconds.
+
+    :type duration_pb: :class:`google.protobuf.duration_pb2.Duration`
+    :param duration_pb: A protobuf duration object.
+
+    :rtype: :class:`datetime.timedelta`
+    :returns: The converted timedelta object.
+    """
+    return datetime.timedelta(
+        seconds=duration_pb.seconds,
+        microseconds=(duration_pb.nanos / 1000.0),
+    )
+
+
 def _name_from_project_path(path, project, template):
     """Validate a URI path and get the leaf object's name.
 
@@ -465,7 +512,7 @@ def _name_from_project_path(path, project, template):
     return match.group('name')
 
 
-def make_secure_channel(credentials, user_agent, host):
+def make_secure_channel(credentials, user_agent, host, extra_options=()):
     """Makes a secure channel for an RPC service.
 
     Uses / depends on gRPC.
@@ -480,14 +527,18 @@ def make_secure_channel(credentials, user_agent, host):
     :type host: str
     :param host: The host for the service.
 
+    :type extra_options: tuple
+    :param extra_options: (Optional) Extra gRPC options used when creating the
+                          channel.
+
     :rtype: :class:`grpc._channel.Channel`
     :returns: gRPC secure channel with credentials attached.
     """
     target = '%s:%d' % (host, http_client.HTTPS_PORT)
     http_request = google_auth_httplib2.Request(http=httplib2.Http())
-    options = (
-        ('grpc.primary_user_agent', user_agent),
-    )
+
+    user_agent_option = ('grpc.primary_user_agent', user_agent)
+    options = (user_agent_option,) + extra_options
     return google.auth.transport.grpc.secure_authorized_channel(
         credentials,
         http_request,
@@ -495,7 +546,8 @@ def make_secure_channel(credentials, user_agent, host):
         options=options)
 
 
-def make_secure_stub(credentials, user_agent, stub_class, host):
+def make_secure_stub(credentials, user_agent, stub_class, host,
+                     extra_options=()):
     """Makes a secure stub for an RPC service.
 
     Uses / depends on gRPC.
@@ -513,10 +565,15 @@ def make_secure_stub(credentials, user_agent, stub_class, host):
     :type host: str
     :param host: The host for the service.
 
+    :type extra_options: tuple
+    :param extra_options: (Optional) Extra gRPC options passed when creating
+                          the channel.
+
     :rtype: object, instance of ``stub_class``
     :returns: The stub object used to make gRPC requests to a given API.
     """
-    channel = make_secure_channel(credentials, user_agent, host)
+    channel = make_secure_channel(credentials, user_agent, host,
+                                  extra_options=extra_options)
     return stub_class(channel)
 
 

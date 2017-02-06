@@ -16,7 +16,7 @@
 
 
 from google.cloud._helpers import _LocalStack
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import HTTPIterator
 from google.cloud.storage._http import Connection
@@ -24,7 +24,7 @@ from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
@@ -46,12 +46,16 @@ class Client(JSONClient):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
+             'https://www.googleapis.com/auth/devstorage.read_only',
+             'https://www.googleapis.com/auth/devstorage.read_write')
+    """The scopes required for authenticating as a Cloud Storage consumer."""
+
     def __init__(self, project=None, credentials=None, http=None):
         self._base_connection = None
         super(Client, self).__init__(project=project, credentials=credentials,
                                      http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
         self._batch_stack = _LocalStack()
 
     @property

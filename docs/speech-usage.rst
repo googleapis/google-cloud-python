@@ -64,9 +64,10 @@ See: `Speech Asynchronous Recognize`_
     >>> operation.complete
     True
     >>> for result in operation.results:
-    ...     print('=' * 20)
-    ...     print(result.transcript)
-    ...     print(result.confidence)
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print(alternative.transcript)
+    ...         print(alternative.confidence)
     ====================
     'how old is the Brooklyn Bridge'
     0.98267895
@@ -88,14 +89,15 @@ Great Britian.
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
-    >>> alternatives = sample.sync_recognize(
+    >>> results = sample.sync_recognize(
     ...     speech.Encoding.FLAC, 16000,
     ...     source_uri='gs://my-bucket/recording.flac', language_code='en-GB',
     ...     max_alternatives=2)
-    >>> for alternative in alternatives:
-    ...     print('=' * 20)
-    ...     print('transcript: ' + alternative.transcript)
-    ...     print('confidence: ' + alternative.confidence)
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a test
     confidence: 0.81
@@ -112,12 +114,13 @@ Example of using the profanity filter.
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
-    >>> alternatives = sample.sync_recognize(max_alternatives=1,
-    ...                                      profanity_filter=True)
-    >>> for alternative in alternatives:
-    ...     print('=' * 20)
-    ...     print('transcript: ' + alternative.transcript)
-    ...     print('confidence: ' + alternative.confidence)
+    >>> results = sample.sync_recognize(max_alternatives=1,
+    ...                                 profanity_filter=True)
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a f****** test
     confidence: 0.81
@@ -134,12 +137,13 @@ words to the vocabulary of the recognizer.
     ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> hints = ['hi', 'good afternoon']
-    >>> alternatives = sample.sync_recognize(max_alternatives=2,
-    ...                                      speech_context=hints)
-    >>> for alternative in alternatives:
-    ...     print('=' * 20)
-    ...     print('transcript: ' + alternative.transcript)
-    ...     print('confidence: ' + alternative.confidence)
+    >>> results = sample.sync_recognize(max_alternatives=2,
+    ...                                 speech_context=hints)
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a test
     confidence: 0.81

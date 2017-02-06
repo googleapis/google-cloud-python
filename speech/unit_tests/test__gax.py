@@ -14,43 +14,6 @@
 
 import unittest
 
-import mock
-
-
-def _make_credentials():
-    import google.auth.credentials
-    return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
-class TestGAPICSpeechAPI(unittest.TestCase):
-    SAMPLE_RATE = 16000
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.speech._gax import GAPICSpeechAPI
-
-        return GAPICSpeechAPI
-
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
-
-    def test_use_bytes_instead_of_file_like_object(self):
-        from google.cloud import speech
-        from google.cloud.speech.sample import Sample
-
-        credentials = _make_credentials()
-        client = speech.Client(credentials=credentials, use_gax=True)
-        client.connection = _Connection()
-        client.connection.credentials = credentials
-
-        sample = Sample(content=b'', encoding=speech.Encoding.FLAC,
-                        sample_rate=self.SAMPLE_RATE)
-
-        api = self._make_one(client)
-        with self.assertRaises(ValueError):
-            api.streaming_recognize(sample)
-        self.assertEqual(client.connection._requested, [])
-
 
 class TestSpeechGAXMakeRequests(unittest.TestCase):
     SAMPLE_RATE = 16000
@@ -61,6 +24,7 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
                   profanity_filter, speech_context, single_utterance,
                   interim_results):
         from google.cloud.speech._gax import _make_streaming_request
+
         return _make_streaming_request(sample=sample,
                                        language_code=language_code,
                                        max_alternatives=max_alternatives,
@@ -72,13 +36,8 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
     def test_ctor(self):
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
-        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
-            SpeechContext)
-        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
-            RecognitionConfig)
-        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
-            StreamingRecognitionConfig)
-        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+            RecognitionConfig, SpeechContext, StreamingRecognitionConfig,
             StreamingRecognizeRequest)
 
         sample = Sample(content=self.AUDIO_CONTENT,
@@ -126,6 +85,7 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
                   profanity_filter, speech_context, single_utterance,
                   interim_results):
         from google.cloud.speech._gax import _stream_requests
+
         return _stream_requests(sample=sample,
                                 language_code=language_code,
                                 max_alternatives=max_alternatives,
@@ -138,12 +98,10 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         from io import BytesIO
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
-        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
-            StreamingRecognitionConfig)
-        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
-            StreamingRecognizeRequest)
+        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+            StreamingRecognitionConfig, StreamingRecognizeRequest)
 
-        sample = Sample(content=BytesIO(self.AUDIO_CONTENT),
+        sample = Sample(stream=BytesIO(self.AUDIO_CONTENT),
                         encoding=speech.Encoding.FLAC,
                         sample_rate=self.SAMPLE_RATE)
         language_code = 'US-en'
@@ -172,10 +130,3 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         self.assertEqual(streaming_request.audio_content, self.AUDIO_CONTENT)
         self.assertIsInstance(config_request.streaming_config,
                               StreamingRecognitionConfig)
-
-
-class _Connection(object):
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []

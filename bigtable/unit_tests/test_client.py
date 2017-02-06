@@ -33,6 +33,7 @@ class Test__make_data_stub(unittest.TestCase):
 
     def _call_fut(self, client):
         from google.cloud.bigtable.client import _make_data_stub
+
         return _make_data_stub(client)
 
     def test_without_emulator(self):
@@ -46,13 +47,18 @@ class Test__make_data_stub(unittest.TestCase):
         fake_stub = object()
         make_secure_stub_args = []
 
-        def mock_make_secure_stub(*args):
+        def mock_make_secure_stub(*args, **kwargs):
             make_secure_stub_args.append(args)
+            make_secure_stub_args.append(kwargs)
             return fake_stub
 
         with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._call_fut(client)
 
+        extra_options = {'extra_options': (
+            ('grpc.max_message_length', 104857600),
+            ('grpc.max_receive_message_length', 104857600)
+        )}
         self.assertIs(result, fake_stub)
         self.assertEqual(make_secure_stub_args, [
             (
@@ -61,6 +67,7 @@ class Test__make_data_stub(unittest.TestCase):
                 MUT.bigtable_pb2.BigtableStub,
                 MUT.DATA_API_HOST,
             ),
+            extra_options,
         ])
 
     def test_with_emulator(self):
@@ -93,6 +100,7 @@ class Test__make_instance_stub(unittest.TestCase):
 
     def _call_fut(self, client):
         from google.cloud.bigtable.client import _make_instance_stub
+
         return _make_instance_stub(client)
 
     def test_without_emulator(self):
@@ -153,6 +161,7 @@ class Test__make_operations_stub(unittest.TestCase):
 
     def _call_fut(self, client):
         from google.cloud.bigtable.client import _make_operations_stub
+
         return _make_operations_stub(client)
 
     def test_without_emulator(self):
@@ -217,6 +226,7 @@ class Test__make_table_stub(unittest.TestCase):
 
     def _call_fut(self, client):
         from google.cloud.bigtable.client import _make_table_stub
+
         return _make_table_stub(client)
 
     def test_without_emulator(self):
@@ -283,6 +293,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.client import Client
+
         return Client
 
     def _make_one(self, *args, **kwargs):

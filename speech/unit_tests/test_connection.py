@@ -20,13 +20,14 @@ class TestConnection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.speech.connection import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_build_api_url(self):
-        conn = self._make_one()
+        conn = self._make_one(object())
         method = 'speech:syncrecognize'
         uri = '/'.join([
             conn.API_BASE_URL,

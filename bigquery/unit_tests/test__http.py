@@ -20,13 +20,14 @@ class TestConnection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery._http import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_build_api_url_no_extra_query_params(self):
-        conn = self._make_one()
+        conn = self._make_one(object())
         URI = '/'.join([
             conn.API_BASE_URL,
             'bigquery',
@@ -38,7 +39,8 @@ class TestConnection(unittest.TestCase):
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        conn = self._make_one()
+
+        conn = self._make_one(object())
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)

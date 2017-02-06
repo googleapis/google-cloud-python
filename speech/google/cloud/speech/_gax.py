@@ -16,12 +16,14 @@
 
 
 from google.cloud.gapic.speech.v1beta1.speech_client import SpeechClient
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionConfig
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import SpeechContext
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+    RecognitionConfig)
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+    SpeechContext)
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
     StreamingRecognitionConfig)
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
     StreamingRecognizeRequest)
 from google.longrunning import operations_grpc
 
@@ -29,8 +31,8 @@ from google.cloud._helpers import make_secure_channel
 from google.cloud._helpers import make_secure_stub
 from google.cloud._http import DEFAULT_USER_AGENT
 
-from google.cloud.speech.alternative import Alternative
 from google.cloud.speech.operation import Operation
+from google.cloud.speech.result import Result
 
 OPERATIONS_API_HOST = 'speech.googleapis.com'
 
@@ -102,9 +104,9 @@ class GAPICSpeechAPI(object):
         audio = RecognitionAudio(content=sample.content,
                                  uri=sample.source_uri)
         api = self._gapic_api
-        response = api.async_recognize(config=config, audio=audio)
+        operation_future = api.async_recognize(config=config, audio=audio)
 
-        return Operation.from_pb(response, self)
+        return Operation.from_pb(operation_future.last_operation_data(), self)
 
     def streaming_recognize(self, sample, language_code=None,
                             max_alternatives=None, profanity_filter=None,
@@ -182,9 +184,7 @@ class GAPICSpeechAPI(object):
                        .cloud_speech_pb2.StreamingRecognizeResponse`
         :returns: ``StreamingRecognizeResponse`` instances.
         """
-        if getattr(sample.content, 'closed', None) is None:
-            raise ValueError('Please use file-like object for data stream.')
-        if sample.content.closed:
+        if sample.stream.closed:
             raise ValueError('Stream is closed.')
 
         requests = _stream_requests(sample, language_code=language_code,
@@ -237,33 +237,26 @@ class GAPICSpeechAPI(object):
                                words to the vocabulary of the recognizer.
 
         :rtype: list
-        :returns: A list of dictionaries. One dict for each alternative. Each
-                  dictionary typically contains two keys (though not
-                  all will be present in all cases)
+        :returns: List of :class:`google.cloud.speech.result.Result` objects.
 
-                  * ``transcript``: The detected text from the audio recording.
-                  * ``confidence``: The confidence in language detection, float
-                    between 0 and 1.
-
-        :raises: ValueError if more than one result is returned or no results.
+        :raises: ValueError if there are no results.
         """
         config = RecognitionConfig(
             encoding=sample.encoding, sample_rate=sample.sample_rate,
             language_code=language_code, max_alternatives=max_alternatives,
             profanity_filter=profanity_filter,
             speech_context=SpeechContext(phrases=speech_context))
-
         audio = RecognitionAudio(content=sample.content,
                                  uri=sample.source_uri)
         api = self._gapic_api
         api_response = api.sync_recognize(config=config, audio=audio)
-        if len(api_response.results) == 1:
-            results = api_response.results.pop()
-            alternatives = results.alternatives
-            return [Alternative.from_pb(alternative)
-                    for alternative in alternatives]
-        else:
-            raise ValueError('More than one result or none returned from API.')
+
+        # Sanity check: If we got no results back, raise an error.
+        if len(api_response.results) == 0:
+            raise ValueError('No results returned from the Speech API.')
+
+        # Iterate over any results that came back.
+        return [Result.from_pb(result) for result in api_response.results]
 
 
 def _stream_requests(sample, language_code=None, max_alternatives=None,
@@ -337,7 +330,7 @@ def _stream_requests(sample, language_code=None, max_alternatives=None,
     yield config_request
 
     while True:
-        data = sample.content.read(sample.chunk_size)
+        data = sample.stream.read(sample.chunk_size)
         if not data:
             break
         yield StreamingRecognizeRequest(audio_content=data)

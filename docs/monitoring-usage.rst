@@ -338,14 +338,20 @@ See `Monitored resource types`_ for more information about particular monitored 
 
   >>> from google.cloud import monitoring
   >>> # Create a Resource object for the desired monitored resource type.
-  >>> resource = client.resource('gce_instance', labels={
-  ...     'instance_id': '1234567890123456789',
-  ...     'zone': 'us-central1-f'
-  ... })
+  >>> resource = client.resource(
+  ...     'gce_instance',
+  ...     labels={
+  ...         'instance_id': '1234567890123456789',
+  ...         'zone': 'us-central1-f'
+  ...     }
+  ... )
   >>> # Create a Metric object, specifying the metric type as well as values for any metric labels.
-  >>> metric = client.metric(type='custom.googleapis.com/my_metric', labels={
-  ...      'status': 'successful'
-  ... })
+  >>> metric = client.metric(
+  ...     type_='custom.googleapis.com/my_metric',
+  ...     labels={
+  ...         'status': 'successful'
+  ...     }
+  ... )
 
 With a ``Metric`` and ``Resource`` in hand, the :class:`~google.cloud.monitoring.client.Client`
 can be used to write :class:`~google.cloud.monitoring.timeseries.Point` values.

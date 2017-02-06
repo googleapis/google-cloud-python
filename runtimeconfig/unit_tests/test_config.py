@@ -23,6 +23,7 @@ class TestConfig(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.runtimeconfig.config import Config
+
         return Config
 
     def _make_one(self, *args, **kw):
@@ -346,11 +347,12 @@ class _Connection(object):
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
+
         self._requested.append(kw)
 
         try:
             response, self._responses = self._responses[0], self._responses[1:]
-        except:
+        except IndexError:
             raise NotFound('miss')
         else:
             return response

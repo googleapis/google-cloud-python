@@ -483,8 +483,11 @@ class ArrayQueryParameter(AbstractQueryParameter):
         :returns: instance
         """
         name = resource.get('name')
-        array_type = resource['parameterType']['arrayType']
-        values = resource['parameterValue']['arrayValues']
+        array_type = resource['parameterType']['arrayType']['type']
+        values = [
+            value['value']
+            for value
+            in resource['parameterValue']['arrayValues']]
         converted = [
             _CELLDATA_FROM_JSON[array_type](value, None) for value in values]
         return cls(name, array_type, converted)
@@ -502,10 +505,12 @@ class ArrayQueryParameter(AbstractQueryParameter):
         resource = {
             'parameterType': {
                 'type': 'ARRAY',
-                'arrayType': self.array_type,
+                'arrayType': {
+                    'type': self.array_type,
+                },
             },
             'parameterValue': {
-                'arrayValues': values,
+                'arrayValues': [{'value': value} for value in values],
             },
         }
         if self.name is not None:

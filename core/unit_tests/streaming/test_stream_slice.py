@@ -20,6 +20,7 @@ class Test_StreamSlice(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.streaming.stream_slice import StreamSlice
+
         return StreamSlice
 
     def _make_one(self, *args, **kw):
@@ -27,6 +28,7 @@ class Test_StreamSlice(unittest.TestCase):
 
     def test_ctor(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
@@ -39,6 +41,7 @@ class Test_StreamSlice(unittest.TestCase):
 
     def test___nonzero___empty(self):
         from io import BytesIO
+
         CONTENT = b''
         MAXSIZE = 0
         stream = BytesIO(CONTENT)
@@ -47,6 +50,7 @@ class Test_StreamSlice(unittest.TestCase):
 
     def test___nonzero___nonempty(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
@@ -56,6 +60,7 @@ class Test_StreamSlice(unittest.TestCase):
     def test_read_exhausted(self):
         from io import BytesIO
         from six.moves import http_client
+
         CONTENT = b''
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
@@ -65,6 +70,7 @@ class Test_StreamSlice(unittest.TestCase):
 
     def test_read_implicit_size(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
@@ -74,6 +80,7 @@ class Test_StreamSlice(unittest.TestCase):
 
     def test_read_explicit_size(self):
         from io import BytesIO
+
         CONTENT = b'CONTENT GOES HERE'
         MAXSIZE = 4
         SIZE = 3

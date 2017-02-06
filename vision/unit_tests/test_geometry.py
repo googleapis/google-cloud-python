@@ -15,17 +15,16 @@
 import unittest
 
 
-class TestConnection(unittest.TestCase):
-
+class TestVertext(unittest.TestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.vision.connection import Connection
-        return Connection
+        from google.cloud.vision.geometry import Vertex
+        return Vertex
 
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
+    def _make_one(self, x_coordinate, y_coordinate):
+        return self._get_target_class()(x_coordinate, y_coordinate)
 
-    def test_default_url(self):
-        client = object()
-        conn = self._make_one(client)
-        self.assertEqual(conn._client, client)
+    def test_vertex_with_zeros(self):
+        vertex = self._make_one(0.0, 0.0)
+        self.assertEqual(vertex.x_coordinate, 0.0)
+        self.assertEqual(vertex.y_coordinate, 0.0)

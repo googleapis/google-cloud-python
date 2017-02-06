@@ -118,7 +118,7 @@ class TestSpeechClient(unittest.TestCase):
     def _make_streaming_request(self, file_obj, single_utterance=True,
                                 interim_results=False):
         client = Config.CLIENT
-        sample = client.sample(content=file_obj,
+        sample = client.sample(stream=file_obj,
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate=16000)
         return sample.streaming_recognize(single_utterance=single_utterance,
@@ -131,7 +131,7 @@ class TestSpeechClient(unittest.TestCase):
         self.assertIsInstance(top_result, Alternative)
         self.assertEqual(top_result.transcript,
                          'hello ' + self.ASSERT_TEXT)
-        self.assertGreater(top_result.confidence, 0.90)
+        self.assertIsInstance(top_result.confidence, float)
         if num_results == 2:
             second_alternative = alternatives[1]
             self.assertIsInstance(second_alternative, Alternative)
@@ -144,7 +144,10 @@ class TestSpeechClient(unittest.TestCase):
 
         results = self._make_sync_request(content=content,
                                           max_alternatives=2)
-        self._check_results(results, 2)
+        self.assertEqual(len(results), 1)
+        alternatives = results[0].alternatives
+        self.assertEqual(len(alternatives), 2)
+        self._check_results(alternatives, 2)
 
     def test_sync_recognize_gcs_file(self):
         bucket_name = Config.TEST_BUCKET.name
@@ -155,9 +158,10 @@ class TestSpeechClient(unittest.TestCase):
             blob.upload_from_file(file_obj)
 
         source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
-        result = self._make_sync_request(source_uri=source_uri,
-                                         max_alternatives=1)
-        self._check_results(result)
+        results = self._make_sync_request(source_uri=source_uri,
+                                          max_alternatives=1)
+        self.assertEqual(len(results), 1)
+        self._check_results(results[0].alternatives)
 
     def test_async_recognize_local_file(self):
         with open(AUDIO_FILE, 'rb') as file_obj:
@@ -167,7 +171,10 @@ class TestSpeechClient(unittest.TestCase):
                                              max_alternatives=2)
 
         _wait_until_complete(operation)
-        self._check_results(operation.results, 2)
+        self.assertEqual(len(operation.results), 1)
+        alternatives = operation.results[0].alternatives
+        self.assertEqual(len(alternatives), 2)
+        self._check_results(alternatives, 2)
 
     def test_async_recognize_gcs_file(self):
         bucket_name = Config.TEST_BUCKET.name
@@ -182,7 +189,10 @@ class TestSpeechClient(unittest.TestCase):
                                              max_alternatives=2)
 
         _wait_until_complete(operation)
-        self._check_results(operation.results, 2)
+        self.assertEqual(len(operation.results), 1)
+        alternatives = operation.results[0].alternatives
+        self.assertEqual(len(alternatives), 2)
+        self._check_results(alternatives, 2)
 
     def test_stream_recognize(self):
         if not Config.USE_GAX:

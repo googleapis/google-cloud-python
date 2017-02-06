@@ -62,8 +62,8 @@ class BaseVisionTestCase(unittest.TestCase):
     def _assert_coordinate(self, coordinate):
         if coordinate is None:
             return
+        self.assertIsNotNone(coordinate)
         self.assertIsInstance(coordinate, (int, float))
-        self.assertNotEqual(coordinate, 0.0)
 
     def _assert_likelihood(self, likelihood):
         from google.cloud.vision.likelihood import Likelihood
@@ -72,6 +72,10 @@ class BaseVisionTestCase(unittest.TestCase):
                   Likelihood.UNLIKELY, Likelihood.POSSIBLE, Likelihood.LIKELY,
                   Likelihood.VERY_UNLIKELY]
         self.assertIn(likelihood, levels)
+
+    def _pb_not_implemented_skip(self, message):
+        if Config.CLIENT._use_gax:
+            self.skipTest(message)
 
 
 class TestVisionClientLogo(unittest.TestCase):
@@ -146,7 +150,7 @@ class TestVisionClientFace(BaseVisionTestCase):
 
         for landmark in LandmarkTypes:
             if landmark is not LandmarkTypes.UNKNOWN_LANDMARK:
-                feature = getattr(landmarks, landmark.value.lower())
+                feature = getattr(landmarks, landmark.name.lower())
                 self.assertIsInstance(feature, Landmark)
                 self.assertIsInstance(feature.position, Position)
                 self._assert_coordinate(feature.position.x_coordinate)
@@ -206,7 +210,6 @@ class TestVisionClientFace(BaseVisionTestCase):
             blob.upload_from_file(file_obj)
 
         source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
-
         client = Config.CLIENT
         image = client.image(source_uri=source_uri)
         faces = image.detect_faces()
@@ -352,7 +355,7 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
             value.delete()
 
     def _assert_safe_search(self, safe_search):
-        from google.cloud.vision.safe import SafeSearchAnnotation
+        from google.cloud.vision.safe_search import SafeSearchAnnotation
 
         self.assertIsInstance(safe_search, SafeSearchAnnotation)
         self._assert_likelihood(safe_search.adult)
@@ -364,9 +367,7 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
         client = Config.CLIENT
         with open(FACE_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
-        safe_searches = image.detect_safe_search()
-        self.assertEqual(len(safe_searches), 1)
-        safe_search = safe_searches[0]
+        safe_search = image.detect_safe_search()
         self._assert_safe_search(safe_search)
 
     def test_detect_safe_search_gcs(self):
@@ -381,17 +382,13 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
 
         client = Config.CLIENT
         image = client.image(source_uri=source_uri)
-        safe_searches = image.detect_safe_search()
-        self.assertEqual(len(safe_searches), 1)
-        safe_search = safe_searches[0]
+        safe_search = image.detect_safe_search()
         self._assert_safe_search(safe_search)
 
     def test_detect_safe_search_filename(self):
         client = Config.CLIENT
         image = client.image(filename=FACE_FILE)
-        safe_searches = image.detect_safe_search()
-        self.assertEqual(len(safe_searches), 1)
-        safe_search = safe_searches[0]
+        safe_search = image.detect_safe_search()
         self._assert_safe_search(safe_search)
 
 
@@ -418,8 +415,8 @@ class TestVisionClientText(unittest.TestCase):
     def _assert_text(self, text):
         self.assertIsInstance(text, EntityAnnotation)
         self.assertIn(text.description, self.DESCRIPTIONS)
-        self.assertIn(text.locale, (None, 'en'))
-        self.assertNotEqual(text.score, 0.0)
+        self.assertIn(text.locale, (None, '', 'en'))
+        self.assertIsInstance(text.score, (type(None), float))
 
     def test_detect_text_content(self):
         client = Config.CLIENT
@@ -465,13 +462,13 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
             value.delete()
 
     def _assert_color(self, color):
-        self.assertIsInstance(color.red, int)
-        self.assertIsInstance(color.green, int)
-        self.assertIsInstance(color.blue, int)
+        self.assertIsInstance(color.red, float)
+        self.assertIsInstance(color.green, float)
+        self.assertIsInstance(color.blue, float)
+        self.assertIsInstance(color.alpha, float)
         self.assertNotEqual(color.red, 0.0)
         self.assertNotEqual(color.green, 0.0)
         self.assertNotEqual(color.blue, 0.0)
-        self.assertIsInstance(color.alpha, float)
 
     def _assert_properties(self, image_property):
         from google.cloud.vision.color import ImagePropertiesAnnotation
@@ -488,11 +485,10 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
         with open(FACE_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
         properties = image.detect_properties()
-        self.assertEqual(len(properties), 1)
-        image_property = properties[0]
-        self._assert_properties(image_property)
+        self._assert_properties(properties)
 
     def test_detect_properties_gcs(self):
+        client = Config.CLIENT
         bucket_name = Config.TEST_BUCKET.name
         blob_name = 'faces.jpg'
         blob = Config.TEST_BUCKET.blob(blob_name)
@@ -502,17 +498,12 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
 
         source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
 
-        client = Config.CLIENT
         image = client.image(source_uri=source_uri)
         properties = image.detect_properties()
-        self.assertEqual(len(properties), 1)
-        image_property = properties[0]
-        self._assert_properties(image_property)
+        self._assert_properties(properties)
 
     def test_detect_properties_filename(self):
         client = Config.CLIENT
         image = client.image(filename=FACE_FILE)
         properties = image.detect_properties()
-        self.assertEqual(len(properties), 1)
-        image_property = properties[0]
-        self._assert_properties(image_property)
+        self._assert_properties(properties)

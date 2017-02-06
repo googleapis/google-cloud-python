@@ -15,7 +15,7 @@
 """Client for interacting with the Google BigQuery API."""
 
 
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import CopyJob
@@ -50,7 +50,7 @@ class Project(object):
             resource['id'], resource['numericId'], resource['friendlyName'])
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
@@ -72,11 +72,14 @@ class Client(JSONClient):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/bigquery',
+             'https://www.googleapis.com/auth/cloud-platform')
+    """The scopes required for authenticating as a BigQuery consumer."""
+
     def __init__(self, project=None, credentials=None, http=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
 
     def list_projects(self, max_results=None, page_token=None):
         """List projects for the project associated with this client.

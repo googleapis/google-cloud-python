@@ -20,12 +20,13 @@ class TestConnection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.monitoring.connection import Connection
+
         return Connection
 
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
-        credentials = object()
-        connection = self._make_one(credentials)
-        self.assertEqual(connection.credentials, credentials)
+        client = object()
+        connection = self._make_one(client)
+        self.assertIs(connection._client, client)

@@ -20,6 +20,7 @@ class TestAlternative(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.speech.alternative import Alternative
+
         return Alternative
 
     def _make_one(self, *args, **kwargs):
@@ -53,7 +54,7 @@ class TestAlternative(unittest.TestCase):
         self.assertIsNone(alternative.confidence)
 
     def test_from_pb_with_no_confidence(self):
-        from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
 
         text = 'the double trouble'
         pb_value = cloud_speech_pb2.SpeechRecognitionAlternative(

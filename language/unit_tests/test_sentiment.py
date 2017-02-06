@@ -20,6 +20,7 @@ class TestSentiment(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.language.sentiment import Sentiment
+
         return Sentiment
 
     def _make_one(self, *args, **kw):

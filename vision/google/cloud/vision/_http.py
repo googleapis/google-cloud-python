@@ -14,6 +14,7 @@
 
 """HTTP Client for interacting with the Google Cloud Vision API."""
 
+from google.cloud.vision.annotations import Annotations
 from google.cloud.vision.feature import Feature
 
 
@@ -40,8 +41,8 @@ class _HTTPVisionAPI(object):
                          based on the number of Feature Types.
 
                          See: https://cloud.google.com/vision/docs/pricing
-        :rtype: dict
-        :returns: List of annotations.
+        :rtype: list
+        :returns: List of :class:`~googe.cloud.vision.annotations.Annotations`.
         """
         request = _make_request(image, features)
 
@@ -49,7 +50,7 @@ class _HTTPVisionAPI(object):
         api_response = self._connection.api_request(
             method='POST', path='/images:annotate', data=data)
         responses = api_response.get('responses')
-        return responses[0]
+        return [Annotations.from_api_repr(response) for response in responses]
 
 
 def _make_request(image, features):

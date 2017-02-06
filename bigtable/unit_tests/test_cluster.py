@@ -28,6 +28,7 @@ class TestCluster(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.cluster import Cluster
+
         return Cluster
 
     def _make_one(self, *args, **kwargs):
@@ -35,6 +36,7 @@ class TestCluster(unittest.TestCase):
 
     def test_constructor_defaults(self):
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
@@ -376,6 +378,7 @@ class Test__prepare_create_request(unittest.TestCase):
 
     def _call_fut(self, cluster):
         from google.cloud.bigtable.cluster import _prepare_create_request
+
         return _prepare_create_request(cluster)
 
     def test_it(self):
@@ -401,18 +404,21 @@ class Test__prepare_create_request(unittest.TestCase):
 def _ClusterPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         instance_pb2 as instance_v2_pb2)
+
     return instance_v2_pb2.Cluster(*args, **kw)
 
 
 def _DeleteClusterRequestPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         bigtable_instance_admin_pb2 as messages_v2_pb2)
+
     return messages_v2_pb2.DeleteClusterRequest(*args, **kw)
 
 
 def _GetClusterRequestPB(*args, **kw):
     from google.cloud.bigtable._generated import (
         bigtable_instance_admin_pb2 as messages_v2_pb2)
+
     return messages_v2_pb2.GetClusterRequest(*args, **kw)
 
 

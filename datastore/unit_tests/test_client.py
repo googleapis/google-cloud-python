@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -42,6 +43,7 @@ class Test__get_gcd_project(unittest.TestCase):
 
     def _call_fut(self):
         from google.cloud.datastore.client import _get_gcd_project
+
         return _get_gcd_project()
 
     def test_no_value(self):
@@ -65,6 +67,7 @@ class Test__determine_default_project(unittest.TestCase):
     def _call_fut(self, project=None):
         from google.cloud.datastore.client import (
             _determine_default_project)
+
         return _determine_default_project(project=project)
 
     def _determine_default_helper(self, gcd=None, fallback=None,
@@ -131,6 +134,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.client import Client
+
         return Client
 
     def _make_one(self, project=PROJECT, namespace=None,
@@ -164,16 +168,17 @@ class TestClient(unittest.TestCase):
             new=fallback_mock)
         patch2 = mock.patch(
             'google.cloud.client.get_credentials',
-            new=lambda: creds)
+            return_value=creds)
 
         with patch1:
             with patch2:
                 client = klass()
+
         self.assertEqual(client.project, OTHER)
         self.assertIsNone(client.namespace)
         self.assertIsInstance(client._connection, _MockConnection)
-        self.assertIs(client._connection.credentials, creds)
-        self.assertIsNone(client._connection.http)
+        self.assertIs(client._credentials, creds)
+        self.assertIsNone(client._http_internal)
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
         self.assertEqual(default_called, [None])
@@ -190,8 +195,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
         self.assertIsInstance(client._connection, _MockConnection)
-        self.assertIs(client._connection.credentials, creds)
-        self.assertIs(client._connection.http, http)
+        self.assertIs(client._credentials, creds)
+        self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
@@ -848,7 +853,7 @@ class TestClient(unittest.TestCase):
                 projection=PROJECTION,
                 order=ORDER,
                 distinct_on=DISTINCT_ON,
-                )
+            )
 
         self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
@@ -952,6 +957,7 @@ class _NoCommitBatch(object):
 
     def __init__(self, client):
         from google.cloud.datastore.batch import Batch
+
         self._client = client
         self._batch = Batch(client)
         self._batch.begin()
@@ -969,6 +975,7 @@ class _NoCommitTransaction(object):
     def __init__(self, client, transaction_id='TRANSACTION'):
         from google.cloud.datastore.batch import Batch
         from google.cloud.datastore.transaction import Transaction
+
         self._client = client
         xact = self._transaction = Transaction(client)
         xact._id = transaction_id
@@ -1005,6 +1012,7 @@ class _Key(object):
 
     def to_protobuf(self):
         from google.cloud.grpc.datastore.v1 import entity_pb2
+
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.project_id = self.project

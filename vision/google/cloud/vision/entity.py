@@ -64,10 +64,30 @@ class EntityAnnotation(object):
         description = response['description']
         locale = response.get('locale', None)
         locations = [LocationInformation.from_api_repr(location)
-                     for location in response.get('locations', [])]
+                     for location in response.get('locations', ())]
         mid = response.get('mid', None)
         score = response.get('score', None)
 
+        return cls(bounds, description, locale, locations, mid, score)
+
+    @classmethod
+    def from_pb(cls, response):
+        """Factory: construct entity from Vision gRPC response.
+
+        :type response: :class:`~google.cloud.grpc.vision.v1.\
+                        image_annotator_pb2.AnnotateImageResponse`
+        :param response: gRPC response from Vision API with entity data.
+
+        :rtype: :class:`~google.cloud.vision.entity.EntityAnnotation`
+        :returns: Instance of ``EntityAnnotation``.
+        """
+        bounds = Bounds.from_pb(response.bounding_poly)
+        description = response.description
+        locale = response.locale
+        locations = [LocationInformation.from_pb(location)
+                     for location in response.locations]
+        mid = response.mid
+        score = response.score
         return cls(bounds, description, locale, locations, mid, score)
 
     @property

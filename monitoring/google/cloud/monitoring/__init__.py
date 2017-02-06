@@ -44,4 +44,4 @@ __all__ = (
 )
 
 
-SCOPE = Connection.SCOPE
+SCOPE = Client.SCOPE

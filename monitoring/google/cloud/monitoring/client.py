@@ -31,7 +31,7 @@ and monitored resource descriptors.
 import datetime
 
 from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud.client import JSONClient
+from google.cloud.client import ClientWithProject
 from google.cloud.monitoring.connection import Connection
 from google.cloud.monitoring.group import Group
 from google.cloud.monitoring.metric import Metric
@@ -47,7 +47,7 @@ from google.cloud.monitoring.timeseries import TimeSeries
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 
 
-class Client(JSONClient):
+class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
@@ -68,11 +68,15 @@ class Client(JSONClient):
                  ``credentials`` for the current object.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/monitoring.read',
+             'https://www.googleapis.com/auth/monitoring',
+             'https://www.googleapis.com/auth/cloud-platform')
+    """The scopes required for authenticating as a Monitoring consumer."""
+
     def __init__(self, project=None, credentials=None, http=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(
-            credentials=self._credentials, http=self._http)
+        self._connection = Connection(self)
 
     def query(self,
               metric_type=Query.DEFAULT_METRIC_TYPE,

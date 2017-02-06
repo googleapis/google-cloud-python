@@ -20,6 +20,7 @@ class TestResourceRecordSet(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         return ResourceRecordSet
 
     def _make_one(self, *args, **kw):

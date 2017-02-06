@@ -224,8 +224,7 @@ categorize the entire contents of the image under four categories.
     >>> client = vision.Client()
     >>> with open('./image.jpg', 'rb') as image_file:
     ...     image = client.image(content=image_file.read())
-    >>> safe_search_results = image.detect_safe_search()
-    >>> safe_search = safe_search_results[0]
+    >>> safe_search = image.detect_safe_search()
     >>> safe_search.adult
     <Likelihood.VERY_UNLIKELY: 'VERY_UNLIKELY'>
     >>> safe_search.spoof
@@ -271,13 +270,13 @@ image and determine the dominant colors in the image.
     >>> client = vision.Client()
     >>> with open('./image.jpg', 'rb') as image_file:
     ...     image = client.image(content=image_file.read())
-    >>> results = image.detect_properties()
-    >>> colors = results[0]
+    >>> properties = image.detect_properties()
+    >>> colors = properties.colors
     >>> first_color = colors[0]
     >>> first_color.red
-    244
+    244.0
     >>> first_color.blue
-    134
+    134.0
     >>> first_color.score
     0.65519291
     >>> first_color.pixel_fraction

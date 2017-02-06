@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -30,6 +31,7 @@ class TestTopic(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub.topic import Topic
+
         return Topic
 
     def _make_one(self, *args, **kw):
@@ -306,6 +308,7 @@ class TestTopic(unittest.TestCase):
 
     def test_subscription(self):
         from google.cloud.pubsub.subscription import Subscription
+
         client = _Client(project=self.PROJECT)
         topic = self._make_one(self.TOPIC_NAME, client=client)
 
@@ -447,6 +450,7 @@ class TestTopic(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -513,6 +517,7 @@ class TestTopic(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
+
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'
@@ -568,6 +573,7 @@ class TestTopic(unittest.TestCase):
 
     def test_set_iam_policy_w_alternate_client(self):
         from google.cloud.pubsub.iam import Policy
+
         RESPONSE = {'etag': 'ACAB'}
 
         client1 = _Client(project=self.PROJECT)
@@ -629,6 +635,7 @@ class TestBatch(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.pubsub.topic import Batch
+
         return Batch
 
     def _make_one(self, *args, **kwargs):
@@ -772,6 +779,77 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(list(batch.messages), [MESSAGE1, MESSAGE2])
         self.assertEqual(getattr(api, '_topic_published', self), self)
 
+    def test_message_count_autocommit(self):
+        """Establish that if the batch is assigned to take a maximum
+        number of messages, that it commits when it reaches that maximum.
+        """
+        client = _Client(project='PROJECT')
+        topic = _Topic(name='TOPIC')
+
+        # Track commits, but do not perform them.
+        Batch = self._get_target_class()
+        with mock.patch.object(Batch, 'commit') as commit:
+            with self._make_one(topic, client=client, max_messages=5) as batch:
+                self.assertIsInstance(batch, Batch)
+
+                # Publish four messages and establish that the batch does
+                # not commit.
+                for i in range(0, 4):
+                    batch.publish({
+                        'attributes': {},
+                        'data': 'Batch message %d.' % (i,),
+                    })
+                    commit.assert_not_called()
+
+                # Publish a fifth message and observe the commit.
+                batch.publish({
+                    'attributes': {},
+                    'data': 'The final call to trigger a commit!',
+                })
+                commit.assert_called_once_with()
+
+            # There should be a second commit after the context manager
+            # exits.
+            self.assertEqual(commit.call_count, 2)
+
+    @mock.patch('time.time')
+    def test_message_time_autocommit(self, mock_time):
+        """Establish that if the batch is sufficiently old, that it commits
+        the next time it receives a publish.
+        """
+        client = _Client(project='PROJECT')
+        topic = _Topic(name='TOPIC')
+
+        # Track commits, but do not perform them.
+        Batch = self._get_target_class()
+        with mock.patch.object(Batch, 'commit') as commit:
+            mock_time.return_value = 0.0
+            with self._make_one(topic, client=client, max_interval=5) as batch:
+                self.assertIsInstance(batch, Batch)
+
+                # Publish some messages and establish that the batch does
+                # not commit.
+                for i in range(0, 10):
+                    batch.publish({
+                        'attributes': {},
+                        'data': 'Batch message %d.' % (i,),
+                    })
+                    commit.assert_not_called()
+
+                # Move time ahead so that this batch is too old.
+                mock_time.return_value = 10.0
+
+                # Publish another message and observe the commit.
+                batch.publish({
+                    'attributes': {},
+                    'data': 'The final call to trigger a commit!',
+                })
+                commit.assert_called_once_with()
+
+            # There should be a second commit after the context manager
+            # exits.
+            self.assertEqual(commit.call_count, 2)
+
 
 class _FauxPublisherAPI(object):
     _api_called = 0
@@ -782,6 +860,7 @@ class _FauxPublisherAPI(object):
 
     def topic_get(self, topic_path):
         from google.cloud.exceptions import NotFound
+
         self._topic_got = topic_path
         try:
             return self._topic_get_response

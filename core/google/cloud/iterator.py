@@ -42,6 +42,14 @@ requests)::
     ...     if not my_item.is_valid:
     ...         break
 
+At any point, you may check the number of items consumed by referencing the
+``num_results`` property of the iterator::
+
+    >>> my_iterator = Iterator(...)
+    >>> for my_item in my_iterator:
+    ...     if my_iterator.num_results >= 10:
+    ...         break
+
 When iterating, not every new item will send a request to the server.
 To iterate based on each page of items (where a page corresponds to
 a request)::
