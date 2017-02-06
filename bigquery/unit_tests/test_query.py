@@ -307,7 +307,6 @@ class TestQueryResults(unittest.TestCase):
         query.timeout_ms = 20000
         query.use_query_cache = False
         query.use_legacy_sql = True
-        query.dry_run = True
 
         query.run(client=client2)
 
@@ -322,7 +321,6 @@ class TestQueryResults(unittest.TestCase):
                 'projectId': self.PROJECT,
                 'datasetId': DATASET,
             },
-            'dryRun': True,
             'maxResults': 100,
             'preserveNulls': True,
             'timeoutMs': 20000,
