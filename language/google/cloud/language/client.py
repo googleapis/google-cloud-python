@@ -117,9 +117,8 @@ class Client(client_module.Client):
     def document_from_url(self, *args, **kwargs):
         """Deprecated equivalent to document_from_gcs_url.
 
-        (Deprecated on 2017-02-06.)
+        DEPRECATED: 2017-02-06
         """
-
         warnings.warn('The `document_from_url` method is deprecated; use '
                       '`document_from_gcs_url` instead.', DeprecationWarning)
         return self.document_from_gcs_url(*args, **kwargs)
