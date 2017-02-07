@@ -14,6 +14,8 @@
 
 """Basic client for Google Cloud Natural Language API."""
 
+import functools
+import warnings
 
 from google.cloud import client as client_module
 from google.cloud.language.connection import Connection
@@ -87,8 +89,8 @@ class Client(client_module.Client):
         return Document(self, content=content,
                         doc_type=Document.HTML, **kwargs)
 
-    def document_from_url(self, gcs_url,
-                          doc_type=Document.PLAIN_TEXT, **kwargs):
+    def document_from_gcs_url(self, gcs_url,
+                              doc_type=Document.PLAIN_TEXT, **kwargs):
         """Create a Cloud Storage document bound to this client.
 
         :type gcs_url: str
@@ -110,3 +112,13 @@ class Client(client_module.Client):
         :returns: A document bound to this client.
         """
         return Document(self, gcs_url=gcs_url, doc_type=doc_type, **kwargs)
+
+    @functools.wraps(document_from_gcs_url)
+    def document_from_url(self, *args, **kwargs):
+        """Deprecated equivalent to document_from_gcs_url.
+
+        DEPRECATED: 2017-02-06
+        """
+        warnings.warn('The `document_from_url` method is deprecated; use '
+                      '`document_from_gcs_url` instead.', DeprecationWarning)
+        return self.document_from_gcs_url(*args, **kwargs)
