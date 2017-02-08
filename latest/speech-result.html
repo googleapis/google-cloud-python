@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Result &mdash; google-cloud 3584917 documentation</title>
+  <title>Speech Result &mdash; google-cloud 4d2a7d1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 3584917 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="index.html"/>
         <link rel="next" title="Speech Sample" href="speech-sample.html"/>
         <link rel="prev" title="Speech Operation" href="speech-operation.html"/> 
 
@@ -321,18 +321,36 @@
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="google.cloud.speech.result.Result.from_pb">
-<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/result.html#Result.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.result.Result.from_pb" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory: construct instance of <code class="docutils literal"><span class="pre">SpeechRecognitionResult</span></code>.</p>
+<dt id="google.cloud.speech.result.Result.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/result.html#Result.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.result.Result.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct instance of <code class="docutils literal"><span class="pre">Result</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>result</strong> (<code class="xref py py-class docutils literal"><span class="pre">StreamingRecognizeResult</span></code>) &#8211; Instance of <code class="docutils literal"><span class="pre">StreamingRecognizeResult</span></code> protobuf.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>result</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary of a <code class="xref py py-class docutils literal"><span class="pre">SpeechRecognitionResult</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">SpeechRecognitionResult</span></code></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.speech.result.Result" title="google.cloud.speech.result.Result"><code class="xref py py-class docutils literal"><span class="pre">Result</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">SpeechRecognitionResult</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Result</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.speech.result.Result.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/result.html#Result.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.result.Result.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct instance of <code class="docutils literal"><span class="pre">Result</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>result</strong> (<code class="xref py py-class docutils literal"><span class="pre">SpeechRecognitionResult</span></code>) &#8211; Instance of <code class="docutils literal"><span class="pre">SpeechRecognitionResult</span></code> protobuf.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.speech.result.Result" title="google.cloud.speech.result.Result"><code class="xref py py-class docutils literal"><span class="pre">Result</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Result</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -470,7 +488,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3584917',
+            VERSION:'4d2a7d1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

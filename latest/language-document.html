@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Document &mdash; google-cloud 3584917 documentation</title>
+  <title>Document &mdash; google-cloud 4d2a7d1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 3584917 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="index.html"/>
         <link rel="next" title="Natural Language Response Classes" href="language-responses.html"/>
         <link rel="prev" title="Natural Language Client" href="language-client.html"/> 
 
@@ -335,15 +335,9 @@ found in a document.</li>
 
 </dd></dl>
 
-<dl class="data">
-<dt id="google.cloud.language.document.DEFAULT_LANGUAGE">
-<code class="descclassname">google.cloud.language.document.</code><code class="descname">DEFAULT_LANGUAGE</code><em class="property"> = 'en-US'</em><a class="headerlink" href="#google.cloud.language.document.DEFAULT_LANGUAGE" title="Permalink to this definition">#</a></dt>
-<dd><p>Default document language, English.</p>
-</dd></dl>
-
 <dl class="class">
 <dt id="google.cloud.language.document.Document">
-<em class="property">class </em><code class="descclassname">google.cloud.language.document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>client</em>, <em>content=None</em>, <em>gcs_url=None</em>, <em>doc_type='PLAIN_TEXT'</em>, <em>language='en-US'</em>, <em>encoding='UTF8'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.document.Document" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.language.document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>client</em>, <em>content=None</em>, <em>gcs_url=None</em>, <em>doc_type='PLAIN_TEXT'</em>, <em>language=None</em>, <em>encoding='UTF8'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.document.Document" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Document to send to Google Cloud Natural Language API.</p>
 <p>Represents either plain text or HTML, and the content is either
@@ -366,7 +360,7 @@ Defaults to plain text. Can be one of
 <a class="reference internal" href="#google.cloud.language.document.Document.PLAIN_TEXT" title="google.cloud.language.document.Document.PLAIN_TEXT"><code class="xref py py-attr docutils literal"><span class="pre">PLAIN_TEXT</span></code></a> or
 or <a class="reference internal" href="#google.cloud.language.document.Document.HTML" title="google.cloud.language.document.Document.HTML"><code class="xref py py-attr docutils literal"><span class="pre">HTML</span></code></a>.</li>
 <li><strong>language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the document text.
-Defaults to <a class="reference internal" href="#google.cloud.language.document.DEFAULT_LANGUAGE" title="google.cloud.language.document.DEFAULT_LANGUAGE"><code class="xref py py-data docutils literal"><span class="pre">DEFAULT_LANGUAGE</span></code></a>.</li>
+Defaults to None (auto-detect).</li>
 <li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The encoding of the document text.
 Defaults to UTF-8. Can be one of
 <a class="reference internal" href="#google.cloud.language.document.Encoding.UTF8" title="google.cloud.language.document.Encoding.UTF8"><code class="xref py py-attr docutils literal"><span class="pre">UTF8</span></code></a>, <a class="reference internal" href="#google.cloud.language.document.Encoding.UTF16" title="google.cloud.language.document.Encoding.UTF16"><code class="xref py py-attr docutils literal"><span class="pre">UTF16</span></code></a>
@@ -570,7 +564,7 @@ sentences, tokens, sentiment and entities.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3584917',
+            VERSION:'4d2a7d1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

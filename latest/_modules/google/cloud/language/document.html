@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.language.document &mdash; google-cloud 3584917 documentation</title>
+  <title>google.cloud.language.document &mdash; google-cloud 4d2a7d1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 3584917 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -312,10 +312,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.language.syntax</span> <span class="k">import</span> <span class="n">Token</span>
 
 
-<span class="n">DEFAULT_LANGUAGE</span> <span class="o">=</span> <span class="s1">&#39;en-US&#39;</span>
-<span class="sd">&quot;&quot;&quot;Default document language, English.&quot;&quot;&quot;</span>
-
-
 <span class="n">Annotations</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
     <span class="s1">&#39;Annotations&#39;</span><span class="p">,</span>
     <span class="s1">&#39;sentences tokens sentiment entities&#39;</span><span class="p">)</span>
@@ -380,7 +376,7 @@
 
 <span class="sd">    :type language: str</span>
 <span class="sd">    :param language: (Optional) The language of the document text.</span>
-<span class="sd">                     Defaults to :data:`DEFAULT_LANGUAGE`.</span>
+<span class="sd">                     Defaults to None (auto-detect).</span>
 
 <span class="sd">    :type encoding: str</span>
 <span class="sd">    :param encoding: (Optional) The encoding of the document text.</span>
@@ -402,7 +398,7 @@
     <span class="sd">&quot;&quot;&quot;HTML document type.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gcs_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc_type</span><span class="o">=</span><span class="n">PLAIN_TEXT</span><span class="p">,</span>
-                 <span class="n">language</span><span class="o">=</span><span class="n">DEFAULT_LANGUAGE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">Encoding</span><span class="o">.</span><span class="n">UTF8</span><span class="p">):</span>
+                 <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">Encoding</span><span class="o">.</span><span class="n">UTF8</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">gcs_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A Document cannot contain both local text and &#39;</span>
                              <span class="s1">&#39;a link to text in a Google Cloud Storage object&#39;</span><span class="p">)</span>
@@ -426,8 +422,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_type</span><span class="p">,</span>
-            <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">info</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">gcs_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -600,7 +597,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'3584917',
+            VERSION:'4d2a7d1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

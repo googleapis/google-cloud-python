@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.language.client &mdash; google-cloud 3584917 documentation</title>
+  <title>google.cloud.language.client &mdash; google-cloud 4d2a7d1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 3584917 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -301,6 +301,8 @@
 
 <span class="sd">&quot;&quot;&quot;Basic client for Google Cloud Natural Language API.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">client</span> <span class="k">as</span> <span class="n">client_module</span>
 <span class="kn">from</span> <span class="nn">google.cloud.language.connection</span> <span class="k">import</span> <span class="n">Connection</span>
@@ -374,8 +376,8 @@
         <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span>
                         <span class="n">doc_type</span><span class="o">=</span><span class="n">Document</span><span class="o">.</span><span class="n">HTML</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.document_from_url"><a class="viewcode-back" href="../../../../language-client.html#google.cloud.language.client.Client.document_from_url">[docs]</a>    <span class="k">def</span> <span class="nf">document_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gcs_url</span><span class="p">,</span>
-                          <span class="n">doc_type</span><span class="o">=</span><span class="n">Document</span><span class="o">.</span><span class="n">PLAIN_TEXT</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.document_from_gcs_url"><a class="viewcode-back" href="../../../../language-client.html#google.cloud.language.client.Client.document_from_gcs_url">[docs]</a>    <span class="k">def</span> <span class="nf">document_from_gcs_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gcs_url</span><span class="p">,</span>
+                              <span class="n">doc_type</span><span class="o">=</span><span class="n">Document</span><span class="o">.</span><span class="n">PLAIN_TEXT</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a Cloud Storage document bound to this client.</span>
 
 <span class="sd">        :type gcs_url: str</span>
@@ -396,7 +398,17 @@
 <span class="sd">        :rtype: :class:`~google.cloud.language.document.Document`</span>
 <span class="sd">        :returns: A document bound to this client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gcs_url</span><span class="o">=</span><span class="n">gcs_url</span><span class="p">,</span> <span class="n">doc_type</span><span class="o">=</span><span class="n">doc_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gcs_url</span><span class="o">=</span><span class="n">gcs_url</span><span class="p">,</span> <span class="n">doc_type</span><span class="o">=</span><span class="n">doc_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">document_from_gcs_url</span><span class="p">)</span>
+<div class="viewcode-block" id="Client.document_from_url"><a class="viewcode-back" href="../../../../language-client.html#google.cloud.language.client.Client.document_from_url">[docs]</a>    <span class="k">def</span> <span class="nf">document_from_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deprecated equivalent to document_from_gcs_url.</span>
+
+<span class="sd">        DEPRECATED: 2017-02-06</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The `document_from_url` method is deprecated; use &#39;</span>
+                      <span class="s1">&#39;`document_from_gcs_url` instead.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_from_gcs_url</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -430,7 +442,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'3584917',
+            VERSION:'4d2a7d1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

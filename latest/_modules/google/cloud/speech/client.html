@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.client &mdash; google-cloud 3584917 documentation</title>
+  <title>google.cloud.speech.client &mdash; google-cloud 4d2a7d1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 3584917 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -301,18 +301,14 @@
 
 <span class="sd">&quot;&quot;&quot;Basic client for Google Cloud Speech API.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">base64</span> <span class="k">import</span> <span class="n">b64encode</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_bytes_to_unicode</span>
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">BaseClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.speech._gax</span> <span class="k">import</span> <span class="n">GAPICSpeechAPI</span>
-<span class="kn">from</span> <span class="nn">google.cloud.speech.alternative</span> <span class="k">import</span> <span class="n">Alternative</span>
+<span class="kn">from</span> <span class="nn">google.cloud.speech._http</span> <span class="k">import</span> <span class="n">HTTPSpeechAPI</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.connection</span> <span class="k">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">google.cloud.speech.operation</span> <span class="k">import</span> <span class="n">Operation</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.sample</span> <span class="k">import</span> <span class="n">Sample</span>
 
 
@@ -401,196 +397,8 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_speech_api</span> <span class="o">=</span> <span class="n">GAPICSpeechAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_speech_api</span> <span class="o">=</span> <span class="n">_JSONSpeechAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_speech_api</span> <span class="o">=</span> <span class="n">HTTPSpeechAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speech_api</span></div>
-
-
-<span class="k">class</span> <span class="nc">_JSONSpeechAPI</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Speech API for interacting with the JSON/REST version of the API.</span>
-
-<span class="sd">    :type client: :class:`google.cloud.core.client.Client`</span>
-<span class="sd">    :param client: Instance of a ``Client`` object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span>
-
-    <span class="k">def</span> <span class="nf">async_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Asychronous Recognize request to Google Speech API.</span>
-
-<span class="sd">        .. _async_recognize: https://cloud.google.com/speech/reference/\</span>
-<span class="sd">                             rest/v1beta1/speech/asyncrecognize</span>
-
-<span class="sd">        See `async_recognize`_.</span>
-
-<span class="sd">        :type sample: :class:`~google.cloud.speech.sample.Sample`</span>
-<span class="sd">        :param sample: Instance of ``Sample`` containing audio information.</span>
-
-<span class="sd">        :type language_code: str</span>
-<span class="sd">        :param language_code: (Optional) The language of the supplied audio as</span>
-<span class="sd">                              BCP-47 language tag. Example: ``&#39;en-GB&#39;``.</span>
-<span class="sd">                              If omitted, defaults to ``&#39;en-US&#39;``.</span>
-
-<span class="sd">        :type max_alternatives: int</span>
-<span class="sd">        :param max_alternatives: (Optional) Maximum number of recognition</span>
-<span class="sd">                                 hypotheses to be returned. The server may</span>
-<span class="sd">                                 return fewer than maxAlternatives.</span>
-<span class="sd">                                 Valid values are 0-30. A value of 0 or 1</span>
-<span class="sd">                                 will return a maximum of 1. Defaults to 1</span>
-
-<span class="sd">        :type profanity_filter: bool</span>
-<span class="sd">        :param profanity_filter: If True, the server will attempt to filter</span>
-<span class="sd">                                 out profanities, replacing all but the</span>
-<span class="sd">                                 initial character in each filtered word with</span>
-<span class="sd">                                 asterisks, e.g. ``&#39;f***&#39;``. If False or</span>
-<span class="sd">                                 omitted, profanities won&#39;t be filtered out.</span>
-
-<span class="sd">        :type speech_context: list</span>
-<span class="sd">        :param speech_context: A list of strings (max 50) containing words and</span>
-<span class="sd">                               phrases &quot;hints&quot; so that the speech recognition</span>
-<span class="sd">                               is more likely to recognize them. This can be</span>
-<span class="sd">                               used to improve the accuracy for specific words</span>
-<span class="sd">                               and phrases. This can also be used to add new</span>
-<span class="sd">                               words to the vocabulary of the recognizer.</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.speech.operation.Operation`</span>
-<span class="sd">        :returns: Operation for asynchronous request to Google Speech API.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">_build_request_data</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="p">,</span>
-                                   <span class="n">profanity_filter</span><span class="p">,</span> <span class="n">speech_context</span><span class="p">)</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;speech:asyncrecognize&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-
-        <span class="n">operation</span> <span class="o">=</span> <span class="n">Operation</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">api_response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
-        <span class="n">operation</span><span class="o">.</span><span class="n">caller_metadata</span><span class="p">[</span><span class="s1">&#39;request_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;AsyncRecognize&#39;</span>
-        <span class="k">return</span> <span class="n">operation</span>
-
-    <span class="k">def</span> <span class="nf">sync_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Synchronous Speech Recognition.</span>
-
-<span class="sd">        .. _sync_recognize: https://cloud.google.com/speech/reference/\</span>
-<span class="sd">                            rest/v1beta1/speech/syncrecognize</span>
-
-<span class="sd">        See `sync_recognize`_.</span>
-
-<span class="sd">        :type sample: :class:`~google.cloud.speech.sample.Sample`</span>
-<span class="sd">        :param sample: Instance of ``Sample`` containing audio information.</span>
-
-<span class="sd">        :type language_code: str</span>
-<span class="sd">        :param language_code: (Optional) The language of the supplied audio as</span>
-<span class="sd">                              BCP-47 language tag. Example: ``&#39;en-GB&#39;``.</span>
-<span class="sd">                              If omitted, defaults to ``&#39;en-US&#39;``.</span>
-
-<span class="sd">        :type max_alternatives: int</span>
-<span class="sd">        :param max_alternatives: (Optional) Maximum number of recognition</span>
-<span class="sd">                                 hypotheses to be returned. The server may</span>
-<span class="sd">                                 return fewer than maxAlternatives.</span>
-<span class="sd">                                 Valid values are 0-30. A value of 0 or 1</span>
-<span class="sd">                                 will return a maximum of 1. Defaults to 1</span>
-
-<span class="sd">        :type profanity_filter: bool</span>
-<span class="sd">        :param profanity_filter: If True, the server will attempt to filter</span>
-<span class="sd">                                 out profanities, replacing all but the</span>
-<span class="sd">                                 initial character in each filtered word with</span>
-<span class="sd">                                 asterisks, e.g. ``&#39;f***&#39;``. If False or</span>
-<span class="sd">                                 omitted, profanities won&#39;t be filtered out.</span>
-
-<span class="sd">        :type speech_context: list</span>
-<span class="sd">        :param speech_context: A list of strings (max 50) containing words and</span>
-<span class="sd">                               phrases &quot;hints&quot; so that the speech recognition</span>
-<span class="sd">                               is more likely to recognize them. This can be</span>
-<span class="sd">                               used to improve the accuracy for specific words</span>
-<span class="sd">                               and phrases. This can also be used to add new</span>
-<span class="sd">                               words to the vocabulary of the recognizer.</span>
-
-<span class="sd">        :rtype: list</span>
-<span class="sd">        :returns: A list of dictionaries. One dict for each alternative. Each</span>
-<span class="sd">                  dictionary typically contains two keys (though not</span>
-<span class="sd">                  all will be present in all cases)</span>
-
-<span class="sd">                  * ``transcript``: The detected text from the audio recording.</span>
-<span class="sd">                  * ``confidence``: The confidence in language detection, float</span>
-<span class="sd">                    between 0 and 1.</span>
-
-<span class="sd">        :raises: ValueError if more than one result is returned or no results.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">_build_request_data</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="p">,</span>
-                                   <span class="n">profanity_filter</span><span class="p">,</span> <span class="n">speech_context</span><span class="p">)</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;speech:syncrecognize&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">alternative</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;alternatives&#39;</span><span class="p">]]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;More than one result or none returned from API.&#39;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_build_request_data</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Builds the request data before making API request.</span>
-
-<span class="sd">    :type sample: :class:`~google.cloud.speech.sample.Sample`</span>
-<span class="sd">    :param sample: Instance of ``Sample`` containing audio information.</span>
-
-<span class="sd">    :type language_code: str</span>
-<span class="sd">    :param language_code: (Optional) The language of the supplied audio as</span>
-<span class="sd">                          BCP-47 language tag. Example: ``&#39;en-GB&#39;``.</span>
-<span class="sd">                          If omitted, defaults to ``&#39;en-US&#39;``.</span>
-
-<span class="sd">    :type max_alternatives: int</span>
-<span class="sd">    :param max_alternatives: (Optional) Maximum number of recognition</span>
-<span class="sd">                             hypotheses to be returned. The server may</span>
-<span class="sd">                             return fewer than maxAlternatives.</span>
-<span class="sd">                             Valid values are 0-30. A value of 0 or 1</span>
-<span class="sd">                             will return a maximum of 1. Defaults to 1</span>
-
-<span class="sd">    :type profanity_filter: bool</span>
-<span class="sd">    :param profanity_filter: If True, the server will attempt to filter</span>
-<span class="sd">                             out profanities, replacing all but the</span>
-<span class="sd">                             initial character in each filtered word with</span>
-<span class="sd">                             asterisks, e.g. ``&#39;f***&#39;``. If False or</span>
-<span class="sd">                             omitted, profanities won&#39;t be filtered out.</span>
-
-<span class="sd">    :type speech_context: list</span>
-<span class="sd">    :param speech_context: A list of strings (max 50) containing words and</span>
-<span class="sd">                           phrases &quot;hints&quot; so that the speech recognition</span>
-<span class="sd">                           is more likely to recognize them. This can be</span>
-<span class="sd">                           used to improve the accuracy for specific words</span>
-<span class="sd">                           and phrases. This can also be used to add new</span>
-<span class="sd">                           words to the vocabulary of the recognizer.</span>
-
-<span class="sd">    :rtype: dict</span>
-<span class="sd">    :returns: Dictionary with required data for Google Speech API.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">sample</span><span class="o">.</span><span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">audio</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span>
-                 <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">b64encode</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">content</span><span class="p">)))}</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">audio</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;uri&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">source_uri</span><span class="p">}</span>
-
-    <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;encoding&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
-              <span class="s1">&#39;sampleRate&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">}</span>
-
-    <span class="k">if</span> <span class="n">language_code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;languageCode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language_code</span>
-    <span class="k">if</span> <span class="n">max_alternatives</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;maxAlternatives&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_alternatives</span>
-    <span class="k">if</span> <span class="n">profanity_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;profanityFilter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">profanity_filter</span>
-    <span class="k">if</span> <span class="n">speech_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;speechContext&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;phrases&#39;</span><span class="p">:</span> <span class="n">speech_context</span><span class="p">}</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;audio&#39;</span><span class="p">:</span> <span class="n">audio</span><span class="p">,</span>
-        <span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">,</span>
-    <span class="p">}</span>
-
-    <span class="k">return</span> <span class="n">data</span>
 </pre></div>
 
            </div>
@@ -624,7 +432,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'3584917',
+            VERSION:'4d2a7d1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

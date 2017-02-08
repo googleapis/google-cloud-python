@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.result &mdash; google-cloud 3584917 documentation</title>
+  <title>google.cloud.speech.result &mdash; google-cloud 4d2a7d1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 3584917 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -319,17 +319,32 @@
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Result.from_pb"><a class="viewcode-back" href="../../../../speech-result.html#google.cloud.speech.result.Result.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct instance of ``SpeechRecognitionResult``.</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct instance of ``Result``.</span>
 
 <span class="sd">        :type result: :class:`~google.cloud.grpc.speech.v1beta1\</span>
-<span class="sd">                               .cloud_speech_pb2.StreamingRecognizeResult`</span>
-<span class="sd">        :param result: Instance of ``StreamingRecognizeResult`` protobuf.</span>
+<span class="sd">                               .cloud_speech_pb2.SpeechRecognitionResult`</span>
+<span class="sd">        :param result: Instance of ``SpeechRecognitionResult`` protobuf.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.speech.result.SpeechRecognitionResult`</span>
-<span class="sd">        :returns: Instance of ``SpeechRecognitionResult``.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.speech.result.Result`</span>
+<span class="sd">        :returns: Instance of ``Result``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">for</span> <span class="n">result</span>
+        <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">alternative</span><span class="p">)</span> <span class="k">for</span> <span class="n">alternative</span>
                         <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">alternatives</span><span class="o">=</span><span class="n">alternatives</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Result.from_api_repr"><a class="viewcode-back" href="../../../../speech-result.html#google.cloud.speech.result.Result.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct instance of ``Result``.</span>
+
+<span class="sd">        :type result: dict</span>
+<span class="sd">        :param result: Dictionary of a :class:`~google.cloud.grpc.speech.\</span>
+<span class="sd">            v1beta1.cloud_speech_pb2.SpeechRecognitionResult`</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.speech.result.Result`</span>
+<span class="sd">        :returns: Instance of ``Result``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">alternatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">alternative</span><span class="p">)</span> <span class="k">for</span> <span class="n">alternative</span>
+                        <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;alternatives&#39;</span><span class="p">]]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">alternatives</span><span class="o">=</span><span class="n">alternatives</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -437,7 +452,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'3584917',
+            VERSION:'4d2a7d1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

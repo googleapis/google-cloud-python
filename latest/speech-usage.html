@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 3584917 documentation</title>
+  <title>Using the API &mdash; google-cloud 4d2a7d1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 3584917 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="index.html"/>
         <link rel="next" title="Speech Client" href="speech-client.html"/>
         <link rel="prev" title="Natural Language Response Classes" href="language-responses.html"/> 
 
@@ -342,9 +342,10 @@ asynchronous recognition.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span><span class="o">.</span><span class="n">complete</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">operation</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
 <span class="go">====================</span>
 <span class="go">&#39;how old is the Brooklyn Bridge&#39;</span>
 <span class="go">0.98267895</span>
@@ -367,9 +368,10 @@ Great Britian.</p>
 <span class="gp">... </span>    <span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-GB&#39;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
 <span class="go">====================</span>
 <span class="go">transcript: Hello, this is a test</span>
 <span class="go">confidence: 0.81</span>
@@ -387,9 +389,10 @@ Great Britian.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span><span class="n">max_alternatives</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="gp">... </span>                                <span class="n">profanity_filter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
 <span class="go">====================</span>
 <span class="go">transcript: Hello, this is a f****** test</span>
 <span class="go">confidence: 0.81</span>
@@ -407,9 +410,10 @@ words to the vocabulary of the recognizer.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span><span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span>                                <span class="n">speech_context</span><span class="o">=</span><span class="n">hints</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
 <span class="go">====================</span>
 <span class="go">transcript: Hello, this is a test</span>
 <span class="go">confidence: 0.81</span>
@@ -534,7 +538,7 @@ been reached.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3584917',
+            VERSION:'4d2a7d1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

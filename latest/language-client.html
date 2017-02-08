@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Natural Language Client &mdash; google-cloud 3584917 documentation</title>
+  <title>Natural Language Client &mdash; google-cloud 4d2a7d1 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 3584917 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="index.html"/>
         <link rel="next" title="Document" href="language-document.html"/>
         <link rel="prev" title="Using the API" href="language-usage.html"/> 
 
@@ -322,6 +322,37 @@ that defines <code class="docutils literal"><span class="pre">request()</span></
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.language.client.Client.document_from_gcs_url">
+<code class="descname">document_from_gcs_url</code><span class="sig-paren">(</span><em>gcs_url</em>, <em>doc_type='PLAIN_TEXT'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client.document_from_gcs_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client.document_from_gcs_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a Cloud Storage document bound to this client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>gcs_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The URL of the Google Cloud Storage object
+holding the content. Of the form
+<code class="docutils literal"><span class="pre">gs://{bucket}/{blob-name}</span></code>.</li>
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The type of text in the document.
+Defaults to plain text. Can also be specified
+as HTML via <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.HTML" title="google.cloud.language.document.Document.HTML"><code class="xref py py-attr docutils literal"><span class="pre">HTML</span></code></a>.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Remaining keyword arguments to be passed along to the
+<a class="reference internal" href="language-document.html#google.cloud.language.document.Document" title="google.cloud.language.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a>
+constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="language-document.html#google.cloud.language.document.Document" title="google.cloud.language.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A document bound to this client.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.language.client.Client.document_from_html">
 <code class="descname">document_from_html</code><span class="sig-paren">(</span><em>content</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client.document_from_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client.document_from_html" title="Permalink to this definition">#</a></dt>
 <dd><p>Create an HTML document bound to this client.</p>
@@ -383,7 +414,7 @@ keyword argument.</p>
 
 <dl class="method">
 <dt id="google.cloud.language.client.Client.document_from_url">
-<code class="descname">document_from_url</code><span class="sig-paren">(</span><em>gcs_url</em>, <em>doc_type='PLAIN_TEXT'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client.document_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client.document_from_url" title="Permalink to this definition">#</a></dt>
+<code class="descname">document_from_url</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client.document_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client.document_from_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a Cloud Storage document bound to this client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -494,7 +525,7 @@ constructor.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3584917',
+            VERSION:'4d2a7d1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
