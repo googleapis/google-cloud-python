@@ -20,7 +20,12 @@ gi#########################################
 .ipynb_checkpoints
 .tags
 
+# Docs #
+########
+docs/source/_build
+
 # Coverage #
+############
 .coverage
 coverage.xml
 coverage_html_report
@@ -43,8 +48,6 @@ MANIFEST
 ################
 # setup.py working directory
 build
-# sphinx build directory
-doc/_build
 # setup.py dist directory
 dist
 # Egg metadata
