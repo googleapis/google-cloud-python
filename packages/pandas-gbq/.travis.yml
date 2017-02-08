@@ -1,0 +1,33 @@
+sudo: false
+
+language: python
+
+env:
+  - PYTHON=2.7 PANDAS=0.19.2
+  - PYTHON=3.4 PANDAS=0.18.1
+  - PYTHON=3.5 PANDAS=0.19.2
+  - PYTHON=3.6 PANDAS=0.19.2
+
+install:
+  - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda config --add channels pandas
+  - conda update -q conda
+
+  # Useful for debugging any issues with conda
+  - conda info -a
+  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS pytest flake8 coverage setuptools
+  - pip install httplib2 google-api-python-client oauth2client pytest-cov
+  - source activate test-environment
+  - conda list
+  - python setup.py install
+
+script:
+    - pytest pandas_gbq
+    - flake8 --version
+
+after_success:
+  - coveralls
