@@ -1,4 +1,4 @@
-#########################################
+gi#########################################
 # Editor temporary/working/backup files #
 .#*
 *\#*\#
@@ -65,38 +65,3 @@ dist
 ehthumbs.db
 Icon?
 Thumbs.db
-
-# Data files #
-##############
-*.dta
-*.xpt
-*.h5
-pandas/io/*.dat
-pandas/io/*.json
-scikits
-
-# Generated Sources #
-#####################
-!skts.c
-!np_datetime.c
-!np_datetime_strings.c
-*.c
-*.cpp
-
-# Performance Testing #
-#######################
-asv_bench/env/
-asv_bench/html/
-asv_bench/results/
-asv_bench/pandas/
-
-# Documentation generated files #
-#################################
-doc/source/generated
-doc/source/_static
-doc/source/vbench
-doc/source/vbench.rst
-doc/source/index.rst
-doc/build/html/index.html
-# Windows specific leftover:
-doc/tmp.sv
