@@ -65,3 +65,6 @@ dist
 ehthumbs.db
 Icon?
 Thumbs.db
+
+# caches #
+.cache
