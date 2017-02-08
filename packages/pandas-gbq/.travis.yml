@@ -17,17 +17,18 @@ install:
   - conda config --add channels pandas
   - conda update -q conda
   - conda info -a
-  - conda create -q -n test-environment python=$PYTHON pandas=$PANDAS pytest coverage setuptools
+  - conda create -n test-environment python=$PYTHON
+  - source activate test-environment
+  - conda install pandas=$PANDAS pytest coverage
   - pip install pytest-cov flake8
   - REQ="ci/requirements-${PYTHON}.pip"
   - pip install -r $REQ
-  - source activate test-environment
   - conda list
   - python setup.py install
 
 script:
-    - pytest pandas_gbq -v
-    - flake8 --version
+  - pytest pandas_gbq -v
+  - flake8 --version
 
 after_success:
   - coveralls
