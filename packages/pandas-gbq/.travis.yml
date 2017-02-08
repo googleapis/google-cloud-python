@@ -20,7 +20,7 @@ install:
   - conda create -n test-environment python=$PYTHON
   - source activate test-environment
   - conda install pandas=$PANDAS
-  - pip install coverage pytest pytest-cov flake8
+  - pip install coverage pytest pytest-cov flake8 codecov
   - REQ="ci/requirements-${PYTHON}.pip"
   - pip install -r $REQ
   - conda list
@@ -31,4 +31,4 @@ script:
   - flake8 pandas_gbq -v
 
 after_success:
-  - if [[ $COVERAGE == 'true' ]]; then coverage report --show-missing; pip install coveralls ; coveralls ; fi
+  - if [[ $COVERAGE == 'true' ]]; then codecov ; fi
