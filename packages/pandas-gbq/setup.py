@@ -18,7 +18,7 @@ def readme():
         return f.read()
 
 INSTALL_REQUIRES = (
-    ['pandas', 'requests>=2.3.0', 'requests-file', 'requests-ftp']
+    ['pandas', 'httplib2', 'google-api-python-client', 'oauth2client']
 )
 
 setup(
