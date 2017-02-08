@@ -20,6 +20,11 @@ gi#########################################
 .ipynb_checkpoints
 .tags
 
+# Coverage #
+.coverage
+coverage.xml
+coverage_html_report
+
 # Compiled source #
 ###################
 *.a
