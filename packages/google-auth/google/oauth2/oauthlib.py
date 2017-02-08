@@ -1,0 +1,142 @@
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Integration with oauthlib
+
+.. warning::
+    This module is experimental and is subject to change signficantly
+    within major version releases.
+
+This module provides helpers for integrating with `requests-oauthlib`_.
+Typically, you'll want to use the higher-level helpers in
+:mod:`google.oauth2.flow`.
+
+.. _requests-oauthlib: http://requests-oauthlib.readthedocs.io/en/stable/
+"""
+
+import json
+
+import requests_oauthlib
+
+import google.oauth2.credentials
+
+_REQUIRED_CONFIG_KEYS = frozenset(('auth_uri', 'token_uri', 'client_id'))
+
+
+def session_from_client_config(client_config, scopes, **kwargs):
+    """Creates a :class:`requests_oauthlib.OAuth2Session` from client
+    configuration loaded from a Google-format client secrets file.
+
+    Args:
+        client_config (Mapping[str, Any]): The client
+            configuration in the Google `client secrets`_ format.
+        scopes (Sequence[str]): The list of scopes to request during the
+            flow.
+        kwargs: Any additional parameters passed to
+            :class:`requests_oauthlib.OAuth2Session`
+
+    Raises:
+        ValueError: If the client configuration is not in the correct
+            format.
+
+    Returns:
+        Tuple[requests_oauthlib.OAuth2Session, Mapping[str, Any]]: The new
+            oauthlib session and the validated client configuration.
+
+    .. _client secrets:
+        https://developers.google.com/api-client-library/python/guide
+        /aaa_client_secrets
+    """
+
+    if 'web' in client_config:
+        config = client_config['web']
+    elif 'installed' in client_config:
+        config = client_config['installed']
+    else:
+        raise ValueError(
+            'Client secrets must be for a web or installed app.')
+
+    if not _REQUIRED_CONFIG_KEYS.issubset(config.keys()):
+        raise ValueError('Client secrets is not in the correct format.')
+
+    session = requests_oauthlib.OAuth2Session(
+        client_id=config['client_id'],
+        scope=scopes,
+        **kwargs)
+
+    return session, client_config
+
+
+def session_from_client_secrets_file(client_secrets_file, scopes, **kwargs):
+    """Creates a :class:`requests_oauthlib.OAuth2Session` instance from a
+    Google-format client secrets file.
+
+    Args:
+        client_secrets_file (str): The path to the `client secrets`_ .json
+            file.
+        scopes (Sequence[str]): The list of scopes to request during the
+            flow.
+        kwargs: Any additional parameters passed to
+            :class:`requests_oauthlib.OAuth2Session`
+
+    Returns:
+        Tuple[requests_oauthlib.OAuth2Session, Mapping[str, Any]]: The new
+            oauthlib session and the validated client configuration.
+
+    .. _client secrets:
+        https://developers.google.com/api-client-library/python/guide
+        /aaa_client_secrets
+    """
+    with open(client_secrets_file, 'r') as json_file:
+        client_config = json.load(json_file)
+
+    return session_from_client_config(client_config, scopes, **kwargs)
+
+
+def credentials_from_session(session, client_config=None):
+    """Creates :class:`google.oauth2.credentials.Credentials` from a
+    :class:`requests_oauthlib.OAuth2Session`.
+
+    :meth:`fetch_token` must be called on the session before before calling
+    this. This uses the session's auth token and the provided client
+    configuration to create :class:`google.oauth2.credentials.Credentials`.
+    This allows you to use the credentials from the session with Google
+    API client libraries.
+
+    Args:
+        session (requests_oauthlib.OAuth2Session): The OAuth 2.0 session.
+        client_config (Mapping[str, Any]): The subset of the client
+            configuration to use. For example, if you have a web client
+            you would pass in `client_config['web']`.
+
+    Returns:
+        google.oauth2.credentials.Credentials: The constructed credentials.
+
+    Raises:
+        ValueError: If there is no access token in the session.
+    """
+    client_config = client_config if client_config is not None else {}
+
+    if not session.token:
+        raise ValueError(
+            'There is no access token for this session, did you call '
+            'fetch_token?')
+
+    return google.oauth2.credentials.Credentials(
+        session.token['access_token'],
+        refresh_token=session.token.get('refresh_token'),
+        token_uri=client_config.get('token_uri'),
+        client_id=client_config.get('client_id'),
+        client_secret=client_config.get('client_secret'),
+        scopes=session.scope)

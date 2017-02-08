@@ -55,12 +55,9 @@ authorization flow::
 
 import json
 
-import requests_oauthlib
-
 import google.auth.transport.requests
 import google.oauth2.credentials
-
-_REQUIRED_CONFIG_KEYS = frozenset(('auth_uri', 'token_uri', 'client_id'))
+import google.oauth2.oauthlib
 
 
 class Flow(object):
@@ -82,8 +79,32 @@ class Flow(object):
         https://console.developers.google.com/apis/credentials
     """
 
-    def __init__(self, client_config, scopes, **kwargs):
+    def __init__(self, oauth2session, client_type, client_config):
         """
+        Args:
+            oauth2session (requests_oauthlib.OAuth2Session):
+                The OAuth 2.0 session from ``requests-oauthlib``.
+            client_type (str): The client type, either ``web`` or
+                ``installed``.
+            client_config (Mapping[str, Any]): The client
+                configuration in the Google `client secrets`_ format.
+
+        .. _client secrets:
+            https://developers.google.com/api-client-library/python/guide
+            /aaa_client_secrets
+        """
+        self.client_type = client_type
+        """str: The client type, either ``'web'`` or ``'installed'``"""
+        self.client_config = client_config[client_type]
+        """Mapping[str, Any]: The OAuth 2.0 client configuration."""
+        self.oauth2session = oauth2session
+        """requests_oauthlib.OAuth2Session: The OAuth 2.0 session."""
+
+    @classmethod
+    def from_client_config(cls, client_config, scopes, **kwargs):
+        """Creates a :class:`requests_oauthlib.OAuth2Session` from client
+        configuration loaded from a Google-format client secrets file.
+
         Args:
             client_config (Mapping[str, Any]): The client
                 configuration in the Google `client secrets`_ format.
@@ -91,6 +112,9 @@ class Flow(object):
                 flow.
             kwargs: Any additional parameters passed to
                 :class:`requests_oauthlib.OAuth2Session`
+
+        Returns:
+            Flow: The constructed Flow instance.
 
         Raises:
             ValueError: If the client configuration is not in the correct
@@ -100,29 +124,19 @@ class Flow(object):
             https://developers.google.com/api-client-library/python/guide
             /aaa_client_secrets
         """
-        self.client_config = None
-        """Mapping[str, Any]: The OAuth 2.0 client configuration."""
-        self.client_type = None
-        """str: The client type, either ``'web'`` or ``'installed'``"""
-
         if 'web' in client_config:
-            self.client_config = client_config['web']
-            self.client_type = 'web'
+            client_type = 'web'
         elif 'installed' in client_config:
-            self.client_config = client_config['installed']
-            self.client_type = 'installed'
+            client_type = 'installed'
         else:
             raise ValueError(
                 'Client secrets must be for a web or installed app.')
 
-        if not _REQUIRED_CONFIG_KEYS.issubset(self.client_config.keys()):
-            raise ValueError('Client secrets is not in the correct format.')
+        session, client_config = (
+            google.oauth2.oauthlib.session_from_client_config(
+                client_config, scopes, **kwargs))
 
-        self.oauth2session = requests_oauthlib.OAuth2Session(
-            client_id=self.client_config['client_id'],
-            scope=scopes,
-            **kwargs)
-        """requests_oauthlib.OAuth2Session: The OAuth 2.0 session."""
+        return cls(session, client_type, client_config)
 
     @classmethod
     def from_client_secrets_file(cls, client_secrets_file, scopes, **kwargs):
@@ -142,7 +156,7 @@ class Flow(object):
         with open(client_secrets_file, 'r') as json_file:
             client_config = json.load(json_file)
 
-        return cls(client_config, scopes=scopes, **kwargs)
+        return cls.from_client_config(client_config, scopes=scopes, **kwargs)
 
     @property
     def redirect_uri(self):
@@ -226,18 +240,8 @@ class Flow(object):
         Raises:
             ValueError: If there is no access token in the session.
         """
-        if not self.oauth2session.token:
-            raise ValueError(
-                'There is no access token for this session, did you call '
-                'fetch_token?')
-
-        return google.oauth2.credentials.Credentials(
-            self.oauth2session.token['access_token'],
-            refresh_token=self.oauth2session.token['refresh_token'],
-            token_uri=self.client_config['token_uri'],
-            client_id=self.client_config['client_id'],
-            client_secret=self.client_config['client_secret'],
-            scopes=self.oauth2session.scope)
+        return google.oauth2.oauthlib.credentials_from_session(
+            self.oauth2session, self.client_config)
 
     def authorized_session(self):
         """Returns a :class:`requests.Session` authorized with credentials.

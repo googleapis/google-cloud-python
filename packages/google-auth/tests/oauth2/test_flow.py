@@ -27,32 +27,6 @@ with open(CLIENT_SECRETS_FILE, 'r') as fh:
     CLIENT_SECRETS_INFO = json.load(fh)
 
 
-def test_constructor_web():
-    instance = flow.Flow(CLIENT_SECRETS_INFO, scopes=mock.sentinel.scopes)
-    assert instance.client_config == CLIENT_SECRETS_INFO['web']
-    assert (instance.oauth2session.client_id ==
-            CLIENT_SECRETS_INFO['web']['client_id'])
-    assert instance.oauth2session.scope == mock.sentinel.scopes
-
-
-def test_constructor_installed():
-    info = {'installed': CLIENT_SECRETS_INFO['web']}
-    instance = flow.Flow(info, scopes=mock.sentinel.scopes)
-    assert instance.client_config == info['installed']
-    assert instance.oauth2session.client_id == info['installed']['client_id']
-    assert instance.oauth2session.scope == mock.sentinel.scopes
-
-
-def test_constructor_bad_format():
-    with pytest.raises(ValueError):
-        flow.Flow({}, scopes=[])
-
-
-def test_constructor_missing_keys():
-    with pytest.raises(ValueError):
-        flow.Flow({'web': {}}, scopes=[])
-
-
 def test_from_client_secrets_file():
     instance = flow.Flow.from_client_secrets_file(
         CLIENT_SECRETS_FILE, scopes=mock.sentinel.scopes)
@@ -62,9 +36,25 @@ def test_from_client_secrets_file():
     assert instance.oauth2session.scope == mock.sentinel.scopes
 
 
+def test_from_client_config_installed():
+    client_config = {'installed': CLIENT_SECRETS_INFO['web']}
+    instance = flow.Flow.from_client_config(
+        client_config, scopes=mock.sentinel.scopes)
+    assert instance.client_config == client_config['installed']
+    assert (instance.oauth2session.client_id ==
+            client_config['installed']['client_id'])
+    assert instance.oauth2session.scope == mock.sentinel.scopes
+
+
+def test_from_client_config_bad_format():
+    with pytest.raises(ValueError):
+        flow.Flow.from_client_config({}, scopes=mock.sentinel.scopes)
+
+
 @pytest.fixture
 def instance():
-    yield flow.Flow(CLIENT_SECRETS_INFO, scopes=mock.sentinel.scopes)
+    yield flow.Flow.from_client_config(
+        CLIENT_SECRETS_INFO, scopes=mock.sentinel.scopes)
 
 
 def test_redirect_uri(instance):
@@ -121,11 +111,6 @@ def test_credentials(instance):
     assert (credentials._client_secret ==
             CLIENT_SECRETS_INFO['web']['client_secret'])
     assert credentials._token_uri == CLIENT_SECRETS_INFO['web']['token_uri']
-
-
-def test_bad_credentials(instance):
-    with pytest.raises(ValueError):
-        assert instance.credentials
 
 
 def test_authorized_session(instance):
