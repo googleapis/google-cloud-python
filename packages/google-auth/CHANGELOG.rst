@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v0.6.0
+------
+
+- Added experimental integration with ``requests-oauthlib`` in ``google.oauth2.oauthlib`` and ``google.oauth2.flow``. (#100, #105, #106)
+- Fixed typo in ``google_auth_httplib2``'s README. (#105)
+
 v0.5.0
 ------
 
