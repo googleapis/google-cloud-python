@@ -14,6 +14,10 @@
 
 """OAuth 2.0 Authorization Flow
 
+.. warning::
+    This module is experimental and is subject to change signficantly
+    within major version releases.
+
 This module provides integration with `requests-oauthlib`_ for running the
 `OAuth 2.0 Authorization Flow`_ and acquiring user credentials.
 
