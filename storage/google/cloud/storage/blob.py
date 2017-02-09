@@ -403,7 +403,7 @@ class Blob(_PropertyMixin):
         :param content_type: Optional type of content being uploaded.
 
         :type chunk_size: int
-        :param size: The size of each chunk when doing resumable and media
+        :param chunk_size: The size of each chunk when doing resumable and media
             uploads.
 
         :type strategy: str
@@ -549,6 +549,10 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
+        :rtype: str
+        :returns: The resumable upload session URL. The upload can be
+            completed by making an HTTP PUT request with the file's contents.
 
         :raises: :class:`ValueError` if size is not passed in and can not be
                  determined; :class:`google.cloud.exceptions.GoogleCloudError`
@@ -745,7 +749,7 @@ class Blob(_PropertyMixin):
                  if the session creation response returns an error status.
         """
 
-        upload, _, start_response = self._create_upload(
+        _, _, start_response = self._create_upload(
             client,
             size=size,
             content_type=content_type,
@@ -758,7 +762,6 @@ class Blob(_PropertyMixin):
 
         # The location header contains the session URL. This can be used
         # to continue the upload.
-        print(start_response)
         resumable_upload_session_url = start_response.info['location']
 
         return resumable_upload_session_url
