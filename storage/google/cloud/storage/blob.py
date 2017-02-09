@@ -403,8 +403,8 @@ class Blob(_PropertyMixin):
         :param content_type: Optional type of content being uploaded.
 
         :type chunk_size: int
-        :param chunk_size: The size of each chunk when doing resumable and media
-            uploads.
+        :param chunk_size: The size of each chunk when doing resumable and
+            media uploads.
 
         :type strategy: str
         :param strategy: Either
