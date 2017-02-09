@@ -94,21 +94,17 @@ class Image(object):
         """
         return self._source
 
-    def _detect_annotation(self, features):
+    def _detect_annotation(self, images):
         """Generic method for detecting annotations.
 
-        :type features: list
-        :param features: List of :class:`~google.cloud.vision.feature.Feature`
-                         indicating the type of annotations to perform.
+        :type images: list
+        :param images: List of :class:`~google.cloud.vision.image.Image`.
 
         :rtype: list
         :returns: List of
-                  :class:`~google.cloud.vision.entity.EntityAnnotation`,
-                  :class:`~google.cloud.vision.face.Face`,
-                  :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,
-                  :class:`~google.cloud.vision.sage.SafeSearchAnnotation`,
+                  :class:`~google.cloud.vision.annotations.Annotations`.
         """
-        return self.client._vision_api.annotate(self, features)
+        return self.client._vision_api.annotate(images)
 
     def detect(self, features):
         """Detect multiple feature types.
@@ -121,7 +117,8 @@ class Image(object):
         :returns: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
-        return self._detect_annotation(features)
+        images = ((self, features),)
+        return self._detect_annotation(images)
 
     def detect_faces(self, limit=10):
         """Detect faces in image.
@@ -133,7 +130,7 @@ class Image(object):
         :returns: List of :class:`~google.cloud.vision.face.Face`.
         """
         features = [Feature(FeatureTypes.FACE_DETECTION, limit)]
-        annotations = self._detect_annotation(features)
+        annotations = self.detect(features)
         return annotations[0].faces
 
     def detect_labels(self, limit=10):
@@ -146,7 +143,7 @@ class Image(object):
         :returns: List of :class:`~google.cloud.vision.entity.EntityAnnotation`
         """
         features = [Feature(FeatureTypes.LABEL_DETECTION, limit)]
-        annotations = self._detect_annotation(features)
+        annotations = self.detect(features)
         return annotations[0].labels
 
     def detect_landmarks(self, limit=10):
@@ -160,7 +157,7 @@ class Image(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
         features = [Feature(FeatureTypes.LANDMARK_DETECTION, limit)]
-        annotations = self._detect_annotation(features)
+        annotations = self.detect(features)
         return annotations[0].landmarks
 
     def detect_logos(self, limit=10):
@@ -174,7 +171,7 @@ class Image(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
         features = [Feature(FeatureTypes.LOGO_DETECTION, limit)]
-        annotations = self._detect_annotation(features)
+        annotations = self.detect(features)
         return annotations[0].logos
 
     def detect_properties(self, limit=10):
@@ -188,7 +185,7 @@ class Image(object):
                   :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.
         """
         features = [Feature(FeatureTypes.IMAGE_PROPERTIES, limit)]
-        annotations = self._detect_annotation(features)
+        annotations = self.detect(features)
         return annotations[0].properties
 
     def detect_safe_search(self, limit=10):
@@ -202,7 +199,7 @@ class Image(object):
                   :class:`~google.cloud.vision.sage.SafeSearchAnnotation`.
         """
         features = [Feature(FeatureTypes.SAFE_SEARCH_DETECTION, limit)]
-        annotations = self._detect_annotation(features)
+        annotations = self.detect(features)
         return annotations[0].safe_searches
 
     def detect_text(self, limit=10):
@@ -216,5 +213,5 @@ class Image(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
         features = [Feature(FeatureTypes.TEXT_DETECTION, limit)]
-        annotations = self._detect_annotation(features)
+        annotations = self.detect(features)
         return annotations[0].texts

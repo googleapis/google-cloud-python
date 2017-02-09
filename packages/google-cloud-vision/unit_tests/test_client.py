@@ -33,6 +33,7 @@ class TestClient(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.vision.client import Client
+
         return Client
 
     def _make_one(self, *args, **kw):
@@ -104,7 +105,8 @@ class TestClient(unittest.TestCase):
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
         image = client.image(content=IMAGE_CONTENT)
-        api_response = client._vision_api.annotate(image, features)
+        images = ((image, features),)
+        api_response = client._vision_api.annotate(images)
 
         self.assertEqual(len(api_response), 1)
         response = api_response[0]

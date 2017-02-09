@@ -20,6 +20,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
 
 from google.cloud.vision._gax import _GAPICVisionAPI
+from google.cloud.vision.batch import Batch
 from google.cloud.vision.connection import Connection
 from google.cloud.vision.image import Image
 from google.cloud.vision._http import _HTTPVisionAPI
@@ -70,6 +71,14 @@ class Client(ClientWithProject):
             self._use_gax = _USE_GAX
         else:
             self._use_gax = use_gax
+
+    def batch(self):
+        """Batch multiple images into a single API request.
+
+        :rtype: :class:`google.cloud.vision.batch.Batch`
+        :returns: Instance of ``Batch``.
+        """
+        return Batch(self)
 
     def image(self, content=None, filename=None, source_uri=None):
         """Get instance of Image using current client.
