@@ -694,7 +694,7 @@ class Blob(_PropertyMixin):
 
         Resumable upload sessions allow you to start an upload session from
         one client and complete the session in another. This method is called
-        by the iniator to set the metadata and limits. The initiator then
+        by the initiator to set the metadata and limits. The initiator then
         passes the session URL to the client that will upload the binary data.
         The client performs a PUT request on the session URL to complete the
         upload. This process allows untrusted clients to upload to an
