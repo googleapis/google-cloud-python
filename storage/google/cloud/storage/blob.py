@@ -749,16 +749,19 @@ class Blob(_PropertyMixin):
                  if the session creation response returns an error status.
         """
 
+        extra_headers = {}
+
+        if origin is not None:
+            # This header is specifically for client-side uploads, it
+            # determines the origins allowed for CORS.
+            extra_headers['Origin'] = origin
+
         _, _, start_response = self._create_upload(
             client,
             size=size,
             content_type=content_type,
             strategy=RESUMABLE_UPLOAD,
-            extra_headers={
-                # This headers are specifically for client-side uploads, it
-                # determines the origins allowed for CORS.
-                'Origin': origin
-            })
+            extra_headers=extra_headers)
 
         # The location header contains the session URL. This can be used
         # to continue the upload.
