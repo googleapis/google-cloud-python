@@ -550,10 +550,6 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
-        :rtype: str
-        :returns: The resumable upload session URL. The upload can be
-            completed by making an HTTP PUT request with the file's contents.
-
         :raises: :class:`ValueError` if size is not passed in and can not be
                  determined; :class:`google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
@@ -744,6 +740,10 @@ class Blob(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
+        :rtype: str
+        :returns: The resumable upload session URL. The upload can be
+            completed by making an HTTP PUT request with the file's contents.
 
         :raises: :class:`google.cloud.exceptions.GoogleCloudError`
                  if the session creation response returns an error status.
