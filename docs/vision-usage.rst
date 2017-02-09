@@ -283,6 +283,40 @@ image and determine the dominant colors in the image.
     0.758658
 
 
+*********************
+Batch image detection
+*********************
+
+Multiple images can be processed with a single request by passing
+:class:`~google.cloud.vision.image.Image` to
+:meth:`~google.cloud.vision.client.Client.batch()`.
+
+.. code-block:: python
+
+    >>> from google.cloud import vision
+    >>> from google.cloud.vision.feature import Feature
+    >>> from google.cloud.vision.feature import FeatureTypes
+    >>>
+    >>> client = vision.Client()
+    >>> batch = client.batch()
+    >>>
+    >>> image_one = client.image(source_uri='gs://my-test-bucket/image1.jpg')
+    >>> image_two = client.image(source_uri='gs://my-test-bucket/image2.jpg')
+    >>> face_feature = Feature(FeatureTypes.FACE_DETECTION, 2)
+    >>> logo_feature = Feature(FeatureTypes.LOGO_DETECTION, 2)
+    >>> batch.add_image(image_one, [face_feature, logo_feature])
+    >>> batch.add_image(image_two, [logo_feature])
+    >>> results = batch.detect()
+    >>> for image in results:
+    ...     for face in image.faces:
+    ...         print('=' * 40)
+    ...         print(face.joy)
+    ========================================
+    <Likelihood.VERY_LIKELY: 'VERY_LIKELY'>
+    ========================================
+    <Likelihood.VERY_LIKELY: 'POSSIBLE'>
+
+
 ****************
 No results found
 ****************

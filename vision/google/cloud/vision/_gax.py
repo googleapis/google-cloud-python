@@ -30,24 +30,28 @@ class _GAPICVisionAPI(object):
         self._client = client
         self._annotator_client = image_annotator_client.ImageAnnotatorClient()
 
-    def annotate(self, image, features):
+    def annotate(self, images):
         """Annotate images through GAX.
 
-        :type image: :class:`~google.cloud.vision.image.Image`
-        :param image: Instance of ``Image``.
-
-        :type features: list
-        :param features: List of :class:`~google.cloud.vision.feature.Feature`.
+        :type images: list
+        :param images: List containing pairs of
+                       :class:`~google.cloud.vision.image.Image` and
+                       :class:`~google.cloud.vision.feature.Feature`.
+                       e.g. [(image, [feature_one, feature_two]),]
 
         :rtype: list
         :returns: List of
                   :class:`~google.cloud.vision.annotations.Annotations`.
         """
-        gapic_features = [_to_gapic_feature(feature) for feature in features]
-        gapic_image = _to_gapic_image(image)
-        request = image_annotator_pb2.AnnotateImageRequest(
-            image=gapic_image, features=gapic_features)
-        requests = [request]
+        requests = []
+        for image, features in images:
+            gapic_features = [_to_gapic_feature(feature)
+                              for feature in features]
+            gapic_image = _to_gapic_image(image)
+            request = image_annotator_pb2.AnnotateImageRequest(
+                image=gapic_image, features=gapic_features)
+            requests.append(request)
+
         annotator_client = self._annotator_client
         responses = annotator_client.batch_annotate_images(requests).responses
         return [Annotations.from_pb(response) for response in responses]

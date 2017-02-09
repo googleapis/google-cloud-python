@@ -21,6 +21,8 @@ from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud import vision
 from google.cloud.vision.entity import EntityAnnotation
+from google.cloud.vision.feature import Feature
+from google.cloud.vision.feature import FeatureTypes
 
 from system_test_utils import unique_resource_id
 from retry import RetryErrors
@@ -507,3 +509,53 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
         image = client.image(filename=FACE_FILE)
         properties = image.detect_properties()
         self._assert_properties(properties)
+
+
+class TestVisionBatchProcessing(BaseVisionTestCase):
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+
+    def test_batch_detect_gcs(self):
+        client = Config.CLIENT
+        bucket_name = Config.TEST_BUCKET.name
+
+        # Logo GCS image.
+        blob_name = 'logos.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(LOGO_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        logo_source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        image_one = client.image(source_uri=logo_source_uri)
+        logo_feature = Feature(FeatureTypes.LOGO_DETECTION, 2)
+
+        # Faces GCS image.
+        blob_name = 'faces.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(FACE_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        face_source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        image_two = client.image(source_uri=face_source_uri)
+        face_feature = Feature(FeatureTypes.FACE_DETECTION, 2)
+
+        batch = client.batch()
+        batch.add_image(image_one, [logo_feature])
+        batch.add_image(image_two, [face_feature, logo_feature])
+        results = batch.detect()
+        self.assertEqual(len(results), 2)
+        self.assertIsInstance(results[0], vision.annotations.Annotations)
+        self.assertIsInstance(results[1], vision.annotations.Annotations)
+        self.assertEqual(len(results[0].logos), 1)
+        self.assertEqual(len(results[0].faces), 0)
+
+        self.assertEqual(len(results[1].logos), 0)
+        self.assertEqual(len(results[1].faces), 2)
