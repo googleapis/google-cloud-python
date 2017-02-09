@@ -28,10 +28,10 @@ def make_report_error_api(client):
     """Create an instance of the GAX Logging API.
 
     :type client::class:`google.cloud.error_reporting.Client`
-    :param client: Error Reporting client
+    :param client: Error Reporting client.
 
     :rtype: :class:_ErrorReportingGaxApi
-    :returns: An Error Reporting API instane
+    :returns: An Error Reporting API instance.
     """
     channel = make_secure_channel(
         client._connection.credentials,
