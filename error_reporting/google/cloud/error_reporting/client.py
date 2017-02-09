@@ -19,10 +19,9 @@ import traceback
 
 try:
     from google.cloud.error_reporting._gax import make_report_error_api
+    _HAVE_GAX = True
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
-else:
-    _HAVE_GAX = True
 
 from google.cloud._helpers import _determine_default_project
 from google.cloud.error_reporting._logging import _ErrorReportingLoggingAPI
