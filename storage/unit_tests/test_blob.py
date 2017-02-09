@@ -1100,6 +1100,79 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(headers['Content-Type'], 'text/plain')
         self.assertEqual(rq[0]['body'], ENCODED)
 
+    def test_create_resumable_upload_session(self):
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+
+        BLOB_NAME = 'blob-name'
+        UPLOAD_URL = 'http://example.com/upload/name/key'
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
+        connection = _Connection(
+            (loc_response, '{}'),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        resumable_url = blob.create_resumable_upload_session()
+
+        self.assertEqual(resumable_url, UPLOAD_URL)
+
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['method'], 'POST')
+
+        uri = rq[0]['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'resumable', 'name': BLOB_NAME})
+        headers = {
+            key.title(): str(value) for key, value in rq[0]['headers'].items()}
+        self.assertEqual(headers['Content-Length'], '0')
+        self.assertEqual(
+            headers['X-Upload-Content-Type'], 'application/octet-stream')
+
+    def test_create_resumable_upload_session_args(self):
+        from six.moves.http_client import OK
+
+        BLOB_NAME = 'blob-name'
+        UPLOAD_URL = 'http://example.com/upload/name/key'
+        CONTENT_TYPE = 'text/plain'
+        SIZE = 1024
+        ORIGIN = 'http://google.com'
+
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
+        connection = _Connection(
+            (loc_response, '{}'),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        resumable_url = blob.create_resumable_upload_session(
+            content_type=CONTENT_TYPE,
+            size=SIZE,
+            origin=ORIGIN)
+
+        self.assertEqual(resumable_url, UPLOAD_URL)
+
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['method'], 'POST')
+
+        headers = {
+            key.title(): str(value) for key, value in rq[0]['headers'].items()}
+        self.assertEqual(headers['Content-Length'], '0')
+        self.assertEqual(headers['X-Upload-Content-Length'], str(SIZE))
+        self.assertEqual(
+            headers['X-Upload-Content-Type'], 'text/plain')
+        self.assertEqual(
+            headers['Origin'], ORIGIN)
+
     def test_make_public(self):
         from six.moves.http_client import OK
         from google.cloud.storage.acl import _ACLEntity
