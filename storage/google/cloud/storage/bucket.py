@@ -868,7 +868,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: dict
         :returns: A dictionary of (form field name, form field value) of form
-            fields that should be added to your HTML upload for in order to
+            fields that should be added to your HTML upload form in order to
             attach the signature.
         """
         client = self._require_client(client)
