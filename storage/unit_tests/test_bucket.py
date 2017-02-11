@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import datetime
+import unittest
 
 import mock
-import unittest
 
 
 def _create_signing_credentials():
@@ -798,7 +798,6 @@ class Test_Bucket(unittest.TestCase):
         self.assertTrue('storageClass' in bucket._changes)
 
     def test_time_created(self):
-        import datetime
         from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud._helpers import UTC
 
@@ -919,7 +918,6 @@ class Test_Bucket(unittest.TestCase):
         self._make_public_w_future_helper(default_object_acl_loaded=False)
 
     def test_make_public_recursive(self):
-        import mock
         from google.cloud.storage.acl import _ACLEntity
 
         _saved = []
@@ -1106,7 +1104,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(
             policy_fields['GoogleAccessId'], mock.sentinel.signer_email)
         self.assertEqual(
-            policy_fields['signature'], base64.b64encode(b'DEADBEEF'))
+            policy_fields['signature'],
+            base64.b64encode(b'DEADBEEF').decode('utf-8'))
 
         policy = json.loads(
             base64.b64decode(policy_fields['policy']))

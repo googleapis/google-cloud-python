@@ -222,10 +222,11 @@ def list_buckets(client, to_delete):
 
 @snippet
 def policy_document(client, to_delete):
+    # pylint: disable=unused-argument
     # [START policy_document]
     bucket = client.bucket('my-bucket')
     conditions = [
-        ['starts-with', '\$key', ''],
+        ['starts-with', '$key', ''],
         {'acl': 'public-read'}]
 
     policy = bucket.generate_upload_policy(conditions)
