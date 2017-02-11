@@ -1108,11 +1108,17 @@ class Test_Bucket(unittest.TestCase):
             base64.b64encode(b'DEADBEEF').decode('utf-8'))
 
         policy = json.loads(
-            base64.b64decode(policy_fields['policy']))
+            base64.b64decode(policy_fields['policy']).decode('utf-8'))
 
-        self.assertEqual(
-            sorted(policy['conditions']),
-            sorted([{'bucket': bucket.name}] + conditions))
+        policy_conditions = policy['conditions']
+        expected_conditions = [{'bucket': bucket.name}] + conditions
+        for expected_condition in expected_conditions:
+            for condition in policy_conditions:
+                if condition == expected_condition:
+                    break
+            else:
+                self.fail('Condition {} not found in {}'.format(
+                    expected_condition, policy_conditions))
 
         return policy_fields, policy
 
