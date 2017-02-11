@@ -12,7 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
+import mock
 import unittest
+
+
+def _create_signing_credentials():
+    import google.auth.credentials
+
+    class _SigningCredentials(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Signing):
+        pass
+
+    credentials = mock.Mock(spec=_SigningCredentials)
+
+    return credentials
 
 
 class Test_Bucket(unittest.TestCase):
@@ -1068,6 +1084,75 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(page2.num_items, 0)
         self.assertEqual(iterator.prefixes, set(['foo', 'bar']))
 
+    def _test_generate_upload_policy_helper(self, **kwargs):
+        import base64
+        import json
+
+        credentials = _create_signing_credentials()
+        credentials.signer_email = mock.sentinel.signer_email
+        credentials.sign_bytes.return_value = b'DEADBEEF'
+        connection = _Connection()
+        connection.credentials = credentials
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._make_one(client=client, name=name)
+
+        conditions = [
+            ['starts-with', '$key', '']]
+
+        policy_fields = bucket.generate_upload_policy(conditions, **kwargs)
+
+        self.assertEqual(policy_fields['bucket'], bucket.name)
+        self.assertEqual(
+            policy_fields['GoogleAccessId'], mock.sentinel.signer_email)
+        self.assertEqual(
+            policy_fields['signature'], base64.b64encode(b'DEADBEEF'))
+
+        policy = json.loads(
+            base64.b64decode(policy_fields['policy']))
+
+        self.assertEqual(
+            sorted(policy['conditions']),
+            sorted([{'bucket': bucket.name}] + conditions))
+
+        return policy_fields, policy
+
+    @mock.patch(
+        'google.cloud.storage.bucket._NOW',
+        return_value=datetime.datetime(1990, 1, 1))
+    def test_generate_upload_policy(self, now):
+        from google.cloud._helpers import _datetime_to_rfc3339
+
+        _, policy = self._test_generate_upload_policy_helper()
+
+        self.assertEqual(
+            policy['expiration'],
+            _datetime_to_rfc3339(
+                now() + datetime.timedelta(hours=1)))
+
+    def test_generate_upload_policy_args(self):
+        from google.cloud._helpers import _datetime_to_rfc3339
+
+        expiration = datetime.datetime(1990, 5, 29)
+
+        _, policy = self._test_generate_upload_policy_helper(
+            expiration=expiration)
+
+        self.assertEqual(
+            policy['expiration'],
+            _datetime_to_rfc3339(expiration))
+
+    def test_generate_upload_policy_bad_credentials(self):
+        credentials = object()
+        connection = _Connection()
+        connection.credentials = credentials
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._make_one(client=client, name=name)
+
+        with self.assertRaises(AttributeError):
+            bucket.generate_upload_policy([])
+
 
 class _Connection(object):
     _delete_bucket = False
@@ -1076,6 +1161,7 @@ class _Connection(object):
         self._responses = responses
         self._requested = []
         self._deleted_buckets = []
+        self.credentials = None
 
     @staticmethod
     def _is_bucket_path(path):
@@ -1108,4 +1194,5 @@ class _Client(object):
 
     def __init__(self, connection, project=None):
         self._connection = connection
+        self._base_connection = connection
         self.project = project
