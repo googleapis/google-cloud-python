@@ -1116,7 +1116,7 @@ class Test_Bucket(unittest.TestCase):
             for condition in policy_conditions:
                 if condition == expected_condition:
                     break
-            else:
+            else:  # pragma: NO COVER
                 self.fail('Condition {} not found in {}'.format(
                     expected_condition, policy_conditions))
 
