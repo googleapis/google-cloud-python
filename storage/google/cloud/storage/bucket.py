@@ -22,8 +22,9 @@ import json
 import google.auth.credentials
 import six
 
-from google.cloud._helpers import (
-    _NOW, _rfc3339_to_datetime, _datetime_to_rfc3339)
+from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud._helpers import _NOW
+from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import HTTPIterator
 from google.cloud.storage._helpers import _PropertyMixin
@@ -855,21 +856,21 @@ class Bucket(_PropertyMixin):
 
         :type expiration: datetime
         :param expiration: Optional expiration in UTC. If not specified, the
-            policy will expire in 1 hour.
+                           policy will expire in 1 hour.
 
         :type conditions: list
         :param conditions: A list of conditions as described in the
-            `policy documents`_ documentation.
+                          `policy documents`_ documentation.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
-                `NoneType``
+                      `NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-            to the ``client`` stored on the current bucket.
+                       to the ``client`` stored on the current bucket.
 
         :rtype: dict
         :returns: A dictionary of (form field name, form field value) of form
-            fields that should be added to your HTML upload form in order to
-            attach the signature.
+                  fields that should be added to your HTML upload form in order
+                  to attach the signature.
         """
         client = self._require_client(client)
         credentials = client._base_connection.credentials
@@ -887,12 +888,12 @@ class Bucket(_PropertyMixin):
             expiration = _NOW() + datetime.timedelta(hours=1)
 
         conditions = conditions + [
-            {'bucket': self.name}
+            {'bucket': self.name},
         ]
 
         policy_document = {
             'expiration': _datetime_to_rfc3339(expiration),
-            'conditions': conditions
+            'conditions': conditions,
         }
 
         encoded_policy_document = base64.b64encode(
@@ -904,7 +905,7 @@ class Bucket(_PropertyMixin):
             'bucket': self.name,
             'GoogleAccessId': credentials.signer_email,
             'policy': encoded_policy_document.decode('utf-8'),
-            'signature': signature.decode('utf-8')
+            'signature': signature.decode('utf-8'),
         }
 
         return fields
