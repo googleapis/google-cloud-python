@@ -274,6 +274,15 @@ class TestQueryResults(unittest.TestCase):
         with self.assertRaises(ValueError):
             query.run()
 
+    def test_run_w_already_has_job_in_properties(self):
+        JOB_ID = 'JOB_ID'
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        query = self._make_one(self.QUERY, client)
+        query._properties['jobReference'] = {'jobId': JOB_ID}
+        with self.assertRaises(ValueError):
+            query.run()
+
     def test_run_w_bound_client(self):
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
