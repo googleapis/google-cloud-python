@@ -355,7 +355,7 @@ class QueryResults(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
-        if self._job is not None:
+        if self.job is not None:
             raise ValueError("Query job is already running.")
 
         client = self._require_client(client)
