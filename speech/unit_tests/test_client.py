@@ -512,7 +512,7 @@ class TestClient(unittest.TestCase):
                                    stability=0.28125))
         last_response = _make_streaming_response(
             _make_streaming_result(alternatives, is_final=True,
-                                   stability=0.9834534))
+                                   stability=0.4375))
         responses = [first_response, second_response, last_response]
 
         channel_args = []
@@ -556,7 +556,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results[1].alternatives[1].confidence,
                          alternatives[1]['confidence'])
         self.assertTrue(results[2].is_final)
-        self.assertEqual(results[2].stability, 0.9834534)
+        self.assertEqual(results[2].stability, 0.4375)
         self.assertEqual(results[2].transcript,
                          results[2].alternatives[0].transcript,
                          alternatives[0]['transcript'])
