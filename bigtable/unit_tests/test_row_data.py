@@ -416,6 +416,7 @@ class TestPartialRowsData(unittest.TestCase):
         with self.assertRaises(InvalidChunk):
             prd.consume_next()
 
+            
 class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     _json_tests = None
