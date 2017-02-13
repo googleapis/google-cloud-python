@@ -509,7 +509,7 @@ class TestClient(unittest.TestCase):
             _make_streaming_result([], is_final=False, stability=0.125))
         second_response = _make_streaming_response(
             _make_streaming_result(alternatives, is_final=False,
-                                   stability=0.1432343))
+                                   stability=0.125))
         last_response = _make_streaming_response(
             _make_streaming_result(alternatives, is_final=True,
                                    stability=0.9834534))
@@ -543,7 +543,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results[0].alternatives, [])
         self.assertFalse(results[0].is_final)
         self.assertEqual(results[0].stability, 0.125)
-        self.assertEqual(results[1].stability, 0.1432343)
+        self.assertEqual(results[1].stability, 0.125)
         self.assertFalse(results[1].is_final)
         self.assertEqual(results[1].transcript,
                          results[1].alternatives[0].transcript,
