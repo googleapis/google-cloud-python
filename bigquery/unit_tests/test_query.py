@@ -124,9 +124,15 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(query.complete, resource.get('jobComplete'))
         self.assertEqual(query.errors, resource.get('errors'))
         self.assertEqual(query.page_token, resource.get('pageToken'))
-        self.assertEqual(query.total_rows, resource.get('totalRows'))
-        self.assertEqual(query.total_bytes_processed,
-                         resource.get('totalBytesProcessed'))
+        if 'totalRows' in resource:
+            self.assertEqual(query.total_rows, int(resource['totalRows']))
+        else:
+            self.assertIsNone(query.total_rows)
+        if 'totalBytesProcessed' in resource:
+            self.assertEqual(query.total_bytes_processed,
+                             int(resource['totalBytesProcessed']))
+        else:
+            self.assertIsNone(query.total_bytes_processed)
 
         if 'jobReference' in resource:
             self.assertEqual(query.name, resource['jobReference']['jobId'])
@@ -336,6 +342,14 @@ class TestQueryResults(unittest.TestCase):
         query._set_properties(resource)
         self.assertEqual(query.total_rows, TOTAL_ROWS)
 
+    def test_total_rows_present_string(self):
+        TOTAL_ROWS = 42
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'totalRows': str(TOTAL_ROWS)}
+        query._set_properties(resource)
+        self.assertEqual(query.total_rows, TOTAL_ROWS)
+
     def test_total_bytes_processed_missing(self):
         client = _Client(self.PROJECT)
         query = self._make_one(self.QUERY, client)
@@ -346,6 +360,14 @@ class TestQueryResults(unittest.TestCase):
         client = _Client(self.PROJECT)
         query = self._make_one(self.QUERY, client)
         resource = {'totalBytesProcessed': TOTAL_BYTES_PROCESSED}
+        query._set_properties(resource)
+        self.assertEqual(query.total_bytes_processed, TOTAL_BYTES_PROCESSED)
+
+    def test_total_bytes_processed_present_string(self):
+        TOTAL_BYTES_PROCESSED = 123456
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'totalBytesProcessed': str(TOTAL_BYTES_PROCESSED)}
         query._set_properties(resource)
         self.assertEqual(query.total_bytes_processed, TOTAL_BYTES_PROCESSED)
 
