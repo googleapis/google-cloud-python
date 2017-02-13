@@ -297,10 +297,10 @@ class TestClient(unittest.TestCase):
 
         alternatives = [{
             'transcript': 'testing 1 2 3',
-            'confidence': 0.125,
+            'confidence': 0.740234375,
         }, {
             'transcript': 'testing 4 5 6',
-            'confidence': 0.125,
+            'confidence': 0.6396484375,
         }]
         result = _make_result(alternatives)
 
@@ -500,16 +500,16 @@ class TestClient(unittest.TestCase):
 
         alternatives = [{
             'transcript': 'testing streaming 1 2 3',
-            'confidence': 0.125,
+            'confidence': 0.5888671875,
         }, {
             'transcript': 'testing streaming 4 5 6',
-            'confidence': 0.125,
+            'confidence': 0.28125,
         }]
         first_response = _make_streaming_response(
-            _make_streaming_result([], is_final=False, stability=0.125))
+            _make_streaming_result([], is_final=False, stability=0.314453125))
         second_response = _make_streaming_response(
             _make_streaming_result(alternatives, is_final=False,
-                                   stability=0.125))
+                                   stability=0.28125))
         last_response = _make_streaming_response(
             _make_streaming_result(alternatives, is_final=True,
                                    stability=0.9834534))
@@ -542,8 +542,8 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(results[0], StreamingSpeechResult)
         self.assertEqual(results[0].alternatives, [])
         self.assertFalse(results[0].is_final)
-        self.assertEqual(results[0].stability, 0.125)
-        self.assertEqual(results[1].stability, 0.125)
+        self.assertEqual(results[0].stability, 0.314453125)
+        self.assertEqual(results[1].stability, 0.28125)
         self.assertFalse(results[1].is_final)
         self.assertEqual(results[1].transcript,
                          results[1].alternatives[0].transcript,
@@ -580,10 +580,10 @@ class TestClient(unittest.TestCase):
 
         alternatives = [{
             'transcript': 'testing streaming 1 2 3',
-            'confidence': 0.125,
+            'confidence': 0.4375,
         }, {
             'transcript': 'testing streaming 4 5 6',
-            'confidence': 0.125,
+            'confidence': 0.84375,
         }]
 
         first_response = _make_streaming_response(
