@@ -208,7 +208,9 @@ class QueryResults(object):
         :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
-        return self._properties.get('totalRows')
+        total_rows = self._properties.get('totalRows')
+        if total_rows is not None:
+            return int(total_rows)
 
     @property
     def total_bytes_processed(self):
@@ -220,7 +222,9 @@ class QueryResults(object):
         :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
-        return self._properties.get('totalBytesProcessed')
+        total_bytes_processed = self._properties.get('totalBytesProcessed')
+        if total_bytes_processed is not None:
+            return int(total_bytes_processed)
 
     @property
     def rows(self):
