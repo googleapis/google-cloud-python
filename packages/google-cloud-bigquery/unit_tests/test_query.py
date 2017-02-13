@@ -251,6 +251,104 @@ class TestQueryResults(unittest.TestCase):
         fetched_later = query.job
         self.assertIs(fetched_later, job)
 
+    def test_cache_hit_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.cache_hit)
+
+    def test_cache_hit_present(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'cacheHit': True}
+        query._set_properties(resource)
+        self.assertTrue(query.cache_hit)
+
+    def test_complete_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.complete)
+
+    def test_complete_present(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'jobComplete': True}
+        query._set_properties(resource)
+        self.assertTrue(query.complete)
+
+    def test_errors_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.errors)
+
+    def test_errors_present(self):
+        ERRORS = [
+            {'reason': 'testing'},
+        ]
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'errors': ERRORS}
+        query._set_properties(resource)
+        self.assertEqual(query.errors, ERRORS)
+
+    def test_name_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.name)
+
+    def test_name_broken_job_reference(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'jobReference': {'bogus': 'BOGUS'}}
+        query._set_properties(resource)
+        self.assertIsNone(query.name)
+
+    def test_name_present(self):
+        JOB_ID = 'JOB_ID'
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'jobReference': {'jobId': JOB_ID}}
+        query._set_properties(resource)
+        self.assertEqual(query.name, JOB_ID)
+
+    def test_page_token_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.page_token)
+
+    def test_page_token_present(self):
+        TOKEN = 'TOKEN'
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'pageToken': TOKEN}
+        query._set_properties(resource)
+        self.assertEqual(query.page_token, TOKEN)
+
+    def test_total_rows_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.total_rows)
+
+    def test_total_rows_present_integer(self):
+        TOTAL_ROWS = 42
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'totalRows': TOTAL_ROWS}
+        query._set_properties(resource)
+        self.assertEqual(query.total_rows, TOTAL_ROWS)
+
+    def test_total_bytes_processed_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.total_bytes_processed)
+
+    def test_total_bytes_processed_present_integer(self):
+        TOTAL_BYTES_PROCESSED = 123456
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'totalBytesProcessed': TOTAL_BYTES_PROCESSED}
+        query._set_properties(resource)
+        self.assertEqual(query.total_bytes_processed, TOTAL_BYTES_PROCESSED)
+
     def test_schema(self):
         client = _Client(self.PROJECT)
         query = self._make_one(self.QUERY, client)
