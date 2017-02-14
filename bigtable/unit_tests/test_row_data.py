@@ -416,20 +416,6 @@ class TestPartialRowsData(unittest.TestCase):
         with self.assertRaises(InvalidChunk):
             prd.consume_next()
 
-    def test_invalid_empty_second_chunk(self):
-        from google.cloud.bigtable.row_data import InvalidChunk
-
-        chunks = _generate_cell_chunks(['', ''])
-        first = chunks[0]
-        first.row_key = b'RK'
-        first.family_name.value = 'A'
-        first.qualifier.value = b'C'
-        response = _ReadRowsResponseV2(chunks)
-        iterator = _MockCancellableIterator(response)
-        prd = self._make_one(iterator)
-        with self.assertRaises(InvalidChunk):
-            prd.consume_next()
-
 
 class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 

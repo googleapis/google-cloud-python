@@ -366,8 +366,6 @@ class PartialRowsData(object):
         """Helper for :meth:`_validate_chunk`"""
         assert self.state == self.ROW_IN_PROGRESS
         self._validate_chunk_status(chunk)
-        if not chunk.HasField('commit_row') and not chunk.reset_row:
-            _raise_if(not chunk.timestamp_micros or not chunk.value)
         _raise_if(chunk.row_key and
                   chunk.row_key != self._row.row_key)
         _raise_if(chunk.HasField('family_name') and
