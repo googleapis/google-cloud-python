@@ -49,5 +49,5 @@ class TestCropHint(unittest.TestCase):
         self.assertEqual(len(crop_hint.bounds.vertices), 1)
         self.assertEqual(crop_hint.bounds.vertices[0].x_coordinate, 1)
         self.assertEqual(crop_hint.bounds.vertices[0].y_coordinate, 2)
-        self.assertEqual(crop_hint.confidence, 1.23)
-        self.assertEqual(crop_hint.importance_fraction, 4.56)
+        self.assertAlmostEqual(crop_hint.confidence, 1.23, 4)
+        self.assertAlmostEqual(crop_hint.importance_fraction, 4.56, 4)

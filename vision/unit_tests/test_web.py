@@ -124,7 +124,7 @@ class TestWebEntity(unittest.TestCase):
         description = 'This is an image from the web that matches your image.'
         web_entity = self._make_one(entity_id, score, description)
         self.assertEqual(web_entity.entity_id, entity_id)
-        self.assertEqual(web_entity.score, score)
+        self.assertAlmostEqual(web_entity.score, score, 4)
         self.assertEqual(web_entity.description, description)
 
     def test_web_entity_from_api_repr(self):
@@ -136,7 +136,7 @@ class TestWebEntity(unittest.TestCase):
         web_entity = self._get_target_class().from_api_repr(entity_dict)
 
         self.assertEqual(web_entity.entity_id, entity_dict['entityId'])
-        self.assertEqual(web_entity.score, entity_dict['score'])
+        self.assertAlmostEqual(web_entity.score, entity_dict['score'], 4)
         self.assertEqual(web_entity.description, entity_dict['description'])
 
     def test_web_entity_from_pb(self):
@@ -149,7 +149,7 @@ class TestWebEntity(unittest.TestCase):
             entity_id=entity_id, score=score, description=description)
         web_entity = self._get_target_class().from_pb(web_entity_pb)
         self.assertEqual(web_entity.entity_id, entity_id)
-        self.assertEqual(web_entity.score, score)
+        self.assertAlmostEqual(web_entity.score, score, 4)
         self.assertEqual(web_entity.description, description)
 
 
@@ -167,7 +167,7 @@ class TestWebImage(unittest.TestCase):
         score = 1234.23
         web_image = self._make_one(url, score)
         self.assertEqual(web_image.url, url)
-        self.assertEqual(web_image.score, score)
+        self.assertAlmostEqual(web_image.score, score, 4)
 
     def test_web_image_from_api_repr(self):
         web_image_dict = {
@@ -176,7 +176,7 @@ class TestWebImage(unittest.TestCase):
         }
         web_image = self._get_target_class().from_api_repr(web_image_dict)
         self.assertEqual(web_image.url, web_image_dict['url'])
-        self.assertEqual(web_image.score, web_image_dict['score'])
+        self.assertAlmostEqual(web_image.score, web_image_dict['score'])
 
     def test_web_image_from_pb(self):
         from google.cloud.proto.vision.v1 import web_annotation_pb2
@@ -187,7 +187,7 @@ class TestWebImage(unittest.TestCase):
             url=url, score=score)
         web_image = self._get_target_class().from_pb(web_image_pb)
         self.assertEqual(web_image.url, url)
-        self.assertEqual(web_image.score, score)
+        self.assertAlmostEqual(web_image.score, score, 4)
 
 
 class TestWebPage(unittest.TestCase):
@@ -204,7 +204,7 @@ class TestWebPage(unittest.TestCase):
         score = 1234.23
         web_page = self._make_one(url, score)
         self.assertEqual(web_page.url, url)
-        self.assertEqual(web_page.score, score)
+        self.assertAlmostEqual(web_page.score, score, 4)
 
     def test_web_page_from_api_repr(self):
         web_page_dict = {
@@ -213,7 +213,7 @@ class TestWebPage(unittest.TestCase):
         }
         web_page = self._get_target_class().from_api_repr(web_page_dict)
         self.assertEqual(web_page.url, web_page_dict['url'])
-        self.assertEqual(web_page.score, web_page_dict['score'])
+        self.assertAlmostEqual(web_page.score, web_page_dict['score'], 4)
 
     def test_web_page_from_pb(self):
         from google.cloud.proto.vision.v1 import web_annotation_pb2
@@ -224,4 +224,4 @@ class TestWebPage(unittest.TestCase):
             url=url, score=score)
         web_page = self._get_target_class().from_pb(web_page_pb)
         self.assertEqual(web_page.url, url)
-        self.assertEqual(web_page.score, score)
+        self.assertAlmostEqual(web_page.score, score, 4)

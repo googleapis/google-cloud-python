@@ -280,8 +280,6 @@ def _entity_from_response_type(feature_type, results):
         crop_hints = results.get('cropHints', [])
         detected_objects.extend(
             CropHint.from_api_repr(result) for result in crop_hints)
-    elif feature_type == _WEB_ANNOTATION:
-        return WebAnnotation.from_api_repr(results)
     elif feature_type == _FULL_TEXT_ANNOTATION:
         return TextAnnotation.from_api_repr(results)
     else:

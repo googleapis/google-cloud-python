@@ -103,9 +103,15 @@ class Test_HTTPVisionAPI(unittest.TestCase):
 
         responses = http_api.annotate(requests_pb=[request])
 
-        http_api._connection.api_request.assert_called_with(
-            data=json.loads(json.dumps(sent)), method='POST',
-            path='/images:annotate')
+        # Establish that one and exactly one api_request call was made.
+        self.assertEqual(http_api._connection.api_request.call_count, 1)
+
+        # Establish that the basic keyword arguments look correct.
+        call = http_api._connection.api_request.mock_calls[0]
+        self.assertEqual(call[2]['method'], 'POST')
+        self.assertEqual(call[2]['path'], '/images:annotate')
+
+        # Establish that the responses look correct.
         self.assertEqual(responses, [])
         self.assertEqual(len(responses), 0)
 
