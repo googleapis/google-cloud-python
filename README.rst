@@ -42,6 +42,7 @@ Cloud Platform services:
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
+-  `Cloud Spanner`_ (`Cloud Spanner README`_)
 
 **Alpha** indicates that the client library for a particular service is
 still a work-in-progress and is more likely to get backwards-incompatible
@@ -79,6 +80,8 @@ updates. See `versioning`_ for more details.
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 .. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
+.. _Cloud Spanner: https://cloud.google.com/spanner/
+.. _Cloud Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
 .. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 
 If you need support for other Google APIs, check out the

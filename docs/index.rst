@@ -200,6 +200,32 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Spanner
+
+  spanner-usage
+  spanner-client-usage
+  spanner-instance-usage
+  spanner-database-usage
+  spanner-session-crud-usage
+  spanner-session-implicit-txn-usage
+  spanner-session-pool-usage
+  spanner-batch-usage
+  spanner-snapshot-usage
+  spanner-transaction-usage
+
+  spanner-client-api
+  spanner-instance-api
+  spanner-database-api
+  spanner-session-api
+  spanner-keyset-api
+  spanner-snapshot-api
+  spanner-batch-api
+  spanner-transaction-api
+  spanner-streamed-api
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>
