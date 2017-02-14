@@ -208,7 +208,9 @@ class QueryResults(object):
         :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
-        return self._properties.get('totalRows')
+        total_rows = self._properties.get('totalRows')
+        if total_rows is not None:
+            return int(total_rows)
 
     @property
     def total_bytes_processed(self):
@@ -220,7 +222,9 @@ class QueryResults(object):
         :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
-        return self._properties.get('totalBytesProcessed')
+        total_bytes_processed = self._properties.get('totalBytesProcessed')
+        if total_bytes_processed is not None:
+            return int(total_bytes_processed)
 
     @property
     def rows(self):
@@ -351,7 +355,7 @@ class QueryResults(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
-        if self._job is not None:
+        if self.job is not None:
             raise ValueError("Query job is already running.")
 
         client = self._require_client(client)

@@ -23,7 +23,7 @@ def _make_pb_entity():
     description = 'testing 1 2 3'
     locale = 'US'
     mid = 'm/w/45342234'
-    score = 0.235434231
+    score = 0.390625
 
     entity_annotation = image_annotator_pb2.EntityAnnotation(
         mid=mid,
@@ -108,7 +108,7 @@ class Test__make_entity_from_pb(unittest.TestCase):
         description = 'testing 1 2 3'
         locale = 'US'
         mid = 'm/w/45342234'
-        score = 0.235434231
+        score = 0.390625
         entity_annotation = _make_pb_entity()
         entities = self._call_fut([entity_annotation])
         self.assertEqual(len(entities), 1)
@@ -183,7 +183,7 @@ class Test__process_image_annotations(unittest.TestCase):
         description = 'testing 1 2 3'
         locale = 'US'
         mid = 'm/w/45342234'
-        score = 0.235434231
+        score = 0.390625
         entity_annotation = _make_pb_entity()
 
         image_response = image_annotator_pb2.AnnotateImageResponse(
