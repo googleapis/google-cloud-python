@@ -108,7 +108,8 @@ class TestClient(unittest.TestCase):
     def test_instance_admin_api(self):
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import client as MUT
-        client = self._makeOne(project=self.PROJECT)
+        creds = _make_credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
 
         class _Client(object):
             pass
@@ -123,7 +124,8 @@ class TestClient(unittest.TestCase):
     def test_database_admin_api(self):
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import client as MUT
-        client = self._makeOne(project=self.PROJECT)
+        creds = _make_credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
 
         class _Client(object):
             pass
@@ -331,13 +333,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(
             options.kwargs['metadata'],
             [('google-cloud-resource-prefix', client.project_name)])
-
-
-class _Client(object):
-
-    def __init__(self, credentials, user_agent):
-        self.credentials = credentials
-        self.user_agent = user_agent
 
 
 class _Credentials(object):
