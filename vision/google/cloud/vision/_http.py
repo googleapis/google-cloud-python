@@ -14,8 +14,12 @@
 
 """HTTP Client for interacting with the Google Cloud Vision API."""
 
+import json
+
 from google.cloud.vision.annotations import Annotations
 from google.cloud.vision.feature import Feature
+
+from google.protobuf import json_format
 
 
 class _HTTPVisionAPI(object):
@@ -29,7 +33,7 @@ class _HTTPVisionAPI(object):
         self._client = client
         self._connection = client._connection
 
-    def annotate(self, images):
+    def annotate(self, images=None, requests_pb=None):
         """Annotate an image to discover it's attributes.
 
         :type images: list of :class:`~google.cloud.vision.image.Image`
@@ -37,11 +41,27 @@ class _HTTPVisionAPI(object):
 
         :rtype: list
         :returns: List of :class:`~googe.cloud.vision.annotations.Annotations`.
+
+        :type requests_pb: list
+        :param requests_pb: List of :class:`google.cloud.proto.vision.v1.\
+                            image_annotator_b2.AnnotateImageRequest`.
+
+        :rtype: list
+        :returns: List of :class:`~googe.cloud.vision.annotations.Annotations`.
         """
+        if any([images, requests_pb]) is False:
+            return []
+
         requests = []
-        for image, features in images:
-            requests.append(_make_request(image, features))
+        if requests_pb is None:
+            for image, features in images:
+                requests.append(_make_request(image, features))
+        else:
+            requests = [json.loads(json_format.MessageToJson(request))
+                        for request in requests_pb]
+
         data = {'requests': requests}
+
         api_response = self._connection.api_request(
             method='POST', path='/images:annotate', data=data)
         responses = api_response.get('responses')

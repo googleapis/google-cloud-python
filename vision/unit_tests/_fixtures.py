@@ -12,6 +12,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+CROP_HINTS_RESPONSE = {
+    "responses": [{
+        "cropHintsAnnotation": {
+            "cropHints": [{
+                "importanceFraction": 1.22,
+                "boundingPoly": {
+                    "vertices": [{
+                        "x": 77
+                    }, {
+                        "x": 1821
+                    }, {
+                        "x": 1821,
+                        "y": 1306
+                    }, {
+                        "x": 77,
+                        "y": 1306
+                    }]
+                },
+                "confidence": 0.5
+            }, {
+                "importanceFraction": 1.2099999,
+                "boundingPoly": {
+                    "vertices": [{}, {
+                        "x": 1959
+                    }, {
+                        "x": 1959,
+                        "y": 1096
+                    }, {
+                        "y": 1096
+                    }]
+                },
+                "confidence": 0.29999998
+            }]
+        }
+    }]
+}
+
 IMAGE_PROPERTIES_RESPONSE = {
     'responses': [
         {

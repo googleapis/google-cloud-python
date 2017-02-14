@@ -21,13 +21,14 @@ class FeatureTypes(object):
     See:
     https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type
     """
+    CROP_HINTS = 'CROP_HINTS'
     FACE_DETECTION = 'FACE_DETECTION'
+    IMAGE_PROPERTIES = 'IMAGE_PROPERTIES'
     LANDMARK_DETECTION = 'LANDMARK_DETECTION'
     LOGO_DETECTION = 'LOGO_DETECTION'
     LABEL_DETECTION = 'LABEL_DETECTION'
     TEXT_DETECTION = 'TEXT_DETECTION'
     SAFE_SEARCH_DETECTION = 'SAFE_SEARCH_DETECTION'
-    IMAGE_PROPERTIES = 'IMAGE_PROPERTIES'
 
 
 class Feature(object):

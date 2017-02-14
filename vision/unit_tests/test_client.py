@@ -206,6 +206,27 @@ class TestClient(unittest.TestCase):
         self.assertEqual(logo_request['maxResults'], 2)
         self.assertEqual(logo_request['type'], 'LOGO_DETECTION')
 
+    def test_detect_crop_hints_from_source(self):
+        from google.cloud.vision.crop_hint import CropHint
+        from unit_tests._fixtures import CROP_HINTS_RESPONSE
+        returned = CROP_HINTS_RESPONSE
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
+        client._connection = _Connection(returned)
+        image = client.image(source_uri=IMAGE_SOURCE)
+        crop_hints = image.detect_crop_hints(aspect_ratios=[1.3333], limit=3)
+
+        self.assertEqual(len(crop_hints), 2)
+        self.assertIsInstance(crop_hints[0], CropHint)
+        image_request = client._connection._requested[0]['data']['requests'][0]
+        self.assertEqual(image_request['image']['source']['gcsImageUri'],
+                         IMAGE_SOURCE)
+        self.assertEqual(
+            image_request['imageContext']['cropHintsParams']['aspectRatios'],
+            [1.3333])
+        self.assertEqual(3, image_request['features'][0]['maxResults'])
+
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE

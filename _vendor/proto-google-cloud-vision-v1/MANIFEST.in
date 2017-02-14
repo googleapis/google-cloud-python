@@ -1,0 +1,3 @@
+include README.rst LICENSE
+global-exclude *.py[co]
+global-exclude __pycache__

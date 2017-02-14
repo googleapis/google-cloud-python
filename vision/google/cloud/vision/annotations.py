@@ -17,28 +17,35 @@
 import six
 
 from google.cloud.vision.color import ImagePropertiesAnnotation
+from google.cloud.vision.crop_hint import CropHint
 from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.safe_search import SafeSearchAnnotation
 
 
+_CROP_HINTS_ANNOTATION = 'cropHintsAnnotation'
 _FACE_ANNOTATIONS = 'faceAnnotations'
 _IMAGE_PROPERTIES_ANNOTATION = 'imagePropertiesAnnotation'
 _SAFE_SEARCH_ANNOTATION = 'safeSearchAnnotation'
 
 _KEY_MAP = {
+    _CROP_HINTS_ANNOTATION: 'crop_hints',
     _FACE_ANNOTATIONS: 'faces',
     _IMAGE_PROPERTIES_ANNOTATION: 'properties',
     'labelAnnotations': 'labels',
     'landmarkAnnotations': 'landmarks',
     'logoAnnotations': 'logos',
     _SAFE_SEARCH_ANNOTATION: 'safe_searches',
-    'textAnnotations': 'texts'
+    'textAnnotations': 'texts',
 }
 
 
 class Annotations(object):
     """Helper class to bundle annotation responses.
+
+    :type crop_hints: list
+    :param crop_hints: List of
+                  :class:`~google.cloud.vision.crop_hint.CropHintsAnnotation`.
 
     :type faces: list
     :param faces: List of :class:`~google.cloud.vision.face.Face`.
@@ -67,8 +74,9 @@ class Annotations(object):
     :param texts: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
     """
-    def __init__(self, faces=(), properties=(), labels=(), landmarks=(),
-                 logos=(), safe_searches=(), texts=()):
+    def __init__(self, crop_hints=(), faces=(), properties=(), labels=(),
+                 landmarks=(), logos=(), safe_searches=(), texts=()):
+        self.crop_hints = crop_hints
         self.faces = faces
         self.properties = properties
         self.labels = labels
@@ -99,7 +107,7 @@ class Annotations(object):
     def from_pb(cls, response):
         """Factory: construct an instance of ``Annotations`` from protobuf.
 
-        :type response: :class:`~google.cloud.grpc.vision.v1.\
+        :type response: :class:`google.cloud.proto.vision.v1.\
                         image_annotator_pb2.AnnotateImageResponse`
         :param response: ``AnnotateImageResponse`` from protobuf call.
 
@@ -113,7 +121,7 @@ class Annotations(object):
 def _process_image_annotations(image):
     """Helper for processing annotation types from protobuf.
 
-    :type image: :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.\
+    :type image: :class:`google.cloud.proto.vision.v1.image_annotator_pb2.\
                  AnnotateImageResponse`
     :param image: ``AnnotateImageResponse`` from protobuf.
 
@@ -121,6 +129,7 @@ def _process_image_annotations(image):
     :returns: Dictionary populated with entities from response.
     """
     return {
+        'crop_hints': _make_crop_hints_from_pb(image.crop_hints_annotation),
         'faces': _make_faces_from_pb(image.face_annotations),
         'labels': _make_entity_from_pb(image.label_annotations),
         'landmarks': _make_entity_from_pb(image.landmark_annotations),
@@ -133,11 +142,25 @@ def _process_image_annotations(image):
     }
 
 
+def _make_crop_hints_from_pb(crop_hints):
+    """Create list of ``CropHint`` objects from a protobuf response.
+
+    :type crop_hints: list
+    :param crop_hints: List of
+                       :class:`google.cloud.grpc.vision.v1.\
+                       image_annotator_pb2.CropHintsAnnotation`
+
+    :rtype: list
+    :returns: List of ``CropHint`` objects.
+    """
+    return [CropHint.from_pb(hint) for hint in crop_hints.crop_hints]
+
+
 def _make_entity_from_pb(annotations):
     """Create an entity from a protobuf response.
 
     :type annotations:
-    :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.EntityAnnotation`
+    :class:`google.cloud.proto.vision.v1.image_annotator_pb2.EntityAnnotation`
     :param annotations: protobuf instance of ``EntityAnnotation``.
 
     :rtype: list
@@ -207,6 +230,10 @@ def _entity_from_response_type(feature_type, results):
         return ImagePropertiesAnnotation.from_api_repr(results)
     elif feature_type == _SAFE_SEARCH_ANNOTATION:
         return SafeSearchAnnotation.from_api_repr(results)
+    elif feature_type == _CROP_HINTS_ANNOTATION:
+        crop_hints = results.get('cropHints', [])
+        detected_objects.extend(
+            CropHint.from_api_repr(result) for result in crop_hints)
     else:
         for result in results:
             detected_objects.append(EntityAnnotation.from_api_repr(result))

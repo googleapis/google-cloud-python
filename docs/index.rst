@@ -158,6 +158,7 @@
   vision-batch
   vision-client
   vision-color
+  vision-crop-hint
   vision-entity
   vision-feature
   vision-face

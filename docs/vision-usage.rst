@@ -98,6 +98,30 @@ You can call the detection method manually.
     'github'
 
 
+**********
+Crop Hints
+**********
+
+:meth:`~google.cloud.vision.image.Image.detect_crop_hints` will attempt to find
+boundaries that contain interesting data which can be used to crop an image.
+
+.. code-block:: python
+
+    >>> from google.cloud import vision
+    >>> client = vision.Client()
+    >>> image = client.image(source_uri='gs://my-test-bucket/image.jpg')
+    >>> crop_hints = image.detect_crop_hints(aspect_ratios=[1.3333], limit=2)
+    >>> first_hint = crop_hints[0]
+    >>> first_hint.bounds.vertices[0].x_coordinate
+    77
+    >>> first_hint.bounds.vertices[0].y_coordinate
+    102
+    >>> first_hint.confidence
+    0.5
+    >>> first_hint.importance_fraction
+    1.22000002861
+
+
 **************
 Face Detection
 **************
