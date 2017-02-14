@@ -253,7 +253,8 @@ class Client(ClientWithProject):
         :param deferred: (Optional) If a list is passed, the keys returned
                          by the backend as "deferred" will be copied into it.
 
-        :type transaction: :class:`~.transaction.Transaction`
+        :type transaction:
+            :class:`~google.cloud.datastore.transaction.Transaction`
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
@@ -281,7 +282,8 @@ class Client(ClientWithProject):
                          by the backend as "deferred" will be copied into it.
                          If the list is not empty, an error will occur.
 
-        :type transaction: :class:`~.transaction.Transaction`
+        :type transaction:
+            :class:`~google.cloud.datastore.transaction.Transaction`
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
