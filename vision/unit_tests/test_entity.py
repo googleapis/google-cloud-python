@@ -39,7 +39,7 @@ class TestEntityAnnotation(unittest.TestCase):
         description = 'testing 1 2 3'
         locale = 'US'
         mid = 'm/w/45342234'
-        score = 0.235434231
+        score = 0.875
         entity_annotation = image_annotator_pb2.EntityAnnotation()
         entity_annotation.mid = mid
         entity_annotation.locale = locale
