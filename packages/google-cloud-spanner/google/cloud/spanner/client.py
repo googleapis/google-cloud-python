@@ -26,7 +26,6 @@ In the hierarchy of API concepts
 
 import google.auth.credentials
 from google.gax import INITIAL_PAGE
-from google.longrunning import operations_grpc
 # pylint: disable=line-too-long
 from google.cloud.gapic.spanner_admin_database.v1.database_admin_client import (  # noqa
     DatabaseAdminClient)
@@ -34,7 +33,6 @@ from google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client import (
     InstanceAdminClient)
 # pylint: enable=line-too-long
 
-from google.cloud._helpers import make_secure_stub
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import _ClientFactoryMixin
 from google.cloud.client import _ClientProjectMixin
@@ -45,8 +43,6 @@ from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner.instance import Instance
 
 SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
-
-OPERATIONS_API_HOST = 'spanner.googleapis.com'
 
 
 class InstanceConfig(object):
@@ -74,13 +70,6 @@ class InstanceConfig(object):
         :returns: an instance of this class
         """
         return cls(config_pb.name, config_pb.display_name)
-
-
-def _make_operations_stub(client):
-    """Helper for :meth:`Client._operations_stub`"""
-    return make_secure_stub(client.credentials, client.user_agent,
-                            operations_grpc.OperationsStub,
-                            OPERATIONS_API_HOST)
 
 
 class Client(_ClientFactoryMixin, _ClientProjectMixin):
@@ -112,7 +101,6 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     """
     _instance_admin_api = None
     _database_admin_api = None
-    _operations_stub_internal = None
 
     def __init__(self, project=None, credentials=None,
                  user_agent=DEFAULT_USER_AGENT):
@@ -173,19 +161,6 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient()
         return self._database_admin_api
-
-    @property
-    def _operations_stub(self):
-        """Stub for google.longrunning.operations calls.
-
-        .. note:
-
-           Will be replaced by a GAX API helper once that library is
-           released.
-        """
-        if self._operations_stub_internal is None:
-            self._operations_stub_internal = _make_operations_stub(self)
-        return self._operations_stub_internal
 
     def copy(self):
         """Make a copy of this client.
