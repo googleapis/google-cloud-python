@@ -1,0 +1,542 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Batching Modifications &mdash; google-cloud 2580872 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="google-cloud 2580872 documentation" href="index.html"/>
+        <link rel="next" title="Read-only Transactions via Snapshots" href="spanner-snapshot-usage.html"/>
+        <link rel="prev" title="Session Pools" href="spanner-session-pool-usage.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> google-cloud
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">google-cloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="google-cloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-cloud-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-cloud-auth.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-helpers.html">Helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-batch.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-iam.html">IAM Policy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-query.html">Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-schema.html">Schemas</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Bigtable</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-instance-api.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-data-api.html">Data API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-instance.html">Instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-cluster.html">Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-table.html">Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-column-family.html">Column Families</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row.html">Bigtable Row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-data.html">Row Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DNS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#cloud-logging-handler-transports">Cloud Logging Handler transports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-stdlib-usage.html">Integration with Python logging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Error Reporting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-util.html">Error Reporting Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-metric.html">Metric Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Monitored Resource Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-group.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-query.html">Time Series Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-timeseries.html">Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-label.html">Label Descriptors</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Translate</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="translate-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translate-client.html">Client</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Vision</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-annotations.html">Vision Annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Natural Language</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="language-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-document.html">Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-responses.html">Natural Language Response Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Speech</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="speech-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-operation.html">Speech Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-result.html">Speech Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-sample.html">Speech Sample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-alternative.html">Speech Alternative</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Runtime Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="runtimeconfig-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtimeconfig-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtimeconfig-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtimeconfig-variable.html">Variables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Spanner</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="spanner-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-instance-usage.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-database-usage.html">Database Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-implicit-txn-usage.html">Implicit Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Batching Modifications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#starting-a-batch">Starting a Batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inserting-records-using-a-batch">Inserting records using a Batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-records-using-a-batch">Update records using a Batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#insert-or-update-records-using-a-batch">Insert or update records using a Batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#replace-records-using-a-batch">Replace records using a Batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-records-using-a-batch">Delete records using a Batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commit-changes-for-a-batch">Commit changes for a Batch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-a-batch-as-a-context-manager">Use a Batch as a Context Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-step">Next Step</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-api.html">Spanner Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-instance-api.html">Instance API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-database-api.html">Database API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-api.html">Session API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-keyset-api.html">Keyset API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-snapshot-api.html">Snapshot API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-batch-api.html">Batch API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-transaction-api.html">Transaction API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-streamed-api.html">StreamedResultSet API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/google-cloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/google-cloud">PyPI</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">google-cloud</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Batching Modifications</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/spanner-batch-usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="batching-modifications">
+<h1>Batching Modifications<a class="headerlink" href="#batching-modifications" title="Permalink to this headline">#</a></h1>
+<p>A <a class="reference internal" href="spanner-batch-api.html#google.cloud.spanner.batch.Batch" title="google.cloud.spanner.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a> represents a set of data
+modification operations to be performed on tables in a dataset.  Use of a
+<code class="docutils literal"><span class="pre">Batch</span></code> does not require creating an explicit
+<a class="reference internal" href="spanner-snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> or
+<a class="reference internal" href="spanner-transaction-api.html#google.cloud.spanner.transaction.Transaction" title="google.cloud.spanner.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>.  Until
+<a class="reference internal" href="spanner-batch-api.html#google.cloud.spanner.batch.Batch.commit" title="google.cloud.spanner.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a> is called on a <code class="docutils literal"><span class="pre">Batch</span></code>,
+no changes are propagated to the back-end.</p>
+<div class="section" id="starting-a-batch">
+<h2>Starting a Batch<a class="headerlink" href="#starting-a-batch" title="Permalink to this headline">#</a></h2>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">batch</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inserting-records-using-a-batch">
+<h2>Inserting records using a Batch<a class="headerlink" href="#inserting-records-using-a-batch" title="Permalink to this headline">#</a></h2>
+<p><code class="xref py py-meth docutils literal"><span class="pre">Batch.insert()</span></code> adds one or more new records to a table.  Fails if
+any of the records already exists.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">batch</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+    <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Phred&#39;</span><span class="p">,</span> <span class="s1">&#39;Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Bharney&#39;</span><span class="p">,</span> <span class="s1">&#39;Rhubble&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span>
+    <span class="p">])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Ensure that data being sent for <code class="docutils literal"><span class="pre">STRING</span></code> columns uses a text string
+(<code class="docutils literal"><span class="pre">str</span></code> in Python 3; <code class="docutils literal"><span class="pre">unicode</span></code> in Python 2).</p>
+<p class="last">Additionally, if you are writing data intended for a <code class="docutils literal"><span class="pre">BYTES</span></code> column, you
+must base64 encode it.</p>
+</div>
+</div>
+<div class="section" id="update-records-using-a-batch">
+<h2>Update records using a Batch<a class="headerlink" href="#update-records-using-a-batch" title="Permalink to this headline">#</a></h2>
+<p><code class="xref py py-meth docutils literal"><span class="pre">Batch.update()</span></code> updates one or more existing records in a table.  Fails
+if any of the records does not already exist.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">batch</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="mi">33</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+    <span class="p">])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Ensure that data being sent for <code class="docutils literal"><span class="pre">STRING</span></code> columns uses a text string
+(<code class="docutils literal"><span class="pre">str</span></code> in Python 3; <code class="docutils literal"><span class="pre">unicode</span></code> in Python 2).</p>
+<p class="last">Additionally, if you are writing data intended for a <code class="docutils literal"><span class="pre">BYTES</span></code> column, you
+must base64 encode it.</p>
+</div>
+</div>
+<div class="section" id="insert-or-update-records-using-a-batch">
+<h2>Insert or update records using a Batch<a class="headerlink" href="#insert-or-update-records-using-a-batch" title="Permalink to this headline">#</a></h2>
+<p><code class="xref py py-meth docutils literal"><span class="pre">Batch.insert_or_update()</span></code> inserts <em>or</em> updates one or more records in a
+table.  Existing rows have values for the supplied columns overwritten;  other
+column values are preserved.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">batch</span><span class="o">.</span><span class="n">insert_or_update</span><span class="p">(</span>
+    <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Phred&#39;</span><span class="p">,</span> <span class="s1">&#39;Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;wylma@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Wylma&#39;</span><span class="p">,</span> <span class="s1">&#39;Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">],</span>
+    <span class="p">])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Ensure that data being sent for <code class="docutils literal"><span class="pre">STRING</span></code> columns uses a text string
+(<code class="docutils literal"><span class="pre">str</span></code> in Python 3; <code class="docutils literal"><span class="pre">unicode</span></code> in Python 2).</p>
+<p class="last">Additionally, if you are writing data intended for a <code class="docutils literal"><span class="pre">BYTES</span></code> column, you
+must base64 encode it.</p>
+</div>
+</div>
+<div class="section" id="replace-records-using-a-batch">
+<h2>Replace records using a Batch<a class="headerlink" href="#replace-records-using-a-batch" title="Permalink to this headline">#</a></h2>
+<p><code class="xref py py-meth docutils literal"><span class="pre">Batch.replace()</span></code> inserts <em>or</em> updates one or more records in a
+table.  Existing rows have values for the supplied columns overwritten;  other
+column values are set to null.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">batch</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+    <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Bharney&#39;</span><span class="p">,</span> <span class="s1">&#39;Rhubble&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+        <span class="p">[</span><span class="s1">&#39;bhettye@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Bhettye&#39;</span><span class="p">,</span> <span class="s1">&#39;Rhubble&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="p">])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Ensure that data being sent for <code class="docutils literal"><span class="pre">STRING</span></code> columns uses a text string
+(<code class="docutils literal"><span class="pre">str</span></code> in Python 3; <code class="docutils literal"><span class="pre">unicode</span></code> in Python 2).</p>
+<p class="last">Additionally, if you are writing data intended for a <code class="docutils literal"><span class="pre">BYTES</span></code> column, you
+must base64 encode it.</p>
+</div>
+</div>
+<div class="section" id="delete-records-using-a-batch">
+<h2>Delete records using a Batch<a class="headerlink" href="#delete-records-using-a-batch" title="Permalink to this headline">#</a></h2>
+<p><code class="xref py py-meth docutils literal"><span class="pre">Batch.delete()</span></code> removes one or more records from a table.  Non-existent
+rows do not cause errors.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">batch</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;citizens&#39;</span><span class="p">,</span>
+    <span class="n">keyset</span><span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;nonesuch@example.com&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="commit-changes-for-a-batch">
+<h2>Commit changes for a Batch<a class="headerlink" href="#commit-changes-for-a-batch" title="Permalink to this headline">#</a></h2>
+<p>After describing the modifications to be made to table data via the
+<code class="xref py py-meth docutils literal"><span class="pre">Batch.insert()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Batch.update()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Batch.insert_or_update()</span></code>,
+<code class="xref py py-meth docutils literal"><span class="pre">Batch.replace()</span></code>, and <code class="xref py py-meth docutils literal"><span class="pre">Batch.delete()</span></code> methods above, send them to
+the back-end by calling <code class="xref py py-meth docutils literal"><span class="pre">Batch.commit()</span></code>, which makes the <code class="docutils literal"><span class="pre">Commit</span></code>
+API call.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">batch</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-a-batch-as-a-context-manager">
+<h2>Use a Batch as a Context Manager<a class="headerlink" href="#use-a-batch-as-a-context-manager" title="Permalink to this headline">#</a></h2>
+<p>Rather than calling <code class="xref py py-meth docutils literal"><span class="pre">Batch.commit()</span></code> manually, you can use the
+<code class="xref py py-class docutils literal"><span class="pre">Batch</span></code> instance as a context manager, and have it called automatically
+if the <code class="docutils literal"><span class="pre">with</span></code> block exits without raising an exception.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+
+    <span class="n">batch</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+        <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+        <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Phred&#39;</span><span class="p">,</span> <span class="s1">&#39;Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Bharney&#39;</span><span class="p">,</span> <span class="s1">&#39;Rhubble&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span>
+        <span class="p">])</span>
+
+    <span class="n">batch</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+        <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="mi">33</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+        <span class="p">])</span>
+
+    <span class="o">...</span>
+
+    <span class="n">batch</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;citizens&#39;</span><span class="p">,</span>
+        <span class="n">keyset</span><span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;nonesuch@example.com&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="next-step">
+<h2>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h2>
+<p>Next, learn about <a class="reference internal" href="spanner-snapshot-usage.html"><span class="doc">Read-only Transactions via Snapshots</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="spanner-snapshot-usage.html" class="btn btn-neutral float-right" title="Read-only Transactions via Snapshots" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="spanner-session-pool-usage.html" class="btn btn-neutral" title="Session Pools" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Google.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2580872',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

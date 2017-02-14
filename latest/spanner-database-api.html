@@ -1,0 +1,766 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Database API &mdash; google-cloud 2580872 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="google-cloud 2580872 documentation" href="index.html"/>
+        <link rel="next" title="Session API" href="spanner-session-api.html"/>
+        <link rel="prev" title="Instance API" href="spanner-instance-api.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> google-cloud
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">google-cloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="google-cloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-cloud-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-cloud-auth.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-helpers.html">Helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-batch.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-iam.html">IAM Policy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-query.html">Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-schema.html">Schemas</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Bigtable</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-instance-api.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-data-api.html">Data API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-instance.html">Instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-cluster.html">Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-table.html">Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-column-family.html">Column Families</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row.html">Bigtable Row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-data.html">Row Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DNS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#cloud-logging-handler-transports">Cloud Logging Handler transports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-stdlib-usage.html">Integration with Python logging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Error Reporting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-util.html">Error Reporting Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-metric.html">Metric Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Monitored Resource Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-group.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-query.html">Time Series Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-timeseries.html">Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-label.html">Label Descriptors</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Translate</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="translate-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translate-client.html">Client</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Vision</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-annotations.html">Vision Annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Natural Language</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="language-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-document.html">Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-responses.html">Natural Language Response Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Speech</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="speech-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-operation.html">Speech Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-result.html">Speech Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-sample.html">Speech Sample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-alternative.html">Speech Alternative</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Runtime Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="runtimeconfig-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtimeconfig-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtimeconfig-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtimeconfig-variable.html">Variables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Spanner</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="spanner-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-instance-usage.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-database-usage.html">Database Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-implicit-txn-usage.html">Implicit Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-batch-usage.html">Batching Modifications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-api.html">Spanner Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-instance-api.html">Instance API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-api.html">Session API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-keyset-api.html">Keyset API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-snapshot-api.html">Snapshot API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-batch-api.html">Batch API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-transaction-api.html">Transaction API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-streamed-api.html">StreamedResultSet API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/google-cloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/google-cloud">PyPI</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">google-cloud</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Database API</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/spanner-database-api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-google.cloud.spanner.database">
+<span id="database-api"></span><h1>Database API<a class="headerlink" href="#module-google.cloud.spanner.database" title="Permalink to this headline">#</a></h1>
+<p>User friendly container for Cloud Spanner Database.</p>
+<dl class="class">
+<dt id="google.cloud.spanner.database.BatchCheckout">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner.database.</code><code class="descname">BatchCheckout</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#BatchCheckout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.BatchCheckout" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Context manager for using a batch from a database.</p>
+<p>Inside the context manager, checks out a session from the database,
+creates a batch from it, making the batch available.</p>
+<p>Caller must <em>not</em> use the batch to perform API requests outside the scope
+of the context manager.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<code class="xref py py-class docutils literal"><span class="pre">Database</span></code>) &#8211; database to use</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner.database.Database">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner.database.</code><code class="descname">Database</code><span class="sig-paren">(</span><em>database_id</em>, <em>instance</em>, <em>ddl_statements=()</em>, <em>pool=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Representation of a Cloud Spanner Database.</p>
+<p>We can use a <a class="reference internal" href="#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a> to:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#google.cloud.spanner.database.Database.create" title="google.cloud.spanner.database.Database.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> the database</li>
+<li><a class="reference internal" href="#google.cloud.spanner.database.Database.reload" title="google.cloud.spanner.database.Database.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a> the database</li>
+<li><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code> the database</li>
+<li><a class="reference internal" href="#google.cloud.spanner.database.Database.drop" title="google.cloud.spanner.database.Database.drop"><code class="xref py py-meth docutils literal"><span class="pre">drop()</span></code></a> the database</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>database_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the database.</li>
+<li><strong>instance</strong> (<a class="reference internal" href="spanner-instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) &#8211; The instance that owns the database.</li>
+<li><strong>ddl_statements</strong> (<em>list of string</em>) &#8211; (Optional) DDL statements, excluding the
+CREATE DATABASE statement.</li>
+<li><strong>pool</strong> (concrete subclass of
+<a class="reference internal" href="spanner-session-api.html#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code></a>.) &#8211; (Optional) session pool to be used by database.  If not
+passed, the database will construct an instance of
+<a class="reference internal" href="spanner-session-api.html#google.cloud.spanner.pool.BurstyPool" title="google.cloud.spanner.pool.BurstyPool"><code class="xref py py-class docutils literal"><span class="pre">BurstyPool</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.batch">
+<code class="descname">batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.batch" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an object which wraps a batch.</p>
+<p>The wrapper <em>must</em> be used as a context manager, with the batch
+as the value returned by the wrapper.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.database.BatchCheckout" title="google.cloud.spanner.database.BatchCheckout"><code class="xref py py-class docutils literal"><span class="pre">BatchCheckout</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">new wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Create this database within its instance</p>
+<p>Inclues any configured schema assigned to <a class="reference internal" href="#google.cloud.spanner.database.Database.ddl_statements" title="google.cloud.spanner.database.Database.ddl_statements"><code class="xref py py-attr docutils literal"><span class="pre">ddl_statements</span></code></a>.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner.database.Database.ddl_statements">
+<code class="descname">ddl_statements</code><a class="headerlink" href="#google.cloud.spanner.database.Database.ddl_statements" title="Permalink to this definition">#</a></dt>
+<dd><p>DDL Statements used to define database schema.</p>
+<p>See:
+cloud.google.com/spanner/docs/data-definition-language</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sequence of string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the statements</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.drop">
+<code class="descname">drop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.drop" title="Permalink to this definition">#</a></dt>
+<dd><p>Drop this database.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.execute_sql">
+<code class="descname">execute_sql</code><span class="sig-paren">(</span><em>sql</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em>, <em>resume_token=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.execute_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.execute_sql" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform an <code class="docutils literal"><span class="pre">ExecuteStreamingSql</span></code> API request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; SQL query statement</li>
+<li><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>{str -&gt; column value}</em>) &#8211; values for parameter replacement.  Keys must match
+the names used in <code class="docutils literal"><span class="pre">sql</span></code>.</li>
+<li><strong>param_types</strong> (dict, {str -&gt; <code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.type_pb2.TypeCode</span></code>}) &#8211; (Optional) explicit types for one or more param
+values;  overrides default type detection on the
+back-end.</li>
+<li><strong>query_mode</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode</span></code>) &#8211; Mode governing return of results / query plan. See:
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</a></li>
+<li><strong>resume_token</strong> (<em>bytes</em>) &#8211; token for resuming previously-interrupted query</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="spanner-streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet" title="google.cloud.spanner.streamed.StreamedResultSet"><code class="xref py py-class docutils literal"><span class="pre">StreamedResultSet</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a result set instance which can be used to consume rows.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.exists" title="Permalink to this definition">#</a></dt>
+<dd><p>Test whether this database exists.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL</a></p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.spanner.database.Database.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>database_pb</em>, <em>instance</em>, <em>pool=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance of this class from a protobuf.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>database_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.spanner.v2.spanner_instance_admin_pb2.Instance</span></code>) &#8211; A instance protobuf object.</li>
+<li><strong>instance</strong> (<a class="reference internal" href="spanner-instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) &#8211; The instance that owns the database.</li>
+<li><strong>pool</strong> (concrete subclass of
+<a class="reference internal" href="spanner-session-api.html#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code></a>.) &#8211; (Optional) session pool to be used by database.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The database parsed from the protobuf response.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the instance
+name does not match the expected format
+or if the parsed project ID does not match the project ID
+on the instance&#8217;s client, or if the parsed instance ID does
+not match the instance&#8217;s ID.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner.database.Database.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner.database.Database.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Database name used in requests.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This property will not change if <code class="docutils literal"><span class="pre">database_id</span></code> does not, but the
+return value is not cached.</p>
+</div>
+<p>The database name is of the form</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">&quot;projects/../instances/../databases/{database_id}&quot;</span></code></div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The database name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.read">
+<code class="descname">read</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>keyset</em>, <em>index=''</em>, <em>limit=0</em>, <em>resume_token=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.read" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform a <code class="docutils literal"><span class="pre">StreamingRead</span></code> API request for rows in a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of the table from which to fetch data</li>
+<li><strong>columns</strong> (<em>list of str</em>) &#8211; names of columns to be retrieved</li>
+<li><strong>keyset</strong> (<a class="reference internal" href="spanner-keyset-api.html#google.cloud.spanner.keyset.KeySet" title="google.cloud.spanner.keyset.KeySet"><code class="xref py py-class docutils literal"><span class="pre">KeySet</span></code></a>) &#8211; keys / ranges identifying rows to be retrieved</li>
+<li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) name of index to use, rather than the
+table&#8217;s primary key</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) maxiumn number of rows to return</li>
+<li><strong>resume_token</strong> (<em>bytes</em>) &#8211; token for resuming previously-interrupted read</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="spanner-streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet" title="google.cloud.spanner.streamed.StreamedResultSet"><code class="xref py py-class docutils literal"><span class="pre">StreamedResultSet</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a result set instance which can be used to consume rows.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.reload" title="Permalink to this definition">#</a></dt>
+<dd><p>Reload this database.</p>
+<p>Refresh any configured schema into <a class="reference internal" href="#google.cloud.spanner.database.Database.ddl_statements" title="google.cloud.spanner.database.Database.ddl_statements"><code class="xref py py-attr docutils literal"><span class="pre">ddl_statements</span></code></a>.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.run_in_transaction">
+<code class="descname">run_in_transaction</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.run_in_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.run_in_transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Perform a unit of work in a transaction, retrying on abort.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>func</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; takes a required positional argument, the transaction,
+and additional positional / keyword arguments as supplied
+by the caller.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; additional positional arguments to be passed to <code class="docutils literal"><span class="pre">func</span></code>.</li>
+<li><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; optional keyword arguments to be passed to <code class="docutils literal"><span class="pre">func</span></code>.
+If passed, &#8220;timeout_secs&#8221; will be removed and used to
+override the default timeout.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">timestamp of committed transaction</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.session">
+<code class="descname">session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.session" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to create a session for this database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="spanner-session-api.html#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a session bound to this database.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.snapshot">
+<code class="descname">snapshot</code><span class="sig-paren">(</span><em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an object which wraps a snapshot.</p>
+<p>The wrapper <em>must</em> be used as a context manager, with the snapshot
+as the value returned by the wrapper.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</a></p>
+<p>If no options are passed, reads will use the <code class="docutils literal"><span class="pre">strong</span></code> model, reading
+at a timestamp where all previously committed transactions are visible.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; Execute all reads at the given timestamp.</li>
+<li><strong>min_read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; Execute all reads at a
+timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</li>
+<li><strong>max_staleness</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; Read data at a
+timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_staleness</span></code> seconds.</li>
+<li><strong>exact_staleness</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; Execute all reads at a timestamp that is
+<code class="docutils literal"><span class="pre">exact_staleness</span></code> old.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="spanner-snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a snapshot bound to this session</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> if the session has not yet been created.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.spanner.database.SnapshotCheckout" title="google.cloud.spanner.database.SnapshotCheckout"><code class="xref py py-class docutils literal"><span class="pre">SnapshotCheckout</span></code></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">new wrapper</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner.database.Database.spanner_api">
+<code class="descname">spanner_api</code><a class="headerlink" href="#google.cloud.spanner.database.Database.spanner_api" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper for session-related API calls.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.database.Database.update_ddl">
+<code class="descname">update_ddl</code><span class="sig-paren">(</span><em>ddl_statements</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#Database.update_ddl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.update_ddl" title="Permalink to this definition">#</a></dt>
+<dd><p>Update DDL for this database.</p>
+<p>Apply any configured schema from <a class="reference internal" href="#google.cloud.spanner.database.Database.ddl_statements" title="google.cloud.spanner.database.Database.ddl_statements"><code class="xref py py-attr docutils literal"><span class="pre">ddl_statements</span></code></a>.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="operation-api.html#google.cloud.operation.Operation" title="google.cloud.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.operation.Operation</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an operation instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner.database.SnapshotCheckout">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner.database.</code><code class="descname">SnapshotCheckout</code><span class="sig-paren">(</span><em>database</em>, <em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/database.html#SnapshotCheckout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.SnapshotCheckout" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Context manager for using a snapshot from a database.</p>
+<p>Inside the context manager, checks out a session from the database,
+creates a snapshot from it, making the snapshot available.</p>
+<p>Caller must <em>not</em> use the snapshot to perform API requests outside the
+scope of the context manager.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>database</strong> (<code class="xref py py-class docutils literal"><span class="pre">Database</span></code>) &#8211; database to use</li>
+<li><strong>read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; Execute all reads at the given timestamp.</li>
+<li><strong>min_read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; Execute all reads at a
+timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</li>
+<li><strong>max_staleness</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; Read data at a
+timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_staleness</span></code> seconds.</li>
+<li><strong>exact_staleness</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; Execute all reads at a timestamp that is
+<code class="docutils literal"><span class="pre">exact_staleness</span></code> old.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="spanner-session-api.html" class="btn btn-neutral float-right" title="Session API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="spanner-instance-api.html" class="btn btn-neutral" title="Instance API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Google.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2580872',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

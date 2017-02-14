@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 4d2a7d1 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud 2580872 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 2580872 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -202,6 +202,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-usage.html">Using the Vision API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-annotations.html">Vision Annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
@@ -233,6 +234,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-config.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-variable.html">Variables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Spanner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-usage.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-usage.html">Database Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-implicit-txn-usage.html">Implicit Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-batch-usage.html">Batching Modifications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-api.html">Spanner Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-api.html">Instance API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-api.html">Database API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-api.html">Session API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-keyset-api.html">Keyset API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-snapshot-api.html">Snapshot API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-batch-api.html">Batch API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-transaction-api.html">Transaction API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-streamed-api.html">StreamedResultSet API</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
 <ul>
@@ -667,6 +691,110 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
+    <span class="k">def</span> <span class="nf">_create_upload</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for upload methods.</span>
+
+<span class="sd">        Creates a :class:`google.cloud.core.streaming.Upload` object to handle</span>
+<span class="sd">        the details of uploading a file to Cloud Storage.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">            ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">            to the ``client`` stored on the blob&#39;s bucket.</span>
+
+<span class="sd">        :type file_obj: file</span>
+<span class="sd">        :param file_obj: A file handle open for reading.</span>
+
+<span class="sd">        :type size: int</span>
+<span class="sd">        :param size: The size of the upload, in bytes.</span>
+
+<span class="sd">        :type content_type: str</span>
+<span class="sd">        :param content_type: Optional type of content being uploaded.</span>
+
+<span class="sd">        :type chunk_size: int</span>
+<span class="sd">        :param chunk_size: The size of each chunk when doing resumable and</span>
+<span class="sd">            media uploads.</span>
+
+<span class="sd">        :type strategy: str</span>
+<span class="sd">        :param strategy: Either</span>
+<span class="sd">            :attr:`google.cloud.core.streaming.transfer.SIMPLE_UPLOAD` or</span>
+<span class="sd">            :attr:`google.cloud.core.streaming.transfer.RESUMABLE_UPLOAD`.</span>
+
+<span class="sd">        :type extra_headers: dict</span>
+<span class="sd">        :param extra_headers: Additional headers to be sent with the upload</span>
+<span class="sd">            initiation request.</span>
+
+<span class="sd">        :rtype: Tuple[google.cloud.core.streaming.Upload,</span>
+<span class="sd">                      google.cloud.core.streaming.Request,</span>
+<span class="sd">                      google.cloud.core.streaming.Response]</span>
+<span class="sd">        :returns: The Upload object, the upload HTTP request, and the upload</span>
+<span class="sd">                  initiation response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+        <span class="c1"># Use ``_base_connection`` rather ``_connection`` since the current</span>
+        <span class="c1"># connection may be a batch. A batch wraps a client&#39;s connection,</span>
+        <span class="c1"># but does not store the ``http`` object. The rest (API_BASE_URL and</span>
+        <span class="c1"># build_api_url) are also defined on the Batch class, but we just</span>
+        <span class="c1"># use the wrapped connection since it has all three (http,</span>
+        <span class="c1"># API_BASE_URL and build_api_url).</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_base_connection</span>
+
+        <span class="n">content_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">content_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;contentType&#39;</span><span class="p">)</span> <span class="ow">or</span>
+                        <span class="s1">&#39;application/octet-stream&#39;</span><span class="p">)</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">extra_headers</span><span class="p">:</span>
+            <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_headers</span><span class="p">)</span>
+
+        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">))</span>
+
+        <span class="c1"># Use apitools&#39; Upload functionality</span>
+        <span class="n">upload</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span>
+            <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">auto_transfer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="n">chunk_size</span>
+
+        <span class="k">if</span> <span class="n">strategy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">RESUMABLE_UPLOAD</span>
+
+        <span class="n">url_builder</span> <span class="o">=</span> <span class="n">_UrlBuilder</span><span class="p">(</span>
+            <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">object_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">upload_config</span> <span class="o">=</span> <span class="n">_UploadConfig</span><span class="p">()</span>
+
+        <span class="c1"># Temporary URL until strategy is determined.</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;/upload&#39;</span>
+        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
+            <span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Configure the upload request parameters.</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="n">upload</span><span class="o">.</span><span class="n">configure_request</span><span class="p">(</span><span class="n">upload_config</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_builder</span><span class="p">)</span>
+
+        <span class="c1"># Configure final URL</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="n">url_builder</span><span class="o">.</span><span class="n">query_params</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;/upload&#39;</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
+            <span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+
+        <span class="c1"># Start the upload session</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">initialize_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">upload</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span>
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_check_response_error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">http_response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`upload_from_file`.&quot;&quot;&quot;</span>
@@ -677,7 +805,6 @@
             <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">faux_response</span><span class="p">,</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
                                  <span class="n">error_info</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
-    <span class="c1"># pylint: disable=too-many-locals</span>
 <div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
@@ -746,8 +873,6 @@
         <span class="c1"># use the wrapped connection since it has all three (http,</span>
         <span class="c1"># API_BASE_URL and build_api_url).</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_base_connection</span>
-        <span class="n">content_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">content_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;contentType&#39;</span><span class="p">)</span> <span class="ow">or</span>
-                        <span class="s1">&#39;application/octet-stream&#39;</span><span class="p">)</span>
 
         <span class="c1"># Rewind the file if desired.</span>
         <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
@@ -762,52 +887,28 @@
                 <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="n">UnsupportedOperation</span><span class="p">):</span>
                     <span class="k">pass</span>  <span class="c1"># Assuming fd is not an actual file (maybe socket).</span>
 
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">,</span>
-        <span class="p">}</span>
-
-        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">))</span>
-
-        <span class="n">upload</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
-                        <span class="n">auto_transfer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">strategy</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">upload</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
+            <span class="n">chunk_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
 
             <span class="k">if</span> <span class="n">total_bytes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">RESUMABLE_UPLOAD</span>
+                <span class="n">strategy</span> <span class="o">=</span> <span class="n">RESUMABLE_UPLOAD</span>
         <span class="k">elif</span> <span class="n">total_bytes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;total bytes could not be determined. Please &#39;</span>
                              <span class="s1">&#39;pass an explicit size, or supply a chunk size &#39;</span>
                              <span class="s1">&#39;for a streaming transfer.&#39;</span><span class="p">)</span>
 
-        <span class="n">url_builder</span> <span class="o">=</span> <span class="n">_UrlBuilder</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                  <span class="n">object_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">upload_config</span> <span class="o">=</span> <span class="n">_UploadConfig</span><span class="p">()</span>
-
-        <span class="c1"># Temporary URL, until we know simple vs. resumable.</span>
-        <span class="n">base_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;/upload&#39;</span>
-        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
-                                              <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Use apitools &#39;Upload&#39; facility.</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
-
-        <span class="n">upload</span><span class="o">.</span><span class="n">configure_request</span><span class="p">(</span><span class="n">upload_config</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_builder</span><span class="p">)</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="n">url_builder</span><span class="o">.</span><span class="n">query_params</span>
-        <span class="n">base_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;/upload&#39;</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
-                                               <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span><span class="p">,</span>
-                                               <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
-        <span class="n">upload</span><span class="o">.</span><span class="n">initialize_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+        <span class="n">upload</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_upload</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="o">=</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">,</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
+            <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="n">RESUMABLE_UPLOAD</span><span class="p">:</span>
             <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">stream_file</span><span class="p">(</span><span class="n">use_chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">http_response</span> <span class="o">=</span> <span class="n">make_api_request</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
-                                             <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+            <span class="n">http_response</span> <span class="o">=</span> <span class="n">make_api_request</span><span class="p">(</span>
+                <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_response_error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">http_response</span><span class="p">)</span>
         <span class="n">response_content</span> <span class="o">=</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span>
@@ -816,7 +917,6 @@
                           <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>  <span class="c1"># pragma: NO COVER  Python3</span>
             <span class="n">response_content</span> <span class="o">=</span> <span class="n">response_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_content</span><span class="p">))</span></div>
-    <span class="c1"># pylint: enable=too-many-locals</span>
 
 <div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
@@ -890,6 +990,95 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
             <span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
             <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Blob.create_resumable_upload_session"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.create_resumable_upload_session">[docs]</a>    <span class="k">def</span> <span class="nf">create_resumable_upload_session</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a resumable upload session.</span>
+
+<span class="sd">        Resumable upload sessions allow you to start an upload session from</span>
+<span class="sd">        one client and complete the session in another. This method is called</span>
+<span class="sd">        by the initiator to set the metadata and limits. The initiator then</span>
+<span class="sd">        passes the session URL to the client that will upload the binary data.</span>
+<span class="sd">        The client performs a PUT request on the session URL to complete the</span>
+<span class="sd">        upload. This process allows untrusted clients to upload to an</span>
+<span class="sd">        access-controlled bucket. For more details, see the</span>
+<span class="sd">        `documentation on signed URLs`_.</span>
+
+<span class="sd">        .. _documentation on signed URLs: https://cloud.google.com/storage\</span>
+<span class="sd">                /docs/access-control/signed-urls#signing-resumable</span>
+
+<span class="sd">        The content type of the upload will either be</span>
+<span class="sd">        - The value passed in to the function (if any)</span>
+<span class="sd">        - The value stored on the current blob</span>
+<span class="sd">        - The default value of &#39;application/octet-stream&#39;</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">           The effect of uploading to an existing blob depends on the</span>
+<span class="sd">           &quot;versioning&quot; and &quot;lifecycle&quot; policies defined on the blob&#39;s</span>
+<span class="sd">           bucket.  In the absence of those policies, upload will</span>
+<span class="sd">           overwrite any existing contents.</span>
+
+<span class="sd">           See the `object versioning</span>
+<span class="sd">           &lt;https://cloud.google.com/storage/docs/object-versioning&gt;`_ and</span>
+<span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
+<span class="sd">           API documents for details.</span>
+
+<span class="sd">        If :attr:`encryption_key` is set, the blob will be `encrypted`_.</span>
+
+<span class="sd">        .. _encrypted: https://cloud.google.com/storage/docs/\</span>
+<span class="sd">                               encryption#customer-supplied</span>
+
+<span class="sd">        :type size: int</span>
+<span class="sd">        :param size: Optional, the maximum number of bytes that can be</span>
+<span class="sd">            uploaded using this session. If the size is not known when creating</span>
+<span class="sd">            the session, this should be left blank.</span>
+
+<span class="sd">        :type content_type: str</span>
+<span class="sd">        :param content_type: Optional type of content being uploaded. This can</span>
+<span class="sd">            be used to restrict the allowed file type that can be uploaded</span>
+<span class="sd">            to the size.</span>
+
+<span class="sd">        :type origin: str</span>
+<span class="sd">        :param origin: Optional origin. If set, the upload can only be</span>
+<span class="sd">            completed by a user-agent that uploads from the given origin. This</span>
+<span class="sd">            can be useful when passing the session to a web client.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The resumable upload session URL. The upload can be</span>
+<span class="sd">            completed by making an HTTP PUT request with the file&#39;s contents.</span>
+
+<span class="sd">        :raises: :class:`google.cloud.exceptions.GoogleCloudError`</span>
+<span class="sd">                 if the session creation response returns an error status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">extra_headers</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># This header is specifically for client-side uploads, it</span>
+            <span class="c1"># determines the origins allowed for CORS.</span>
+            <span class="n">extra_headers</span><span class="p">[</span><span class="s1">&#39;Origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">start_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_upload</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
+            <span class="n">strategy</span><span class="o">=</span><span class="n">RESUMABLE_UPLOAD</span><span class="p">,</span>
+            <span class="n">extra_headers</span><span class="o">=</span><span class="n">extra_headers</span><span class="p">)</span>
+
+        <span class="c1"># The location header contains the session URL. This can be used</span>
+        <span class="c1"># to continue the upload.</span>
+        <span class="n">resumable_upload_session_url</span> <span class="o">=</span> <span class="n">start_response</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">resumable_upload_session_url</span></div>
 
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
@@ -1334,7 +1523,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'4d2a7d1',
+            VERSION:'2580872',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

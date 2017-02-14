@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Client &mdash; google-cloud 4d2a7d1 documentation</title>
+  <title>Client &mdash; google-cloud 2580872 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 4d2a7d1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 2580872 documentation" href="index.html"/>
         <link rel="next" title="Instance" href="bigtable-instance.html"/>
         <link rel="prev" title="Data API" href="bigtable-data-api.html"/> 
 
@@ -203,6 +203,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-annotations.html">Vision Annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
@@ -234,6 +235,29 @@
 <li class="toctree-l1"><a class="reference internal" href="runtimeconfig-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimeconfig-config.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimeconfig-variable.html">Variables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Spanner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="spanner-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-instance-usage.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-database-usage.html">Database Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-implicit-txn-usage.html">Implicit Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-batch-usage.html">Batching Modifications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-api.html">Spanner Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-instance-api.html">Instance API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-database-api.html">Database API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-api.html">Session API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-keyset-api.html">Keyset API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-snapshot-api.html">Snapshot API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-batch-api.html">Batch API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-transaction-api.html">Transaction API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-streamed-api.html">StreamedResultSet API</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
 <ul>
@@ -291,12 +315,14 @@
 <p>This is the base from which all interactions with the API occur.</p>
 <p>In the hierarchy of API concepts</p>
 <ul class="simple">
-<li>a <a class="reference internal" href="#google.cloud.bigtable.client.Client" title="google.cloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> owns an <a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></li>
-<li>an <a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> owns a <a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></li>
+<li>a <a class="reference internal" href="#google.cloud.bigtable.client.Client" title="google.cloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> owns an
+<a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></li>
+<li>an <a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> owns a
+<a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></li>
 <li>a <a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> owns a
 <a class="reference internal" href="bigtable-column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a></li>
-<li>a <a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> owns a <a class="reference internal" href="bigtable-row.html#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a>
-(and all the cells in the row)</li>
+<li>a <a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> owns a
+<a class="reference internal" href="bigtable-row.html#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a> (and all the cells in the row)</li>
 </ul>
 <dl class="data">
 <dt id="google.cloud.bigtable.client.ADMIN_SCOPE">
@@ -420,8 +446,9 @@ cluster; used to set up the instance&#8217;s cluster.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)">tuple</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A pair of results, the first is a list of
-<a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> objects returned and the second is a
-list of strings (the failed locations in the request).</td>
+<a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> objects
+returned and the second is a list of strings (the failed
+locations in the request).</td>
 </tr>
 </tbody>
 </table>
@@ -527,7 +554,7 @@ API RPC service.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4d2a7d1',
+            VERSION:'2580872',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
