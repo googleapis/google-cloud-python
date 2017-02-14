@@ -264,3 +264,17 @@ class Image(object):
         features = [Feature(FeatureTypes.TEXT_DETECTION, limit)]
         annotations = self.detect(features)
         return annotations[0].texts
+
+    def detect_web(self, limit=10):
+        """Detect similar images elsewhere on the web.
+
+        :type limit: int
+        :param limit: The maximum instances of text to find.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+        """
+        features = [Feature(FeatureTypes.WEB_ANNOTATION, limit)]
+        annotations = self.detect(features)
+        return annotations[0].web

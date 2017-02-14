@@ -614,3 +614,82 @@ class TestVisionBatchProcessing(BaseVisionTestCase):
 
         self.assertEqual(len(results[1].logos), 0)
         self.assertEqual(len(results[1].faces), 2)
+
+
+class TestVisionWebAnnotation(BaseVisionTestCase):
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+
+    def _assert_web_entity(self, web_entity):
+        from google.cloud.vision.web import WebEntity
+
+        self.assertIsInstance(web_entity, WebEntity)
+        self.assertIsInstance(web_entity.entity_id, six.text_type)
+        self.assertIsInstance(web_entity.score, float)
+        self.assertIsInstance(web_entity.description, six.text_type)
+
+    def _assert_web_image(self, web_image):
+        from google.cloud.vision.web import WebImage
+
+        self.assertIsInstance(web_image, WebImage)
+        self.assertIsInstance(web_image.url, six.text_type)
+        self.assertIsInstance(web_image.score, float)
+
+    def _assert_web_page(self, web_page):
+        from google.cloud.vision.web import WebPage
+
+        self.assertIsInstance(web_page, WebPage)
+        self.assertIsInstance(web_page.url, six.text_type)
+        self.assertIsInstance(web_page.score, float)
+
+    def _assert_web_images(self, web_images, limit):
+        self.assertEqual(len(web_images.web_entities), limit)
+        for web_entity in web_images.web_entities:
+            self._assert_web_entity(web_entity)
+
+        self.assertEqual(len(web_images.full_matching_images), limit)
+        for web_image in web_images.full_matching_images:
+            self._assert_web_image(web_image)
+
+        self.assertEqual(len(web_images.partial_matching_images), limit)
+        for web_image in web_images.partial_matching_images:
+            self._assert_web_image(web_image)
+
+        self.assertEqual(len(web_images.pages_with_matching_images), limit)
+        for web_page in web_images.pages_with_matching_images:
+            self._assert_web_page(web_page)
+
+    def test_detect_web_images_from_content(self):
+        client = Config.CLIENT
+        with open(LANDMARK_FILE, 'rb') as image_file:
+            image = client.image(content=image_file.read())
+        limit = 5
+        web_images = image.detect_web(limit=limit)
+        self._assert_web_images(web_images, limit)
+
+    def test_detect_web_images_from_gcs(self):
+        client = Config.CLIENT
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'landmark.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(LANDMARK_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        image = client.image(source_uri=source_uri)
+        limit = 5
+        web_images = image.detect_web(limit=limit)
+        self._assert_web_images(web_images, limit)
+
+    def test_detect_web_images_from_filename(self):
+        client = Config.CLIENT
+        image = client.image(filename=LANDMARK_FILE)
+        limit = 5
+        web_images = image.detect_web(limit=limit)
+        self._assert_web_images(web_images, limit)

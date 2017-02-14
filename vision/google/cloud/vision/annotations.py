@@ -21,12 +21,14 @@ from google.cloud.vision.crop_hint import CropHint
 from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.safe_search import SafeSearchAnnotation
+from google.cloud.vision.web import WebAnnotation
 
 
 _CROP_HINTS_ANNOTATION = 'cropHintsAnnotation'
 _FACE_ANNOTATIONS = 'faceAnnotations'
 _IMAGE_PROPERTIES_ANNOTATION = 'imagePropertiesAnnotation'
 _SAFE_SEARCH_ANNOTATION = 'safeSearchAnnotation'
+_WEB_ANNOTATION = 'webAnnotation'
 
 _KEY_MAP = {
     _CROP_HINTS_ANNOTATION: 'crop_hints',
@@ -37,6 +39,7 @@ _KEY_MAP = {
     'logoAnnotations': 'logos',
     _SAFE_SEARCH_ANNOTATION: 'safe_searches',
     'textAnnotations': 'texts',
+    _WEB_ANNOTATION: 'web',
 }
 
 
@@ -73,9 +76,13 @@ class Annotations(object):
     :type texts: list
     :param texts: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
+
+    :type web: list
+    :param web: List of :class:`~google.cloud.vision.web.WebAnnotation`.
     """
     def __init__(self, crop_hints=(), faces=(), properties=(), labels=(),
-                 landmarks=(), logos=(), safe_searches=(), texts=()):
+                 landmarks=(), logos=(), safe_searches=(), texts=(),
+                 web=()):
         self.crop_hints = crop_hints
         self.faces = faces
         self.properties = properties
@@ -84,6 +91,7 @@ class Annotations(object):
         self.logos = logos
         self.safe_searches = safe_searches
         self.texts = texts
+        self.web = web
 
     @classmethod
     def from_api_repr(cls, response):
@@ -107,7 +115,7 @@ class Annotations(object):
     def from_pb(cls, response):
         """Factory: construct an instance of ``Annotations`` from protobuf.
 
-        :type response: :class:`google.cloud.proto.vision.v1.\
+        :type response: :class:`~google.cloud.proto.vision.v1.\
                         image_annotator_pb2.AnnotateImageResponse`
         :param response: ``AnnotateImageResponse`` from protobuf call.
 
@@ -121,7 +129,7 @@ class Annotations(object):
 def _process_image_annotations(image):
     """Helper for processing annotation types from protobuf.
 
-    :type image: :class:`google.cloud.proto.vision.v1.image_annotator_pb2.\
+    :type image: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.\
                  AnnotateImageResponse`
     :param image: ``AnnotateImageResponse`` from protobuf.
 
@@ -139,6 +147,7 @@ def _process_image_annotations(image):
         'safe_searches': _make_safe_search_from_pb(
             image.safe_search_annotation),
         'texts': _make_entity_from_pb(image.text_annotations),
+        'web': _make_web_annotation_from_pb(image.web_annotation)
     }
 
 
@@ -160,7 +169,7 @@ def _make_entity_from_pb(annotations):
     """Create an entity from a protobuf response.
 
     :type annotations:
-    :class:`google.cloud.proto.vision.v1.image_annotator_pb2.EntityAnnotation`
+    :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.EntityAnnotation`
     :param annotations: protobuf instance of ``EntityAnnotation``.
 
     :rtype: list
@@ -173,7 +182,7 @@ def _make_faces_from_pb(faces):
     """Create face objects from a protobuf response.
 
     :type faces:
-    :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.FaceAnnotation`
+    :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.FaceAnnotation`
     :param faces: Protobuf instance of ``FaceAnnotation``.
 
     :rtype: list
@@ -185,7 +194,7 @@ def _make_faces_from_pb(faces):
 def _make_image_properties_from_pb(image_properties):
     """Create ``ImageProperties`` object from a protobuf response.
 
-    :type image_properties: :class:`~google.cloud.grpc.vision.v1.\
+    :type image_properties: :class:`~google.cloud.proto.vision.v1.\
                             image_annotator_pb2.ImagePropertiesAnnotation`
     :param image_properties: Protobuf instance of
                              ``ImagePropertiesAnnotation``.
@@ -199,7 +208,7 @@ def _make_image_properties_from_pb(image_properties):
 def _make_safe_search_from_pb(safe_search):
     """Create ``SafeSearchAnnotation`` object from a protobuf response.
 
-    :type safe_search: :class:`~google.cloud.grpc.vision.v1.\
+    :type safe_search: :class:`~google.cloud.proto.vision.v1.\
                             image_annotator_pb2.SafeSearchAnnotation`
     :param safe_search: Protobuf instance of ``SafeSearchAnnotation``.
 
@@ -207,6 +216,19 @@ def _make_safe_search_from_pb(safe_search):
     :returns: Instance of ``SafeSearchAnnotation``.
     """
     return SafeSearchAnnotation.from_pb(safe_search)
+
+
+def _make_web_annotation_from_pb(annotation):
+    """Create ``WebAnnotation`` object from a protobuf response.
+
+    :type annotation: :class:`~google.cloud.proto.vision.v1.web_annotation_pb2\
+                      .WebAnnotation`
+    :param annotation: Protobuf instance of ``WebAnnotation``.
+
+    :rtype: :class: `~google.cloud.vision.web.WebAnnotation`
+    :returns: Instance of ``WebAnnotation``.
+    """
+    return WebAnnotation.from_pb(annotation)
 
 
 def _entity_from_response_type(feature_type, results):
@@ -230,6 +252,8 @@ def _entity_from_response_type(feature_type, results):
         return ImagePropertiesAnnotation.from_api_repr(results)
     elif feature_type == _SAFE_SEARCH_ANNOTATION:
         return SafeSearchAnnotation.from_api_repr(results)
+    elif feature_type == _WEB_ANNOTATION:
+        return WebAnnotation.from_api_repr(results)
     elif feature_type == _CROP_HINTS_ANNOTATION:
         crop_hints = results.get('cropHints', [])
         detected_objects.extend(

@@ -1851,3 +1851,43 @@ TEXT_DETECTION_RESPONSE = {
         }
     ]
 }
+
+
+WEB_ANNOTATION_RESPONSE = {
+    'responses': [
+        {
+            'webAnnotation': {
+                'partialMatchingImages': [{
+                    'score': 0.9216,
+                    'url': 'https://cloud.google.com/vision'
+                }, {
+                    'score': 0.55520177,
+                    'url': 'https://cloud.google.com/vision'
+                }],
+                'fullMatchingImages': [{
+                    'score': 0.09591467,
+                    'url': 'https://cloud.google.com/vision'
+                }, {
+                    'score': 0.09591467,
+                    'url': 'https://cloud.google.com/vision'
+                }],
+                'webEntities': [{
+                    'entityId': '/m/019dvv',
+                    'score': 1470.4435,
+                    'description': 'Mount Rushmore National Memorial'
+                }, {
+                    'entityId': '/m/05_5t0l',
+                    'score': 0.9468027,
+                    'description': 'Landmark'
+                }],
+                'pagesWithMatchingImages': [{
+                    'score': 2.9996617,
+                    'url': 'https://cloud.google.com/vision'
+                }, {
+                    'score': 1.1980441,
+                    'url': 'https://cloud.google.com/vision'
+                }]
+            }
+        }
+    ]
+}

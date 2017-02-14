@@ -510,6 +510,39 @@ class TestClient(unittest.TestCase):
         self.assertEqual(image_properties, ())
         self.assertEqual(len(image_properties), 0)
 
+    def test_detect_web_annotation(self):
+        from google.cloud.vision.web import WebEntity
+        from google.cloud.vision.web import WebImage
+        from google.cloud.vision.web import WebPage
+        from unit_tests._fixtures import WEB_ANNOTATION_RESPONSE
+
+        returned = WEB_ANNOTATION_RESPONSE
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
+        client._connection = _Connection(returned)
+        image = client.image(source_uri=IMAGE_SOURCE)
+        web_images = image.detect_web(limit=2)
+
+        self.assertEqual(len(web_images.partial_matching_images), 2)
+        self.assertEqual(len(web_images.full_matching_images), 2)
+        self.assertEqual(len(web_images.web_entities), 2)
+        self.assertEqual(len(web_images.pages_with_matching_images), 2)
+
+        self.assertIsInstance(web_images.partial_matching_images[0],
+                              WebImage)
+        self.assertIsInstance(web_images.full_matching_images[0], WebImage)
+        self.assertIsInstance(web_images.web_entities[0], WebEntity)
+        self.assertIsInstance(web_images.pages_with_matching_images[0],
+                              WebPage)
+
+        image_request = client._connection._requested[0]['data']['requests'][0]
+        self.assertEqual(image_request['image']['source']['gcs_image_uri'],
+                         IMAGE_SOURCE)
+        self.assertEqual(image_request['features'][0]['maxResults'], 2)
+        self.assertEqual(image_request['features'][0]['type'],
+                         'WEB_ANNOTATION')
+
 
 class _Connection(object):
 

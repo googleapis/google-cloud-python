@@ -341,6 +341,43 @@ Multiple images can be processed with a single request by passing
     <Likelihood.VERY_LIKELY: 'POSSIBLE'>
 
 
+***************
+Web Annotations
+***************
+
+:meth:`~google.cloud.vision.image.Image.detect_web` search for images on the
+web that are similar to the image you have.
+
+.. code-block:: python
+
+    >>> from google.cloud import vision
+    >>> client = vision.Client()
+    >>> with open('./image.jpg', 'rb') as image_file:
+    ...     image = client.image(content=image_file.read())
+    >>> web_images = image.detect_web(limit=2)
+    >>> for full_matching_image in web_images.full_matching_images:
+    ...     print('=' * 20)
+    ...     print(full_matching_image.url)
+    ====================
+    'https://example.com/image.jpg'
+    >>> for partial_matching_image in web_images.partial_matching_images:
+    ...     print('=' * 20)
+    ...     print(partial_matching_image.url)
+    ====================
+    >>> for page_with_matching_images in web_images.pages_with_matching_images:
+    ...     print('=' * 20)
+    ...     print(page_with_matching_images.url)
+    ====================
+    'https://example.com/portfolio/'
+    >>> for entity in web_images.web_entities:
+    ...     print('=' * 20)
+    ...     print(entity.description)
+    ====================
+    'Mount Rushmore National Memorial'
+    ====================
+    'Landmark'
+
+
 ****************
 No results found
 ****************

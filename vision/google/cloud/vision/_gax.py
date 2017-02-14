@@ -74,7 +74,7 @@ def _to_gapic_feature(feature):
     :param feature: Local ``Feature`` class to be converted to gRPC ``Feature``
                     instance.
 
-    :rtype: :class:`google.cloud.proto.vision.v1.image_annotator_pb2.Feature`
+    :rtype: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.Feature`
     :returns: gRPC ``Feature`` converted from
               :class:`~google.cloud.vision.feature.Feature`.
     """
@@ -89,7 +89,7 @@ def _to_gapic_image(image):
     :type image: :class:`~google.cloud.vision.image.Image`
     :param image: Local ``Image`` class to be converted to gRPC ``Image``.
 
-    :rtype: :class:`google.cloud.proto.vision.v1.image_annotator_pb2.Image`
+    :rtype: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.Image`
     :returns: gRPC ``Image`` converted from
               :class:`~google.cloud.vision.image.Image`.
     """
