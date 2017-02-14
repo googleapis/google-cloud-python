@@ -164,6 +164,7 @@
   vision-face
   vision-image
   vision-safe-search
+  vision-text
   vision-web
 
 .. toctree::

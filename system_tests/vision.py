@@ -35,6 +35,7 @@ FACE_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'faces.jpg')
 LABEL_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'car.jpg')
 LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'landmark.jpg')
 TEXT_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'text.jpg')
+FULL_TEXT_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'full-text.jpg')
 
 
 class Config(object):
@@ -80,7 +81,8 @@ class BaseVisionTestCase(unittest.TestCase):
             self.skipTest(message)
 
 
-class TestVisionClientCropHint(BaseVisionTestCase):
+
+class TestVisionFullText(unittest.TestCase):
     def setUp(self):
         self.to_delete_by_case = []
 
@@ -88,6 +90,52 @@ class TestVisionClientCropHint(BaseVisionTestCase):
         for value in self.to_delete_by_case:
             value.delete()
 
+    def _assert_full_text(self, full_text):
+        from google.cloud.vision.text import TextAnnotation
+
+        self.assertIsInstance(full_text, TextAnnotation)
+        self.assertIsInstance(full_text.text, six.text_type)
+        self.assertEqual(len(full_text.pages), 1)
+        self.assertIsInstance(full_text.pages[0].width, int)
+        self.assertIsInstance(full_text.pages[0].height, int)
+
+    def test_detect_full_text_content(self):
+        client = Config.CLIENT
+        with open(FULL_TEXT_FILE, 'rb') as image_file:
+            image = client.image(content=image_file.read())
+        full_text = image.detect_full_text()
+        self._assert_full_text(full_text)
+
+    def test_detect_full_text_filename(self):
+        client = Config.CLIENT
+        image = client.image(filename=FULL_TEXT_FILE)
+        full_text = image.detect_full_text()
+        self._assert_full_text(full_text)
+
+    def test_detect_full_text_gcs(self):
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'full-text.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(FULL_TEXT_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        client = Config.CLIENT
+        image = client.image(source_uri=source_uri)
+        full_text = image.detect_full_text()
+        self._assert_full_text(full_text)
+
+        
+class TestVisionClientCropHint(BaseVisionTestCase):
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+  
     def _assert_crop_hint(self, hint):
         from google.cloud.vision.crop_hint import CropHint
         from google.cloud.vision.geometry import Bounds

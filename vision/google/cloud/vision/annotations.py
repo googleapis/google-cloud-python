@@ -21,11 +21,13 @@ from google.cloud.vision.crop_hint import CropHint
 from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.safe_search import SafeSearchAnnotation
+from google.cloud.vision.text import TextAnnotation
 from google.cloud.vision.web import WebAnnotation
 
 
 _CROP_HINTS_ANNOTATION = 'cropHintsAnnotation'
 _FACE_ANNOTATIONS = 'faceAnnotations'
+_FULL_TEXT_ANNOTATION = 'fullTextAnnotation'
 _IMAGE_PROPERTIES_ANNOTATION = 'imagePropertiesAnnotation'
 _SAFE_SEARCH_ANNOTATION = 'safeSearchAnnotation'
 _WEB_ANNOTATION = 'webAnnotation'
@@ -33,6 +35,7 @@ _WEB_ANNOTATION = 'webAnnotation'
 _KEY_MAP = {
     _CROP_HINTS_ANNOTATION: 'crop_hints',
     _FACE_ANNOTATIONS: 'faces',
+    _FULL_TEXT_ANNOTATION: 'full_texts',
     _IMAGE_PROPERTIES_ANNOTATION: 'properties',
     'labelAnnotations': 'labels',
     'landmarkAnnotations': 'landmarks',
@@ -52,6 +55,10 @@ class Annotations(object):
 
     :type faces: list
     :param faces: List of :class:`~google.cloud.vision.face.Face`.
+
+    :type full_texts: list
+    :param full_texts: List of
+                       :class:`~google.cloud.vision.text.TextAnnotation`.
 
     :type properties: list
     :param properties:
@@ -80,11 +87,12 @@ class Annotations(object):
     :type web: list
     :param web: List of :class:`~google.cloud.vision.web.WebAnnotation`.
     """
-    def __init__(self, crop_hints=(), faces=(), properties=(), labels=(),
-                 landmarks=(), logos=(), safe_searches=(), texts=(),
-                 web=()):
+    def __init__(self, crop_hints=(), faces=(), full_texts=(), properties=(),
+                 labels=(), landmarks=(), logos=(), safe_searches=(),
+                 texts=(), web=()):
         self.crop_hints = crop_hints
         self.faces = faces
+        self.full_texts = full_texts
         self.properties = properties
         self.labels = labels
         self.landmarks = landmarks
@@ -139,6 +147,7 @@ def _process_image_annotations(image):
     return {
         'crop_hints': _make_crop_hints_from_pb(image.crop_hints_annotation),
         'faces': _make_faces_from_pb(image.face_annotations),
+        'full_texts': _make_full_text_from_pb(image.full_text_annotation),
         'labels': _make_entity_from_pb(image.label_annotations),
         'landmarks': _make_entity_from_pb(image.landmark_annotations),
         'logos': _make_entity_from_pb(image.logo_annotations),
@@ -189,6 +198,19 @@ def _make_faces_from_pb(faces):
     :returns: List of ``Face``.
     """
     return [Face.from_pb(face) for face in faces]
+
+
+def _make_full_text_from_pb(full_text):
+    """Create text annotation object from protobuf response.
+
+    :type full_text: :class:`~google.cloud.proto.vision.v1.\
+                     text_annotation_pb2.TextAnnotation`
+    :param full_text: Protobuf instance of ``TextAnnotation``.
+
+    :rtype: :class:`~google.cloud.vision.text.TextAnnotation`
+    :returns: Instance of ``TextAnnotation``.
+    """
+    return TextAnnotation.from_pb(full_text)
 
 
 def _make_image_properties_from_pb(image_properties):
@@ -258,6 +280,10 @@ def _entity_from_response_type(feature_type, results):
         crop_hints = results.get('cropHints', [])
         detected_objects.extend(
             CropHint.from_api_repr(result) for result in crop_hints)
+    elif feature_type == _WEB_ANNOTATION:
+        return WebAnnotation.from_api_repr(results)
+    elif feature_type == _FULL_TEXT_ANNOTATION:
+        return TextAnnotation.from_api_repr(results)
     else:
         for result in results:
             detected_objects.append(EntityAnnotation.from_api_repr(result))

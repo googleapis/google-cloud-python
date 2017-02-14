@@ -1,17 +1,124 @@
 # Copyright 2016 Google Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an 'AS IS' BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+FULL_TEXT_RESPONSE = {
+    'responses': [{
+        'fullTextAnnotation': {
+            'pages': [{
+                'height': 1872,
+                'property': {
+                    'detectedLanguages': [{
+                        'languageCode': 'en'
+                    }]
+                },
+                'blocks': [{
+                    'blockType': 'TEXT',
+                    'property': {
+                        'detectedLanguages': [{
+                            'languageCode': 'en'
+                        }]
+                    },
+                    'boundingBox': {
+                        'vertices': [{
+                            'y': 8,
+                            'x': 344
+                        }, {
+                            'y': 8,
+                            'x': 434
+                        }, {
+                            'y': 22,
+                            'x': 434
+                        }, {
+                            'y': 22,
+                            'x': 344
+                        }]
+                    },
+                    'paragraphs': [{
+                        'property': {
+                            'detectedLanguages': [{
+                                'languageCode': 'en'
+                            }]
+                        },
+                        'words': [{
+                            'symbols': [{
+                                'property': {
+                                    'detectedLanguages': [{
+                                        'languageCode': 'en'
+                                    }]
+                                },
+                                'text': 'T',
+                                'boundingBox': {
+                                    'vertices': [{
+                                        'y': 8,
+                                        'x': 344
+                                    }, {
+                                        'y': 8,
+                                        'x': 352
+                                    }, {
+                                        'y': 22,
+                                        'x': 352
+                                    }, {
+                                        'y': 22,
+                                        'x': 344
+                                    }]
+                                }
+                            }],
+                            'property': {
+                                'detectedLanguages': [{
+                                    'languageCode': 'en'
+                                }]
+                            },
+                            'boundingBox': {
+                                'vertices': [{
+                                    'y': 8,
+                                    'x': 377
+                                }, {
+                                    'y': 8,
+                                    'x': 434
+                                }, {
+                                    'y': 22,
+                                    'x': 434
+                                }, {
+                                    'y': 22,
+                                    'x': 377
+                                }]
+                            }
+                        }],
+                        'boundingBox': {
+                            'vertices': [{
+                                'y': 8,
+                                'x': 344
+                            }, {
+                                'y': 8,
+                                'x': 434
+                            }, {
+                                'y': 22,
+                                'x': 434
+                            }, {
+                                'y': 22,
+                                'x': 344
+                            }]
+                        }
+                    }]
+                }],
+                'width': 792
+            }],
+            'text': 'The Republic\nBy Plato'
+        }
+    }]
+}
 
 CROP_HINTS_RESPONSE = {
     "responses": [{
@@ -49,6 +156,7 @@ CROP_HINTS_RESPONSE = {
         }
     }]
 }
+
 
 IMAGE_PROPERTIES_RESPONSE = {
     'responses': [

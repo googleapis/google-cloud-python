@@ -283,6 +283,36 @@ class TestClient(unittest.TestCase):
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
 
+    def test_detect_full_text_annotation(self):
+        from google.cloud.vision.text import TextAnnotation
+        from unit_tests._fixtures import FULL_TEXT_RESPONSE
+
+        returned = FULL_TEXT_RESPONSE
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
+        client._connection = _Connection(returned)
+        image = client.image(source_uri=IMAGE_SOURCE)
+        full_text = image.detect_full_text(limit=2)
+
+        self.assertIsInstance(full_text, TextAnnotation)
+        self.assertEqual(full_text.text, 'The Republic\nBy Plato')
+        self.assertEqual(len(full_text.pages), 1)
+        self.assertEqual(len(full_text.pages), 1)
+        page = full_text.pages[0]
+        self.assertEqual(page.height, 1872)
+        self.assertEqual(page.width, 792)
+        self.assertEqual(len(page.blocks), 1)
+        self.assertEqual(len(page.blocks[0].paragraphs), 1)
+        self.assertEqual(len(page.blocks[0].paragraphs[0].words), 1)
+
+        image_request = client._connection._requested[0]['data']['requests'][0]
+        self.assertEqual(image_request['image']['source']['gcs_image_uri'],
+                         IMAGE_SOURCE)
+        self.assertEqual(image_request['features'][0]['maxResults'], 2)
+        self.assertEqual(image_request['features'][0]['type'],
+                         'DOCUMENT_TEXT_DETECTION')
+
     def test_label_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests._fixtures import (

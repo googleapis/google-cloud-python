@@ -182,6 +182,19 @@ class Image(object):
         annotations = self.detect(features)
         return annotations[0].faces
 
+    def detect_full_text(self, limit=10):
+        """Detect a full document's text.
+
+        :type limit: int
+        :param limit: The number of documents to detect.
+
+        :rtype: list
+        :returns: List of :class:`~google.cloud.vision.text.TextAnnotation`.
+        """
+        features = [Feature(FeatureTypes.DOCUMENT_TEXT_DETECTION, limit)]
+        annotations = self.detect(features)
+        return annotations[0].full_texts
+
     def detect_labels(self, limit=10):
         """Detect labels that describe objects in an image.
 
