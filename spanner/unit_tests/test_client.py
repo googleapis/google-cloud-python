@@ -28,41 +28,6 @@ def _make_credentials():
     return mock.Mock(spec=_CredentialsWithScopes)
 
 
-class Test__make_operations_stub(unittest.TestCase):
-
-    def _callFUT(self, client):
-        from google.cloud.spanner.client import _make_operations_stub
-        return _make_operations_stub(client)
-
-    def test_it(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import client as MUT
-
-        credentials = _Credentials()
-        user_agent = 'you-sir-age-int'
-        client = _Client(credentials, user_agent)
-
-        fake_stub = object()
-        make_secure_stub_args = []
-
-        def mock_make_secure_stub(*args):
-            make_secure_stub_args.append(args)
-            return fake_stub
-
-        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._callFUT(client)
-
-        self.assertIs(result, fake_stub)
-        self.assertEqual(make_secure_stub_args, [
-            (
-                client.credentials,
-                client.user_agent,
-                MUT.operations_grpc.OperationsStub,
-                MUT.OPERATIONS_API_HOST,
-            ),
-        ])
-
-
 class TestClient(unittest.TestCase):
 
     PROJECT = 'PROJECT'
@@ -169,24 +134,6 @@ class TestClient(unittest.TestCase):
         self.assertTrue(isinstance(api, _Client))
         again = client.database_admin_api
         self.assertTrue(again is api)
-
-    def test__operations_stub(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import client as MUT
-        client = self._makeOne(project=self.PROJECT)
-
-        class _Stub(object):
-            pass
-
-        def _make_operations_stub(_):
-            return _Stub()
-
-        with _Monkey(MUT, _make_operations_stub=_make_operations_stub):
-            stub = client._operations_stub
-
-        self.assertTrue(isinstance(stub, _Stub))
-        again = client._operations_stub
-        self.assertTrue(again is stub)
 
     def test_copy(self):
         credentials = _Credentials('value')
