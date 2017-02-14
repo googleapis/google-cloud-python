@@ -18,12 +18,14 @@ This is the base from which all interactions with the API occur.
 
 In the hierarchy of API concepts
 
-* a :class:`Client` owns an :class:`.Instance`
-* an :class:`.Instance` owns a :class:`~google.cloud.bigtable.table.Table`
+* a :class:`~google.cloud.bigtable.client.Client` owns an
+  :class:`~google.cloud.bigtable.instance.Instance`
+* an :class:`~google.cloud.bigtable.instance.Instance` owns a
+  :class:`~google.cloud.bigtable.table.Table`
 * a :class:`~google.cloud.bigtable.table.Table` owns a
   :class:`~.column_family.ColumnFamily`
-* a :class:`~google.cloud.bigtable.table.Table` owns a :class:`~.row.Row`
-  (and all the cells in the row)
+* a :class:`~google.cloud.bigtable.table.Table` owns a
+  :class:`~google.cloud.bigtable.row.Row` (and all the cells in the row)
 """
 
 
@@ -342,7 +344,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :param serve_nodes: (Optional) The number of nodes in the instance's
                             cluster; used to set up the instance's cluster.
 
-        :rtype: :class:`.Instance`
+        :rtype: :class:`~google.cloud.bigtable.instance.Instance`
         :returns: an instance owned by this client.
         """
         return Instance(instance_id, self, location,
@@ -353,8 +355,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
         :rtype: tuple
         :returns: A pair of results, the first is a list of
-                  :class:`.Instance` objects returned and the second is a
-                  list of strings (the failed locations in the request).
+                  :class:`~google.cloud.bigtable.instance.Instance` objects
+                  returned and the second is a list of strings (the failed
+                  locations in the request).
         """
         request_pb = bigtable_instance_admin_pb2.ListInstancesRequest(
             parent=self.project_name)

@@ -49,7 +49,7 @@ class Table(object):
     :type table_id: str
     :param table_id: The ID of the table.
 
-    :type instance: :class:`Instance <.instance.Instance>`
+    :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance that owns the table.
     """
 
