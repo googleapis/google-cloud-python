@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -59,7 +59,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-spanner',
-    version='0.23.0',
+    version='0.23.1',
     description='Python Client for Cloud Spanner',
     long_description=README,
     namespace_packages=[
