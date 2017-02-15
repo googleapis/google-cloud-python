@@ -8,6 +8,10 @@ env:
   - PYTHON=3.5 PANDAS=0.19.2 COVERAGE='true'
   - PYTHON=3.6 PANDAS=0.19.2 COVERAGE='false'
 
+before_install:
+  - echo "before_install"
+  - source ci/travis_process_gbq_encryption.sh
+
 install:
   - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda

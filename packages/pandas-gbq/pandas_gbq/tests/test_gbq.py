@@ -3,9 +3,9 @@ import pytest
 import re
 from datetime import datetime
 import pytz
-import platform
 from time import sleep
 import os
+from random import randint
 import logging
 
 import numpy as np
@@ -16,7 +16,7 @@ from pandas import compat
 from pandas import NaT
 from pandas.compat import u, range
 from pandas.core.frame import DataFrame
-import pandas.io.gbq as gbq
+from pandas_gbq import gbq
 import pandas.util.testing as tm
 from pandas.compat.numpy import np_datetime64_compat
 
@@ -24,15 +24,8 @@ PROJECT_ID = None
 PRIVATE_KEY_JSON_PATH = None
 PRIVATE_KEY_JSON_CONTENTS = None
 
-if compat.PY3:
-    DATASET_ID = 'pydata_pandas_bq_testing_py3'
-else:
-    DATASET_ID = 'pydata_pandas_bq_testing_py2'
-
 TABLE_ID = 'new_test'
-DESTINATION_TABLE = "{0}.{1}".format(DATASET_ID + "1", TABLE_ID)
 
-VERSION = platform.python_version()
 
 _IMPORTS = False
 _GOOGLE_API_CLIENT_INSTALLED = False
@@ -62,6 +55,10 @@ def _skip_if_no_private_key_contents():
 def _in_travis_environment():
     return 'TRAVIS_BUILD_DIR' in os.environ and \
            'GBQ_PROJECT_ID' in os.environ
+
+
+def _get_dataset_prefix_random():
+    return ''.join(['pandas_gbq_', str(randint(1, 100000))])
 
 
 def _get_project_id():
@@ -211,17 +208,17 @@ def _check_if_can_get_correct_default_credentials():
         return False
 
 
-def clean_gbq_environment(private_key=None):
+def clean_gbq_environment(dataset_prefix, private_key=None):
     dataset = gbq._Dataset(_get_project_id(), private_key=private_key)
-
+    all_datasets = dataset.datasets()
     for i in range(1, 10):
-        if DATASET_ID + str(i) in dataset.datasets():
-            dataset_id = DATASET_ID + str(i)
+        dataset_id = dataset_prefix + str(i)
+        if dataset_id in all_datasets:
             table = gbq._Table(_get_project_id(), dataset_id,
                                private_key=private_key)
-            for j in range(1, 20):
-                if TABLE_ID + str(j) in dataset.tables(dataset_id):
-                    table.delete(TABLE_ID + str(j))
+            all_tables = dataset.tables(dataset_id)
+            for table_id in all_tables:
+                table.delete(table_id)
 
             dataset.delete(dataset_id)
 
@@ -364,6 +361,11 @@ class GBQUnitTests(tm.TestCase):
         _setup_common()
 
     def test_import_google_api_python_client(self):
+        if not _in_travis_environment():
+            pytest.skip("Skip if not in travis environment. Extra test to "
+                        "make sure pandas_gbq doesn't break when "
+                        "using google-api-python-client==1.2")
+
         if compat.PY2:
             with tm.assertRaises(ImportError):
                 from googleapiclient.discovery import build  # noqa
@@ -817,131 +819,124 @@ class TestToGBQIntegration(tm.TestCase):
         _skip_if_no_project_id()
 
         _setup_common()
-        clean_gbq_environment(_get_private_key_path())
-
-        gbq._Dataset(_get_project_id(),
-                     private_key=_get_private_key_path()
-                     ).create(DATASET_ID + "1")
 
     def setUp(self):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
 
+        self.dataset_prefix = _get_dataset_prefix_random()
+        clean_gbq_environment(self.dataset_prefix, _get_private_key_path())
         self.dataset = gbq._Dataset(_get_project_id(),
                                     private_key=_get_private_key_path())
-        self.table = gbq._Table(_get_project_id(), DATASET_ID + "1",
+        self.table = gbq._Table(_get_project_id(), self.dataset_prefix + "1",
                                 private_key=_get_private_key_path())
         self.sut = gbq.GbqConnector(_get_project_id(),
                                     private_key=_get_private_key_path())
+        self.destination_table = "{0}{1}.{2}".format(self.dataset_prefix, "1",
+                                                     TABLE_ID)
+        self.dataset.create(self.dataset_prefix + "1")
 
     @classmethod
     def tearDownClass(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *AFTER*
         # executing all tests.
-
-        clean_gbq_environment(_get_private_key_path())
+        pass
 
     def tearDown(self):
         # - PER-TEST FIXTURES -
         # put here any instructions you want to be run *AFTER* *EVERY* test is
         # executed.
-        pass
+        clean_gbq_environment(self.dataset_prefix, _get_private_key_path())
 
     def test_upload_data(self):
-        destination_table = DESTINATION_TABLE + "1"
-
+        test_id = "1"
         test_size = 20001
         df = make_mixed_dataframe_v2(test_size)
 
-        gbq.to_gbq(df, destination_table, _get_project_id(), chunksize=10000,
-                   private_key=_get_private_key_path())
+        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
+                   chunksize=10000, private_key=_get_private_key_path())
 
         sleep(30)  # <- Curses Google!!!
 
         result = gbq.read_gbq("SELECT COUNT(*) as NUM_ROWS FROM {0}"
-                              .format(destination_table),
+                              .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
                               private_key=_get_private_key_path())
         self.assertEqual(result['NUM_ROWS'][0], test_size)
 
     def test_upload_data_if_table_exists_fail(self):
-        destination_table = DESTINATION_TABLE + "2"
-
+        test_id = "2"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
-        self.table.create(TABLE_ID + "2", gbq._generate_bq_schema(df))
+        self.table.create(TABLE_ID + test_id, gbq._generate_bq_schema(df))
 
         # Test the default value of if_exists is 'fail'
         with tm.assertRaises(gbq.TableCreationError):
-            gbq.to_gbq(df, destination_table, _get_project_id(),
+            gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
                        private_key=_get_private_key_path())
 
         # Test the if_exists parameter with value 'fail'
         with tm.assertRaises(gbq.TableCreationError):
-            gbq.to_gbq(df, destination_table, _get_project_id(),
+            gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
                        if_exists='fail', private_key=_get_private_key_path())
 
     def test_upload_data_if_table_exists_append(self):
-        destination_table = DESTINATION_TABLE + "3"
-
+        test_id = "3"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
         df_different_schema = tm.makeMixedDataFrame()
 
         # Initialize table with sample data
-        gbq.to_gbq(df, destination_table, _get_project_id(), chunksize=10000,
-                   private_key=_get_private_key_path())
+        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
+                   chunksize=10000, private_key=_get_private_key_path())
 
         # Test the if_exists parameter with value 'append'
-        gbq.to_gbq(df, destination_table, _get_project_id(),
+        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
                    if_exists='append', private_key=_get_private_key_path())
 
         sleep(30)  # <- Curses Google!!!
 
         result = gbq.read_gbq("SELECT COUNT(*) as NUM_ROWS FROM {0}"
-                              .format(destination_table),
+                              .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
                               private_key=_get_private_key_path())
         self.assertEqual(result['NUM_ROWS'][0], test_size * 2)
 
         # Try inserting with a different schema, confirm failure
         with tm.assertRaises(gbq.InvalidSchema):
-            gbq.to_gbq(df_different_schema, destination_table,
+            gbq.to_gbq(df_different_schema, self.destination_table + test_id,
                        _get_project_id(), if_exists='append',
                        private_key=_get_private_key_path())
 
     def test_upload_data_if_table_exists_replace(self):
-
-        raise pytest.skip("buggy test")
-
-        destination_table = DESTINATION_TABLE + "4"
-
+        test_id = "4"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
         df_different_schema = tm.makeMixedDataFrame()
 
         # Initialize table with sample data
-        gbq.to_gbq(df, destination_table, _get_project_id(), chunksize=10000,
-                   private_key=_get_private_key_path())
+        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
+                   chunksize=10000, private_key=_get_private_key_path())
 
         # Test the if_exists parameter with the value 'replace'.
-        gbq.to_gbq(df_different_schema, destination_table,
+        gbq.to_gbq(df_different_schema, self.destination_table + test_id,
                    _get_project_id(), if_exists='replace',
                    private_key=_get_private_key_path())
 
         sleep(30)  # <- Curses Google!!!
 
         result = gbq.read_gbq("SELECT COUNT(*) as NUM_ROWS FROM {0}"
-                              .format(destination_table),
+                              .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
                               private_key=_get_private_key_path())
         self.assertEqual(result['NUM_ROWS'][0], 5)
 
     def test_google_upload_errors_should_raise_exception(self):
-        destination_table = DESTINATION_TABLE + "5"
+        raise pytest.skip("buggy test")
 
+        test_id = "5"
         test_timestamp = datetime.now(pytz.timezone('US/Arizona'))
         bad_df = DataFrame({'bools': [False, False], 'flts': [0.0, 1.0],
                             'ints': [0, '1'], 'strs': ['a', 1],
@@ -949,8 +944,8 @@ class TestToGBQIntegration(tm.TestCase):
                            index=range(2))
 
         with tm.assertRaises(gbq.StreamingInsertError):
-            gbq.to_gbq(bad_df, destination_table, _get_project_id(),
-                       verbose=True, private_key=_get_private_key_path())
+            gbq.to_gbq(bad_df, self.destination_table + test_id,
+                       _get_project_id(), private_key=_get_private_key_path())
 
     def test_generate_schema(self):
         df = tm.makeMixedDataFrame()
@@ -964,44 +959,45 @@ class TestToGBQIntegration(tm.TestCase):
         self.assertEqual(schema, test_schema)
 
     def test_create_table(self):
-        destination_table = TABLE_ID + "6"
+        test_id = "6"
         test_schema = {'fields': [{'name': 'A', 'type': 'FLOAT'},
                                   {'name': 'B', 'type': 'FLOAT'},
                                   {'name': 'C', 'type': 'STRING'},
                                   {'name': 'D', 'type': 'TIMESTAMP'}]}
-        self.table.create(destination_table, test_schema)
-        self.assertTrue(self.table.exists(destination_table),
+        self.table.create(TABLE_ID + test_id, test_schema)
+        self.assertTrue(self.table.exists(TABLE_ID + test_id),
                         'Expected table to exist')
 
     def test_table_does_not_exist(self):
-        self.assertTrue(not self.table.exists(TABLE_ID + "7"),
+        test_id = "7"
+        self.assertTrue(not self.table.exists(TABLE_ID + test_id),
                         'Expected table not to exist')
 
     def test_delete_table(self):
-        destination_table = TABLE_ID + "8"
+        test_id = "8"
         test_schema = {'fields': [{'name': 'A', 'type': 'FLOAT'},
                                   {'name': 'B', 'type': 'FLOAT'},
                                   {'name': 'C', 'type': 'STRING'},
                                   {'name': 'D', 'type': 'TIMESTAMP'}]}
-        self.table.create(destination_table, test_schema)
-        self.table.delete(destination_table)
+        self.table.create(TABLE_ID + test_id, test_schema)
+        self.table.delete(TABLE_ID + test_id)
         self.assertTrue(not self.table.exists(
-            destination_table), 'Expected table not to exist')
+            TABLE_ID + test_id), 'Expected table not to exist')
 
     def test_list_table(self):
-        destination_table = TABLE_ID + "9"
+        test_id = "9"
         test_schema = {'fields': [{'name': 'A', 'type': 'FLOAT'},
                                   {'name': 'B', 'type': 'FLOAT'},
                                   {'name': 'C', 'type': 'STRING'},
                                   {'name': 'D', 'type': 'TIMESTAMP'}]}
-        self.table.create(destination_table, test_schema)
-        self.assertTrue(
-            destination_table in self.dataset.tables(DATASET_ID + "1"),
-            'Expected table list to contain table {0}'
-            .format(destination_table))
+        self.table.create(TABLE_ID + test_id, test_schema)
+        self.assertTrue(TABLE_ID + test_id in
+                        self.dataset.tables(self.dataset_prefix + "1"),
+                        'Expected table list to contain table {0}'
+                        .format(TABLE_ID + test_id))
 
     def test_verify_schema_allows_flexible_column_order(self):
-        destination_table = TABLE_ID + "10"
+        test_id = "10"
         test_schema_1 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
                                     {'name': 'B', 'type': 'FLOAT'},
                                     {'name': 'C', 'type': 'STRING'},
@@ -1011,13 +1007,13 @@ class TestToGBQIntegration(tm.TestCase):
                                     {'name': 'B', 'type': 'FLOAT'},
                                     {'name': 'D', 'type': 'TIMESTAMP'}]}
 
-        self.table.create(destination_table, test_schema_1)
+        self.table.create(TABLE_ID + test_id, test_schema_1)
         self.assertTrue(self.sut.verify_schema(
-            DATASET_ID + "1", destination_table, test_schema_2),
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2),
             'Expected schema to match')
 
     def test_verify_schema_fails_different_data_type(self):
-        destination_table = TABLE_ID + "11"
+        test_id = "11"
         test_schema_1 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
                                     {'name': 'B', 'type': 'FLOAT'},
                                     {'name': 'C', 'type': 'STRING'},
@@ -1027,13 +1023,13 @@ class TestToGBQIntegration(tm.TestCase):
                                     {'name': 'C', 'type': 'STRING'},
                                     {'name': 'D', 'type': 'TIMESTAMP'}]}
 
-        self.table.create(destination_table, test_schema_1)
+        self.table.create(TABLE_ID + test_id, test_schema_1)
         self.assertFalse(self.sut.verify_schema(
-            DATASET_ID + "1", destination_table, test_schema_2),
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2),
             'Expected different schema')
 
     def test_verify_schema_fails_different_structure(self):
-        destination_table = TABLE_ID + "12"
+        test_id = "12"
         test_schema_1 = {'fields': [{'name': 'A', 'type': 'FLOAT'},
                                     {'name': 'B', 'type': 'FLOAT'},
                                     {'name': 'C', 'type': 'STRING'},
@@ -1043,34 +1039,34 @@ class TestToGBQIntegration(tm.TestCase):
                                     {'name': 'C', 'type': 'STRING'},
                                     {'name': 'D', 'type': 'TIMESTAMP'}]}
 
-        self.table.create(destination_table, test_schema_1)
+        self.table.create(TABLE_ID + test_id, test_schema_1)
         self.assertFalse(self.sut.verify_schema(
-            DATASET_ID + "1", destination_table, test_schema_2),
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2),
             'Expected different schema')
 
     def test_upload_data_flexible_column_order(self):
-        destination_table = DESTINATION_TABLE + "13"
-
+        test_id = "13"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
 
         # Initialize table with sample data
-        gbq.to_gbq(df, destination_table, _get_project_id(), chunksize=10000,
-                   private_key=_get_private_key_path())
+        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
+                   chunksize=10000, private_key=_get_private_key_path())
 
         df_columns_reversed = df[df.columns[::-1]]
 
-        gbq.to_gbq(df_columns_reversed, destination_table, _get_project_id(),
-                   if_exists='append', private_key=_get_private_key_path())
+        gbq.to_gbq(df_columns_reversed, self.destination_table + test_id,
+                   _get_project_id(), if_exists='append',
+                   private_key=_get_private_key_path())
 
     def test_list_dataset(self):
-        dataset_id = DATASET_ID + "1"
+        dataset_id = self.dataset_prefix + "1"
         self.assertTrue(dataset_id in self.dataset.datasets(),
                         'Expected dataset list to contain dataset {0}'
                         .format(dataset_id))
 
     def test_list_table_zero_results(self):
-        dataset_id = DATASET_ID + "2"
+        dataset_id = self.dataset_prefix + "2"
         self.dataset.create(dataset_id)
         table_list = gbq._Dataset(_get_project_id(),
                                   private_key=_get_private_key_path()
@@ -1079,26 +1075,26 @@ class TestToGBQIntegration(tm.TestCase):
                          'Expected gbq.list_table() to return 0')
 
     def test_create_dataset(self):
-        dataset_id = DATASET_ID + "3"
+        dataset_id = self.dataset_prefix + "3"
         self.dataset.create(dataset_id)
         self.assertTrue(dataset_id in self.dataset.datasets(),
                         'Expected dataset to exist')
 
     def test_delete_dataset(self):
-        dataset_id = DATASET_ID + "4"
+        dataset_id = self.dataset_prefix + "4"
         self.dataset.create(dataset_id)
         self.dataset.delete(dataset_id)
         self.assertTrue(dataset_id not in self.dataset.datasets(),
                         'Expected dataset not to exist')
 
     def test_dataset_exists(self):
-        dataset_id = DATASET_ID + "5"
+        dataset_id = self.dataset_prefix + "5"
         self.dataset.create(dataset_id)
         self.assertTrue(self.dataset.exists(dataset_id),
                         'Expected dataset to exist')
 
     def create_table_data_dataset_does_not_exist(self):
-        dataset_id = DATASET_ID + "6"
+        dataset_id = self.dataset_prefix + "6"
         table_id = TABLE_ID + "1"
         table_with_new_dataset = gbq._Table(_get_project_id(), dataset_id)
         df = make_mixed_dataframe_v2(10)
@@ -1110,7 +1106,8 @@ class TestToGBQIntegration(tm.TestCase):
 
     def test_dataset_does_not_exist(self):
         self.assertTrue(not self.dataset.exists(
-            DATASET_ID + "_not_found"), 'Expected dataset not to exist')
+                        self.dataset_prefix + "_not_found"),
+                        'Expected dataset not to exist')
 
 
 class TestToGBQIntegrationServiceAccountKeyPath(tm.TestCase):
@@ -1131,41 +1128,42 @@ class TestToGBQIntegrationServiceAccountKeyPath(tm.TestCase):
         _skip_if_no_private_key_path()
 
         _setup_common()
-        clean_gbq_environment(_get_private_key_path())
 
     def setUp(self):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test
         # is executed.
-        pass
+
+        self.dataset_prefix = _get_dataset_prefix_random()
+        clean_gbq_environment(self.dataset_prefix, _get_private_key_path())
+        self.destination_table = "{0}{1}.{2}".format(self.dataset_prefix, "2",
+                                                     TABLE_ID)
 
     @classmethod
     def tearDownClass(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *AFTER*
         # executing all tests.
-
-        clean_gbq_environment(_get_private_key_path())
+        pass
 
     def tearDown(self):
         # - PER-TEST FIXTURES -
         # put here any instructions you want to be run *AFTER* *EVERY* test
         # is executed.
-        pass
+        clean_gbq_environment(self.dataset_prefix, _get_private_key_path())
 
     def test_upload_data_as_service_account_with_key_path(self):
-        destination_table = "{0}.{1}".format(DATASET_ID + "2", TABLE_ID + "1")
-
+        test_id = "1"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
 
-        gbq.to_gbq(df, destination_table, _get_project_id(), chunksize=10000,
-                   private_key=_get_private_key_path())
+        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
+                   chunksize=10000, private_key=_get_private_key_path())
 
         sleep(30)  # <- Curses Google!!!
 
-        result = gbq.read_gbq(
-            "SELECT COUNT(*) as NUM_ROWS FROM {0}".format(destination_table),
+        result = gbq.read_gbq("SELECT COUNT(*) as NUM_ROWS FROM {0}".format(
+            self.destination_table + test_id),
             project_id=_get_project_id(),
             private_key=_get_private_key_path())
 
@@ -1188,43 +1186,43 @@ class TestToGBQIntegrationServiceAccountKeyContents(tm.TestCase):
 
         _setup_common()
         _skip_if_no_project_id()
-        _skip_if_no_private_key_contents()
 
-        clean_gbq_environment(_get_private_key_contents())
+        _skip_if_no_private_key_contents()
 
     def setUp(self):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test
         # is executed.
-        pass
+        self.dataset_prefix = _get_dataset_prefix_random()
+        clean_gbq_environment(self.dataset_prefix, _get_private_key_contents())
+        self.destination_table = "{0}{1}.{2}".format(self.dataset_prefix, "3",
+                                                     TABLE_ID)
 
     @classmethod
     def tearDownClass(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *AFTER*
         # executing all tests.
-
-        clean_gbq_environment(_get_private_key_contents())
+        pass
 
     def tearDown(self):
         # - PER-TEST FIXTURES -
         # put here any instructions you want to be run *AFTER* *EVERY* test
         # is executed.
-        pass
+        clean_gbq_environment(self.dataset_prefix, _get_private_key_contents())
 
     def test_upload_data_as_service_account_with_key_contents(self):
-        destination_table = "{0}.{1}".format(DATASET_ID + "3", TABLE_ID + "1")
-
+        test_id = "1"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
 
-        gbq.to_gbq(df, destination_table, _get_project_id(), chunksize=10000,
-                   private_key=_get_private_key_contents())
+        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
+                   chunksize=10000, private_key=_get_private_key_contents())
 
         sleep(30)  # <- Curses Google!!!
 
-        result = gbq.read_gbq(
-            "SELECT COUNT(*) as NUM_ROWS FROM {0}".format(destination_table),
+        result = gbq.read_gbq("SELECT COUNT(*) as NUM_ROWS FROM {0}".format(
+            self.destination_table + test_id),
             project_id=_get_project_id(),
             private_key=_get_private_key_contents())
         self.assertEqual(result['NUM_ROWS'][0], test_size)
