@@ -1,21 +1,7 @@
-<table>
-<tr>
-  <td>Latest Release</td>
-  <td><img src="https://img.shields.io/pypi/v/pandas-gbq.svg" alt="latest release" /></td>
-</tr>
-<tr>
-  <td>Package Status</td>
-  <td><img src="https://img.shields.io/pypi/status/pandas-gbq.svg" alt="status" /></td>
-</tr>
-<tr>
-  <td>Build Status</td>
-  <td>
-    <a href="https://travis-ci.org/pydata/pandas-gbq">
-    <img src="https://travis-ci.org/pydata/pandas-gbq.svg?branch=master" alt="travis build status" />
-    </a>
-  </td>
-</tr>
-</table>
+.. |Build Status| image:: https://travis-ci.org/pydata/pandas-gbq.svg?branch=master
+   :target: https://travis-ci.org/pydata/pandas-gbq
+.. |Version Status| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
+   :target: https://pypi.python.org/pypi/pandas-gbq/
 
 pandas-gbq
 ==========
