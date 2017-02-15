@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Scheamas for BigQuery tables / queries."""
+"""Schemas for BigQuery tables / queries."""
 
 
 class SchemaField(object):
