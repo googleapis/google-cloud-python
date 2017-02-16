@@ -9,8 +9,8 @@ from setuptools import setup, find_packages
 import sys
 
 install_requires = [
-    'googleapis-common-protos>=1.5.0, <2.0dev',
-    'google-gax>=0.15.1, <0.16dev',
+    'googleapis-common-protos>=1.5.2, <2.0dev',
+    'google-gax>=0.15.6, <0.16dev',
     'proto-google-cloud-vision-v1>=0.15.0, <0.16dev',
     'oauth2client>=2.0.0, <4.0dev',
 ]

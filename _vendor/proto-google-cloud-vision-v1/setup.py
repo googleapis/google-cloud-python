@@ -10,9 +10,9 @@ import setuptools
 from setuptools import setup, find_packages
 
 install_requires = [
+  'googleapis-common-protos[grpc]>=1.5.2, <2.0dev'
   'oauth2client>=2.0.0, <4.0dev',
   'grpcio>=1.0.2, <2.0dev',
-  'googleapis-common-protos[grpc]>=1.5.0, <2.0dev'
 ]
 
 setuptools.setup(

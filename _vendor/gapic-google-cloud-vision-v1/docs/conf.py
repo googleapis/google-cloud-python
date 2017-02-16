@@ -60,7 +60,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'gapic-google-cloud-vision-v1'
-copyright = u'2016, Google'
+copyright = u'2017, Google'
 author = u'Google APIs'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -289,7 +289,7 @@ texinfo_documents = [
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
 
-# If true, do not generate a @etailmenu in the "Top" node's menu.
+# If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
 
 # Example configuration for intersphinx: refer to the Python standard library.

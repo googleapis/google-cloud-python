@@ -97,7 +97,7 @@ class Feature(object):
           SAFE_SEARCH_DETECTION (int): Run computer vision models to compute image safe-search properties.
           IMAGE_PROPERTIES (int): Compute a set of image properties, such as the image's dominant colors.
           CROP_HINTS (int): Run crop hints.
-          WEB_ANNOTATION (int): Run web annotation.
+          WEB_DETECTION (int): Run web detection.
         """
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
@@ -109,7 +109,7 @@ class Feature(object):
         SAFE_SEARCH_DETECTION = 6
         IMAGE_PROPERTIES = 7
         CROP_HINTS = 9
-        WEB_ANNOTATION = 10
+        WEB_DETECTION = 10
 
 
 class FaceAnnotation(object):
