@@ -14,10 +14,16 @@
 
 """Create / interact with Google Cloud Storage buckets."""
 
+import base64
 import copy
+import datetime
+import json
 
+import google.auth.credentials
 import six
 
+from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import HTTPIterator
@@ -829,3 +835,76 @@ class Bucket(_PropertyMixin):
             for blob in blobs:
                 blob.acl.all().grant_read()
                 blob.acl.save(client=client)
+
+    def generate_upload_policy(
+            self, conditions, expiration=None, client=None):
+        """Create a signed upload policy for uploading objects.
+
+        This method generates and signs a policy document. You can use
+        `policy documents`_ to allow visitors to a website to upload files to
+        Google Cloud Storage without giving them direct write access.
+
+        For example:
+
+        .. literalinclude:: storage_snippets.py
+          :start-after: [START policy_document]
+          :end-before: [END policy_document]
+
+        .. _policy documents:
+            https://cloud.google.com/storage/docs/xml-api\
+            /post-object#policydocument
+
+        :type expiration: datetime
+        :param expiration: Optional expiration in UTC. If not specified, the
+                           policy will expire in 1 hour.
+
+        :type conditions: list
+        :param conditions: A list of conditions as described in the
+                          `policy documents`_ documentation.
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: dict
+        :returns: A dictionary of (form field name, form field value) of form
+                  fields that should be added to your HTML upload form in order
+                  to attach the signature.
+        """
+        client = self._require_client(client)
+        credentials = client._base_connection.credentials
+
+        if not isinstance(credentials, google.auth.credentials.Signing):
+            auth_uri = ('http://google-cloud-python.readthedocs.io/en/latest/'
+                        'google-cloud-auth.html#setting-up-a-service-account')
+            raise AttributeError(
+                'you need a private key to sign credentials.'
+                'the credentials you are currently using %s '
+                'just contains a token. see %s for more '
+                'details.' % (type(credentials), auth_uri))
+
+        if expiration is None:
+            expiration = _NOW() + datetime.timedelta(hours=1)
+
+        conditions = conditions + [
+            {'bucket': self.name},
+        ]
+
+        policy_document = {
+            'expiration': _datetime_to_rfc3339(expiration),
+            'conditions': conditions,
+        }
+
+        encoded_policy_document = base64.b64encode(
+            json.dumps(policy_document).encode('utf-8'))
+        signature = base64.b64encode(
+            credentials.sign_bytes(encoded_policy_document))
+
+        fields = {
+            'bucket': self.name,
+            'GoogleAccessId': credentials.signer_email,
+            'policy': encoded_policy_document.decode('utf-8'),
+            'signature': signature.decode('utf-8'),
+        }
+
+        return fields
