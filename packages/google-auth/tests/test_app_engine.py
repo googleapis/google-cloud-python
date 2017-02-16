@@ -139,6 +139,10 @@ class TestCredentials(object):
         assert signature == mock.sentinel.signature
         app_identity_mock.sign_blob.assert_called_with(to_sign)
 
+    def test_signer(self, app_identity_mock):
+        credentials = app_engine.Credentials()
+        assert isinstance(credentials.signer, app_engine.Signer)
+
     def test_signer_email(self, app_identity_mock):
         credentials = app_engine.Credentials()
         assert credentials.signer_email == credentials.service_account_email

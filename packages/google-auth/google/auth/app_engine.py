@@ -123,6 +123,7 @@ class Credentials(credentials.Scoped, credentials.Signing,
         super(Credentials, self).__init__()
         self._scopes = scopes
         self._service_account_id = service_account_id
+        self._signer = Signer()
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
@@ -156,9 +157,14 @@ class Credentials(credentials.Scoped, credentials.Signing,
 
     @_helpers.copy_docstring(credentials.Signing)
     def sign_bytes(self, message):
-        return Signer().sign(message)
+        return self._signer.sign(message)
 
     @property
     @_helpers.copy_docstring(credentials.Signing)
     def signer_email(self):
         return self.service_account_email
+
+    @property
+    @_helpers.copy_docstring(credentials.Signing)
+    def signer(self):
+        return self._signer

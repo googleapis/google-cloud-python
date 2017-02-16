@@ -134,6 +134,9 @@ class TestCredentials(object):
         signature = self.credentials.sign_bytes(to_sign)
         assert crypt.verify_signature(to_sign, signature, PUBLIC_CERT_BYTES)
 
+    def test_signer(self):
+        assert isinstance(self.credentials.signer, crypt.Signer)
+
     def test_signer_email(self):
         assert self.credentials.signer_email == self.SERVICE_ACCOUNT_EMAIL
 

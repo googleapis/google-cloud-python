@@ -236,3 +236,10 @@ class Signing(object):
         # pylint: disable=missing-raises-doc
         # (pylint doesn't recognize that this is abstract)
         raise NotImplementedError('Signer email must be implemented.')
+
+    @abc.abstractproperty
+    def signer(self):
+        """google.auth.crypt.Signer: The signer used to sign bytes."""
+        # pylint: disable=missing-raises-doc
+        # (pylint doesn't recognize that this is abstract)
+        raise NotImplementedError('Signer must be implemented.')
