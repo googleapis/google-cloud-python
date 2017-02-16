@@ -50,7 +50,7 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.22.1, < 0.23dev',
+    'google-cloud-core >= 0.23.0, < 0.24dev',
     'grpcio >= 1.0.2, < 2.0dev',
     'gapic-google-cloud-logging-v2 >= 0.90.0, < 0.91dev',
 ]
