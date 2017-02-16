@@ -182,6 +182,7 @@ class Signer(object):
     def __init__(self, private_key, key_id=None):
         self._key = private_key
         self.key_id = key_id
+        """Optional[str]: The key ID used to identify this private key."""
 
     def sign(self, message):
         """Signs a message.

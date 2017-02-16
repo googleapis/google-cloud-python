@@ -24,5 +24,6 @@ Submodules
    google.auth.crypt
    google.auth.environment_vars
    google.auth.exceptions
+   google.auth.iam
    google.auth.jwt
 
