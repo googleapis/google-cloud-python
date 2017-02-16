@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v0.7.0
+------
+
+- Added ``google.auth.iam.Signer``. (#108)
+- Fixed issue where ``google.auth.app_engine.Signer`` erroneously returns a tuple from ``sign()``. (#109)
+- Added public property ``google.auth.credentials.Signing.signer``. (#110)
+
 v0.6.0
 ------
 
