@@ -34,13 +34,30 @@ except ImportError:
 
 
 class Signer(object):
-    """Signs messages using the App Engine app identity service.
+    """Signs messages using the App Engine App Identity service.
 
     This can be used in place of :class:`google.auth.crypt.Signer` when
     running in the App Engine standard environment.
+
+    .. warning::
+        The App Identity service signs bytes using Google-managed keys.
+        Because of this it's possible that the key used to sign bytes will
+        change. In some cases this change can occur between successive calls
+        to :attr:`key_id` and :meth:`sign`. This could result in a signature
+        that was signed with a different key than the one indicated by
+        :attr:`key_id`. It's recommended that if you use this in your code
+        that you account for this behavior by building in retry logic.
     """
-    def __init__(self):
-        self.key_id = None
+
+    @property
+    def key_id(self):
+        """Optional[str]: The key ID used to identify this private key.
+
+        .. note::
+           This makes a request to the App Identity service.
+        """
+        key_id, _ = app_identity.sign_blob(b'')
+        return key_id
 
     @staticmethod
     def sign(message):
@@ -53,7 +70,8 @@ class Signer(object):
             bytes: The signature of the message.
         """
         message = _helpers.to_bytes(message)
-        return app_identity.sign_blob(message)
+        _, signature = app_identity.sign_blob(message)
+        return signature
 
 
 def get_project_id():

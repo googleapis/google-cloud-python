@@ -41,6 +41,28 @@ def test_get_project_id_missing_apis():
     assert excinfo.match(r'App Engine APIs are not available')
 
 
+class TestSigner(object):
+    def test_key_id(self, app_identity_mock):
+        app_identity_mock.sign_blob.return_value = (
+            mock.sentinel.key_id, mock.sentinel.signature)
+
+        signer = app_engine.Signer()
+
+        assert signer.key_id == mock.sentinel.key_id
+
+    def test_sign(self, app_identity_mock):
+        app_identity_mock.sign_blob.return_value = (
+            mock.sentinel.key_id, mock.sentinel.signature)
+
+        signer = app_engine.Signer()
+        to_sign = b'123'
+
+        signature = signer.sign(to_sign)
+
+        assert signature == mock.sentinel.signature
+        app_identity_mock.sign_blob.assert_called_with(to_sign)
+
+
 class TestCredentials(object):
     def test_missing_apis(self):
         with pytest.raises(EnvironmentError) as excinfo:
@@ -107,7 +129,8 @@ class TestCredentials(object):
         assert not credentials.expired
 
     def test_sign_bytes(self, app_identity_mock):
-        app_identity_mock.sign_blob.return_value = mock.sentinel.signature
+        app_identity_mock.sign_blob.return_value = (
+            mock.sentinel.key_id, mock.sentinel.signature)
         credentials = app_engine.Credentials()
         to_sign = b'123'
 
