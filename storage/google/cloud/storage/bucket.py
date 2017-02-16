@@ -862,8 +862,7 @@ class Bucket(_PropertyMixin):
         :param conditions: A list of conditions as described in the
                           `policy documents`_ documentation.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      `NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client`
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
