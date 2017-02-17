@@ -23,6 +23,7 @@ class TestSyncHandler(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging.handlers.transports import SyncTransport
+
         return SyncTransport
 
     def _make_one(self, *args, **kw):
