@@ -1536,6 +1536,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud._testing import _NamedTemporaryFile
         from google.cloud._helpers import UTC
         from google.cloud.exceptions import BadRequest
+
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
             tzinfo=UTC)
