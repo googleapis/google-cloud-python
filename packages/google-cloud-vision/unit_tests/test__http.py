@@ -23,6 +23,22 @@ PROJECT = 'PROJECT'
 B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT).decode('ascii')
 
 
+class TestConnection(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.vision._http import Connection
+        return Connection
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_default_url(self):
+        client = object()
+        conn = self._make_one(client)
+        self.assertEqual(conn._client, client)
+
+
 class Test_HTTPVisionAPI(unittest.TestCase):
     def _get_target_class(self):
         from google.cloud.vision._http import _HTTPVisionAPI
