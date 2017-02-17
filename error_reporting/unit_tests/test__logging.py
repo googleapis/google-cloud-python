@@ -19,6 +19,7 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -31,6 +32,7 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
     def _call_fut(self, project, credentials):
         from google.cloud.error_reporting._logging import (
             _ErrorReportingLoggingAPI)
+
         return _ErrorReportingLoggingAPI(project, credentials)
 
     def test_constructor(self):

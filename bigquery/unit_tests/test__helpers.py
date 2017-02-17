@@ -556,6 +556,7 @@ class Test_bytes_to_json(unittest.TestCase):
 
     def test_w_bytes(self):
         import base64
+
         source = b'source'
         expected = base64.encodestring(source)
         self.assertEqual(self._call_fut(source), expected)
