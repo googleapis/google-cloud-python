@@ -404,21 +404,17 @@ may cause problems creating links or rendering the description.
 
 .. _description on PyPI: https://pypi.python.org/pypi/google-cloud
 
-********************************************
-Travis Configuration and Build Optimizations
-********************************************
+**********************************************
+CircleCI Configuration and Build Optimizations
+**********************************************
 
-All build scripts in the ``.travis.yml`` configuration file which have
+All build scripts in the ``circle.yml`` configuration file which have
 Python dependencies are specified in the ``tox.ini`` configuration.
-They are executed in the Travis build via ``tox -e ${ENV}`` where
+They are executed in the CircleCI build via ``tox -e ${ENV}`` where
 ``${ENV}`` is the environment being tested.
 
-If new ``tox`` environments are added to be run in a Travis build, they
+If new ``tox`` environments are added to be run in a CircleCI build, they
 should be listed in ``[tox].envlist`` as a default environment.
-
-We speed up builds by using the Travis `caching feature`_.
-
-.. _caching feature: https://docs.travis-ci.com/user/caching/#pip-cache
 
 We intentionally **do not** cache the ``.tox/`` directory. Instead, we
 allow the ``tox`` environments to be re-built for every build. This
@@ -445,11 +441,10 @@ Supported versions can be found in our ``tox.ini`` `config`_.
 .. _config: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/tox.ini
 
 We explicitly decided not to support `Python 2.5`_ due to `decreased usage`_
-and lack of continuous integration `support`_.
+and lack of continuous integration support.
 
 .. _Python 2.5: https://docs.python.org/2.5/
 .. _decreased usage: https://caremad.io/2013/10/a-look-at-pypi-downloads/
-.. _support: https://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
 
 We have `dropped 2.6`_ as a supported version as well since Python 2.6 is no
 longer supported by the core development team.
