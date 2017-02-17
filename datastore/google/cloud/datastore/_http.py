@@ -16,6 +16,7 @@
 
 import contextlib
 import os
+from pkg_resources import get_distribution
 
 from google.rpc import status_pb2
 
@@ -61,6 +62,9 @@ DATASTORE_API_HOST = 'datastore.googleapis.com'
 
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
+_DATASTORE_DIST = get_distribution('google-cloud-datastore')
+_CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(
+    _DATASTORE_DIST.version)
 
 
 class _DatastoreAPIOverHttp(object):
@@ -102,6 +106,7 @@ class _DatastoreAPIOverHttp(object):
             'Content-Type': 'application/x-protobuf',
             'Content-Length': str(len(data)),
             'User-Agent': self.connection.USER_AGENT,
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
         }
         headers, content = self.connection.http.request(
             uri=self.connection.build_api_url(project=project, method=method),
