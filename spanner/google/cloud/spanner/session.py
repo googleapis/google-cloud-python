@@ -14,6 +14,7 @@
 
 """Wrapper for Cloud Spanner Session objects."""
 
+from functools import total_ordering
 import time
 
 from google.gax.errors import GaxError
@@ -34,6 +35,7 @@ DEFAULT_RETRY_TIMEOUT_SECS = 30
 """Default timeout used by :meth:`Session.run_in_transaction`."""
 
 
+@total_ordering
 class Session(object):
     """Representation of a Cloud Spanner Session.
 
@@ -52,6 +54,9 @@ class Session(object):
 
     def __init__(self, database):
         self._database = database
+
+    def __lt__(self, other):
+        return self._session_id < other._session_id
 
     @property
     def session_id(self):
