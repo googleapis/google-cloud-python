@@ -14,46 +14,21 @@
 
 """Connections to Google Cloud Datastore API servers."""
 
-import contextlib
 import os
 
 from google.rpc import status_pb2
 
-from google.cloud._helpers import make_insecure_stub
-from google.cloud._helpers import make_secure_stub
 from google.cloud import _http as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud import exceptions
 from google.cloud.grpc.datastore.v1 import datastore_pb2 as _datastore_pb2
 try:
-    from grpc import StatusCode
-    from google.cloud.grpc.datastore.v1 import datastore_pb2_grpc
-except ImportError:  # pragma: NO COVER
-    _GRPC_ERROR_MAPPING = {}
-    _HAVE_GRPC = False
-    datastore_pb2_grpc = None
-    StatusCode = None
-else:
-    # NOTE: We don't include OK -> 200 or CANCELLED -> 499
-    _GRPC_ERROR_MAPPING = {
-        StatusCode.UNKNOWN: exceptions.InternalServerError,
-        StatusCode.INVALID_ARGUMENT: exceptions.BadRequest,
-        StatusCode.DEADLINE_EXCEEDED: exceptions.GatewayTimeout,
-        StatusCode.NOT_FOUND: exceptions.NotFound,
-        StatusCode.ALREADY_EXISTS: exceptions.Conflict,
-        StatusCode.PERMISSION_DENIED: exceptions.Forbidden,
-        StatusCode.UNAUTHENTICATED: exceptions.Unauthorized,
-        StatusCode.RESOURCE_EXHAUSTED: exceptions.TooManyRequests,
-        StatusCode.FAILED_PRECONDITION: exceptions.PreconditionFailed,
-        StatusCode.ABORTED: exceptions.Conflict,
-        StatusCode.OUT_OF_RANGE: exceptions.BadRequest,
-        StatusCode.UNIMPLEMENTED: exceptions.MethodNotImplemented,
-        StatusCode.INTERNAL: exceptions.InternalServerError,
-        StatusCode.UNAVAILABLE: exceptions.ServiceUnavailable,
-        StatusCode.DATA_LOSS: exceptions.InternalServerError,
-    }
+    from google.cloud.datastore._gax import _DatastoreAPIOverGRPC
     _HAVE_GRPC = True
+except ImportError:  # pragma: NO COVER
+    _DatastoreAPIOverGRPC = None
+    _HAVE_GRPC = False
 
 
 DATASTORE_API_HOST = 'datastore.googleapis.com'
@@ -236,158 +211,6 @@ class _DatastoreAPIOverHttp(object):
         """
         return self._rpc(project, 'allocateIds', request_pb,
                          _datastore_pb2.AllocateIdsResponse)
-
-
-@contextlib.contextmanager
-def _grpc_catch_rendezvous():
-    """Re-map gRPC exceptions that happen in context.
-
-    .. _code.proto: https://github.com/googleapis/googleapis/blob/\
-                    master/google/rpc/code.proto
-
-    Remaps gRPC exceptions to the classes defined in
-    :mod:`~google.cloud.exceptions` (according to the description
-    in `code.proto`_).
-    """
-    try:
-        yield
-    except exceptions.GrpcRendezvous as exc:
-        error_code = exc.code()
-        error_class = _GRPC_ERROR_MAPPING.get(error_code)
-        if error_class is None:
-            raise
-        else:
-            raise error_class(exc.details())
-
-
-class _DatastoreAPIOverGRPC(object):
-    """Helper mapping datastore API methods.
-
-    Makes requests to send / receive protobuf content over gRPC.
-
-    Methods make bare API requests without any helpers for constructing
-    the requests or parsing the responses.
-
-    :type connection: :class:`Connection`
-    :param connection: A connection object that contains helpful
-                       information for making requests.
-
-    :type secure: bool
-    :param secure: Flag indicating if a secure stub connection is needed.
-    """
-
-    def __init__(self, connection, secure):
-        if secure:
-            self._stub = make_secure_stub(connection.credentials,
-                                          connection.USER_AGENT,
-                                          datastore_pb2_grpc.DatastoreStub,
-                                          connection.host)
-        else:
-            self._stub = make_insecure_stub(datastore_pb2_grpc.DatastoreStub,
-                                            connection.host)
-
-    def lookup(self, project, request_pb):
-        """Perform a ``lookup`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.LookupRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.LookupResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.Lookup(request_pb)
-
-    def run_query(self, project, request_pb):
-        """Perform a ``runQuery`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.RunQueryRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.RunQueryResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.RunQuery(request_pb)
-
-    def begin_transaction(self, project, request_pb):
-        """Perform a ``beginTransaction`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb:
-            :class:`.datastore_pb2.BeginTransactionRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.BeginTransaction(request_pb)
-
-    def commit(self, project, request_pb):
-        """Perform a ``commit`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.CommitRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.CommitResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.Commit(request_pb)
-
-    def rollback(self, project, request_pb):
-        """Perform a ``rollback`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.RollbackRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.RollbackResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.Rollback(request_pb)
-
-    def allocate_ids(self, project, request_pb):
-        """Perform an ``allocateIds`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.AllocateIdsRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.AllocateIds(request_pb)
 
 
 class Connection(connection_module.Connection):
