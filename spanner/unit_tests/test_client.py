@@ -42,9 +42,10 @@ class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.client import Client
+
         return Client
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def _constructor_test_helper(self, expected_scopes, creds,
@@ -53,7 +54,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner import client as MUT
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
-        client = self._makeOne(project=self.PROJECT, credentials=creds,
+        client = self._make_one(project=self.PROJECT, credentials=creds,
                                user_agent=user_agent)
 
         expected_creds = expected_creds or creds.with_scopes.return_value
@@ -108,8 +109,9 @@ class TestClient(unittest.TestCase):
     def test_instance_admin_api(self):
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import client as MUT
+
         creds = _make_credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
 
         class _Client(object):
             pass
@@ -124,8 +126,9 @@ class TestClient(unittest.TestCase):
     def test_database_admin_api(self):
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import client as MUT
+
         creds = _make_credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
 
         class _Client(object):
             pass
@@ -139,7 +142,7 @@ class TestClient(unittest.TestCase):
 
     def test_copy(self):
         credentials = _Credentials('value')
-        client = self._makeOne(
+        client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
             user_agent=self.USER_AGENT)
@@ -151,12 +154,12 @@ class TestClient(unittest.TestCase):
 
     def test_credentials_property(self):
         credentials = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
         self.assertTrue(client.credentials is credentials)
 
     def test_project_name_property(self):
         credentials = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
         project_name = 'projects/' + self.PROJECT
         self.assertEqual(client.project_name, project_name)
 
@@ -164,8 +167,9 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _GAXPageIterator
         from google.gax import INITIAL_PAGE
         from google.cloud.spanner.client import InstanceConfig
+
         credentials = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
         client.connection = object()
         api = client._instance_admin_api = _FauxInstanceAdminAPI()
         config = _InstanceConfigPB(name=self.CONFIGURATION_NAME,
@@ -194,11 +198,12 @@ class TestClient(unittest.TestCase):
         import six
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.spanner.client import InstanceConfig
+
         SIZE = 15
         TOKEN_RETURNED = 'TOKEN_RETURNED'
         TOKEN_PASSED = 'TOKEN_PASSED'
         credentials = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
         client.connection = object()
         api = client._instance_admin_api = _FauxInstanceAdminAPI()
         config = _InstanceConfigPB(name=self.CONFIGURATION_NAME,
@@ -229,8 +234,9 @@ class TestClient(unittest.TestCase):
     def test_instance_factory_defaults(self):
         from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
         from google.cloud.spanner.instance import Instance
+
         credentials = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         instance = client.instance(self.INSTANCE_ID)
 
@@ -243,8 +249,9 @@ class TestClient(unittest.TestCase):
 
     def test_instance_factory_explicit(self):
         from google.cloud.spanner.instance import Instance
+
         credentials = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         instance = client.instance(self.INSTANCE_ID, self.CONFIGURATION_NAME,
                                    display_name=self.DISPLAY_NAME,
@@ -261,8 +268,9 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _GAXPageIterator
         from google.gax import INITIAL_PAGE
         from google.cloud.spanner.instance import Instance
+
         credentials = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
         client.connection = object()
         api = client._instance_admin_api = _FauxInstanceAdminAPI()
         instance = _InstancePB(name=self.INSTANCE_NAME,
@@ -296,11 +304,12 @@ class TestClient(unittest.TestCase):
         import six
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.spanner.instance import Instance
+
         SIZE = 15
         TOKEN_RETURNED = 'TOKEN_RETURNED'
         TOKEN_PASSED = 'TOKEN_PASSED'
         credentials = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
         client.connection = object()
         api = client._instance_admin_api = _FauxInstanceAdminAPI()
         instance = _InstancePB(name=self.INSTANCE_NAME,

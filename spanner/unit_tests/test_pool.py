@@ -20,40 +20,42 @@ class TestAbstractSessionPool(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.pool import AbstractSessionPool
+
         return AbstractSessionPool
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_defaults(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         self.assertIsNone(pool._database)
 
     def test_bind_abstract(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         with self.assertRaises(NotImplementedError):
             pool.bind(database)
 
     def test_get_abstract(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         with self.assertRaises(NotImplementedError):
             pool.get()
 
     def test_put_abstract(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         session = object()
         with self.assertRaises(NotImplementedError):
             pool.put(session)
 
     def test_clear_abstract(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         with self.assertRaises(NotImplementedError):
             pool.clear()
 
     def test_session_wo_kwargs(self):
         from google.cloud.spanner.pool import SessionCheckout
-        pool = self._makeOne()
+
+        pool = self._make_one()
         checkout = pool.session()
         self.assertIsInstance(checkout, SessionCheckout)
         self.assertIs(checkout._pool, pool)
@@ -62,7 +64,8 @@ class TestAbstractSessionPool(unittest.TestCase):
 
     def test_session_w_kwargs(self):
         from google.cloud.spanner.pool import SessionCheckout
-        pool = self._makeOne()
+
+        pool = self._make_one()
         checkout = pool.session(foo='bar')
         self.assertIsInstance(checkout, SessionCheckout)
         self.assertIs(checkout._pool, pool)
@@ -74,27 +77,28 @@ class TestFixedSizePool(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.pool import FixedSizePool
+
         return FixedSizePool
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_defaults(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 10)
         self.assertEqual(pool.default_timeout, 10)
         self.assertTrue(pool._sessions.empty())
 
     def test_ctor_explicit(self):
-        pool = self._makeOne(size=4, default_timeout=30)
+        pool = self._make_one(size=4, default_timeout=30)
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 4)
         self.assertEqual(pool.default_timeout, 30)
         self.assertTrue(pool._sessions.empty())
 
     def test_bind(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         SESSIONS = [_Session(database)] * 10
         database._sessions.extend(SESSIONS)
@@ -110,7 +114,7 @@ class TestFixedSizePool(unittest.TestCase):
             self.assertTrue(session._created)
 
     def test_get_non_expired(self):
-        pool = self._makeOne(size=4)
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 4
         database._sessions.extend(SESSIONS)
@@ -123,7 +127,7 @@ class TestFixedSizePool(unittest.TestCase):
         self.assertFalse(pool._sessions.full())
 
     def test_get_expired(self):
-        pool = self._makeOne(size=4)
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 5
         SESSIONS[0]._exists = False
@@ -139,7 +143,8 @@ class TestFixedSizePool(unittest.TestCase):
 
     def test_get_empty_default_timeout(self):
         from six.moves.queue import Empty
-        pool = self._makeOne(size=1)
+
+        pool = self._make_one(size=1)
         queue = pool._sessions = _Queue()
 
         with self.assertRaises(Empty):
@@ -149,7 +154,8 @@ class TestFixedSizePool(unittest.TestCase):
 
     def test_get_empty_explicit_timeout(self):
         from six.moves.queue import Empty
-        pool = self._makeOne(size=1, default_timeout=0.1)
+
+        pool = self._make_one(size=1, default_timeout=0.1)
         queue = pool._sessions = _Queue()
 
         with self.assertRaises(Empty):
@@ -159,7 +165,8 @@ class TestFixedSizePool(unittest.TestCase):
 
     def test_put_full(self):
         from six.moves.queue import Full
-        pool = self._makeOne(size=4)
+
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 4
         database._sessions.extend(SESSIONS)
@@ -171,7 +178,7 @@ class TestFixedSizePool(unittest.TestCase):
         self.assertTrue(pool._sessions.full())
 
     def test_put_non_full(self):
-        pool = self._makeOne(size=4)
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 4
         database._sessions.extend(SESSIONS)
@@ -183,7 +190,7 @@ class TestFixedSizePool(unittest.TestCase):
         self.assertTrue(pool._sessions.full())
 
     def test_clear(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         SESSIONS = [_Session(database)] * 10
         database._sessions.extend(SESSIONS)
@@ -203,25 +210,26 @@ class TestBurstyPool(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.pool import BurstyPool
+
         return BurstyPool
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_defaults(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         self.assertIsNone(pool._database)
         self.assertEqual(pool.target_size, 10)
         self.assertTrue(pool._sessions.empty())
 
     def test_ctor_explicit(self):
-        pool = self._makeOne(target_size=4)
+        pool = self._make_one(target_size=4)
         self.assertIsNone(pool._database)
         self.assertEqual(pool.target_size, 4)
         self.assertTrue(pool._sessions.empty())
 
     def test_get_empty(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         database._sessions.append(_Session(database))
         pool.bind(database)
@@ -234,7 +242,7 @@ class TestBurstyPool(unittest.TestCase):
         self.assertTrue(pool._sessions.empty())
 
     def test_get_non_empty_session_exists(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         previous = _Session(database)
         pool.bind(database)
@@ -248,7 +256,7 @@ class TestBurstyPool(unittest.TestCase):
         self.assertTrue(pool._sessions.empty())
 
     def test_get_non_empty_session_expired(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         previous = _Session(database, exists=False)
         newborn = _Session(database)
@@ -265,7 +273,7 @@ class TestBurstyPool(unittest.TestCase):
         self.assertTrue(pool._sessions.empty())
 
     def test_put_empty(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         pool.bind(database)
         session = _Session(database)
@@ -275,7 +283,7 @@ class TestBurstyPool(unittest.TestCase):
         self.assertFalse(pool._sessions.empty())
 
     def test_put_full(self):
-        pool = self._makeOne(target_size=1)
+        pool = self._make_one(target_size=1)
         database = _Database('name')
         pool.bind(database)
         older = _Session(database)
@@ -289,7 +297,7 @@ class TestBurstyPool(unittest.TestCase):
         self.assertIs(pool.get(), older)
 
     def test_put_full_expired(self):
-        pool = self._makeOne(target_size=1)
+        pool = self._make_one(target_size=1)
         database = _Database('name')
         pool.bind(database)
         older = _Session(database)
@@ -303,7 +311,7 @@ class TestBurstyPool(unittest.TestCase):
         self.assertIs(pool.get(), older)
 
     def test_clear(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         pool.bind(database)
         previous = _Session(database)
@@ -318,13 +326,14 @@ class TestPingingPool(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.pool import PingingPool
+
         return PingingPool
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_defaults(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 10)
         self.assertEqual(pool.default_timeout, 10)
@@ -332,7 +341,7 @@ class TestPingingPool(unittest.TestCase):
         self.assertTrue(pool._sessions.empty())
 
     def test_ctor_explicit(self):
-        pool = self._makeOne(size=4, default_timeout=30, ping_interval=1800)
+        pool = self._make_one(size=4, default_timeout=30, ping_interval=1800)
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 4)
         self.assertEqual(pool.default_timeout, 30)
@@ -340,7 +349,7 @@ class TestPingingPool(unittest.TestCase):
         self.assertTrue(pool._sessions.empty())
 
     def test_bind(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         SESSIONS = [_Session(database)] * 10
         database._sessions.extend(SESSIONS)
@@ -357,7 +366,7 @@ class TestPingingPool(unittest.TestCase):
             self.assertTrue(session._created)
 
     def test_get_hit_no_ping(self):
-        pool = self._makeOne(size=4)
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 4
         database._sessions.extend(SESSIONS)
@@ -373,7 +382,8 @@ class TestPingingPool(unittest.TestCase):
         import datetime
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import pool as MUT
-        pool = self._makeOne(size=4)
+
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 4
         database._sessions.extend(SESSIONS)
@@ -394,7 +404,8 @@ class TestPingingPool(unittest.TestCase):
         import datetime
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import pool as MUT
-        pool = self._makeOne(size=4)
+
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 5
         SESSIONS[0]._exists = False
@@ -415,7 +426,8 @@ class TestPingingPool(unittest.TestCase):
 
     def test_get_empty_default_timeout(self):
         from six.moves.queue import Empty
-        pool = self._makeOne(size=1)
+
+        pool = self._make_one(size=1)
         queue = pool._sessions = _Queue()
 
         with self.assertRaises(Empty):
@@ -425,7 +437,8 @@ class TestPingingPool(unittest.TestCase):
 
     def test_get_empty_explicit_timeout(self):
         from six.moves.queue import Empty
-        pool = self._makeOne(size=1, default_timeout=0.1)
+
+        pool = self._make_one(size=1, default_timeout=0.1)
         queue = pool._sessions = _Queue()
 
         with self.assertRaises(Empty):
@@ -435,7 +448,8 @@ class TestPingingPool(unittest.TestCase):
 
     def test_put_full(self):
         from six.moves.queue import Full
-        pool = self._makeOne(size=4)
+
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 4
         database._sessions.extend(SESSIONS)
@@ -450,7 +464,8 @@ class TestPingingPool(unittest.TestCase):
         import datetime
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import pool as MUT
-        pool = self._makeOne(size=1)
+
+        pool = self._make_one(size=1)
         queue = pool._sessions = _Queue()
 
         now = datetime.datetime.utcnow()
@@ -466,7 +481,7 @@ class TestPingingPool(unittest.TestCase):
         self.assertIs(queued, session)
 
     def test_clear(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         SESSIONS = [_Session(database)] * 10
         database._sessions.extend(SESSIONS)
@@ -482,11 +497,11 @@ class TestPingingPool(unittest.TestCase):
             self.assertTrue(session._deleted)
 
     def test_ping_empty(self):
-        pool = self._makeOne(size=1)
+        pool = self._make_one(size=1)
         pool.ping()  # Does not raise 'Empty'
 
     def test_ping_oldest_fresh(self):
-        pool = self._makeOne(size=1)
+        pool = self._make_one(size=1)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 1
         database._sessions.extend(SESSIONS)
@@ -500,7 +515,8 @@ class TestPingingPool(unittest.TestCase):
         import datetime
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import pool as MUT
-        pool = self._makeOne(size=1)
+
+        pool = self._make_one(size=1)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 1
         database._sessions.extend(SESSIONS)
@@ -516,7 +532,8 @@ class TestPingingPool(unittest.TestCase):
         import datetime
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import pool as MUT
-        pool = self._makeOne(size=1)
+
+        pool = self._make_one(size=1)
         database = _Database('name')
         SESSIONS = [_Session(database)] * 2
         SESSIONS[0]._exists = False
@@ -535,13 +552,14 @@ class TestTransactionPingingPool(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.pool import TransactionPingingPool
+
         return TransactionPingingPool
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_defaults(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 10)
         self.assertEqual(pool.default_timeout, 10)
@@ -550,7 +568,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertTrue(pool._pending_sessions.empty())
 
     def test_ctor_explicit(self):
-        pool = self._makeOne(size=4, default_timeout=30, ping_interval=1800)
+        pool = self._make_one(size=4, default_timeout=30, ping_interval=1800)
         self.assertIsNone(pool._database)
         self.assertEqual(pool.size, 4)
         self.assertEqual(pool.default_timeout, 30)
@@ -559,7 +577,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertTrue(pool._pending_sessions.empty())
 
     def test_bind(self):
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         SESSIONS = [_Session(database) for _ in range(10)]
         database._sessions.extend(SESSIONS)
@@ -581,7 +599,8 @@ class TestTransactionPingingPool(unittest.TestCase):
 
     def test_put_full(self):
         from six.moves.queue import Full
-        pool = self._makeOne(size=4)
+
+        pool = self._make_one(size=4)
         database = _Database('name')
         SESSIONS = [_Session(database) for _ in range(4)]
         database._sessions.extend(SESSIONS)
@@ -593,7 +612,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertTrue(pool._sessions.full())
 
     def test_put_non_full_w_active_txn(self):
-        pool = self._makeOne(size=1)
+        pool = self._make_one(size=1)
         queue = pool._sessions = _Queue()
         pending = pool._pending_sessions = _Queue()
         database = _Database('name')
@@ -610,7 +629,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertFalse(txn._begun)
 
     def test_put_non_full_w_committed_txn(self):
-        pool = self._makeOne(size=1)
+        pool = self._make_one(size=1)
         queue = pool._sessions = _Queue()
         pending = pool._pending_sessions = _Queue()
         database = _Database('name')
@@ -628,7 +647,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertFalse(session._transaction._begun)
 
     def test_put_non_full(self):
-        pool = self._makeOne(size=1)
+        pool = self._make_one(size=1)
         queue = pool._sessions = _Queue()
         pending = pool._pending_sessions = _Queue()
         database = _Database('name')
@@ -643,11 +662,11 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertFalse(pending.empty())
 
     def test_begin_pending_transactions_empty(self):
-        pool = self._makeOne(size=1)
+        pool = self._make_one(size=1)
         pool.begin_pending_transactions()  # no raise
 
     def test_begin_pending_transactions_non_empty(self):
-        pool = self._makeOne(size=1)
+        pool = self._make_one(size=1)
         pool._sessions = _Queue()
 
         database = _Database('name')
@@ -670,21 +689,22 @@ class TestSessionCheckout(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.pool import SessionCheckout
+
         return SessionCheckout
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_wo_kwargs(self):
         pool = _Pool()
-        checkout = self._makeOne(pool)
+        checkout = self._make_one(pool)
         self.assertIs(checkout._pool, pool)
         self.assertIsNone(checkout._session)
         self.assertEqual(checkout._kwargs, {})
 
     def test_ctor_w_kwargs(self):
         pool = _Pool()
-        checkout = self._makeOne(pool, foo='bar')
+        checkout = self._make_one(pool, foo='bar')
         self.assertIs(checkout._pool, pool)
         self.assertIsNone(checkout._session)
         self.assertEqual(checkout._kwargs, {'foo': 'bar'})
@@ -692,7 +712,7 @@ class TestSessionCheckout(unittest.TestCase):
     def test_context_manager_wo_kwargs(self):
         session = object()
         pool = _Pool(session)
-        checkout = self._makeOne(pool)
+        checkout = self._make_one(pool)
 
         self.assertEqual(len(pool._items), 1)
         self.assertIs(pool._items[0], session)
@@ -708,7 +728,7 @@ class TestSessionCheckout(unittest.TestCase):
     def test_context_manager_w_kwargs(self):
         session = object()
         pool = _Pool(session)
-        checkout = self._makeOne(pool, foo='bar')
+        checkout = self._make_one(pool, foo='bar')
 
         self.assertEqual(len(pool._items), 1)
         self.assertIs(pool._items[0], session)
@@ -756,6 +776,7 @@ class _Session(object):
 
     def delete(self):
         from google.cloud.exceptions import NotFound
+
         self._deleted = True
         if not self._exists:
             raise NotFound("unknown session")
@@ -790,6 +811,7 @@ class _Queue(object):
 
     def get(self, **kwargs):
         from six.moves.queue import Empty
+
         self._got = kwargs
         try:
             return self._items.pop()

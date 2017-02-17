@@ -20,14 +20,15 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.streamed import StreamedResultSet
+
         return StreamedResultSet
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_defaults(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         self.assertIs(streamed._response_iterator, iterator)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
@@ -36,7 +37,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_fields_unset(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         with self.assertRaises(AttributeError):
             _ = streamed.fields
 
@@ -44,12 +45,14 @@ class TestStreamedResultSet(unittest.TestCase):
     def _makeScalarField(name, type_):
         from google.cloud.proto.spanner.v1.type_pb2 import StructType
         from google.cloud.proto.spanner.v1.type_pb2 import Type
+
         return StructType.Field(name=name, type=Type(code=type_))
 
     @staticmethod
     def _makeArrayField(name, element_type_code=None, element_type=None):
         from google.cloud.proto.spanner.v1.type_pb2 import StructType
         from google.cloud.proto.spanner.v1.type_pb2 import Type
+
         if element_type is None:
             element_type = Type(code=element_type_code)
         array_type = Type(
@@ -60,6 +63,7 @@ class TestStreamedResultSet(unittest.TestCase):
     def _makeStructType(struct_type_fields):
         from google.cloud.proto.spanner.v1.type_pb2 import StructType
         from google.cloud.proto.spanner.v1.type_pb2 import Type
+
         fields = [
             StructType.Field(name=key, type=Type(code=value))
             for key, value in struct_type_fields
@@ -70,6 +74,7 @@ class TestStreamedResultSet(unittest.TestCase):
     @staticmethod
     def _makeValue(value):
         from google.cloud.spanner._helpers import _make_value_pb
+
         return _make_value_pb(value)
 
     @staticmethod
@@ -77,13 +82,14 @@ class TestStreamedResultSet(unittest.TestCase):
         from google.protobuf.struct_pb2 import ListValue
         from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner._helpers import _make_list_value_pb
+
         if value_pbs is not None:
             return Value(list_value=ListValue(values=value_pbs))
         return Value(list_value=_make_list_value_pb(values))
 
     def test_properties_set(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -96,8 +102,9 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_bool(self):
         from google.cloud.spanner.streamed import Unmergeable
+
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('registered_voter', 'BOOL'),
         ]
@@ -110,7 +117,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_int64(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('age', 'INT64'),
         ]
@@ -124,7 +131,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_float64_nan_string(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('weight', 'FLOAT64'),
         ]
@@ -137,7 +144,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_float64_w_empty(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('weight', 'FLOAT64'),
         ]
@@ -150,8 +157,9 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_float64_w_float64(self):
         from google.cloud.spanner.streamed import Unmergeable
+
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('weight', 'FLOAT64'),
         ]
@@ -164,7 +172,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_string(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('name', 'STRING'),
         ]
@@ -179,7 +187,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_array_of_bool(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeArrayField('name', element_type_code='BOOL'),
         ]
@@ -195,7 +203,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_array_of_int(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeArrayField('name', element_type_code='INT64'),
         ]
@@ -211,12 +219,13 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_array_of_float(self):
         import math
+
         PI = math.pi
         EULER = math.e
         SQRT_2 = math.sqrt(2.0)
         LOG_10 = math.log(10)
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeArrayField('name', element_type_code='FLOAT64'),
         ]
@@ -232,7 +241,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_array_of_string(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeArrayField('name', element_type_code='STRING'),
         ]
@@ -248,7 +257,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_array_of_string_with_null(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeArrayField('name', element_type_code='STRING'),
         ]
@@ -265,11 +274,12 @@ class TestStreamedResultSet(unittest.TestCase):
     def test__merge_chunk_array_of_array_of_int(self):
         from google.cloud.proto.spanner.v1.type_pb2 import StructType
         from google.cloud.proto.spanner.v1.type_pb2 import Type
+
         subarray_type = Type(
             code='ARRAY', array_element_type=Type(code='INT64'))
         array_type = Type(code='ARRAY', array_element_type=subarray_type)
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             StructType.Field(name='loloi', type=array_type)
         ]
@@ -296,11 +306,12 @@ class TestStreamedResultSet(unittest.TestCase):
     def test__merge_chunk_array_of_array_of_string(self):
         from google.cloud.proto.spanner.v1.type_pb2 import StructType
         from google.cloud.proto.spanner.v1.type_pb2 import Type
+
         subarray_type = Type(
             code='ARRAY', array_element_type=Type(code='STRING'))
         array_type = Type(code='ARRAY', array_element_type=subarray_type)
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             StructType.Field(name='lolos', type=array_type)
         ]
@@ -326,7 +337,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_array_of_struct(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         struct_type = self._makeStructType([
             ('name', 'STRING'),
             ('age', 'INT64'),
@@ -349,7 +360,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_array_of_struct_unmergeable(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         struct_type = self._makeStructType([
             ('name', 'STRING'),
             ('registered', 'BOOL'),
@@ -373,7 +384,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_merge_values_empty_and_empty(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -387,7 +398,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_merge_values_empty_and_partial(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -403,7 +414,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_merge_values_empty_and_filled(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -419,7 +430,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_merge_values_empty_and_filled_plus(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -439,7 +450,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_merge_values_partial_and_empty(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -456,7 +467,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_merge_values_partial_and_partial(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -473,7 +484,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_merge_values_partial_and_filled(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -492,7 +503,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_merge_values_partial_and_filled_plus(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
@@ -516,7 +527,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_consume_next_empty(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         with self.assertRaises(StopIteration):
             streamed.consume_next()
 
@@ -531,7 +542,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._makeValue(bare) for bare in BARE]
         result_set = _PartialResultSetPB(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         streamed.consume_next()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
@@ -549,7 +560,7 @@ class TestStreamedResultSet(unittest.TestCase):
         ]
         result_set = _PartialResultSetPB(VALUES, chunked_value=True)
         iterator = _MockCancellableIterator(result_set)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         streamed._metadata = _ResultSetMetadataPB(FIELDS)
         streamed.consume_next()
         self.assertEqual(streamed.rows, [])
@@ -571,7 +582,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._makeValue(bare) for bare in BARE]
         result_set = _PartialResultSetPB(VALUES)
         iterator = _MockCancellableIterator(result_set)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         streamed._metadata = _ResultSetMetadataPB(FIELDS)
         streamed._pending_chunk = self._makeValue(u'Phred ')
         streamed.consume_next()
@@ -599,7 +610,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._makeValue(bare) for bare in BARE]
         result_set = _PartialResultSetPB(VALUES, stats=stats)
         iterator = _MockCancellableIterator(result_set)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         streamed._metadata = metadata
         streamed.consume_next()
         self.assertEqual(streamed.rows, [BARE])
@@ -609,7 +620,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_consume_all_empty(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         streamed.consume_all()
 
     def test_consume_all_one_result_set_partial(self):
@@ -623,7 +634,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._makeValue(bare) for bare in BARE]
         result_set = _PartialResultSetPB(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         streamed.consume_all()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
@@ -645,7 +656,7 @@ class TestStreamedResultSet(unittest.TestCase):
         result_set1 = _PartialResultSetPB(VALUES[:4], metadata=metadata)
         result_set2 = _PartialResultSetPB(VALUES[4:])
         iterator = _MockCancellableIterator(result_set1, result_set2)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         streamed.consume_all()
         self.assertEqual(streamed.rows, [
             [BARE[0], BARE[1], BARE[2]],
@@ -657,7 +668,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test___iter___empty(self):
         iterator = _MockCancellableIterator()
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         found = list(streamed)
         self.assertEqual(found, [])
 
@@ -672,7 +683,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._makeValue(bare) for bare in BARE]
         result_set = _PartialResultSetPB(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         found = list(streamed)
         self.assertEqual(found, [])
         self.assertEqual(streamed.rows, [])
@@ -695,7 +706,7 @@ class TestStreamedResultSet(unittest.TestCase):
         result_set1 = _PartialResultSetPB(VALUES[:4], metadata=metadata)
         result_set2 = _PartialResultSetPB(VALUES[4:])
         iterator = _MockCancellableIterator(result_set1, result_set2)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         found = list(streamed)
         self.assertEqual(found, [
             [BARE[0], BARE[1], BARE[2]],
@@ -726,7 +737,7 @@ class TestStreamedResultSet(unittest.TestCase):
         result_set1 = _PartialResultSetPB(VALUES[:4], metadata=metadata)
         result_set2 = _PartialResultSetPB(VALUES[4:])
         iterator = _MockCancellableIterator(result_set1, result_set2)
-        streamed = self._makeOne(iterator)
+        streamed = self._make_one(iterator)
         streamed._rows[:] = ALREADY
         found = list(streamed)
         self.assertEqual(found, ALREADY + [
@@ -757,6 +768,7 @@ class _ResultSetMetadataPB(object):
 
     def __init__(self, fields):
         from google.cloud.proto.spanner.v1.type_pb2 import StructType
+
         self.row_type = StructType(fields=fields)
 
 
@@ -765,6 +777,7 @@ class _ResultSetStatsPB(object):
     def __init__(self, query_plan=None, **query_stats):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner._helpers import _make_value_pb
+
         self.query_plan = query_plan
         self.query_stats = Struct(fields={
             key: _make_value_pb(value) for key, value in query_stats.items()})
@@ -791,13 +804,15 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.streamed import StreamedResultSet
+
         return StreamedResultSet
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def _load_json_test(self, test_name):
         import os
+
         if self.__class__._json_tests is None:
             dirname = os.path.dirname(__file__)
             filename = os.path.join(
@@ -813,7 +828,7 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
     def _match_results(self, testcase_name, assert_equality=None):
         partial_result_sets, expected = self._load_json_test(testcase_name)
         iterator = _MockCancellableIterator(*partial_result_sets)
-        partial = self._makeOne(iterator)
+        partial = self._make_one(iterator)
         partial.consume_all()
         if assert_equality is not None:
             assert_equality(partial.rows, expected)
@@ -927,6 +942,7 @@ def _normalize_float(cell):
 def _normalize_results(rows_data, fields):
     """Helper for _parse_streaming_read_acceptance_tests"""
     from google.cloud.proto.spanner.v1 import type_pb2
+
     normalized = []
     for row_data in rows_data:
         row = []
