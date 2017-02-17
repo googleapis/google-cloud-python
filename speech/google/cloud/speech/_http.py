@@ -18,9 +18,27 @@ from base64 import b64encode
 
 from google.cloud._helpers import _bytes_to_unicode
 from google.cloud._helpers import _to_bytes
+from google.cloud import _http
 
 from google.cloud.speech.result import Result
 from google.cloud.speech.operation import Operation
+
+
+class Connection(_http.JSONConnection):
+    """A connection to Google Cloud Speech JSON REST API.
+
+    :type client: :class:`~google.cloud.speech.client.Client`
+    :param client: The client that owns the current connection.
+    """
+
+    API_BASE_URL = 'https://speech.googleapis.com'
+    """The base of the API call URL."""
+
+    API_VERSION = 'v1beta1'
+    """The version of the API, used in building the API call's URL."""
+
+    API_URL_TEMPLATE = '{api_base_url}/{api_version}/{path}'
+    """A template for the URL of a particular API call."""
 
 
 class HTTPSpeechAPI(object):

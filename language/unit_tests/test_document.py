@@ -97,7 +97,7 @@ def _get_entities(include_entities):
 
 def make_mock_client(response):
     import mock
-    from google.cloud.language.connection import Connection
+    from google.cloud.language._http import Connection
     from google.cloud.language.client import Client
 
     connection = mock.Mock(spec=Connection)

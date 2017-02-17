@@ -16,7 +16,8 @@
 
 
 from google.cloud.client import ClientWithProject
-from google.cloud.runtimeconfig.connection import Connection
+
+from google.cloud.runtimeconfig._http import Connection
 from google.cloud.runtimeconfig.config import Config
 
 

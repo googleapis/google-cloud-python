@@ -36,7 +36,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        from google.cloud.language.connection import Connection
+        from google.cloud.language._http import Connection
 
         creds = make_mock_credentials()
         http = object()

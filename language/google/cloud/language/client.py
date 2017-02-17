@@ -18,7 +18,8 @@ import functools
 import warnings
 
 from google.cloud import client as client_module
-from google.cloud.language.connection import Connection
+
+from google.cloud.language._http import Connection
 from google.cloud.language.document import Document
 
 
