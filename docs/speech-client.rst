@@ -5,11 +5,3 @@ Speech Client
   :members:
   :undoc-members:
   :show-inheritance:
-
-Connection
-~~~~~~~~~~
-
-.. automodule:: google.cloud.speech.connection
-  :members:
-  :undoc-members:
-  :show-inheritance:

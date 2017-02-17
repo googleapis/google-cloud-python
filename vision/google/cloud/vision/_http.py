@@ -14,8 +14,27 @@
 
 """HTTP Client for interacting with the Google Cloud Vision API."""
 
+from google.cloud import _http
+
 from google.cloud.vision.annotations import Annotations
 from google.cloud.vision.feature import Feature
+
+
+class Connection(_http.JSONConnection):
+    """A connection to Google Cloud Vision via the JSON REST API.
+
+    :type client: :class:`~google.cloud.vision.client.Client`
+    :param client: The client that owns the current connection.
+    """
+
+    API_BASE_URL = 'https://vision.googleapis.com'
+    """The base of the API call URL."""
+
+    API_VERSION = 'v1'
+    """The version of the API, used in building the API call's URL."""
+
+    API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
+    """A template for the URL of a particular API call."""
 
 
 class _HTTPVisionAPI(object):

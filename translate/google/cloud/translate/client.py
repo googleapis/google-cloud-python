@@ -19,7 +19,8 @@ import six
 
 from google.cloud._helpers import _to_bytes
 from google.cloud.client import Client as BaseClient
-from google.cloud.translate.connection import Connection
+
+from google.cloud.translate._http import Connection
 
 
 ENGLISH_ISO_639 = 'en'

@@ -19,7 +19,7 @@ class TestConnection(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.language.connection import Connection
+        from google.cloud.speech._http import Connection
 
         return Connection
 
@@ -28,11 +28,11 @@ class TestConnection(unittest.TestCase):
 
     def test_build_api_url(self):
         conn = self._make_one(object())
+        method = 'speech:syncrecognize'
         uri = '/'.join([
             conn.API_BASE_URL,
             conn.API_VERSION,
-            'documents',
+            method,
         ])
-        method = 'annotateText'
-        uri += ':' + method
+
         self.assertEqual(conn.build_api_url(method), uri)

@@ -19,13 +19,20 @@ class TestConnection(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.vision.connection import Connection
+        from google.cloud.language._http import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_default_url(self):
-        client = object()
-        conn = self._make_one(client)
-        self.assertEqual(conn._client, client)
+    def test_build_api_url(self):
+        conn = self._make_one(object())
+        uri = '/'.join([
+            conn.API_BASE_URL,
+            conn.API_VERSION,
+            'documents',
+        ])
+        method = 'annotateText'
+        uri += ':' + method
+        self.assertEqual(conn.build_api_url(method), uri)
