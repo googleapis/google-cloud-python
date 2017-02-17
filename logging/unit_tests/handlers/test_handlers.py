@@ -23,6 +23,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging.handlers.handlers import CloudLoggingHandler
+
         return CloudLoggingHandler
 
     def _make_one(self, *args, **kw):
@@ -49,6 +50,7 @@ class TestSetupLogging(unittest.TestCase):
 
     def _call_fut(self, handler, excludes=None):
         from google.cloud.logging.handlers.handlers import setup_logging
+
         if excludes:
             return setup_logging(handler, excluded_loggers=excludes)
         else:
