@@ -38,7 +38,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        from google.cloud.dns.connection import Connection
+        from google.cloud.dns._http import Connection
 
         creds = _make_credentials()
         http = object()
