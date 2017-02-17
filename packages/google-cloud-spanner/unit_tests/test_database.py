@@ -31,7 +31,7 @@ class _BaseTest(unittest.TestCase):
     SESSION_ID = 'session_id'
     SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
 
@@ -39,13 +39,15 @@ class TestDatabase(_BaseTest):
 
     def _getTargetClass(self):
         from google.cloud.spanner.database import Database
+
         return Database
 
     def test_ctor_defaults(self):
         from google.cloud.spanner.pool import BurstyPool
+
         instance = _Instance(self.INSTANCE_NAME)
 
-        database = self._makeOne(self.DATABASE_ID, instance)
+        database = self._make_one(self.DATABASE_ID, instance)
 
         self.assertEqual(database.database_id, self.DATABASE_ID)
         self.assertTrue(database._instance is instance)
@@ -57,7 +59,7 @@ class TestDatabase(_BaseTest):
     def test_ctor_w_explicit_pool(self):
         instance = _Instance(self.INSTANCE_NAME)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
         self.assertEqual(database.database_id, self.DATABASE_ID)
         self.assertTrue(database._instance is instance)
         self.assertEqual(list(database.ddl_statements), [])
@@ -67,22 +69,23 @@ class TestDatabase(_BaseTest):
     def test_ctor_w_ddl_statements_non_string(self):
 
         with self.assertRaises(ValueError):
-            self._makeOne(
+            self._make_one(
                 self.DATABASE_ID, instance=object(),
                 ddl_statements=[object()])
 
     def test_ctor_w_ddl_statements_w_create_database(self):
 
         with self.assertRaises(ValueError):
-            self._makeOne(
+            self._make_one(
                 self.DATABASE_ID, instance=object(),
                 ddl_statements=['CREATE DATABASE foo'])
 
     def test_ctor_w_ddl_statements_ok(self):
         from google.cloud.spanner._fixtures import DDL_STATEMENTS
+
         instance = _Instance(self.INSTANCE_NAME)
         pool = _Pool()
-        database = self._makeOne(
+        database = self._make_one(
             self.DATABASE_ID, instance, ddl_statements=DDL_STATEMENTS,
             pool=pool)
         self.assertEqual(database.database_id, self.DATABASE_ID)
@@ -92,6 +95,7 @@ class TestDatabase(_BaseTest):
     def test_from_pb_bad_database_name(self):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
+
         database_name = 'INCORRECT_FORMAT'
         database_pb = admin_v1_pb2.Database(name=database_name)
         klass = self._getTargetClass()
@@ -102,6 +106,7 @@ class TestDatabase(_BaseTest):
     def test_from_pb_project_mistmatch(self):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
+
         ALT_PROJECT = 'ALT_PROJECT'
         client = _Client(project=ALT_PROJECT)
         instance = _Instance(self.INSTANCE_NAME, client)
@@ -114,6 +119,7 @@ class TestDatabase(_BaseTest):
     def test_from_pb_instance_mistmatch(self):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
+
         ALT_INSTANCE = '/projects/%s/instances/ALT-INSTANCE' % (
             self.PROJECT_ID,)
         client = _Client()
@@ -127,6 +133,7 @@ class TestDatabase(_BaseTest):
     def test_from_pb_success_w_explicit_pool(self):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
+
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client)
         database_pb = admin_v1_pb2.Database(name=self.DATABASE_NAME)
@@ -144,6 +151,7 @@ class TestDatabase(_BaseTest):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
         from google.cloud.spanner.pool import BurstyPool
+
         DATABASE_ID_HYPHEN = 'database-id'
         DATABASE_NAME_HYPHEN = (
             self.INSTANCE_NAME + '/databases/' + DATABASE_ID_HYPHEN)
@@ -164,17 +172,18 @@ class TestDatabase(_BaseTest):
     def test_name_property(self):
         instance = _Instance(self.INSTANCE_NAME)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
         expected_name = self.DATABASE_NAME
         self.assertEqual(database.name, expected_name)
 
     def test_spanner_api_property(self):
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import database as MUT
+
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         _client = object()
         _clients = [_client]
@@ -192,38 +201,39 @@ class TestDatabase(_BaseTest):
     def test___eq__(self):
         instance = _Instance(self.INSTANCE_NAME)
         pool1, pool2 = _Pool(), _Pool()
-        database1 = self._makeOne(self.DATABASE_ID, instance, pool=pool1)
-        database2 = self._makeOne(self.DATABASE_ID, instance, pool=pool2)
+        database1 = self._make_one(self.DATABASE_ID, instance, pool=pool1)
+        database2 = self._make_one(self.DATABASE_ID, instance, pool=pool2)
         self.assertEqual(database1, database2)
 
     def test___eq__type_differ(self):
         pool = _Pool()
-        database1 = self._makeOne(self.DATABASE_ID, None, pool=pool)
+        database1 = self._make_one(self.DATABASE_ID, None, pool=pool)
         database2 = object()
         self.assertNotEqual(database1, database2)
 
     def test___ne__same_value(self):
         instance = _Instance(self.INSTANCE_NAME)
         pool1, pool2 = _Pool(), _Pool()
-        database1 = self._makeOne(self.DATABASE_ID, instance, pool=pool1)
-        database2 = self._makeOne(self.DATABASE_ID, instance, pool=pool2)
+        database1 = self._make_one(self.DATABASE_ID, instance, pool=pool1)
+        database2 = self._make_one(self.DATABASE_ID, instance, pool=pool2)
         comparison_val = (database1 != database2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
         pool1, pool2 = _Pool(), _Pool()
-        database1 = self._makeOne('database_id1', 'instance1', pool=pool1)
-        database2 = self._makeOne('database_id2', 'instance2', pool=pool2)
+        database1 = self._make_one('database_id1', 'instance1', pool=pool1)
+        database2 = self._make_one('database_id2', 'instance2', pool=pool2)
         self.assertNotEqual(database1, database2)
 
     def test_create_grpc_error(self):
         from google.gax.errors import GaxError
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _random_gax_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         with self.assertRaises(GaxError):
             database.create()
@@ -238,14 +248,15 @@ class TestDatabase(_BaseTest):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_create_already_exists(self):
-        DATABASE_ID_HYPHEN = 'database-id'
         from google.cloud.exceptions import Conflict
+
+        DATABASE_ID_HYPHEN = 'database-id'
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _create_database_conflict=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(DATABASE_ID_HYPHEN, instance, pool=pool)
+        database = self._make_one(DATABASE_ID_HYPHEN, instance, pool=pool)
 
         with self.assertRaises(Conflict):
             database.create()
@@ -268,7 +279,7 @@ class TestDatabase(_BaseTest):
             _database_not_found=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(DATABASE_ID_HYPHEN, instance, pool=pool)
+        database = self._make_one(DATABASE_ID_HYPHEN, instance, pool=pool)
 
         with self.assertRaises(NotFound):
             database.create()
@@ -284,13 +295,14 @@ class TestDatabase(_BaseTest):
 
     def test_create_success(self):
         from google.cloud.spanner._fixtures import DDL_STATEMENTS
+
         op_future = _FauxOperationFuture()
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _create_database_response=op_future)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(
+        database = self._make_one(
             self.DATABASE_ID, instance, ddl_statements=DDL_STATEMENTS,
             pool=pool)
 
@@ -311,12 +323,13 @@ class TestDatabase(_BaseTest):
 
     def test_exists_grpc_error(self):
         from google.gax.errors import GaxError
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _random_gax_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         with self.assertRaises(GaxError):
             database.exists()
@@ -332,7 +345,7 @@ class TestDatabase(_BaseTest):
             _database_not_found=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         self.assertFalse(database.exists())
 
@@ -345,6 +358,7 @@ class TestDatabase(_BaseTest):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
         from google.cloud.spanner._fixtures import DDL_STATEMENTS
+
         client = _Client()
         ddl_pb = admin_v1_pb2.GetDatabaseDdlResponse(
             statements=DDL_STATEMENTS)
@@ -352,7 +366,7 @@ class TestDatabase(_BaseTest):
             _get_database_ddl_response=ddl_pb)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         self.assertTrue(database.exists())
 
@@ -363,12 +377,13 @@ class TestDatabase(_BaseTest):
 
     def test_reload_grpc_error(self):
         from google.gax.errors import GaxError
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _random_gax_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         with self.assertRaises(GaxError):
             database.reload()
@@ -380,12 +395,13 @@ class TestDatabase(_BaseTest):
 
     def test_reload_not_found(self):
         from google.cloud.exceptions import NotFound
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _database_not_found=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         with self.assertRaises(NotFound):
             database.reload()
@@ -399,6 +415,7 @@ class TestDatabase(_BaseTest):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
         from google.cloud.spanner._fixtures import DDL_STATEMENTS
+
         client = _Client()
         ddl_pb = admin_v1_pb2.GetDatabaseDdlResponse(
             statements=DDL_STATEMENTS)
@@ -406,7 +423,7 @@ class TestDatabase(_BaseTest):
             _get_database_ddl_response=ddl_pb)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         database.reload()
 
@@ -420,12 +437,13 @@ class TestDatabase(_BaseTest):
     def test_update_ddl_grpc_error(self):
         from google.gax.errors import GaxError
         from google.cloud.spanner._fixtures import DDL_STATEMENTS
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _random_gax_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         with self.assertRaises(GaxError):
             database.update_ddl(DDL_STATEMENTS)
@@ -440,12 +458,13 @@ class TestDatabase(_BaseTest):
     def test_update_ddl_not_found(self):
         from google.cloud.exceptions import NotFound
         from google.cloud.spanner._fixtures import DDL_STATEMENTS
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _database_not_found=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         with self.assertRaises(NotFound):
             database.update_ddl(DDL_STATEMENTS)
@@ -459,13 +478,14 @@ class TestDatabase(_BaseTest):
 
     def test_update_ddl(self):
         from google.cloud.spanner._fixtures import DDL_STATEMENTS
+
         op_future = _FauxOperationFuture()
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _update_database_ddl_response=op_future)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         future = database.update_ddl(DDL_STATEMENTS)
 
@@ -482,12 +502,13 @@ class TestDatabase(_BaseTest):
 
     def test_drop_grpc_error(self):
         from google.gax.errors import GaxError
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _random_gax_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         with self.assertRaises(GaxError):
             database.drop()
@@ -499,12 +520,13 @@ class TestDatabase(_BaseTest):
 
     def test_drop_not_found(self):
         from google.cloud.exceptions import NotFound
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _database_not_found=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         with self.assertRaises(NotFound):
             database.drop()
@@ -516,12 +538,13 @@ class TestDatabase(_BaseTest):
 
     def test_drop_success(self):
         from google.protobuf.empty_pb2 import Empty
+
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
             _drop_database_response=Empty())
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         database.drop()
 
@@ -532,10 +555,11 @@ class TestDatabase(_BaseTest):
 
     def test_session_factory(self):
         from google.cloud.spanner.session import Session
+
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         session = database.session()
 
@@ -551,7 +575,7 @@ class TestDatabase(_BaseTest):
         session = _Session()
         pool.put(session)
         session._execute_result = []
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         rows = list(database.execute_sql(QUERY))
 
@@ -560,6 +584,7 @@ class TestDatabase(_BaseTest):
 
     def test_run_in_transaction_wo_args(self):
         import datetime
+
         NOW = datetime.datetime.now()
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -567,7 +592,7 @@ class TestDatabase(_BaseTest):
         session = _Session()
         pool.put(session)
         session._committed = NOW
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         _unit_of_work = object()
 
@@ -578,6 +603,7 @@ class TestDatabase(_BaseTest):
 
     def test_run_in_transaction_w_args(self):
         import datetime
+
         SINCE = datetime.datetime(2017, 1, 1)
         UNTIL = datetime.datetime(2018, 1, 1)
         NOW = datetime.datetime.now()
@@ -587,7 +613,7 @@ class TestDatabase(_BaseTest):
         session = _Session()
         pool.put(session)
         session._committed = NOW
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         _unit_of_work = object()
 
@@ -600,6 +626,7 @@ class TestDatabase(_BaseTest):
 
     def test_read(self):
         from google.cloud.spanner.keyset import KeySet
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         KEYS = ['bharney@example.com', 'phred@example.com']
@@ -612,7 +639,7 @@ class TestDatabase(_BaseTest):
         pool = _Pool()
         session = _Session()
         pool.put(session)
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         rows = list(database.read(
             TABLE_NAME, COLUMNS, KEYSET, INDEX, LIMIT, TOKEN))
@@ -631,12 +658,13 @@ class TestDatabase(_BaseTest):
 
     def test_batch(self):
         from google.cloud.spanner.database import BatchCheckout
+
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         session = _Session()
         pool.put(session)
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         checkout = database.batch()
         self.assertIsInstance(checkout, BatchCheckout)
@@ -644,12 +672,13 @@ class TestDatabase(_BaseTest):
 
     def test_snapshot_defaults(self):
         from google.cloud.spanner.database import SnapshotCheckout
+
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         session = _Session()
         pool.put(session)
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         checkout = database.snapshot()
         self.assertIsInstance(checkout, SnapshotCheckout)
@@ -663,13 +692,14 @@ class TestDatabase(_BaseTest):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.spanner.database import SnapshotCheckout
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         session = _Session()
         pool.put(session)
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         checkout = database.snapshot(read_timestamp=now)
 
@@ -684,13 +714,14 @@ class TestDatabase(_BaseTest):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.spanner.database import SnapshotCheckout
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         session = _Session()
         pool.put(session)
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         checkout = database.snapshot(min_read_timestamp=now)
 
@@ -704,13 +735,14 @@ class TestDatabase(_BaseTest):
     def test_snapshot_w_max_staleness(self):
         import datetime
         from google.cloud.spanner.database import SnapshotCheckout
+
         staleness = datetime.timedelta(seconds=1, microseconds=234567)
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         session = _Session()
         pool.put(session)
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         checkout = database.snapshot(max_staleness=staleness)
 
@@ -724,13 +756,14 @@ class TestDatabase(_BaseTest):
     def test_snapshot_w_exact_staleness(self):
         import datetime
         from google.cloud.spanner.database import SnapshotCheckout
+
         staleness = datetime.timedelta(seconds=1, microseconds=234567)
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         session = _Session()
         pool.put(session)
-        database = self._makeOne(self.DATABASE_ID, instance, pool=pool)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         checkout = database.snapshot(exact_staleness=staleness)
 
@@ -746,11 +779,12 @@ class TestBatchCheckout(_BaseTest):
 
     def _getTargetClass(self):
         from google.cloud.spanner.database import BatchCheckout
+
         return BatchCheckout
 
     def test_ctor(self):
         database = _Database(self.DATABASE_NAME)
-        checkout = self._makeOne(database)
+        checkout = self._make_one(database)
         self.assertTrue(checkout._database is database)
 
     def test_context_mgr_success(self):
@@ -761,6 +795,7 @@ class TestBatchCheckout(_BaseTest):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner.batch import Batch
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
@@ -770,7 +805,7 @@ class TestBatchCheckout(_BaseTest):
         pool = database._pool = _Pool()
         session = _Session(database)
         pool.put(session)
-        checkout = self._makeOne(database)
+        checkout = self._make_one(database)
 
         with checkout as batch:
             self.assertIsNone(pool._session)
@@ -790,11 +825,12 @@ class TestBatchCheckout(_BaseTest):
 
     def test_context_mgr_failure(self):
         from google.cloud.spanner.batch import Batch
+
         database = _Database(self.DATABASE_NAME)
         pool = database._pool = _Pool()
         session = _Session(database)
         pool.put(session)
-        checkout = self._makeOne(database)
+        checkout = self._make_one(database)
 
         class Testing(Exception):
             pass
@@ -814,16 +850,18 @@ class TestSnapshotCheckout(_BaseTest):
 
     def _getTargetClass(self):
         from google.cloud.spanner.database import SnapshotCheckout
+
         return SnapshotCheckout
 
     def test_ctor_defaults(self):
         from google.cloud.spanner.snapshot import Snapshot
+
         database = _Database(self.DATABASE_NAME)
         session = _Session(database)
         pool = database._pool = _Pool()
         pool.put(session)
 
-        checkout = self._makeOne(database)
+        checkout = self._make_one(database)
         self.assertTrue(checkout._database is database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertIsNone(checkout._min_read_timestamp)
@@ -842,13 +880,14 @@ class TestSnapshotCheckout(_BaseTest):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.spanner.snapshot import Snapshot
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         database = _Database(self.DATABASE_NAME)
         session = _Session(database)
         pool = database._pool = _Pool()
         pool.put(session)
 
-        checkout = self._makeOne(database, read_timestamp=now)
+        checkout = self._make_one(database, read_timestamp=now)
         self.assertTrue(checkout._database is database)
         self.assertEqual(checkout._read_timestamp, now)
         self.assertIsNone(checkout._min_read_timestamp)
@@ -868,13 +907,14 @@ class TestSnapshotCheckout(_BaseTest):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.spanner.snapshot import Snapshot
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         database = _Database(self.DATABASE_NAME)
         session = _Session(database)
         pool = database._pool = _Pool()
         pool.put(session)
 
-        checkout = self._makeOne(database, min_read_timestamp=now)
+        checkout = self._make_one(database, min_read_timestamp=now)
         self.assertTrue(checkout._database is database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertEqual(checkout._min_read_timestamp, now)
@@ -893,13 +933,14 @@ class TestSnapshotCheckout(_BaseTest):
     def test_ctor_w_max_staleness(self):
         import datetime
         from google.cloud.spanner.snapshot import Snapshot
+
         staleness = datetime.timedelta(seconds=1, microseconds=234567)
         database = _Database(self.DATABASE_NAME)
         session = _Session(database)
         pool = database._pool = _Pool()
         pool.put(session)
 
-        checkout = self._makeOne(database, max_staleness=staleness)
+        checkout = self._make_one(database, max_staleness=staleness)
         self.assertTrue(checkout._database is database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertIsNone(checkout._min_read_timestamp)
@@ -918,13 +959,14 @@ class TestSnapshotCheckout(_BaseTest):
     def test_ctor_w_exact_staleness(self):
         import datetime
         from google.cloud.spanner.snapshot import Snapshot
+
         staleness = datetime.timedelta(seconds=1, microseconds=234567)
         database = _Database(self.DATABASE_NAME)
         session = _Session(database)
         pool = database._pool = _Pool()
         pool.put(session)
 
-        checkout = self._makeOne(database, exact_staleness=staleness)
+        checkout = self._make_one(database, exact_staleness=staleness)
 
         self.assertIs(checkout._database, database)
         self.assertIsNone(checkout._read_timestamp)
@@ -943,11 +985,12 @@ class TestSnapshotCheckout(_BaseTest):
 
     def test_context_mgr_failure(self):
         from google.cloud.spanner.snapshot import Snapshot
+
         database = _Database(self.DATABASE_NAME)
         pool = database._pool = _Pool()
         session = _Session(database)
         pool.put(session)
-        checkout = self._makeOne(database)
+        checkout = self._make_one(database)
 
         class Testing(Exception):
             pass
@@ -1068,14 +1111,13 @@ class _FauxDatabaseAdminAPI(_GAXBaseAPI):
 
     def _make_grpc_already_exists(self):
         from grpc.beta.interfaces import StatusCode
+
         return self._make_grpc_error(StatusCode.ALREADY_EXISTS)
 
-    def create_database(self,
-                        parent,
-                        create_statement,
-                        extra_statements=None,
+    def create_database(self, parent, create_statement, extra_statements=None,
                         options=None):
         from google.gax.errors import GaxError
+
         self._created_database = (
             parent, create_statement, extra_statements, options)
         if self._random_gax_error:
@@ -1088,6 +1130,7 @@ class _FauxDatabaseAdminAPI(_GAXBaseAPI):
 
     def get_database_ddl(self, database, options=None):
         from google.gax.errors import GaxError
+
         self._got_database_ddl = database, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1097,6 +1140,7 @@ class _FauxDatabaseAdminAPI(_GAXBaseAPI):
 
     def drop_database(self, database, options=None):
         from google.gax.errors import GaxError
+
         self._dropped_database = database, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -1107,6 +1151,7 @@ class _FauxDatabaseAdminAPI(_GAXBaseAPI):
     def update_database_ddl(self, database, statements, operation_id,
                             options=None):
         from google.gax.errors import GaxError
+
         self._updated_database_ddl = (
             database, statements, operation_id, options)
         if self._random_gax_error:
