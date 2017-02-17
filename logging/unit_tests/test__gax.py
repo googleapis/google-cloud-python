@@ -53,6 +53,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging._gax import _LoggingAPI
+
         return _LoggingAPI
 
     def test_ctor(self):

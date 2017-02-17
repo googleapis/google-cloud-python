@@ -43,9 +43,10 @@ class Test_SnapshotBase(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.snapshot import _SnapshotBase
+
         return _SnapshotBase
 
-    def _makeOne(self, session):
+    def _make_one(self, session):
         return self._getTargetClass()(session)
 
     def _makeDerived(self, session):
@@ -55,6 +56,7 @@ class Test_SnapshotBase(unittest.TestCase):
             def _make_txn_selector(self):
                 from google.cloud.proto.spanner.v1.transaction_pb2 import (
                     TransactionOptions, TransactionSelector)
+
                 options = TransactionOptions(
                     read_only=TransactionOptions.ReadOnly(strong=True))
                 return TransactionSelector(single_use=options)
@@ -63,12 +65,12 @@ class Test_SnapshotBase(unittest.TestCase):
 
     def test_ctor(self):
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
         self.assertTrue(base._session is session)
 
     def test__make_txn_selector_virtual(self):
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
         with self.assertRaises(NotImplementedError):
             base._make_txn_selector()
 
@@ -77,6 +79,7 @@ class Test_SnapshotBase(unittest.TestCase):
             TransactionSelector)
         from google.gax.errors import GaxError
         from google.cloud.spanner.keyset import KeySet
+
         KEYSET = KeySet(all_=True)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
@@ -112,6 +115,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.proto.spanner.v1.type_pb2 import STRING, INT64
         from google.cloud.spanner.keyset import KeySet
         from google.cloud.spanner._helpers import _make_value_pb
+
         VALUES = [
             [u'bharney', 31],
             [u'phred', 32],
@@ -172,6 +176,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.proto.spanner.v1.transaction_pb2 import (
             TransactionSelector)
         from google.gax.errors import GaxError
+
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _random_gax_error=True)
@@ -212,6 +217,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.proto.spanner.v1.type_pb2 import Type, StructType
         from google.cloud.proto.spanner.v1.type_pb2 import STRING, INT64
         from google.cloud.spanner._helpers import _make_value_pb
+
         VALUES = [
             [u'bharney', u'rhubbyl', 31],
             [u'phred', u'phlyntstone', 32],
@@ -297,21 +303,23 @@ class TestSnapshot(unittest.TestCase):
         from google.cloud.spanner.snapshot import Snapshot
         return Snapshot
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def _makeTimestamp(self):
         import datetime
         from google.cloud._helpers import UTC
+
         return datetime.datetime.utcnow().replace(tzinfo=UTC)
 
     def _makeDuration(self, seconds=1, microseconds=0):
         import datetime
+
         return datetime.timedelta(seconds=seconds, microseconds=microseconds)
 
     def test_ctor_defaults(self):
         session = _Session()
-        snapshot = self._makeOne(session)
+        snapshot = self._make_one(session)
         self.assertTrue(snapshot._session is session)
         self.assertTrue(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
@@ -325,13 +333,13 @@ class TestSnapshot(unittest.TestCase):
         session = _Session()
 
         with self.assertRaises(ValueError):
-            self._makeOne(
+            self._make_one(
                 session, read_timestamp=timestamp, max_staleness=duration)
 
     def test_ctor_w_read_timestamp(self):
         timestamp = self._makeTimestamp()
         session = _Session()
-        snapshot = self._makeOne(session, read_timestamp=timestamp)
+        snapshot = self._make_one(session, read_timestamp=timestamp)
         self.assertTrue(snapshot._session is session)
         self.assertFalse(snapshot._strong)
         self.assertEqual(snapshot._read_timestamp, timestamp)
@@ -342,7 +350,7 @@ class TestSnapshot(unittest.TestCase):
     def test_ctor_w_min_read_timestamp(self):
         timestamp = self._makeTimestamp()
         session = _Session()
-        snapshot = self._makeOne(session, min_read_timestamp=timestamp)
+        snapshot = self._make_one(session, min_read_timestamp=timestamp)
         self.assertTrue(snapshot._session is session)
         self.assertFalse(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
@@ -353,7 +361,7 @@ class TestSnapshot(unittest.TestCase):
     def test_ctor_w_max_staleness(self):
         duration = self._makeDuration()
         session = _Session()
-        snapshot = self._makeOne(session, max_staleness=duration)
+        snapshot = self._make_one(session, max_staleness=duration)
         self.assertTrue(snapshot._session is session)
         self.assertFalse(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
@@ -364,7 +372,7 @@ class TestSnapshot(unittest.TestCase):
     def test_ctor_w_exact_staleness(self):
         duration = self._makeDuration()
         session = _Session()
-        snapshot = self._makeOne(session, exact_staleness=duration)
+        snapshot = self._make_one(session, exact_staleness=duration)
         self.assertTrue(snapshot._session is session)
         self.assertFalse(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
@@ -374,16 +382,17 @@ class TestSnapshot(unittest.TestCase):
 
     def test__make_txn_selector_strong(self):
         session = _Session()
-        snapshot = self._makeOne(session)
+        snapshot = self._make_one(session)
         selector = snapshot._make_txn_selector()
         options = selector.single_use
         self.assertTrue(options.read_only.strong)
 
     def test__make_txn_selector_w_read_timestamp(self):
         from google.cloud._helpers import _pb_timestamp_to_datetime
+
         timestamp = self._makeTimestamp()
         session = _Session()
-        snapshot = self._makeOne(session, read_timestamp=timestamp)
+        snapshot = self._make_one(session, read_timestamp=timestamp)
         selector = snapshot._make_txn_selector()
         options = selector.single_use
         self.assertEqual(
@@ -392,9 +401,10 @@ class TestSnapshot(unittest.TestCase):
 
     def test__make_txn_selector_w_min_read_timestamp(self):
         from google.cloud._helpers import _pb_timestamp_to_datetime
+
         timestamp = self._makeTimestamp()
         session = _Session()
-        snapshot = self._makeOne(session, min_read_timestamp=timestamp)
+        snapshot = self._make_one(session, min_read_timestamp=timestamp)
         selector = snapshot._make_txn_selector()
         options = selector.single_use
         self.assertEqual(
@@ -404,7 +414,7 @@ class TestSnapshot(unittest.TestCase):
     def test__make_txn_selector_w_max_staleness(self):
         duration = self._makeDuration(seconds=3, microseconds=123456)
         session = _Session()
-        snapshot = self._makeOne(session, max_staleness=duration)
+        snapshot = self._make_one(session, max_staleness=duration)
         selector = snapshot._make_txn_selector()
         options = selector.single_use
         self.assertEqual(options.read_only.max_staleness.seconds, 3)
@@ -413,7 +423,7 @@ class TestSnapshot(unittest.TestCase):
     def test__make_txn_selector_w_exact_staleness(self):
         duration = self._makeDuration(seconds=3, microseconds=123456)
         session = _Session()
-        snapshot = self._makeOne(session, exact_staleness=duration)
+        snapshot = self._make_one(session, exact_staleness=duration)
         selector = snapshot._make_txn_selector()
         options = selector.single_use
         self.assertEqual(options.read_only.exact_staleness.seconds, 3)
@@ -440,6 +450,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
                        transaction=None, index='', limit=0,
                        resume_token='', options=None):
         from google.gax.errors import GaxError
+
         self._streaming_read_with = (
             session, table, columns, key_set, transaction, index,
             limit, resume_token, options)
@@ -452,6 +463,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
                               params=None, param_types=None,
                               resume_token='', query_mode=None, options=None):
         from google.gax.errors import GaxError
+
         self._executed_streaming_sql_with = (
             session, sql, transaction, params, param_types, resume_token,
             query_mode, options)

@@ -108,8 +108,7 @@ class TestClient(unittest.TestCase):
 
     @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
     def test_report_exception_with_service_version_in_constructor(
-            self,
-            make_client):
+            self, make_client):
         CREDENTIALS = _make_credentials()
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"

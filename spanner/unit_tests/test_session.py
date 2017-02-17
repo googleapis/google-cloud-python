@@ -30,32 +30,33 @@ class TestSession(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.session import Session
+
         return Session
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         self.assertTrue(session.session_id is None)
         self.assertTrue(session._database is database)
 
     def test_name_property_wo_session_id(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         with self.assertRaises(ValueError):
             _ = session.name
 
     def test_name_property_w_session_id(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = self.SESSION_ID
         self.assertEqual(session.name, self.SESSION_NAME)
 
     def test_create_w_session_id(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = self.SESSION_ID
         with self.assertRaises(ValueError):
             session.create()
@@ -65,7 +66,7 @@ class TestSession(unittest.TestCase):
         gax_api = _SpannerApi(_create_session_response=session_pb)
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
 
         session.create()
 
@@ -78,10 +79,11 @@ class TestSession(unittest.TestCase):
 
     def test_create_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _SpannerApi(_random_gax_error=True)
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
 
         with self.assertRaises(GaxError):
             session.create()
@@ -93,7 +95,7 @@ class TestSession(unittest.TestCase):
 
     def test_exists_wo_session_id(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         self.assertFalse(session.exists())
 
     def test_exists_hit(self):
@@ -101,7 +103,7 @@ class TestSession(unittest.TestCase):
         gax_api = _SpannerApi(_get_session_response=session_pb)
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
         self.assertTrue(session.exists())
@@ -115,7 +117,7 @@ class TestSession(unittest.TestCase):
         gax_api = _SpannerApi()
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
         self.assertFalse(session.exists())
@@ -127,10 +129,11 @@ class TestSession(unittest.TestCase):
 
     def test_exists_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _SpannerApi(_random_gax_error=True)
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
         with self.assertRaises(GaxError):
@@ -143,7 +146,7 @@ class TestSession(unittest.TestCase):
 
     def test_delete_wo_session_id(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         with self.assertRaises(ValueError):
             session.delete()
 
@@ -151,7 +154,7 @@ class TestSession(unittest.TestCase):
         gax_api = _SpannerApi(_delete_session_ok=True)
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
         session.delete()
@@ -163,10 +166,11 @@ class TestSession(unittest.TestCase):
 
     def test_delete_miss(self):
         from google.cloud.exceptions import NotFound
+
         gax_api = _SpannerApi(_delete_session_ok=False)
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
         with self.assertRaises(NotFound):
@@ -179,10 +183,11 @@ class TestSession(unittest.TestCase):
 
     def test_delete_error(self):
         from google.gax.errors import GaxError
+
         gax_api = _SpannerApi(_random_gax_error=True)
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
         with self.assertRaises(GaxError):
@@ -195,15 +200,16 @@ class TestSession(unittest.TestCase):
 
     def test_snapshot_not_created(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
 
         with self.assertRaises(ValueError):
             session.snapshot()
 
     def test_snapshot_created(self):
         from google.cloud.spanner.snapshot import Snapshot
+
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'  # emulate 'session.create()'
 
         snapshot = session.snapshot()
@@ -214,12 +220,13 @@ class TestSession(unittest.TestCase):
 
     def test_read_not_created(self):
         from google.cloud.spanner.keyset import KeySet
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         KEYS = ['bharney@example.com', 'phred@example.com']
         KEYSET = KeySet(keys=KEYS)
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
 
         with self.assertRaises(ValueError):
             session.read(TABLE_NAME, COLUMNS, KEYSET)
@@ -228,6 +235,7 @@ class TestSession(unittest.TestCase):
         from google.cloud.spanner import session as MUT
         from google.cloud._testing import _Monkey
         from google.cloud.spanner.keyset import KeySet
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         KEYS = ['bharney@example.com', 'phred@example.com']
@@ -236,7 +244,7 @@ class TestSession(unittest.TestCase):
         LIMIT = 20
         TOKEN = b'DEADBEEF'
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         _read_with = []
@@ -274,7 +282,7 @@ class TestSession(unittest.TestCase):
     def test_execute_sql_not_created(self):
         SQL = 'SELECT first_name, age FROM citizens'
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
 
         with self.assertRaises(ValueError):
             session.execute_sql(SQL)
@@ -282,10 +290,11 @@ class TestSession(unittest.TestCase):
     def test_execute_sql_defaults(self):
         from google.cloud.spanner import session as MUT
         from google.cloud._testing import _Monkey
+
         SQL = 'SELECT first_name, age FROM citizens'
         TOKEN = b'DEADBEEF'
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         _executed_sql_with = []
@@ -320,15 +329,16 @@ class TestSession(unittest.TestCase):
 
     def test_batch_not_created(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
 
         with self.assertRaises(ValueError):
             session.batch()
 
     def test_batch_created(self):
         from google.cloud.spanner.batch import Batch
+
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         batch = session.batch()
@@ -338,15 +348,16 @@ class TestSession(unittest.TestCase):
 
     def test_transaction_not_created(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
 
         with self.assertRaises(ValueError):
             session.transaction()
 
     def test_transaction_created(self):
         from google.cloud.spanner.transaction import Transaction
+
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         transaction = session.transaction()
@@ -357,7 +368,7 @@ class TestSession(unittest.TestCase):
 
     def test_transaction_w_existing_txn(self):
         database = _Database(self.DATABASE_NAME)
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         existing = session.transaction()
@@ -369,6 +380,7 @@ class TestSession(unittest.TestCase):
     def test_retry_transaction_w_commit_error_txn_already_begun(self):
         from google.gax.errors import GaxError
         from google.cloud.spanner.transaction import Transaction
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         VALUES = [
@@ -380,7 +392,7 @@ class TestSession(unittest.TestCase):
         )
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
         begun_txn = session._transaction = Transaction(session)
         begun_txn._id = b'FACEDACE'
@@ -405,6 +417,7 @@ class TestSession(unittest.TestCase):
         from google.cloud.proto.spanner.v1.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud.spanner.transaction import Transaction
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         VALUES = [
@@ -419,7 +432,7 @@ class TestSession(unittest.TestCase):
         )
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         called_with = []
@@ -451,6 +464,7 @@ class TestSession(unittest.TestCase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner.transaction import Transaction
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         VALUES = [
@@ -468,7 +482,7 @@ class TestSession(unittest.TestCase):
         )
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         called_with = []
@@ -496,6 +510,7 @@ class TestSession(unittest.TestCase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.spanner.transaction import Transaction
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         VALUES = [
@@ -514,7 +529,7 @@ class TestSession(unittest.TestCase):
         )
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         called_with = []
@@ -547,6 +562,7 @@ class TestSession(unittest.TestCase):
         from google.cloud.spanner.transaction import Transaction
         from google.cloud.spanner import session as MUT
         from google.cloud._testing import _Monkey
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         VALUES = [
@@ -569,7 +585,7 @@ class TestSession(unittest.TestCase):
         )
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         called_with = []
@@ -609,6 +625,7 @@ class TestSession(unittest.TestCase):
         from google.cloud.spanner.transaction import Transaction
         from google.cloud.spanner import session as MUT
         from google.cloud._testing import _Monkey
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         VALUES = [
@@ -630,7 +647,7 @@ class TestSession(unittest.TestCase):
         )
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         called_with = []
@@ -675,6 +692,7 @@ class TestSession(unittest.TestCase):
         from google.cloud.spanner.transaction import Transaction
         from google.cloud.spanner import session as MUT
         from google.cloud._testing import _Monkey
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         VALUES = [
@@ -697,7 +715,7 @@ class TestSession(unittest.TestCase):
         )
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         called_with = []
@@ -729,6 +747,7 @@ class TestSession(unittest.TestCase):
             Transaction as TransactionPB)
         from grpc import StatusCode
         from google.cloud.spanner.transaction import Transaction
+
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
         VALUES = [
@@ -743,7 +762,7 @@ class TestSession(unittest.TestCase):
         )
         database = _Database(self.DATABASE_NAME)
         database.spanner_api = gax_api
-        session = self._makeOne(database)
+        session = self._make_one(database)
         session._session_id = 'DEADBEEF'
 
         called_with = []
@@ -780,6 +799,7 @@ class _SpannerApi(_GAXBaseAPI):
 
     def create_session(self, database, options=None):
         from google.gax.errors import GaxError
+
         self._create_session_called_with = database, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -787,6 +807,7 @@ class _SpannerApi(_GAXBaseAPI):
 
     def get_session(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._get_session_called_with = name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -797,6 +818,7 @@ class _SpannerApi(_GAXBaseAPI):
 
     def delete_session(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._delete_session_called_with = name, options
         if self._random_gax_error:
             raise GaxError('error')
@@ -811,6 +833,7 @@ class _SpannerApi(_GAXBaseAPI):
         from google.protobuf.duration_pb2 import Duration
         from google.rpc.error_details_pb2 import RetryInfo
         from grpc._common import cygrpc_metadata
+
         if self._commit_abort_retry_nanos is None:
             return cygrpc_metadata(())
         retry_info = RetryInfo(
@@ -824,6 +847,7 @@ class _SpannerApi(_GAXBaseAPI):
                transaction_id='', single_use_transaction=None, options=None):
         from grpc import StatusCode
         from google.gax.errors import GaxError
+
         assert single_use_transaction is None
         self._committed = (session, mutations, transaction_id, options)
         if self._commit_error:

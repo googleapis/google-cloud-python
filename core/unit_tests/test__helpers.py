@@ -669,6 +669,7 @@ class Test__name_from_project_path(unittest.TestCase):
 
     def _call_fut(self, path, project, template):
         from google.cloud._helpers import _name_from_project_path
+
         return _name_from_project_path(path, project, template)
 
     def test_w_invalid_path_length(self):
