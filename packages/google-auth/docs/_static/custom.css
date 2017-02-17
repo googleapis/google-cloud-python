@@ -5,3 +5,8 @@ div.document {
 code.descname {
     color: #4885ed;
 }
+
+th.field-name {
+    min-width: 100px;
+    color: #3cba54;
+}
