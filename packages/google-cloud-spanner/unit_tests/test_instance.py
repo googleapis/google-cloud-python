@@ -38,15 +38,17 @@ class TestInstance(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.instance import Instance
+
         return Instance
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
+
         client = object()
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertTrue(instance._client is client)
         self.assertTrue(instance.configuration_name is None)
@@ -57,10 +59,10 @@ class TestInstance(unittest.TestCase):
         DISPLAY_NAME = 'display_name'
         client = object()
 
-        instance = self._makeOne(self.INSTANCE_ID, client,
-                                 configuration_name=self.CONFIG_NAME,
-                                 node_count=self.NODE_COUNT,
-                                 display_name=DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  configuration_name=self.CONFIG_NAME,
+                                  node_count=self.NODE_COUNT,
+                                  display_name=DISPLAY_NAME)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertTrue(instance._client is client)
         self.assertEqual(instance.configuration_name, self.CONFIG_NAME)
@@ -71,8 +73,8 @@ class TestInstance(unittest.TestCase):
         DISPLAY_NAME = 'display_name'
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME,
-                                 display_name=DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME,
+                                  display_name=DISPLAY_NAME)
         new_instance = instance.copy()
 
         # Make sure the client copy succeeded.
@@ -91,7 +93,7 @@ class TestInstance(unittest.TestCase):
             display_name=display_name,
         )
 
-        instance = self._makeOne(None, None, None, None)
+        instance = self._make_one(None, None, None, None)
         self.assertEqual(instance.display_name, None)
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, display_name)
@@ -101,7 +103,7 @@ class TestInstance(unittest.TestCase):
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         instance_pb = admin_v1_pb2.Instance()
-        instance = self._makeOne(None, None, None, None)
+        instance = self._make_one(None, None, None, None)
         self.assertEqual(instance.display_name, None)
         with self.assertRaises(ValueError):
             instance._update_from_pb(instance_pb)
@@ -155,40 +157,41 @@ class TestInstance(unittest.TestCase):
     def test_name_property(self):
         client = _Client(project=self.PROJECT)
 
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
 
     def test___eq__(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
-        instance2 = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance1 = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance2 = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         self.assertEqual(instance1, instance2)
 
     def test___eq__type_differ(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance1 = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         instance2 = object()
         self.assertNotEqual(instance1, instance2)
 
     def test___ne__same_value(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
-        instance2 = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance1 = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance2 = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         comparison_val = (instance1 != instance2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        instance1 = self._makeOne('instance_id1', 'client1', self.CONFIG_NAME)
-        instance2 = self._makeOne('instance_id2', 'client2', self.CONFIG_NAME)
+        instance1 = self._make_one('instance_id1', 'client1', self.CONFIG_NAME)
+        instance2 = self._make_one('instance_id2', 'client2', self.CONFIG_NAME)
         self.assertNotEqual(instance1, instance2)
 
     def test_create_grpc_error(self):
         from google.gax.errors import GaxError
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _random_gax_error=True)
-        instance = self._makeOne(self.INSTANCE_ID, client,
-                                 configuration_name=self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  configuration_name=self.CONFIG_NAME)
 
         with self.assertRaises(GaxError):
             instance.create()
@@ -205,11 +208,12 @@ class TestInstance(unittest.TestCase):
 
     def test_create_already_exists(self):
         from google.cloud.exceptions import Conflict
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _create_instance_conflict=True)
-        instance = self._makeOne(self.INSTANCE_ID, client,
-                                 configuration_name=self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  configuration_name=self.CONFIG_NAME)
 
         with self.assertRaises(Conflict):
             instance.create()
@@ -229,10 +233,10 @@ class TestInstance(unittest.TestCase):
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _create_instance_response=op_future)
-        instance = self._makeOne(self.INSTANCE_ID, client,
-                                 configuration_name=self.CONFIG_NAME,
-                                 display_name=self.DISPLAY_NAME,
-                                 node_count=self.NODE_COUNT)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  configuration_name=self.CONFIG_NAME,
+                                  display_name=self.DISPLAY_NAME,
+                                  node_count=self.NODE_COUNT)
 
         future = instance.create()
 
@@ -252,10 +256,11 @@ class TestInstance(unittest.TestCase):
 
     def test_exists_instance_grpc_error(self):
         from google.gax.errors import GaxError
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _random_gax_error=True)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
         with self.assertRaises(GaxError):
             instance.exists()
@@ -270,7 +275,7 @@ class TestInstance(unittest.TestCase):
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _instance_not_found=True)
         api._instance_not_found = True
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
         self.assertFalse(instance.exists())
 
@@ -282,6 +287,7 @@ class TestInstance(unittest.TestCase):
     def test_exists_success(self):
         from google.cloud.proto.spanner.admin.instance.v1 import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
+
         client = _Client(self.PROJECT)
         instance_pb = admin_v1_pb2.Instance(
             name=self.INSTANCE_NAME,
@@ -291,7 +297,7 @@ class TestInstance(unittest.TestCase):
         )
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _get_instance_response=instance_pb)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         self.assertTrue(instance.exists())
 
@@ -302,10 +308,11 @@ class TestInstance(unittest.TestCase):
 
     def test_reload_instance_grpc_error(self):
         from google.gax.errors import GaxError
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _random_gax_error=True)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
         with self.assertRaises(GaxError):
             instance.reload()
@@ -317,11 +324,12 @@ class TestInstance(unittest.TestCase):
 
     def test_reload_instance_not_found(self):
         from google.cloud.exceptions import NotFound
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _instance_not_found=True)
         api._instance_not_found = True
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
         with self.assertRaises(NotFound):
             instance.reload()
@@ -334,6 +342,7 @@ class TestInstance(unittest.TestCase):
     def test_reload_success(self):
         from google.cloud.proto.spanner.admin.instance.v1 import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
+
         client = _Client(self.PROJECT)
         instance_pb = admin_v1_pb2.Instance(
             name=self.INSTANCE_NAME,
@@ -343,7 +352,7 @@ class TestInstance(unittest.TestCase):
         )
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _get_instance_response=instance_pb)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         instance.reload()
 
@@ -359,11 +368,12 @@ class TestInstance(unittest.TestCase):
     def test_update_grpc_error(self):
         from google.gax.errors import GaxError
         from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _random_gax_error=True)
-        instance = self._makeOne(self.INSTANCE_ID, client,
-                                 configuration_name=self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  configuration_name=self.CONFIG_NAME)
 
         with self.assertRaises(GaxError):
             instance.update()
@@ -381,11 +391,12 @@ class TestInstance(unittest.TestCase):
     def test_update_not_found(self):
         from google.cloud.exceptions import NotFound
         from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _instance_not_found=True)
-        instance = self._makeOne(self.INSTANCE_ID, client,
-                                 configuration_name=self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  configuration_name=self.CONFIG_NAME)
 
         with self.assertRaises(NotFound):
             instance.update()
@@ -405,10 +416,10 @@ class TestInstance(unittest.TestCase):
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _update_instance_response=op_future)
-        instance = self._makeOne(self.INSTANCE_ID, client,
-                                 configuration_name=self.CONFIG_NAME,
-                                 node_count=self.NODE_COUNT,
-                                 display_name=self.DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client,
+                                  configuration_name=self.CONFIG_NAME,
+                                  node_count=self.NODE_COUNT,
+                                  display_name=self.DISPLAY_NAME)
 
         future = instance.update()
 
@@ -428,10 +439,11 @@ class TestInstance(unittest.TestCase):
 
     def test_delete_grpc_error(self):
         from google.gax.errors import GaxError
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _random_gax_error=True)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         with self.assertRaises(GaxError):
             instance.delete()
@@ -443,10 +455,11 @@ class TestInstance(unittest.TestCase):
 
     def test_delete_not_found(self):
         from google.cloud.exceptions import NotFound
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _instance_not_found=True)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         with self.assertRaises(NotFound):
             instance.delete()
@@ -458,10 +471,11 @@ class TestInstance(unittest.TestCase):
 
     def test_delete_success(self):
         from google.protobuf.empty_pb2 import Empty
+
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _delete_instance_response=Empty())
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
 
         instance.delete()
 
@@ -473,8 +487,9 @@ class TestInstance(unittest.TestCase):
     def test_database_factory_defaults(self):
         from google.cloud.spanner.database import Database
         from google.cloud.spanner.pool import BurstyPool
+
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         DATABASE_ID = 'database-id'
 
         database = instance.database(DATABASE_ID)
@@ -490,8 +505,9 @@ class TestInstance(unittest.TestCase):
     def test_database_factory_explicit(self):
         from google.cloud.spanner._fixtures import DDL_STATEMENTS
         from google.cloud.spanner.database import Database
+
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.CONFIG_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         DATABASE_ID = 'database-id'
         pool = _Pool()
 
@@ -509,13 +525,14 @@ class TestInstance(unittest.TestCase):
         from google.cloud._testing import _GAXPageIterator
         from google.gax import INITIAL_PAGE
         from google.cloud.spanner.database import Database
+
         NEXT_TOKEN = 'TOKEN'
         database_pb = _DatabasePB(name=self.DATABASE_NAME)
         response = _GAXPageIterator([database_pb], page_token=NEXT_TOKEN)
         client = _Client(self.PROJECT)
         api = client.database_admin_api = _FauxDatabaseAdminAPI()
         api._list_databases_response = response
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         iterator = instance.list_databases()
         next_token = iterator.next_page_token
@@ -537,6 +554,7 @@ class TestInstance(unittest.TestCase):
     def test_list_databases_w_paging(self):
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.spanner.database import Database
+
         SIZE = 15
         TOKEN = 'TOKEN'
         database_pb = _DatabasePB(name=self.DATABASE_NAME)
@@ -544,7 +562,7 @@ class TestInstance(unittest.TestCase):
         client = _Client(self.PROJECT)
         api = client.database_admin_api = _FauxDatabaseAdminAPI()
         api._list_databases_response = response
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._make_one(self.INSTANCE_ID, client)
 
         iterator = instance.list_databases(
             page_size=SIZE, page_token=TOKEN)
@@ -574,6 +592,7 @@ class _Client(object):
 
     def copy(self):
         from copy import deepcopy
+
         return deepcopy(self)
 
     def __eq__(self, other):
@@ -595,10 +614,12 @@ class _FauxInstanceAdminAPI(_GAXBaseAPI):
 
     def _make_grpc_already_exists(self):
         from grpc.beta.interfaces import StatusCode
+
         return self._make_grpc_error(StatusCode.ALREADY_EXISTS)
 
     def create_instance(self, parent, instance_id, instance, options=None):
         from google.gax.errors import GaxError
+
         self._created_instance = (parent, instance_id, instance, options)
         if self._random_gax_error:
             raise GaxError('error')
@@ -608,6 +629,7 @@ class _FauxInstanceAdminAPI(_GAXBaseAPI):
 
     def get_instance(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._got_instance = (name, options)
         if self._random_gax_error:
             raise GaxError('error')
@@ -617,6 +639,7 @@ class _FauxInstanceAdminAPI(_GAXBaseAPI):
 
     def update_instance(self, instance, field_mask, options=None):
         from google.gax.errors import GaxError
+
         self._updated_instance = (instance, field_mask, options)
         if self._random_gax_error:
             raise GaxError('error')
@@ -626,6 +649,7 @@ class _FauxInstanceAdminAPI(_GAXBaseAPI):
 
     def delete_instance(self, name, options=None):
         from google.gax.errors import GaxError
+
         self._deleted_instance = name, options
         if self._random_gax_error:
             raise GaxError('error')

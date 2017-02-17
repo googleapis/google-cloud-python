@@ -36,7 +36,7 @@ class _BaseTest(unittest.TestCase):
     SESSION_ID = 'session-id'
     SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
 
@@ -44,11 +44,13 @@ class Test_BatchBase(_BaseTest):
 
     def _getTargetClass(self):
         from google.cloud.spanner.batch import _BatchBase
+
         return _BatchBase
 
     def _compare_values(self, result, source):
         from google.protobuf.struct_pb2 import ListValue
         from google.protobuf.struct_pb2 import Value
+
         for found, expected in zip(result, source):
             self.assertIsInstance(found, ListValue)
             self.assertEqual(len(found.values), len(expected))
@@ -62,20 +64,21 @@ class Test_BatchBase(_BaseTest):
 
     def test_ctor(self):
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
         self.assertTrue(base._session is session)
         self.assertEqual(len(base._mutations), 0)
 
     def test__check_state_virtual(self):
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
         with self.assertRaises(NotImplementedError):
             base._check_state()
 
     def test_insert(self):
         from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
 
         base.insert(TABLE_NAME, columns=COLUMNS, values=VALUES)
 
@@ -90,8 +93,9 @@ class Test_BatchBase(_BaseTest):
 
     def test_update(self):
         from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
 
         base.update(TABLE_NAME, columns=COLUMNS, values=VALUES)
 
@@ -106,8 +110,9 @@ class Test_BatchBase(_BaseTest):
 
     def test_insert_or_update(self):
         from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
 
         base.insert_or_update(TABLE_NAME, columns=COLUMNS, values=VALUES)
 
@@ -122,8 +127,9 @@ class Test_BatchBase(_BaseTest):
 
     def test_replace(self):
         from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
 
         base.replace(TABLE_NAME, columns=COLUMNS, values=VALUES)
 
@@ -139,10 +145,11 @@ class Test_BatchBase(_BaseTest):
     def test_delete(self):
         from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
         from google.cloud.spanner.keyset import KeySet
+
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)
         session = _Session()
-        base = self._makeOne(session)
+        base = self._make_one(session)
 
         base.delete(TABLE_NAME, keyset=keyset)
 
@@ -164,20 +171,22 @@ class TestBatch(_BaseTest):
 
     def _getTargetClass(self):
         from google.cloud.spanner.batch import Batch
+
         return Batch
 
     def test_ctor(self):
         session = _Session()
-        batch = self._makeOne(session)
+        batch = self._make_one(session)
         self.assertTrue(batch._session is session)
 
     def test_commit_already_committed(self):
         from google.cloud.spanner.keyset import KeySet
+
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)
         database = _Database()
         session = _Session(database)
-        batch = self._makeOne(session)
+        batch = self._make_one(session)
         batch.committed = object()
         batch.delete(TABLE_NAME, keyset=keyset)
 
@@ -191,13 +200,14 @@ class TestBatch(_BaseTest):
         from google.cloud.proto.spanner.v1.mutation_pb2 import (
             Mutation as MutationPB)
         from google.cloud.spanner.keyset import KeySet
+
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _random_gax_error=True)
         session = _Session(database)
-        batch = self._makeOne(session)
+        batch = self._make_one(session)
         batch.delete(TABLE_NAME, keyset=keyset)
 
         with self.assertRaises(GaxError):
@@ -229,6 +239,7 @@ class TestBatch(_BaseTest):
             TransactionOptions)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
@@ -236,7 +247,7 @@ class TestBatch(_BaseTest):
         api = database.spanner_api = _FauxSpannerAPI(
             _commit_response=response)
         session = _Session(database)
-        batch = self._makeOne(session)
+        batch = self._make_one(session)
         batch.insert(TABLE_NAME, COLUMNS, VALUES)
 
         committed = batch.commit()
@@ -255,11 +266,12 @@ class TestBatch(_BaseTest):
     def test_context_mgr_already_committed(self):
         import datetime
         from google.cloud._helpers import UTC
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI()
         session = _Session(database)
-        batch = self._makeOne(session)
+        batch = self._make_one(session)
         batch.committed = now
 
         with self.assertRaises(ValueError):
@@ -275,6 +287,7 @@ class TestBatch(_BaseTest):
             TransactionOptions)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
@@ -282,7 +295,7 @@ class TestBatch(_BaseTest):
         api = database.spanner_api = _FauxSpannerAPI(
             _commit_response=response)
         session = _Session(database)
-        batch = self._makeOne(session)
+        batch = self._make_one(session)
 
         with batch:
             batch.insert(TABLE_NAME, COLUMNS, VALUES)
@@ -302,6 +315,7 @@ class TestBatch(_BaseTest):
         from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         response = CommitResponse(commit_timestamp=now_pb)
@@ -309,7 +323,7 @@ class TestBatch(_BaseTest):
         api = database.spanner_api = _FauxSpannerAPI(
             _commit_response=response)
         session = _Session(database)
-        batch = self._makeOne(session)
+        batch = self._make_one(session)
 
         class _BailOut(Exception):
             pass
@@ -344,6 +358,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
     def commit(self, session, mutations,
                transaction_id='', single_use_transaction=None, options=None):
         from google.gax.errors import GaxError
+
         assert transaction_id == ''
         self._committed = (session, mutations, single_use_transaction, options)
         if self._random_gax_error:

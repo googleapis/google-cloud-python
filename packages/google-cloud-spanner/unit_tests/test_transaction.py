@@ -39,14 +39,15 @@ class TestTransaction(unittest.TestCase):
 
     def _getTargetClass(self):
         from google.cloud.spanner.transaction import Transaction
+
         return Transaction
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_defaults(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         self.assertTrue(transaction._session is session)
         self.assertIsNone(transaction._id)
         self.assertIsNone(transaction.committed)
@@ -54,13 +55,13 @@ class TestTransaction(unittest.TestCase):
 
     def test__check_state_not_begun(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         with self.assertRaises(ValueError):
             transaction._check_state()
 
     def test__check_state_already_committed(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = b'DEADBEEF'
         transaction.committed = object()
         with self.assertRaises(ValueError):
@@ -68,7 +69,7 @@ class TestTransaction(unittest.TestCase):
 
     def test__check_state_already_rolled_back(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = b'DEADBEEF'
         transaction._rolled_back = True
         with self.assertRaises(ValueError):
@@ -76,45 +77,46 @@ class TestTransaction(unittest.TestCase):
 
     def test__check_state_ok(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = b'DEADBEEF'
         transaction._check_state()  # does not raise
 
     def test__make_txn_selector(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         selector = transaction._make_txn_selector()
         self.assertEqual(selector.id, self.TRANSACTION_ID)
 
     def test_begin_already_begun(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         with self.assertRaises(ValueError):
             transaction.begin()
 
     def test_begin_already_rolled_back(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._rolled_back = True
         with self.assertRaises(ValueError):
             transaction.begin()
 
     def test_begin_already_committed(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction.committed = object()
         with self.assertRaises(ValueError):
             transaction.begin()
 
     def test_begin_w_gax_error(self):
         from google.gax.errors import GaxError
+
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _random_gax_error=True)
         session = _Session(database)
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
 
         with self.assertRaises(GaxError):
             transaction.begin()
@@ -128,12 +130,13 @@ class TestTransaction(unittest.TestCase):
     def test_begin_ok(self):
         from google.cloud.proto.spanner.v1.transaction_pb2 import (
             Transaction as TransactionPB)
+
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _begin_transaction_response=transaction_pb)
         session = _Session(database)
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
 
         txn_id = transaction.begin()
 
@@ -148,13 +151,13 @@ class TestTransaction(unittest.TestCase):
 
     def test_rollback_not_begun(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         with self.assertRaises(ValueError):
             transaction.rollback()
 
     def test_rollback_already_committed(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         transaction.committed = object()
         with self.assertRaises(ValueError):
@@ -162,7 +165,7 @@ class TestTransaction(unittest.TestCase):
 
     def test_rollback_already_rolled_back(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         transaction._rolled_back = True
         with self.assertRaises(ValueError):
@@ -170,11 +173,12 @@ class TestTransaction(unittest.TestCase):
 
     def test_rollback_w_gax_error(self):
         from google.gax.errors import GaxError
+
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _random_gax_error=True)
         session = _Session(database)
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         transaction.insert(TABLE_NAME, COLUMNS, VALUES)
 
@@ -191,12 +195,13 @@ class TestTransaction(unittest.TestCase):
 
     def test_rollback_ok(self):
         from google.protobuf.empty_pb2 import Empty
+
         empty_pb = Empty()
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _rollback_response=empty_pb)
         session = _Session(database)
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         transaction.replace(TABLE_NAME, COLUMNS, VALUES)
 
@@ -212,13 +217,13 @@ class TestTransaction(unittest.TestCase):
 
     def test_commit_not_begun(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         with self.assertRaises(ValueError):
             transaction.commit()
 
     def test_commit_already_committed(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         transaction.committed = object()
         with self.assertRaises(ValueError):
@@ -226,7 +231,7 @@ class TestTransaction(unittest.TestCase):
 
     def test_commit_already_rolled_back(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         transaction._rolled_back = True
         with self.assertRaises(ValueError):
@@ -234,18 +239,19 @@ class TestTransaction(unittest.TestCase):
 
     def test_commit_no_mutations(self):
         session = _Session()
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         with self.assertRaises(ValueError):
             transaction.commit()
 
     def test_commit_w_gax_error(self):
         from google.gax.errors import GaxError
+
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _random_gax_error=True)
         session = _Session(database)
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         transaction.replace(TABLE_NAME, COLUMNS, VALUES)
 
@@ -267,6 +273,7 @@ class TestTransaction(unittest.TestCase):
         from google.cloud.spanner.keyset import KeySet
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
+
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
         keys = [[0], [1], [2]]
@@ -276,7 +283,7 @@ class TestTransaction(unittest.TestCase):
         api = database.spanner_api = _FauxSpannerAPI(
             _commit_response=response)
         session = _Session(database)
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
         transaction._id = self.TRANSACTION_ID
         transaction.delete(TABLE_NAME, keyset)
 
@@ -298,6 +305,7 @@ class TestTransaction(unittest.TestCase):
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
+
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
         database = _Database()
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
@@ -308,7 +316,7 @@ class TestTransaction(unittest.TestCase):
             _begin_transaction_response=transaction_pb,
             _commit_response=response)
         session = _Session(database)
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
 
         with transaction:
             transaction.insert(TABLE_NAME, COLUMNS, VALUES)
@@ -327,13 +335,14 @@ class TestTransaction(unittest.TestCase):
         empty_pb = Empty()
         from google.cloud.proto.spanner.v1.transaction_pb2 import (
             Transaction as TransactionPB)
+
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _begin_transaction_response=transaction_pb,
             _rollback_response=empty_pb)
         session = _Session(database)
-        transaction = self._makeOne(session)
+        transaction = self._make_one(session)
 
         with self.assertRaises(Exception):
             with transaction:
@@ -370,6 +379,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
 
     def begin_transaction(self, session, options_, options=None):
         from google.gax.errors import GaxError
+
         self._begun = (session, options_, options)
         if self._random_gax_error:
             raise GaxError('error')
@@ -377,6 +387,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
 
     def rollback(self, session, transaction_id, options=None):
         from google.gax.errors import GaxError
+
         self._rolled_back = (session, transaction_id, options)
         if self._random_gax_error:
             raise GaxError('error')
@@ -385,6 +396,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
     def commit(self, session, mutations,
                transaction_id='', single_use_transaction=None, options=None):
         from google.gax.errors import GaxError
+
         assert single_use_transaction is None
         self._committed = (session, mutations, transaction_id, options)
         if self._random_gax_error:
