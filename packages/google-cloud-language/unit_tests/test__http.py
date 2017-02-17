@@ -19,7 +19,7 @@ class TestConnection(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.language.connection import Connection
+        from google.cloud.language._http import Connection
 
         return Connection
 
