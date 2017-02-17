@@ -8,11 +8,3 @@ Client
   :members:
   :undoc-members:
   :show-inheritance:
-
-Connection
-~~~~~~~~~~
-
-.. automodule:: google.cloud.vision.connection
-  :members:
-  :undoc-members:
-  :show-inheritance:
