@@ -17,7 +17,8 @@
 
 from google.cloud.client import Client as BaseClient
 from google.cloud.iterator import HTTPIterator
-from google.cloud.resource_manager.connection import Connection
+
+from google.cloud.resource_manager._http import Connection
 from google.cloud.resource_manager.project import Project
 
 
