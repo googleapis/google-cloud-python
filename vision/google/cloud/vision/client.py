@@ -20,10 +20,10 @@ from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
 
 from google.cloud.vision._gax import _GAPICVisionAPI
-from google.cloud.vision.batch import Batch
-from google.cloud.vision.connection import Connection
-from google.cloud.vision.image import Image
 from google.cloud.vision._http import _HTTPVisionAPI
+from google.cloud.vision._http import Connection
+from google.cloud.vision.batch import Batch
+from google.cloud.vision.image import Image
 
 
 _USE_GAX = not os.getenv(DISABLE_GRPC, False)

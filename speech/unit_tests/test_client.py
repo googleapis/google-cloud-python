@@ -85,7 +85,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        from google.cloud.speech.connection import Connection
+        from google.cloud.speech._http import Connection
 
         creds = _make_credentials()
         http = object()

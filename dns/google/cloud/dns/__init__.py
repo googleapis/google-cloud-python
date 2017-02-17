@@ -27,7 +27,6 @@ The main concepts with this API are:
 
 from google.cloud.dns.zone import Changes
 from google.cloud.dns.client import Client
-from google.cloud.dns.connection import Connection
 from google.cloud.dns.zone import ManagedZone
 from google.cloud.dns.resource_record_set import ResourceRecordSet
 

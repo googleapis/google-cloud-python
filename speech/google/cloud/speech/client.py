@@ -20,8 +20,8 @@ from google.cloud.client import Client as BaseClient
 from google.cloud.environment_vars import DISABLE_GRPC
 
 from google.cloud.speech._gax import GAPICSpeechAPI
+from google.cloud.speech._http import Connection
 from google.cloud.speech._http import HTTPSpeechAPI
-from google.cloud.speech.connection import Connection
 from google.cloud.speech.sample import Sample
 
 
