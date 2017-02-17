@@ -55,7 +55,7 @@ class TestClient(unittest.TestCase):
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                               user_agent=user_agent)
+                                user_agent=user_agent)
 
         expected_creds = expected_creds or creds.with_scopes.return_value
         self.assertIs(client._credentials, expected_creds)
