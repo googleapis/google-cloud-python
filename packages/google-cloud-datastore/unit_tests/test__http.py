@@ -31,6 +31,9 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test__rpc(self):
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
+
         class ReqPB(object):
 
             def SerializeToString(self):
@@ -56,17 +59,24 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         self.assertIsInstance(response, RspPB)
         self.assertEqual(response._pb, 'CONTENT')
         called_with = http._called_with
+        self.assertEqual(len(called_with), 4)
         self.assertEqual(called_with['uri'], URI)
         self.assertEqual(called_with['method'], 'POST')
-        self.assertEqual(called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': '5',
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(called_with['headers'], expected_headers)
         self.assertEqual(called_with['body'], REQPB)
         self.assertEqual(conn.build_kwargs,
                          [{'method': METHOD, 'project': PROJECT}])
 
     def test__request_w_200(self):
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
+
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = b'DATA'
@@ -77,12 +87,16 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         self.assertEqual(datastore_api._request(PROJECT, METHOD, DATA),
                          'CONTENT')
         called_with = http._called_with
+        self.assertEqual(len(called_with), 4)
         self.assertEqual(called_with['uri'], URI)
         self.assertEqual(called_with['method'], 'POST')
-        self.assertEqual(called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': '4',
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(called_with['headers'], expected_headers)
         self.assertEqual(called_with['body'], DATA)
         self.assertEqual(conn.build_kwargs,
                          [{'method': METHOD, 'project': PROJECT}])
@@ -386,12 +400,18 @@ class TestConnection(unittest.TestCase):
             return self._get_target_class()(client)
 
     def _verifyProtobufCall(self, called_with, URI, conn):
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
+
         self.assertEqual(called_with['uri'], URI)
         self.assertEqual(called_with['method'], 'POST')
-        self.assertEqual(called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': str(len(called_with['body'])),
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(called_with['headers'], expected_headers)
 
     def test_default_url(self):
         klass = self._get_target_class()
@@ -681,6 +701,9 @@ class TestConnection(unittest.TestCase):
     def test_lookup_multiple_keys_w_deferred(self):
         from google.cloud.grpc.datastore.v1 import datastore_pb2
 
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
+
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
         key_pb2 = self._make_key_pb(PROJECT, id_=2345)
@@ -704,9 +727,13 @@ class TestConnection(unittest.TestCase):
         self._verifyProtobufCall(cw, URI, conn)
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': '48',
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
