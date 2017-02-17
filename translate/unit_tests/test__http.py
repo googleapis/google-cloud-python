@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc.
+# Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ class TestConnection(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.resource_manager.connection import Connection
+        from google.cloud.translate._http import Connection
 
         return Connection
 
@@ -30,6 +30,8 @@ class TestConnection(unittest.TestCase):
         conn = self._make_one(object())
         URI = '/'.join([
             conn.API_BASE_URL,
+            'language',
+            'translate',
             conn.API_VERSION,
             'foo',
         ])
@@ -40,10 +42,13 @@ class TestConnection(unittest.TestCase):
         from six.moves.urllib.parse import urlsplit
 
         conn = self._make_one(object())
-        uri = conn.build_api_url('/foo', {'bar': 'baz'})
+        query_params = [('q', 'val1'), ('q', 'val2')]
+        uri = conn.build_api_url('/foo', query_params=query_params)
         scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
-        self.assertEqual(path,
-                         '/'.join(['', conn.API_VERSION, 'foo']))
-        parms = dict(parse_qsl(qs))
-        self.assertEqual(parms['bar'], 'baz')
+        self.assertEqual('%s://%s' % (scheme, netloc),
+                         conn.API_BASE_URL)
+        expected_path = '/'.join(
+            ['', 'language', 'translate', conn.API_VERSION, 'foo'])
+        self.assertEqual(path, expected_path)
+        params = parse_qsl(qs)
+        self.assertEqual(params, query_params)

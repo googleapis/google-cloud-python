@@ -27,7 +27,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
-        from google.cloud.translate.connection import Connection
+        from google.cloud.translate._http import Connection
         from google.cloud.translate.client import ENGLISH_ISO_639
 
         http = object()
@@ -38,7 +38,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.target_language, ENGLISH_ISO_639)
 
     def test_constructor_non_default(self):
-        from google.cloud.translate.connection import Connection
+        from google.cloud.translate._http import Connection
 
         http = object()
         target = 'es'
