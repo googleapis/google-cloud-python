@@ -540,7 +540,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(image_properties, ())
         self.assertEqual(len(image_properties), 0)
 
-    def test_detect_web_annotation(self):
+    def test_detect_web_detection(self):
         from google.cloud.vision.web import WebEntity
         from google.cloud.vision.web import WebImage
         from google.cloud.vision.web import WebPage

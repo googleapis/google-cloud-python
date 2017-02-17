@@ -22,7 +22,7 @@ from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.safe_search import SafeSearchAnnotation
 from google.cloud.vision.text import TextAnnotation
-from google.cloud.vision.web import WebAnnotation
+from google.cloud.vision.web import WebDetection
 
 
 _CROP_HINTS_ANNOTATION = 'cropHintsAnnotation'
@@ -30,7 +30,7 @@ _FACE_ANNOTATIONS = 'faceAnnotations'
 _FULL_TEXT_ANNOTATION = 'fullTextAnnotation'
 _IMAGE_PROPERTIES_ANNOTATION = 'imagePropertiesAnnotation'
 _SAFE_SEARCH_ANNOTATION = 'safeSearchAnnotation'
-_WEB_ANNOTATION = 'webAnnotation'
+_WEB_ANNOTATION = 'webDetection'
 
 _KEY_MAP = {
     _CROP_HINTS_ANNOTATION: 'crop_hints',
@@ -85,7 +85,7 @@ class Annotations(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
 
     :type web: list
-    :param web: List of :class:`~google.cloud.vision.web.WebAnnotation`.
+    :param web: List of :class:`~google.cloud.vision.web.WebDetection`.
     """
     def __init__(self, crop_hints=(), faces=(), full_texts=(), properties=(),
                  labels=(), landmarks=(), logos=(), safe_searches=(),
@@ -156,7 +156,7 @@ def _process_image_annotations(image):
         'safe_searches': _make_safe_search_from_pb(
             image.safe_search_annotation),
         'texts': _make_entity_from_pb(image.text_annotations),
-        'web': _make_web_annotation_from_pb(image.web_annotation)
+        'web': _make_web_detection_from_pb(image.web_detection)
     }
 
 
@@ -240,17 +240,17 @@ def _make_safe_search_from_pb(safe_search):
     return SafeSearchAnnotation.from_pb(safe_search)
 
 
-def _make_web_annotation_from_pb(annotation):
-    """Create ``WebAnnotation`` object from a protobuf response.
+def _make_web_detection_from_pb(annotation):
+    """Create ``WebDetection`` object from a protobuf response.
 
-    :type annotation: :class:`~google.cloud.proto.vision.v1.web_annotation_pb2\
-                      .WebAnnotation`
-    :param annotation: Protobuf instance of ``WebAnnotation``.
+    :type annotation: :class:`~google.cloud.proto.vision.v1.web_detection_pb2\
+                      .WebDetection`
+    :param annotation: Protobuf instance of ``WebDetection``.
 
-    :rtype: :class: `~google.cloud.vision.web.WebAnnotation`
-    :returns: Instance of ``WebAnnotation``.
+    :rtype: :class: `~google.cloud.vision.web.WebDetection`
+    :returns: Instance of ``WebDetection``.
     """
-    return WebAnnotation.from_pb(annotation)
+    return WebDetection.from_pb(annotation)
 
 
 def _entity_from_response_type(feature_type, results):
@@ -275,7 +275,7 @@ def _entity_from_response_type(feature_type, results):
     elif feature_type == _SAFE_SEARCH_ANNOTATION:
         return SafeSearchAnnotation.from_api_repr(results)
     elif feature_type == _WEB_ANNOTATION:
-        return WebAnnotation.from_api_repr(results)
+        return WebDetection.from_api_repr(results)
     elif feature_type == _CROP_HINTS_ANNOTATION:
         crop_hints = results.get('cropHints', [])
         detected_objects.extend(

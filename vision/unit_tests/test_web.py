@@ -15,11 +15,11 @@
 import unittest
 
 
-class TestWebAnnotation(unittest.TestCase):
+class TestWebDetection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.vision.web import WebAnnotation
-        return WebAnnotation
+        from google.cloud.vision.web import WebDetection
+        return WebDetection
 
     def _make_one(self, web_entities, full_matching_images,
                   partial_matching_images, pages_with_matching_images):
@@ -27,19 +27,19 @@ class TestWebAnnotation(unittest.TestCase):
                                         partial_matching_images,
                                         pages_with_matching_images)
 
-    def test_web_annotation_ctor(self):
-        web_annotation = self._make_one(1, 2, 3, 4)
-        self.assertEqual(web_annotation.web_entities, 1)
-        self.assertEqual(web_annotation.full_matching_images, 2)
-        self.assertEqual(web_annotation.partial_matching_images, 3)
-        self.assertEqual(web_annotation.pages_with_matching_images, 4)
+    def test_web_detection_ctor(self):
+        web_detection = self._make_one(1, 2, 3, 4)
+        self.assertEqual(web_detection.web_entities, 1)
+        self.assertEqual(web_detection.full_matching_images, 2)
+        self.assertEqual(web_detection.partial_matching_images, 3)
+        self.assertEqual(web_detection.pages_with_matching_images, 4)
 
-    def test_web_annotation_from_api_repr(self):
+    def test_web_detection_from_api_repr(self):
         from google.cloud.vision.web import WebEntity
         from google.cloud.vision.web import WebImage
         from google.cloud.vision.web import WebPage
 
-        web_annotation_dict = {
+        web_detection_dict = {
             'partialMatchingImages': [{
                 'url': 'https://cloud.google.com/vision',
                 'score': 0.92234,
@@ -58,22 +58,22 @@ class TestWebAnnotation(unittest.TestCase):
                 'score': 0.92234,
             }],
         }
-        web_annotation = self._get_target_class().from_api_repr(
-            web_annotation_dict)
-        self.assertEqual(len(web_annotation.partial_matching_images), 1)
-        self.assertEqual(len(web_annotation.full_matching_images), 1)
-        self.assertEqual(len(web_annotation.web_entities), 1)
-        self.assertEqual(len(web_annotation.pages_with_matching_images), 1)
+        web_detection = self._get_target_class().from_api_repr(
+            web_detection_dict)
+        self.assertEqual(len(web_detection.partial_matching_images), 1)
+        self.assertEqual(len(web_detection.full_matching_images), 1)
+        self.assertEqual(len(web_detection.web_entities), 1)
+        self.assertEqual(len(web_detection.pages_with_matching_images), 1)
 
-        self.assertIsInstance(web_annotation.partial_matching_images[0],
+        self.assertIsInstance(web_detection.partial_matching_images[0],
                               WebImage)
-        self.assertIsInstance(web_annotation.full_matching_images[0], WebImage)
-        self.assertIsInstance(web_annotation.web_entities[0], WebEntity)
-        self.assertIsInstance(web_annotation.pages_with_matching_images[0],
+        self.assertIsInstance(web_detection.full_matching_images[0], WebImage)
+        self.assertIsInstance(web_detection.web_entities[0], WebEntity)
+        self.assertIsInstance(web_detection.pages_with_matching_images[0],
                               WebPage)
 
-    def test_web_annotation_from_pb(self):
-        from google.cloud.proto.vision.v1 import web_annotation_pb2
+    def test_web_detection_from_pb(self):
+        from google.cloud.proto.vision.v1 import web_detection_pb2
         from google.cloud.vision.web import WebEntity
         from google.cloud.vision.web import WebImage
         from google.cloud.vision.web import WebPage
@@ -83,29 +83,29 @@ class TestWebAnnotation(unittest.TestCase):
         score = 1470.4435
         url = 'http://cloud.google.com/vision'
 
-        web_entity_pb = web_annotation_pb2.WebAnnotation.WebEntity(
+        web_entity_pb = web_detection_pb2.WebDetection.WebEntity(
             entity_id=entity_id, score=score, description=description)
 
-        web_image_pb = web_annotation_pb2.WebAnnotation.WebImage(
+        web_image_pb = web_detection_pb2.WebDetection.WebImage(
             url=url, score=score)
 
-        web_page_pb = web_annotation_pb2.WebAnnotation.WebPage(
+        web_page_pb = web_detection_pb2.WebDetection.WebPage(
             url=url, score=score)
 
-        web_annotation_pb = web_annotation_pb2.WebAnnotation(
+        web_detection_pb = web_detection_pb2.WebDetection(
             web_entities=[web_entity_pb], full_matching_images=[web_image_pb],
             partial_matching_images=[web_image_pb],
             pages_with_matching_images=[web_page_pb])
-        web_annotation = self._get_target_class().from_pb(web_annotation_pb)
-        self.assertEqual(len(web_annotation.web_entities), 1)
-        self.assertEqual(len(web_annotation.full_matching_images), 1)
-        self.assertEqual(len(web_annotation.partial_matching_images), 1)
-        self.assertEqual(len(web_annotation.pages_with_matching_images), 1)
-        self.assertIsInstance(web_annotation.web_entities[0], WebEntity)
-        self.assertIsInstance(web_annotation.full_matching_images[0], WebImage)
-        self.assertIsInstance(web_annotation.partial_matching_images[0],
+        web_detection = self._get_target_class().from_pb(web_detection_pb)
+        self.assertEqual(len(web_detection.web_entities), 1)
+        self.assertEqual(len(web_detection.full_matching_images), 1)
+        self.assertEqual(len(web_detection.partial_matching_images), 1)
+        self.assertEqual(len(web_detection.pages_with_matching_images), 1)
+        self.assertIsInstance(web_detection.web_entities[0], WebEntity)
+        self.assertIsInstance(web_detection.full_matching_images[0], WebImage)
+        self.assertIsInstance(web_detection.partial_matching_images[0],
                               WebImage)
-        self.assertIsInstance(web_annotation.pages_with_matching_images[0],
+        self.assertIsInstance(web_detection.pages_with_matching_images[0],
                               WebPage)
 
 
@@ -140,12 +140,12 @@ class TestWebEntity(unittest.TestCase):
         self.assertEqual(web_entity.description, entity_dict['description'])
 
     def test_web_entity_from_pb(self):
-        from google.cloud.proto.vision.v1 import web_annotation_pb2
+        from google.cloud.proto.vision.v1 import web_detection_pb2
 
         entity_id = '/m/019dvv'
         score = 1470.4435
         description = 'Some images like the image you have.'
-        web_entity_pb = web_annotation_pb2.WebAnnotation.WebEntity(
+        web_entity_pb = web_detection_pb2.WebDetection.WebEntity(
             entity_id=entity_id, score=score, description=description)
         web_entity = self._get_target_class().from_pb(web_entity_pb)
         self.assertEqual(web_entity.entity_id, entity_id)
@@ -179,11 +179,11 @@ class TestWebImage(unittest.TestCase):
         self.assertAlmostEqual(web_image.score, web_image_dict['score'])
 
     def test_web_image_from_pb(self):
-        from google.cloud.proto.vision.v1 import web_annotation_pb2
+        from google.cloud.proto.vision.v1 import web_detection_pb2
 
         url = 'http://cloud.google.com/vision'
         score = 1234.23
-        web_image_pb = web_annotation_pb2.WebAnnotation.WebImage(
+        web_image_pb = web_detection_pb2.WebDetection.WebImage(
             url=url, score=score)
         web_image = self._get_target_class().from_pb(web_image_pb)
         self.assertEqual(web_image.url, url)
@@ -216,11 +216,11 @@ class TestWebPage(unittest.TestCase):
         self.assertAlmostEqual(web_page.score, web_page_dict['score'], 4)
 
     def test_web_page_from_pb(self):
-        from google.cloud.proto.vision.v1 import web_annotation_pb2
+        from google.cloud.proto.vision.v1 import web_detection_pb2
 
         url = 'http://cloud.google.com/vision'
         score = 1234.23
-        web_page_pb = web_annotation_pb2.WebAnnotation.WebPage(
+        web_page_pb = web_detection_pb2.WebDetection.WebPage(
             url=url, score=score)
         web_page = self._get_target_class().from_pb(web_page_pb)
         self.assertEqual(web_page.url, url)

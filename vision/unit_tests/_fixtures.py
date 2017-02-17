@@ -1964,7 +1964,7 @@ TEXT_DETECTION_RESPONSE = {
 WEB_ANNOTATION_RESPONSE = {
     'responses': [
         {
-            'webAnnotation': {
+            'webDetection': {
                 'partialMatchingImages': [{
                     'score': 0.9216,
                     'url': 'https://cloud.google.com/vision'

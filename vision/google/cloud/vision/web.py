@@ -15,28 +15,28 @@
 """Web image search."""
 
 
-class WebAnnotation(object):
-    """Representation of a web annotation sent from the Vision API.
+class WebDetection(object):
+    """Representation of a web detection sent from the Vision API.
 
     :type web_entities: list
     :param web_entities: List of
                          :class:`google.cloud.proto.vision.v1.\
-                         web_annotation_pb2.WebAnnotation.WebEntity`.
+                         web_detection_pb2.WebDetection.WebEntity`.
 
     :type full_matching_images: list
     :param full_matching_images: List of
                                  :class:`google.cloud.proto.vision.v1.\
-                                 web_annotation_pb2.WebAnnotation.WebImage`.
+                                 web_detection_pb2.WebDetection.WebImage`.
 
     :type partial_matching_images: list
     :param partial_matching_images: List of
                                     :class:`google.cloud.proto.vision.v1.\
-                                    web_annotation_pb2.WebAnnotation.WebImage`.
+                                    web_detection_pb2.WebDetection.WebImage`.
 
     :type pages_with_matching_images: list
     :param pages_with_matching_images: List of
                                        :class:`google.cloud.proto.vision.v1.\
-                                       web_annotation_pb2.WebAnnotation.\
+                                       web_detection_pb2.WebDetection.\
                                        WebPage`.
     """
     def __init__(self, web_entities=(), full_matching_images=(),
@@ -47,21 +47,21 @@ class WebAnnotation(object):
         self._pages_with_matching_images = pages_with_matching_images
 
     @classmethod
-    def from_api_repr(cls, annotation):
-        """Factory: construct ``WebAnnotation`` from Vision API response.
+    def from_api_repr(cls, detection):
+        """Factory: construct ``WebDetection`` from Vision API response.
 
-        :type annotation: dict
-        :param annotation: Dictionary representing a ``WebAnnotation``.
+        :type detection: dict
+        :param detection: Dictionary representing a ``WebDetection``.
 
-        :rtype: :class:`~google.cloud.vision.web.WebAnnotation`
-        :returns: Populated instance of ``WebAnnotation``.
+        :rtype: :class:`~google.cloud.vision.web.WebDetection`
+        :returns: Populated instance of ``WebDetection``.
         """
-        web_entities = annotation.get('webEntities')
-        full_matching_images = annotation.get('fullMatchingImages')
-        partial_matching_images = annotation.get('partialMatchingImages')
-        pages_with_matching_images = annotation.get('pagesWithMatchingImages')
+        web_entities = detection.get('webEntities')
+        full_matching_images = detection.get('fullMatchingImages')
+        partial_matching_images = detection.get('partialMatchingImages')
+        pages_with_matching_images = detection.get('pagesWithMatchingImages')
 
-        web_annotation = {
+        web_detection = {
             'web_entities': [WebEntity.from_api_repr(web_entity)
                              for web_entity in web_entities],
             'full_matching_images': [WebImage.from_api_repr(web_image)
@@ -73,29 +73,29 @@ class WebAnnotation(object):
                                            for web_page
                                            in pages_with_matching_images],
         }
-        return cls(**web_annotation)
+        return cls(**web_detection)
 
     @classmethod
-    def from_pb(cls, annotation):
-        """Factory: construct ``WebAnnotation`` from Vision API response.
+    def from_pb(cls, detection):
+        """Factory: construct ``WebDetection`` from Vision API response.
 
-        :type annotation: :class:`~google.cloud.proto.vision.v1.\
-                          web_annotation_pb2.WebAnnotation`
-        :param annotation: Dictionary representing a ``WebAnnotation``.
+        :type detection: :class:`~google.cloud.proto.vision.v1.\
+                          web_detection_pb2.WebDetection`
+        :param detection: Dictionary representing a ``WebDetection``.
 
-        :rtype: :class:`~google.cloud.vision.web.WebAnnotation`
-        :returns: Populated instance of ``WebAnnotation``.
+        :rtype: :class:`~google.cloud.vision.web.WebDetection`
+        :returns: Populated instance of ``WebDetection``.
         """
         web_entities = [WebEntity.from_pb(web_entity)
-                        for web_entity in annotation.web_entities]
+                        for web_entity in detection.web_entities]
         full_image_matches = [WebImage.from_pb(web_image)
-                              for web_image in annotation.full_matching_images]
+                              for web_image in detection.full_matching_images]
         partial_image_matches = [WebImage.from_pb(web_image)
                                  for web_image
-                                 in annotation.partial_matching_images]
+                                 in detection.partial_matching_images]
         pages_with_images = [WebPage.from_pb(web_page)
                              for web_page
-                             in annotation.pages_with_matching_images]
+                             in detection.pages_with_matching_images]
         return cls(web_entities, full_image_matches, partial_image_matches,
                    pages_with_images)
 
@@ -172,7 +172,7 @@ class WebEntity(object):
         """Factory: construct ``WebEntity`` from Vision API response.
 
         :type web_entity: :class:`~google.cloud.proto.vision.v1.\
-                          web_annotation_pb2.WebAnnotation.WebEntity`
+                          web_detection_pb2.WebDetection.WebEntity`
         :param web_entity: Dictionary representing a web entity
 
         :rtype: :class:`~google.cloud.vision.web.WebEntity`
@@ -243,7 +243,7 @@ class WebImage(object):
         """Factory: construct ``WebImage`` from Vision API response.
 
         :type web_image: :class:`~google.cloud.proto.vision.v1.\
-                         web_annotation_pb2.WebAnnotation.WebImage`
+                         web_detection_pb2.WebDetection.WebImage`
         :param web_image: Dictionary representing a web image
 
         :rtype: :class:`~google.cloud.vision.web.WebImage`
@@ -304,7 +304,7 @@ class WebPage(object):
         """Factory: construct ``WebPage`` from Vision API response.
 
         :type web_page: :class:`~google.cloud.proto.vision.v1.\
-                        web_annotation_pb2.WebAnnotation.WebPage`
+                        web_detection_pb2.WebDetection.WebPage`
         :param web_page: Dictionary representing a web image
 
         :rtype: :class:`~google.cloud.vision.web.WebPage`
