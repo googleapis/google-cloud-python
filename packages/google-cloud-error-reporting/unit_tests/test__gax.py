@@ -21,6 +21,7 @@ class Test_make_report_error_api(unittest.TestCase):
 
     def test_make_report_error_api(self):
         from google.cloud.error_reporting._gax import make_report_error_api
+
         client = mock.Mock()
         client.project = mock.Mock()
         report_error_client = make_report_error_api(client)
@@ -33,6 +34,7 @@ class Test_ErrorReportingGaxApi(unittest.TestCase):
 
     def _call_fut(self, gax_api, project):
         from google.cloud.error_reporting._gax import _ErrorReportingGaxApi
+
         return _ErrorReportingGaxApi(gax_api, project)
 
     def test_constructor(self):
