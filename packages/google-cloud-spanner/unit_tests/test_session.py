@@ -44,9 +44,9 @@ class TestSession(unittest.TestCase):
 
     def test___lt___(self):
         database = _Database(self.DATABASE_NAME)
-        lhs = self._makeOne(database)
+        lhs = self._make_one(database)
         lhs._session_id = b'123'
-        rhs = self._makeOne(database)
+        rhs = self._make_one(database)
         rhs._session_id = b'234'
         self.assertTrue(lhs < rhs)
 

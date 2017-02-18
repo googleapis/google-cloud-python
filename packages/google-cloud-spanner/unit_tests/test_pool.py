@@ -603,7 +603,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.spanner import pool as MUT
         NOW = datetime.datetime.utcnow()
-        pool = self._makeOne()
+        pool = self._make_one()
         database = _Database('name')
         SESSIONS = [_Session(database) for _ in range(10)]
         database._sessions.extend(SESSIONS)
