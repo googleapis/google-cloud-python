@@ -42,6 +42,14 @@ class TestSession(unittest.TestCase):
         self.assertTrue(session.session_id is None)
         self.assertTrue(session._database is database)
 
+    def test___lt___(self):
+        database = _Database(self.DATABASE_NAME)
+        lhs = self._make_one(database)
+        lhs._session_id = b'123'
+        rhs = self._make_one(database)
+        rhs._session_id = b'234'
+        self.assertTrue(lhs < rhs)
+
     def test_name_property_wo_session_id(self):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)

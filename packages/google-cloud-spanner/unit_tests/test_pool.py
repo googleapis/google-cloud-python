@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+from functools import total_ordering
 import unittest
 
 
@@ -597,6 +598,32 @@ class TestTransactionPingingPool(unittest.TestCase):
 
         self.assertTrue(pool._pending_sessions.empty())
 
+    def test_bind_w_timestamp_race(self):
+        import datetime
+        from google.cloud._testing import _Monkey
+        from google.cloud.spanner import pool as MUT
+        NOW = datetime.datetime.utcnow()
+        pool = self._make_one()
+        database = _Database('name')
+        SESSIONS = [_Session(database) for _ in range(10)]
+        database._sessions.extend(SESSIONS)
+
+        with _Monkey(MUT, _NOW=lambda: NOW):
+            pool.bind(database)
+
+        self.assertIs(pool._database, database)
+        self.assertEqual(pool.size, 10)
+        self.assertEqual(pool.default_timeout, 10)
+        self.assertEqual(pool._delta.seconds, 3000)
+        self.assertTrue(pool._sessions.full())
+
+        for session in SESSIONS:
+            self.assertTrue(session._created)
+            txn = session._transaction
+            self.assertTrue(txn._begun)
+
+        self.assertTrue(pool._pending_sessions.empty())
+
     def test_put_full(self):
         from six.moves.queue import Full
 
@@ -755,6 +782,7 @@ class _Transaction(object):
         return self._committed
 
 
+@total_ordering
 class _Session(object):
 
     _transaction = None
@@ -766,6 +794,9 @@ class _Session(object):
         self._created = False
         self._deleted = False
         self._transaction = transaction
+
+    def __lt__(self, other):
+        return id(self) < id(other)
 
     def create(self):
         self._created = True
