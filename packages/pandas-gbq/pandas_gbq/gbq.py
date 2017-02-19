@@ -167,8 +167,6 @@ class GbqConnector(object):
         This method tries to retrieve the "default application credentials".
         This could be useful for running code on Google Cloud Platform.
 
-        .. versionadded:: 0.19.0
-
         Parameters
         ----------
         None
@@ -652,8 +650,6 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
 
       By default "application default credentials" are used.
 
-      .. versionadded:: 0.19.0
-
       If default application credentials are not found or are restrictive,
       user account credentials are used. In this case, you will be asked to
       grant permissions for product name 'pandas GBQ'.
@@ -683,16 +679,12 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
         or string contents. This is useful for remote server
         authentication (eg. jupyter iPython notebook on remote host)
 
-        .. versionadded:: 0.18.1
-
     dialect : {'legacy', 'standard'}, default 'legacy'
         'legacy' : Use BigQuery's legacy SQL dialect.
         'standard' : Use BigQuery's standard SQL (beta), which is
         compliant with the SQL 2011 standard. For more information
         see `BigQuery SQL Reference
         <https://cloud.google.com/bigquery/sql-reference/>`__
-
-        .. versionadded:: 0.19.0
 
     **kwargs : Arbitrary keyword arguments
         configuration (dict): query config parameters for job processing.
@@ -702,8 +694,6 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
 
         For more information see `BigQuery SQL Reference
         <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`
-
-        .. versionadded:: 0.20.0
 
     Returns
     -------
@@ -787,8 +777,6 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
     - If "private_key" is not provided:
 
       By default "application default credentials" are used.
-
-      .. versionadded:: 0.19.0
 
       If default application credentials are not found or are restrictive,
       user account credentials are used. In this case, you will be asked to
@@ -912,8 +900,6 @@ class _Table(GbqConnector):
     def exists(self, table_id):
         """ Check if a table exists in Google BigQuery
 
-        .. versionadded:: 0.17.0
-
         Parameters
         ----------
         table : str
@@ -939,8 +925,6 @@ class _Table(GbqConnector):
 
     def create(self, table_id, schema):
         """ Create a table in Google BigQuery given a table and schema
-
-        .. versionadded:: 0.17.0
 
         Parameters
         ----------
@@ -980,8 +964,6 @@ class _Table(GbqConnector):
     def delete(self, table_id):
         """ Delete a table in Google BigQuery
 
-        .. versionadded:: 0.17.0
-
         Parameters
         ----------
         table : str
@@ -1017,8 +999,6 @@ class _Dataset(GbqConnector):
     def exists(self, dataset_id):
         """ Check if a dataset exists in Google BigQuery
 
-        .. versionadded:: 0.17.0
-
         Parameters
         ----------
         dataset_id : str
@@ -1043,8 +1023,6 @@ class _Dataset(GbqConnector):
 
     def datasets(self):
         """ Return a list of datasets in Google BigQuery
-
-        .. versionadded:: 0.17.0
 
         Parameters
         ----------
@@ -1086,8 +1064,6 @@ class _Dataset(GbqConnector):
     def create(self, dataset_id):
         """ Create a dataset in Google BigQuery
 
-        .. versionadded:: 0.17.0
-
         Parameters
         ----------
         dataset : str
@@ -1115,8 +1091,6 @@ class _Dataset(GbqConnector):
     def delete(self, dataset_id):
         """ Delete a dataset in Google BigQuery
 
-        .. versionadded:: 0.17.0
-
         Parameters
         ----------
         dataset : str
@@ -1139,8 +1113,6 @@ class _Dataset(GbqConnector):
 
     def tables(self, dataset_id):
         """ List tables in the specific dataset in Google BigQuery
-
-        .. versionadded:: 0.17.0
 
         Parameters
         ----------
