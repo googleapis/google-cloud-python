@@ -548,7 +548,7 @@ class TestMetric(unittest.TestCase):
             'type': TYPE,
             'labels': LABELS,
         }
-        self.assertEquals(metric._to_dict(), expected_dict)
+        self.assertEqual(metric._to_dict(), expected_dict)
 
 
 class _Connection(object):
