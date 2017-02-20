@@ -52,8 +52,8 @@ class TestClient(unittest.TestCase):
     def test_ctor_default(self, _):
         CREDENTIALS = _make_credentials()
         target = self._make_one(credentials=CREDENTIALS)
-        self.assertEquals(target.service, target.DEFAULT_SERVICE)
-        self.assertEquals(target.version, None)
+        self.assertEqual(target.service, target.DEFAULT_SERVICE)
+        self.assertEqual(target.version, None)
 
     def test_ctor_params(self):
         CREDENTIALS = _make_credentials()
@@ -61,8 +61,8 @@ class TestClient(unittest.TestCase):
                                 credentials=CREDENTIALS,
                                 service=self.SERVICE,
                                 version=self.VERSION)
-        self.assertEquals(target.service, self.SERVICE)
-        self.assertEquals(target.version, self.VERSION)
+        self.assertEqual(target.service, self.SERVICE)
+        self.assertEqual(target.version, self.VERSION)
 
     def test_report_exception_with_gax(self):
         CREDENTIALS = _make_credentials()
@@ -77,7 +77,7 @@ class TestClient(unittest.TestCase):
             except NameError:
                 target.report_exception()
             payload = make_api.return_value.report_error_event.call_args[0][0]
-        self.assertEquals(payload['serviceContext'], {
+        self.assertEqual(payload['serviceContext'], {
             'service': target.DEFAULT_SERVICE,
         })
         self.assertIn('test_report', payload['message'])
@@ -99,7 +99,7 @@ class TestClient(unittest.TestCase):
             mock_report = _error_api.return_value.report_error_event
             payload = mock_report.call_args[0][0]
 
-        self.assertEquals(payload['serviceContext'], {
+        self.assertEqual(payload['serviceContext'], {
             'service': target.DEFAULT_SERVICE,
         })
         self.assertIn('test_report', payload['message'])
@@ -129,7 +129,7 @@ class TestClient(unittest.TestCase):
             target.report_exception(http_context=http_context, user=USER)
 
         payload = client.report_error_event.call_args[0][0]
-        self.assertEquals(payload['serviceContext'], {
+        self.assertEqual(payload['serviceContext'], {
             'service': SERVICE,
             'version': VERSION
         })
@@ -137,11 +137,11 @@ class TestClient(unittest.TestCase):
             'test_report_exception_with_service_version_in_constructor',
             payload['message'])
         self.assertIn('test_client.py', payload['message'])
-        self.assertEquals(
+        self.assertEqual(
             payload['context']['httpContext']['responseStatusCode'], 500)
-        self.assertEquals(
+        self.assertEqual(
             payload['context']['httpContext']['method'], 'GET')
-        self.assertEquals(payload['context']['user'], USER)
+        self.assertEqual(payload['context']['user'], USER)
 
     @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
     def test_report(self, make_client):
@@ -157,7 +157,7 @@ class TestClient(unittest.TestCase):
 
         payload = client.report_error_event.call_args[0][0]
 
-        self.assertEquals(payload['message'], MESSAGE)
+        self.assertEqual(payload['message'], MESSAGE)
         report_location = payload['context']['reportLocation']
         self.assertIn('test_client.py', report_location['filePath'])
         self.assertEqual(report_location['functionName'], 'test_report')
