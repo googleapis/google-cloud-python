@@ -12,12 +12,12 @@ specifying the location and other parameters for a set of instances.  These
 configurations are defined by the server, and cannot be changed.
 
 To list of all instance configurations available to your project, use the
-:meth:`~google.cloud.spanner.client.Client.list_instance_configurations`
+:meth:`~google.cloud.spanner.client.Client.list_instance_configs`
 method of the client:
 
 .. code:: python
 
-    configs, token = client.list_instance_configurations()
+    configs, token = client.list_instance_configs()
 
 
 To fetch a single instance configuration, use the
@@ -26,7 +26,7 @@ method of the client:
 
 .. code:: python
 
-    config = client.get_instance_configuration('confg-name')
+    config = client.get_instance_configuration('config-name')
 
 
 List Instances
@@ -57,7 +57,7 @@ To create a :class:`~google.cloud.spanner.instance.Instance` object:
 - ``configuration_name`` is the name of the instance configuration to which the
   instance will be bound.  It must be one of the names configured for your
   project, discoverable via
-  :meth:`google.cloud.spanner.client.Client.list_instance_configurations`.
+  :meth:`google.cloud.spanner.client.Client.list_instance_configs`.
 
 - ``node_count`` is a postitive integral count of the number of nodes used
   by the instance.  More nodes allows for higher performance, but at a higher
