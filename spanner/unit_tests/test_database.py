@@ -17,6 +17,8 @@ import unittest
 
 import mock
 
+from google.cloud.spanner import __version__
+
 from google.cloud._testing import _GAXBaseAPI
 
 
@@ -188,7 +190,9 @@ class TestDatabase(_BaseTest):
         _client = object()
         _clients = [_client]
 
-        def _mock_spanner_client():
+        def _mock_spanner_client(*args, **kwargs):
+            self.assertEqual(kwargs['lib_name'], 'gccl')
+            self.assertEqual(kwargs['lib_version'], __version__)
             return _clients.pop(0)
 
         with _Monkey(MUT, SpannerClient=_mock_spanner_client):

@@ -30,6 +30,7 @@ import six
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.operation import register_type
+from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.batch import Batch
 from google.cloud.spanner.session import Session
@@ -179,7 +180,8 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
-            self._spanner_api = SpannerClient()
+            self._spanner_api = SpannerClient(lib_name='gccl',
+                                              lib_version=__version__)
         return self._spanner_api
 
     def __eq__(self, other):
