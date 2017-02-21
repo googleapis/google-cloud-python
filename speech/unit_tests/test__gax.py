@@ -14,6 +14,19 @@
 
 import unittest
 
+import mock
+
+import google.auth.credentials
+
+
+class TestGAPICSpeechAPI(unittest.TestCase):
+    def test_gapic_api(self):
+        """Establish that the ._gapic_api of the GAPICSpeechAPI object
+        is a GAPIC SpeechClient object called with the appropriate
+        arguments.
+        """
+        
+
 
 class TestSpeechGAXMakeRequests(unittest.TestCase):
     SAMPLE_RATE = 16000

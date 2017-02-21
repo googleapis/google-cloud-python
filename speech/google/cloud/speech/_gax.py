@@ -46,13 +46,17 @@ class GAPICSpeechAPI(object):
         channel = make_secure_channel(
             credentials, DEFAULT_USER_AGENT,
             SpeechClient.SERVICE_ADDRESS)
-        self._gapic_api = SpeechClient(channel=channel, lib_name='gccl',
-                                       lib_version=__version__)
+        self._gapic_api = SpeechClient(
+            channel=channel,
+            lib_name='gccl',
+            lib_version=__version__,
+        )
         self._operations_stub = make_secure_stub(
             credentials,
             DEFAULT_USER_AGENT,
             operations_grpc.OperationsStub,
-            OPERATIONS_API_HOST)
+            OPERATIONS_API_HOST,
+        )
 
     def async_recognize(self, sample, language_code=None,
                         max_alternatives=None, profanity_filter=None,
