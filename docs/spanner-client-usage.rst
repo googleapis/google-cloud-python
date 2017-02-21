@@ -1,5 +1,5 @@
-Base for Everything
-===================
+Client
+======
 
 To use the API, the :class:`~google.cloud.spanner.client.Client`
 class defines a high-level interface which handles authorization
