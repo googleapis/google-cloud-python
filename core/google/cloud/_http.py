@@ -15,7 +15,9 @@
 """Shared implementation of connections to API servers."""
 
 import json
+import platform
 from pkg_resources import get_distribution
+
 import six
 from six.moves.urllib.parse import urlencode
 
@@ -29,6 +31,10 @@ DEFAULT_USER_AGENT = 'gcloud-python/{0}'.format(
     get_distribution('google-cloud-core').version)
 """The user agent for google-cloud-python requests."""
 
+CLIENT_INFO_HEADER = 'X-Goog-API-Client'
+CLIENT_INFO_TEMPLATE = (
+    'gl-python/' + platform.python_version() + ' gccl/{}')
+
 
 class Connection(object):
     """A generic connection to Google Cloud Platform.
@@ -38,6 +44,11 @@ class Connection(object):
     """
 
     USER_AGENT = DEFAULT_USER_AGENT
+    _EXTRA_HEADERS = {}
+    """Headers to be sent with every request.
+
+    Intended to be over-ridden by subclasses.
+    """
 
     def __init__(self, client):
         self._client = client
@@ -147,7 +158,9 @@ class JSONConnection(Connection):
         :param content_type: The proper MIME type of the data provided.
 
         :type headers: dict
-        :param headers: A dictionary of HTTP headers to send with the request.
+        :param headers: (Optional) A dictionary of HTTP headers to send with
+                        the request. If passed, will be modified directly
+                        here with added headers.
 
         :type target_object: object
         :param target_object:
@@ -161,6 +174,7 @@ class JSONConnection(Connection):
                   returned by :meth:`_do_request`.
         """
         headers = headers or {}
+        headers.update(self._EXTRA_HEADERS)
         headers['Accept-Encoding'] = 'gzip'
 
         if data:
