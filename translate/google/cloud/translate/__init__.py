@@ -14,6 +14,10 @@
 
 """Google Cloud Translation API wrapper."""
 
+
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-translate').version
+
 from google.cloud.translate.client import BASE
 from google.cloud.translate.client import Client
 from google.cloud.translate.client import NMT
