@@ -111,7 +111,6 @@ class TestClient(unittest.TestCase):
         the database and instance API objects in the GAPIC.
         """
         from google.cloud.spanner import __version__
-        from google.cloud.spanner import client as MUT
         from google.cloud.gapic.spanner_admin_database import v1 as db
         from google.cloud.gapic.spanner_admin_instance import v1 as inst
 
@@ -123,7 +122,10 @@ class TestClient(unittest.TestCase):
         # name and version.
         with mock.patch.object(DatabaseAdminClient, '__init__') as mock_dac:
             mock_dac.return_value = None
-            client = self._make_one()
+            client = self._make_one(
+                credentials=_make_credentials(),
+                project='foo',
+            )
             self.assertIsInstance(client.database_admin_api,
                                   DatabaseAdminClient)
             mock_dac.assert_called_once()
@@ -135,7 +137,10 @@ class TestClient(unittest.TestCase):
         # name and version.
         with mock.patch.object(InstanceAdminClient, '__init__') as mock_iac:
             mock_iac.return_value = None
-            client = self._make_one()
+            client = self._make_one(
+                credentials=_make_credentials(),
+                project='foo',
+            )
             self.assertIsInstance(client.instance_admin_api,
                                   InstanceAdminClient)
             mock_iac.assert_called_once()
@@ -152,7 +157,8 @@ class TestClient(unittest.TestCase):
 
         class _Client(object):
             def __init__(self, *args, **kwargs):
-                pass
+                self.args = args
+                self.kwargs = kwargs
 
         with _Monkey(MUT, InstanceAdminClient=_Client):
             api = client.instance_admin_api
@@ -160,6 +166,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(isinstance(api, _Client))
         again = client.instance_admin_api
         self.assertTrue(again is api)
+        self.assertEqual(api.kwargs['lib_name'], 'gccl')
 
     def test_database_admin_api(self):
         from google.cloud._testing import _Monkey
@@ -170,7 +177,8 @@ class TestClient(unittest.TestCase):
 
         class _Client(object):
             def __init__(self, *args, **kwargs):
-                pass
+                self.args = args
+                self.kwargs = kwargs
 
         with _Monkey(MUT, DatabaseAdminClient=_Client):
             api = client.database_admin_api
@@ -178,6 +186,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(isinstance(api, _Client))
         again = client.database_admin_api
         self.assertTrue(again is api)
+        self.assertEqual(api.kwargs['lib_name'], 'gccl')
 
     def test_copy(self):
         credentials = _Credentials('value')

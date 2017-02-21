@@ -180,8 +180,8 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
-            self._spanner_api = SpannerClient(lib_name='gccl',
-                                              lib_version=__version__)
+            self._spanner_api = SpannerClient(
+                lib_name='gccl', lib_version=__version__)
         return self._spanner_api
 
     def __eq__(self, other):
