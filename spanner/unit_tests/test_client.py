@@ -107,9 +107,6 @@ class TestClient(unittest.TestCase):
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_admin_api_lib_name(self):
-        """Establish that the lib_name and lib_version are passed to
-        the database and instance API objects in the GAPIC.
-        """
         from google.cloud.spanner import __version__
         from google.cloud.gapic.spanner_admin_database import v1 as db
         from google.cloud.gapic.spanner_admin_instance import v1 as inst
