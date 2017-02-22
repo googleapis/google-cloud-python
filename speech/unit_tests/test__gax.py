@@ -25,13 +25,15 @@ class TestGAPICSpeechAPI(unittest.TestCase):
         from google.cloud.speech import __version__
         from google.cloud.gapic.speech.v1beta1 import speech_client
 
+        from .test_client import _make_credentials
+
         # Mock the creation of the actual GAPIC speech client.
         with mock.patch.object(speech_client.SpeechClient, '__init__') as sc:
             sc.return_value = None
 
             # Ensure that the lib_name and lib_version arguments
             # are passed as expected.
-            client = Client()
+            client = Client(credentials=_make_credentials())
             client.speech_api
             sc.assert_called_once()
             self.assertEqual(sc.mock_calls[0][2]['lib_name'], 'gccl')
