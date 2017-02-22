@@ -1446,6 +1446,48 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(
             headers['X-Goog-Encryption-Key-Sha256'], DEST_KEY_HASH_B64)
 
+    def test_update_storage_class_invalid(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        with self.assertRaises(ValueError):
+            blob.update_storage_class(u'BOGUS')
+
+    def test_update_storage_class_setter_valid(self):
+        from six.moves.http_client import OK
+        BLOB_NAME = 'blob-name'
+        STORAGE_CLASS = u'NEARLINE'
+        RESPONSE = {
+            'resource': {'storageClass': STORAGE_CLASS},
+        }
+        response = ({'status': OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        blob.update_storage_class('NEARLINE')
+
+        self.assertEqual(blob.storage_class, 'NEARLINE')
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
+        self.assertEqual(kw[0]['path'], PATH)
+        self.assertNotIn('query_params', kw[0])
+        SENT = {'storageClass': STORAGE_CLASS}
+        self.assertEqual(kw[0]['data'], SENT)
+
+        headers = {
+            key.title(): str(value) for key, value in kw[0]['headers'].items()}
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Algorithm', headers)
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Key', headers)
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Key-Sha256', headers)
+        self.assertNotIn('X-Goog-Encryption-Algorithm', headers)
+        self.assertNotIn('X-Goog-Encryption-Key', headers)
+        self.assertNotIn('X-Goog-Encryption-Key-Sha256', headers)
+
     def test_cache_control_getter(self):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
