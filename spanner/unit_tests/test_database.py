@@ -191,7 +191,7 @@ class TestDatabase(_BaseTest):
         _clients = [_client]
 
         def _mock_spanner_client(*args, **kwargs):
-            self.assertIsInstance(args, (list, tuple))
+            self.assertIsInstance(args, tuple)
             self.assertEqual(kwargs['lib_name'], 'gccl')
             self.assertEqual(kwargs['lib_version'], __version__)
             return _clients.pop(0)
