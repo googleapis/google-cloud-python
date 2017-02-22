@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestConnection(unittest.TestCase):
 
@@ -36,3 +38,33 @@ class TestConnection(unittest.TestCase):
         method = 'annotateText'
         uri += ':' + method
         self.assertEqual(conn.build_api_url(method), uri)
+
+    def test_extra_headers(self):
+        from google.cloud import _http as base_http
+        from google.cloud.language import _http as MUT
+
+        http = mock.Mock(spec=['request'])
+        response = mock.Mock(status=200, spec=['status'])
+        data = b'brent-spiner'
+        http.request.return_value = response, data
+        client = mock.Mock(_http=http, spec=['_http'])
+
+        conn = self._make_one(client)
+        req_data = 'req-data-boring'
+        result = conn.api_request(
+            'GET', '/rainbow', data=req_data, expect_json=False)
+        self.assertEqual(result, data)
+
+        expected_headers = {
+            'Content-Length': str(len(req_data)),
+            'Accept-Encoding': 'gzip',
+            base_http.CLIENT_INFO_HEADER: MUT._CLIENT_INFO,
+            'User-Agent': conn.USER_AGENT,
+        }
+        expected_uri = conn.build_api_url('/rainbow')
+        http.request.assert_called_once_with(
+            body=req_data,
+            headers=expected_headers,
+            method='GET',
+            uri=expected_uri,
+        )
