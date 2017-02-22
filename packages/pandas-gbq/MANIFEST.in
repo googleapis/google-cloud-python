@@ -1,0 +1,2 @@
+include versioneer.py
+include pandas_gbq/_version.py
