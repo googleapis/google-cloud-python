@@ -14,6 +14,10 @@
 
 """Google Cloud Speech API wrapper."""
 
+
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-speech').version
+
 from google.cloud.speech.alternative import Alternative
 from google.cloud.speech.client import Client
 from google.cloud.speech.encoding import Encoding
