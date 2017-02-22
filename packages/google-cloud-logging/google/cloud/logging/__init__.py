@@ -15,6 +15,9 @@
 """Google Stackdriver Logging API wrapper."""
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-logging').version
+
 from google.cloud.logging.client import Client
 
 
