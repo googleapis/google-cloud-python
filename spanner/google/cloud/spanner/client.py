@@ -38,6 +38,7 @@ from google.cloud.client import _ClientFactoryMixin
 from google.cloud.client import _ClientProjectMixin
 from google.cloud.credentials import get_credentials
 from google.cloud.iterator import GAXIterator
+from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner.instance import Instance
@@ -152,14 +153,20 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def instance_admin_api(self):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
-            self._instance_admin_api = InstanceAdminClient()
+            self._instance_admin_api = InstanceAdminClient(
+                lib_name='gccl',
+                lib_version=__version__,
+            )
         return self._instance_admin_api
 
     @property
     def database_admin_api(self):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
-            self._database_admin_api = DatabaseAdminClient()
+            self._database_admin_api = DatabaseAdminClient(
+                lib_name='gccl',
+                lib_version=__version__,
+            )
         return self._database_admin_api
 
     def copy(self):

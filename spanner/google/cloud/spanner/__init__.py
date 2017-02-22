@@ -15,6 +15,10 @@
 """Cloud Spanner API package."""
 
 
+import pkg_resources
+__version__ = pkg_resources.get_distribution('google-cloud-spanner').version
+
+
 from google.cloud.spanner.client import Client
 
 from google.cloud.spanner.keyset import KeyRange
