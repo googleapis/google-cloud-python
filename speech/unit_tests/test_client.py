@@ -258,9 +258,9 @@ class TestClient(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def speech_api(channel=None):
+        def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(response=_make_sync_response(),
-                                       channel=channel)
+                                       channel=channel, **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
@@ -311,10 +311,10 @@ class TestClient(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def speech_api(channel=None):
+        def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(
                 response=_make_sync_response(result),
-                channel=channel)
+                channel=channel, **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
@@ -407,8 +407,8 @@ class TestClient(unittest.TestCase):
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
-        def speech_api(channel=None):
-            return _MockGAPICSpeechAPI(channel=channel)
+        def speech_api(channel=None, **kwargs):
+            return _MockGAPICSpeechAPI(channel=channel, **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
@@ -463,8 +463,8 @@ class TestClient(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def speech_api(channel=None):
-            return _MockGAPICSpeechAPI(channel=channel)
+        def speech_api(channel=None, **kwargs):
+            return _MockGAPICSpeechAPI(channel=channel, **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
@@ -522,8 +522,9 @@ class TestClient(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def speech_api(channel=None):
-            return _MockGAPICSpeechAPI(channel=channel, response=responses)
+        def speech_api(channel=None, **kwargs):
+            return _MockGAPICSpeechAPI(channel=channel, response=responses,
+                                       **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
@@ -599,8 +600,9 @@ class TestClient(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def speech_api(channel=None):
-            return _MockGAPICSpeechAPI(channel=channel, response=responses)
+        def speech_api(channel=None, **kwargs):
+            return _MockGAPICSpeechAPI(channel=channel, response=responses,
+                                       **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
@@ -643,8 +645,9 @@ class TestClient(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def speech_api(channel=None):
-            return _MockGAPICSpeechAPI(channel=channel, response=responses)
+        def speech_api(channel=None, **kwargs):
+            return _MockGAPICSpeechAPI(channel=channel, response=responses,
+                                       **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
@@ -677,8 +680,8 @@ class TestClient(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def speech_api(channel=None):
-            return _MockGAPICSpeechAPI(channel=channel)
+        def speech_api(channel=None, **kwargs):
+            return _MockGAPICSpeechAPI(channel=channel, **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
@@ -720,9 +723,10 @@ class _MockGAPICSpeechAPI(object):
 
     SERVICE_ADDRESS = 'foo.apis.invalid'
 
-    def __init__(self, response=None, channel=None):
+    def __init__(self, response=None, channel=None, **kwargs):
         self._response = response
         self._channel = channel
+        self._kwargs = kwargs
 
     def async_recognize(self, config, audio):
         from google.gapic.longrunning.operations_client import OperationsClient
