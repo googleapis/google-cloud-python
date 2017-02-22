@@ -15,7 +15,6 @@
 """Connections to Google Cloud Datastore API servers."""
 
 import os
-from pkg_resources import get_distribution
 
 from google.rpc import status_pb2
 
@@ -24,6 +23,8 @@ from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud import exceptions
 from google.cloud.grpc.datastore.v1 import datastore_pb2 as _datastore_pb2
+
+from google.cloud.datastore import __version__
 try:
     from google.cloud.datastore._gax import _DatastoreAPIOverGRPC
     _HAVE_GRPC = True
@@ -37,9 +38,7 @@ DATASTORE_API_HOST = 'datastore.googleapis.com'
 
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
-_DATASTORE_DIST = get_distribution('google-cloud-datastore')
-_CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(
-    _DATASTORE_DIST.version)
+_CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(__version__)
 
 
 class _DatastoreAPIOverHttp(object):
