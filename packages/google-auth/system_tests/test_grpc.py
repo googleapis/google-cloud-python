@@ -15,23 +15,40 @@
 import google.auth
 import google.auth.credentials
 import google.auth.transport.grpc
-from google.cloud.gapic.pubsub.v1 import publisher_api
+from google.cloud.gapic.pubsub.v1 import publisher_client
 
 
-def test_grpc_request(http_request):
+def test_grpc_request_with_regular_credentials(http_request):
     credentials, project_id = google.auth.default()
     credentials = google.auth.credentials.with_scopes_if_required(
         credentials, ['https://www.googleapis.com/auth/pubsub'])
 
-    target = '{}:{}'.format(
-        publisher_api.PublisherApi.SERVICE_ADDRESS,
-        publisher_api.PublisherApi.DEFAULT_SERVICE_PORT)
-
     channel = google.auth.transport.grpc.secure_authorized_channel(
-        credentials, http_request, target)
+        credentials,
+        http_request,
+        publisher_client.PublisherClient.SERVICE_ADDRESS)
 
     # Create a pub/sub client.
-    client = publisher_api.PublisherApi(channel=channel)
+    client = publisher_client.PublisherClient(channel=channel)
+
+    # list the topics and drain the iterator to test that an authorized API
+    # call works.
+    list_topics_iter = client.list_topics(
+        project='projects/{}'.format(project_id))
+    list(list_topics_iter)
+
+
+def test_grpc_request_with_jwt_credentials(http_request):
+    credentials, project_id = google.auth.default()
+    credentials = credentials.to_jwt_credentials()
+
+    channel = google.auth.transport.grpc.secure_authorized_channel(
+        credentials,
+        http_request,
+        publisher_client.PublisherClient.SERVICE_ADDRESS)
+
+    # Create a pub/sub client.
+    client = publisher_client.PublisherClient(channel=channel)
 
     # list the topics and drain the iterator to test that an authorized API
     # call works.

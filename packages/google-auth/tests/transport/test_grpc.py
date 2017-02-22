@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import mock
+import datetime
 
+import mock
 import pytest
 
+from google.auth import credentials
 try:
     import google.auth.transport.grpc
     HAS_GRPC = True
@@ -26,11 +28,11 @@ except ImportError:  # pragma: NO COVER
 pytestmark = pytest.mark.skipif(not HAS_GRPC, reason='gRPC is unavailable.')
 
 
-class MockCredentials(object):
+class MockCredentials(credentials.Credentials):
     def __init__(self, token='token'):
+        super(MockCredentials, self).__init__()
         self.token = token
-        self.valid = True
-        self.expired = False
+        self.expiry = None
 
     def refresh(self, request):
         self.token += '1'
@@ -54,7 +56,7 @@ class TestAuthMetadataPlugin(object):
 
     def test_call_refresh(self):
         credentials = MockCredentials()
-        credentials.expired = True
+        credentials.expiry = datetime.datetime.min
         request = mock.Mock()
 
         plugin = google.auth.transport.grpc.AuthMetadataPlugin(

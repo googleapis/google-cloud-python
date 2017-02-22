@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import grpc
+import six
 
 
 class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
@@ -40,19 +41,21 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         self._credentials = credentials
         self._request = request
 
-    def _get_authorization_headers(self):
+    def _get_authorization_headers(self, context):
         """Gets the authorization headers for a request.
 
         Returns:
             Sequence[Tuple[str, str]]: A list of request headers (key, value)
                 to add to the request.
         """
-        if self._credentials.expired or not self._credentials.valid:
-            self._credentials.refresh(self._request)
+        headers = {}
+        self._credentials.before_request(
+            self._request,
+            context.method_name,
+            context.service_url,
+            headers)
 
-        return [
-            ('authorization', 'Bearer {}'.format(self._credentials.token))
-        ]
+        return list(six.iteritems(headers))
 
     def __call__(self, context, callback):
         """Passes authorization metadata into the given callback.
@@ -62,7 +65,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             callback (grpc.AuthMetadataPluginCallback): The callback that will
                 be invoked to pass in the authorization metadata.
         """
-        callback(self._get_authorization_headers(), None)
+        callback(self._get_authorization_headers(context), None)
 
 
 def secure_authorized_channel(

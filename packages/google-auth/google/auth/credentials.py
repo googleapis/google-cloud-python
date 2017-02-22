@@ -104,8 +104,9 @@ class Credentials(object):
         Args:
             request (google.auth.transport.Request): The object used to make
                 HTTP requests.
-            method (str): The request's HTTP method.
-            url (str): The request's URI.
+            method (str): The request's HTTP method or the RPC method being
+                invoked.
+            url (str): The request's URI or the RPC service's URI.
             headers (Mapping): The request's headers.
         """
         # pylint: disable=unused-argument
