@@ -23,6 +23,9 @@ The main concepts with this API are:
 """
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-bigquery').version
+
 from google.cloud.bigquery._helpers import ArrayQueryParameter
 from google.cloud.bigquery._helpers import ScalarQueryParameter
 from google.cloud.bigquery._helpers import StructQueryParameter

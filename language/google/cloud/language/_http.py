@@ -16,6 +16,11 @@
 
 from google.cloud import _http
 
+from google.cloud.language import __version__
+
+
+_CLIENT_INFO = _http.CLIENT_INFO_TEMPLATE.format(__version__)
+
 
 class Connection(_http.JSONConnection):
     """A connection to Google Cloud Natural Language JSON REST API.
@@ -32,3 +37,7 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}/documents:{path}'
     """A template for the URL of a particular API call."""
+
+    _EXTRA_HEADERS = {
+        _http.CLIENT_INFO_HEADER: _CLIENT_INFO,
+    }
