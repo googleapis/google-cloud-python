@@ -16,28 +16,68 @@ import unittest
 
 import mock
 
-import google.auth.credentials
+
+def _make_credentials():
+    import google.auth.credentials
+
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class TestGAPICSpeechAPI(unittest.TestCase):
-    def test_kwarg_lib_name(self):
-        from google.cloud.speech import Client
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.speech._gax import GAPICSpeechAPI
+
+        return GAPICSpeechAPI
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    @mock.patch(
+        'google.cloud._helpers.make_secure_channel',
+        return_value=mock.sentinel.channel)
+    @mock.patch(
+        'google.cloud.gapic.speech.v1beta1.speech_client.SpeechClient',
+        SERVICE_ADDRESS='hey.you.guys')
+    @mock.patch(
+        'google.cloud._helpers.make_secure_stub',
+        return_value=mock.sentinel.stub)
+    def test_constructor(self, mocked_stub, mocked_cls, mocked_channel):
+        from google.longrunning import operations_grpc
+        from google.cloud._http import DEFAULT_USER_AGENT
         from google.cloud.speech import __version__
-        from google.cloud.gapic.speech.v1beta1 import speech_client
+        from google.cloud.speech._gax import OPERATIONS_API_HOST
 
-        from .test_client import _make_credentials
+        mock_cnxn = mock.Mock(
+            credentials=_make_credentials(),
+            spec=['credentials'],
+        )
+        mock_client = mock.Mock(_connection=mock_cnxn, spec=['_connection'])
 
-        # Mock the creation of the actual GAPIC speech client.
-        with mock.patch.object(speech_client.SpeechClient, '__init__') as sc:
-            sc.return_value = None
+        speech_api = self._make_one(mock_client)
+        self.assertIs(speech_api._client, mock_client)
+        self.assertIs(
+            speech_api._gapic_api,
+            mocked_cls.return_value,
+        )
 
-            # Ensure that the lib_name and lib_version arguments
-            # are passed as expected.
-            client = Client(credentials=_make_credentials())
-            client.speech_api
-            sc.assert_called_once()
-            self.assertEqual(sc.mock_calls[0][2]['lib_name'], 'gccl')
-            self.assertEqual(sc.mock_calls[0][2]['lib_version'], __version__)
+        mocked_stub.assert_called_once_with(
+            mock_cnxn.credentials,
+            DEFAULT_USER_AGENT,
+            operations_grpc.OperationsStub,
+            OPERATIONS_API_HOST,
+        )
+        mocked_cls.assert_called_once_with(
+            channel=mock.sentinel.channel,
+            lib_name='gccl',
+            lib_version=__version__,
+        )
+        mocked_channel.assert_called_once_with(
+            mock_cnxn.credentials,
+            DEFAULT_USER_AGENT,
+            mocked_cls.SERVICE_ADDRESS,
+        )
 
 
 class TestSpeechGAXMakeRequests(unittest.TestCase):
