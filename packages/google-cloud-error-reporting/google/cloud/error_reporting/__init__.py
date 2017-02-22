@@ -15,6 +15,9 @@
 """Client library for Stackdriver Error Reporting"""
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-error-reporting').version
+
 from google.cloud.error_reporting.client import Client
 from google.cloud.error_reporting.client import HTTPContext
 from google.cloud.error_reporting.util import build_flask_context
