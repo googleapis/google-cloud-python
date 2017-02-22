@@ -14,13 +14,12 @@
 
 """Create / interact with Google Cloud Storage connections."""
 
-from pkg_resources import get_distribution
-
 from google.cloud import _http
 
+from google.cloud.storage import __version__
 
-_STORAGE_DIST = get_distribution('google-cloud-storage')
-_CLIENT_INFO = _http.CLIENT_INFO_TEMPLATE.format(_STORAGE_DIST.version)
+
+_CLIENT_INFO = _http.CLIENT_INFO_TEMPLATE.format(__version__)
 
 
 class Connection(_http.JSONConnection):

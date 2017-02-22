@@ -15,6 +15,9 @@
 """Client library for Google Cloud Natural Language API."""
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-language').version
+
 from google.cloud.language.client import Client
 from google.cloud.language.document import Document
 from google.cloud.language.document import Encoding

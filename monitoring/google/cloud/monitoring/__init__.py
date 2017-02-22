@@ -14,6 +14,10 @@
 
 """Google Stackdriver Monitoring API wrapper."""
 
+
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-monitoring').version
+
 from google.cloud.monitoring.client import Client
 from google.cloud.monitoring.group import Group
 from google.cloud.monitoring.label import LabelDescriptor

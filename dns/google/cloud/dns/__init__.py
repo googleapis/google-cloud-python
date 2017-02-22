@@ -25,6 +25,9 @@ The main concepts with this API are:
 """
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-dns').version
+
 from google.cloud.dns.zone import Changes
 from google.cloud.dns.client import Client
 from google.cloud.dns.zone import ManagedZone
