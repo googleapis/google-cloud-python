@@ -32,6 +32,28 @@ class TestGAXClient(unittest.TestCase):
             api = self._make_one(client)
         self.assertIs(api._client, client)
 
+    def test_kwarg_lib_name(self):
+        from google.cloud.gapic.vision.v1.image_annotator_client import (
+            ImageAnnotatorClient)
+        from google.cloud.vision import __version__
+
+        from .test_client import _make_credentials
+
+        # Mock the GAPIC ImageAnnotatorClient, whose arguments we
+        # want to check.
+        with mock.patch.object(ImageAnnotatorClient, '__init__') as iac:
+            iac.return_value = None
+
+            # Create the GAX client.
+            client = object()
+            self._make_one(client, credentials=_make_credentials())
+
+            # Assert that the GAPIC constructor was called once, and
+            # that lib_name and lib_version were sent.
+            iac.assert_called_once()
+            self.assertEqual(iac.mock_calls[0][2]['lib_name'], 'gccl')
+            self.assertEqual(iac.mock_calls[0][2]['lib_version'], __version__)
+
     def test_annotation(self):
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
