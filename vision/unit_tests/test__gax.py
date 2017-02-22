@@ -17,6 +17,11 @@ import unittest
 import mock
 
 
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
+
 class TestGAXClient(unittest.TestCase):
     def _get_target_class(self):
         from google.cloud.vision._gax import _GAPICVisionAPI
@@ -35,8 +40,7 @@ class TestGAXClient(unittest.TestCase):
     def test_gapic_credentials(self):
         from google.cloud.gapic.vision.v1.image_annotator_client import (
             ImageAnnotatorClient)
-
-        from .test_client import _make_credentials
+        from google.cloud.vision import Client
 
         # Mock the GAPIC ImageAnnotatorClient, whose arguments we
         # want to check.
@@ -45,19 +49,20 @@ class TestGAXClient(unittest.TestCase):
 
             # Create the GAX client.
             credentials = _make_credentials()
-            self._make_one(client=object(), credentials=credentials)
+            client = Client(credentials=credentials)
+            self._make_one(client=client)
 
             # Assert that the GAPIC constructor was called once, and
             # that the credentials were sent.
             iac.assert_called_once()
-            self.assertIs(iac.mock_calls[0][2]['credentials'], credentials)
+            _, _, kwargs = iac.mock_calls[0]
+            self.assertIs(kwargs['credentials'], credentials)
 
     def test_kwarg_lib_name(self):
         from google.cloud.gapic.vision.v1.image_annotator_client import (
             ImageAnnotatorClient)
         from google.cloud.vision import __version__
-
-        from .test_client import _make_credentials
+        from google.cloud.vision import Client
 
         # Mock the GAPIC ImageAnnotatorClient, whose arguments we
         # want to check.
@@ -65,20 +70,22 @@ class TestGAXClient(unittest.TestCase):
             iac.return_value = None
 
             # Create the GAX client.
-            self._make_one(client=object(), credentials=_make_credentials())
+            client = Client(credentials=_make_credentials())
+            self._make_one(client=client)
 
             # Assert that the GAPIC constructor was called once, and
             # that lib_name and lib_version were sent.
             iac.assert_called_once()
-            self.assertEqual(iac.mock_calls[0][2]['lib_name'], 'gccl')
-            self.assertEqual(iac.mock_calls[0][2]['lib_version'], __version__)
+            _, _, kwargs = iac.mock_calls[0]
+            self.assertEqual(kwargs['lib_name'], 'gccl')
+            self.assertEqual(kwargs['lib_version'], __version__)
 
     def test_annotation(self):
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
 
-        client = mock.Mock(spec_set=[])
+        client = mock.Mock(spec_set=['_credentials'])
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
         image_content = b'abc 1 2 3'
         image = Image(client, content=image_content)
@@ -105,7 +112,7 @@ class TestGAXClient(unittest.TestCase):
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
 
-        client = mock.Mock(spec_set=[])
+        client = mock.Mock(spec_set=['_credentials'])
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
         image_content = b'abc 1 2 3'
         image = Image(client, content=image_content)
@@ -134,7 +141,7 @@ class TestGAXClient(unittest.TestCase):
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
 
-        client = mock.Mock(spec_set=[])
+        client = mock.Mock(spec_set=['_credentials'])
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
         image_content = b'abc 1 2 3'
         image = Image(client, content=image_content)
