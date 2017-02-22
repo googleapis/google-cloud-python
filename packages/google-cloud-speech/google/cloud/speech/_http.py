@@ -20,8 +20,12 @@ from google.cloud._helpers import _bytes_to_unicode
 from google.cloud._helpers import _to_bytes
 from google.cloud import _http
 
+from google.cloud.speech import __version__
 from google.cloud.speech.result import Result
 from google.cloud.speech.operation import Operation
+
+
+_CLIENT_INFO = _http.CLIENT_INFO_TEMPLATE.format(__version__)
 
 
 class Connection(_http.JSONConnection):
@@ -39,6 +43,10 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}/{path}'
     """A template for the URL of a particular API call."""
+
+    _EXTRA_HEADERS = {
+        _http.CLIENT_INFO_HEADER: _CLIENT_INFO,
+    }
 
 
 class HTTPSpeechAPI(object):
