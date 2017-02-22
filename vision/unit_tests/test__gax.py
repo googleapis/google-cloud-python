@@ -49,7 +49,7 @@ class TestGAXClient(unittest.TestCase):
 
             # Create the GAX client.
             credentials = _make_credentials()
-            client = Client(credentials=credentials)
+            client = Client(credentials=credentials, project='foo')
             self._make_one(client=client)
 
             # Assert that the GAPIC constructor was called once, and
@@ -70,7 +70,7 @@ class TestGAXClient(unittest.TestCase):
             iac.return_value = None
 
             # Create the GAX client.
-            client = Client(credentials=_make_credentials())
+            client = Client(credentials=_make_credentials(), project='foo')
             self._make_one(client=client)
 
             # Assert that the GAPIC constructor was called once, and
