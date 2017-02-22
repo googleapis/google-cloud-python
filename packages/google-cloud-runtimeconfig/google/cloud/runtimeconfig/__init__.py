@@ -14,4 +14,8 @@
 
 """Google Cloud Runtime Configurator API package."""
 
+
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-runtimeconfig').version
+
 from google.cloud.runtimeconfig.client import Client
