@@ -85,7 +85,7 @@ def _to_gapic_image(image):
     :type image: :class:`~google.cloud.vision.image.Image`
     :param image: Local ``Image`` class to be converted to gRPC ``Image``.
 
-    :rtype: :class:`~google.cloudvision.v1.image_annotator_pb2.Image`
+    :rtype: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.Image`
     :returns: gRPC ``Image`` converted from
               :class:`~google.cloud.vision.image.Image`.
     """
