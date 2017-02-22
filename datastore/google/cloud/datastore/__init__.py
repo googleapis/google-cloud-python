@@ -54,6 +54,9 @@ The main concepts with this API are:
 """
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-datastore').version
+
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.client import Client
 from google.cloud.datastore.entity import Entity
