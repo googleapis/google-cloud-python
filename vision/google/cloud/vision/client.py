@@ -109,8 +109,7 @@ class Client(ClientWithProject):
         """
         if self._vision_api_internal is None:
             if self._use_gax:
-                self._vision_api_internal = _GAPICVisionAPI(
-                    self, credentials=None)
+                self._vision_api_internal = _GAPICVisionAPI(self)
             else:
                 self._vision_api_internal = _HTTPVisionAPI(self)
         return self._vision_api_internal

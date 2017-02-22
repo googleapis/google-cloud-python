@@ -70,7 +70,7 @@ def _to_gapic_feature(feature):
     :param feature: Local ``Feature`` class to be converted to gRPC ``Feature``
                     instance.
 
-    :rtype: :class:`~google.cloudvision.v1.image_annotator_pb2.Feature`
+    :rtype: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.Feature`
     :returns: gRPC ``Feature`` converted from
               :class:`~google.cloud.vision.feature.Feature`.
     """
