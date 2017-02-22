@@ -26,9 +26,6 @@ class _GAPICVisionAPI(object):
 
     :type client: :class:`~google.cloud.vision.client.Client`
     :param client: Instance of ``Client`` object.
-
-    :type kwargs: dict
-    :param kwargs: Additional keyword arguments are sent to the GAPIC client.
     """
     def __init__(self, client=None):
         self._client = client
