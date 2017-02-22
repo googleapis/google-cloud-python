@@ -26,6 +26,7 @@ import datetime
 
 from google.auth import _helpers
 from google.auth import credentials
+from google.auth import crypt
 
 try:
     from google.appengine.api import app_identity
@@ -33,42 +34,25 @@ except ImportError:
     app_identity = None
 
 
-class Signer(object):
+class Signer(crypt.Signer):
     """Signs messages using the App Engine App Identity service.
 
     This can be used in place of :class:`google.auth.crypt.Signer` when
     running in the App Engine standard environment.
-
-    .. warning::
-        The App Identity service signs bytes using Google-managed keys.
-        Because of this it's possible that the key used to sign bytes will
-        change. In some cases this change can occur between successive calls
-        to :attr:`key_id` and :meth:`sign`. This could result in a signature
-        that was signed with a different key than the one indicated by
-        :attr:`key_id`. It's recommended that if you use this in your code
-        that you account for this behavior by building in retry logic.
     """
 
     @property
     def key_id(self):
         """Optional[str]: The key ID used to identify this private key.
 
-        .. note::
-           This makes a request to the App Identity service.
+        .. warning::
+           This is always ``None``. The key ID used by App Engine can not
+           be reliably determined ahead of time.
         """
-        key_id, _ = app_identity.sign_blob(b'')
-        return key_id
+        return None
 
-    @staticmethod
-    def sign(message):
-        """Signs a message.
-
-        Args:
-            message (Union[str, bytes]): The message to be signed.
-
-        Returns:
-            bytes: The signature of the message.
-        """
+    @_helpers.copy_docstring(crypt.Signer)
+    def sign(self, message):
         message = _helpers.to_bytes(message)
         _, signature = app_identity.sign_blob(message)
         return signature

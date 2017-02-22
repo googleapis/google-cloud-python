@@ -44,7 +44,7 @@ with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
 
 @pytest.fixture(scope='module')
 def signer():
-    return crypt.Signer.from_string(PRIVATE_KEY_BYTES, '1')
+    return crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, '1')
 
 
 class TestCredentials(object):

@@ -64,16 +64,12 @@ class TestSigner(object):
                 mock.sentinel.service_account_email)
 
     def test_key_id(self):
-        key_id = '123'
-        request = make_request(http_client.OK, data={'keyId': key_id})
-        credentials = make_credentials()
-
         signer = iam.Signer(
-            request, credentials, mock.sentinel.service_account_email)
+            mock.sentinel.request,
+            mock.sentinel.credentials,
+            mock.sentinel.service_account_email)
 
-        assert signer.key_id == '123'
-        auth_header = request.call_args[1]['headers']['authorization']
-        assert auth_header == 'Bearer token'
+        assert signer.key_id is None
 
     def test_sign_bytes(self):
         signature = b'DEADBEEF'

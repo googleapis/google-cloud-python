@@ -69,7 +69,7 @@ with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
 
 def test_verify_signature():
     to_sign = b'foo'
-    signer = crypt.Signer.from_string(PRIVATE_KEY_BYTES)
+    signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
     signature = signer.sign(to_sign)
 
     assert crypt.verify_signature(
@@ -82,57 +82,57 @@ def test_verify_signature():
 
 def test_verify_signature_failure():
     to_sign = b'foo'
-    signer = crypt.Signer.from_string(PRIVATE_KEY_BYTES)
+    signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
     signature = signer.sign(to_sign)
 
     assert not crypt.verify_signature(
         to_sign, signature, OTHER_CERT_BYTES)
 
 
-class TestVerifier(object):
+class TestRSAVerifier(object):
     def test_verify_success(self):
         to_sign = b'foo'
-        signer = crypt.Signer.from_string(PRIVATE_KEY_BYTES)
+        signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
 
-        verifier = crypt.Verifier.from_string(PUBLIC_KEY_BYTES)
+        verifier = crypt.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
         assert verifier.verify(to_sign, actual_signature)
 
     def test_verify_unicode_success(self):
         to_sign = u'foo'
-        signer = crypt.Signer.from_string(PRIVATE_KEY_BYTES)
+        signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
 
-        verifier = crypt.Verifier.from_string(PUBLIC_KEY_BYTES)
+        verifier = crypt.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
         assert verifier.verify(to_sign, actual_signature)
 
     def test_verify_failure(self):
-        verifier = crypt.Verifier.from_string(PUBLIC_KEY_BYTES)
+        verifier = crypt.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
         bad_signature1 = b''
         assert not verifier.verify(b'foo', bad_signature1)
         bad_signature2 = b'a'
         assert not verifier.verify(b'foo', bad_signature2)
 
     def test_from_string_pub_key(self):
-        verifier = crypt.Verifier.from_string(PUBLIC_KEY_BYTES)
-        assert isinstance(verifier, crypt.Verifier)
+        verifier = crypt.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
+        assert isinstance(verifier, crypt.RSAVerifier)
         assert isinstance(verifier._pubkey, rsa.key.PublicKey)
 
     def test_from_string_pub_key_unicode(self):
         public_key = _helpers.from_bytes(PUBLIC_KEY_BYTES)
-        verifier = crypt.Verifier.from_string(public_key)
-        assert isinstance(verifier, crypt.Verifier)
+        verifier = crypt.RSAVerifier.from_string(public_key)
+        assert isinstance(verifier, crypt.RSAVerifier)
         assert isinstance(verifier._pubkey, rsa.key.PublicKey)
 
     def test_from_string_pub_cert(self):
-        verifier = crypt.Verifier.from_string(PUBLIC_CERT_BYTES)
-        assert isinstance(verifier, crypt.Verifier)
+        verifier = crypt.RSAVerifier.from_string(PUBLIC_CERT_BYTES)
+        assert isinstance(verifier, crypt.RSAVerifier)
         assert isinstance(verifier._pubkey, rsa.key.PublicKey)
 
     def test_from_string_pub_cert_unicode(self):
         public_cert = _helpers.from_bytes(PUBLIC_CERT_BYTES)
-        verifier = crypt.Verifier.from_string(public_cert)
-        assert isinstance(verifier, crypt.Verifier)
+        verifier = crypt.RSAVerifier.from_string(public_cert)
+        assert isinstance(verifier, crypt.RSAVerifier)
         assert isinstance(verifier._pubkey, rsa.key.PublicKey)
 
     def test_from_string_pub_cert_failure(self):
@@ -144,25 +144,25 @@ class TestVerifier(object):
 
         with load_pem_patch as load_pem:
             with pytest.raises(ValueError):
-                crypt.Verifier.from_string(cert_bytes)
+                crypt.RSAVerifier.from_string(cert_bytes)
             load_pem.assert_called_once_with(cert_bytes, 'CERTIFICATE')
 
 
-class TestSigner(object):
+class TestRSASigner(object):
     def test_from_string_pkcs1(self):
-        signer = crypt.Signer.from_string(PKCS1_KEY_BYTES)
-        assert isinstance(signer, crypt.Signer)
+        signer = crypt.RSASigner.from_string(PKCS1_KEY_BYTES)
+        assert isinstance(signer, crypt.RSASigner)
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_string_pkcs1_unicode(self):
         key_bytes = _helpers.from_bytes(PKCS1_KEY_BYTES)
-        signer = crypt.Signer.from_string(key_bytes)
-        assert isinstance(signer, crypt.Signer)
+        signer = crypt.RSASigner.from_string(key_bytes)
+        assert isinstance(signer, crypt.RSASigner)
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_string_pkcs8(self):
-        signer = crypt.Signer.from_string(PKCS8_KEY_BYTES)
-        assert isinstance(signer, crypt.Signer)
+        signer = crypt.RSASigner.from_string(PKCS8_KEY_BYTES)
+        assert isinstance(signer, crypt.RSASigner)
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_string_pkcs8_extra_bytes(self):
@@ -179,28 +179,29 @@ class TestSigner(object):
 
         with decode_patch as decode:
             with pytest.raises(ValueError):
-                crypt.Signer.from_string(key_bytes)
+                crypt.RSASigner.from_string(key_bytes)
             # Verify mock was called.
             decode.assert_called_once_with(
                 pem_bytes, asn1Spec=crypt._PKCS8_SPEC)
 
     def test_from_string_pkcs8_unicode(self):
         key_bytes = _helpers.from_bytes(PKCS8_KEY_BYTES)
-        signer = crypt.Signer.from_string(key_bytes)
-        assert isinstance(signer, crypt.Signer)
+        signer = crypt.RSASigner.from_string(key_bytes)
+        assert isinstance(signer, crypt.RSASigner)
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_string_pkcs12(self):
         with pytest.raises(ValueError):
-            crypt.Signer.from_string(PKCS12_KEY_BYTES)
+            crypt.RSASigner.from_string(PKCS12_KEY_BYTES)
 
     def test_from_string_bogus_key(self):
         key_bytes = 'bogus-key'
         with pytest.raises(ValueError):
-            crypt.Signer.from_string(key_bytes)
+            crypt.RSASigner.from_string(key_bytes)
 
     def test_from_service_account_info(self):
-        signer = crypt.Signer.from_service_account_info(SERVICE_ACCOUNT_INFO)
+        signer = crypt.RSASigner.from_service_account_info(
+            SERVICE_ACCOUNT_INFO)
 
         assert signer.key_id == SERVICE_ACCOUNT_INFO[
             crypt._JSON_FILE_PRIVATE_KEY_ID]
@@ -208,12 +209,12 @@ class TestSigner(object):
 
     def test_from_service_account_info_missing_key(self):
         with pytest.raises(ValueError) as excinfo:
-            crypt.Signer.from_service_account_info({})
+            crypt.RSASigner.from_service_account_info({})
 
         assert excinfo.match(crypt._JSON_FILE_PRIVATE_KEY)
 
     def test_from_service_account_file(self):
-        signer = crypt.Signer.from_service_account_file(
+        signer = crypt.RSASigner.from_service_account_file(
             SERVICE_ACCOUNT_JSON_FILE)
 
         assert signer.key_id == SERVICE_ACCOUNT_INFO[

@@ -48,7 +48,7 @@ class TestSigner(object):
 
         signer = app_engine.Signer()
 
-        assert signer.key_id == mock.sentinel.key_id
+        assert signer.key_id is None
 
     def test_sign(self, app_identity_mock):
         app_identity_mock.sign_blob.return_value = (

@@ -31,7 +31,7 @@ with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
 
 def test_from_dict():
     signer = _service_account_info.from_dict(SERVICE_ACCOUNT_INFO)
-    assert isinstance(signer, crypt.Signer)
+    assert isinstance(signer, crypt.RSASigner)
     assert signer.key_id == SERVICE_ACCOUNT_INFO['private_key_id']
 
 
@@ -59,5 +59,5 @@ def test_from_filename():
     for key, value in six.iteritems(SERVICE_ACCOUNT_INFO):
         assert info[key] == value
 
-    assert isinstance(signer, crypt.Signer)
+    assert isinstance(signer, crypt.RSASigner)
     assert signer.key_id == SERVICE_ACCOUNT_INFO['private_key_id']

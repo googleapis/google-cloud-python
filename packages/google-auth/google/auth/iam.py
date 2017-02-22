@@ -25,6 +25,7 @@ import json
 from six.moves import http_client
 
 from google.auth import _helpers
+from google.auth import crypt
 from google.auth import exceptions
 
 _IAM_API_ROOT_URI = 'https://iam.googleapis.com/v1'
@@ -32,20 +33,11 @@ _SIGN_BLOB_URI = (
     _IAM_API_ROOT_URI + '/projects/-/serviceAccounts/{}:signBlob?alt=json')
 
 
-class Signer(object):
+class Signer(crypt.Signer):
     """Signs messages using the IAM `signBlob API`_.
 
     This is useful when you need to sign bytes but do not have access to the
     credential's private key file.
-
-    .. warning::
-        The IAM API signs bytes using Google-managed keys. Because of this
-        it's possible that the key used to sign bytes will change. In some
-        cases this change can occur between successive calls to :attr:`key_id`
-        and :meth:`sign`. This could result in a signature that was signed
-        with a different key than the one indicated by :attr:`key_id`. It's
-        recommended that if you use this in your code that you account for
-        this behavior by building in retry logic.
 
     .. _signBlob API:
         https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts
@@ -98,20 +90,13 @@ class Signer(object):
     def key_id(self):
         """Optional[str]: The key ID used to identify this private key.
 
-        .. note::
-            This makes an API request to the IAM API.
+        .. warning::
+           This is always ``None``. The key ID used by IAM can not
+           be reliably determined ahead of time.
         """
-        response = self._make_signing_request('')
-        return response['keyId']
+        return None
 
+    @_helpers.copy_docstring(crypt.Signer)
     def sign(self, message):
-        """Signs a message.
-
-        Args:
-            message (Union[str, bytes]): The message to be signed.
-
-        Returns:
-            bytes: The signature of the message.
-        """
         response = self._make_signing_request(message)
         return base64.b64decode(response['signature'])

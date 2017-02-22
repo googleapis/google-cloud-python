@@ -24,20 +24,21 @@ The simplest way to verify signatures is using :func:`verify_signature`::
     valid = crypt.verify_signature(message, signature, cert)
 
 If you're going to verify many messages with the same certificate, you can use
-:class:`Verifier`::
+:class:`RSAVerifier`::
 
     cert = open('certs.pem').read()
-    verifier = crypt.Verifier.from_string(cert)
+    verifier = crypt.RSAVerifier.from_string(cert)
     valid = verifier.verify(message, signature)
 
 
-To sign messages use :class:`Signer` with a private key::
+To sign messages use :class:`RSASigner` with a private key::
 
     private_key = open('private_key.pem').read()
-    signer = crypt.Signer(private_key)
+    signer = crypt.RSASigner(private_key)
     signature = signer.sign(message)
 
 """
+import abc
 import io
 import json
 
@@ -77,23 +78,17 @@ def _bit_list_to_bytes(bit_list):
     byte_vals = bytearray()
     for start in six.moves.xrange(0, num_bits, 8):
         curr_bits = bit_list[start:start + 8]
-        char_val = sum(val * digit
-                       for val, digit in six.moves.zip(_POW2, curr_bits))
+        char_val = sum(
+            val * digit for val, digit in six.moves.zip(_POW2, curr_bits))
         byte_vals.append(char_val)
     return bytes(byte_vals)
 
 
+@six.add_metaclass(abc.ABCMeta)
 class Verifier(object):
-    """This object is used to verify cryptographic signatures.
+    """Abstract base class for crytographic signature verifiers."""
 
-    Args:
-        public_key (rsa.key.PublicKey): The public key used to verify
-            signatures.
-    """
-
-    def __init__(self, public_key):
-        self._pubkey = public_key
-
+    @abc.abstractmethod
     def verify(self, message, signature):
         """Verifies a message against a cryptographic signature.
 
@@ -105,6 +100,24 @@ class Verifier(object):
             bool: True if message was signed by the private key associated
             with the public key that this object was constructed with.
         """
+        # pylint: disable=missing-raises-doc,redundant-returns-doc
+        # (pylint doesn't recognize that this is abstract)
+        raise NotImplementedError('Verify must be implemented')
+
+
+class RSAVerifier(Verifier):
+    """Verifies RSA cryptographic signatures using public keys.
+
+    Args:
+        public_key (rsa.key.PublicKey): The public key used to verify
+            signatures.
+    """
+
+    def __init__(self, public_key):
+        self._pubkey = public_key
+
+    @_helpers.copy_docstring(Verifier)
+    def verify(self, message, signature):
         message = _helpers.to_bytes(message)
         try:
             return rsa.pkcs1.verify(message, signature, self._pubkey)
@@ -145,7 +158,7 @@ class Verifier(object):
 
 
 def verify_signature(message, signature, certs):
-    """Verify a cryptographic signature.
+    """Verify an RSA cryptographic signature.
 
     Checks that the provided ``signature`` was generated from ``bytes`` using
     the private key associated with the ``cert``.
@@ -163,14 +176,38 @@ def verify_signature(message, signature, certs):
         certs = [certs]
 
     for cert in certs:
-        verifier = Verifier.from_string(cert)
+        verifier = RSAVerifier.from_string(cert)
         if verifier.verify(message, signature):
             return True
     return False
 
 
+@six.add_metaclass(abc.ABCMeta)
 class Signer(object):
-    """Signs messages with a private key.
+    """Abstract base class for cryptographic signers."""
+
+    @abc.abstractproperty
+    def key_id(self):
+        """Optional[str]: The key ID used to identify this private key."""
+        raise NotImplementedError('Key id must be implemented')
+
+    @abc.abstractmethod
+    def sign(self, message):
+        """Signs a message.
+
+        Args:
+            message (Union[str, bytes]): The message to be signed.
+
+        Returns:
+            bytes: The signature of the message.
+        """
+        # pylint: disable=missing-raises-doc,redundant-returns-doc
+        # (pylint doesn't recognize that this is abstract)
+        raise NotImplementedError('Sign must be implemented')
+
+
+class RSASigner(Signer):
+    """Signs messages with an RSA private key.
 
     Args:
         private_key (rsa.key.PrivateKey): The private key to sign with.
@@ -181,18 +218,15 @@ class Signer(object):
 
     def __init__(self, private_key, key_id=None):
         self._key = private_key
-        self.key_id = key_id
-        """Optional[str]: The key ID used to identify this private key."""
+        self._key_id = key_id
 
+    @property
+    @_helpers.copy_docstring(Signer)
+    def key_id(self):
+        return self._key_id
+
+    @_helpers.copy_docstring(Signer)
     def sign(self, message):
-        """Signs a message.
-
-        Args:
-            message (Union[str, bytes]): The message to be signed.
-
-        Returns:
-            bytes: The signature of the message.
-        """
         message = _helpers.to_bytes(message)
         return rsa.pkcs1.sign(message, self._key, 'SHA-256')
 

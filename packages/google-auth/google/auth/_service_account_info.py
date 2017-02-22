@@ -51,7 +51,7 @@ def from_dict(data, require=None):
             'fields {}.'.format(', '.join(missing)))
 
     # Create a signer.
-    signer = crypt.Signer.from_service_account_info(data)
+    signer = crypt.RSASigner.from_service_account_info(data)
 
     return signer
 

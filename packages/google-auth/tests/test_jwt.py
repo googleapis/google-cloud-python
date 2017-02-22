@@ -44,7 +44,7 @@ with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
 
 @pytest.fixture
 def signer():
-    return crypt.Signer.from_string(PRIVATE_KEY_BYTES, '1')
+    return crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, '1')
 
 
 def test_encode_basic(signer):
@@ -78,7 +78,7 @@ def token_factory(signer):
         # False is specified to remove the signer's key id for testing
         # headers without key ids.
         if key_id is False:
-            signer.key_id = None
+            signer._key_id = None
             key_id = None
 
         return jwt.encode(signer, payload, key_id=key_id)
@@ -265,7 +265,7 @@ class TestCredentials:
         assert crypt.verify_signature(to_sign, signature, PUBLIC_CERT_BYTES)
 
     def test_signer(self):
-        assert isinstance(self.credentials.signer, crypt.Signer)
+        assert isinstance(self.credentials.signer, crypt.RSASigner)
 
     def test_signer_email(self):
         assert (self.credentials.signer_email ==
