@@ -24,6 +24,9 @@ The main concepts with this API are:
 """
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-pubsub').version
+
 from google.cloud.pubsub.client import Client
 from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
