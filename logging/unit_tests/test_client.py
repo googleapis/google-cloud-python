@@ -632,6 +632,22 @@ class TestClient(unittest.TestCase):
 
         setup_logging.assert_called()
 
+    def test_setup_shutdown_stacktrace_reporting(self):
+        import mock
+
+        credentials = _make_credentials()
+        shutdown_patch = mock.patch(
+            'google.cloud.logging.client.setup_shutdown_stacktrace_reporting')
+        with shutdown_patch as shutdown_mock:
+            client = self._make_one(project=self.PROJECT,
+                                    credentials=credentials,
+                                    use_gax=False)
+            client.enable_shutdown_logging(thread_dump=False)
+            shutdown_mock.assert_not_called()
+
+            client.enable_shutdown_logging(thread_dump=True)
+            shutdown_mock.assert_called()
+
 
 class _Connection(object):
 
