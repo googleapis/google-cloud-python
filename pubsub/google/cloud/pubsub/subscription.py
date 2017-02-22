@@ -220,6 +220,10 @@ class Subscription(object):
         See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
+        :attr:`ack_deadline` and :attr:`push_endpoint` might never have
+        been set locally, or might have been updated by another client.  This
+        method fetches their values from the server.
+
         Example:
 
         .. literalinclude:: pubsub_snippets.py
