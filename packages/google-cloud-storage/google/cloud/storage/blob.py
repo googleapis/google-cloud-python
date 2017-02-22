@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pylint: disable=too-many-lines
+
 """Create / interact with Google Cloud Storage blobs."""
 
 import base64
@@ -72,6 +74,9 @@ class Blob(_PropertyMixin):
 
     _CHUNK_SIZE_MULTIPLE = 256 * 1024
     """Number (256 KB, in bytes) that must divide the chunk size."""
+
+    _STORAGE_CLASSES = (
+        'STANDARD', 'NEARLINE', 'MULTI_REGIONAL', 'REGIONAL', 'COLDLINE')
 
     def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
         super(Blob, self).__init__(name=name)
@@ -851,6 +856,33 @@ class Blob(_PropertyMixin):
             return None, rewritten, size
 
         return api_response['rewriteToken'], rewritten, size
+
+    def update_storage_class(self, new_class, client=None):
+        """Update blob's storage class via a rewrite-in-place.
+
+        See:
+        https://cloud.google.com/storage/docs/per-object-storage-class
+
+        :type new_class: str
+        :param new_class: new storage class for the object
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+        """
+        if new_class not in self._STORAGE_CLASSES:
+            raise ValueError("Invalid storage class: %s" % (new_class,))
+
+        client = self._require_client(client)
+        headers = _get_encryption_headers(self._encryption_key)
+        headers.update(_get_encryption_headers(
+            self._encryption_key, source=True))
+
+        api_response = client._connection.api_request(
+            method='POST', path=self.path + '/rewriteTo' + self.path,
+            data={'storageClass': new_class}, headers=headers,
+            _target_object=self)
+        self._set_properties(api_response['resource'])
 
     cache_control = _scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.
