@@ -20,12 +20,35 @@ import mock
 class Test_make_report_error_api(unittest.TestCase):
 
     def test_make_report_error_api(self):
+        from google.cloud.gapic.errorreporting.v1beta1 import (
+            report_errors_service_client)
+
+        from grpc._channel import Channel
+
+        from google.cloud.error_reporting import __version__
         from google.cloud.error_reporting._gax import make_report_error_api
 
         client = mock.Mock()
-        client.project = mock.Mock()
-        report_error_client = make_report_error_api(client)
-        self.assertEqual(report_error_client._project, client.project)
+
+        # Mock out the constructor for the GAPIC client.
+        ServiceClient = report_errors_service_client.ReportErrorsServiceClient
+        with mock.patch.object(ServiceClient, '__init__') as resc:
+            resc.return_value = None
+
+            # Call the function being tested.
+            report_error_client = make_report_error_api(client)
+
+            # Assert that the arguments to the GAPIC constructor appear
+            # to be correct.
+            resc.assert_called_once()
+            _, _, kwargs = resc.mock_calls[0]
+            self.assertIsInstance(kwargs['channel'], Channel)
+            self.assertEqual(kwargs['lib_name'], 'gccl')
+            self.assertEqual(kwargs['lib_version'], __version__)
+
+        # Assert that the final error client has the project in
+        # the expected location.
+        self.assertIs(report_error_client._project, client.project)
 
 
 class Test_ErrorReportingGaxApi(unittest.TestCase):
