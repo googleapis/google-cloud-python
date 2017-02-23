@@ -1453,7 +1453,7 @@ class Test_Blob(unittest.TestCase):
         with self.assertRaises(ValueError):
             blob.update_storage_class(u'BOGUS')
 
-    def test_update_storage_class_setter_valid(self):
+    def test_update_storage_class_wo_encryption_key(self):
         from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
         STORAGE_CLASS = u'NEARLINE'
@@ -1481,12 +1481,65 @@ class Test_Blob(unittest.TestCase):
 
         headers = {
             key.title(): str(value) for key, value in kw[0]['headers'].items()}
+        # Blob has no key, and therefore the relevant headers are not sent.
         self.assertNotIn('X-Goog-Copy-Source-Encryption-Algorithm', headers)
         self.assertNotIn('X-Goog-Copy-Source-Encryption-Key', headers)
         self.assertNotIn('X-Goog-Copy-Source-Encryption-Key-Sha256', headers)
         self.assertNotIn('X-Goog-Encryption-Algorithm', headers)
         self.assertNotIn('X-Goog-Encryption-Key', headers)
         self.assertNotIn('X-Goog-Encryption-Key-Sha256', headers)
+
+    def test_update_storage_class_w_encryption_key(self):
+        import base64
+        import hashlib
+        from six.moves.http_client import OK
+
+        BLOB_NAME = 'blob-name'
+        BLOB_KEY = b'01234567890123456789012345678901'  # 32 bytes
+        BLOB_KEY_B64 = base64.b64encode(BLOB_KEY).rstrip().decode('ascii')
+        BLOB_KEY_HASH = hashlib.sha256(BLOB_KEY).digest()
+        BLOB_KEY_HASH_B64 = base64.b64encode(
+            BLOB_KEY_HASH).rstrip().decode('ascii')
+        STORAGE_CLASS = u'NEARLINE'
+        RESPONSE = {
+            'resource': {'storageClass': STORAGE_CLASS},
+        }
+        response = ({'status': OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(
+            BLOB_NAME, bucket=bucket, encryption_key=BLOB_KEY)
+
+        blob.update_storage_class('NEARLINE')
+
+        self.assertEqual(blob.storage_class, 'NEARLINE')
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
+        self.assertEqual(kw[0]['path'], PATH)
+        self.assertNotIn('query_params', kw[0])
+        SENT = {'storageClass': STORAGE_CLASS}
+        self.assertEqual(kw[0]['data'], SENT)
+
+        headers = {
+            key.title(): str(value) for key, value in kw[0]['headers'].items()}
+        # Blob has key, and therefore the relevant headers are sent.
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Key'], BLOB_KEY_B64)
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Key-Sha256'],
+            BLOB_KEY_HASH_B64)
+        self.assertEqual(
+            headers['X-Goog-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(
+            headers['X-Goog-Encryption-Key'], BLOB_KEY_B64)
+        self.assertEqual(
+            headers['X-Goog-Encryption-Key-Sha256'], BLOB_KEY_HASH_B64)
 
     def test_cache_control_getter(self):
         BLOB_NAME = 'blob-name'
