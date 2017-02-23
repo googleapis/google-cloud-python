@@ -49,11 +49,16 @@ class TestGAPICSpeechAPI(unittest.TestCase):
         from google.cloud.speech import __version__
         from google.cloud.speech._gax import OPERATIONS_API_HOST
 
+        credentials = _make_credentials()
         mock_cnxn = mock.Mock(
-            credentials=_make_credentials(),
+            credentials=credentials,
             spec=['credentials'],
         )
-        mock_client = mock.Mock(_connection=mock_cnxn, spec=['_connection'])
+        mock_client = mock.Mock(
+            _connection=mock_cnxn,
+            _credentials=credentials,
+            spec=['_connection', '_credentials'],
+        )
 
         speech_api = self._make_one(mock_client)
         self.assertIs(speech_api._client, mock_client)
