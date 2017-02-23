@@ -436,8 +436,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import (
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import (
             Subscription as SubscriptionPB)
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.pubsub.client import Client
@@ -479,8 +479,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
-        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import (
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import (
             Subscription as SubscriptionPB)
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.pubsub.client import Client
@@ -527,7 +527,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_subscription_create(self):
-        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import Subscription
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import Subscription
 
         sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH)
         gax_api = _GAXSubscriberAPI(_create_subscription_response=sub_pb)
@@ -588,8 +588,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_get_hit(self):
-        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import Subscription
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import Subscription
 
         push_cfg_pb = PushConfig(push_endpoint=self.PUSH_ENDPOINT)
         sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH,
@@ -932,16 +932,19 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         return make_gax_publisher_api(*args, **kwargs)
 
     def test_live_api(self):
+        from google.cloud.pubsub import __version__
         from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
+        publisher_api_kwargs = []
         channel_args = []
         channel_obj = object()
         mock_result = object()
         host = 'foo.apis.invalid'
 
-        def mock_publisher_api(channel):
+        def mock_publisher_api(channel, **kwargs):
             channels.append(channel)
+            publisher_api_kwargs.append(kwargs)
             return mock_result
 
         def make_channel(*args):
@@ -959,18 +962,25 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
             result = self._call_fut(creds)
 
         self.assertIs(result, mock_result)
+        self.assertEqual(len(publisher_api_kwargs), 1)
+        self.assertEqual(publisher_api_kwargs[0]['lib_name'], 'gccl')
+        self.assertEqual(publisher_api_kwargs[0]['lib_version'], __version__)
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
                          [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
+        from google.cloud.pubsub import __version__
+
         channels = []
+        publisher_api_kwargs = []
         mock_result = object()
         insecure_args = []
         mock_channel = object()
 
-        def mock_publisher_api(channel):
+        def mock_publisher_api(channel, **kwargs):
             channels.append(channel)
+            publisher_api_kwargs.append(kwargs)
             return mock_result
 
         def mock_insecure_channel(host):
@@ -986,6 +996,9 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
             result = self._call_fut(host=host)
 
         self.assertIs(result, mock_result)
+        self.assertEqual(len(publisher_api_kwargs), 1)
+        self.assertEqual(publisher_api_kwargs[0]['lib_name'], 'gccl')
+        self.assertEqual(publisher_api_kwargs[0]['lib_version'], __version__)
         self.assertEqual(channels, [mock_channel])
         self.assertEqual(insecure_args, [host])
 
@@ -999,16 +1012,19 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         return make_gax_subscriber_api(*args, **kwargs)
 
     def test_live_api(self):
+        from google.cloud.pubsub import __version__
         from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
+        subscriber_api_kwargs = []
         channel_args = []
         channel_obj = object()
         mock_result = object()
         host = 'foo.apis.invalid'
 
-        def mock_subscriber_api(channel):
+        def mock_subscriber_api(channel, **kwargs):
             channels.append(channel)
+            subscriber_api_kwargs.append(kwargs)
             return mock_result
 
         def make_channel(*args):
@@ -1026,18 +1042,25 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
             result = self._call_fut(creds)
 
         self.assertIs(result, mock_result)
+        self.assertEqual(len(subscriber_api_kwargs), 1)
+        self.assertEqual(subscriber_api_kwargs[0]['lib_name'], 'gccl')
+        self.assertEqual(subscriber_api_kwargs[0]['lib_version'], __version__)
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
                          [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
+        from google.cloud.pubsub import __version__
+
         channels = []
+        subscriber_api_kwargs = []
         mock_result = object()
         insecure_args = []
         mock_channel = object()
 
-        def mock_subscriber_api(channel):
+        def mock_subscriber_api(channel, **kwargs):
             channels.append(channel)
+            subscriber_api_kwargs.append(kwargs)
             return mock_result
 
         def mock_insecure_channel(host):
@@ -1053,6 +1076,9 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
             result = self._call_fut(host=host)
 
         self.assertIs(result, mock_result)
+        self.assertEqual(len(subscriber_api_kwargs), 1)
+        self.assertEqual(subscriber_api_kwargs[0]['lib_name'], 'gccl')
+        self.assertEqual(subscriber_api_kwargs[0]['lib_version'], __version__)
         self.assertEqual(channels, [mock_channel])
         self.assertEqual(insecure_args, [host])
 
