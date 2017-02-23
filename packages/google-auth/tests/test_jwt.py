@@ -206,17 +206,20 @@ class TestCredentials:
     @pytest.fixture(autouse=True)
     def credentials_fixture(self, signer):
         self.credentials = jwt.Credentials(
-            signer, self.SERVICE_ACCOUNT_EMAIL)
+            signer, self.SERVICE_ACCOUNT_EMAIL, self.SERVICE_ACCOUNT_EMAIL,
+            self.AUDIENCE)
 
     def test_from_service_account_info(self):
         with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
             info = json.load(fh)
 
-        credentials = jwt.Credentials.from_service_account_info(info)
+        credentials = jwt.Credentials.from_service_account_info(
+            info, audience=self.AUDIENCE)
 
         assert credentials._signer.key_id == info['private_key_id']
         assert credentials._issuer == info['client_email']
         assert credentials._subject == info['client_email']
+        assert credentials._audience == self.AUDIENCE
 
     def test_from_service_account_info_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -235,11 +238,12 @@ class TestCredentials:
         info = SERVICE_ACCOUNT_INFO.copy()
 
         credentials = jwt.Credentials.from_service_account_file(
-            SERVICE_ACCOUNT_JSON_FILE)
+            SERVICE_ACCOUNT_JSON_FILE, audience=self.AUDIENCE)
 
         assert credentials._signer.key_id == info['private_key_id']
         assert credentials._issuer == info['client_email']
         assert credentials._subject == info['client_email']
+        assert credentials._audience == self.AUDIENCE
 
     def test_from_service_account_file_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -258,6 +262,18 @@ class TestCredentials:
         assert not self.credentials.valid
         # Expiration hasn't been set yet
         assert not self.credentials.expired
+
+    def test_with_claims(self):
+        new_audience = 'new_audience'
+        new_credentials = self.credentials.with_claims(
+            audience=new_audience)
+
+        assert new_credentials._signer == self.credentials._signer
+        assert new_credentials._issuer == self.credentials._issuer
+        assert new_credentials._subject == self.credentials._subject
+        assert new_credentials._audience == new_audience
+        assert (new_credentials._additional_claims ==
+                self.credentials._additional_claims)
 
     def test_sign_bytes(self):
         to_sign = b'123'
@@ -292,43 +308,24 @@ class TestCredentials:
             now.return_value = self.credentials.expiry + one_day
             assert self.credentials.expired
 
-    def test_before_request_one_time_token(self):
+    def test_before_request(self):
         headers = {}
 
         self.credentials.refresh(None)
         self.credentials.before_request(
-            mock.Mock(), 'GET', 'http://example.com?a=1#3', headers)
-
-        header_value = headers['authorization']
-        _, token = header_value.split(' ')
-
-        # This should be a one-off token, so it shouldn't be the same as the
-        # credentials' stored token.
-        assert token != self.credentials.token
-
-        payload = self._verify_token(token)
-        assert payload['aud'] == 'http://example.com'
-
-    def test_before_request_with_preset_audience(self):
-        headers = {}
-
-        credentials = self.credentials.with_claims(audience=self.AUDIENCE)
-        credentials.refresh(None)
-        credentials.before_request(
             None, 'GET', 'http://example.com?a=1#3', headers)
 
         header_value = headers['authorization']
         _, token = header_value.split(' ')
 
         # Since the audience is set, it should use the existing token.
-        assert token.encode('utf-8') == credentials.token
+        assert token.encode('utf-8') == self.credentials.token
 
         payload = self._verify_token(token)
         assert payload['aud'] == self.AUDIENCE
 
     def test_before_request_refreshes(self):
-        credentials = self.credentials.with_claims(audience=self.AUDIENCE)
-        assert not credentials.valid
-        credentials.before_request(
+        assert not self.credentials.valid
+        self.credentials.before_request(
             None, 'GET', 'http://example.com?a=1#3', {})
-        assert credentials.valid
+        assert self.credentials.valid

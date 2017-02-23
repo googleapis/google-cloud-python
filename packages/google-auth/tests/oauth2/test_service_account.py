@@ -112,9 +112,11 @@ class TestCredentials(object):
         assert credentials._additional_claims == additional_claims
 
     def test_to_jwt_credentials(self):
-        jwt_from_svc = self.credentials.to_jwt_credentials()
+        jwt_from_svc = self.credentials.to_jwt_credentials(
+            audience=mock.sentinel.audience)
         jwt_from_info = jwt.Credentials.from_service_account_info(
-            SERVICE_ACCOUNT_INFO)
+            SERVICE_ACCOUNT_INFO,
+            audience=mock.sentinel.audience)
 
         assert isinstance(jwt_from_svc, jwt.Credentials)
         assert jwt_from_svc._signer.key_id == jwt_from_info._signer.key_id

@@ -204,7 +204,7 @@ class Credentials(credentials.Signing,
             filename, require=['client_email', 'token_uri'])
         return cls._from_signer_and_info(signer, info, **kwargs)
 
-    def to_jwt_credentials(self):
+    def to_jwt_credentials(self, audience):
         """Creates a :class:`google.auth.jwt.Credentials` instance from this
         instance.
 
@@ -223,13 +223,18 @@ class Credentials(credentials.Signing,
             jwt_creds = jwt.Credentials.from_service_account_file(
                 'service_account.json')
 
+        Args:
+            audience (str): the `aud` claim. The intended audience for the
+                credentials.
+
         Returns:
             google.auth.jwt.Credentials: A new Credentials instance.
         """
         return jwt.Credentials(
             self._signer,
             issuer=self._service_account_email,
-            subject=self._service_account_email)
+            subject=self._service_account_email,
+            audience=audience)
 
     @property
     def service_account_email(self):

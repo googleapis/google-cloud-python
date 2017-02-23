@@ -40,7 +40,10 @@ def test_grpc_request_with_regular_credentials(http_request):
 
 def test_grpc_request_with_jwt_credentials(http_request):
     credentials, project_id = google.auth.default()
-    credentials = credentials.to_jwt_credentials()
+    audience = 'https://{}/google.pubsub.v1.Publisher'.format(
+        publisher_client.PublisherClient.SERVICE_ADDRESS)
+    credentials = credentials.to_jwt_credentials(
+        audience=audience)
 
     channel = google.auth.transport.grpc.secure_authorized_channel(
         credentials,
