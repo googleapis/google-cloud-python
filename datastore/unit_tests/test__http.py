@@ -914,6 +914,23 @@ class TestConnection(unittest.TestCase):
             self.assertEqual(key_before, key_after)
 
 
+class TestHTTPDatastoreAPI(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.datastore._http import HTTPDatastoreAPI
+
+        return HTTPDatastoreAPI
+
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
+
+    def test_constructor(self):
+        client = object()
+        ds_api = self._make_one(client)
+        self.assertIs(ds_api.client, client)
+
+
 class Http(object):
 
     _called_with = None
