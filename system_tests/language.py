@@ -100,8 +100,9 @@ class TestLanguage(unittest.TestCase):
 
     def test_analyze_entities(self):
         document = Config.CLIENT.document_from_text(self.TEXT_CONTENT)
-        entities = document.analyze_entities().entities
-        self._check_analyze_entities_result(entities)
+        response = document.analyze_entities()
+        self.assertEqual(response.language, 'en')
+        self._check_analyze_entities_result(response.entities)
 
     def test_analyze_entities_from_blob(self):
         # Upload the text to a blob.
