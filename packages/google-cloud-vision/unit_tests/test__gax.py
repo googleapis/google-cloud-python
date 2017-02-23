@@ -17,6 +17,11 @@ import unittest
 import mock
 
 
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
+
 class TestGAXClient(unittest.TestCase):
     def _get_target_class(self):
         from google.cloud.vision._gax import _GAPICVisionAPI
@@ -32,12 +37,55 @@ class TestGAXClient(unittest.TestCase):
             api = self._make_one(client)
         self.assertIs(api._client, client)
 
+    def test_gapic_credentials(self):
+        from google.cloud.gapic.vision.v1.image_annotator_client import (
+            ImageAnnotatorClient)
+        from google.cloud.vision import Client
+
+        # Mock the GAPIC ImageAnnotatorClient, whose arguments we
+        # want to check.
+        with mock.patch.object(ImageAnnotatorClient, '__init__') as iac:
+            iac.return_value = None
+
+            # Create the GAX client.
+            credentials = _make_credentials()
+            client = Client(credentials=credentials, project='foo')
+            self._make_one(client=client)
+
+            # Assert that the GAPIC constructor was called once, and
+            # that the credentials were sent.
+            iac.assert_called_once()
+            _, _, kwargs = iac.mock_calls[0]
+            self.assertIs(kwargs['credentials'], credentials)
+
+    def test_kwarg_lib_name(self):
+        from google.cloud.gapic.vision.v1.image_annotator_client import (
+            ImageAnnotatorClient)
+        from google.cloud.vision import __version__
+        from google.cloud.vision import Client
+
+        # Mock the GAPIC ImageAnnotatorClient, whose arguments we
+        # want to check.
+        with mock.patch.object(ImageAnnotatorClient, '__init__') as iac:
+            iac.return_value = None
+
+            # Create the GAX client.
+            client = Client(credentials=_make_credentials(), project='foo')
+            self._make_one(client=client)
+
+            # Assert that the GAPIC constructor was called once, and
+            # that lib_name and lib_version were sent.
+            iac.assert_called_once()
+            _, _, kwargs = iac.mock_calls[0]
+            self.assertEqual(kwargs['lib_name'], 'gccl')
+            self.assertEqual(kwargs['lib_version'], __version__)
+
     def test_annotation(self):
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
 
-        client = mock.Mock(spec_set=[])
+        client = mock.Mock(spec_set=['_credentials'])
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
         image_content = b'abc 1 2 3'
         image = Image(client, content=image_content)
@@ -64,7 +112,7 @@ class TestGAXClient(unittest.TestCase):
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
 
-        client = mock.Mock(spec_set=[])
+        client = mock.Mock(spec_set=['_credentials'])
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
         image_content = b'abc 1 2 3'
         image = Image(client, content=image_content)
@@ -87,13 +135,13 @@ class TestGAXClient(unittest.TestCase):
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
     def test_annotate_multiple_results(self):
-        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
         from google.cloud.vision.annotations import Annotations
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
 
-        client = mock.Mock(spec_set=[])
+        client = mock.Mock(spec_set=['_credentials'])
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
         image_content = b'abc 1 2 3'
         image = Image(client, content=image_content)
@@ -128,7 +176,7 @@ class Test__to_gapic_feature(unittest.TestCase):
     def test__to_gapic_feature(self):
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
-        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
 
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
         feature_pb = self._call_fut(feature)
@@ -144,7 +192,7 @@ class Test__to_gapic_image(unittest.TestCase):
 
     def test__to_gapic_image_content(self):
         from google.cloud.vision.image import Image
-        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
 
         image_content = b'abc 1 2 3'
         client = object()
@@ -155,7 +203,7 @@ class Test__to_gapic_image(unittest.TestCase):
 
     def test__to_gapic_image_uri(self):
         from google.cloud.vision.image import Image
-        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
 
         image_uri = 'gs://1234/34.jpg'
         client = object()

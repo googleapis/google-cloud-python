@@ -43,7 +43,7 @@ class BoundsBase(object):
     def from_pb(cls, vertices):
         """Factory: construct BoundsBase instance from a protobuf response.
 
-        :type vertices: :class:`~google.cloud.grpc.vision.v1.\
+        :type vertices: :class:`~google.cloud.proto.vision.v1.\
                                  geometry_pb2.BoundingPoly`
         :param vertices: List of vertices.
 
