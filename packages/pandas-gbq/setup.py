@@ -24,6 +24,7 @@ INSTALL_REQUIRES = (
 setup(
     name=NAME,
     version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     description="Pandas interface to Google Big Query",
     long_description=readme(),
     license='BSD License',
@@ -48,5 +49,4 @@ setup(
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     test_suite='tests',
-    zip_safe=False,
 )
