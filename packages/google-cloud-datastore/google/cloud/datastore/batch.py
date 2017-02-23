@@ -238,8 +238,9 @@ class Batch(object):
         This is called by :meth:`commit`.
         """
         # NOTE: ``self._commit_request`` will be modified.
-        _, updated_keys = self._client._connection.commit(
+        commit_response_pb = self._client._connection.commit(
             self.project, self._commit_request, self._id)
+        _, updated_keys = _parse_commit_response(commit_response_pb)
         # If the back-end returns without error, we are guaranteed that
         # :meth:`Connection.commit` will return keys that match (length and
         # order) directly ``_partial_key_entities``.
@@ -311,3 +312,21 @@ def _assign_entity_to_pb(entity_pb, entity):
     bare_entity_pb = helpers.entity_to_protobuf(entity)
     bare_entity_pb.key.CopyFrom(bare_entity_pb.key)
     entity_pb.CopyFrom(bare_entity_pb)
+
+
+def _parse_commit_response(commit_response_pb):
+    """Extract response data from a commit response.
+
+    :type commit_response_pb: :class:`.datastore_pb2.CommitResponse`
+    :param commit_response_pb: The protobuf response from a commit request.
+
+    :rtype: tuple
+    :returns: The pair of the number of index updates and a list of
+              :class:`.entity_pb2.Key` for each incomplete key
+              that was completed in the commit.
+    """
+    mut_results = commit_response_pb.mutation_results
+    index_updates = commit_response_pb.index_updates
+    completed_keys = [mut_result.key for mut_result in mut_results
+                      if mut_result.HasField('key')]  # Message field (Key)
+    return index_updates, completed_keys

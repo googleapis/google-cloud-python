@@ -568,7 +568,8 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client._connection._commit.append([_KeyPB(key)])
+        key_pb = _make_key(234)
+        client._connection._commit.append([key_pb])
 
         result = client.put_multi([entity])
         self.assertIsNone(result)
@@ -931,7 +932,6 @@ class _MockConnection(object):
         self._commit = []
         self._alloc_cw = []
         self._alloc = []
-        self._index_updates = 0
 
     def _add_lookup_result(self, results=(), missing=(), deferred=()):
         self._lookup.append((list(results), list(missing), list(deferred)))
@@ -943,9 +943,13 @@ class _MockConnection(object):
         return results, missing, deferred
 
     def commit(self, project, commit_request, transaction_id):
+        from google.cloud.grpc.datastore.v1 import datastore_pb2
+
         self._commit_cw.append((project, commit_request, transaction_id))
-        response, self._commit = self._commit[0], self._commit[1:]
-        return self._index_updates, response
+        keys, self._commit = self._commit[0], self._commit[1:]
+        mutation_results = [
+            datastore_pb2.MutationResult(key=key) for key in keys]
+        return datastore_pb2.CommitResponse(mutation_results=mutation_results)
 
     def allocate_ids(self, project, key_pbs):
         self._alloc_cw.append((project, key_pbs))
@@ -1058,3 +1062,12 @@ def _mutated_pb(test_case, mutation_pb_list, mutation_type):
                           mutation_type)
 
     return getattr(mutated_pb, mutation_type)
+
+
+def _make_key(id_):
+    from google.cloud.grpc.datastore.v1 import entity_pb2
+
+    key = entity_pb2.Key()
+    elem = key.path.add()
+    elem.id = id_
+    return key
