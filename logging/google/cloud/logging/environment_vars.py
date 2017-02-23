@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Environment variables used by the package."""
 
 _APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
 """Environment variable set in App Engine when vm:true is set."""
 
+
 _APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
 """Environment variable set in App Engine when env:flex is set."""
+
 
 _CONTAINER_ENGINE_ENV = 'KUBERNETES_SERVICE'
 """Environment variable set in a Google Container Engine environment."""

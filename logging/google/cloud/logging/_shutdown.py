@@ -67,22 +67,24 @@ def _write_stacktrace_log(client, traces):
     gae_instance = _get_gae_instance()
 
     text_payload = '{}\nThread traces\n{}'.format(gae_instance, traces)
-    logger_name = 'projects/{}/logs/appengine.googleapis.com%2Fapp.shutdown'.format(client.project)
+
+    logger_name = 'projects/{}/logs/{}'.format(
+        client.project, 'appengine.googleapis.com%2Fapp.shutdown')
 
     resource = {'type': 'gae_app', 'labels': {'project_id': client.project,
                                               'version_id': gae_version,
                                               'module_id': gae_service}}
 
-    labels = {'appengine.googleapis.com/version_id': gae_version,
-              'compute.googleapis.com/resource_type': 'instance',
-              'appengine.googleapis.com/instance_name': gae_instance,
-              'appengine.googleapis.com / module_id': gae_service, }
+    labels = {
+        'appengine.googleapis.com/version_id': gae_version,
+        'compute.googleapis.com/resource_type': 'instance',
+        'appengine.googleapis.com/instance_name': gae_instance,
+        'appengine.googleapis.com/module_id': gae_service,
+    }
 
-    split_payloads = _split_entry(bytes(text_payload))
+    split_payloads = _split_entry(text_payload.encode('utf-8'))
     entries = [{'text_payload': payload} for payload in split_payloads]
 
-    print "SENDINT ENTRY %s logger  %s resource %s " % (entries, logger_name,
-                                                        resource )
     client.logging_api.write_entries(
         entries, logger_name=logger_name, resource=resource, labels=labels)
 
@@ -93,35 +95,31 @@ def _is_on_appengine():
         _APPENGINE_FLEXIBLE_ENV_FLEX))
 
 
-def _report_stacktraces(client, signal, frame):
+def _report_stacktraces(
+        client, signal_, frame):  # pylint: disable=unused-argument
     """Reports the stacktraces of all active threads to Stackdriver Logging.
 
     :type client: `google.cloud.logging.Client`
     :param client: Stackdriver logging client.
 
-    :type signal: int
-    :param signal: Signal number.
+    :type signal_: int
+    :param signal_: Signal number.
 
     :type frame: frame object
     :param frame: The current stack frame.
     """
     traces = ''
-    print "RUNNING SIGNAL HANDLER!"
-    for threadId, stack in sys._current_frames().items():
-        traces += '\n# ThreadID: {}'.format(threadId)
-        for filename, lineno, name, line in traceback.extract_stack(stack):
+    for thread_id, stack in sys._current_frames().items():
+        traces += '\n# ThreadID: {}'.format(thread_id)
+        for filename, lineno, name, _ in traceback.extract_stack(stack):
             traces += 'File: {}, line {}, in {}'.format(
                 filename, lineno, name)
 
     _write_stacktrace_log(client, traces)
 
-def fml(signal, frame):
-    print "MY LIFE IS F'ed"
 
-
-
-def setup_shutdown_stacktrace_reporting(client):
-    """Installs a SIGTERM handler to log stack traces to  Stackdriver.
+def setup_stacktrace_crash_report(client):
+    """Installs a SIGTERM handler to log stack traces to Stackdriver.
 
     :type client: `google.cloud.logging.Client`
     :param client: Stackdriver logging client.
@@ -129,5 +127,5 @@ def setup_shutdown_stacktrace_reporting(client):
     if not _is_on_appengine():
         raise RuntimeError('Shutdown reporting is only supported on App '
                            'Engine flexible environment.')
-    print "INSTALLIGN SIGNAL HANDLER"
-    signal.signal(signal.SIGTERM, functools.partial(_report_stacktraces, client))
+    signal.signal(
+        signal.SIGTERM, functools.partial(_report_stacktraces, client))

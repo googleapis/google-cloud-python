@@ -21,8 +21,8 @@ class Test_setup_shutdown_stracktrace_reporting(unittest.TestCase):
 
     def _call_fut(self, request):
         from google.cloud.logging._shutdown import (
-            setup_shutdown_stacktrace_reporting)
-        return setup_shutdown_stacktrace_reporting(request)
+            setup_stacktrace_crash_report)
+        return setup_stacktrace_crash_report(request)
 
     def test_setup_shutdown_stacktrace_reporting_no_gae(self):
         with self.assertRaises(RuntimeError):
@@ -50,7 +50,6 @@ class Test_write_stackrace_log(unittest.TestCase):
         )
         return _write_stacktrace_log(client, traces)
 
-
     def test_write_stracktrace_log(self):
         from google.cloud._testing import _Monkey
         import os
@@ -62,7 +61,8 @@ class Test_write_stackrace_log(unittest.TestCase):
             self._call_fut(mock_client, trace)
             called = mock_client.logging_api.write_entries.call_args
 
-        expected_payload = 'myversion\nThread traces\n{}'.format(trace)
+        expected_payload = 'myversion\nThread traces\n{}'.format(
+            trace).encode('utf-8')
         self.assertEqual(called[0][0], [{'text_payload': expected_payload}])
 
 
@@ -78,9 +78,7 @@ class Test_report_stacktraces(unittest.TestCase):
         patch = mock.patch(
             'google.cloud.logging._shutdown._write_stacktrace_log')
         with patch as write_log_mock:
-            self._call_fut(mock.Mock(), mock.Mock() ,mock.Mock())
+            self._call_fut(mock.Mock(), mock.Mock(), mock.Mock())
 
             traces = write_log_mock.call_args[0][1]
         self.assertIn('test__shutdown', traces)
-
-

@@ -38,7 +38,7 @@ from google.cloud.logging._http import Connection
 from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging._http import _MetricsAPI as JSONMetricsAPI
 from google.cloud.logging._http import _SinksAPI as JSONSinksAPI
-from google.cloud.logging._shutdown import setup_shutdown_stacktrace_reporting
+from google.cloud.logging._shutdown import setup_stacktrace_crash_report
 from google.cloud.logging.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers import AppEngineHandler
 from google.cloud.logging.handlers import ContainerEngineHandler
@@ -327,15 +327,17 @@ class Client(ClientWithProject):
     def enable_shutdown_logging(self, thread_dump=True):
         """Enable shutdown report logging.
 
+        .. note::  This method is only supported on App Engine Flexible.
+
         This method installs a SIGTERM handler that will report various
         application metrics to Stackdriver Logging.
 
-        Currently the only supported option is stacktrace logging.
+        Currently the only supported option is thread stacktrace logging. This
+        will log all the stacktraces of all active threads.
 
-        :type log_level: bool
-        :param log_level: (Optional) When true, on SIGTERM the application
+        :type thread_dump: bool
+        :param thread_dump: (Optional) When true, on SIGTERM the application
                           will log the stacktrace of all running threads.
         """
         if thread_dump:
-            setup_shutdown_stacktrace_reporting(self)
-
+            setup_stacktrace_crash_report(self)
