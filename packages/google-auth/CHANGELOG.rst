@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v0.8.0
+------
+
+- Removed one-time token behavior from ``jwt.Credentials``, audience claim is now required and fixed. (#117)
+- ``crypt.Signer`` and ``crypt.Verifier`` are now abstract base classes. The concrete implementations have been renamed to ``crypt.RSASigner`` and ``crypt.RSAVerifier``. ``app_engine.Signer`` and ``iam.Signer`` now inherit from ``crypt.Signer``. (#115)
+- ``transport.grpc`` now correctly calls ``Credentials.before_request``. (#116)
+
 v0.7.0
 ------
 
