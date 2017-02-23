@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.error_reporting.client &mdash; google-cloud 2580872 documentation</title>
+  <title>google.cloud.error_reporting.client &mdash; google-cloud ab1ce15 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 2580872 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ab1ce15 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -238,7 +238,7 @@
 <p class="caption"><span class="caption-text">Spanner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-usage.html">Database Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
@@ -323,12 +323,25 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Client for interacting with the Stackdriver Logging API&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Client for interacting with the Stackdriver Error Reporting API&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
 
-<span class="kn">import</span> <span class="nn">google.cloud.logging.client</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">google.cloud.error_reporting._gax</span> <span class="k">import</span> <span class="n">make_report_error_api</span>
+    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
+    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_determine_default_project</span>
+<span class="kn">from</span> <span class="nn">google.cloud.error_reporting._logging</span> <span class="k">import</span> <span class="n">_ErrorReportingLoggingAPI</span>
+<span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
+
 <span class="kn">import</span> <span class="nn">six</span>
+
+<span class="n">_DISABLE_GAX</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">_USE_GAX</span> <span class="o">=</span> <span class="n">_HAVE_GAX</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GAX</span>
 
 
 <div class="viewcode-block" id="HTTPContext"><a class="viewcode-back" href="../../../../error-reporting-client.html#google.cloud.error_reporting.client.HTTPContext">[docs]</a><span class="k">class</span> <span class="nc">HTTPContext</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -407,6 +420,12 @@
 <span class="sd">                    SHA-1 hash, for example. If the developer did not provide</span>
 <span class="sd">                    a version, the value is set to default.</span>
 
+<span class="sd">    :type use_gax: bool</span>
+<span class="sd">    :param use_gax: (Optional) Explicitly specifies whether</span>
+<span class="sd">                    to use the gRPC transport (via GAX) or HTTP. If unset,</span>
+<span class="sd">                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment</span>
+<span class="sd">                    variable.</span>
+
 <span class="sd">    :raises: :class:`ValueError` if the project is neither passed in nor</span>
 <span class="sd">             set in the environment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -415,24 +434,56 @@
                  <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logging_client</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span>
-            <span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
+                 <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">use_gax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">_determine_default_project</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">project</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_http</span> <span class="o">=</span> <span class="n">http</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">service</span> <span class="k">if</span> <span class="n">service</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_SERVICE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="k">if</span> <span class="n">use_gax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">_USE_GAX</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
 
     <span class="n">DEFAULT_SERVICE</span> <span class="o">=</span> <span class="s1">&#39;python&#39;</span>
 
-    <span class="k">def</span> <span class="nf">_send_error_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span>
-                           <span class="n">report_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Makes the call to the Error Reporting API via the log stream.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">report_errors_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for logging-related API calls.</span>
 
-<span class="sd">        This is the lower-level interface to build the payload, generally</span>
-<span class="sd">        users will use either report() or report_exception() to automatically</span>
-<span class="sd">        gather the parameters for this method.</span>
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries</span>
+<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs</span>
 
-<span class="sd">        Currently this method sends the Error Report by formatting a structured</span>
-<span class="sd">        log message according to</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">            :class:`_gax._ErrorReportingGaxApi`</span>
+<span class="sd">            or</span>
+<span class="sd">            :class:`._logging._ErrorReportingLoggingAPI`</span>
+<span class="sd">        :returns: A class that implements the report errors API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="n">make_report_error_api</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="n">_ErrorReportingLoggingAPI</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span>
+
+    <span class="k">def</span> <span class="nf">_build_error_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">message</span><span class="p">,</span>
+                            <span class="n">report_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Builds the Error Reporting object to report.</span>
+
+<span class="sd">        This builds the object according to</span>
 
 <span class="sd">        https://cloud.google.com/error-reporting/docs/formatting-error-messages</span>
 
@@ -462,7 +513,10 @@
 <span class="sd">                     logged in. In this  case the Error Reporting system will</span>
 <span class="sd">                     use other data, such as remote IP address,</span>
 <span class="sd">                     to distinguish affected users.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dict payload ready to be serialized to JSON and sent to</span>
+<span class="sd">                  the API.</span>
+<span class="sd">         &quot;&quot;&quot;</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;serviceContext&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;service&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="p">,</span>
@@ -489,9 +543,49 @@
 
         <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
             <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="k">return</span> <span class="n">payload</span>
 
-        <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_client</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="s1">&#39;errors&#39;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_struct</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_send_error_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">message</span><span class="p">,</span>
+                           <span class="n">report_location</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Makes the call to the Error Reporting API.</span>
+
+<span class="sd">        This is the lower-level interface to build and send the payload,</span>
+<span class="sd">        generally users will use either report() or report_exception() to</span>
+<span class="sd">        automatically gather the parameters for this method.</span>
+
+<span class="sd">        :type message: str</span>
+<span class="sd">        :param message: The stack trace that was reported or logged by the</span>
+<span class="sd">                   service.</span>
+
+<span class="sd">        :type report_location: dict</span>
+<span class="sd">        :param report_location:  The location in the source code where the</span>
+<span class="sd">               decision was made to report the error, usually the place</span>
+<span class="sd">               where it was logged. For a logged exception this would be the</span>
+<span class="sd">               source line where the exception is logged, usually close to</span>
+<span class="sd">               the place where it was caught.</span>
+
+<span class="sd">               This should be a Python dict that contains the keys &#39;filePath&#39;,</span>
+<span class="sd">               &#39;lineNumber&#39;, and &#39;functionName&#39;</span>
+
+<span class="sd">        :type http_context: :class`google.cloud.error_reporting.HTTPContext`</span>
+<span class="sd">        :param http_context: The HTTP request which was processed when the</span>
+<span class="sd">                             error was triggered.</span>
+
+<span class="sd">        :type user: str</span>
+<span class="sd">        :param user: The user who caused or was affected by the crash. This can</span>
+<span class="sd">                     be a user ID, an email address, or an arbitrary token that</span>
+<span class="sd">                     uniquely identifies the user. When sending an error</span>
+<span class="sd">                     report, leave this field empty if the user was not</span>
+<span class="sd">                     logged in. In this  case the Error Reporting system will</span>
+<span class="sd">                     use other data, such as remote IP address,</span>
+<span class="sd">                     to distinguish affected users.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">error_report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_error_report</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">report_location</span><span class="p">,</span>
+                                                <span class="n">http_context</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_errors_api</span><span class="o">.</span><span class="n">report_error_event</span><span class="p">(</span><span class="n">error_report</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Client.report"><a class="viewcode-back" href="../../../../error-reporting-client.html#google.cloud.error_reporting.client.Client.report">[docs]</a>    <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">http_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reports a message to Stackdriver Error Reporting</span>
@@ -596,7 +690,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'2580872',
+            VERSION:'ab1ce15',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

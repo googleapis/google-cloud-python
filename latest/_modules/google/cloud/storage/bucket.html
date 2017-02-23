@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.bucket &mdash; google-cloud 2580872 documentation</title>
+  <title>google.cloud.storage.bucket &mdash; google-cloud ab1ce15 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 2580872 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ab1ce15 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -238,7 +238,7 @@
 <p class="caption"><span class="caption-text">Spanner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-usage.html">Database Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
@@ -325,10 +325,16 @@
 
 <span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Storage buckets.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
+<span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_NOW</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
@@ -1139,7 +1145,80 @@
 
             <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
                 <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
-                <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div></div>
+                <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bucket.generate_upload_policy"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.generate_upload_policy">[docs]</a>    <span class="k">def</span> <span class="nf">generate_upload_policy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="p">,</span> <span class="n">expiration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a signed upload policy for uploading objects.</span>
+
+<span class="sd">        This method generates and signs a policy document. You can use</span>
+<span class="sd">        `policy documents`_ to allow visitors to a website to upload files to</span>
+<span class="sd">        Google Cloud Storage without giving them direct write access.</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">          :start-after: [START policy_document]</span>
+<span class="sd">          :end-before: [END policy_document]</span>
+
+<span class="sd">        .. _policy documents:</span>
+<span class="sd">            https://cloud.google.com/storage/docs/xml-api\</span>
+<span class="sd">            /post-object#policydocument</span>
+
+<span class="sd">        :type expiration: datetime</span>
+<span class="sd">        :param expiration: Optional expiration in UTC. If not specified, the</span>
+<span class="sd">                           policy will expire in 1 hour.</span>
+
+<span class="sd">        :type conditions: list</span>
+<span class="sd">        :param conditions: A list of conditions as described in the</span>
+<span class="sd">                          `policy documents`_ documentation.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client`</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary of (form field name, form field value) of form</span>
+<span class="sd">                  fields that should be added to your HTML upload form in order</span>
+<span class="sd">                  to attach the signature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_base_connection</span><span class="o">.</span><span class="n">credentials</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">Signing</span><span class="p">):</span>
+            <span class="n">auth_uri</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;http://google-cloud-python.readthedocs.io/en/latest/&#39;</span>
+                        <span class="s1">&#39;google-cloud-auth.html#setting-up-a-service-account&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="s1">&#39;you need a private key to sign credentials.&#39;</span>
+                <span class="s1">&#39;the credentials you are currently using </span><span class="si">%s</span><span class="s1"> &#39;</span>
+                <span class="s1">&#39;just contains a token. see </span><span class="si">%s</span><span class="s1"> for more &#39;</span>
+                <span class="s1">&#39;details.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">credentials</span><span class="p">),</span> <span class="n">auth_uri</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">expiration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">expiration</span> <span class="o">=</span> <span class="n">_NOW</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">conditions</span> <span class="o">=</span> <span class="n">conditions</span> <span class="o">+</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;bucket&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
+        <span class="p">]</span>
+
+        <span class="n">policy_document</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;expiration&#39;</span><span class="p">:</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
+            <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="n">conditions</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">encoded_policy_document</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">policy_document</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span>
+            <span class="n">credentials</span><span class="o">.</span><span class="n">sign_bytes</span><span class="p">(</span><span class="n">encoded_policy_document</span><span class="p">))</span>
+
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;bucket&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;GoogleAccessId&#39;</span><span class="p">:</span> <span class="n">credentials</span><span class="o">.</span><span class="n">signer_email</span><span class="p">,</span>
+            <span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">encoded_policy_document</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;signature&#39;</span><span class="p">:</span> <span class="n">signature</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">fields</span></div></div>
 </pre></div>
 
            </div>
@@ -1173,7 +1252,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'2580872',
+            VERSION:'ab1ce15',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

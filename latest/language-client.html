@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Natural Language Client &mdash; google-cloud 2580872 documentation</title>
+  <title>Natural Language Client &mdash; google-cloud ab1ce15 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 2580872 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud ab1ce15 documentation" href="index.html"/>
         <link rel="next" title="Document" href="language-document.html"/>
         <link rel="prev" title="Using the API" href="language-usage.html"/> 
 
@@ -215,10 +215,7 @@
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="language-usage.html">Using the API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Client</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.language.connection">Connection</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="language-document.html">Document</a></li>
 <li class="toctree-l1"><a class="reference internal" href="language-responses.html">Natural Language Response Classes</a></li>
 </ul>
@@ -242,7 +239,7 @@
 <p class="caption"><span class="caption-text">Spanner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-database-usage.html">Database Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
@@ -325,7 +322,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.6.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.7.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
@@ -469,43 +466,6 @@ constructor.</li>
 
 </dd></dl>
 
-<div class="section" id="module-google.cloud.language.connection">
-<span id="connection"></span><h2>Connection<a class="headerlink" href="#module-google.cloud.language.connection" title="Permalink to this headline">#</a></h2>
-<p>Basic connection for Google Cloud Natural Language API.</p>
-<dl class="class">
-<dt id="google.cloud.language.connection.Connection">
-<em class="property">class </em><code class="descclassname">google.cloud.language.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.connection.Connection" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud._http.JSONConnection</span></code></p>
-<p>A connection to Google Cloud Natural Language JSON REST API.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="#google.cloud.language.client.Client" title="google.cloud.language.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client that owns the current connection.</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="google.cloud.language.connection.Connection.API_BASE_URL">
-<code class="descname">API_BASE_URL</code><em class="property"> = 'https://language.googleapis.com'</em><a class="headerlink" href="#google.cloud.language.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
-<dd><p>The base of the API call URL.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.language.connection.Connection.API_URL_TEMPLATE">
-<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base_url}/{api_version}/documents:{path}'</em><a class="headerlink" href="#google.cloud.language.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
-<dd><p>A template for the URL of a particular API call.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.language.connection.Connection.API_VERSION">
-<code class="descname">API_VERSION</code><em class="property"> = 'v1'</em><a class="headerlink" href="#google.cloud.language.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
-<dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
 </div>
 
 
@@ -549,7 +509,7 @@ constructor.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2580872',
+            VERSION:'ab1ce15',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

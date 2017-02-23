@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 2580872 documentation</title>
+  <title>Buckets &mdash; google-cloud ab1ce15 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 2580872 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud ab1ce15 documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -239,7 +239,7 @@
 <p class="caption"><span class="caption-text">Spanner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-database-usage.html">Database Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
@@ -672,6 +672,68 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the bucket exists in Cloud Storage.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.generate_upload_policy">
+<code class="descname">generate_upload_policy</code><span class="sig-paren">(</span><em>conditions</em>, <em>expiration=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.generate_upload_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.generate_upload_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a signed upload policy for uploading objects.</p>
+<p>This method generates and signs a policy document. You can use
+<a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/post-object#policydocument">policy documents</a> to allow visitors to a website to upload files to
+Google Cloud Storage without giving them direct write access.</p>
+<p>For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+    <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s1">&#39;starts-with&#39;</span><span class="p">,</span> <span class="s1">&#39;$key&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">],</span>
+        <span class="p">{</span><span class="s1">&#39;acl&#39;</span><span class="p">:</span> <span class="s1">&#39;public-read&#39;</span><span class="p">}]</span>
+
+    <span class="n">policy</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">generate_upload_policy</span><span class="p">(</span><span class="n">conditions</span><span class="p">)</span>
+
+    <span class="c1"># Generate an upload form using the form fields.</span>
+    <span class="n">policy_fields</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;</span><span class="si">{key}</span><span class="s1">&quot; value=&quot;</span><span class="si">{value}</span><span class="s1">&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">policy</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">upload_form</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;&lt;form action=&quot;http://</span><span class="si">{bucket_name}</span><span class="s1">.storage.googleapis.com&quot;&#39;</span>
+        <span class="s1">&#39;   method=&quot;post&quot;enctype=&quot;multipart/form-data&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;key&quot; value=&quot;&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;bucket&quot; value=&quot;</span><span class="si">{bucket_name}</span><span class="s1">&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;acl&quot; value=&quot;public-read&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input name=&quot;file&quot; type=&quot;file&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;&#39;</span>
+        <span class="s1">&#39;</span><span class="si">{policy_fields}</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;&lt;form&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">policy_fields</span><span class="o">=</span><span class="n">policy_fields</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">upload_form</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#module-datetime" title="(in Python v2.7)"><em>datetime</em></a>) &#8211; Optional expiration in UTC. If not specified, the
+policy will expire in 1 hour.</li>
+<li><strong>conditions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of conditions as described in the
+<a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/post-object#policydocument">policy documents</a> documentation.</li>
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary of (form field name, form field value) of form
+fields that should be added to your HTML upload form in order
+to attach the signature.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1117,7 +1179,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2580872',
+            VERSION:'ab1ce15',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

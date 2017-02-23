@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Error Reporting Client &mdash; google-cloud 2580872 documentation</title>
+  <title>Error Reporting Client &mdash; google-cloud ab1ce15 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 2580872 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud ab1ce15 documentation" href="index.html"/>
         <link rel="next" title="Error Reporting Utilities" href="error-reporting-util.html"/>
         <link rel="prev" title="Using the API" href="error-reporting-usage.html"/> 
 
@@ -239,7 +239,7 @@
 <p class="caption"><span class="caption-text">Spanner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-database-usage.html">Database Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
@@ -311,10 +311,10 @@
             
   <div class="section" id="module-google.cloud.error_reporting.client">
 <span id="error-reporting-client"></span><h1>Error Reporting Client<a class="headerlink" href="#module-google.cloud.error_reporting.client" title="Permalink to this headline">#</a></h1>
-<p>Client for interacting with the Stackdriver Logging API</p>
+<p>Client for interacting with the Stackdriver Error Reporting API</p>
 <dl class="class">
 <dt id="google.cloud.error_reporting.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.error_reporting.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em>, <em>service=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/error_reporting/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.error_reporting.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.error_reporting.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em>, <em>service=None</em>, <em>version=None</em>, <em>use_gax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/error_reporting/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.error_reporting.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Error Reporting client. Currently Error Reporting is done by creating
 a Logging client.</p>
@@ -343,6 +343,10 @@ which can be changed whenever new code is deployed.</li>
 provided, which could represent a version label or a Git
 SHA-1 hash, for example. If the developer did not provide
 a version, the value is set to default.</li>
+<li><strong>use_gax</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
+to use the gRPC transport (via GAX) or HTTP. If unset,
+falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code> environment
+variable.</li>
 </ul>
 </td>
 </tr>
@@ -381,6 +385,27 @@ to distinguish affected users.</li>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">client</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s2">&quot;Something went wrong!&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.error_reporting.client.Client.report_errors_api">
+<code class="descname">report_errors_api</code><a class="headerlink" href="#google.cloud.error_reporting.client.Client.report_errors_api" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper for logging-related API calls.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/entries">https://cloud.google.com/logging/docs/api/reference/rest/v2/entries</a>
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_gax._ErrorReportingGaxApi</span></code>
+or
+<code class="xref py py-class docutils literal"><span class="pre">_logging._ErrorReportingLoggingAPI</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A class that implements the report errors API.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -495,7 +520,7 @@ provided in the error report.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2580872',
+            VERSION:'ab1ce15',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

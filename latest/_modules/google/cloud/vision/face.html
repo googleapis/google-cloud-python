@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.face &mdash; google-cloud 2580872 documentation</title>
+  <title>google.cloud.vision.face &mdash; google-cloud ab1ce15 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 2580872 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ab1ce15 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -238,7 +238,7 @@
 <p class="caption"><span class="caption-text">Spanner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-usage.html">Database Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
@@ -361,7 +361,7 @@
 <div class="viewcode-block" id="Angles.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: convert protobuf Angle object to local Angle object.</span>
 
-<span class="sd">        :type angle: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">        :type angle: :class:`~google.cloud.proto.vision.v1.\</span>
 <span class="sd">                     image_annotator_pb2.FaceAnnotation`</span>
 <span class="sd">        :param angle: Protobuf ``FaceAnnotation`` response with angle data.</span>
 
@@ -437,7 +437,7 @@
 <div class="viewcode-block" id="Emotions.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Emotions.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">emotions</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``Emotions`` from Vision API response.</span>
 
-<span class="sd">        :type emotions: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">        :type emotions: :class:`~google.cloud.proto.vision.v1.\</span>
 <span class="sd">                        image_annotator_pb2.FaceAnnotation`</span>
 <span class="sd">        :param emotions: Response dictionary representing a face with emotions.</span>
 
@@ -536,7 +536,7 @@
 <div class="viewcode-block" id="Face.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Face from an protobuf response</span>
 
-<span class="sd">        :type face: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">        :type face: :class:`~google.cloud.proto.vision.v1.\</span>
 <span class="sd">                       image_annotator_pb2.AnnotateImageResponse`</span>
 <span class="sd">        :param face: ``AnnotateImageResponse`` from gRPC call.</span>
 
@@ -708,7 +708,7 @@
 <div class="viewcode-block" id="FaceImageProperties.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct image properties from image.</span>
 
-<span class="sd">        :type face: :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.\</span>
+<span class="sd">        :type face: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.\</span>
 <span class="sd">                    FaceAnnotation`</span>
 <span class="sd">        :param face: Protobuf instace of `Face`.</span>
 
@@ -819,7 +819,7 @@
 <div class="viewcode-block" id="Landmark.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmark</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Landmark from a response.</span>
 
-<span class="sd">        :type landmark: :class:`~google.cloud.grpc.vision.v1.\</span>
+<span class="sd">        :type landmark: :class:`~google.cloud.proto.vision.v1.\</span>
 <span class="sd">                        image_annotator_pb.FaceAnnotation.Landmark`</span>
 <span class="sd">        :param landmark: Landmark representation from Vision API.</span>
 
@@ -917,7 +917,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'2580872',
+            VERSION:'ab1ce15',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

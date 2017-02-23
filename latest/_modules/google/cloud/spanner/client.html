@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.spanner.client &mdash; google-cloud 2580872 documentation</title>
+  <title>google.cloud.spanner.client &mdash; google-cloud ab1ce15 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 2580872 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ab1ce15 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -238,7 +238,7 @@
 <p class="caption"><span class="caption-text">Spanner</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-usage.html">Database Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
@@ -349,6 +349,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">_ClientProjectMixin</span>
 <span class="kn">from</span> <span class="nn">google.cloud.credentials</span> <span class="k">import</span> <span class="n">get_credentials</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">GAXIterator</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="k">import</span> <span class="n">__version__</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner.instance</span> <span class="k">import</span> <span class="n">DEFAULT_NODE_COUNT</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner.instance</span> <span class="k">import</span> <span class="n">Instance</span>
@@ -463,14 +464,20 @@
     <span class="k">def</span> <span class="nf">instance_admin_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="n">InstanceAdminClient</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="n">InstanceAdminClient</span><span class="p">(</span>
+                <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span>
+                <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">database_admin_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="o">=</span> <span class="n">DatabaseAdminClient</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="o">=</span> <span class="n">DatabaseAdminClient</span><span class="p">(</span>
+                <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span>
+                <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span>
 
 <div class="viewcode-block" id="Client.copy"><a class="viewcode-back" href="../../../../spanner-client-api.html#google.cloud.spanner.client.Client.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -643,7 +650,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'2580872',
+            VERSION:'ab1ce15',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

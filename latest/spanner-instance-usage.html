@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Instance Admin API &mdash; google-cloud 2580872 documentation</title>
+  <title>Instance Admin API &mdash; google-cloud ab1ce15 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 2580872 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud ab1ce15 documentation" href="index.html"/>
         <link rel="next" title="Database Admin API" href="spanner-database-usage.html"/>
-        <link rel="prev" title="Base for Everything" href="spanner-client-usage.html"/> 
+        <link rel="prev" title="Client" href="spanner-client-usage.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -239,7 +239,7 @@
 <p class="caption"><span class="caption-text">Spanner</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spanner-client-usage.html">Client</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Instance Admin API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#instance-configurations">Instance Configurations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#list-instances">List Instances</a></li>
@@ -330,15 +330,15 @@ interact with individual instances for a project.</p>
 specifying the location and other parameters for a set of instances.  These
 configurations are defined by the server, and cannot be changed.</p>
 <p>To list of all instance configurations available to your project, use the
-<code class="xref py py-meth docutils literal"><span class="pre">list_instance_configurations()</span></code>
+<a class="reference internal" href="spanner-client-api.html#google.cloud.spanner.client.Client.list_instance_configs" title="google.cloud.spanner.client.Client.list_instance_configs"><code class="xref py py-meth docutils literal"><span class="pre">list_instance_configs()</span></code></a>
 method of the client:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">configs</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configurations</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">configs</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>To fetch a single instance configuration, use the
 <code class="xref py py-meth docutils literal"><span class="pre">get_instance_configuration()</span></code>
 method of the client:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_instance_configuration</span><span class="p">(</span><span class="s1">&#39;confg-name&#39;</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_instance_configuration</span><span class="p">(</span><span class="s1">&#39;config-name&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -365,7 +365,7 @@ the client:</p>
 <li><code class="docutils literal"><span class="pre">configuration_name</span></code> is the name of the instance configuration to which the
 instance will be bound.  It must be one of the names configured for your
 project, discoverable via
-<code class="xref py py-meth docutils literal"><span class="pre">google.cloud.spanner.client.Client.list_instance_configurations()</span></code>.</li>
+<a class="reference internal" href="spanner-client-api.html#google.cloud.spanner.client.Client.list_instance_configs" title="google.cloud.spanner.client.Client.list_instance_configs"><code class="xref py py-meth docutils literal"><span class="pre">google.cloud.spanner.client.Client.list_instance_configs()</span></code></a>.</li>
 <li><code class="docutils literal"><span class="pre">node_count</span></code> is a postitive integral count of the number of nodes used
 by the instance.  More nodes allows for higher performance, but at a higher
 billing cost.</li>
@@ -473,7 +473,7 @@ will result in an :exc`ValueError` being raised.</p>
         <a href="spanner-database-usage.html" class="btn btn-neutral float-right" title="Database Admin API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="spanner-client-usage.html" class="btn btn-neutral" title="Base for Everything" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="spanner-client-usage.html" class="btn btn-neutral" title="Client" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -504,7 +504,7 @@ will result in an :exc`ValueError` being raised.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2580872',
+            VERSION:'ab1ce15',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
