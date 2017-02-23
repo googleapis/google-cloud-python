@@ -99,7 +99,7 @@ class Annotations(object):
     def from_pb(cls, response):
         """Factory: construct an instance of ``Annotations`` from protobuf.
 
-        :type response: :class:`~google.cloud.grpc.vision.v1.\
+        :type response: :class:`~google.cloud.proto.vision.v1.\
                         image_annotator_pb2.AnnotateImageResponse`
         :param response: ``AnnotateImageResponse`` from protobuf call.
 
@@ -113,7 +113,7 @@ class Annotations(object):
 def _process_image_annotations(image):
     """Helper for processing annotation types from protobuf.
 
-    :type image: :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.\
+    :type image: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.\
                  AnnotateImageResponse`
     :param image: ``AnnotateImageResponse`` from protobuf.
 
@@ -137,7 +137,7 @@ def _make_entity_from_pb(annotations):
     """Create an entity from a protobuf response.
 
     :type annotations:
-    :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.EntityAnnotation`
+    :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.EntityAnnotation`
     :param annotations: protobuf instance of ``EntityAnnotation``.
 
     :rtype: list
@@ -150,7 +150,7 @@ def _make_faces_from_pb(faces):
     """Create face objects from a protobuf response.
 
     :type faces:
-    :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.FaceAnnotation`
+    :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.FaceAnnotation`
     :param faces: Protobuf instance of ``FaceAnnotation``.
 
     :rtype: list
@@ -162,7 +162,7 @@ def _make_faces_from_pb(faces):
 def _make_image_properties_from_pb(image_properties):
     """Create ``ImageProperties`` object from a protobuf response.
 
-    :type image_properties: :class:`~google.cloud.grpc.vision.v1.\
+    :type image_properties: :class:`~google.cloud.proto.vision.v1.\
                             image_annotator_pb2.ImagePropertiesAnnotation`
     :param image_properties: Protobuf instance of
                              ``ImagePropertiesAnnotation``.
@@ -176,7 +176,7 @@ def _make_image_properties_from_pb(image_properties):
 def _make_safe_search_from_pb(safe_search):
     """Create ``SafeSearchAnnotation`` object from a protobuf response.
 
-    :type safe_search: :class:`~google.cloud.grpc.vision.v1.\
+    :type safe_search: :class:`~google.cloud.proto.vision.v1.\
                             image_annotator_pb2.SafeSearchAnnotation`
     :param safe_search: Protobuf instance of ``SafeSearchAnnotation``.
 
