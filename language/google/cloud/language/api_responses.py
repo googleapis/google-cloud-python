@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Classes representing each of the types of responses returned from
-the Natural Language API.
-"""
+"""Response types from the Natural Language API."""
 
 from google.cloud.language.entity import Entity
 from google.cloud.language.sentence import Sentence
@@ -76,7 +74,7 @@ class SentimentResponse(object):
         """
         return cls(
             language=payload.get('language', None),
-            sentences=[Sentence.from_api_repr(i) for i
+            sentences=[Sentence.from_api_repr(sentence) for sentence
                        in payload.get('sentences', ())],
             sentiment=Sentiment.from_api_repr(payload['documentSentiment']),
         )
@@ -109,8 +107,8 @@ class SyntaxResponse(object):
         """
         return cls(
             language=payload.get('language', None),
-            sentences=[Sentence.from_api_repr(i) for i in
+            sentences=[Sentence.from_api_repr(sentence) for sentence in
                        payload.get('sentences', ())],
-            tokens=[Token.from_api_repr(i) for i in
+            tokens=[Token.from_api_repr(token) for token in
                     payload.get('tokens', ())]
         )
