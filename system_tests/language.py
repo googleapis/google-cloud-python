@@ -100,7 +100,7 @@ class TestLanguage(unittest.TestCase):
 
     def test_analyze_entities(self):
         document = Config.CLIENT.document_from_text(self.TEXT_CONTENT)
-        entities = document.analyze_entities()
+        entities = document.analyze_entities().entities
         self._check_analyze_entities_result(entities)
 
     def test_analyze_entities_from_blob(self):
@@ -114,13 +114,13 @@ class TestLanguage(unittest.TestCase):
         # Create a document referencing that blob.
         gcs_url = 'gs://%s/%s' % (bucket_name, blob_name)
         document = Config.CLIENT.document_from_url(gcs_url)
-        entities = document.analyze_entities()
+        entities = document.analyze_entities().entities
         self._check_analyze_entities_result(entities)
 
     def test_analyze_sentiment(self):
         positive_msg = 'Jogging is fun'
         document = Config.CLIENT.document_from_text(positive_msg)
-        sentiment = document.analyze_sentiment()
+        sentiment = document.analyze_sentiment().sentiment
         self.assertEqual(sentiment.score, 0.5)
         self.assertTrue(0.0 < sentiment.magnitude < 1.5)
 
@@ -147,5 +147,5 @@ class TestLanguage(unittest.TestCase):
     def test_analyze_syntax(self):
         positive_msg = 'Jogging is fun'
         document = Config.CLIENT.document_from_text(positive_msg)
-        tokens = document.analyze_syntax()
+        tokens = document.analyze_syntax().tokens
         self._check_analyze_syntax_result(tokens)
