@@ -19,18 +19,29 @@ from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import (
     _determine_default_project as _base_default_project)
 from google.cloud.client import ClientWithProject
+from google.cloud.environment_vars import DISABLE_GRPC
+from google.cloud.environment_vars import GCD_DATASET
+
 from google.cloud.datastore._http import Connection
+from google.cloud.datastore._http import HTTPDatastoreAPI
 from google.cloud.datastore import helpers
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
 from google.cloud.datastore.query import Query
 from google.cloud.datastore.transaction import Transaction
-from google.cloud.environment_vars import GCD_DATASET
+try:
+    from google.cloud.datastore._gax import make_datastore_api
+    _HAVE_GRPC = True
+except ImportError:  # pragma: NO COVER
+    make_datastore_api = None
+    _HAVE_GRPC = False
 
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
+
+_USE_GAX = _HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
 
 
 def _get_gcd_project():
@@ -169,23 +180,44 @@ class Client(ClientWithProject):
                  :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
+
+    :type use_gax: bool
+    :param use_gax: (Optional) Explicitly specifies whether
+                    to use the gRPC transport (via GAX) or HTTP. If unset,
+                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
+                    variable.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/datastore',)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
     def __init__(self, project=None, namespace=None,
-                 credentials=None, http=None):
+                 credentials=None, http=None, use_gax=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
         self._connection = Connection(self)
         self.namespace = namespace
         self._batch_stack = _LocalStack()
+        self._datastore_api_internal = None
+        if use_gax is None:
+            self._use_gax = _USE_GAX
+        else:
+            self._use_gax = use_gax
 
     @staticmethod
     def _determine_default(project):
         """Helper:  override default project detection."""
         return _determine_default_project(project)
+
+    @property
+    def _datastore_api(self):
+        """Getter for a wrapped API object."""
+        if self._datastore_api_internal is None:
+            if self._use_gax:
+                self._datastore_api_internal = make_datastore_api(self)
+            else:
+                self._datastore_api_internal = HTTPDatastoreAPI(self)
+        return self._datastore_api_internal
 
     def _push_batch(self, batch):
         """Push a batch/transaction onto our stack.

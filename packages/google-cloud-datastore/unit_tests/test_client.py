@@ -138,13 +138,14 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _make_one(self, project=PROJECT, namespace=None,
-                  credentials=None, http=None):
+                  credentials=None, http=None, use_gax=None):
         return self._get_target_class()(project=project,
                                         namespace=namespace,
                                         credentials=credentials,
-                                        http=http)
+                                        http=http,
+                                        use_gax=use_gax)
 
-    def test_ctor_w_project_no_environ(self):
+    def test_constructor_w_project_no_environ(self):
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
         patch = mock.patch(
@@ -153,7 +154,7 @@ class TestClient(unittest.TestCase):
         with patch:
             self.assertRaises(EnvironmentError, self._make_one, None)
 
-    def test_ctor_w_implicit_inputs(self):
+    def test_constructor_w_implicit_inputs(self):
         OTHER = 'other'
         creds = _make_credentials()
         default_called = []
@@ -183,7 +184,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.current_transaction)
         self.assertEqual(default_called, [None])
 
-    def test_ctor_w_explicit_inputs(self):
+    def test_constructor_w_explicit_inputs(self):
         OTHER = 'other'
         NAMESPACE = 'namespace'
         creds = _make_credentials()
@@ -199,6 +200,69 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
+
+    def test_constructor_use_gax_default(self):
+        import google.cloud.datastore.client as MUT
+
+        project = 'PROJECT'
+        creds = _make_credentials()
+        http = object()
+
+        with mock.patch.object(MUT, '_USE_GAX', new=True):
+            client1 = self._make_one(
+                project=project, credentials=creds, http=http)
+            self.assertTrue(client1._use_gax)
+            # Explicitly over-ride the environment.
+            client2 = self._make_one(
+                project=project, credentials=creds, http=http,
+                use_gax=False)
+            self.assertFalse(client2._use_gax)
+
+        with mock.patch.object(MUT, '_USE_GAX', new=False):
+            client3 = self._make_one(
+                project=project, credentials=creds, http=http)
+            self.assertFalse(client3._use_gax)
+            # Explicitly over-ride the environment.
+            client4 = self._make_one(
+                project=project, credentials=creds, http=http,
+                use_gax=True)
+            self.assertTrue(client4._use_gax)
+
+    def test__datastore_api_property_gax(self):
+        client = self._make_one(
+            project='prahj-ekt', credentials=_make_credentials(),
+            http=object(), use_gax=True)
+
+        self.assertIsNone(client._datastore_api_internal)
+        patch = mock.patch(
+            'google.cloud.datastore.client.make_datastore_api',
+            return_value=mock.sentinel.ds_api)
+        with patch as make_api:
+            ds_api = client._datastore_api
+            self.assertIs(ds_api, mock.sentinel.ds_api)
+            make_api.assert_called_once_with(client)
+            self.assertIs(
+                client._datastore_api_internal, mock.sentinel.ds_api)
+            # Make sure the cached value is used.
+            self.assertEqual(make_api.call_count, 1)
+            self.assertIs(
+                client._datastore_api, mock.sentinel.ds_api)
+            self.assertEqual(make_api.call_count, 1)
+
+    def test__datastore_api_property_http(self):
+        from google.cloud.datastore._http import HTTPDatastoreAPI
+
+        client = self._make_one(
+            project='prahj-ekt', credentials=_make_credentials(),
+            http=object(), use_gax=False)
+
+        self.assertIsNone(client._datastore_api_internal)
+        ds_api = client._datastore_api
+        self.assertIsInstance(ds_api, HTTPDatastoreAPI)
+        self.assertIs(ds_api.client, client)
+        # Make sure the cached value is used.
+        self.assertIs(client._datastore_api_internal, ds_api)
+        self.assertIs(client._datastore_api, ds_api)
 
     def test__push_batch_and__pop_batch(self):
         creds = _make_credentials()
