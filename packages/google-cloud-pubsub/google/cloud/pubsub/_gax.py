@@ -23,8 +23,8 @@ from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.protobuf.json_format import MessageToDict
-from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PubsubMessage
-from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
+from google.cloud.proto.pubsub.v1.pubsub_pb2 import PubsubMessage
+from google.cloud.proto.pubsub.v1.pubsub_pb2 import PushConfig
 from grpc import insecure_channel
 from grpc import StatusCode
 
@@ -35,6 +35,7 @@ from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
+from google.cloud.pubsub import __version__
 from google.cloud.pubsub._helpers import subscription_name_from_path
 from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
@@ -535,7 +536,8 @@ def make_gax_publisher_api(credentials=None, host=None):
         channel = make_secure_channel(
             credentials, DEFAULT_USER_AGENT,
             PublisherClient.SERVICE_ADDRESS)
-    return PublisherClient(channel=channel)
+    return PublisherClient(
+        channel=channel, lib_name='gccl', lib_version=__version__)
 
 
 def make_gax_subscriber_api(credentials=None, host=None):
@@ -561,7 +563,8 @@ def make_gax_subscriber_api(credentials=None, host=None):
         channel = make_secure_channel(
             credentials, DEFAULT_USER_AGENT,
             SubscriberClient.SERVICE_ADDRESS)
-    return SubscriberClient(channel=channel)
+    return SubscriberClient(
+        channel=channel, lib_name='gccl', lib_version=__version__)
 
 
 def _item_to_topic(iterator, resource):
