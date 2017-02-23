@@ -1113,8 +1113,7 @@ class Test_make_gax_logging_api(unittest.TestCase):
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        conn = mock.Mock(credentials=creds, spec=['credentials'])
-        client = mock.Mock(_connection=conn, spec=['_connection'])
+        client = mock.Mock(_credentials=creds, spec=['_credentials'])
         channels = []
         channel_args = []
         generated_api_kwargs = []
@@ -1167,8 +1166,7 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        conn = mock.Mock(credentials=creds, spec=['credentials'])
-        client = mock.Mock(_connection=conn, spec=['_connection'])
+        client = mock.Mock(_credentials=creds, spec=['_credentials'])
         channels = []
         channel_args = []
         generated_api_kwargs = []
@@ -1221,8 +1219,7 @@ class Test_make_gax_sinks_api(unittest.TestCase):
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        conn = mock.Mock(credentials=creds, spec=['credentials'])
-        client = mock.Mock(_connection=conn, spec=['_connection'])
+        client = mock.Mock(_credentials=creds, spec=['_credentials'])
         channels = []
         channel_args = []
         generated_api_kwargs = []
