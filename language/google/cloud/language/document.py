@@ -19,7 +19,7 @@ A document is used to hold text to be analyzed and annotated.
 
 import collections
 
-from google.cloud.language.entity import Entity
+from google.cloud.language.entity import EntityResponse
 from google.cloud.language.sentiment import Sentiment
 from google.cloud.language.syntax import Sentence
 from google.cloud.language.syntax import Token
@@ -27,7 +27,7 @@ from google.cloud.language.syntax import Token
 
 Annotations = collections.namedtuple(
     'Annotations',
-    'sentences tokens sentiment entities')
+    ['sentences', 'tokens', 'sentiment', 'entities', 'language'])
 """Annotations for a document.
 
 :type sentences: list
@@ -42,6 +42,9 @@ Annotations = collections.namedtuple(
 :type entities: list
 :param entities: List of :class:`~.language.entity.Entity`
                  found in a document.
+
+:type language: str
+:param language: The language used for the annotation.
 """
 
 
@@ -156,9 +159,8 @@ class Document(object):
 
         See `analyzeEntities`_.
 
-        :rtype: list
-        :returns: A list of :class:`~.language.entity.Entity` returned from
-                  the API.
+        :rtype: :class:`~.language.entity.EntityResponse`
+        :returns: A representation of the entity response.
         """
         data = {
             'document': self._to_dict(),
@@ -166,8 +168,7 @@ class Document(object):
         }
         api_response = self.client._connection.api_request(
             method='POST', path='analyzeEntities', data=data)
-        return [Entity.from_api_repr(entity)
-                for entity in api_response['entities']]
+        return EntityResponse.from_api_repr(api_response)
 
     def analyze_sentiment(self):
         """Analyze the sentiment in the current document.
@@ -177,13 +178,13 @@ class Document(object):
 
         See `analyzeSentiment`_.
 
-        :rtype: :class:`.Sentiment`
-        :returns: The sentiment of the current document.
+        :rtype: :class:`.SentimentResponse`
+        :returns: A representation of the sentiment response.
         """
         data = {'document': self._to_dict()}
         api_response = self.client._connection.api_request(
             method='POST', path='analyzeSentiment', data=data)
-        return Sentiment.from_api_repr(api_response['documentSentiment'])
+        return SentimentResponse.from_api_repr(api_response)
 
     def analyze_syntax(self):
         """Analyze the syntax in the current document.
@@ -271,9 +272,10 @@ class Document(object):
         entities = [Entity.from_api_repr(entity)
                     for entity in api_response['entities']]
         annotations = Annotations(
-            sentences=sentences,
-            tokens=tokens,
-            sentiment=sentiment,
             entities=entities,
+            language=api_response.get('language', None),
+            sentences=sentences,
+            sentiment=sentiment,
+            tokens=tokens,
         )
         return annotations

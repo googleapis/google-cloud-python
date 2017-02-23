@@ -101,6 +101,37 @@ class PartOfSpeech(object):
         return cls._REVERSE_MAP[tag]
 
 
+class SyntaxResponse(object):
+    """A representation of a response to an ``analyzeSyntax`` request
+    to the Google Natural Language API.
+
+    :type tokens: list
+    :param tokens: A list of :class:`~.language.syntax.Token` objects.
+
+    :type language: str
+    :param: language: The language used for analyzing sentiment.
+
+    :type sentences: list
+    :param sentences: A list of :class:`~.language.syntax.Sentence` objects.
+    """
+    def __init__(self, tokens, language, sentences):
+        self.tokens = tokens
+        self.language = language
+        self.sentences = sentences
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        """Return an syntax response from a JSON representation.
+
+        :type payload: dict
+        :param payload: A dictionary representing the response.
+        """
+        return cls(
+            language=payload.get('language', None),
+            sentences=[Sentence(i) for i in payload.get('sentences', ())],
+            tokens=[Token(i) for i in payload.get('tokens', ())]
+        )
+
 class Token(object):
     """A Google Cloud Natural Language API token object.
 

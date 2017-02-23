@@ -46,16 +46,38 @@ class EntityType(object):
     """Other entity type (i.e. known but not classified)."""
 
 
+class EntityResponse(object):
+    """A representation of a response sent back from the
+    ``analyzeEntites`` request to the Google Natural language API.
+
+    :type entities: list
+    :param entities: A list of :class:`~.language.entity.Entity` objects.
+
+    :type language: str
+    :param language: The language used for analysis.
+    """
+    def __init__(self, entities, language):
+        self.entities = entities
+        self.language = language
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        """Return an entity response from a JSON representation.
+
+        :type payload: dict
+        :param payload: A dictionary representing the response.
+        """
+        return cls(
+            entities=[Entity.from_api_repr(i) for i in payload['entities']],
+            language=payload['language'],
+        )
+
 class Entity(object):
     """A Google Cloud Natural Language API entity.
 
     Represents a phrase in text that is a known entity, such as a person,
     an organization, or location. The API associates information, such as
     salience and mentions, with entities.
-
-    The only supported metadata (as of August 2016) is ``wikipedia_url``,
-    so this value will be removed from the passed in ``metadata``
-    and put in its own property.
 
     .. _Entity message: https://cloud.google.com/natural-language/\
                         reference/rest/v1/Entity
@@ -84,7 +106,7 @@ class Entity(object):
     def __init__(self, name, entity_type, metadata, salience, mentions):
         self.name = name
         self.entity_type = entity_type
-        self.wikipedia_url = metadata.pop('wikipedia_url', None)
+        self.wikipedia_url = metadata.get('wikipedia_url', None)
         self.metadata = metadata
         self.salience = salience
         self.mentions = mentions
