@@ -95,7 +95,7 @@ class TestImagePropertiesAnnotation(unittest.TestCase):
         return ImagePropertiesAnnotation
 
     def test_image_properties_annotation_from_pb(self):
-        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
         from google.protobuf.wrappers_pb2 import FloatValue
         from google.type.color_pb2 import Color
 
@@ -121,7 +121,7 @@ class TestImagePropertiesAnnotation(unittest.TestCase):
         self.assertEqual(image_properties.colors[0].color.alpha, 1.0)
 
     def test_empty_image_properties_annotation_from_pb(self):
-        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
 
         image_properties_pb = image_annotator_pb2.ImageProperties()
 
