@@ -42,7 +42,7 @@ class GAPICSpeechAPI(object):
     """Manage calls through GAPIC wrappers to the Speech API."""
     def __init__(self, client=None):
         self._client = client
-        credentials = self._client._connection.credentials
+        credentials = self._client._credentials
         channel = make_secure_channel(
             credentials, DEFAULT_USER_AGENT,
             SpeechClient.SERVICE_ADDRESS)
