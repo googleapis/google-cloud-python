@@ -39,6 +39,7 @@ from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
+from google.cloud.logging import __version__
 from google.cloud.logging._helpers import entry_from_resource
 from google.cloud.logging.sink import Sink
 from google.cloud.logging.metric import Metric
@@ -534,7 +535,8 @@ def make_gax_logging_api(client):
     channel = make_secure_channel(
         client._connection.credentials, DEFAULT_USER_AGENT,
         LoggingServiceV2Client.SERVICE_ADDRESS)
-    generated = LoggingServiceV2Client(channel=channel)
+    generated = LoggingServiceV2Client(
+        channel=channel, lib_name='gccl', lib_version=__version__)
     return _LoggingAPI(generated, client)
 
 
@@ -550,7 +552,8 @@ def make_gax_metrics_api(client):
     channel = make_secure_channel(
         client._connection.credentials, DEFAULT_USER_AGENT,
         MetricsServiceV2Client.SERVICE_ADDRESS)
-    generated = MetricsServiceV2Client(channel=channel)
+    generated = MetricsServiceV2Client(
+        channel=channel, lib_name='gccl', lib_version=__version__)
     return _MetricsAPI(generated, client)
 
 
@@ -566,5 +569,6 @@ def make_gax_sinks_api(client):
     channel = make_secure_channel(
         client._connection.credentials, DEFAULT_USER_AGENT,
         ConfigServiceV2Client.SERVICE_ADDRESS)
-    generated = ConfigServiceV2Client(channel=channel)
+    generated = ConfigServiceV2Client(
+        channel=channel, lib_name='gccl', lib_version=__version__)
     return _SinksAPI(generated, client)
