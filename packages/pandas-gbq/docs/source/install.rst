@@ -8,7 +8,9 @@ Pip
 
 To install the latest version of pandas-gbq: from the
 
-    pip install pandas-gbq
+.. code-block:: shell
+
+    $ pip install pandas-gbq -U
 
 This installs pandas-gbq and all common dependencies, including Pandas.
 
