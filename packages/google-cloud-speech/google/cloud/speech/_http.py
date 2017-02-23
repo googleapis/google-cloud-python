@@ -57,7 +57,7 @@ class HTTPSpeechAPI(object):
     """
     def __init__(self, client):
         self._client = client
-        self._connection = client._connection
+        self._connection = Connection(client)
 
     def async_recognize(self, sample, language_code=None,
                         max_alternatives=None, profanity_filter=None,
