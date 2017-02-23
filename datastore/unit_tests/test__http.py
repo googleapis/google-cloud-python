@@ -696,8 +696,8 @@ class TestConnection(unittest.TestCase):
         from google.cloud.grpc.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
-        PROJECT = 'PROJECT'
-        key_pb = self._make_key_pb(PROJECT)
+        project = 'PROJECT'
+        key_pb = self._make_key_pb(project)
         rsp_pb = datastore_pb2.CommitResponse()
         req_pb = datastore_pb2.CommitRequest()
         mutation = req_pb.mutations.add()
@@ -708,44 +708,32 @@ class TestConnection(unittest.TestCase):
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        URI = '/'.join([
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':commit',
+            project + ':commit',
         ])
 
-        # Set up mock for parsing the response.
-        expected_result = object()
-        _parsed = []
+        result = conn.commit(project, req_pb, None)
+        self.assertEqual(result, rsp_pb)
 
-        def mock_parse(response):
-            _parsed.append(response)
-            return expected_result
-
-        patch = mock.patch(
-            'google.cloud.datastore._http._parse_commit_response',
-            new=mock_parse)
-        with patch:
-            result = conn.commit(PROJECT, req_pb, None)
-
-        self.assertIs(result, expected_result)
+        # Verify the caller.
         cw = http._called_with
-        self._verify_protobuf_call(cw, URI, conn)
+        self._verify_protobuf_call(cw, uri, conn)
         rq_class = datastore_pb2.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'')
         self.assertEqual(list(request.mutations), [mutation])
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
-        self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
         from google.cloud.grpc.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
-        PROJECT = 'PROJECT'
-        key_pb = self._make_key_pb(PROJECT)
+        project = 'PROJECT'
+        key_pb = self._make_key_pb(project)
         rsp_pb = datastore_pb2.CommitResponse()
         req_pb = datastore_pb2.CommitRequest()
         mutation = req_pb.mutations.add()
@@ -756,37 +744,25 @@ class TestConnection(unittest.TestCase):
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        URI = '/'.join([
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':commit',
+            project + ':commit',
         ])
 
-        # Set up mock for parsing the response.
-        expected_result = object()
-        _parsed = []
+        result = conn.commit(project, req_pb, b'xact')
+        self.assertEqual(result, rsp_pb)
 
-        def mock_parse(response):
-            _parsed.append(response)
-            return expected_result
-
-        patch = mock.patch(
-            'google.cloud.datastore._http._parse_commit_response',
-            new=mock_parse)
-        with patch:
-            result = conn.commit(PROJECT, req_pb, b'xact')
-
-        self.assertIs(result, expected_result)
+        # Verify the caller.
         cw = http._called_with
-        self._verify_protobuf_call(cw, URI, conn)
+        self._verify_protobuf_call(cw, uri, conn)
         rq_class = datastore_pb2.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'xact')
         self.assertEqual(list(request.mutations), [mutation])
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
-        self.assertEqual(_parsed, [rsp_pb])
 
     def test_rollback_ok(self):
         from google.cloud.grpc.datastore.v1 import datastore_pb2
@@ -868,46 +844,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(len(request.keys), len(before_key_pbs))
         for key_before, key_after in zip(before_key_pbs, request.keys):
             self.assertEqual(key_before, key_after)
-
-
-class Test__parse_commit_response(unittest.TestCase):
-
-    def _call_fut(self, commit_response_pb):
-        from google.cloud.datastore._http import _parse_commit_response
-
-        return _parse_commit_response(commit_response_pb)
-
-    def test_it(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import entity_pb2
-
-        index_updates = 1337
-        keys = [
-            entity_pb2.Key(
-                path=[
-                    entity_pb2.Key.PathElement(
-                        kind='Foo',
-                        id=1234,
-                    ),
-                ],
-            ),
-            entity_pb2.Key(
-                path=[
-                    entity_pb2.Key.PathElement(
-                        kind='Bar',
-                        name='baz',
-                    ),
-                ],
-            ),
-        ]
-        response = datastore_pb2.CommitResponse(
-            mutation_results=[
-                datastore_pb2.MutationResult(key=key) for key in keys
-            ],
-            index_updates=index_updates,
-        )
-        result = self._call_fut(response)
-        self.assertEqual(result, (index_updates, keys))
 
 
 class Http(object):
