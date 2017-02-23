@@ -58,7 +58,7 @@ class SentimentResponse(object):
     :param sentiment: A Sentiment object.
 
     :type language: str
-    :param: language: The language used for analyzing sentiment.
+    :param language: The language used for analyzing sentiment.
 
     :type sentences: list
     :param sentences: A list of :class:`~.language.syntax.Sentence` objects.
@@ -94,7 +94,7 @@ class SyntaxResponse(object):
     :param tokens: A list of :class:`~.language.syntax.Token` objects.
 
     :type language: str
-    :param: language: The language used for analyzing sentiment.
+    :param language: The language used for analyzing sentiment.
 
     :type sentences: list
     :param sentences: A list of :class:`~.language.syntax.Sentence` objects.

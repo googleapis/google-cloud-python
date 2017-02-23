@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Representation of Sentence objects."""
+
 from google.cloud.language.sentiment import Sentiment
 
 
@@ -39,8 +41,6 @@ class Sentence(object):
         sentiment for the sentence.
     """
     def __init__(self, content, begin, sentiment=None):
-        """Sentence constructor."""
-
         self.content = content
         self.begin = begin
         self.sentiment = sentiment
