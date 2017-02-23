@@ -59,7 +59,7 @@ class Sentence(object):
         # The sentence may or may not have a sentiment; only attempt the
         # typecast if one is present.
         sentiment = None
-        if payload.get('sentiment', None) is not None:
+        if payload.get('sentiment') is not None:
             sentiment = Sentiment.from_api_repr(payload['sentiment'])
 
         # Return a Sentence object.

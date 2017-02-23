@@ -80,7 +80,7 @@ class Entity(object):
     def __init__(self, name, entity_type, metadata, salience, mentions):
         self.name = name
         self.entity_type = entity_type
-        self.wikipedia_url = metadata.get('wikipedia_url', None)
+        self.wikipedia_url = metadata.get('wikipedia_url')
         self.metadata = metadata
         self.salience = salience
         self.mentions = mentions

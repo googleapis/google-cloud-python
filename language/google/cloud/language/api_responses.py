@@ -106,7 +106,7 @@ class SyntaxResponse(object):
         :param payload: A dictionary representing the response.
         """
         return cls(
-            language=payload.get('language', None),
+            language=payload.get('language'),
             sentences=[Sentence.from_api_repr(sentence) for sentence in
                        payload.get('sentences', ())],
             tokens=[Token.from_api_repr(token) for token in
