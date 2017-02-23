@@ -36,7 +36,7 @@ def make_report_error_api(client):
     :returns: An Error Reporting API instance.
     """
     channel = make_secure_channel(
-        client._connection.credentials,
+        client._credentials,
         DEFAULT_USER_AGENT,
         report_errors_service_client.ReportErrorsServiceClient.SERVICE_ADDRESS)
     gax_client = report_errors_service_client.ReportErrorsServiceClient(
