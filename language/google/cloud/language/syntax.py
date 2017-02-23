@@ -18,9 +18,6 @@ The ``annotateText`` method, when used with the "syntax" feature,
 breaks a document down into tokens and sentences.
 """
 
-from google.cloud.language.sentiment import Sentiment
-from google.cloud.language.sentence import Sentence
-
 
 class PartOfSpeech(object):
     """Part of speech of a :class:`Token`."""

@@ -38,8 +38,9 @@ class Sentence(object):
         ``include_sentiment`` is set to true, this field will contain the
         sentiment for the sentence.
     """
-
     def __init__(self, content, begin, sentiment=None):
+        """Sentence constructor."""
+
         self.content = content
         self.begin = begin
         self.sentiment = sentiment

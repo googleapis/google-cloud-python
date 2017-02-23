@@ -40,6 +40,9 @@ class EntityResponse(object):
 
         :type payload: dict
         :param payload: A dictionary representing the response.
+
+        :rtype: :class:`~.language.entity.Entity`
+        :returns: An ``Entity`` object.
         """
         return cls(
             entities=[Entity.from_api_repr(i) for i in payload['entities']],
@@ -71,9 +74,12 @@ class SentimentResponse(object):
 
         :type payload: dict
         :param payload: A dictionary representing the response.
+
+        :rtype: `~.language.sentiment.Sentiment`
+        :returns: A ``Sentiment`` object.
         """
         return cls(
-            language=payload.get('language', None),
+            language=payload.get('language'),
             sentences=[Sentence.from_api_repr(sentence) for sentence
                        in payload.get('sentences', ())],
             sentiment=Sentiment.from_api_repr(payload['documentSentiment']),
@@ -104,6 +110,9 @@ class SyntaxResponse(object):
 
         :type payload: dict
         :param payload: A dictionary representing the response.
+
+        :rtype: `~.language.syntax.Syntax`
+        :returns: A ``Syntax`` object.
         """
         return cls(
             language=payload.get('language'),
