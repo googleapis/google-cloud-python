@@ -19,9 +19,11 @@ from google.cloud._http import DEFAULT_USER_AGENT
 
 from google.cloud.gapic.errorreporting.v1beta1 import (
     report_errors_service_client)
-from google.cloud.grpc.devtools.clouderrorreporting.v1beta1 import (
+from google.cloud.proto.devtools.clouderrorreporting.v1beta1 import (
     report_errors_service_pb2)
 from google.protobuf.json_format import ParseDict
+
+from google.cloud.error_reporting import __version__
 
 
 def make_report_error_api(client):
@@ -38,7 +40,7 @@ def make_report_error_api(client):
         DEFAULT_USER_AGENT,
         report_errors_service_client.ReportErrorsServiceClient.SERVICE_ADDRESS)
     gax_client = report_errors_service_client.ReportErrorsServiceClient(
-        channel=channel)
+        channel=channel, lib_name='gccl', lib_version=__version__)
     return _ErrorReportingGaxApi(gax_client, client.project)
 
 
