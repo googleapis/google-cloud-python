@@ -30,9 +30,10 @@ class TestEntity(unittest.TestCase):
         name = 'Italian'
         entity_type = 'LOCATION'
         wiki_url = 'http://en.wikipedia.org/wiki/Italy'
-        metadata = {'wikipedia_url': wiki_url}
-        base_metadata = {'foo': 'bar'}
-        metadata.update(base_metadata)
+        metadata = {
+            'foo': 'bar',
+            'wikipedia_url': wiki_url,
+        }
         salience = 0.19960518
         mentions = ['Italian']
         entity = self._make_one(name, entity_type, metadata,
@@ -40,7 +41,7 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(entity.name, name)
         self.assertEqual(entity.entity_type, entity_type)
         self.assertEqual(entity.wikipedia_url, wiki_url)
-        self.assertEqual(entity.metadata, base_metadata)
+        self.assertEqual(entity.metadata, metadata)
         self.assertEqual(entity.salience, salience)
         self.assertEqual(entity.mentions, mentions)
 
@@ -69,5 +70,5 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(entity.entity_type, entity_type)
         self.assertEqual(entity.salience, salience)
         self.assertEqual(entity.wikipedia_url, wiki_url)
-        self.assertEqual(entity.metadata, {})
+        self.assertEqual(entity.metadata, {'wikipedia_url': wiki_url})
         self.assertEqual(entity.mentions, [mention1, mention2, mention3])

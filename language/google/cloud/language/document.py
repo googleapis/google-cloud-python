@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ A document is used to hold text to be analyzed and annotated.
 
 import collections
 
-from google.cloud.language.entity import EntityResponse
+from google.cloud.language import api_responses
+from google.cloud.language.entity import Entity
 from google.cloud.language.sentiment import Sentiment
 from google.cloud.language.syntax import Sentence
 from google.cloud.language.syntax import Token
@@ -168,7 +169,7 @@ class Document(object):
         }
         api_response = self.client._connection.api_request(
             method='POST', path='analyzeEntities', data=data)
-        return EntityResponse.from_api_repr(api_response)
+        return api_responses.EntityResponse.from_api_repr(api_response)
 
     def analyze_sentiment(self):
         """Analyze the sentiment in the current document.
@@ -184,7 +185,7 @@ class Document(object):
         data = {'document': self._to_dict()}
         api_response = self.client._connection.api_request(
             method='POST', path='analyzeSentiment', data=data)
-        return SentimentResponse.from_api_repr(api_response)
+        return api_responses.SentimentResponse.from_api_repr(api_response)
 
     def analyze_syntax(self):
         """Analyze the syntax in the current document.
@@ -204,8 +205,7 @@ class Document(object):
         }
         api_response = self.client._connection.api_request(
             method='POST', path='analyzeSyntax', data=data)
-        return [Token.from_api_repr(token)
-                for token in api_response.get('tokens', ())]
+        return api_responses.SyntaxResponse.from_api_repr(api_response)
 
     def annotate_text(self, include_syntax=True, include_entities=True,
                       include_sentiment=True):

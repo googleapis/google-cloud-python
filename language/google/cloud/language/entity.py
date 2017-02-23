@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,32 +45,6 @@ class EntityType(object):
     OTHER = 'OTHER'
     """Other entity type (i.e. known but not classified)."""
 
-
-class EntityResponse(object):
-    """A representation of a response sent back from the
-    ``analyzeEntites`` request to the Google Natural language API.
-
-    :type entities: list
-    :param entities: A list of :class:`~.language.entity.Entity` objects.
-
-    :type language: str
-    :param language: The language used for analysis.
-    """
-    def __init__(self, entities, language):
-        self.entities = entities
-        self.language = language
-
-    @classmethod
-    def from_api_repr(cls, payload):
-        """Return an entity response from a JSON representation.
-
-        :type payload: dict
-        :param payload: A dictionary representing the response.
-        """
-        return cls(
-            entities=[Entity.from_api_repr(i) for i in payload['entities']],
-            language=payload['language'],
-        )
 
 class Entity(object):
     """A Google Cloud Natural Language API entity.
