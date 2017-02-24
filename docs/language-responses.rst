@@ -11,7 +11,7 @@ Responses
 Sentences
 ~~~~~~~~~
 
-.. automodule:: google.cloud.language.sentences
+.. automodule:: google.cloud.language.sentence
   :members:
   :show-inheritance:
 
