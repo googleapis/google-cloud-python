@@ -29,7 +29,7 @@ class Test_setup_shutdown_stracktrace_reporting(unittest.TestCase):
             self._call_fut(mock.Mock())
 
     def test_setup_shutdown_stacktrace_reporting(self):
-        from google.cloud.logging.environment_vars import (
+        from google.cloud.logging._environment_vars import (
             _APPENGINE_FLEXIBLE_ENV_VM)
         from google.cloud._testing import _Monkey
         import os

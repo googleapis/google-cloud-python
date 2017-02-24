@@ -31,9 +31,9 @@ else:
 
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
-from google.cloud.logging.environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
-from google.cloud.logging.environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
-from google.cloud.logging.environment_vars import _CONTAINER_ENGINE_ENV
+from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
+from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
+from google.cloud.logging._environment_vars import _CONTAINER_ENGINE_ENV
 from google.cloud.logging._http import Connection
 from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging._http import _MetricsAPI as JSONMetricsAPI
@@ -44,7 +44,6 @@ from google.cloud.logging.handlers import AppEngineHandler
 from google.cloud.logging.handlers import ContainerEngineHandler
 from google.cloud.logging.handlers import setup_logging
 from google.cloud.logging.handlers.handlers import EXCLUDED_LOGGER_DEFAULTS
-
 
 from google.cloud.logging.logger import Logger
 from google.cloud.logging.metric import Metric

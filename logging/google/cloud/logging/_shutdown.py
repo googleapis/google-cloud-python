@@ -20,8 +20,8 @@ import signal
 import sys
 import traceback
 
-from google.cloud.logging.environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
-from google.cloud.logging.environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
+from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
+from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
 
 
 # Maximum size in bytes to send to Stackdriver Logging in one entry
