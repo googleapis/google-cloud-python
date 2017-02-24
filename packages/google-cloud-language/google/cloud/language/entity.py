@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016-2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,10 +53,6 @@ class Entity(object):
     an organization, or location. The API associates information, such as
     salience and mentions, with entities.
 
-    The only supported metadata (as of August 2016) is ``wikipedia_url``,
-    so this value will be removed from the passed in ``metadata``
-    and put in its own property.
-
     .. _Entity message: https://cloud.google.com/natural-language/\
                         reference/rest/v1/Entity
     .. _EntityType enum: https://cloud.google.com/natural-language/\
@@ -84,7 +80,6 @@ class Entity(object):
     def __init__(self, name, entity_type, metadata, salience, mentions):
         self.name = name
         self.entity_type = entity_type
-        self.wikipedia_url = metadata.pop('wikipedia_url', None)
         self.metadata = metadata
         self.salience = salience
         self.mentions = mentions
