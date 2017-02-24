@@ -426,10 +426,8 @@ class Connection(connection_module.Connection):
 
             This method will mutate ``request`` before using it.
 
-        :rtype: tuple
-        :returns: The pair of the number of index updates and a list of
-                  :class:`.entity_pb2.Key` for each incomplete key
-                  that was completed in the commit.
+        :rtype: :class:`.datastore_pb2.CommitResponse`
+        :returns: The protobuf response from a commit request.
         """
         if transaction_id:
             request.mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
@@ -437,8 +435,7 @@ class Connection(connection_module.Connection):
         else:
             request.mode = _datastore_pb2.CommitRequest.NON_TRANSACTIONAL
 
-        response = self._datastore_api.commit(project, request)
-        return _parse_commit_response(response)
+        return self._datastore_api.commit(project, request)
 
     def rollback(self, project, transaction_id):
         """Rollback the connection's existing transaction.
@@ -508,21 +505,3 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     """
     for key_pb in key_pbs:
         request_field_pb.add().CopyFrom(key_pb)
-
-
-def _parse_commit_response(commit_response_pb):
-    """Extract response data from a commit response.
-
-    :type commit_response_pb: :class:`.datastore_pb2.CommitResponse`
-    :param commit_response_pb: The protobuf response from a commit request.
-
-    :rtype: tuple
-    :returns: The pair of the number of index updates and a list of
-              :class:`.entity_pb2.Key` for each incomplete key
-              that was completed in the commit.
-    """
-    mut_results = commit_response_pb.mutation_results
-    index_updates = commit_response_pb.index_updates
-    completed_keys = [mut_result.key for mut_result in mut_results
-                      if mut_result.HasField('key')]  # Message field (Key)
-    return index_updates, completed_keys

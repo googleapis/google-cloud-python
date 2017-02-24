@@ -126,12 +126,12 @@ class TestTransaction(unittest.TestCase):
         self.assertIsNone(xact.id)
 
     def test_commit_w_partial_keys(self):
-        _PROJECT = 'PROJECT'
-        _KIND = 'KIND'
-        _ID = 123
-        connection = _Connection(234)
-        connection._completed_keys = [_make_key(_KIND, _ID, _PROJECT)]
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        kind = 'KIND'
+        id_ = 123
+        key = _make_key(kind, id_, project)
+        connection = _Connection(234, keys=[key])
+        client = _Client(project, connection)
         xact = self._make_one(client)
         xact.begin()
         entity = _Entity()
@@ -139,9 +139,9 @@ class TestTransaction(unittest.TestCase):
         xact._commit_request = commit_request = object()
         xact.commit()
         self.assertEqual(connection._committed,
-                         (_PROJECT, commit_request, 234))
+                         (project, commit_request, 234))
         self.assertIsNone(xact.id)
-        self.assertEqual(entity.key.path, [{'kind': _KIND, 'id': _ID}])
+        self.assertEqual(entity.key.path, [{'kind': kind, 'id': id_}])
 
     def test_context_manager_no_raise(self):
         _PROJECT = 'PROJECT'
@@ -196,10 +196,14 @@ class _Connection(object):
     _committed = None
     _side_effect = None
 
-    def __init__(self, xact_id=123):
+    def __init__(self, xact_id=123, keys=()):
+        from google.cloud.grpc.datastore.v1 import datastore_pb2
+
         self._xact_id = xact_id
-        self._completed_keys = []
-        self._index_updates = 0
+        mutation_results = [
+            datastore_pb2.MutationResult(key=key) for key in keys]
+        self._commit_response_pb = datastore_pb2.CommitResponse(
+            mutation_results=mutation_results)
 
     def begin_transaction(self, project):
         self._begun = project
@@ -213,7 +217,7 @@ class _Connection(object):
 
     def commit(self, project, commit_request, transaction_id):
         self._committed = (project, commit_request, transaction_id)
-        return self._index_updates, self._completed_keys
+        return self._commit_response_pb
 
 
 class _Entity(dict):
