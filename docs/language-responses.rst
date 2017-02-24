@@ -8,6 +8,12 @@ Responses
   :members:
   :show-inheritance:
 
+Sentences
+~~~~~~~~~
+
+.. automodule:: google.cloud.language.sentences
+  :members:
+  :show-inheritance:
 
 Entity
 ~~~~~~
