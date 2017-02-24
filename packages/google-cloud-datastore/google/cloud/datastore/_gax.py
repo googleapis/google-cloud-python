@@ -23,7 +23,7 @@ from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
 from google.cloud import exceptions
 
-from google.cloud.grpc.datastore.v1 import datastore_pb2_grpc
+from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
 
 
 _GRPC_ERROR_MAPPING = {

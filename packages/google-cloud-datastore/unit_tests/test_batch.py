@@ -27,7 +27,7 @@ class TestBatch(unittest.TestCase):
         return self._get_target_class()(client)
 
     def test_ctor(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         _PROJECT = 'PROJECT'
         _NAMESPACE = 'NAMESPACE'
@@ -377,8 +377,8 @@ class Test__parse_commit_response(unittest.TestCase):
         return _parse_commit_response(commit_response_pb)
 
     def test_it(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
 
         index_updates = 1337
         keys = [
@@ -414,7 +414,7 @@ class _Connection(object):
     _save_result = (False, None)
 
     def __init__(self, *new_key_ids):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         self._committed = []
         mutation_results = [
@@ -449,7 +449,7 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from google.cloud.grpc.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
 
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
@@ -507,8 +507,8 @@ def _mutated_pb(test_case, mutation_pb_list, mutation_type):
 
 
 def _make_mutation(id_):
-    from google.cloud.grpc.datastore.v1 import datastore_pb2
-    from google.cloud.grpc.datastore.v1 import entity_pb2
+    from google.cloud.proto.datastore.v1 import datastore_pb2
+    from google.cloud.proto.datastore.v1 import entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = 'PROJECT'
