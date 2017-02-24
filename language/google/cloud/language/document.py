@@ -22,7 +22,7 @@ import collections
 from google.cloud.language import api_responses
 from google.cloud.language.entity import Entity
 from google.cloud.language.sentiment import Sentiment
-from google.cloud.language.syntax import Sentence
+from google.cloud.language.sentence import Sentence
 from google.cloud.language.syntax import Token
 
 

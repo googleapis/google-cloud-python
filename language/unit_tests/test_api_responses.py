@@ -55,3 +55,53 @@ class TestEntityResponse(unittest.TestCase):
         self.assertAlmostEqual(entity.salience, 0.15)
         self.assertEqual(entity.entity_type, EntityType.LOCATION)
         self.assertEqual(entity_response.language, 'en')
+
+
+class TestSentimentResponse(unittest.TestCase):
+    SENTIMENT_DICT = {
+        'score': 0.4,
+        'magnitude': 3.14159,
+    }
+    SENTENCE_DICT = {
+        'text': {
+            'beginOffset': 0,
+            'content': 'It is hailing in Wales.',
+        },
+        'sentiment': SENTIMENT_DICT,
+    }
+
+    def test_constructor(self):
+        from google.cloud.language.api_responses import SentimentResponse
+        from google.cloud.language.sentence import Sentence
+        from google.cloud.language.sentiment import Sentiment
+
+        sentiment_response = SentimentResponse(
+            language='en',
+            sentences=[Sentence.from_api_repr(self.SENTENCE_DICT)],
+            sentiment=Sentiment.from_api_repr(self.SENTIMENT_DICT),
+        )
+
+        self._verify_sentiment_response(sentiment_response)
+
+    def test_api_repr_factory(self):
+        from google.cloud.language.api_responses import SentimentResponse
+
+        sentiment_response = SentimentResponse.from_api_repr({
+            'documentSentiment': self.SENTIMENT_DICT,
+            'language': 'en',
+            'sentences': [self.SENTENCE_DICT],
+        })
+
+        self._verify_sentiment_response(sentiment_response)
+
+    def _verify_sentiment_response(self, sentiment_response):
+        from google.cloud.language.sentiment import Sentiment
+
+        self.assertEqual(sentiment_response.language, 'en')
+        self.assertEqual(len(sentiment_response.sentences), 1)
+        sentence = sentiment_response.sentences[0]
+        self.assertEqual(sentence.begin, 0)
+        self.assertEqual(sentence.content, 'It is hailing in Wales.')
+        self.assertIsInstance(sentence.sentiment, Sentiment)
+        self.assertAlmostEqual(sentiment_response.sentiment.score, 0.4)
+        self.assertAlmostEqual(sentiment_response.sentiment.magnitude, 3.14159)

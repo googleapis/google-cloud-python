@@ -434,7 +434,7 @@ class TestDocument(unittest.TestCase):
             path='analyzeSyntax', method='POST', data=expected)
 
     def _verify_sentences(self, include_syntax, annotations):
-        from google.cloud.language.syntax import Sentence
+        from google.cloud.language.sentence import Sentence
 
         if include_syntax:
             self.assertEqual(len(annotations.sentences), 1)

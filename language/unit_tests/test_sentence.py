@@ -19,7 +19,7 @@ class TestSentence(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.language.syntax import Sentence
+        from google.cloud.language.sentence import Sentence
 
         return Sentence
 
