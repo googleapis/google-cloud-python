@@ -17,7 +17,7 @@
 import copy
 import six
 
-from google.cloud.grpc.datastore.v1 import entity_pb2 as _entity_pb2
+from google.cloud.proto.datastore.v1 import entity_pb2 as _entity_pb2
 
 
 class Key(object):
