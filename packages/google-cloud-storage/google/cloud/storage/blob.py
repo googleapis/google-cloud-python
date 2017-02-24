@@ -76,7 +76,27 @@ class Blob(_PropertyMixin):
     """Number (256 KB, in bytes) that must divide the chunk size."""
 
     _STORAGE_CLASSES = (
-        'STANDARD', 'NEARLINE', 'MULTI_REGIONAL', 'REGIONAL', 'COLDLINE')
+        'NEARLINE',
+        'MULTI_REGIONAL',
+        'REGIONAL',
+        'COLDLINE',
+        'STANDARD',  # alias for MULTI_REGIONAL/REGIONAL, based on location
+    )
+    """Allowed values for :attr:`storage_class`.
+
+    See:
+    https://cloud.google.com/storage/docs/json_api/v1/objects#storageClass
+    https://cloud.google.com/storage/docs/per-object-storage-class
+
+    .. note::
+       This list does not include 'DURABLE_REDUCED_AVAILABILITY', which
+       is only documented for buckets (and deprectated.
+
+    .. note::
+       The documentation does *not* mention 'STANDARD', but it is the value
+       assigned by the back-end for objects created in buckets with 'STANDARD'
+       set as their 'storage_class'.
+    """
 
     def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
         super(Blob, self).__init__(name=name)
