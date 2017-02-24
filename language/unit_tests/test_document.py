@@ -197,7 +197,6 @@ class TestDocument(unittest.TestCase):
         self.assertIsInstance(entity, Entity)
         self.assertEqual(entity.name, name)
         self.assertEqual(entity.entity_type, entity_type)
-        self.assertEqual(entity.wikipedia_url, wiki_url)
         if wiki_url:
             self.assertEqual(entity.metadata, {'wikipedia_url': wiki_url})
         else:
