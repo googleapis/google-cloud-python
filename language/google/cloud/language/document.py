@@ -273,7 +273,7 @@ class Document(object):
                     for entity in api_response['entities']]
         annotations = Annotations(
             entities=entities,
-            language=api_response.get('language', None),
+            language=api_response.get('language'),
             sentences=sentences,
             sentiment=sentiment,
             tokens=tokens,
