@@ -197,8 +197,10 @@ class TestDocument(unittest.TestCase):
         self.assertIsInstance(entity, Entity)
         self.assertEqual(entity.name, name)
         self.assertEqual(entity.entity_type, entity_type)
-        self.assertEqual(entity.wikipedia_url, wiki_url)
-        self.assertEqual(entity.metadata, {})
+        if wiki_url:
+            self.assertEqual(entity.metadata, {'wikipedia_url': wiki_url})
+        else:
+            self.assertEqual(entity.metadata, {})
         self.assertEqual(entity.salience, salience)
         self.assertEqual(entity.mentions, [name])
 
@@ -274,12 +276,12 @@ class TestDocument(unittest.TestCase):
         client = make_mock_client(response)
         document = self._make_one(client, content)
 
-        entities = document.analyze_entities()
-        self.assertEqual(len(entities), 2)
-        entity1 = entities[0]
+        entity_response = document.analyze_entities()
+        self.assertEqual(len(entity_response.entities), 2)
+        entity1 = entity_response.entities[0]
         self._verify_entity(entity1, name1, EntityType.OTHER,
                             None, salience1)
-        entity2 = entities[1]
+        entity2 = entity_response.entities[1]
         self._verify_entity(entity2, name2, EntityType.LOCATION,
                             wiki2, salience2)
 
@@ -297,6 +299,8 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(sentiment.magnitude, magnitude)
 
     def test_analyze_sentiment(self):
+        from google.cloud.language.api_responses import SentimentResponse
+
         content = 'All the pretty horses.'
         score = 1
         magnitude = 0.6
@@ -310,8 +314,9 @@ class TestDocument(unittest.TestCase):
         client = make_mock_client(response)
         document = self._make_one(client, content)
 
-        sentiment = document.analyze_sentiment()
-        self._verify_sentiment(sentiment, score, magnitude)
+        sentiment_response = document.analyze_sentiment()
+        self.assertIsInstance(sentiment_response, SentimentResponse)
+        self._verify_sentiment(sentiment_response.sentiment, score, magnitude)
 
         # Verify the request.
         expected = self._expected_data(content)
@@ -327,6 +332,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(token.lemma, lemma)
 
     def test_analyze_syntax(self):
+        from google.cloud.language.api_responses import SyntaxResponse
         from google.cloud.language.document import Encoding
         from google.cloud.language.syntax import PartOfSpeech
 
@@ -406,7 +412,10 @@ class TestDocument(unittest.TestCase):
         client = make_mock_client(response)
         document = self._make_one(client, content)
 
-        tokens = document.analyze_syntax()
+        syntax_response = document.analyze_syntax()
+        self.assertIsInstance(syntax_response, SyntaxResponse)
+
+        tokens = syntax_response.tokens
         self.assertEqual(len(tokens), 4)
         token1 = tokens[0]
         self._verify_token(token1, name1, PartOfSpeech.NOUN, name1)
@@ -424,7 +433,7 @@ class TestDocument(unittest.TestCase):
             path='analyzeSyntax', method='POST', data=expected)
 
     def _verify_sentences(self, include_syntax, annotations):
-        from google.cloud.language.syntax import Sentence
+        from google.cloud.language.sentence import Sentence
 
         if include_syntax:
             self.assertEqual(len(annotations.sentences), 1)
