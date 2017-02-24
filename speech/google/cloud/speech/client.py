@@ -20,7 +20,6 @@ from google.cloud.client import Client as BaseClient
 from google.cloud.environment_vars import DISABLE_GRPC
 
 from google.cloud.speech._gax import GAPICSpeechAPI
-from google.cloud.speech._http import Connection
 from google.cloud.speech._http import HTTPSpeechAPI
 from google.cloud.speech.sample import Sample
 
@@ -58,8 +57,6 @@ class Client(BaseClient):
 
     def __init__(self, credentials=None, http=None, use_gax=None):
         super(Client, self).__init__(credentials=credentials, http=http)
-        self._connection = Connection(self)
-
         # Save on the actual client class whether we use GAX or not.
         if use_gax is None:
             self._use_gax = _USE_GAX

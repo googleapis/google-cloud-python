@@ -55,7 +55,7 @@ class _HTTPVisionAPI(object):
 
     def __init__(self, client):
         self._client = client
-        self._connection = client._connection
+        self._connection = Connection(client)
 
     def annotate(self, images):
         """Annotate an image to discover it's attributes.
