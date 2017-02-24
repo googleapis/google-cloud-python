@@ -21,7 +21,9 @@ from google.cloud.language.syntax import Token
 
 
 class EntityResponse(object):
-    """A representation of a response sent back from the
+    """Object representation of entity responses.
+
+    A representation of a response sent back from the
     ``analyzeEntites`` request to the Google Natural language API.
 
     :type entities: list
@@ -51,7 +53,9 @@ class EntityResponse(object):
 
 
 class SentimentResponse(object):
-    """A representation of a response to an ``analyzeSentiment`` request
+    """Object representation of sentiment responses.
+
+    A representation of a response to an ``analyzeSentiment`` request
     to the Google Natural Language API.
 
     :type sentiment: :class:`~.language.sentiment.Sentiment`
@@ -87,7 +91,9 @@ class SentimentResponse(object):
 
 
 class SyntaxResponse(object):
-    """A representation of a response to an ``analyzeSyntax`` request
+    """Object representation of syntax responses.
+
+    A representation of a response to an ``analyzeSyntax`` request
     to the Google Natural Language API.
 
     :type tokens: list
