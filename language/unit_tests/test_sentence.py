@@ -46,7 +46,7 @@ class TestSentence(unittest.TestCase):
         sentence = klass.from_api_repr(payload)
         self.assertEqual(sentence.content, content)
         self.assertEqual(sentence.begin, begin)
-        self.assertEqual(sentence.sentiment, None)
+        self.assertIsNone(sentence.sentiment)
 
     def test_from_api_repr_with_sentiment(self):
         from google.cloud.language.sentiment import Sentiment
