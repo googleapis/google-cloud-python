@@ -24,7 +24,7 @@ def _make_credentials():
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
-    from google.cloud.grpc.datastore.v1 import entity_pb2
+    from google.cloud.proto.datastore.v1 import entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
@@ -280,7 +280,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results, [])
 
     def test_get_multi_miss_w_missing(self):
-        from google.cloud.grpc.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
         from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
@@ -344,7 +344,7 @@ class TestClient(unittest.TestCase):
                          [key.to_protobuf()])
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
-        from google.cloud.grpc.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
         from google.cloud.datastore.entity import Entity
         from google.cloud.datastore.key import Key
 
@@ -943,7 +943,7 @@ class _MockConnection(object):
         return results, missing, deferred
 
     def commit(self, project, commit_request, transaction_id):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         self._commit_cw.append((project, commit_request, transaction_id))
         keys, self._commit = self._commit[0], self._commit[1:]
@@ -1015,7 +1015,7 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from google.cloud.grpc.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
 
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
@@ -1065,7 +1065,7 @@ def _mutated_pb(test_case, mutation_pb_list, mutation_type):
 
 
 def _make_key(id_):
-    from google.cloud.grpc.datastore.v1 import entity_pb2
+    from google.cloud.proto.datastore.v1 import entity_pb2
 
     key = entity_pb2.Key()
     elem = key.path.add()
