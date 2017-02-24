@@ -379,10 +379,8 @@ class Connection(connection_module.Connection):
                                the given transaction.  Incompatible with
                                ``eventual==True``.
 
-        :rtype: tuple
-        :returns: Four-tuple containing the entities returned,
-                  the end cursor of the query, a ``more_results``
-                  enum and a count of the number of skipped results.
+        :rtype: :class:`.datastore_pb2.RunQueryResponse`
+        :returns: The protobuf response from a ``runQuery`` request.
         """
         request = _datastore_pb2.RunQueryRequest()
         _set_read_options(request, eventual, transaction_id)
@@ -391,13 +389,7 @@ class Connection(connection_module.Connection):
             request.partition_id.namespace_id = namespace
 
         request.query.CopyFrom(query_pb)
-        response = self._datastore_api.run_query(project, request)
-        return (
-            [e.entity for e in response.batch.entity_results],
-            response.batch.end_cursor,  # Assume response always has cursor.
-            response.batch.more_results,
-            response.batch.skipped_results,
-        )
+        return self._datastore_api.run_query(project, request)
 
     def begin_transaction(self, project):
         """Begin a transaction.

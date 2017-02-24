@@ -441,43 +441,33 @@ class Iterator(BaseIterator):
 
         return pb
 
-    def _process_query_results(self, entity_pbs, cursor_as_bytes,
-                               more_results_enum, skipped_results):
+    def _process_query_results(self, response_pb):
         """Process the response from a datastore query.
 
-        :type entity_pbs: iterable
-        :param entity_pbs: The entities returned in the current page.
-
-        :type cursor_as_bytes: bytes
-        :param cursor_as_bytes: The end cursor of the query.
-
-        :type more_results_enum:
-            :class:`.query_pb2.QueryResultBatch.MoreResultsType`
-        :param more_results_enum: Enum indicating if there are more results.
-
-        :type skipped_results: int
-        :param skipped_results: The number of skipped results.
+        :type response_pb: :class:`.datastore_pb2.RunQueryResponse`
+        :param response_pb: The protobuf response from a ``runQuery`` request.
 
         :rtype: iterable
         :returns: The next page of entity results.
         :raises ValueError: If ``more_results`` is an unexpected value.
         """
-        self._skipped_results = skipped_results
+        self._skipped_results = response_pb.batch.skipped_results
 
-        if cursor_as_bytes == b'':  # Empty-value for bytes.
+        if response_pb.batch.end_cursor == b'':  # Empty-value for bytes.
             self.next_page_token = None
         else:
-            self.next_page_token = base64.urlsafe_b64encode(cursor_as_bytes)
+            self.next_page_token = base64.urlsafe_b64encode(
+                response_pb.batch.end_cursor)
         self._end_cursor = None
 
-        if more_results_enum == _NOT_FINISHED:
+        if response_pb.batch.more_results == _NOT_FINISHED:
             self._more_results = True
-        elif more_results_enum in _FINISHED:
+        elif response_pb.batch.more_results in _FINISHED:
             self._more_results = False
         else:
             raise ValueError('Unexpected value returned for `more_results`.')
 
-        return entity_pbs
+        return [result.entity for result in response_pb.batch.entity_results]
 
     def _next_page(self):
         """Get the next page in the iterator.
@@ -492,13 +482,13 @@ class Iterator(BaseIterator):
         pb = self._build_protobuf()
         transaction = self.client.current_transaction
 
-        query_results = self.client._connection.run_query(
+        response_pb = self.client._connection.run_query(
             query_pb=pb,
             project=self._query.project,
             namespace=self._query.namespace,
             transaction_id=transaction and transaction.id,
         )
-        entity_pbs = self._process_query_results(*query_results)
+        entity_pbs = self._process_query_results(response_pb)
         return Page(self, entity_pbs, self._item_to_value)
 
 
