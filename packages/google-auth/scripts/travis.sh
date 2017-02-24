@@ -25,6 +25,9 @@ if [[ -n $SYSTEM_TEST ]]; then
     if [[ $TRAVIS_SECURE_ENV_VARS == "true" ]]; then
         echo 'Extracting secrets.'
         scripts/decrypt-secrets.sh "$SECRETS_PASSWORD"
+        # Prevent build failures from leaking our password.
+        # looking at you, Tox.
+        export SECRETS_PASSWORD=""
     else
         # This is an external PR, so just mark system tests as green.
         echo 'In system test but secrets are not available, skipping.'
