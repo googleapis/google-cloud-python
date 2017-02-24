@@ -159,6 +159,7 @@ class TestSyntaxResponse(unittest.TestCase):
         sentence = syntax_response.sentences[0]
         self.assertEqual(sentence.begin, 0)
         self.assertEqual(sentence.content, 'It is hailing in Wales.')
+        self.assertIsInstance(sentence.sentiment, Sentiment)
         self.assertEqual(len(syntax_response.tokens), 1)
         token = syntax_response.tokens[0]
         self.assertEqual(token.text_content, 'It')
