@@ -22,7 +22,7 @@ https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operat
 """
 
 from google.cloud.datastore import helpers
-from google.cloud.grpc.datastore.v1 import datastore_pb2 as _datastore_pb2
+from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
 
 
 class Batch(object):

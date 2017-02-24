@@ -27,7 +27,7 @@ class TestTransaction(unittest.TestCase):
         return self._get_target_class()(client, **kw)
 
     def test_ctor_defaults(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         _PROJECT = 'PROJECT'
         connection = _Connection()
@@ -179,7 +179,7 @@ class TestTransaction(unittest.TestCase):
 
 
 def _make_key(kind, id_, project):
-    from google.cloud.grpc.datastore.v1 import entity_pb2
+    from google.cloud.proto.datastore.v1 import entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project
@@ -197,7 +197,7 @@ class _Connection(object):
     _side_effect = None
 
     def __init__(self, xact_id=123, keys=()):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         self._xact_id = xact_id
         mutation_results = [

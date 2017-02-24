@@ -139,7 +139,7 @@ class TestConnection(unittest.TestCase):
         return Key(*path_args, project=project).to_protobuf()
 
     def _make_query_pb(self, kind):
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
         pb = query_pb2.Query()
         pb.kind.add().name = kind
@@ -253,7 +253,7 @@ class TestConnection(unittest.TestCase):
                          URI)
 
     def test_lookup_single_key_empty_response(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -281,7 +281,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb, keys[0])
 
     def test_lookup_single_key_empty_response_w_eventual(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -321,7 +321,7 @@ class TestConnection(unittest.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
@@ -352,8 +352,8 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_lookup_single_key_nonempty_response(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -385,7 +385,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb, keys[0])
 
     def test_lookup_multiple_keys_empty_response(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
@@ -415,7 +415,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
@@ -450,7 +450,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_deferred(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         from google.cloud import _http as connection_module
         from google.cloud.datastore._http import _CLIENT_INFO
@@ -494,8 +494,8 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_run_query_w_eventual_no_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
         project = 'PROJECT'
         kind = 'Nonesuch'
@@ -534,8 +534,8 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, b'')
 
     def test_run_query_wo_eventual_w_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
         project = 'PROJECT'
         kind = 'Nonesuch'
@@ -577,8 +577,8 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, transaction)
 
     def test_run_query_w_eventual_and_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
         PROJECT = 'PROJECT'
         KIND = 'Nonesuch'
@@ -595,8 +595,8 @@ class TestConnection(unittest.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
         project = 'PROJECT'
         kind = 'Nonesuch'
@@ -632,9 +632,9 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.query, q_pb)
 
     def test_run_query_w_namespace_nonempty_result(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import entity_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
         project = 'PROJECT'
         kind = 'Kind'
@@ -670,7 +670,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.query, q_pb)
 
     def test_begin_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
@@ -693,7 +693,7 @@ class TestConnection(unittest.TestCase):
         request.ParseFromString(cw['body'])
 
     def test_commit_wo_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
         project = 'PROJECT'
@@ -729,7 +729,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_commit_w_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
         project = 'PROJECT'
@@ -765,7 +765,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
     def test_rollback_ok(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         TRANSACTION = b'xact'
@@ -789,7 +789,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.transaction, TRANSACTION)
 
     def test_allocate_ids_empty(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         rsp_pb = datastore_pb2.AllocateIdsResponse()
@@ -811,7 +811,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(list(request.keys), [])
 
     def test_allocate_ids_non_empty(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         before_key_pbs = [

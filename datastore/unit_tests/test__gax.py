@@ -126,7 +126,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             return self._get_target_class()(connection, secure)
 
     def test_constructor(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2_grpc
+        from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
 
         conn = mock.Mock(
             credentials=object(),
@@ -149,7 +149,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         )])
 
     def test_constructor_insecure(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2_grpc
+        from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
 
         conn = mock.Mock(
             credentials=object(),
