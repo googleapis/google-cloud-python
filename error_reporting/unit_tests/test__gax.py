@@ -28,7 +28,11 @@ class Test_make_report_error_api(unittest.TestCase):
         from google.cloud.error_reporting import __version__
         from google.cloud.error_reporting._gax import make_report_error_api
 
-        client = mock.Mock()
+        client = mock.Mock(
+            _credentials=mock.sentinel.credentials,
+            project='prahj-ekt',
+            spec=['project', '_credentials'],
+        )
 
         # Mock out the constructor for the GAPIC client.
         ServiceClient = report_errors_service_client.ReportErrorsServiceClient
