@@ -20,7 +20,7 @@ from google.cloud._helpers import _ensure_tuple_or_list
 from google.cloud.iterator import Iterator as BaseIterator
 from google.cloud.iterator import Page
 
-from google.cloud.grpc.datastore.v1 import query_pb2 as _query_pb2
+from google.cloud.proto.datastore.v1 import query_pb2 as _query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
 

@@ -22,7 +22,7 @@ from google.cloud import _http as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud import exceptions
-from google.cloud.grpc.datastore.v1 import datastore_pb2 as _datastore_pb2
+from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
 
 from google.cloud.datastore import __version__
 try:
