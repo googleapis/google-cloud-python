@@ -14,6 +14,7 @@
 
 import google.auth
 import google.auth.credentials
+import google.auth.jwt
 import google.auth.transport.grpc
 from google.cloud.gapic.pubsub.v1 import publisher_client
 
@@ -42,7 +43,8 @@ def test_grpc_request_with_jwt_credentials(http_request):
     credentials, project_id = google.auth.default()
     audience = 'https://{}/google.pubsub.v1.Publisher'.format(
         publisher_client.PublisherClient.SERVICE_ADDRESS)
-    credentials = credentials.to_jwt_credentials(
+    credentials = google.auth.jwt.Credentials.from_signing_credentials(
+        credentials,
         audience=audience)
 
     channel = google.auth.transport.grpc.secure_authorized_channel(

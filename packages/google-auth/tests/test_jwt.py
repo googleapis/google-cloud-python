@@ -258,6 +258,20 @@ class TestCredentials:
         assert credentials._audience == self.AUDIENCE
         assert credentials._additional_claims == self.ADDITIONAL_CLAIMS
 
+    def test_from_signing_credentials(self):
+        jwt_from_signing = self.credentials.from_signing_credentials(
+            self.credentials,
+            audience=mock.sentinel.new_audience)
+        jwt_from_info = jwt.Credentials.from_service_account_info(
+            SERVICE_ACCOUNT_INFO,
+            audience=mock.sentinel.new_audience)
+
+        assert isinstance(jwt_from_signing, jwt.Credentials)
+        assert jwt_from_signing._signer.key_id == jwt_from_info._signer.key_id
+        assert jwt_from_signing._issuer == jwt_from_info._issuer
+        assert jwt_from_signing._subject == jwt_from_info._subject
+        assert jwt_from_signing._audience == jwt_from_info._audience
+
     def test_default_state(self):
         assert not self.credentials.valid
         # Expiration hasn't been set yet

@@ -204,38 +204,6 @@ class Credentials(credentials.Signing,
             filename, require=['client_email', 'token_uri'])
         return cls._from_signer_and_info(signer, info, **kwargs)
 
-    def to_jwt_credentials(self, audience):
-        """Creates a :class:`google.auth.jwt.Credentials` instance from this
-        instance.
-
-        The new instance will use the same private key as this instance and
-        will use this instance's service account email as the issuer and
-        subject.
-
-        This is the same as calling
-        :meth:`jwt.Credentials.from_service_account_file` with the same
-        file used to create these credentials::
-
-            svc_creds = service_account.Credentials.from_service_account_file(
-                'service_account.json')
-            jwt_from_svc = svc_credentials.to_jwt_credentials()
-            # is the same as:
-            jwt_creds = jwt.Credentials.from_service_account_file(
-                'service_account.json')
-
-        Args:
-            audience (str): the `aud` claim. The intended audience for the
-                credentials.
-
-        Returns:
-            google.auth.jwt.Credentials: A new Credentials instance.
-        """
-        return jwt.Credentials(
-            self._signer,
-            issuer=self._service_account_email,
-            subject=self._service_account_email,
-            audience=audience)
-
     @property
     def service_account_email(self):
         """The service account email."""
