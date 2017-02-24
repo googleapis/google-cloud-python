@@ -249,13 +249,13 @@ class TestBatch(unittest.TestCase):
         self.assertRaises(ValueError, batch.commit)
 
     def test_commit_w_partial_key_entities(self):
-        _PROJECT = 'PROJECT'
-        _NEW_ID = 1234
-        connection = _Connection(_NEW_ID)
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        new_id = 1234
+        connection = _Connection(new_id)
+        client = _Client(project, connection)
         batch = self._make_one(client)
         entity = _Entity({})
-        key = entity.key = _Key(_PROJECT)
+        key = entity.key = _Key(project)
         key._id = None
         batch._partial_key_entities.append(entity)
 
@@ -266,9 +266,9 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch._status, batch._FINISHED)
 
         self.assertEqual(connection._committed,
-                         [(_PROJECT, batch._commit_request, None)])
+                         [(project, batch._commit_request, None)])
         self.assertFalse(entity.key.is_partial)
-        self.assertEqual(entity.key._id, _NEW_ID)
+        self.assertEqual(entity.key._id, new_id)
 
     def test_as_context_mgr_wo_error(self):
         _PROJECT = 'PROJECT'
@@ -369,30 +369,62 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(client._batches, [])
 
 
-class _PathElementPB(object):
+class Test__parse_commit_response(unittest.TestCase):
 
-    def __init__(self, id_):
-        self.id = id_
+    def _call_fut(self, commit_response_pb):
+        from google.cloud.datastore.batch import _parse_commit_response
 
+        return _parse_commit_response(commit_response_pb)
 
-class _KeyPB(object):
+    def test_it(self):
+        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.grpc.datastore.v1 import entity_pb2
 
-    def __init__(self, id_):
-        self.path = [_PathElementPB(id_)]
+        index_updates = 1337
+        keys = [
+            entity_pb2.Key(
+                path=[
+                    entity_pb2.Key.PathElement(
+                        kind='Foo',
+                        id=1234,
+                    ),
+                ],
+            ),
+            entity_pb2.Key(
+                path=[
+                    entity_pb2.Key.PathElement(
+                        kind='Bar',
+                        name='baz',
+                    ),
+                ],
+            ),
+        ]
+        response = datastore_pb2.CommitResponse(
+            mutation_results=[
+                datastore_pb2.MutationResult(key=key) for key in keys
+            ],
+            index_updates=index_updates,
+        )
+        result = self._call_fut(response)
+        self.assertEqual(result, (index_updates, keys))
 
 
 class _Connection(object):
     _marker = object()
     _save_result = (False, None)
 
-    def __init__(self, *new_keys):
-        self._completed_keys = [_KeyPB(key) for key in new_keys]
+    def __init__(self, *new_key_ids):
+        from google.cloud.grpc.datastore.v1 import datastore_pb2
+
         self._committed = []
-        self._index_updates = 0
+        mutation_results = [
+            _make_mutation(key_id) for key_id in new_key_ids]
+        self._commit_response_pb = datastore_pb2.CommitResponse(
+            mutation_results=mutation_results)
 
     def commit(self, project, commit_request, transaction_id):
         self._committed.append((project, commit_request, transaction_id))
-        return self._index_updates, self._completed_keys
+        return self._commit_response_pb
 
 
 class _Entity(dict):
@@ -472,3 +504,15 @@ def _mutated_pb(test_case, mutation_pb_list, mutation_type):
                           mutation_type)
 
     return getattr(mutated_pb, mutation_type)
+
+
+def _make_mutation(id_):
+    from google.cloud.grpc.datastore.v1 import datastore_pb2
+    from google.cloud.grpc.datastore.v1 import entity_pb2
+
+    key = entity_pb2.Key()
+    key.partition_id.project_id = 'PROJECT'
+    elem = key.path.add()
+    elem.kind = 'Kind'
+    elem.id = id_
+    return datastore_pb2.MutationResult(key=key)
