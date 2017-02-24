@@ -1,6 +1,14 @@
 Natural Language Response Classes
 =================================
 
+Responses
+~~~~~~~~~
+
+.. automodule:: google.cloud.language.api_responses
+  :members:
+  :show-inheritance:
+
+
 Entity
 ~~~~~~
 
