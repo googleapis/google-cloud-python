@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from copy import copy
 import unittest
 
 
@@ -105,3 +106,64 @@ class TestSentimentResponse(unittest.TestCase):
         self.assertIsInstance(sentence.sentiment, Sentiment)
         self.assertAlmostEqual(sentiment_response.sentiment.score, 0.4)
         self.assertAlmostEqual(sentiment_response.sentiment.magnitude, 3.14159)
+
+
+class TestSyntaxResponse(unittest.TestCase):
+    SENTENCE_DICT = copy(TestSentimentResponse.SENTENCE_DICT)
+    TOKEN_DICT = {
+        'dependencyEdge': {
+            'headTokenIndex': 0,
+            'label': 'NSUBJ',
+        },
+        'lemma': 'it',
+        'partOfSpeech': {
+            'tag': 'PRON',
+        },
+        'text': {
+            'beginOffset': 0,
+            'content': 'It'
+        },
+    }
+
+    def test_constructor(self):
+        from google.cloud.language.api_responses import SyntaxResponse
+        from google.cloud.language.sentence import Sentence
+        from google.cloud.language.syntax import Token
+
+        syntax_response = SyntaxResponse(
+            language='en',
+            sentences=[Sentence.from_api_repr(self.SENTENCE_DICT)],
+            tokens=[Token.from_api_repr(self.TOKEN_DICT)],
+        )
+
+        self._verify_syntax_response(syntax_response)
+
+    def test_api_repr_factory(self):
+        from google.cloud.language.api_responses import SyntaxResponse
+
+        syntax_response = SyntaxResponse.from_api_repr({
+            'language': 'en',
+            'sentences': [self.SENTENCE_DICT],
+            'tokens': [self.TOKEN_DICT],
+        })
+
+        self._verify_syntax_response(syntax_response)
+
+    def _verify_syntax_response(self, syntax_response):
+        from google.cloud.language.sentiment import Sentiment
+        from google.cloud.language.syntax import PartOfSpeech
+
+        self.assertEqual(syntax_response.language, 'en')
+
+        self.assertEqual(len(syntax_response.sentences), 1)
+        sentence = syntax_response.sentences[0]
+        self.assertEqual(sentence.begin, 0)
+        self.assertEqual(sentence.content, 'It is hailing in Wales.')
+        self.assertEqual(len(syntax_response.tokens), 1)
+        token = syntax_response.tokens[0]
+        self.assertEqual(token.text_content, 'It')
+        self.assertEqual(token.text_begin, 0)
+        self.assertEqual(token.part_of_speech, PartOfSpeech.PRONOUN)
+        self.assertEqual(token.edge_index, 0)
+        self.assertEqual(token.edge_label, 'NSUBJ')
+        self.assertEqual(token.lemma, 'it')
