@@ -229,9 +229,8 @@ class TestClient(unittest.TestCase):
         image_request = client._connection._requested[0]['data']['requests'][0]
         self.assertEqual(image_request['image']['source']['gcsImageUri'],
                          IMAGE_SOURCE)
-        self.assertAlmostEqual(
-            image_request['imageContext']['cropHintsParams']['aspectRatios'][0],
-            1.3333, 4)
+        ar = image_request['imageContext']['cropHintsParams']['aspectRatios']
+        self.assertAlmostEqual(ar[0], 1.3333, 4)
         self.assertEqual(3, image_request['features'][0]['maxResults'])
 
     def test_face_detection_from_source(self):

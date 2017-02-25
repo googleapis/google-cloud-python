@@ -81,7 +81,6 @@ class BaseVisionTestCase(unittest.TestCase):
             self.skipTest(message)
 
 
-
 class TestVisionFullText(unittest.TestCase):
     def setUp(self):
         self.to_delete_by_case = []
@@ -127,7 +126,7 @@ class TestVisionFullText(unittest.TestCase):
         full_text = image.detect_full_text()
         self._assert_full_text(full_text)
 
-        
+
 class TestVisionClientCropHint(BaseVisionTestCase):
     def setUp(self):
         self.to_delete_by_case = []
@@ -135,7 +134,7 @@ class TestVisionClientCropHint(BaseVisionTestCase):
     def tearDown(self):
         for value in self.to_delete_by_case:
             value.delete()
-  
+
     def _assert_crop_hint(self, hint):
         from google.cloud.vision.crop_hint import CropHint
         from google.cloud.vision.geometry import Bounds
