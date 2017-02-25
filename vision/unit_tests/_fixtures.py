@@ -1961,7 +1961,7 @@ TEXT_DETECTION_RESPONSE = {
 }
 
 
-WEB_ANNOTATION_RESPONSE = {
+WEB_DETECTION_RESPONSE = {
     'responses': [
         {
             'webDetection': {

@@ -576,9 +576,9 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.web import WebEntity
         from google.cloud.vision.web import WebImage
         from google.cloud.vision.web import WebPage
-        from unit_tests._fixtures import WEB_ANNOTATION_RESPONSE
+        from unit_tests._fixtures import WEB_DETECTION_RESPONSE
 
-        returned = WEB_ANNOTATION_RESPONSE
+        returned = WEB_DETECTION_RESPONSE
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
@@ -604,7 +604,7 @@ class TestClient(unittest.TestCase):
                          IMAGE_SOURCE)
         self.assertEqual(image_request['features'][0]['maxResults'], 2)
         self.assertEqual(image_request['features'][0]['type'],
-                         'WEB_ANNOTATION')
+                         'WEB_DETECTION')
 
 
 class _Connection(object):
