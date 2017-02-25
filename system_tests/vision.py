@@ -35,6 +35,7 @@ FACE_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'faces.jpg')
 LABEL_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'car.jpg')
 LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'landmark.jpg')
 TEXT_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'text.jpg')
+FULL_TEXT_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'full-text.jpg')
 
 
 class Config(object):
@@ -78,6 +79,107 @@ class BaseVisionTestCase(unittest.TestCase):
     def _pb_not_implemented_skip(self, message):
         if Config.CLIENT._use_gax:
             self.skipTest(message)
+
+
+class TestVisionFullText(unittest.TestCase):
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+
+    def _assert_full_text(self, full_text):
+        from google.cloud.vision.text import TextAnnotation
+
+        self.assertIsInstance(full_text, TextAnnotation)
+        self.assertIsInstance(full_text.text, six.text_type)
+        self.assertEqual(len(full_text.pages), 1)
+        self.assertIsInstance(full_text.pages[0].width, int)
+        self.assertIsInstance(full_text.pages[0].height, int)
+
+    def test_detect_full_text_content(self):
+        client = Config.CLIENT
+        with open(FULL_TEXT_FILE, 'rb') as image_file:
+            image = client.image(content=image_file.read())
+        full_text = image.detect_full_text()
+        self._assert_full_text(full_text)
+
+    def test_detect_full_text_filename(self):
+        client = Config.CLIENT
+        image = client.image(filename=FULL_TEXT_FILE)
+        full_text = image.detect_full_text()
+        self._assert_full_text(full_text)
+
+    def test_detect_full_text_gcs(self):
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'full-text.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(FULL_TEXT_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        client = Config.CLIENT
+        image = client.image(source_uri=source_uri)
+        full_text = image.detect_full_text()
+        self._assert_full_text(full_text)
+
+
+class TestVisionClientCropHint(BaseVisionTestCase):
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+
+    def _assert_crop_hint(self, hint):
+        from google.cloud.vision.crop_hint import CropHint
+        from google.cloud.vision.geometry import Bounds
+
+        self.assertIsInstance(hint, CropHint)
+        self.assertIsInstance(hint.bounds, Bounds)
+        self.assertGreater(hint.bounds.vertices, 1)
+        self.assertIsInstance(hint.confidence, (int, float))
+        self.assertIsInstance(hint.importance_fraction, float)
+
+    def test_detect_crop_hints_content(self):
+        client = Config.CLIENT
+        with open(FACE_FILE, 'rb') as image_file:
+            image = client.image(content=image_file.read())
+        crop_hints = image.detect_crop_hints(
+            aspect_ratios=[1.3333, 1.7777], limit=2)
+        self.assertEqual(len(crop_hints), 2)
+        for hint in crop_hints:
+            self._assert_crop_hint(hint)
+
+    def test_detect_crop_hints_filename(self):
+        client = Config.CLIENT
+        image = client.image(filename=FACE_FILE)
+        crop_hints = image.detect_crop_hints(
+            aspect_ratios=[1.3333, 1.7777], limit=2)
+        self.assertEqual(len(crop_hints), 2)
+        for hint in crop_hints:
+            self._assert_crop_hint(hint)
+
+    def test_detect_crop_hints_gcs(self):
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'faces.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(FACE_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+        client = Config.CLIENT
+        image = client.image(source_uri=source_uri)
+        crop_hints = image.detect_crop_hints(
+            aspect_ratios=[1.3333, 1.7777], limit=2)
+        self.assertEqual(len(crop_hints), 2)
+        for hint in crop_hints:
+            self._assert_crop_hint(hint)
 
 
 class TestVisionClientLogo(unittest.TestCase):
@@ -559,3 +661,82 @@ class TestVisionBatchProcessing(BaseVisionTestCase):
 
         self.assertEqual(len(results[1].logos), 0)
         self.assertEqual(len(results[1].faces), 2)
+
+
+class TestVisionWebAnnotation(BaseVisionTestCase):
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+
+    def _assert_web_entity(self, web_entity):
+        from google.cloud.vision.web import WebEntity
+
+        self.assertIsInstance(web_entity, WebEntity)
+        self.assertIsInstance(web_entity.entity_id, six.text_type)
+        self.assertIsInstance(web_entity.score, float)
+        self.assertIsInstance(web_entity.description, six.text_type)
+
+    def _assert_web_image(self, web_image):
+        from google.cloud.vision.web import WebImage
+
+        self.assertIsInstance(web_image, WebImage)
+        self.assertIsInstance(web_image.url, six.text_type)
+        self.assertIsInstance(web_image.score, float)
+
+    def _assert_web_page(self, web_page):
+        from google.cloud.vision.web import WebPage
+
+        self.assertIsInstance(web_page, WebPage)
+        self.assertIsInstance(web_page.url, six.text_type)
+        self.assertIsInstance(web_page.score, float)
+
+    def _assert_web_images(self, web_images, limit):
+        self.assertEqual(len(web_images.web_entities), limit)
+        for web_entity in web_images.web_entities:
+            self._assert_web_entity(web_entity)
+
+        self.assertEqual(len(web_images.full_matching_images), limit)
+        for web_image in web_images.full_matching_images:
+            self._assert_web_image(web_image)
+
+        self.assertEqual(len(web_images.partial_matching_images), limit)
+        for web_image in web_images.partial_matching_images:
+            self._assert_web_image(web_image)
+
+        self.assertEqual(len(web_images.pages_with_matching_images), limit)
+        for web_page in web_images.pages_with_matching_images:
+            self._assert_web_page(web_page)
+
+    def test_detect_web_images_from_content(self):
+        client = Config.CLIENT
+        with open(LANDMARK_FILE, 'rb') as image_file:
+            image = client.image(content=image_file.read())
+        limit = 5
+        web_images = image.detect_web(limit=limit)
+        self._assert_web_images(web_images, limit)
+
+    def test_detect_web_images_from_gcs(self):
+        client = Config.CLIENT
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'landmark.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(LANDMARK_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        image = client.image(source_uri=source_uri)
+        limit = 5
+        web_images = image.detect_web(limit=limit)
+        self._assert_web_images(web_images, limit)
+
+    def test_detect_web_images_from_filename(self):
+        client = Config.CLIENT
+        image = client.image(filename=LANDMARK_FILE)
+        limit = 5
+        web_images = image.detect_web(limit=limit)
+        self._assert_web_images(web_images, limit)

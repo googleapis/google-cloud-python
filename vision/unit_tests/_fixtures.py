@@ -1,16 +1,162 @@
 # Copyright 2016 Google Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an 'AS IS' BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+
+FULL_TEXT_RESPONSE = {
+    'responses': [{
+        'fullTextAnnotation': {
+            'pages': [{
+                'height': 1872,
+                'property': {
+                    'detectedLanguages': [{
+                        'languageCode': 'en'
+                    }]
+                },
+                'blocks': [{
+                    'blockType': 'TEXT',
+                    'property': {
+                        'detectedLanguages': [{
+                            'languageCode': 'en'
+                        }]
+                    },
+                    'boundingBox': {
+                        'vertices': [{
+                            'y': 8,
+                            'x': 344
+                        }, {
+                            'y': 8,
+                            'x': 434
+                        }, {
+                            'y': 22,
+                            'x': 434
+                        }, {
+                            'y': 22,
+                            'x': 344
+                        }]
+                    },
+                    'paragraphs': [{
+                        'property': {
+                            'detectedLanguages': [{
+                                'languageCode': 'en'
+                            }]
+                        },
+                        'words': [{
+                            'symbols': [{
+                                'property': {
+                                    'detectedLanguages': [{
+                                        'languageCode': 'en'
+                                    }]
+                                },
+                                'text': 'T',
+                                'boundingBox': {
+                                    'vertices': [{
+                                        'y': 8,
+                                        'x': 344
+                                    }, {
+                                        'y': 8,
+                                        'x': 352
+                                    }, {
+                                        'y': 22,
+                                        'x': 352
+                                    }, {
+                                        'y': 22,
+                                        'x': 344
+                                    }]
+                                }
+                            }],
+                            'property': {
+                                'detectedLanguages': [{
+                                    'languageCode': 'en'
+                                }]
+                            },
+                            'boundingBox': {
+                                'vertices': [{
+                                    'y': 8,
+                                    'x': 377
+                                }, {
+                                    'y': 8,
+                                    'x': 434
+                                }, {
+                                    'y': 22,
+                                    'x': 434
+                                }, {
+                                    'y': 22,
+                                    'x': 377
+                                }]
+                            }
+                        }],
+                        'boundingBox': {
+                            'vertices': [{
+                                'y': 8,
+                                'x': 344
+                            }, {
+                                'y': 8,
+                                'x': 434
+                            }, {
+                                'y': 22,
+                                'x': 434
+                            }, {
+                                'y': 22,
+                                'x': 344
+                            }]
+                        }
+                    }]
+                }],
+                'width': 792
+            }],
+            'text': 'The Republic\nBy Plato'
+        }
+    }]
+}
+
+CROP_HINTS_RESPONSE = {
+    "responses": [{
+        "cropHintsAnnotation": {
+            "cropHints": [{
+                "importanceFraction": 1.22,
+                "boundingPoly": {
+                    "vertices": [{
+                        "x": 77
+                    }, {
+                        "x": 1821
+                    }, {
+                        "x": 1821,
+                        "y": 1306
+                    }, {
+                        "x": 77,
+                        "y": 1306
+                    }]
+                },
+                "confidence": 0.5
+            }, {
+                "importanceFraction": 1.2099999,
+                "boundingPoly": {
+                    "vertices": [{}, {
+                        "x": 1959
+                    }, {
+                        "x": 1959,
+                        "y": 1096
+                    }, {
+                        "y": 1096
+                    }]
+                },
+                "confidence": 0.29999998
+            }]
+        }
+    }]
+}
+
 
 IMAGE_PROPERTIES_RESPONSE = {
     'responses': [
@@ -1810,6 +1956,46 @@ TEXT_DETECTION_RESPONSE = {
                     }
                 }
             ]
+        }
+    ]
+}
+
+
+WEB_ANNOTATION_RESPONSE = {
+    'responses': [
+        {
+            'webDetection': {
+                'partialMatchingImages': [{
+                    'score': 0.9216,
+                    'url': 'https://cloud.google.com/vision'
+                }, {
+                    'score': 0.55520177,
+                    'url': 'https://cloud.google.com/vision'
+                }],
+                'fullMatchingImages': [{
+                    'score': 0.09591467,
+                    'url': 'https://cloud.google.com/vision'
+                }, {
+                    'score': 0.09591467,
+                    'url': 'https://cloud.google.com/vision'
+                }],
+                'webEntities': [{
+                    'entityId': '/m/019dvv',
+                    'score': 1470.4435,
+                    'description': 'Mount Rushmore National Memorial'
+                }, {
+                    'entityId': '/m/05_5t0l',
+                    'score': 0.9468027,
+                    'description': 'Landmark'
+                }],
+                'pagesWithMatchingImages': [{
+                    'score': 2.9996617,
+                    'url': 'https://cloud.google.com/vision'
+                }, {
+                    'score': 1.1980441,
+                    'url': 'https://cloud.google.com/vision'
+                }]
+            }
         }
     ]
 }

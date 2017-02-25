@@ -107,6 +107,16 @@ class TestGAXClient(unittest.TestCase):
             mock_anno.from_pb.assert_called_with('mock response data')
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
+    def test_annotate_no_requests(self):
+        client = mock.Mock(spec_set=['_credentials'])
+        with mock.patch('google.cloud.vision._gax.image_annotator_client.'
+                        'ImageAnnotatorClient'):
+            gax_api = self._make_one(client)
+
+        response = gax_api.annotate()
+        self.assertEqual(response, [])
+        gax_api._annotator_client.batch_annotate_images.assert_not_called()
+
     def test_annotate_no_results(self):
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
@@ -167,6 +177,47 @@ class TestGAXClient(unittest.TestCase):
         self.assertIsInstance(responses[1], Annotations)
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
+    def test_annotate_with_pb_requests_results(self):
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision.annotations import Annotations
+
+        client = mock.Mock(spec_set=['_credentials'])
+
+        feature_type = image_annotator_pb2.Feature.CROP_HINTS
+        feature = image_annotator_pb2.Feature(type=feature_type, max_results=2)
+
+        image_content = b'abc 1 2 3'
+        image = image_annotator_pb2.Image(content=image_content)
+
+        aspect_ratios = [1.3333, 1.7777]
+        crop_hints_params = image_annotator_pb2.CropHintsParams(
+            aspect_ratios=aspect_ratios)
+        image_context = image_annotator_pb2.ImageContext(
+            crop_hints_params=crop_hints_params)
+        request = image_annotator_pb2.AnnotateImageRequest(
+            image=image, features=[feature], image_context=image_context)
+
+        with mock.patch('google.cloud.vision._gax.image_annotator_client.'
+                        'ImageAnnotatorClient'):
+            gax_api = self._make_one(client)
+
+        responses = [
+            image_annotator_pb2.AnnotateImageResponse(),
+            image_annotator_pb2.AnnotateImageResponse(),
+        ]
+        response = image_annotator_pb2.BatchAnnotateImagesResponse(
+            responses=responses)
+
+        gax_api._annotator_client = mock.Mock(
+            spec_set=['batch_annotate_images'])
+        gax_api._annotator_client.batch_annotate_images.return_value = response
+        responses = gax_api.annotate(requests_pb=[request])
+
+        self.assertEqual(len(responses), 2)
+        self.assertIsInstance(responses[0], Annotations)
+        self.assertIsInstance(responses[1], Annotations)
+        gax_api._annotator_client.batch_annotate_images.assert_called()
+
 
 class Test__to_gapic_feature(unittest.TestCase):
     def _call_fut(self, feature):
@@ -201,7 +252,7 @@ class Test__to_gapic_image(unittest.TestCase):
         self.assertIsInstance(image_pb, image_annotator_pb2.Image)
         self.assertEqual(image_pb.content, image_content)
 
-    def test__to_gapic_image_uri(self):
+    def test__to_gapic_gcs_image_uri(self):
         from google.cloud.vision.image import Image
         from google.cloud.proto.vision.v1 import image_annotator_pb2
 
@@ -211,6 +262,26 @@ class Test__to_gapic_image(unittest.TestCase):
         image_pb = self._call_fut(image)
         self.assertIsInstance(image_pb, image_annotator_pb2.Image)
         self.assertEqual(image_pb.source.gcs_image_uri, image_uri)
+
+    def test__to_gapic_image_uri(self):
+        from google.cloud.vision.image import Image
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
+
+        image_uri = 'http://1234/34.jpg'
+        client = object()
+        image = Image(client, source_uri=image_uri)
+        image_pb = self._call_fut(image)
+        self.assertIsInstance(image_pb, image_annotator_pb2.Image)
+        self.assertEqual(image_pb.source.image_uri, image_uri)
+
+    def test__to_gapic_invalid_image_uri(self):
+        from google.cloud.vision.image import Image
+
+        image_uri = 'ftp://1234/34.jpg'
+        client = object()
+        image = Image(client, source_uri=image_uri)
+        with self.assertRaises(ValueError):
+            self._call_fut(image)
 
     def test__to_gapic_with_empty_image(self):
         image = mock.Mock(

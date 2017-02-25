@@ -659,7 +659,7 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
-        :type data: bytes or text
+        :type data: bytes or str
         :param data: The data to store in this blob.  If the value is
                      text, it will be encoded as UTF-8.
 

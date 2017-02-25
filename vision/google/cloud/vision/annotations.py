@@ -12,36 +12,54 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pylint: disable=too-many-arguments
 """Annotations management for Vision API responses."""
 
 import six
 
 from google.cloud.vision.color import ImagePropertiesAnnotation
+from google.cloud.vision.crop_hint import CropHint
 from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.safe_search import SafeSearchAnnotation
+from google.cloud.vision.text import TextAnnotation
+from google.cloud.vision.web import WebDetection
 
 
+_CROP_HINTS_ANNOTATION = 'cropHintsAnnotation'
 _FACE_ANNOTATIONS = 'faceAnnotations'
+_FULL_TEXT_ANNOTATION = 'fullTextAnnotation'
 _IMAGE_PROPERTIES_ANNOTATION = 'imagePropertiesAnnotation'
 _SAFE_SEARCH_ANNOTATION = 'safeSearchAnnotation'
+_WEB_ANNOTATION = 'webDetection'
 
 _KEY_MAP = {
+    _CROP_HINTS_ANNOTATION: 'crop_hints',
     _FACE_ANNOTATIONS: 'faces',
+    _FULL_TEXT_ANNOTATION: 'full_texts',
     _IMAGE_PROPERTIES_ANNOTATION: 'properties',
     'labelAnnotations': 'labels',
     'landmarkAnnotations': 'landmarks',
     'logoAnnotations': 'logos',
     _SAFE_SEARCH_ANNOTATION: 'safe_searches',
-    'textAnnotations': 'texts'
+    'textAnnotations': 'texts',
+    _WEB_ANNOTATION: 'web',
 }
 
 
 class Annotations(object):
     """Helper class to bundle annotation responses.
 
+    :type crop_hints: list
+    :param crop_hints: List of
+                  :class:`~google.cloud.vision.crop_hint.CropHintsAnnotation`.
+
     :type faces: list
     :param faces: List of :class:`~google.cloud.vision.face.Face`.
+
+    :type full_texts: list
+    :param full_texts: List of
+                       :class:`~google.cloud.vision.text.TextAnnotation`.
 
     :type properties: list
     :param properties:
@@ -66,16 +84,23 @@ class Annotations(object):
     :type texts: list
     :param texts: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
+
+    :type web: list
+    :param web: List of :class:`~google.cloud.vision.web.WebDetection`.
     """
-    def __init__(self, faces=(), properties=(), labels=(), landmarks=(),
-                 logos=(), safe_searches=(), texts=()):
+    def __init__(self, crop_hints=(), faces=(), full_texts=(), properties=(),
+                 labels=(), landmarks=(), logos=(), safe_searches=(),
+                 texts=(), web=()):
+        self.crop_hints = crop_hints
         self.faces = faces
+        self.full_texts = full_texts
         self.properties = properties
         self.labels = labels
         self.landmarks = landmarks
         self.logos = logos
         self.safe_searches = safe_searches
         self.texts = texts
+        self.web = web
 
     @classmethod
     def from_api_repr(cls, response):
@@ -121,7 +146,9 @@ def _process_image_annotations(image):
     :returns: Dictionary populated with entities from response.
     """
     return {
+        'crop_hints': _make_crop_hints_from_pb(image.crop_hints_annotation),
         'faces': _make_faces_from_pb(image.face_annotations),
+        'full_texts': _make_full_text_from_pb(image.full_text_annotation),
         'labels': _make_entity_from_pb(image.label_annotations),
         'landmarks': _make_entity_from_pb(image.landmark_annotations),
         'logos': _make_entity_from_pb(image.logo_annotations),
@@ -130,7 +157,22 @@ def _process_image_annotations(image):
         'safe_searches': _make_safe_search_from_pb(
             image.safe_search_annotation),
         'texts': _make_entity_from_pb(image.text_annotations),
+        'web': _make_web_detection_from_pb(image.web_detection)
     }
+
+
+def _make_crop_hints_from_pb(crop_hints):
+    """Create list of ``CropHint`` objects from a protobuf response.
+
+    :type crop_hints: list
+    :param crop_hints: List of
+                       :class:`google.cloud.grpc.vision.v1.\
+                       image_annotator_pb2.CropHintsAnnotation`
+
+    :rtype: list
+    :returns: List of ``CropHint`` objects.
+    """
+    return [CropHint.from_pb(hint) for hint in crop_hints.crop_hints]
 
 
 def _make_entity_from_pb(annotations):
@@ -157,6 +199,19 @@ def _make_faces_from_pb(faces):
     :returns: List of ``Face``.
     """
     return [Face.from_pb(face) for face in faces]
+
+
+def _make_full_text_from_pb(full_text):
+    """Create text annotation object from protobuf response.
+
+    :type full_text: :class:`~google.cloud.proto.vision.v1.\
+                     text_annotation_pb2.TextAnnotation`
+    :param full_text: Protobuf instance of ``TextAnnotation``.
+
+    :rtype: :class:`~google.cloud.vision.text.TextAnnotation`
+    :returns: Instance of ``TextAnnotation``.
+    """
+    return TextAnnotation.from_pb(full_text)
 
 
 def _make_image_properties_from_pb(image_properties):
@@ -186,6 +241,19 @@ def _make_safe_search_from_pb(safe_search):
     return SafeSearchAnnotation.from_pb(safe_search)
 
 
+def _make_web_detection_from_pb(annotation):
+    """Create ``WebDetection`` object from a protobuf response.
+
+    :type annotation: :class:`~google.cloud.proto.vision.v1.web_detection_pb2\
+                      .WebDetection`
+    :param annotation: Protobuf instance of ``WebDetection``.
+
+    :rtype: :class: `~google.cloud.vision.web.WebDetection`
+    :returns: Instance of ``WebDetection``.
+    """
+    return WebDetection.from_pb(annotation)
+
+
 def _entity_from_response_type(feature_type, results):
     """Convert a JSON result to an entity type based on the feature.
 
@@ -207,6 +275,14 @@ def _entity_from_response_type(feature_type, results):
         return ImagePropertiesAnnotation.from_api_repr(results)
     elif feature_type == _SAFE_SEARCH_ANNOTATION:
         return SafeSearchAnnotation.from_api_repr(results)
+    elif feature_type == _WEB_ANNOTATION:
+        return WebDetection.from_api_repr(results)
+    elif feature_type == _CROP_HINTS_ANNOTATION:
+        crop_hints = results.get('cropHints', [])
+        detected_objects.extend(
+            CropHint.from_api_repr(result) for result in crop_hints)
+    elif feature_type == _FULL_TEXT_ANNOTATION:
+        return TextAnnotation.from_api_repr(results)
     else:
         for result in results:
             detected_objects.append(EntityAnnotation.from_api_repr(result))

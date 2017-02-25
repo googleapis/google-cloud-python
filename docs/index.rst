@@ -158,11 +158,14 @@
   vision-batch
   vision-client
   vision-color
+  vision-crop-hint
   vision-entity
   vision-feature
   vision-face
   vision-image
   vision-safe-search
+  vision-text
+  vision-web
 
 .. toctree::
   :maxdepth: 0
