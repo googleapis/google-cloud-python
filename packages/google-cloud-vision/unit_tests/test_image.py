@@ -72,6 +72,24 @@ class TestVisionImage(unittest.TestCase):
         self.assertEqual(None, image.content)
         self.assertEqual(image.as_dict(), as_dict)
 
+    def test_image_source_type_image_url(self):
+        url = 'http://www.example.com/image.jpg'
+        image = self._make_one(CLIENT_MOCK, source_uri=url)
+        as_dict = {
+            'source': {
+                'image_uri': url,
+            },
+        }
+
+        self.assertEqual(image.source, url)
+        self.assertIsNone(image.content)
+        self.assertEqual(image.as_dict(), as_dict)
+
+    def test_image_no_valid_image_data(self):
+        image = self._make_one(CLIENT_MOCK, source_uri='ftp://notsupported')
+        with self.assertRaises(ValueError):
+            image.as_dict()
+
     def test_cannot_set_both_source_and_content(self):
         image = self._make_one(CLIENT_MOCK, content=IMAGE_CONTENT)
 

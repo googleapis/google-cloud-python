@@ -17,6 +17,9 @@
 
 from base64 import b64encode
 
+from google.cloud.proto.vision.v1 import image_annotator_pb2
+
+from google.cloud.vision._gax import _to_gapic_image
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
 from google.cloud.vision.feature import Feature
@@ -33,7 +36,7 @@ class Image(object):
     :param filename: Filename to image.
 
     :type source_uri: str
-    :param source_uri: Google Cloud Storage URI of image.
+    :param source_uri: URL or Google Cloud Storage URI of image.
 
     :type client: :class:`~google.cloud.vision.client.Client`
     :param client: Instance of Vision client.
@@ -69,12 +72,19 @@ class Image(object):
             return {
                 'content': _bytes_to_unicode(b64encode(self.content))
             }
-        else:
+        elif self.source.startswith('gs://'):
             return {
                 'source': {
                     'gcs_image_uri': self.source
                 }
             }
+        elif self.source.startswith(('http://', 'https://')):
+            return {
+                'source': {
+                    'image_uri': self.source
+                }
+            }
+        raise ValueError('No image content or source found.')
 
     @property
     def content(self):
@@ -106,6 +116,18 @@ class Image(object):
         """
         return self.client._vision_api.annotate(images)
 
+    def _detect_annotation_from_pb(self, requests_pb=None):
+        """Helper for pre-made requests.
+
+        :type requests_pb: list
+        :param requests_pb: List of :class:`google.cloud.proto.vision.v1.\
+                            image_annotator_pb2.AnnotateImageRequest`
+
+        :rtype: :class:`~google.cloud.vision.annotations.Annotations`
+        :returns: Instance of ``Annotations``.
+        """
+        return self.client._vision_api.annotate(self, requests_pb=requests_pb)
+
     def detect(self, features):
         """Detect multiple feature types.
 
@@ -120,6 +142,33 @@ class Image(object):
         images = ((self, features),)
         return self._detect_annotation(images)
 
+    def detect_crop_hints(self, aspect_ratios=None, limit=10):
+        """Detect crop hints in image.
+
+        :type aspect_ratios: list
+        :param aspect_ratios: (Optional) List of floats i.e. 4/3 == 1.33333. A
+                              maximum of 16 aspect ratios can be given.
+
+        :type limit: int
+        :param limit: (Optional) The number of crop hints to detect.
+
+        :rtype: list
+        :returns: List of :class:`~google.cloud.vision.crop_hint.CropHints`.
+        """
+        feature_type = image_annotator_pb2.Feature.CROP_HINTS
+        feature = image_annotator_pb2.Feature(type=feature_type,
+                                              max_results=limit)
+        image = _to_gapic_image(self)
+        crop_hints_params = image_annotator_pb2.CropHintsParams(
+            aspect_ratios=aspect_ratios)
+        image_context = image_annotator_pb2.ImageContext(
+            crop_hints_params=crop_hints_params)
+        request = image_annotator_pb2.AnnotateImageRequest(
+            image=image, features=[feature], image_context=image_context)
+
+        annotations = self._detect_annotation_from_pb([request])
+        return annotations[0].crop_hints
+
     def detect_faces(self, limit=10):
         """Detect faces in image.
 
@@ -132,6 +181,19 @@ class Image(object):
         features = [Feature(FeatureTypes.FACE_DETECTION, limit)]
         annotations = self.detect(features)
         return annotations[0].faces
+
+    def detect_full_text(self, limit=10):
+        """Detect a full document's text.
+
+        :type limit: int
+        :param limit: The number of documents to detect.
+
+        :rtype: list
+        :returns: List of :class:`~google.cloud.vision.text.TextAnnotation`.
+        """
+        features = [Feature(FeatureTypes.DOCUMENT_TEXT_DETECTION, limit)]
+        annotations = self.detect(features)
+        return annotations[0].full_texts
 
     def detect_labels(self, limit=10):
         """Detect labels that describe objects in an image.
@@ -215,3 +277,17 @@ class Image(object):
         features = [Feature(FeatureTypes.TEXT_DETECTION, limit)]
         annotations = self.detect(features)
         return annotations[0].texts
+
+    def detect_web(self, limit=10):
+        """Detect similar images elsewhere on the web.
+
+        :type limit: int
+        :param limit: The maximum instances of text to find.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+        """
+        features = [Feature(FeatureTypes.WEB_ANNOTATION, limit)]
+        annotations = self.detect(features)
+        return annotations[0].web

@@ -95,6 +95,51 @@ class Test_HTTPVisionAPI(unittest.TestCase):
         self.assertEqual(len(response), 0)
         self.assertIsInstance(response, list)
 
+    def test_call_annotate_with_no_parameters(self):
+        client = mock.Mock(spec_set=['_connection'])
+        http_api = self._make_one(client)
+        http_api._connection = mock.Mock(spec_set=['api_request'])
+
+        results = http_api.annotate()
+        self.assertEqual(results, [])
+        http_api._connection.api_request.assert_not_called()
+
+    def test_call_annotate_with_pb_requests_results(self):
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
+
+        client = mock.Mock(spec_set=['_connection'])
+
+        feature_type = image_annotator_pb2.Feature.CROP_HINTS
+        feature = image_annotator_pb2.Feature(type=feature_type, max_results=2)
+
+        image = image_annotator_pb2.Image(content=IMAGE_CONTENT)
+
+        aspect_ratios = [1.3333, 1.7777]
+        crop_hints_params = image_annotator_pb2.CropHintsParams(
+            aspect_ratios=aspect_ratios)
+        image_context = image_annotator_pb2.ImageContext(
+            crop_hints_params=crop_hints_params)
+        request = image_annotator_pb2.AnnotateImageRequest(
+            image=image, features=[feature], image_context=image_context)
+
+        http_api = self._make_one(client)
+        http_api._connection = mock.Mock(spec_set=['api_request'])
+        http_api._connection.api_request.return_value = {'responses': []}
+
+        responses = http_api.annotate(requests_pb=[request])
+
+        # Establish that one and exactly one api_request call was made.
+        self.assertEqual(http_api._connection.api_request.call_count, 1)
+
+        # Establish that the basic keyword arguments look correct.
+        call = http_api._connection.api_request.mock_calls[0]
+        self.assertEqual(call[2]['method'], 'POST')
+        self.assertEqual(call[2]['path'], '/images:annotate')
+
+        # Establish that the responses look correct.
+        self.assertEqual(responses, [])
+        self.assertEqual(len(responses), 0)
+
     def test_call_annotate_with_more_than_one_result(self):
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
