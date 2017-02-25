@@ -75,7 +75,6 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        vision_api = client._vision_api
         self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
 
     def test_face_annotation(self):

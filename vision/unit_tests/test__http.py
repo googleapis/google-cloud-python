@@ -105,29 +105,8 @@ class Test_HTTPVisionAPI(unittest.TestCase):
         http_api._connection.api_request.assert_not_called()
 
     def test_call_annotate_with_pb_requests_results(self):
-        import json
         from google.cloud.proto.vision.v1 import image_annotator_pb2
 
-        sent = {
-            'requests': [
-                {
-                    'image': {
-                        'content': B64_IMAGE_CONTENT
-                    },
-                    'features': [
-                        {
-                            'maxResults': 2,
-                            'type': 'CROP_HINTS'
-                        },
-                    ],
-                    'imageContext': {
-                        'cropHintsParams': {
-                            'aspectRatios': [1.3333, 1.7777]
-                        },
-                    },
-                },
-            ],
-        }
         client = mock.Mock(spec_set=['_connection'])
 
         feature_type = image_annotator_pb2.Feature.CROP_HINTS
