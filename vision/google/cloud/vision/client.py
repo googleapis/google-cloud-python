@@ -88,7 +88,7 @@ class Client(ClientWithProject):
         :param filename: Filename to image.
 
         :type source_uri: str
-        :param source_uri: Google Cloud Storage URI of image.
+        :param source_uri: URL or Google Cloud Storage URI of image.
 
         :rtype: :class:`~google.cloud.vision.image.Image`
         :returns: Image instance with the current client attached.

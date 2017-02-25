@@ -33,7 +33,7 @@ class _GAPICVisionAPI(object):
             credentials=client._credentials, lib_name='gccl',
             lib_version=__version__)
 
-    def annotate(self, images):
+    def annotate(self, images=None, requests_pb=None):
         """Annotate images through GAX.
 
         :type images: list
@@ -42,18 +42,28 @@ class _GAPICVisionAPI(object):
                        :class:`~google.cloud.vision.feature.Feature`.
                        e.g. [(image, [feature_one, feature_two]),]
 
+        :type requests_pb: list
+        :param requests_pb: List of :class:`google.cloud.proto.vision.v1.\
+                            image_annotator_pb2.AnnotateImageRequest`
+
         :rtype: list
         :returns: List of
                   :class:`~google.cloud.vision.annotations.Annotations`.
         """
-        requests = []
-        for image, features in images:
-            gapic_features = [_to_gapic_feature(feature)
-                              for feature in features]
-            gapic_image = _to_gapic_image(image)
-            request = image_annotator_pb2.AnnotateImageRequest(
-                image=gapic_image, features=gapic_features)
-            requests.append(request)
+        if any([images, requests_pb]) is False:
+            return []
+
+        if requests_pb is None:
+            requests = []
+            for image, features in images:
+                gapic_features = [_to_gapic_feature(feature)
+                                  for feature in features]
+                gapic_image = _to_gapic_image(image)
+                request = image_annotator_pb2.AnnotateImageRequest(
+                    image=gapic_image, features=gapic_features)
+                requests.append(request)
+        else:
+            requests = requests_pb
 
         annotator_client = self._annotator_client
         responses = annotator_client.batch_annotate_images(requests).responses
@@ -89,9 +99,16 @@ def _to_gapic_image(image):
     if image.content is not None:
         return image_annotator_pb2.Image(content=image.content)
     if image.source is not None:
-        return image_annotator_pb2.Image(
-            source=image_annotator_pb2.ImageSource(
-                gcs_image_uri=image.source
-            ),
-        )
+        if image.source.startswith('gs://'):
+            return image_annotator_pb2.Image(
+                source=image_annotator_pb2.ImageSource(
+                    gcs_image_uri=image.source
+                ),
+            )
+        elif image.source.startswith(('http://', 'https://')):
+            return image_annotator_pb2.Image(
+                source=image_annotator_pb2.ImageSource(
+                    image_uri=image.source
+                ),
+            )
     raise ValueError('No image content or source found.')

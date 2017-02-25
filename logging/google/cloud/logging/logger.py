@@ -171,7 +171,7 @@ class Logger(object):
         See:
         https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write
 
-        :type text: text
+        :type text: str
         :param text: the log message.
 
         :type client: :class:`~google.cloud.logging.client.Client` or

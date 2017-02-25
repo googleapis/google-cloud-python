@@ -75,8 +75,6 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        vision_api = client._vision_api
-        vision_api._connection = _Connection()
         self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
 
     def test_face_annotation(self):
@@ -213,6 +211,27 @@ class TestClient(unittest.TestCase):
         self.assertEqual(logo_request['maxResults'], 2)
         self.assertEqual(logo_request['type'], 'LOGO_DETECTION')
 
+    def test_detect_crop_hints_from_source(self):
+        from google.cloud.vision.crop_hint import CropHint
+        from unit_tests._fixtures import CROP_HINTS_RESPONSE
+        returned = CROP_HINTS_RESPONSE
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
+        api = client._vision_api
+        api._connection = _Connection(returned)
+        image = client.image(source_uri=IMAGE_SOURCE)
+        crop_hints = image.detect_crop_hints(aspect_ratios=[1.3333], limit=3)
+
+        self.assertEqual(len(crop_hints), 2)
+        self.assertIsInstance(crop_hints[0], CropHint)
+        image_request = api._connection._requested[0]['data']['requests'][0]
+        self.assertEqual(image_request['image']['source']['gcsImageUri'],
+                         IMAGE_SOURCE)
+        ar = image_request['imageContext']['cropHintsParams']['aspectRatios']
+        self.assertAlmostEqual(ar[0], 1.3333, 4)
+        self.assertEqual(3, image_request['features'][0]['maxResults'])
+
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
@@ -274,6 +293,37 @@ class TestClient(unittest.TestCase):
         self.assertEqual(B64_IMAGE_CONTENT,
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
+
+    def test_detect_full_text_annotation(self):
+        from google.cloud.vision.text import TextAnnotation
+        from unit_tests._fixtures import FULL_TEXT_RESPONSE
+
+        returned = FULL_TEXT_RESPONSE
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
+        api = client._vision_api
+        api._connection = _Connection(returned)
+        image = client.image(source_uri=IMAGE_SOURCE)
+        full_text = image.detect_full_text(limit=2)
+
+        self.assertIsInstance(full_text, TextAnnotation)
+        self.assertEqual(full_text.text, 'The Republic\nBy Plato')
+        self.assertEqual(len(full_text.pages), 1)
+        self.assertEqual(len(full_text.pages), 1)
+        page = full_text.pages[0]
+        self.assertEqual(page.height, 1872)
+        self.assertEqual(page.width, 792)
+        self.assertEqual(len(page.blocks), 1)
+        self.assertEqual(len(page.blocks[0].paragraphs), 1)
+        self.assertEqual(len(page.blocks[0].paragraphs[0].words), 1)
+
+        image_request = api._connection._requested[0]['data']['requests'][0]
+        self.assertEqual(image_request['image']['source']['gcs_image_uri'],
+                         IMAGE_SOURCE)
+        self.assertEqual(image_request['features'][0]['maxResults'], 2)
+        self.assertEqual(image_request['features'][0]['type'],
+                         'DOCUMENT_TEXT_DETECTION')
 
     def test_label_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
@@ -521,6 +571,40 @@ class TestClient(unittest.TestCase):
         image_properties = image.detect_properties()
         self.assertEqual(image_properties, ())
         self.assertEqual(len(image_properties), 0)
+
+    def test_detect_web_detection(self):
+        from google.cloud.vision.web import WebEntity
+        from google.cloud.vision.web import WebImage
+        from google.cloud.vision.web import WebPage
+        from unit_tests._fixtures import WEB_ANNOTATION_RESPONSE
+
+        returned = WEB_ANNOTATION_RESPONSE
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
+        api = client._vision_api
+        api._connection = _Connection(returned)
+        image = client.image(source_uri=IMAGE_SOURCE)
+        web_images = image.detect_web(limit=2)
+
+        self.assertEqual(len(web_images.partial_matching_images), 2)
+        self.assertEqual(len(web_images.full_matching_images), 2)
+        self.assertEqual(len(web_images.web_entities), 2)
+        self.assertEqual(len(web_images.pages_with_matching_images), 2)
+
+        self.assertIsInstance(web_images.partial_matching_images[0],
+                              WebImage)
+        self.assertIsInstance(web_images.full_matching_images[0], WebImage)
+        self.assertIsInstance(web_images.web_entities[0], WebEntity)
+        self.assertIsInstance(web_images.pages_with_matching_images[0],
+                              WebPage)
+
+        image_request = api._connection._requested[0]['data']['requests'][0]
+        self.assertEqual(image_request['image']['source']['gcs_image_uri'],
+                         IMAGE_SOURCE)
+        self.assertEqual(image_request['features'][0]['maxResults'], 2)
+        self.assertEqual(image_request['features'][0]['type'],
+                         'WEB_ANNOTATION')
 
 
 class _Connection(object):
