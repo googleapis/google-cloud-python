@@ -341,9 +341,9 @@ Multiple images can be processed with a single request by passing
     <Likelihood.VERY_LIKELY: 'POSSIBLE'>
 
 
-***************
-Web Annotations
-***************
+*************
+Web Detection
+*************
 
 :meth:`~google.cloud.vision.image.Image.detect_web` search for images on the
 web that are similar to the image you have.
