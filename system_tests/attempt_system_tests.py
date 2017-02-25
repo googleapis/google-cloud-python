@@ -68,6 +68,7 @@ MODULES = (  # ordered from most to least stable
     'translate',
     'monitoring',
     'bigtable',
+    'spanner',
 )
 
 SCRIPTS_DIR = os.path.dirname(__file__)

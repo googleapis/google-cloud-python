@@ -331,7 +331,7 @@ class TestResource(unittest.TestCase):
             'type': TYPE,
             'labels': LABELS,
         }
-        self.assertEquals(resource._to_dict(), expected_dict)
+        self.assertEqual(resource._to_dict(), expected_dict)
 
 
 class _Connection(object):

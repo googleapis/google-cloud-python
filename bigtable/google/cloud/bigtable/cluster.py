@@ -72,7 +72,7 @@ class Cluster(object):
     :type cluster_id: str
     :param cluster_id: The ID of the cluster.
 
-    :type instance: :class:`.instance.Instance`
+    :type instance: :class:`~google.cloud.bigtable.instance.Instance`
     :param instance: The instance where the cluster resides.
 
     :type serve_nodes: int
@@ -104,7 +104,7 @@ class Cluster(object):
         :type cluster_pb: :class:`instance_pb2.Cluster`
         :param cluster_pb: A cluster protobuf object.
 
-        :type instance: :class:`.instance.Instance>`
+        :type instance: :class:`~google.cloud.bigtable.instance.Instance>`
         :param instance: The instance that owns the cluster.
 
         :rtype: :class:`Cluster`

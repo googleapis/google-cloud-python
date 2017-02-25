@@ -23,6 +23,52 @@ PROJECT = 'PROJECT'
 B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT).decode('ascii')
 
 
+class TestConnection(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.vision._http import Connection
+        return Connection
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_default_url(self):
+        client = object()
+        conn = self._make_one(client)
+        self.assertEqual(conn._client, client)
+
+    def test_extra_headers(self):
+        from google.cloud import _http as base_http
+        from google.cloud.vision import _http as MUT
+
+        http = mock.Mock(spec=['request'])
+        response = mock.Mock(status=200, spec=['status'])
+        data = b'brent-spiner'
+        http.request.return_value = response, data
+        client = mock.Mock(_http=http, spec=['_http'])
+
+        conn = self._make_one(client)
+        req_data = 'req-data-boring'
+        result = conn.api_request(
+            'GET', '/rainbow', data=req_data, expect_json=False)
+        self.assertEqual(result, data)
+
+        expected_headers = {
+            'Content-Length': str(len(req_data)),
+            'Accept-Encoding': 'gzip',
+            base_http.CLIENT_INFO_HEADER: MUT._CLIENT_INFO,
+            'User-Agent': conn.USER_AGENT,
+        }
+        expected_uri = conn.build_api_url('/rainbow')
+        http.request.assert_called_once_with(
+            body=req_data,
+            headers=expected_headers,
+            method='GET',
+            uri=expected_uri,
+        )
+
+
 class Test_HTTPVisionAPI(unittest.TestCase):
     def _get_target_class(self):
         from google.cloud.vision._http import _HTTPVisionAPI

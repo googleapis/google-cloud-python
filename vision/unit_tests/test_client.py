@@ -47,7 +47,8 @@ class TestClient(unittest.TestCase):
     def test_annotate_with_preset_api(self):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
-        client._connection = _Connection()
+        vision_api = client._vision_api
+        vision_api._connection = _Connection()
 
         api = mock.Mock()
         api.annotate.return_value = mock.sentinel.annotated
@@ -62,7 +63,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=None)
-        client._connection = _Connection()
+        vision_api = client._vision_api
+        vision_api._connection = _Connection()
         with mock.patch('google.cloud.vision.client._GAPICVisionAPI',
                         spec=True):
             self.assertIsInstance(client._vision_api, _GAPICVisionAPI)
@@ -73,7 +75,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection()
+        vision_api = client._vision_api
+        vision_api._connection = _Connection()
         self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
 
     def test_face_annotation(self):
@@ -100,7 +103,9 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
@@ -110,8 +115,8 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(api_response), 1)
         response = api_response[0]
-        self.assertEqual(REQUEST,
-                         client._connection._requested[0]['data'])
+        self.assertEqual(
+            REQUEST, connection._requested[0]['data'])
         self.assertIsInstance(response, Annotations)
 
     def test_image_with_client_gcs_source(self):
@@ -163,7 +168,9 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(returned)
+        vision_api = client._vision_api
+        connection = _Connection(returned)
+        vision_api._connection = connection
 
         limit = 2
         label_feature = Feature(FeatureTypes.LABEL_DETECTION, limit)
@@ -193,7 +200,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(third_label.description, 'truck')
         self.assertEqual(third_label.score, 0.88429511)
 
-        requested = client._connection._requested
+        requested = connection._requested
         requests = requested[0]['data']['requests']
         image_request = requests[0]
         label_request = image_request['features'][0]
@@ -234,13 +241,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         faces = image.detect_faces(limit=3)
         self.assertEqual(5, len(faces))
         self.assertIsInstance(faces[0], Face)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
         self.assertEqual(3, image_request['features'][0]['maxResults'])
@@ -252,13 +261,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(content=IMAGE_CONTENT)
         faces = image.detect_faces(limit=5)
         self.assertEqual(5, len(faces))
         self.assertIsInstance(faces[0], Face)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
 
         self.assertEqual(B64_IMAGE_CONTENT,
                          image_request['image']['content'])
@@ -271,13 +282,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(content=IMAGE_CONTENT)
         faces = image.detect_faces(limit=5)
         self.assertEqual(faces, ())
         self.assertEqual(len(faces), 0)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
 
         self.assertEqual(B64_IMAGE_CONTENT,
                          image_request['image']['content'])
@@ -321,13 +334,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         labels = image.detect_labels(limit=3)
         self.assertEqual(3, len(labels))
         self.assertIsInstance(labels[0], EntityAnnotation)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
         self.assertEqual(3, image_request['features'][0]['maxResults'])
@@ -343,7 +358,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        vision_api._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
         labels = image.detect_labels()
@@ -358,13 +374,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         landmarks = image.detect_landmarks(limit=3)
         self.assertEqual(2, len(landmarks))
         self.assertIsInstance(landmarks[0], EntityAnnotation)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
         self.assertEqual(3, image_request['features'][0]['maxResults'])
@@ -381,13 +399,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(content=IMAGE_CONTENT)
         landmarks = image.detect_landmarks(limit=5)
         self.assertEqual(2, len(landmarks))
         self.assertIsInstance(landmarks[0], EntityAnnotation)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(B64_IMAGE_CONTENT,
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
@@ -399,7 +419,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        vision_api._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
         landmarks = image.detect_landmarks()
@@ -413,13 +434,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         logos = image.detect_logos(limit=3)
         self.assertEqual(2, len(logos))
         self.assertIsInstance(logos[0], EntityAnnotation)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
         self.assertEqual(3, image_request['features'][0]['maxResults'])
@@ -431,13 +454,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(content=IMAGE_CONTENT)
         logos = image.detect_logos(limit=5)
         self.assertEqual(2, len(logos))
         self.assertIsInstance(logos[0], EntityAnnotation)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(B64_IMAGE_CONTENT,
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
@@ -450,13 +475,15 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         text = image.detect_text(limit=3)
         self.assertEqual(3, len(text))
         self.assertIsInstance(text[0], EntityAnnotation)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
         self.assertEqual(3, image_request['features'][0]['maxResults'])
@@ -474,12 +501,14 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         safe_search = image.detect_safe_search()
         self.assertIsInstance(safe_search, SafeSearchAnnotation)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
 
@@ -495,7 +524,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        vision_api._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
         safe_search = image.detect_safe_search()
@@ -510,12 +540,14 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        connection = _Connection(RETURNED)
+        vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         image_properties = image.detect_properties()
         self.assertIsInstance(image_properties, ImagePropertiesAnnotation)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
         self.assertEqual(0.42258179, image_properties.colors[0].score)
@@ -533,7 +565,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(RETURNED)
+        vision_api = client._vision_api
+        vision_api._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
         image_properties = image.detect_properties()

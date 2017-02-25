@@ -16,8 +16,6 @@ import unittest
 
 import mock
 
-from google.cloud.datastore._http import _HAVE_GRPC
-
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
@@ -31,6 +29,9 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test__rpc(self):
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
+
         class ReqPB(object):
 
             def SerializeToString(self):
@@ -56,17 +57,24 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         self.assertIsInstance(response, RspPB)
         self.assertEqual(response._pb, 'CONTENT')
         called_with = http._called_with
+        self.assertEqual(len(called_with), 4)
         self.assertEqual(called_with['uri'], URI)
         self.assertEqual(called_with['method'], 'POST')
-        self.assertEqual(called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': '5',
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(called_with['headers'], expected_headers)
         self.assertEqual(called_with['body'], REQPB)
         self.assertEqual(conn.build_kwargs,
                          [{'method': METHOD, 'project': PROJECT}])
 
     def test__request_w_200(self):
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
+
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = b'DATA'
@@ -77,12 +85,16 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         self.assertEqual(datastore_api._request(PROJECT, METHOD, DATA),
                          'CONTENT')
         called_with = http._called_with
+        self.assertEqual(len(called_with), 4)
         self.assertEqual(called_with['uri'], URI)
         self.assertEqual(called_with['method'], 'POST')
-        self.assertEqual(called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': '4',
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(called_with['headers'], expected_headers)
         self.assertEqual(called_with['body'], DATA)
         self.assertEqual(conn.build_kwargs,
                          [{'method': METHOD, 'project': PROJECT}])
@@ -110,253 +122,6 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
                          [{'method': METHOD, 'project': PROJECT}])
 
 
-@unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-class Test__grpc_catch_rendezvous(unittest.TestCase):
-
-    def _call_fut(self):
-        from google.cloud.datastore._http import _grpc_catch_rendezvous
-
-        return _grpc_catch_rendezvous()
-
-    @staticmethod
-    def _fake_method(exc, result=None):
-        if exc is None:
-            return result
-        else:
-            raise exc
-
-    def test_success(self):
-        expected = object()
-        with self._call_fut():
-            result = self._fake_method(None, expected)
-        self.assertIs(result, expected)
-
-    def test_failure_aborted(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import Conflict
-        from google.cloud.exceptions import GrpcRendezvous
-
-        details = 'Bad things.'
-        exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        with self.assertRaises(Conflict):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_failure_invalid_argument(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import BadRequest
-        from google.cloud.exceptions import GrpcRendezvous
-
-        details = ('Cannot have inequality filters on multiple '
-                   'properties: [created, priority]')
-        exc_state = _RPCState((), None, None,
-                              StatusCode.INVALID_ARGUMENT, details)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        with self.assertRaises(BadRequest):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_failure_cancelled(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import GrpcRendezvous
-
-        exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        with self.assertRaises(GrpcRendezvous):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_commit_failure_non_grpc_err(self):
-        exc = RuntimeError('Not a gRPC error')
-        with self.assertRaises(RuntimeError):
-            with self._call_fut():
-                self._fake_method(exc)
-
-
-class Test_DatastoreAPIOverGRPC(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.datastore._http import _DatastoreAPIOverGRPC
-
-        return _DatastoreAPIOverGRPC
-
-    def _make_one(self, stub, connection=None, secure=True, mock_args=None):
-        if connection is None:
-            connection = _Connection(None)
-            connection.credentials = object()
-            connection.host = 'CURR_HOST'
-
-        if mock_args is None:
-            mock_args = []
-
-        def mock_make_stub(*args):
-            mock_args.append(args)
-            return stub
-
-        if secure:
-            patch = mock.patch(
-                'google.cloud.datastore._http.make_secure_stub',
-                new=mock_make_stub)
-        else:
-            patch = mock.patch(
-                'google.cloud.datastore._http.make_insecure_stub',
-                new=mock_make_stub)
-
-        with patch:
-            return self._get_target_class()(connection, secure)
-
-    def test_constructor(self):
-        from google.cloud.datastore import _http as MUT
-
-        conn = _Connection(None)
-        conn.credentials = object()
-        conn.host = 'CURR_HOST'
-
-        stub = _GRPCStub()
-        mock_args = []
-        datastore_api = self._make_one(stub, connection=conn,
-                                       mock_args=mock_args)
-        self.assertIs(datastore_api._stub, stub)
-
-        self.assertEqual(mock_args, [(
-            conn.credentials,
-            conn.USER_AGENT,
-            MUT.datastore_pb2_grpc.DatastoreStub,
-            conn.host,
-        )])
-
-    def test_constructor_insecure(self):
-        from google.cloud.datastore import _http as MUT
-
-        conn = _Connection(None)
-        conn.credentials = object()
-        conn.host = 'CURR_HOST:1234'
-
-        stub = _GRPCStub()
-        mock_args = []
-        datastore_api = self._make_one(stub, connection=conn,
-                                       secure=False,
-                                       mock_args=mock_args)
-        self.assertIs(datastore_api._stub, stub)
-
-        self.assertEqual(mock_args, [(
-            MUT.datastore_pb2_grpc.DatastoreStub,
-            conn.host,
-        )])
-
-    def test_lookup(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.lookup(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Lookup')])
-
-    def test_run_query(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.run_query(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'RunQuery')])
-
-    def _run_query_failure_helper(self, exc, err_class):
-        stub = _GRPCStub(side_effect=exc)
-        datastore_api = self._make_one(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        with self.assertRaises(err_class):
-            datastore_api.run_query(project, request_pb)
-
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'RunQuery')])
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_run_query_invalid_argument(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import BadRequest
-        from google.cloud.exceptions import GrpcRendezvous
-
-        details = ('Cannot have inequality filters on multiple '
-                   'properties: [created, priority]')
-        exc_state = _RPCState((), None, None,
-                              StatusCode.INVALID_ARGUMENT, details)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        self._run_query_failure_helper(exc, BadRequest)
-
-    def test_begin_transaction(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.begin_transaction(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(
-            stub.method_calls,
-            [(request_pb, 'BeginTransaction')])
-
-    def test_commit_success(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.commit(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Commit')])
-
-    def test_rollback(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.rollback(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Rollback')])
-
-    def test_allocate_ids(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.allocate_ids(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(
-            stub.method_calls,
-            [(request_pb, 'AllocateIds')])
-
-
 class TestConnection(unittest.TestCase):
 
     @staticmethod
@@ -374,7 +139,7 @@ class TestConnection(unittest.TestCase):
         return Key(*path_args, project=project).to_protobuf()
 
     def _make_query_pb(self, kind):
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
         pb = query_pb2.Query()
         pb.kind.add().name = kind
@@ -385,13 +150,19 @@ class TestConnection(unittest.TestCase):
                         new=use_grpc):
             return self._get_target_class()(client)
 
-    def _verifyProtobufCall(self, called_with, URI, conn):
+    def _verify_protobuf_call(self, called_with, URI, conn):
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
+
         self.assertEqual(called_with['uri'], URI)
         self.assertEqual(called_with['method'], 'POST')
-        self.assertEqual(called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': str(len(called_with['body'])),
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(called_with['headers'], expected_headers)
 
     def test_default_url(self):
         klass = self._get_target_class()
@@ -482,7 +253,7 @@ class TestConnection(unittest.TestCase):
                          URI)
 
     def test_lookup_single_key_empty_response(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -501,7 +272,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -510,7 +281,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb, keys[0])
 
     def test_lookup_single_key_empty_response_w_eventual(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -530,7 +301,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -550,7 +321,7 @@ class TestConnection(unittest.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
@@ -571,7 +342,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -581,8 +352,8 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_lookup_single_key_nonempty_response(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -605,7 +376,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(found.key.path[0].kind, 'Kind')
         self.assertEqual(found.key.path[0].id, 1234)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -614,7 +385,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb, keys[0])
 
     def test_lookup_multiple_keys_empty_response(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
@@ -634,7 +405,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -644,7 +415,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
@@ -669,7 +440,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual([missed.key for missed in missing],
                          [key_pb1, key_pb2])
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -679,7 +450,10 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_deferred(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
 
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
@@ -701,12 +475,16 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(len(missing), 0)
         self.assertEqual([def_key for def_key in deferred], [key_pb1, key_pb2])
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': '48',
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -716,37 +494,38 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_run_query_w_eventual_no_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
-        PROJECT = 'PROJECT'
-        KIND = 'Nonesuch'
-        CURSOR = b'\x00'
-        q_pb = self._make_query_pb(KIND)
+        project = 'PROJECT'
+        kind = 'Nonesuch'
+        cursor = b'\x00'
+        q_pb = self._make_query_pb(kind)
         rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.end_cursor = CURSOR
+        rsp_pb.batch.end_cursor = cursor
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
+
+        # Make request.
         conn = self._make_one(client)
-        URI = '/'.join([
+        response = conn.run_query(project, q_pb, eventual=True)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':runQuery',
+            project + ':runQuery',
         ])
-        pbs, end, more, skipped = conn.run_query(PROJECT, q_pb,
-                                                 eventual=True)
-        self.assertEqual(pbs, [])
-        self.assertEqual(end, CURSOR)
-        self.assertTrue(more)
-        self.assertEqual(skipped, 0)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb2.RunQueryRequest
-        request = rq_class()
+        self._verify_protobuf_call(cw, uri, conn)
+        request = datastore_pb2.RunQueryRequest()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace_id, '')
         self.assertEqual(request.query, q_pb)
@@ -755,49 +534,51 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, b'')
 
     def test_run_query_wo_eventual_w_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
-        PROJECT = 'PROJECT'
-        KIND = 'Nonesuch'
-        CURSOR = b'\x00'
-        TRANSACTION = b'TRANSACTION'
-        q_pb = self._make_query_pb(KIND)
+        project = 'PROJECT'
+        kind = 'Nonesuch'
+        cursor = b'\x00'
+        transaction = b'TRANSACTION'
+        q_pb = self._make_query_pb(kind)
         rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.end_cursor = CURSOR
+        rsp_pb.batch.end_cursor = cursor
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
+
+        # Make request.
         conn = self._make_one(client)
-        URI = '/'.join([
+        response = conn.run_query(
+            project, q_pb, transaction_id=transaction)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':runQuery',
+            project + ':runQuery',
         ])
-        pbs, end, more, skipped = conn.run_query(
-            PROJECT, q_pb, transaction_id=TRANSACTION)
-        self.assertEqual(pbs, [])
-        self.assertEqual(end, CURSOR)
-        self.assertTrue(more)
-        self.assertEqual(skipped, 0)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb2.RunQueryRequest
-        request = rq_class()
+        self._verify_protobuf_call(cw, uri, conn)
+        request = datastore_pb2.RunQueryRequest()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace_id, '')
         self.assertEqual(request.query, q_pb)
         self.assertEqual(
             request.read_options.read_consistency,
             datastore_pb2.ReadOptions.READ_CONSISTENCY_UNSPECIFIED)
-        self.assertEqual(request.read_options.transaction, TRANSACTION)
+        self.assertEqual(request.read_options.transaction, transaction)
 
     def test_run_query_w_eventual_and_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
         PROJECT = 'PROJECT'
         KIND = 'Nonesuch'
@@ -814,73 +595,82 @@ class TestConnection(unittest.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import query_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
-        PROJECT = 'PROJECT'
-        KIND = 'Nonesuch'
-        CURSOR = b'\x00'
-        q_pb = self._make_query_pb(KIND)
+        project = 'PROJECT'
+        kind = 'Nonesuch'
+        cursor = b'\x00'
+        q_pb = self._make_query_pb(kind)
         rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.end_cursor = CURSOR
+        rsp_pb.batch.end_cursor = cursor
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
+
+        # Make request.
         conn = self._make_one(client)
-        URI = '/'.join([
+        response = conn.run_query(project, q_pb)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':runQuery',
+            project + ':runQuery',
         ])
-        pbs, end, more, skipped = conn.run_query(PROJECT, q_pb)
-        self.assertEqual(pbs, [])
-        self.assertEqual(end, CURSOR)
-        self.assertTrue(more)
-        self.assertEqual(skipped, 0)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb2.RunQueryRequest
-        request = rq_class()
+        self._verify_protobuf_call(cw, uri, conn)
+        request = datastore_pb2.RunQueryRequest()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace_id, '')
         self.assertEqual(request.query, q_pb)
 
     def test_run_query_w_namespace_nonempty_result(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
 
-        PROJECT = 'PROJECT'
-        KIND = 'Kind'
+        project = 'PROJECT'
+        kind = 'Kind'
         entity = entity_pb2.Entity()
-        q_pb = self._make_query_pb(KIND)
+        q_pb = self._make_query_pb(kind)
         rsp_pb = datastore_pb2.RunQueryResponse()
         rsp_pb.batch.entity_results.add(entity=entity)
-        rsp_pb.batch.entity_result_type = 1  # FULL
-        rsp_pb.batch.more_results = 3  # NO_MORE_RESULTS
+        rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
+        rsp_pb.batch.more_results = query_pb2.QueryResultBatch.NO_MORE_RESULTS
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
+
+        # Make request.
         conn = self._make_one(client)
-        URI = '/'.join([
+        namespace = 'NS'
+        response = conn.run_query(project, q_pb, namespace=namespace)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        cw = http._called_with
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':runQuery',
+            project + ':runQuery',
         ])
-        pbs = conn.run_query(PROJECT, q_pb, 'NS')[0]
-        self.assertEqual(len(pbs), 1)
-        cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb2.RunQueryRequest
-        request = rq_class()
+        self._verify_protobuf_call(cw, uri, conn)
+        request = datastore_pb2.RunQueryRequest()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace_id, 'NS')
+        self.assertEqual(request.partition_id.namespace_id, namespace)
         self.assertEqual(request.query, q_pb)
 
     def test_begin_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
@@ -897,17 +687,17 @@ class TestConnection(unittest.TestCase):
         ])
         self.assertEqual(conn.begin_transaction(PROJECT), TRANSACTION)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
 
     def test_commit_wo_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
-        PROJECT = 'PROJECT'
-        key_pb = self._make_key_pb(PROJECT)
+        project = 'PROJECT'
+        key_pb = self._make_key_pb(project)
         rsp_pb = datastore_pb2.CommitResponse()
         req_pb = datastore_pb2.CommitRequest()
         mutation = req_pb.mutations.add()
@@ -918,44 +708,32 @@ class TestConnection(unittest.TestCase):
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        URI = '/'.join([
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':commit',
+            project + ':commit',
         ])
 
-        # Set up mock for parsing the response.
-        expected_result = object()
-        _parsed = []
+        result = conn.commit(project, req_pb, None)
+        self.assertEqual(result, rsp_pb)
 
-        def mock_parse(response):
-            _parsed.append(response)
-            return expected_result
-
-        patch = mock.patch(
-            'google.cloud.datastore._http._parse_commit_response',
-            new=mock_parse)
-        with patch:
-            result = conn.commit(PROJECT, req_pb, None)
-
-        self.assertIs(result, expected_result)
+        # Verify the caller.
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, uri, conn)
         rq_class = datastore_pb2.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'')
         self.assertEqual(list(request.mutations), [mutation])
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
-        self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
-        PROJECT = 'PROJECT'
-        key_pb = self._make_key_pb(PROJECT)
+        project = 'PROJECT'
+        key_pb = self._make_key_pb(project)
         rsp_pb = datastore_pb2.CommitResponse()
         req_pb = datastore_pb2.CommitRequest()
         mutation = req_pb.mutations.add()
@@ -966,40 +744,28 @@ class TestConnection(unittest.TestCase):
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        URI = '/'.join([
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':commit',
+            project + ':commit',
         ])
 
-        # Set up mock for parsing the response.
-        expected_result = object()
-        _parsed = []
+        result = conn.commit(project, req_pb, b'xact')
+        self.assertEqual(result, rsp_pb)
 
-        def mock_parse(response):
-            _parsed.append(response)
-            return expected_result
-
-        patch = mock.patch(
-            'google.cloud.datastore._http._parse_commit_response',
-            new=mock_parse)
-        with patch:
-            result = conn.commit(PROJECT, req_pb, b'xact')
-
-        self.assertIs(result, expected_result)
+        # Verify the caller.
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, uri, conn)
         rq_class = datastore_pb2.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'xact')
         self.assertEqual(list(request.mutations), [mutation])
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
-        self.assertEqual(_parsed, [rsp_pb])
 
     def test_rollback_ok(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         TRANSACTION = b'xact'
@@ -1016,14 +782,14 @@ class TestConnection(unittest.TestCase):
         ])
         self.assertIsNone(conn.rollback(PROJECT, TRANSACTION))
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.RollbackRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, TRANSACTION)
 
     def test_allocate_ids_empty(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         rsp_pb = datastore_pb2.AllocateIdsResponse()
@@ -1038,14 +804,14 @@ class TestConnection(unittest.TestCase):
         ])
         self.assertEqual(conn.allocate_ids(PROJECT, []), [])
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(list(request.keys), [])
 
     def test_allocate_ids_non_empty(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
         PROJECT = 'PROJECT'
         before_key_pbs = [
@@ -1071,53 +837,13 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn.allocate_ids(PROJECT, before_key_pbs),
                          after_key_pbs)
         cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
+        self._verify_protobuf_call(cw, URI, conn)
         rq_class = datastore_pb2.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(len(request.keys), len(before_key_pbs))
         for key_before, key_after in zip(before_key_pbs, request.keys):
             self.assertEqual(key_before, key_after)
-
-
-class Test__parse_commit_response(unittest.TestCase):
-
-    def _call_fut(self, commit_response_pb):
-        from google.cloud.datastore._http import _parse_commit_response
-
-        return _parse_commit_response(commit_response_pb)
-
-    def test_it(self):
-        from google.cloud.grpc.datastore.v1 import datastore_pb2
-        from google.cloud.grpc.datastore.v1 import entity_pb2
-
-        index_updates = 1337
-        keys = [
-            entity_pb2.Key(
-                path=[
-                    entity_pb2.Key.PathElement(
-                        kind='Foo',
-                        id=1234,
-                    ),
-                ],
-            ),
-            entity_pb2.Key(
-                path=[
-                    entity_pb2.Key.PathElement(
-                        kind='Bar',
-                        name='baz',
-                    ),
-                ],
-            ),
-        ]
-        response = datastore_pb2.CommitResponse(
-            mutation_results=[
-                datastore_pb2.MutationResult(key=key) for key in keys
-            ],
-            index_updates=index_updates,
-        )
-        result = self._call_fut(response)
-        self.assertEqual(result, (index_updates, keys))
 
 
 class Http(object):
@@ -1147,40 +873,3 @@ class _Connection(object):
     def build_api_url(self, **kwargs):
         self.build_kwargs.append(kwargs)
         return self.api_url
-
-
-class _GRPCStub(object):
-
-    def __init__(self, return_val=None, side_effect=Exception):
-        self.return_val = return_val
-        self.side_effect = side_effect
-        self.method_calls = []
-
-    def _method(self, request_pb, name):
-        self.method_calls.append((request_pb, name))
-        if self.side_effect is Exception:
-            return self.return_val
-        else:
-            raise self.side_effect
-
-    def Lookup(self, request_pb):
-        return self._method(request_pb, 'Lookup')
-
-    def RunQuery(self, request_pb):
-        return self._method(request_pb, 'RunQuery')
-
-    def BeginTransaction(self, request_pb):
-        return self._method(request_pb, 'BeginTransaction')
-
-    def Commit(self, request_pb):
-        return self._method(request_pb, 'Commit')
-
-    def Rollback(self, request_pb):
-        return self._method(request_pb, 'Rollback')
-
-    def AllocateIds(self, request_pb):
-        return self._method(request_pb, 'AllocateIds')
-
-
-class _RequestPB(object):
-    project_id = None

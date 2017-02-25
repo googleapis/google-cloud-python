@@ -35,7 +35,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
-        from google.cloud.resource_manager.connection import Connection
+        from google.cloud.resource_manager._http import Connection
 
         http = object()
         credentials = _make_credentials()

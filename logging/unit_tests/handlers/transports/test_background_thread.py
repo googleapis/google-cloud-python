@@ -25,6 +25,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
     def _get_target_class():
         from google.cloud.logging.handlers.transports import (
             BackgroundThreadTransport)
+
         return BackgroundThreadTransport
 
     def _make_one(self, *args, **kw):
@@ -34,7 +35,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         client = _Client(self.PROJECT)
         NAME = 'python_logger'
         transport = self._make_one(client, NAME)
-        self.assertEquals(transport.worker.logger.name, NAME)
+        self.assertEqual(transport.worker.logger.name, NAME)
 
     def test_send(self):
         client = _Client(self.PROJECT)
@@ -62,6 +63,7 @@ class TestWorker(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging.handlers.transports import background_thread
+
         return background_thread._Worker
 
     def _make_one(self, *args, **kw):
@@ -71,7 +73,7 @@ class TestWorker(unittest.TestCase):
         NAME = 'python_logger'
         logger = _Logger(NAME)
         worker = self._make_one(logger)
-        self.assertEquals(worker.batch, logger._batch)
+        self.assertEqual(worker.batch, logger._batch)
 
     def test_run(self):
         NAME = 'python_logger'

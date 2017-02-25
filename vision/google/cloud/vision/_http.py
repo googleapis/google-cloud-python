@@ -16,10 +16,37 @@
 
 import json
 
+from google.cloud import _http
+
+from google.cloud.vision import __version__
 from google.cloud.vision.annotations import Annotations
 from google.cloud.vision.feature import Feature
 
 from google.protobuf import json_format
+
+
+_CLIENT_INFO = _http.CLIENT_INFO_TEMPLATE.format(__version__)
+
+
+class Connection(_http.JSONConnection):
+    """A connection to Google Cloud Vision via the JSON REST API.
+
+    :type client: :class:`~google.cloud.vision.client.Client`
+    :param client: The client that owns the current connection.
+    """
+
+    API_BASE_URL = 'https://vision.googleapis.com'
+    """The base of the API call URL."""
+
+    API_VERSION = 'v1'
+    """The version of the API, used in building the API call's URL."""
+
+    API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
+    """A template for the URL of a particular API call."""
+
+    _EXTRA_HEADERS = {
+        _http.CLIENT_INFO_HEADER: _CLIENT_INFO,
+    }
 
 
 class _HTTPVisionAPI(object):
@@ -31,7 +58,7 @@ class _HTTPVisionAPI(object):
 
     def __init__(self, client):
         self._client = client
-        self._connection = client._connection
+        self._connection = Connection(client)
 
     def annotate(self, images=None, requests_pb=None):
         """Annotate an image to discover it's attributes.

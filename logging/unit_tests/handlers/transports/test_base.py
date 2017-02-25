@@ -22,6 +22,7 @@ class TestBaseHandler(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging.handlers.transports import Transport
+
         return Transport
 
     def _make_one(self, *args, **kw):

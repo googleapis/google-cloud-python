@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -50,14 +50,14 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.22.1, < 0.23dev',
+    'google-cloud-core >= 0.23.1, < 0.24dev',
     'grpcio >= 1.0.2, < 2.0dev',
-    'gapic-google-cloud-pubsub-v1 >= 0.14.0, < 0.15dev',
+    'gapic-google-cloud-pubsub-v1 >= 0.15.0, < 0.16dev',
 ]
 
 setup(
     name='google-cloud-pubsub',
-    version='0.22.0',
+    version='0.23.0',
     description='Python Client for Google Cloud Pub/Sub',
     long_description=README,
     namespace_packages=[

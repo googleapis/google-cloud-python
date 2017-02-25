@@ -18,9 +18,14 @@ import functools
 
 from google.cloud import _http
 from google.cloud.iterator import HTTPIterator
+
+from google.cloud.logging import __version__
 from google.cloud.logging._helpers import entry_from_resource
 from google.cloud.logging.sink import Sink
 from google.cloud.logging.metric import Metric
+
+
+_CLIENT_INFO = _http.CLIENT_INFO_TEMPLATE.format(__version__)
 
 
 class Connection(_http.JSONConnection):
@@ -38,6 +43,10 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
     """A template for the URL of a particular API call."""
+
+    _EXTRA_HEADERS = {
+        _http.CLIENT_INFO_HEADER: _CLIENT_INFO,
+    }
 
 
 class _LoggingAPI(object):

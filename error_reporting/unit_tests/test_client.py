@@ -47,12 +47,13 @@ class TestClient(unittest.TestCase):
     SERVICE = 'SERVICE'
     VERSION = 'myversion'
 
-    def test_ctor_default(self):
+    @mock.patch(
+        'google.cloud.error_reporting.client._determine_default_project')
+    def test_ctor_default(self, _):
         CREDENTIALS = _make_credentials()
-        target = self._make_one(project=self.PROJECT,
-                                credentials=CREDENTIALS)
-        self.assertEquals(target.service, target.DEFAULT_SERVICE)
-        self.assertEquals(target.version, None)
+        target = self._make_one(credentials=CREDENTIALS)
+        self.assertEqual(target.service, target.DEFAULT_SERVICE)
+        self.assertEqual(target.version, None)
 
     def test_ctor_params(self):
         CREDENTIALS = _make_credentials()
@@ -60,30 +61,54 @@ class TestClient(unittest.TestCase):
                                 credentials=CREDENTIALS,
                                 service=self.SERVICE,
                                 version=self.VERSION)
-        self.assertEquals(target.service, self.SERVICE)
-        self.assertEquals(target.version, self.VERSION)
+        self.assertEqual(target.service, self.SERVICE)
+        self.assertEqual(target.version, self.VERSION)
 
-    def test_report_exception(self):
+    def test_report_exception_with_gax(self):
         CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
-        logger = _Logger()
-        target.logging_client.logger = lambda _: logger
-
-        try:
-            raise NameError
-        except NameError:
-            target.report_exception()
-
-        payload = logger.log_struct_called_with
-        self.assertEquals(payload['serviceContext'], {
+        patch = mock.patch(
+            'google.cloud.error_reporting.client.make_report_error_api')
+        with patch as make_api:
+            try:
+                raise NameError
+            except NameError:
+                target.report_exception()
+            payload = make_api.return_value.report_error_event.call_args[0][0]
+        self.assertEqual(payload['serviceContext'], {
             'service': target.DEFAULT_SERVICE,
         })
         self.assertIn('test_report', payload['message'])
         self.assertIn('test_client.py', payload['message'])
 
-    def test_report_exception_with_service_version_in_constructor(self):
+    def test_report_exception_wo_gax(self):
+        CREDENTIALS = _make_credentials()
+        target = self._make_one(project=self.PROJECT,
+                                credentials=CREDENTIALS,
+                                use_gax=False)
+        patch = mock.patch(
+            'google.cloud.error_reporting.client._ErrorReportingLoggingAPI'
+        )
+        with patch as _error_api:
+            try:
+                raise NameError
+            except NameError:
+                target.report_exception()
+            mock_report = _error_api.return_value.report_error_event
+            payload = mock_report.call_args[0][0]
+
+        self.assertEqual(payload['serviceContext'], {
+            'service': target.DEFAULT_SERVICE,
+        })
+        self.assertIn('test_report', payload['message'])
+        self.assertIn('test_client.py', payload['message'])
+        self.assertIsNotNone(target.report_errors_api)
+
+    @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
+    def test_report_exception_with_service_version_in_constructor(
+            self, make_client):
         CREDENTIALS = _make_credentials()
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"
@@ -92,19 +117,19 @@ class TestClient(unittest.TestCase):
                                 service=SERVICE,
                                 version=VERSION)
 
-        logger = _Logger()
-        target.logging_client.logger = lambda _: logger
-
         http_context = self._makeHTTP(method="GET", response_status_code=500)
         USER = "user@gmail.com"
+
+        client = mock.Mock()
+        make_client.return_value = client
 
         try:
             raise NameError
         except NameError:
             target.report_exception(http_context=http_context, user=USER)
 
-        payload = logger.log_struct_called_with
-        self.assertEquals(payload['serviceContext'], {
+        payload = client.report_error_event.call_args[0][0]
+        self.assertEqual(payload['serviceContext'], {
             'service': SERVICE,
             'version': VERSION
         })
@@ -112,38 +137,29 @@ class TestClient(unittest.TestCase):
             'test_report_exception_with_service_version_in_constructor',
             payload['message'])
         self.assertIn('test_client.py', payload['message'])
-        self.assertEquals(
+        self.assertEqual(
             payload['context']['httpContext']['responseStatusCode'], 500)
-        self.assertEquals(
+        self.assertEqual(
             payload['context']['httpContext']['method'], 'GET')
-        self.assertEquals(payload['context']['user'], USER)
+        self.assertEqual(payload['context']['user'], USER)
 
-    def test_report(self):
+    @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
+    def test_report(self, make_client):
         CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
-        logger = _Logger()
-        target.logging_client.logger = lambda _: logger
+        client = mock.Mock()
+        make_client.return_value = client
 
         MESSAGE = 'this is an error'
         target.report(MESSAGE)
 
-        payload = logger.log_struct_called_with
-        self.assertEquals(payload['message'], MESSAGE)
+        payload = client.report_error_event.call_args[0][0]
+
+        self.assertEqual(payload['message'], MESSAGE)
         report_location = payload['context']['reportLocation']
         self.assertIn('test_client.py', report_location['filePath'])
         self.assertEqual(report_location['functionName'], 'test_report')
         self.assertGreater(report_location['lineNumber'], 100)
-        self.assertLess(report_location['lineNumber'], 150)
-
-
-class _Logger(object):
-
-    def log_struct(self, payload,  # pylint: disable=unused-argument
-                   client=None,  # pylint: disable=unused-argument
-                   labels=None,   # pylint: disable=unused-argument
-                   insert_id=None,   # pylint: disable=unused-argument
-                   severity=None,   # pylint: disable=unused-argument
-                   http_request=None):  # pylint: disable=unused-argument
-        self.log_struct_called_with = payload
+        self.assertLess(report_location['lineNumber'], 250)

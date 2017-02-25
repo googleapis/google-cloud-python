@@ -53,6 +53,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.logging._gax import _LoggingAPI
+
         return _LoggingAPI
 
     def test_ctor(self):
@@ -1107,14 +1108,15 @@ class Test_make_gax_logging_api(unittest.TestCase):
         return make_gax_logging_api(client)
 
     def test_it(self):
+        from google.cloud.logging import __version__
         from google.cloud.logging._gax import _LoggingAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        conn = mock.Mock(credentials=creds, spec=['credentials'])
-        client = mock.Mock(_connection=conn, spec=['_connection'])
+        client = mock.Mock(_credentials=creds, spec=['_credentials'])
         channels = []
         channel_args = []
+        generated_api_kwargs = []
         channel_obj = object()
         generated = object()
 
@@ -1122,8 +1124,9 @@ class Test_make_gax_logging_api(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def generated_api(channel=None):
+        def generated_api(channel=None, **kwargs):
             channels.append(channel)
+            generated_api_kwargs.append(kwargs)
             return generated
 
         host = 'foo.apis.invalid'
@@ -1140,6 +1143,10 @@ class Test_make_gax_logging_api(unittest.TestCase):
         self.assertEqual(channel_args,
                          [(creds, DEFAULT_USER_AGENT, host)])
 
+        self.assertEqual(len(generated_api_kwargs), 1)
+        self.assertEqual(generated_api_kwargs[0]['lib_name'], 'gccl')
+        self.assertEqual(generated_api_kwargs[0]['lib_version'], __version__)
+
         self.assertIsInstance(logging_api, _LoggingAPI)
         self.assertIs(logging_api._gax_api, generated)
         self.assertIs(logging_api._client, client)
@@ -1154,14 +1161,15 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         return make_gax_metrics_api(client)
 
     def test_it(self):
+        from google.cloud.logging import __version__
         from google.cloud.logging._gax import _MetricsAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        conn = mock.Mock(credentials=creds, spec=['credentials'])
-        client = mock.Mock(_connection=conn, spec=['_connection'])
+        client = mock.Mock(_credentials=creds, spec=['_credentials'])
         channels = []
         channel_args = []
+        generated_api_kwargs = []
         channel_obj = object()
         generated = object()
 
@@ -1169,8 +1177,9 @@ class Test_make_gax_metrics_api(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def generated_api(channel=None):
+        def generated_api(channel=None, **kwargs):
             channels.append(channel)
+            generated_api_kwargs.append(kwargs)
             return generated
 
         host = 'foo.apis.invalid'
@@ -1187,6 +1196,10 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         self.assertEqual(channel_args,
                          [(creds, DEFAULT_USER_AGENT, host)])
 
+        self.assertEqual(len(generated_api_kwargs), 1)
+        self.assertEqual(generated_api_kwargs[0]['lib_name'], 'gccl')
+        self.assertEqual(generated_api_kwargs[0]['lib_version'], __version__)
+
         self.assertIsInstance(metrics_api, _MetricsAPI)
         self.assertIs(metrics_api._gax_api, generated)
         self.assertIs(metrics_api._client, client)
@@ -1201,14 +1214,15 @@ class Test_make_gax_sinks_api(unittest.TestCase):
         return make_gax_sinks_api(client)
 
     def test_it(self):
+        from google.cloud.logging import __version__
         from google.cloud.logging._gax import _SinksAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        conn = mock.Mock(credentials=creds, spec=['credentials'])
-        client = mock.Mock(_connection=conn, spec=['_connection'])
+        client = mock.Mock(_credentials=creds, spec=['_credentials'])
         channels = []
         channel_args = []
+        generated_api_kwargs = []
         channel_obj = object()
         generated = object()
 
@@ -1216,8 +1230,9 @@ class Test_make_gax_sinks_api(unittest.TestCase):
             channel_args.append(args)
             return channel_obj
 
-        def generated_api(channel=None):
+        def generated_api(channel=None, **kwargs):
             channels.append(channel)
+            generated_api_kwargs.append(kwargs)
             return generated
 
         host = 'foo.apis.invalid'
@@ -1233,6 +1248,10 @@ class Test_make_gax_sinks_api(unittest.TestCase):
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
                          [(creds, DEFAULT_USER_AGENT, host)])
+
+        self.assertEqual(len(generated_api_kwargs), 1)
+        self.assertEqual(generated_api_kwargs[0]['lib_name'], 'gccl')
+        self.assertEqual(generated_api_kwargs[0]['lib_version'], __version__)
 
         self.assertIsInstance(sinks_api, _SinksAPI)
         self.assertIs(sinks_api._gax_api, generated)

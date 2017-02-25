@@ -23,6 +23,7 @@ import language
 import logging_
 import monitoring
 import pubsub
+import spanner
 import speech
 import storage
 import system_test_utils
@@ -31,17 +32,18 @@ import vision
 
 
 TEST_MODULES = {
-    'datastore': datastore,
-    'speech': speech,
-    'vision': vision,
-    'storage': storage,
-    'pubsub': pubsub,
     'bigquery': bigquery,
     'bigtable': bigtable,
+    'datastore': datastore,
     'language': language,
     'logging': logging_,
     'monitoring': monitoring,
+    'pubsub': pubsub,
+    'spanner': spanner,
+    'speech': speech,
+    'storage': storage,
     'translate': translate,
+    'vision': vision,
 }
 
 
@@ -53,7 +55,7 @@ def get_parser():
     parser = argparse.ArgumentParser(
         description='google-cloud test runner against actual project.')
     parser.add_argument('--package', dest='package',
-                        choices=TEST_MODULES.keys(),
+                        choices=sorted(TEST_MODULES),
                         default='datastore', help='Package to be tested.')
     parser.add_argument(
         '--ignore-requirements',

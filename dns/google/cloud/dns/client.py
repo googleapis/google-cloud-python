@@ -16,7 +16,8 @@
 
 
 from google.cloud.client import ClientWithProject
-from google.cloud.dns.connection import Connection
+
+from google.cloud.dns._http import Connection
 from google.cloud.dns.zone import ManagedZone
 from google.cloud.iterator import HTTPIterator
 

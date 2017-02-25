@@ -15,8 +15,10 @@
 """Google Cloud Resource Manager API wrapper."""
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-resource-manager').version
+
 from google.cloud.resource_manager.client import Client
-from google.cloud.resource_manager.connection import Connection
 from google.cloud.resource_manager.project import Project
 
 

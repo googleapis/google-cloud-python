@@ -17,6 +17,7 @@
 from google.cloud.gapic.vision.v1 import image_annotator_client
 from google.cloud.proto.vision.v1 import image_annotator_pb2
 
+from google.cloud.vision import __version__
 from google.cloud.vision.annotations import Annotations
 
 
@@ -28,7 +29,9 @@ class _GAPICVisionAPI(object):
     """
     def __init__(self, client=None):
         self._client = client
-        self._annotator_client = image_annotator_client.ImageAnnotatorClient()
+        self._annotator_client = image_annotator_client.ImageAnnotatorClient(
+            credentials=client._credentials, lib_name='gccl',
+            lib_version=__version__)
 
     def annotate(self, images=None, requests_pb=None):
         """Annotate images through GAX.
