@@ -1,0 +1,680 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>google.cloud.spanner.client &mdash; google-cloud 0.23.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="google-cloud 0.23.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="Module code" href="../../../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> google-cloud
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">google-cloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-auth.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../operation-api.html">Long-Running Operations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-helpers.html">Helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage-batch.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-iam.html">IAM Policy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-job.html">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-table.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-query.html">Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-schema.html">Schemas</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Bigtable</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client-intro.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance-api.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table-api.html">Table Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-data-api.html">Data API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance.html">Instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-cluster.html">Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table.html">Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-column-family.html">Column Families</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row.html">Bigtable Row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row-data.html">Row Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-project.html">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DNS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns-zone.html">Managed Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns-resource-record-set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns-changes.html">Change Sets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#cloud-logging-handler-transports">Cloud Logging Handler transports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-logger.html">Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-entries.html">Entries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-metric.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-sink.html">Sinks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-stdlib-usage.html">Integration with Python logging module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Error Reporting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-util.html">Error Reporting Utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-metric.html">Metric Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-resource.html">Monitored Resource Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-group.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-query.html">Time Series Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-timeseries.html">Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-label.html">Label Descriptors</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Translate</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate-client.html">Client</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Vision</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-usage.html">Using the Vision API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-annotations.html">Vision Annotations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-batch.html">Vision Batch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-safe-search.html">Vision Safe Search</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Natural Language</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language-document.html">Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language-responses.html">Natural Language Response Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Speech</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-encoding.html">Speech Encoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-operation.html">Speech Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-result.html">Speech Result</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-sample.html">Speech Sample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-alternative.html">Speech Alternative</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Runtime Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-variable.html">Variables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Spanner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-usage.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-usage.html">Database Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-implicit-txn-usage.html">Implicit Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-batch-usage.html">Batching Modifications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-api.html">Spanner Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-api.html">Instance API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-api.html">Database API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-api.html">Session API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-keyset-api.html">Keyset API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-snapshot-api.html">Snapshot API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-batch-api.html">Batch API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-transaction-api.html">Transaction API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-streamed-api.html">StreamedResultSet API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/google-cloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/google-cloud">PyPI</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">google-cloud</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      
+    <li>google.cloud.spanner.client</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for google.cloud.spanner.client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Parent client for calling the Cloud Spanner API.</span>
+
+<span class="sd">This is the base from which all interactions with the API occur.</span>
+
+<span class="sd">In the hierarchy of API concepts</span>
+
+<span class="sd">* a :class:`~google.cloud.spanner.client.Client` owns an</span>
+<span class="sd">  :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">* a :class:`~google.cloud.spanner.instance.Instance` owns a</span>
+<span class="sd">  :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">google.auth.credentials</span>
+<span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">INITIAL_PAGE</span>
+<span class="c1"># pylint: disable=line-too-long</span>
+<span class="kn">from</span> <span class="nn">google.cloud.gapic.spanner_admin_database.v1.database_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
+    <span class="n">DatabaseAdminClient</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
+    <span class="n">InstanceAdminClient</span><span class="p">)</span>
+<span class="c1"># pylint: enable=line-too-long</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">DEFAULT_USER_AGENT</span>
+<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">_ClientFactoryMixin</span>
+<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">_ClientProjectMixin</span>
+<span class="kn">from</span> <span class="nn">google.cloud.credentials</span> <span class="k">import</span> <span class="n">get_credentials</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">GAXIterator</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="k">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner.instance</span> <span class="k">import</span> <span class="n">DEFAULT_NODE_COUNT</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner.instance</span> <span class="k">import</span> <span class="n">Instance</span>
+
+<span class="n">SPANNER_ADMIN_SCOPE</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/spanner.admin&#39;</span>
+
+
+<div class="viewcode-block" id="InstanceConfig"><a class="viewcode-back" href="../../../../spanner-client-api.html#google.cloud.spanner.client.InstanceConfig">[docs]</a><span class="k">class</span> <span class="nc">InstanceConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Named configurations for Spanner instances.</span>
+
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param name: ID of the instance configuration</span>
+
+<span class="sd">    :type display_name: str</span>
+<span class="sd">    :param display_name: Name of the instance configuration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">display_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">display_name</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="InstanceConfig.from_pb"><a class="viewcode-back" href="../../../../spanner-client-api.html#google.cloud.spanner.client.InstanceConfig.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config_pb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct an instance from the equvalent protobuf.</span>
+
+<span class="sd">        :type config_pb:</span>
+<span class="sd">          :class:`~google.spanner.v1.spanner_instance_admin_pb2.InstanceConfig`</span>
+<span class="sd">        :param config_pb: the protobuf to parse</span>
+
+<span class="sd">        :rtype: :class:`InstanceConfig`</span>
+<span class="sd">        :returns: an instance of this class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">config_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">config_pb</span><span class="o">.</span><span class="n">display_name</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../spanner-client-api.html#google.cloud.spanner.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">_ClientFactoryMixin</span><span class="p">,</span> <span class="n">_ClientProjectMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Client for interacting with Cloud Spanner API.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Since the Cloud Spanner API requires the gRPC transport, no</span>
+<span class="sd">        ``http`` argument is accepted by this class.</span>
+
+<span class="sd">    :type project: :class:`str` or :func:`unicode &lt;unicode&gt;`</span>
+<span class="sd">    :param project: (Optional) The ID of the project which owns the</span>
+<span class="sd">                    instances, tables and data. If not provided, will</span>
+<span class="sd">                    attempt to determine from the environment.</span>
+
+<span class="sd">    :type credentials:</span>
+<span class="sd">        :class:`OAuth2Credentials &lt;oauth2client.client.OAuth2Credentials&gt;` or</span>
+<span class="sd">        :data:`NoneType &lt;types.NoneType&gt;`</span>
+<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
+<span class="sd">                        client. If not provided, defaults to the Google</span>
+<span class="sd">                        Application Default Credentials.</span>
+
+<span class="sd">    :type user_agent: str</span>
+<span class="sd">    :param user_agent: (Optional) The user agent to be used with API request.</span>
+<span class="sd">                       Defaults to :const:`DEFAULT_USER_AGENT`.</span>
+
+<span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if both ``read_only``</span>
+<span class="sd">             and ``admin`` are :data:`True`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_database_admin_api</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">user_agent</span><span class="o">=</span><span class="n">DEFAULT_USER_AGENT</span><span class="p">):</span>
+
+        <span class="n">_ClientProjectMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
+
+        <span class="n">scopes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">SPANNER_ADMIN_SCOPE</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">with_scopes_if_required</span><span class="p">(</span>
+            <span class="n">credentials</span><span class="p">,</span> <span class="n">scopes</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Getter for client&#39;s credentials.</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">            :class:`OAuth2Credentials &lt;oauth2client.client.OAuth2Credentials&gt;`</span>
+<span class="sd">        :returns: The credentials stored on the client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">project_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project name to be used with Spanner APIs.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This property will not change if ``project`` does not, but the</span>
+<span class="sd">            return value is not cached.</span>
+
+<span class="sd">        The project name is of the form</span>
+
+<span class="sd">            ``&quot;projects/{project}&quot;``</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The project name to be used with the Cloud Spanner Admin</span>
+<span class="sd">                  API RPC service.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;projects/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">instance_admin_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="n">InstanceAdminClient</span><span class="p">(</span>
+                <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span>
+                <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">database_admin_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="o">=</span> <span class="n">DatabaseAdminClient</span><span class="p">(</span>
+                <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span>
+                <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span>
+
+<div class="viewcode-block" id="Client.copy"><a class="viewcode-back" href="../../../../spanner-client-api.html#google.cloud.spanner.client.Client.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make a copy of this client.</span>
+
+<span class="sd">        Copies the local data stored as simple types but does not copy the</span>
+<span class="sd">        current state of any open connections with the Cloud Bigtable API.</span>
+
+<span class="sd">        :rtype: :class:`.Client`</span>
+<span class="sd">        :returns: A copy of the current client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span>
+        <span class="n">copied_creds</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">scopes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">copied_creds</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.list_instance_configs"><a class="viewcode-back" href="../../../../spanner-client-api.html#google.cloud.spanner.client.Client.list_instance_configs">[docs]</a>    <span class="k">def</span> <span class="nf">list_instance_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List available instance configurations for the client&#39;s project.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstanceConfigs</span>
+
+<span class="sd">        :type page_size: int</span>
+<span class="sd">        :param page_size: (Optional) Maximum number of results to return.</span>
+
+<span class="sd">        :type page_token: str</span>
+<span class="sd">        :param page_token: (Optional) Token for fetching next page of results.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Iterator of</span>
+<span class="sd">            :class:`~google.cloud.spanner.instance.InstanceConfig`</span>
+<span class="sd">            resources within the client&#39;s project.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">page_token</span> <span class="o">=</span> <span class="n">INITIAL_PAGE</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span>
+                                       <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_api</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">GAXIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance_config</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../../spanner-client-api.html#google.cloud.spanner.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span>
+                 <span class="n">configuration_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">node_count</span><span class="o">=</span><span class="n">DEFAULT_NODE_COUNT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory to create a instance associated with this client.</span>
+
+<span class="sd">        :type instance_id: str</span>
+<span class="sd">        :param instance_id: The ID of the instance.</span>
+
+<span class="sd">        :type configuration_name: string</span>
+<span class="sd">        :param configuration_name:</span>
+<span class="sd">           (Optional) Name of the instance configuration used to set up the</span>
+<span class="sd">           instance&#39;s cluster, in the form:</span>
+<span class="sd">           ``projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;``.</span>
+<span class="sd">           **Required** for instances which do not yet exist.</span>
+
+<span class="sd">        :type display_name: str</span>
+<span class="sd">        :param display_name: (Optional) The display name for the instance in</span>
+<span class="sd">                             the Cloud Console UI. (Must be between 4 and 30</span>
+<span class="sd">                             characters.) If this value is not set in the</span>
+<span class="sd">                             constructor, will fall back to the instance ID.</span>
+
+<span class="sd">        :type node_count: int</span>
+<span class="sd">        :param node_count: (Optional) The number of nodes in the instance&#39;s</span>
+<span class="sd">                            cluster; used to set up the instance&#39;s cluster.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">        :returns: an instance owned by this client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Instance</span><span class="p">(</span>
+            <span class="n">instance_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">configuration_name</span><span class="p">,</span> <span class="n">node_count</span><span class="p">,</span> <span class="n">display_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.list_instances"><a class="viewcode-back" href="../../../../spanner-client-api.html#google.cloud.spanner.client.Client.list_instances">[docs]</a>    <span class="k">def</span> <span class="nf">list_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List instances for the client&#39;s project.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstances</span>
+
+<span class="sd">        :type filter_: string</span>
+<span class="sd">        :param filter_: (Optional) Filter to select instances listed.  See:</span>
+<span class="sd">                        the ``ListInstancesRequest`` docs above for examples.</span>
+
+<span class="sd">        :type page_size: int</span>
+<span class="sd">        :param page_size: (Optional) Maximum number of results to return.</span>
+
+<span class="sd">        :type page_token: str</span>
+<span class="sd">        :param page_token: (Optional) Token for fetching next page of results.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Iterator of :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">            resources within the client&#39;s project.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">page_token</span> <span class="o">=</span> <span class="n">INITIAL_PAGE</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span>
+                                       <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_api</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">GAXIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_item_to_instance_config</span><span class="p">(</span>
+        <span class="n">iterator</span><span class="p">,</span> <span class="n">config_pb</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="sd">&quot;&quot;&quot;Convert an instance config protobuf to the native object.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type config_pb:</span>
+<span class="sd">        :class:`~google.spanner.admin.instance.v1.InstanceConfig`</span>
+<span class="sd">    :param config_pb: An instance config returned from the API.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.spanner.instance.InstanceConfig`</span>
+<span class="sd">    :returns: The next instance config in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">InstanceConfig</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">config_pb</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_instance</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert an instance protobuf to the native object.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`</span>
+<span class="sd">    :param instance_pb: An instance returned from the API.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">    :returns: The next instance in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Instance</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Google.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.23.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
