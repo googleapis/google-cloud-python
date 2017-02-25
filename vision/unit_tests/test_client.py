@@ -76,7 +76,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
         vision_api = client._vision_api
-        vision_api._connection = _Connection()
         self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
 
     def test_face_annotation(self):
@@ -220,13 +219,14 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(returned)
+        api = client._vision_api
+        api._connection = _Connection(returned)
         image = client.image(source_uri=IMAGE_SOURCE)
         crop_hints = image.detect_crop_hints(aspect_ratios=[1.3333], limit=3)
 
         self.assertEqual(len(crop_hints), 2)
         self.assertIsInstance(crop_hints[0], CropHint)
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = api._connection._requested[0]['data']['requests'][0]
         self.assertEqual(image_request['image']['source']['gcsImageUri'],
                          IMAGE_SOURCE)
         ar = image_request['imageContext']['cropHintsParams']['aspectRatios']
@@ -303,7 +303,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(returned)
+        api = client._vision_api
+        api._connection = _Connection(returned)
         image = client.image(source_uri=IMAGE_SOURCE)
         full_text = image.detect_full_text(limit=2)
 
@@ -318,7 +319,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(page.blocks[0].paragraphs), 1)
         self.assertEqual(len(page.blocks[0].paragraphs[0].words), 1)
 
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = api._connection._requested[0]['data']['requests'][0]
         self.assertEqual(image_request['image']['source']['gcs_image_uri'],
                          IMAGE_SOURCE)
         self.assertEqual(image_request['features'][0]['maxResults'], 2)
@@ -582,7 +583,8 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
-        client._connection = _Connection(returned)
+        api = client._vision_api
+        api._connection = _Connection(returned)
         image = client.image(source_uri=IMAGE_SOURCE)
         web_images = image.detect_web(limit=2)
 
@@ -598,7 +600,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(web_images.pages_with_matching_images[0],
                               WebPage)
 
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        image_request = api._connection._requested[0]['data']['requests'][0]
         self.assertEqual(image_request['image']['source']['gcs_image_uri'],
                          IMAGE_SOURCE)
         self.assertEqual(image_request['features'][0]['maxResults'], 2)

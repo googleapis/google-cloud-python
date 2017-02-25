@@ -108,7 +108,7 @@ class TestGAXClient(unittest.TestCase):
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
     def test_annotate_no_requests(self):
-        client = mock.Mock(spec_set=[])
+        client = mock.Mock(spec_set=['_credentials'])
         with mock.patch('google.cloud.vision._gax.image_annotator_client.'
                         'ImageAnnotatorClient'):
             gax_api = self._make_one(client)
@@ -181,7 +181,7 @@ class TestGAXClient(unittest.TestCase):
         from google.cloud.proto.vision.v1 import image_annotator_pb2
         from google.cloud.vision.annotations import Annotations
 
-        client = mock.Mock(spec_set=[])
+        client = mock.Mock(spec_set=['_credentials'])
 
         feature_type = image_annotator_pb2.Feature.CROP_HINTS
         feature = image_annotator_pb2.Feature(type=feature_type, max_results=2)
