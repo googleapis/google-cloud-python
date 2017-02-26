@@ -2,4 +2,3 @@ numpydoc
 sphinx
 sphinx_rtd_theme
 pandas
-pandas-gbq
