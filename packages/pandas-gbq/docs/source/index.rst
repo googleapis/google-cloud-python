@@ -19,6 +19,14 @@ to existing tables.
    `BigQuery Documentation <https://cloud.google.com/bigquery/what-is-bigquery>`__
    for details on the service itself.
 
+.. currentmodule:: pandas_gbq
+
+.. autosummary::
+   :toctree: generated/
+
+   read_gbq
+   to_gbq
+
 Contents:
 
 .. toctree::
