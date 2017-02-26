@@ -288,6 +288,6 @@ class Image(object):
         :returns: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
-        features = [Feature(FeatureTypes.WEB_ANNOTATION, limit)]
+        features = [Feature(FeatureTypes.WEB_DETECTION, limit)]
         annotations = self.detect(features)
         return annotations[0].web

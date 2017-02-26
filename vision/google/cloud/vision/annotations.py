@@ -31,7 +31,7 @@ _FACE_ANNOTATIONS = 'faceAnnotations'
 _FULL_TEXT_ANNOTATION = 'fullTextAnnotation'
 _IMAGE_PROPERTIES_ANNOTATION = 'imagePropertiesAnnotation'
 _SAFE_SEARCH_ANNOTATION = 'safeSearchAnnotation'
-_WEB_ANNOTATION = 'webDetection'
+_WEB_DETECTION = 'webDetection'
 
 _KEY_MAP = {
     _CROP_HINTS_ANNOTATION: 'crop_hints',
@@ -43,7 +43,7 @@ _KEY_MAP = {
     'logoAnnotations': 'logos',
     _SAFE_SEARCH_ANNOTATION: 'safe_searches',
     'textAnnotations': 'texts',
-    _WEB_ANNOTATION: 'web',
+    _WEB_DETECTION: 'web',
 }
 
 
@@ -275,7 +275,7 @@ def _entity_from_response_type(feature_type, results):
         return ImagePropertiesAnnotation.from_api_repr(results)
     elif feature_type == _SAFE_SEARCH_ANNOTATION:
         return SafeSearchAnnotation.from_api_repr(results)
-    elif feature_type == _WEB_ANNOTATION:
+    elif feature_type == _WEB_DETECTION:
         return WebDetection.from_api_repr(results)
     elif feature_type == _CROP_HINTS_ANNOTATION:
         crop_hints = results.get('cropHints', [])
