@@ -353,6 +353,5 @@ texinfo_documents = [
 intersphinx_mapping = {'https://docs.python.org/': None}
 
 extlinks = {'issue': ('https://github.com/pydata/pandas-gbq/issues/%s',
-                      'GH'),
-            'wiki': ('https://github.com/pydata/pandas-gbq/wiki/%s',
-                     'wiki ')}
+                      'GH#'),
+            'pr': ('https://github.com/pydata/pandas-gbq/pull/%s', 'GH#')}

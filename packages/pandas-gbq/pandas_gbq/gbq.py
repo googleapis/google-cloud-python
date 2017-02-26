@@ -563,8 +563,12 @@ class GbqConnector(object):
                 datasetId=dataset_id,
                 tableId=table_id).execute()['schema']
 
+            remote_fields = [{'name': field_remote['name'],
+                              'type': field_remote['type']}
+                             for field_remote in remote_schema['fields']]
+
             fields_remote = set([json.dumps(field_remote)
-                                 for field_remote in remote_schema['fields']])
+                                 for field_remote in remote_fields])
             fields_local = set(json.dumps(field_local)
                                for field_local in schema['fields'])
 

@@ -1161,6 +1161,34 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                    _get_project_id(), if_exists='append',
                    private_key=_get_private_key_path())
 
+    def test_verify_schema_ignores_field_mode(self):
+        test_id = "14"
+        test_schema_1 = {'fields': [{'name': 'A',
+                                     'type': 'FLOAT',
+                                     'mode': 'NULLABLE'},
+                                    {'name': 'B',
+                                     'type': 'FLOAT',
+                                     'mode': 'NULLABLE'},
+                                    {'name': 'C',
+                                     'type': 'STRING',
+                                     'mode': 'NULLABLE'},
+                                    {'name': 'D',
+                                     'type': 'TIMESTAMP',
+                                     'mode': 'REQUIRED'}]}
+        test_schema_2 = {'fields': [{'name': 'A',
+                                     'type': 'FLOAT'},
+                                    {'name': 'B',
+                                     'type': 'FLOAT'},
+                                    {'name': 'C',
+                                     'type': 'STRING'},
+                                    {'name': 'D',
+                                     'type': 'TIMESTAMP'}]}
+
+        self.table.create(TABLE_ID + test_id, test_schema_1)
+        self.assertTrue(self.sut.verify_schema(
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2),
+            'Expected schema to match')
+
     def test_list_dataset(self):
         dataset_id = self.dataset_prefix + "1"
         self.assertTrue(dataset_id in self.dataset.datasets(),

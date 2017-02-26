@@ -1,8 +1,10 @@
 Changelog
 =========
 
-0.2.0 / 2017-?
---------------
+0.2.0 / 2017-03-??
+------------------
+
+- Bug with appending to a BigQuery table where fields have modes (NULLABLE,REQUIRED,REPEATED) specified. These modes were compared versus the remote schema and writing a table via ``to_gbq`` would previously raise. (:issue:`13`)
 
 0.1.2 / 2017-02-23
 ------------------
