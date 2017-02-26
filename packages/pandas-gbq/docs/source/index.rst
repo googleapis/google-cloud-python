@@ -22,7 +22,6 @@ to existing tables.
 .. currentmodule:: pandas_gbq
 
 .. autosummary::
-   :toctree: generated/
 
    read_gbq
    to_gbq
