@@ -159,7 +159,7 @@ class Client(object):
         """
         if self._report_errors_api is None:
             if self._use_gax:
-                self._report_errors_api = make_report_error_api(self._project)
+                self._report_errors_api = make_report_error_api(self)
             else:
                 self._report_errors_api = _ErrorReportingLoggingAPI(
                     self._project, self._credentials, self._http)

@@ -26,48 +26,46 @@ def _make_credentials():
 
 class TestClient(unittest.TestCase):
 
+    PROJECT = 'PROJECT'
+    SERVICE = 'SERVICE'
+    VERSION = 'myversion'
+
     @staticmethod
     def _get_target_class():
         from google.cloud.error_reporting.client import Client
 
         return Client
 
-    def _getHttpContext(self):
-        from google.cloud.error_reporting.client import HTTPContext
-
-        return HTTPContext
-
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def _makeHTTP(self, *args, **kw):
-        return self._getHttpContext()(*args, **kw)
+    def _make_http(self, *args, **kw):
+        from google.cloud.error_reporting.client import HTTPContext
 
-    PROJECT = 'PROJECT'
-    SERVICE = 'SERVICE'
-    VERSION = 'myversion'
+        return HTTPContext(*args, **kw)
 
     @mock.patch(
         'google.cloud.error_reporting.client._determine_default_project')
-    def test_ctor_default(self, _):
-        CREDENTIALS = _make_credentials()
-        target = self._make_one(credentials=CREDENTIALS)
-        self.assertEqual(target.service, target.DEFAULT_SERVICE)
-        self.assertEqual(target.version, None)
+    def test_ctor_default(self, default_mock):
+        credentials = _make_credentials()
+        client = self._make_one(credentials=credentials)
+        self.assertEqual(client.service, client.DEFAULT_SERVICE)
+        self.assertEqual(client.version, None)
+        default_mock.assert_called_once_with()
 
     def test_ctor_params(self):
-        CREDENTIALS = _make_credentials()
-        target = self._make_one(project=self.PROJECT,
-                                credentials=CREDENTIALS,
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT,
+                                credentials=credentials,
                                 service=self.SERVICE,
                                 version=self.VERSION)
-        self.assertEqual(target.service, self.SERVICE)
-        self.assertEqual(target.version, self.VERSION)
+        self.assertEqual(client.service, self.SERVICE)
+        self.assertEqual(client.version, self.VERSION)
 
     def test_report_exception_with_gax(self):
-        CREDENTIALS = _make_credentials()
-        target = self._make_one(project=self.PROJECT,
-                                credentials=CREDENTIALS)
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT,
+                                credentials=credentials)
 
         patch = mock.patch(
             'google.cloud.error_reporting.client.make_report_error_api')
@@ -75,18 +73,20 @@ class TestClient(unittest.TestCase):
             try:
                 raise NameError
             except NameError:
-                target.report_exception()
+                client.report_exception()
             payload = make_api.return_value.report_error_event.call_args[0][0]
+            make_api.assert_called_once_with(client)
+
         self.assertEqual(payload['serviceContext'], {
-            'service': target.DEFAULT_SERVICE,
+            'service': client.DEFAULT_SERVICE,
         })
         self.assertIn('test_report', payload['message'])
         self.assertIn('test_client.py', payload['message'])
 
     def test_report_exception_wo_gax(self):
-        CREDENTIALS = _make_credentials()
-        target = self._make_one(project=self.PROJECT,
-                                credentials=CREDENTIALS,
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT,
+                                credentials=credentials,
                                 use_gax=False)
         patch = mock.patch(
             'google.cloud.error_reporting.client._ErrorReportingLoggingAPI'
@@ -95,43 +95,46 @@ class TestClient(unittest.TestCase):
             try:
                 raise NameError
             except NameError:
-                target.report_exception()
+                client.report_exception()
             mock_report = _error_api.return_value.report_error_event
             payload = mock_report.call_args[0][0]
 
         self.assertEqual(payload['serviceContext'], {
-            'service': target.DEFAULT_SERVICE,
+            'service': client.DEFAULT_SERVICE,
         })
         self.assertIn('test_report', payload['message'])
         self.assertIn('test_client.py', payload['message'])
-        self.assertIsNotNone(target.report_errors_api)
+        self.assertIsNotNone(client.report_errors_api)
 
     @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
     def test_report_exception_with_service_version_in_constructor(
-            self, make_client):
-        CREDENTIALS = _make_credentials()
-        SERVICE = "notdefault"
-        VERSION = "notdefaultversion"
-        target = self._make_one(project=self.PROJECT,
-                                credentials=CREDENTIALS,
-                                service=SERVICE,
-                                version=VERSION)
+            self, make_api):
+        credentials = _make_credentials()
+        service = 'notdefault'
+        version = 'notdefaultversion'
+        client = self._make_one(project=self.PROJECT,
+                                credentials=credentials,
+                                service=service,
+                                version=version)
 
-        http_context = self._makeHTTP(method="GET", response_status_code=500)
-        USER = "user@gmail.com"
+        http_context = self._make_http(
+            method='GET', response_status_code=500)
+        user = 'user@gmail.com'
 
-        client = mock.Mock()
-        make_client.return_value = client
+        error_api = mock.Mock(spec=['report_error_event'])
+        make_api.return_value = error_api
 
         try:
             raise NameError
         except NameError:
-            target.report_exception(http_context=http_context, user=USER)
+            client.report_exception(http_context=http_context, user=user)
 
-        payload = client.report_error_event.call_args[0][0]
+        make_api.assert_called_once_with(client)
+
+        payload = error_api.report_error_event.call_args[0][0]
         self.assertEqual(payload['serviceContext'], {
-            'service': SERVICE,
-            'version': VERSION
+            'service': service,
+            'version': version
         })
         self.assertIn(
             'test_report_exception_with_service_version_in_constructor',
@@ -141,23 +144,24 @@ class TestClient(unittest.TestCase):
             payload['context']['httpContext']['responseStatusCode'], 500)
         self.assertEqual(
             payload['context']['httpContext']['method'], 'GET')
-        self.assertEqual(payload['context']['user'], USER)
+        self.assertEqual(payload['context']['user'], user)
 
     @mock.patch('google.cloud.error_reporting.client.make_report_error_api')
-    def test_report(self, make_client):
-        CREDENTIALS = _make_credentials()
-        target = self._make_one(project=self.PROJECT,
-                                credentials=CREDENTIALS)
+    def test_report(self, make_api):
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT,
+                                credentials=credentials)
 
-        client = mock.Mock()
-        make_client.return_value = client
+        error_api = mock.Mock(spec=['report_error_event'])
+        make_api.return_value = error_api
 
-        MESSAGE = 'this is an error'
-        target.report(MESSAGE)
+        message = 'this is an error'
+        client.report(message)
 
-        payload = client.report_error_event.call_args[0][0]
+        payload = error_api.report_error_event.call_args[0][0]
+        make_api.assert_called_once_with(client)
 
-        self.assertEqual(payload['message'], MESSAGE)
+        self.assertEqual(payload['message'], message)
         report_location = payload['context']['reportLocation']
         self.assertIn('test_client.py', report_location['filePath'])
         self.assertEqual(report_location['functionName'], 'test_report')
