@@ -13,6 +13,7 @@ Contents:
 
    install.rst
    examples-tutorials.rst
+   changelog.rst
 
 
 Indices and tables
