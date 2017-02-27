@@ -68,7 +68,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         from google.api.monitored_resource_pb2 import MonitoredResource
         from google.gax import INITIAL_PAGE
-        from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
 
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud._helpers import UTC
@@ -126,7 +126,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         import datetime
 
         from google.api.monitored_resource_pb2 import MonitoredResource
-        from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud._helpers import UTC
         from google.cloud._testing import _GAXPageIterator
@@ -217,8 +217,8 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
     def _make_log_entry_with_extras(self, labels, iid, type_url, now):
         from google.api.monitored_resource_pb2 import MonitoredResource
-        from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
-        from google.cloud.grpc.logging.v2.log_entry_pb2 import (
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
+        from google.cloud.proto.logging.v2.log_entry_pb2 import (
             LogEntryOperation)
         from google.logging.type.http_request_pb2 import HttpRequest
         from google.logging.type.log_severity_pb2 import WARNING
@@ -334,7 +334,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_write_entries_single(self):
-        from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
 
         TEXT = 'TEXT'
         ENTRY = {
@@ -368,7 +368,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         # pylint: disable=too-many-statements
         from datetime import datetime
         from google.logging.type.log_severity_pb2 import WARNING
-        from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
         from google.cloud._helpers import UTC, _pb_timestamp_to_datetime
 
         NOW = datetime.utcnow().replace(tzinfo=UTC)
@@ -464,7 +464,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         # pylint: disable=too-many-statements
         import datetime
         from google.logging.type.log_severity_pb2 import WARNING
-        from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
         from google.protobuf.any_pb2 import Any
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import UTC
@@ -635,7 +635,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_list_sinks_no_paging(self):
         import six
         from google.gax import INITIAL_PAGE
-        from google.cloud.grpc.logging.v2.logging_config_pb2 import LogSink
+        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.logging.sink import Sink
 
@@ -670,7 +670,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
     def test_list_sinks_w_paging(self):
-        from google.cloud.grpc.logging.v2.logging_config_pb2 import LogSink
+        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.logging.sink import Sink
 
@@ -728,7 +728,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
                 self.DESTINATION_URI)
 
     def test_sink_create_ok(self):
-        from google.cloud.grpc.logging.v2.logging_config_pb2 import LogSink
+        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
 
         gax_api = _GAXSinksAPI()
         api = self._make_one(gax_api, None)
@@ -764,7 +764,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
             api.sink_get(self.PROJECT, self.SINK_NAME)
 
     def test_sink_get_hit(self):
-        from google.cloud.grpc.logging.v2.logging_config_pb2 import LogSink
+        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
 
         RESPONSE = {
             'name': self.SINK_PATH,
@@ -808,7 +808,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
                 self.DESTINATION_URI)
 
     def test_sink_update_hit(self):
-        from google.cloud.grpc.logging.v2.logging_config_pb2 import LogSink
+        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
 
         response = LogSink(name=self.SINK_NAME,
                            destination=self.DESTINATION_URI,
@@ -877,7 +877,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_list_metrics_no_paging(self):
         import six
         from google.gax import INITIAL_PAGE
-        from google.cloud.grpc.logging.v2.logging_metrics_pb2 import LogMetric
+        from google.cloud.proto.logging.v2.logging_metrics_pb2 import LogMetric
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.logging.metric import Metric
 
@@ -912,7 +912,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
     def test_list_metrics_w_paging(self):
-        from google.cloud.grpc.logging.v2.logging_metrics_pb2 import LogMetric
+        from google.cloud.proto.logging.v2.logging_metrics_pb2 import LogMetric
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.logging.metric import Metric
 
@@ -970,7 +970,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
                 self.DESCRIPTION)
 
     def test_metric_create_ok(self):
-        from google.cloud.grpc.logging.v2.logging_metrics_pb2 import LogMetric
+        from google.cloud.proto.logging.v2.logging_metrics_pb2 import LogMetric
 
         gax_api = _GAXMetricsAPI()
         api = self._make_one(gax_api, None)
@@ -1006,7 +1006,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_get_hit(self):
-        from google.cloud.grpc.logging.v2.logging_metrics_pb2 import LogMetric
+        from google.cloud.proto.logging.v2.logging_metrics_pb2 import LogMetric
 
         RESPONSE = {
             'name': self.METRIC_PATH,
@@ -1050,7 +1050,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
                 self.DESCRIPTION)
 
     def test_metric_update_hit(self):
-        from google.cloud.grpc.logging.v2.logging_metrics_pb2 import LogMetric
+        from google.cloud.proto.logging.v2.logging_metrics_pb2 import LogMetric
 
         response = LogMetric(name=self.METRIC_NAME,
                              description=self.DESCRIPTION,
