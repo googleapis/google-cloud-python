@@ -90,8 +90,20 @@ class Bucket(_PropertyMixin):
     This is used in Bucket.delete() and Bucket.make_public().
     """
 
-    _STORAGE_CLASSES = ('STANDARD', 'NEARLINE', 'DURABLE_REDUCED_AVAILABILITY',
-                        'MULTI_REGIONAL', 'REGIONAL', 'COLDLINE')
+    _STORAGE_CLASSES = (
+        'MULTI_REGIONAL',
+        'REGIONAL',
+        'NEARLINE',
+        'COLDLINE',
+        'STANDARD',  # alias for MULTI_REGIONAL/REGIONAL, based on location
+        'DURABLE_REDUCED_AVAILABILITY',  # deprecated
+    )
+    """Allowed values for :attr:`storage_class`.
+
+    See:
+    https://cloud.google.com/storage/docs/json_api/v1/buckets#storageClass
+    https://cloud.google.com/storage/docs/storage-classes
+    """
 
     def __init__(self, client, name=None):
         super(Bucket, self).__init__(name=name)
