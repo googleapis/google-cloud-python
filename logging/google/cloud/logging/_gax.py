@@ -26,9 +26,9 @@ from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.cloud.grpc.logging.v2.logging_config_pb2 import LogSink
-from google.cloud.grpc.logging.v2.logging_metrics_pb2 import LogMetric
-from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
+from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
+from google.cloud.proto.logging.v2.logging_metrics_pb2 import LogMetric
+from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
 from grpc import StatusCode
