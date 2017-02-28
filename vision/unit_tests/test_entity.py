@@ -24,14 +24,15 @@ class TestEntityAnnotation(unittest.TestCase):
     def test_logo_annotation(self):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
 
-        LOGO = LOGO_DETECTION_RESPONSE['responses'][0]['logoAnnotations'][0]
         entity_class = self._get_target_class()
-        logo = entity_class.from_api_repr(LOGO)
+        logo = entity_class.from_api_repr(
+            LOGO_DETECTION_RESPONSE['responses'][0]['logoAnnotations'][0])
 
-        self.assertEqual('/m/05b5c', logo.mid)
-        self.assertEqual('Brand1', logo.description)
-        self.assertEqual(0.63192177, logo.score)
-        self.assertEqual(162, logo.bounds.vertices[0].y_coordinate)
+        self.assertEqual(logo.mid, '/m/05b5c')
+        self.assertEqual(logo.description, 'Brand1')
+        self.assertEqual(logo.score, 0.63192177)
+        self.assertEqual(logo.bounds.vertices[0].x_coordinate, 78)
+        self.assertEqual(logo.bounds.vertices[0].y_coordinate, 162)
 
     def test_logo_pb_annotation(self):
         from google.cloud.proto.vision.v1 import image_annotator_pb2
