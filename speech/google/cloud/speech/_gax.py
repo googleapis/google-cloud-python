@@ -39,7 +39,11 @@ OPERATIONS_API_HOST = 'speech.googleapis.com'
 
 
 class GAPICSpeechAPI(object):
-    """Manage calls through GAPIC wrappers to the Speech API."""
+    """Manage calls through GAPIC wrappers to the Speech API.
+
+    :type client: `~google.cloud.core.client.Client`
+    :param client: Instance of ``Client`.
+    """
     def __init__(self, client=None):
         self._client = client
         credentials = self._client._credentials
