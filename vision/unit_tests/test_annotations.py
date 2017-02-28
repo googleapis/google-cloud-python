@@ -128,6 +128,7 @@ class Test__make_entity_from_pb(unittest.TestCase):
 class Test__make_faces_from_pb(unittest.TestCase):
     def _call_fut(self, annotations):
         from google.cloud.vision.annotations import _make_faces_from_pb
+
         return _make_faces_from_pb(annotations)
 
     def test_it(self):
@@ -144,6 +145,7 @@ class Test__make_image_properties_from_pb(unittest.TestCase):
     def _call_fut(self, annotations):
         from google.cloud.vision.annotations import (
             _make_image_properties_from_pb)
+
         return _make_image_properties_from_pb(annotations)
 
     def test_it(self):

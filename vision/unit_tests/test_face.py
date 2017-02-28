@@ -19,6 +19,7 @@ class TestFace(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.vision.face import Face
+
         return Face
 
     def _make_face_pb(self, *args, **kwargs):
@@ -28,10 +29,11 @@ class TestFace(unittest.TestCase):
 
     def setUp(self):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
-        self.FACE_ANNOTATIONS = FACE_DETECTION_RESPONSE['responses'][0]
+
+        self.face_annotations = FACE_DETECTION_RESPONSE['responses'][0]
         self.face_class = self._get_target_class()
         self.face = self.face_class.from_api_repr(
-            self.FACE_ANNOTATIONS['faceAnnotations'][0])
+            self.face_annotations['faceAnnotations'][0])
 
     def test_face_from_pb(self):
         from google.cloud.proto.vision.v1 import image_annotator_pb2
@@ -48,49 +50,45 @@ class TestFace(unittest.TestCase):
     def test_face_landmarks(self):
         from google.cloud.vision.face import LandmarkTypes
 
-        self.assertEqual(0.54453093, self.face.landmarking_confidence)
-        self.assertEqual(0.9863683, self.face.detection_confidence)
+        self.assertEqual(self.face.landmarking_confidence, 0.54453093)
+        self.assertEqual(self.face.detection_confidence, 0.9863683)
         self.assertTrue(hasattr(self.face.landmarks, 'left_eye'))
-        self.assertEqual(1004.8003,
-                         self.face.landmarks.left_eye.position.x_coordinate)
-        self.assertEqual(482.69385,
-                         self.face.landmarks.left_eye.position.y_coordinate)
-        self.assertEqual(0.0016593217,
-                         self.face.landmarks.left_eye.position.z_coordinate)
-        self.assertEqual(self.face.landmarks.left_eye.landmark_type,
-                         LandmarkTypes.LEFT_EYE)
+        left_eye = self.face.landmarks.left_eye
+        self.assertEqual(left_eye.position.x_coordinate, 1004.8003)
+        self.assertEqual(left_eye.position.y_coordinate, 482.69385)
+        self.assertEqual(left_eye.position.z_coordinate, 0.0016593217)
+        self.assertEqual(left_eye.landmark_type, LandmarkTypes.LEFT_EYE)
 
     def test_facial_emotions(self):
         from google.cloud.vision.face import Likelihood
-        self.assertEqual(Likelihood.VERY_LIKELY,
-                         self.face.joy)
-        self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.sorrow)
-        self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.surprise)
-        self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.anger)
 
-    def test_faciale_angles(self):
-        self.assertEqual(-0.43419784, self.face.angles.roll)
-        self.assertEqual(6.027647, self.face.angles.pan)
-        self.assertEqual(-18.412321, self.face.angles.tilt)
+        self.assertEqual(self.face.joy, Likelihood.VERY_LIKELY)
+        self.assertEqual(self.face.sorrow, Likelihood.VERY_UNLIKELY)
+        self.assertEqual(self.face.surprise, Likelihood.VERY_UNLIKELY)
+        self.assertEqual(self.face.anger, Likelihood.VERY_UNLIKELY)
+
+    def test_facial_angles(self):
+        self.assertEqual(self.face.angles.roll, -0.43419784)
+        self.assertEqual(self.face.angles.pan, 6.027647)
+        self.assertEqual(self.face.angles.tilt, -18.412321)
 
     def test_face_headware_and_blur_and_underexposed(self):
         from google.cloud.vision.face import Likelihood
-        self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.image_properties.blurred)
-        self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.headwear)
-        self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.image_properties.underexposed)
+
+        very_unlikely = Likelihood.VERY_UNLIKELY
+        image_properties = self.face.image_properties
+        self.assertEqual(image_properties.blurred, very_unlikely)
+        self.assertEqual(image_properties.underexposed, very_unlikely)
+        self.assertEqual(self.face.headwear, Likelihood.VERY_UNLIKELY)
 
     def test_face_bounds(self):
-        self.assertEqual(4, len(self.face.bounds.vertices))
-        self.assertEqual(748, self.face.bounds.vertices[0].x_coordinate)
-        self.assertEqual(58, self.face.bounds.vertices[0].y_coordinate)
+        self.assertEqual(len(self.face.bounds.vertices), 4)
+        vertex = self.face.bounds.vertices[0]
+        self.assertEqual(vertex.x_coordinate, 748)
+        self.assertEqual(vertex.y_coordinate, 58)
 
     def test_facial_skin_bounds(self):
-        self.assertEqual(4, len(self.face.fd_bounds.vertices))
-        self.assertEqual(845, self.face.fd_bounds.vertices[0].x_coordinate)
-        self.assertEqual(310, self.face.fd_bounds.vertices[0].y_coordinate)
+        self.assertEqual(len(self.face.fd_bounds.vertices), 4)
+        vertex = self.face.bounds.vertices[1]
+        self.assertEqual(vertex.x_coordinate, 1430)
+        self.assertEqual(vertex.y_coordinate, 58)
