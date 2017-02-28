@@ -30,7 +30,7 @@ SYNC_RECOGNIZE_EMPTY_RESPONSE = {
 }
 
 ASYNC_RECOGNIZE_RESPONSE = {
-    'name': '123456789'
+    'name': '123456789',
 }
 
 OPERATION_COMPLETE_RESPONSE = {
@@ -51,7 +51,7 @@ OPERATION_COMPLETE_RESPONSE = {
                 'alternatives': [
                     {
                         'transcript': 'how old is the Brooklyn Bridge',
-                        'confidence': 0.98267895
+                        'confidence': 0.98267895,
                     },
                 ],
             },
