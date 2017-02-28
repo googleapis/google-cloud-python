@@ -19,11 +19,12 @@ class TestCropHint(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.vision.crop_hint import CropHint
+
         return CropHint
 
     def test_crop_hint_annotation(self):
-        from google.cloud.vision.geometry import Bounds
         from unit_tests._fixtures import CROP_HINTS_RESPONSE
+        from google.cloud.vision.geometry import Bounds
 
         response = CROP_HINTS_RESPONSE['responses'][0]['cropHintsAnnotation']
         crop_hints_dict = response['cropHints'][0]
@@ -47,7 +48,8 @@ class TestCropHint(unittest.TestCase):
         crop_hint = crop_hints_class.from_pb(crop_hint_pb)
 
         self.assertEqual(len(crop_hint.bounds.vertices), 1)
-        self.assertEqual(crop_hint.bounds.vertices[0].x_coordinate, 1)
-        self.assertEqual(crop_hint.bounds.vertices[0].y_coordinate, 2)
+        vertex = crop_hint.bounds.vertices[0]
+        self.assertEqual(vertex.x_coordinate, 1)
+        self.assertEqual(vertex.y_coordinate, 2)
         self.assertAlmostEqual(crop_hint.confidence, 1.23, 4)
         self.assertAlmostEqual(crop_hint.importance_fraction, 4.56, 4)

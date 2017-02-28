@@ -19,12 +19,14 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class TestGAXClient(unittest.TestCase):
     def _get_target_class(self):
         from google.cloud.vision._gax import _GAPICVisionAPI
+
         return _GAPICVisionAPI
 
     def _make_one(self, *args, **kwargs):
@@ -40,6 +42,7 @@ class TestGAXClient(unittest.TestCase):
     def test_gapic_credentials(self):
         from google.cloud.gapic.vision.v1.image_annotator_client import (
             ImageAnnotatorClient)
+
         from google.cloud.vision import Client
 
         # Mock the GAPIC ImageAnnotatorClient, whose arguments we
@@ -214,8 +217,8 @@ class TestGAXClient(unittest.TestCase):
         responses = gax_api.annotate(requests_pb=[request])
 
         self.assertEqual(len(responses), 2)
-        self.assertIsInstance(responses[0], Annotations)
-        self.assertIsInstance(responses[1], Annotations)
+        for annotation in responses:
+            self.assertIsInstance(annotation, Annotations)
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
 
@@ -239,6 +242,7 @@ class Test__to_gapic_feature(unittest.TestCase):
 class Test__to_gapic_image(unittest.TestCase):
     def _call_fut(self, image):
         from google.cloud.vision._gax import _to_gapic_image
+
         return _to_gapic_image(image)
 
     def test__to_gapic_image_content(self):
