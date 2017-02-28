@@ -19,6 +19,7 @@ class TestSafeSearchAnnotation(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.vision.safe_search import SafeSearchAnnotation
+
         return SafeSearchAnnotation
 
     def test_safe_search_annotation(self):

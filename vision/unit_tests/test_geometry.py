@@ -15,10 +15,11 @@
 import unittest
 
 
-class TestVertext(unittest.TestCase):
+class TestVertex(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.vision.geometry import Vertex
+
         return Vertex
 
     def _make_one(self, x_coordinate, y_coordinate):
