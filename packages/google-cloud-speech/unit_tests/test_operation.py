@@ -67,12 +67,11 @@ class TestOperation(unittest.TestCase):
             )
             type_url = 'type.googleapis.com/%s' % (
                 result_pb.DESCRIPTOR.full_name,)
-            any_pb = Any(type_url=type_url,
-                         value=result_pb.SerializeToString())
+            any_pb = Any(
+                type_url=type_url, value=result_pb.SerializeToString())
 
         return operations_pb2.Operation(
-            name=self.OPERATION_NAME,
-            response=any_pb)
+            name=self.OPERATION_NAME, response=any_pb)
 
     def test__update_state_no_response(self):
         client = object()
