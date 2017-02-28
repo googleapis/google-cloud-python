@@ -21,6 +21,7 @@ PROJECT = 'PROJECT'
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 

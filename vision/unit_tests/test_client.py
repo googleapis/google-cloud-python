@@ -26,6 +26,7 @@ B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT).decode('ascii')
 
 def _make_credentials():
     import google.auth.credentials
+
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -61,8 +62,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision._gax import _GAPICVisionAPI
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=None)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=None)
         vision_api = client._vision_api
         vision_api._connection = _Connection()
         with mock.patch('google.cloud.vision.client._GAPICVisionAPI',
@@ -73,8 +74,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision._http import _HTTPVisionAPI
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
 
     def test_face_annotation(self):
@@ -82,31 +83,32 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.feature import Feature, FeatureTypes
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
 
-        RETURNED = FACE_DETECTION_RESPONSE
-        REQUEST = {
+        returned = FACE_DETECTION_RESPONSE
+        request = {
             "requests": [
                 {
                     "image": {
-                        "content": B64_IMAGE_CONTENT
+                        "content": B64_IMAGE_CONTENT,
                     },
                     "features": [
                         {
                             "maxResults": 3,
-                            "type": "FACE_DETECTION"
-                        }
-                    ]
-                }
-            ]
+                            "type": "FACE_DETECTION",
+                        },
+                    ],
+                },
+            ],
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(returned)
         vision_api._connection = connection
 
-        features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
-                            max_results=3)]
+        features = [
+            Feature(feature_type=FeatureTypes.FACE_DETECTION, max_results=3),
+        ]
         image = client.image(content=IMAGE_CONTENT)
         images = ((image, features),)
         api_response = client._vision_api.annotate(images)
@@ -114,15 +116,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(api_response), 1)
         response = api_response[0]
         self.assertEqual(
-            REQUEST, connection._requested[0]['data'])
+            request, connection._requested[0]['data'])
         self.assertIsInstance(response, Annotations)
 
     def test_image_with_client_gcs_source(self):
         from google.cloud.vision.image import Image
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT,
-                                credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         gcs_image = client.image(source_uri=IMAGE_SOURCE)
         self.assertIsInstance(gcs_image, Image)
         self.assertEqual(gcs_image.source, IMAGE_SOURCE)
@@ -131,8 +132,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.image import Image
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         raw_image = client.image(content=IMAGE_CONTENT)
         self.assertIsInstance(raw_image, Image)
         self.assertEqual(raw_image.content, IMAGE_CONTENT)
@@ -143,8 +144,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.image import Image
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         with patch('google.cloud.vision.image.open',
                    mock_open(read_data=IMAGE_CONTENT)) as m:
             file_image = client.image(filename='my_image.jpg')
@@ -214,85 +215,88 @@ class TestClient(unittest.TestCase):
     def test_detect_crop_hints_from_source(self):
         from google.cloud.vision.crop_hint import CropHint
         from unit_tests._fixtures import CROP_HINTS_RESPONSE
-        returned = CROP_HINTS_RESPONSE
+
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         api = client._vision_api
-        api._connection = _Connection(returned)
+        api._connection = _Connection(CROP_HINTS_RESPONSE)
         image = client.image(source_uri=IMAGE_SOURCE)
         crop_hints = image.detect_crop_hints(aspect_ratios=[1.3333], limit=3)
 
         self.assertEqual(len(crop_hints), 2)
         self.assertIsInstance(crop_hints[0], CropHint)
         image_request = api._connection._requested[0]['data']['requests'][0]
-        self.assertEqual(image_request['image']['source']['gcsImageUri'],
-                         IMAGE_SOURCE)
-        ar = image_request['imageContext']['cropHintsParams']['aspectRatios']
-        self.assertAlmostEqual(ar[0], 1.3333, 4)
-        self.assertEqual(3, image_request['features'][0]['maxResults'])
+        self.assertEqual(
+            image_request['image']['source']['gcsImageUri'], IMAGE_SOURCE)
+
+        crop_hints = image_request['imageContext']['cropHintsParams']
+        ratios = crop_hints['aspectRatios']
+        self.assertAlmostEqual(ratios[0], 1.3333, 4)
+        self.assertEqual(image_request['features'][0]['maxResults'], 3)
 
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
-        RETURNED = FACE_DETECTION_RESPONSE
+
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(FACE_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         faces = image.detect_faces(limit=3)
-        self.assertEqual(5, len(faces))
-        self.assertIsInstance(faces[0], Face)
+        self.assertEqual(len(faces), 5)
+        for face in faces:
+            self.assertIsInstance(face, Face)
+
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(IMAGE_SOURCE,
-                         image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual(3, image_request['features'][0]['maxResults'])
+        self.assertEqual(
+            IMAGE_SOURCE, image_request['image']['source']['gcs_image_uri'])
+        self.assertEqual(image_request['features'][0]['maxResults'], 3)
 
     def test_face_detection_from_content(self):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
-        RETURNED = FACE_DETECTION_RESPONSE
+
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(FACE_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(content=IMAGE_CONTENT)
         faces = image.detect_faces(limit=5)
-        self.assertEqual(5, len(faces))
-        self.assertIsInstance(faces[0], Face)
-        image_request = connection._requested[0]['data']['requests'][0]
+        self.assertEqual(len(faces), 5)
+        for face in faces:
+            self.assertIsInstance(face, Face)
 
-        self.assertEqual(B64_IMAGE_CONTENT,
-                         image_request['image']['content'])
-        self.assertEqual(5, image_request['features'][0]['maxResults'])
+        image_request = connection._requested[0]['data']['requests'][0]
+        self.assertEqual(B64_IMAGE_CONTENT, image_request['image']['content'])
+        self.assertEqual(image_request['features'][0]['maxResults'], 5)
 
     def test_face_detection_from_content_no_results(self):
-        RETURNED = {
+        returned = {
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(returned)
         vision_api._connection = connection
 
         image = client.image(content=IMAGE_CONTENT)
         faces = image.detect_faces(limit=5)
         self.assertEqual(faces, ())
         self.assertEqual(len(faces), 0)
-        image_request = connection._requested[0]['data']['requests'][0]
 
-        self.assertEqual(B64_IMAGE_CONTENT,
-                         image_request['image']['content'])
-        self.assertEqual(5, image_request['features'][0]['maxResults'])
+        image_request = connection._requested[0]['data']['requests'][0]
+        self.assertEqual(B64_IMAGE_CONTENT, image_request['image']['content'])
+        self.assertEqual(image_request['features'][0]['maxResults'], 5)
 
     def test_detect_full_text_annotation(self):
         from google.cloud.vision.text import TextAnnotation
@@ -300,8 +304,8 @@ class TestClient(unittest.TestCase):
 
         returned = FULL_TEXT_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         api = client._vision_api
         api._connection = _Connection(returned)
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -319,46 +323,46 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(page.blocks[0].paragraphs[0].words), 1)
 
         image_request = api._connection._requested[0]['data']['requests'][0]
-        self.assertEqual(image_request['image']['source']['gcs_image_uri'],
-                         IMAGE_SOURCE)
+        self.assertEqual(
+            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
         self.assertEqual(image_request['features'][0]['maxResults'], 2)
-        self.assertEqual(image_request['features'][0]['type'],
-                         'DOCUMENT_TEXT_DETECTION')
+        self.assertEqual(
+            image_request['features'][0]['type'], 'DOCUMENT_TEXT_DETECTION')
 
     def test_label_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import (
-            LABEL_DETECTION_RESPONSE as RETURNED)
+        from unit_tests._fixtures import LABEL_DETECTION_RESPONSE
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(LABEL_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         labels = image.detect_labels(limit=3)
-        self.assertEqual(3, len(labels))
-        self.assertIsInstance(labels[0], EntityAnnotation)
+        self.assertEqual(len(labels), 3)
+        for label in labels:
+            self.assertIsInstance(label, EntityAnnotation)
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(IMAGE_SOURCE,
-                         image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual(3, image_request['features'][0]['maxResults'])
-        self.assertEqual('automobile', labels[0].description)
-        self.assertEqual('vehicle', labels[1].description)
-        self.assertEqual('/m/0k4j', labels[0].mid)
-        self.assertEqual('/m/07yv9', labels[1].mid)
+        self.assertEqual(
+            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
+        self.assertEqual(image_request['features'][0]['maxResults'], 3)
+        self.assertEqual(labels[0].description, 'automobile')
+        self.assertEqual(labels[1].description, 'vehicle')
+        self.assertEqual(labels[0].mid, '/m/0k4j')
+        self.assertEqual(labels[1].mid, '/m/07yv9')
 
     def test_label_detection_no_results(self):
-        RETURNED = {
+        returned = {
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        vision_api._connection = _Connection(RETURNED)
+        vision_api._connection = _Connection(returned)
 
         image = client.image(content=IMAGE_CONTENT)
         labels = image.detect_labels()
@@ -367,59 +371,59 @@ class TestClient(unittest.TestCase):
 
     def test_landmark_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import (
-            LANDMARK_DETECTION_RESPONSE as RETURNED)
+        from unit_tests._fixtures import LANDMARK_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(LANDMARK_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         landmarks = image.detect_landmarks(limit=3)
-        self.assertEqual(2, len(landmarks))
-        self.assertIsInstance(landmarks[0], EntityAnnotation)
+        self.assertEqual(len(landmarks), 2)
+
+        for landmark in landmarks:
+            self.assertIsInstance(landmark, EntityAnnotation)
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(IMAGE_SOURCE,
-                         image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual(3, image_request['features'][0]['maxResults'])
-        self.assertEqual(48.861013, landmarks[0].locations[0].latitude)
-        self.assertEqual(2.335818, landmarks[0].locations[0].longitude)
-        self.assertEqual('/m/04gdr', landmarks[0].mid)
-        self.assertEqual('/m/094llg', landmarks[1].mid)
+        self.assertEqual(
+            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
+        self.assertEqual(image_request['features'][0]['maxResults'], 3)
+        self.assertEqual(landmarks[0].locations[0].latitude, 48.861013)
+        self.assertEqual(landmarks[0].locations[0].longitude, 2.335818)
+        self.assertEqual(landmarks[0].mid, '/m/04gdr')
+        self.assertEqual(landmarks[1].mid, '/m/094llg')
 
     def test_landmark_detection_from_content(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import (
-            LANDMARK_DETECTION_RESPONSE as RETURNED)
+        from unit_tests._fixtures import LANDMARK_DETECTION_RESPONSE
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(LANDMARK_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(content=IMAGE_CONTENT)
         landmarks = image.detect_landmarks(limit=5)
-        self.assertEqual(2, len(landmarks))
-        self.assertIsInstance(landmarks[0], EntityAnnotation)
+        self.assertEqual(len(landmarks), 2)
+        for landmark in landmarks:
+            self.assertIsInstance(landmark, EntityAnnotation)
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(B64_IMAGE_CONTENT,
-                         image_request['image']['content'])
-        self.assertEqual(5, image_request['features'][0]['maxResults'])
+        self.assertEqual(image_request['image']['content'], B64_IMAGE_CONTENT)
+        self.assertEqual(image_request['features'][0]['maxResults'], 5)
 
     def test_landmark_detection_no_results(self):
-        RETURNED = {
+        returned = {
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        vision_api._connection = _Connection(RETURNED)
+        vision_api._connection = _Connection(returned)
 
         image = client.image(content=IMAGE_CONTENT)
         landmarks = image.detect_landmarks()
@@ -429,53 +433,53 @@ class TestClient(unittest.TestCase):
     def test_logo_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
-        RETURNED = LOGO_DETECTION_RESPONSE
+
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(LOGO_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         logos = image.detect_logos(limit=3)
-        self.assertEqual(2, len(logos))
-        self.assertIsInstance(logos[0], EntityAnnotation)
+        self.assertEqual(len(logos), 2)
+        for logo in logos:
+            self.assertIsInstance(logo, EntityAnnotation)
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(IMAGE_SOURCE,
-                         image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual(3, image_request['features'][0]['maxResults'])
+        self.assertEqual(
+            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
+        self.assertEqual(image_request['features'][0]['maxResults'], 3)
 
     def test_logo_detection_from_content(self):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
-        RETURNED = LOGO_DETECTION_RESPONSE
+
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(LOGO_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(content=IMAGE_CONTENT)
         logos = image.detect_logos(limit=5)
-        self.assertEqual(2, len(logos))
-        self.assertIsInstance(logos[0], EntityAnnotation)
+        self.assertEqual(len(logos), 2)
+        for logo in logos:
+            self.assertIsInstance(logo, EntityAnnotation)
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(B64_IMAGE_CONTENT,
-                         image_request['image']['content'])
-        self.assertEqual(5, image_request['features'][0]['maxResults'])
+        self.assertEqual(image_request['image']['content'], B64_IMAGE_CONTENT)
+        self.assertEqual(image_request['features'][0]['maxResults'], 5)
 
     def test_text_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import (
-            TEXT_DETECTION_RESPONSE as RETURNED)
+        from unit_tests._fixtures import TEXT_DETECTION_RESPONSE
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(TEXT_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -483,33 +487,33 @@ class TestClient(unittest.TestCase):
         self.assertEqual(3, len(text))
         self.assertIsInstance(text[0], EntityAnnotation)
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(IMAGE_SOURCE,
-                         image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual(3, image_request['features'][0]['maxResults'])
-        self.assertEqual('en', text[0].locale)
-        self.assertEqual('Google CloudPlatform\n', text[0].description)
-        self.assertEqual('Google', text[1].description)
-        self.assertEqual(694, text[0].bounds.vertices[0].y_coordinate)
+        self.assertEqual(
+            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
+        self.assertEqual(image_request['features'][0]['maxResults'], 3)
+        self.assertEqual(text[0].locale, 'en')
+        self.assertEqual(text[0].description, 'Google CloudPlatform\n')
+        self.assertEqual(text[1].description, 'Google')
+        self.assertEqual(text[0].bounds.vertices[0].x_coordinate, 129)
+        self.assertEqual(text[0].bounds.vertices[0].y_coordinate, 694)
 
     def test_safe_search_detection_from_source(self):
         from google.cloud.vision.likelihood import Likelihood
         from google.cloud.vision.safe_search import SafeSearchAnnotation
         from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
-        RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(SAFE_SEARCH_DETECTION_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         safe_search = image.detect_safe_search()
         self.assertIsInstance(safe_search, SafeSearchAnnotation)
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(IMAGE_SOURCE,
-                         image_request['image']['source']['gcs_image_uri'])
+        self.assertEqual(
+            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
 
         self.assertIs(safe_search.adult, Likelihood.VERY_UNLIKELY)
         self.assertIs(safe_search.spoof, Likelihood.UNLIKELY)
@@ -517,14 +521,14 @@ class TestClient(unittest.TestCase):
         self.assertIs(safe_search.violence, Likelihood.VERY_UNLIKELY)
 
     def test_safe_search_no_results(self):
-        RETURNED = {
+        returned = {
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        vision_api._connection = _Connection(RETURNED)
+        vision_api._connection = _Connection(returned)
 
         image = client.image(content=IMAGE_CONTENT)
         safe_search = image.detect_safe_search()
@@ -535,37 +539,36 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.color import ImagePropertiesAnnotation
         from unit_tests._fixtures import IMAGE_PROPERTIES_RESPONSE
 
-        RETURNED = IMAGE_PROPERTIES_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        connection = _Connection(RETURNED)
+        connection = _Connection(IMAGE_PROPERTIES_RESPONSE)
         vision_api._connection = connection
 
         image = client.image(source_uri=IMAGE_SOURCE)
         image_properties = image.detect_properties()
         self.assertIsInstance(image_properties, ImagePropertiesAnnotation)
         image_request = connection._requested[0]['data']['requests'][0]
-        self.assertEqual(IMAGE_SOURCE,
-                         image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual(0.42258179, image_properties.colors[0].score)
-        self.assertEqual(0.025376344,
-                         image_properties.colors[0].pixel_fraction)
-        self.assertEqual(253, image_properties.colors[0].color.red)
-        self.assertEqual(203, image_properties.colors[0].color.green)
-        self.assertEqual(65, image_properties.colors[0].color.blue)
-        self.assertEqual(0.0, image_properties.colors[0].color.alpha)
+        self.assertEqual(
+            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
+        self.assertEqual(image_properties.colors[0].score, 0.42258179)
+        self.assertEqual(
+            image_properties.colors[0].pixel_fraction, 0.025376344)
+        self.assertEqual(image_properties.colors[0].color.red, 253)
+        self.assertEqual(image_properties.colors[0].color.green, 203)
+        self.assertEqual(image_properties.colors[0].color.blue, 65)
+        self.assertEqual(image_properties.colors[0].color.alpha, 0.0)
 
     def test_image_properties_no_results(self):
-        RETURNED = {
+        returned = {
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         vision_api = client._vision_api
-        vision_api._connection = _Connection(RETURNED)
+        vision_api._connection = _Connection(returned)
 
         image = client.image(content=IMAGE_CONTENT)
         image_properties = image.detect_properties()
@@ -578,12 +581,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.web import WebPage
         from unit_tests._fixtures import WEB_DETECTION_RESPONSE
 
-        returned = WEB_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, use_gax=False)
         api = client._vision_api
-        api._connection = _Connection(returned)
+        api._connection = _Connection(WEB_DETECTION_RESPONSE)
         image = client.image(source_uri=IMAGE_SOURCE)
         web_images = image.detect_web(limit=2)
 
@@ -592,19 +594,24 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(web_images.web_entities), 2)
         self.assertEqual(len(web_images.pages_with_matching_images), 2)
 
-        self.assertIsInstance(web_images.partial_matching_images[0],
-                              WebImage)
-        self.assertIsInstance(web_images.full_matching_images[0], WebImage)
-        self.assertIsInstance(web_images.web_entities[0], WebEntity)
-        self.assertIsInstance(web_images.pages_with_matching_images[0],
-                              WebPage)
+        for partial_match in web_images.partial_matching_images:
+            self.assertIsInstance(partial_match, WebImage)
+
+        for full_match in web_images.full_matching_images:
+            self.assertIsInstance(full_match, WebImage)
+
+        for web_entity in web_images.web_entities:
+            self.assertIsInstance(web_entity, WebEntity)
+
+        for page in web_images.pages_with_matching_images:
+            self.assertIsInstance(page, WebPage)
 
         image_request = api._connection._requested[0]['data']['requests'][0]
-        self.assertEqual(image_request['image']['source']['gcs_image_uri'],
-                         IMAGE_SOURCE)
+        self.assertEqual(
+            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
         self.assertEqual(image_request['features'][0]['maxResults'], 2)
-        self.assertEqual(image_request['features'][0]['type'],
-                         'WEB_DETECTION')
+        self.assertEqual(
+            image_request['features'][0]['type'], 'WEB_DETECTION')
 
 
 class _Connection(object):
@@ -615,6 +622,7 @@ class _Connection(object):
 
     def api_request(self, **kw):
         import json
+
         json.dumps(kw.get('data', ''))  # Simulate JSON encoding.
         self._requested.append(kw)
         response, self._responses = self._responses[0], self._responses[1:]

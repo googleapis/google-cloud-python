@@ -28,6 +28,7 @@ class TestConnection(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.vision._http import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):
@@ -72,6 +73,7 @@ class TestConnection(unittest.TestCase):
 class Test_HTTPVisionAPI(unittest.TestCase):
     def _get_target_class(self):
         from google.cloud.vision._http import _HTTPVisionAPI
+
         return _HTTPVisionAPI
 
     def _make_one(self, *args, **kwargs):
@@ -172,6 +174,7 @@ class TestVisionRequest(unittest.TestCase):
     @staticmethod
     def _get_target_function():
         from google.cloud.vision._http import _make_request
+
         return _make_request
 
     def _call_fut(self, *args, **kw):

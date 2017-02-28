@@ -19,6 +19,7 @@ class TestColor(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.vision.color import Color
+
         return Color
 
     def test_rgb_color_data(self):
@@ -92,6 +93,7 @@ class TestImagePropertiesAnnotation(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.vision.color import ImagePropertiesAnnotation
+
         return ImagePropertiesAnnotation
 
     def test_image_properties_annotation_from_pb(self):
@@ -101,9 +103,8 @@ class TestImagePropertiesAnnotation(unittest.TestCase):
 
         alpha = FloatValue(value=1.0)
         color_pb = Color(red=1.0, green=2.0, blue=3.0, alpha=alpha)
-        color_info_pb = image_annotator_pb2.ColorInfo(color=color_pb,
-                                                      score=1.0,
-                                                      pixel_fraction=1.0)
+        color_info_pb = image_annotator_pb2.ColorInfo(
+            color=color_pb, score=1.0, pixel_fraction=1.0)
         dominant_colors = image_annotator_pb2.DominantColorsAnnotation(
             colors=[color_info_pb])
 
