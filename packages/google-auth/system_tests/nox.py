@@ -86,11 +86,9 @@ def install_cloud_sdk(session):
     # This tells gcloud which Python interpreter to use (always use 2.7)
     session.env[CLOUD_SDK_PYTHON_ENV] = CLOUD_SDK_PYTHON
 
-    # If gcloud cli executable already exists, we don't need to do anything
-    # else.
-    # Note that because of this we do not attempt to update the sdk -
-    # if the CLOUD_SDK_ROOT is cached, it will need to be periodically cleared.
+    # If gcloud cli executable already exists, just update it.
     if py.path.local(GCLOUD).exists():
+        session.run(GCLOUD, 'components', 'update', '-q')
         return
 
     tar_path = CLOUD_SDK_ROOT.join(CLOUD_SDK_DIST_FILENAME)
