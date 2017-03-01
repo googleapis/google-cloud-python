@@ -617,7 +617,7 @@ class TestClient(unittest.TestCase):
 
         http_mock = mock.Mock(spec=httplib2.Http)
         deepcopy = mock.Mock(return_value=http_mock)
-        setup_logging = mock.Mock()
+        setup_logging = mock.Mock(spec=[])
 
         credentials = _make_credentials()
 

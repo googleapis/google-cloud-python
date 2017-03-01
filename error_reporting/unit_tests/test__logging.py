@@ -26,10 +26,8 @@ def _make_credentials():
 class Test_ErrorReportingLoggingAPI(unittest.TestCase):
 
     PROJECT = 'PROJECT'
-    SERVICE = 'SERVICE'
-    VERSION = 'myversion'
 
-    def _call_fut(self, project, credentials):
+    def _make_one(self, project, credentials):
         from google.cloud.error_reporting._logging import (
             _ErrorReportingLoggingAPI)
 
@@ -37,17 +35,27 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
 
     def test_constructor(self):
         credentials = _make_credentials()
-        logger_client = self._call_fut(self.PROJECT, credentials)
+        logging_api = self._make_one(self.PROJECT, credentials)
 
-        self.assertEqual(logger_client.logging_client._connection.credentials,
+        self.assertEqual(logging_api.logging_client._connection.credentials,
                          credentials)
-        self.assertEqual(logger_client.logging_client.project, self.PROJECT)
+        self.assertEqual(logging_api.logging_client.project, self.PROJECT)
 
-    @mock.patch('google.cloud.logging.client')
-    def test_report_error_event(self, _):
+    @mock.patch('google.cloud.logging.client.Client')
+    def test_report_error_event(self, mocked_cls):
         credentials = _make_credentials()
-        logger_client = self._call_fut(self.PROJECT, credentials)
-        payload = mock.Mock()
-        logger_client.report_error_event(payload)
-        logger_mock = mock.Mock()
-        self.assertTrue(logger_mock.log_struct.called_with, payload)
+        logging_api = self._make_one(self.PROJECT, credentials)
+        mocked_cls.assert_called_once_with(self.PROJECT, credentials, None)
+        self.assertIs(logging_api.logging_client, mocked_cls.return_value)
+
+        logger = mock.Mock(spec=['log_struct'])
+        logging_api.logging_client.logger.return_value = logger
+
+        # Actually make the API call.
+        error_report = {
+            'message': 'The cabs are here.',
+        }
+        logging_api.report_error_event(error_report)
+
+        # Check the mocks.
+        logger.log_struct.assert_called_once_with(error_report)

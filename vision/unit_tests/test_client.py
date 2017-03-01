@@ -51,12 +51,12 @@ class TestClient(unittest.TestCase):
         vision_api = client._vision_api
         vision_api._connection = _Connection()
 
-        api = mock.Mock()
-        api.annotate.return_value = mock.sentinel.annotated
+        annotate = mock.Mock(return_value=mock.sentinel.annotated, spec=[])
+        api = mock.Mock(annotate=annotate, spec=['annotate'])
 
         client._vision_api_internal = api
         client._vision_api.annotate()
-        api.annotate.assert_called_once_with()
+        annotate.assert_called_once_with()
 
     def test_make_gax_client(self):
         from google.cloud.vision._gax import _GAPICVisionAPI
