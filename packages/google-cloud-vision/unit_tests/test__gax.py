@@ -33,7 +33,10 @@ class TestGAXClient(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def test_ctor(self):
-        client = mock.Mock()
+        client = mock.Mock(
+            _credentials=_make_credentials(),
+            spec=['_credentials'],
+        )
         with mock.patch('google.cloud.vision._gax.image_annotator_client.'
                         'ImageAnnotatorClient'):
             api = self._make_one(client)
