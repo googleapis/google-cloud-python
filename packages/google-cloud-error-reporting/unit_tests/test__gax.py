@@ -59,24 +59,34 @@ class Test_ErrorReportingGaxApi(unittest.TestCase):
 
     PROJECT = 'PROJECT'
 
-    def _call_fut(self, gax_api, project):
+    def _make_one(self, gax_api, project):
         from google.cloud.error_reporting._gax import _ErrorReportingGaxApi
 
         return _ErrorReportingGaxApi(gax_api, project)
 
     def test_constructor(self):
-        gax_api = mock.Mock()
-        gax_client_wrapper = self._call_fut(gax_api, self.PROJECT)
+        gax_api = mock.Mock(spec=[])
+        gax_client_wrapper = self._make_one(gax_api, self.PROJECT)
 
         self.assertEqual(gax_client_wrapper._project, self.PROJECT)
         self.assertEqual(gax_client_wrapper._gax_api, gax_api)
 
-    @mock.patch("google.cloud.error_reporting._gax.ParseDict")
-    def test_report_error_event(self, _):
-        gax_api = mock.Mock()
-        gax_client_wrapper = self._call_fut(gax_api, self.PROJECT)
+    def test_report_error_event(self):
+        from google.cloud.proto.devtools.clouderrorreporting.v1beta1 import (
+            report_errors_service_pb2)
 
-        mock_error_report = mock.Mock()
-        gax_client_wrapper.report_error_event(mock_error_report)
-        self.assertTrue(gax_api.report_error_event.called_with,
-                        mock_error_report)
+        gax_api = mock.Mock(spec=['project_path', 'report_error_event'])
+        gax_client_wrapper = self._make_one(gax_api, self.PROJECT)
+
+        error_report = {
+            'message': 'The cabs are here.',
+        }
+        gax_client_wrapper.report_error_event(error_report)
+
+        gax_api.project_path.assert_called_once_with(self.PROJECT)
+        project_name = gax_api.project_path.return_value
+        error_pb = report_errors_service_pb2.ReportedErrorEvent(
+            message=error_report['message'],
+        )
+        gax_api.report_error_event.assert_called_once_with(
+            project_name, error_pb)

@@ -44,6 +44,14 @@ class TestClient(unittest.TestCase):
 
         return HTTPContext(*args, **kw)
 
+    def _get_report_payload(self, error_api):
+        self.assertEqual(error_api.report_error_event.call_count, 1)
+        call = error_api.report_error_event.mock_calls[0]
+        _, positional, kwargs = call
+        self.assertEqual(kwargs, {})
+        self.assertEqual(len(positional), 1)
+        return positional[0]
+
     @mock.patch(
         'google.cloud.error_reporting.client._determine_default_project')
     def test_ctor_default(self, default_mock):
@@ -131,7 +139,7 @@ class TestClient(unittest.TestCase):
 
         make_api.assert_called_once_with(client)
 
-        payload = error_api.report_error_event.call_args[0][0]
+        payload = self._get_report_payload(error_api)
         self.assertEqual(payload['serviceContext'], {
             'service': service,
             'version': version
@@ -158,8 +166,7 @@ class TestClient(unittest.TestCase):
         message = 'this is an error'
         client.report(message)
 
-        payload = error_api.report_error_event.call_args[0][0]
-        make_api.assert_called_once_with(client)
+        payload = self._get_report_payload(error_api)
 
         self.assertEqual(payload['message'], message)
         report_location = payload['context']['reportLocation']
