@@ -14,6 +14,8 @@
 
 """GAX Client for interacting with the Google Cloud Vision API."""
 
+from google.gax.errors import RetryError
+
 from google.cloud.gapic.vision.v1 import image_annotator_client
 from google.cloud.proto.vision.v1 import image_annotator_pb2
 
@@ -66,7 +68,12 @@ class _GAPICVisionAPI(object):
             requests = requests_pb
 
         annotator_client = self._annotator_client
-        responses = annotator_client.batch_annotate_images(requests).responses
+        try:
+            api_result = annotator_client.batch_annotate_images(requests)
+            responses = api_result.responses
+        except RetryError as exception:
+            raise exception.cause.exception()
+
         return [Annotations.from_pb(response) for response in responses]
 
 
