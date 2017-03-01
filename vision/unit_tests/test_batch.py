@@ -40,7 +40,7 @@ class TestBatch(unittest.TestCase):
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
 
-        client = mock.Mock()
+        client = mock.Mock(spec=[])
         image = Image(client, source_uri='gs://images/imageone.jpg')
         face_feature = Feature(FeatureTypes.FACE_DETECTION, 5)
         logo_feature = Feature(FeatureTypes.LOGO_DETECTION, 3)
@@ -66,8 +66,13 @@ class TestBatch(unittest.TestCase):
         image_two = client.image(source_uri='gs://images/imagtwo.jpg')
         face_feature = Feature(FeatureTypes.FACE_DETECTION, 5)
         logo_feature = Feature(FeatureTypes.LOGO_DETECTION, 3)
-        client._vision_api_internal = mock.Mock()
-        client._vision_api_internal.annotate.return_value = True
+
+        # Make mocks.
+        annotate = mock.Mock(return_value=True, spec=[])
+        vision_api = mock.Mock(annotate=annotate, spec=['annotate'])
+        client._vision_api_internal = vision_api
+
+        # Actually  call the partially-mocked method.
         batch = client.batch()
         batch.add_image(image_one, [face_feature])
         batch.add_image(image_two, [logo_feature, face_feature])
