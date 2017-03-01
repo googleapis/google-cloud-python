@@ -41,6 +41,11 @@ class TestCredentials(object):
         assert not self.credentials.expired
         # Scopes aren't required for these credentials
         assert not self.credentials.requires_scopes
+        # Test properties
+        assert self.credentials.refresh_token == self.REFRESH_TOKEN
+        assert self.credentials.token_uri == self.TOKEN_URI
+        assert self.credentials.client_id == self.CLIENT_ID
+        assert self.credentials.client_secret == self.CLIENT_SECRET
 
     def test_create_scoped(self):
         with pytest.raises(NotImplementedError):

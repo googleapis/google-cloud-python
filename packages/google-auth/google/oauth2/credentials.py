@@ -69,6 +69,27 @@ class Credentials(credentials.Scoped, credentials.Credentials):
         self._client_secret = client_secret
 
     @property
+    def refresh_token(self):
+        """Optional[str]: The OAuth 2.0 refresh token."""
+        return self._refresh_token
+
+    @property
+    def token_uri(self):
+        """Optional[str]: The OAuth 2.0 authorization server's token endpoint
+        URI."""
+        return self._token_uri
+
+    @property
+    def client_id(self):
+        """Optional[str]: The OAuth 2.0 client ID."""
+        return self._client_id
+
+    @property
+    def client_secret(self):
+        """Optional[str]: The OAuth 2.0 client secret."""
+        return self._client_secret
+
+    @property
     def requires_scopes(self):
         """False: OAuth 2.0 credentials have their scopes set when
         the initial token is requested and can not be changed."""
