@@ -136,9 +136,9 @@ User credentials
 ++++++++++++++++
 
 User credentials are typically obtained via `OAuth 2.0`_. This library does not
-provide any support for *obtaining* user credentials, however, you can use user
-credentials with this library. You can use libraries such as `oauthlib`_ or
-`oauth2client`_ to obtain the access token. After you have an access token, you
+provide any direct support for *obtaining* user credentials, however, you can
+use user credentials with this library. You can use libraries such as
+`oauthlib`_ to obtain the access token. After you have an access token, you
 can create a :class:`google.oauth2.credentials.Credentials` instance::
 
     import google.oauth2.credentials
@@ -156,12 +156,27 @@ URI to allow the credentials to be automatically refreshed::
         client_id='client_id',
         client_secret='client_secret')
 
+
+This library has some helpers for integrating with `requests-oauthlib`_ to
+provide support for obtaining user credentials. You can use
+:func:`google.oauth2.oauthlib.credentials_from_session` to obtain
+:class:`google.oauth2.credentials.Credentials` from a 
+:class:`requests_oauthlib.OAuth2Session` as above::
+
+    import google.oauth2.oauthlib
+
+    google_auth_credentials = google.oauth2.oauthlib.credentials_from_session(
+        oauth2session)
+
+You can also use :class:`google.oauth2.flow.Flow` to perform the OAuth 2.0
+Authorization Grant Flow to obtain credentials using `requests-oauthlib`_.
+
 .. _OAuth 2.0:
     https://developers.google.com/identity/protocols/OAuth2
 .. _oauthlib:
     https://oauthlib.readthedocs.io/en/latest/
-.. _oauth2client:
-    https://oauth2client.readthedocs.org
+.. _requests-oauthlib:
+    https://requests-oauthlib.readthedocs.io/en/latest/
 
 Making authenticated requests
 -----------------------------
