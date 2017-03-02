@@ -24,3 +24,10 @@ _APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
 
 _CONTAINER_ENGINE_ENV = 'KUBERNETES_SERVICE'
 """Environment variable set in a Google Container Engine environment."""
+
+_GAE_SERVICE = 'GAE_SERVICE'
+"""Environment variable in the App Engine Flex env that indicates version."""
+
+_GAE_VERSION = 'GAE_VERSION'
+"""Environment variable in the App Engine Flex env that indicates version."""
+

@@ -17,30 +17,36 @@
 import functools
 import os
 import signal
+import six
 import sys
 import traceback
 
 from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
 from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
-
+from google.cloud.logging._environment_vars import _GAE_SERVICE
+from google.cloud.logging._environment_vars import _GAE_VERSION
+from google.cloud. import _helpers
 
 # Maximum size in bytes to send to Stackdriver Logging in one entry
-MAX_PAYLOAD_SIZE = 1024 * 100
+_MAX_PAYLOAD_SIZE = 100 * 1024
+
+_LOGGER_NAME_TMPL = 'projects/{}/logs/appengine.googleapis.com%2Fapp.shutdown'
+
 
 
 def _get_gae_instance():
     """Returns the App Engine Flexible instance."""
-    return os.getenv('GAE_INSTANCE')
+    return os.getenv(_APPENGINE_FLEXIBLE_ENV_FLEX)
 
 
 def _get_gae_service():
     """Returns the App Engine Flexible service."""
-    return os.getenv('GAE_SERVICE')
+    return os.getenv(_GAE_SERVICE)
 
 
 def _get_gae_version():
     """Returns the App Engine Flexible version."""
-    return os.getenv('GAE_VERSION')
+    return os.getenv(_GAE_VERSION)
 
 
 def _split_entry(payload):
@@ -48,14 +54,14 @@ def _split_entry(payload):
 
     Stackdriver Logging payloads are a maximum of 100Kb.
     """
-    return [payload[i:i + MAX_PAYLOAD_SIZE]
-            for i in range(0, len(payload), MAX_PAYLOAD_SIZE)]
+    return [payload[i:i + _MAX_PAYLOAD_SIZE]
+            for i in six.moves.xrange(0, len(payload), _MAX_PAYLOAD_SIZE)]
 
 
 def _write_stacktrace_log(client, traces):
     """Writes the trace logs to the appropriate GAE resource in Stackdriver.
 
-    :type client: `google.cloud.logging.Client`
+    :type client: :class:`google.cloud.logging.Client`
     :param client: Stackdriver logging client.
 
     :type traces: str
@@ -68,12 +74,16 @@ def _write_stacktrace_log(client, traces):
 
     text_payload = '{}\nThread traces\n{}'.format(gae_instance, traces)
 
-    logger_name = 'projects/{}/logs/{}'.format(
-        client.project, 'appengine.googleapis.com%2Fapp.shutdown')
+    logger_name = _LOGGER_NAME_TMPL.format(client.project)
 
-    resource = {'type': 'gae_app', 'labels': {'project_id': client.project,
-                                              'version_id': gae_version,
-                                              'module_id': gae_service}}
+    resource = {
+        'type': 'gae_app',
+        'labels': {
+            'project_id': client.project,
+            'version_id': gae_version,
+             'module_id': gae_service,
+        },
+    }
 
     labels = {
         'appengine.googleapis.com/version_id': gae_version,
@@ -82,7 +92,7 @@ def _write_stacktrace_log(client, traces):
         'appengine.googleapis.com/module_id': gae_service,
     }
 
-    split_payloads = _split_entry(text_payload.encode('utf-8'))
+    split_payloads = _split_entry(_helper.to_bytes(text_payload))
     entries = [{'text_payload': payload} for payload in split_payloads]
 
     client.logging_api.write_entries(
@@ -108,14 +118,14 @@ def _report_stacktraces(
     :type frame: frame object
     :param frame: The current stack frame.
     """
-    traces = ''
+    traces = []
     for thread_id, stack in sys._current_frames().items():
         traces += '\n# ThreadID: {}'.format(thread_id)
         for filename, lineno, name, _ in traceback.extract_stack(stack):
             traces += 'File: {}, line {}, in {}'.format(
                 filename, lineno, name)
 
-    _write_stacktrace_log(client, traces)
+    _write_stacktrace_log(client, ''.join(traces))
 
 
 def setup_stacktrace_crash_report(client):
