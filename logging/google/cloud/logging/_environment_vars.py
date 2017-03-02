@@ -30,4 +30,3 @@ _GAE_SERVICE = 'GAE_SERVICE'
 
 _GAE_VERSION = 'GAE_VERSION'
 """Environment variable in the App Engine Flex env that indicates version."""
-

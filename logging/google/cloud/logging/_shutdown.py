@@ -17,7 +17,6 @@
 import functools
 import os
 import signal
-import six
 import sys
 import traceback
 
@@ -25,13 +24,14 @@ from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
 from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
 from google.cloud.logging._environment_vars import _GAE_SERVICE
 from google.cloud.logging._environment_vars import _GAE_VERSION
-from google.cloud. import _helpers
+from google.cloud import _helpers
+
+import six
 
 # Maximum size in bytes to send to Stackdriver Logging in one entry
 _MAX_PAYLOAD_SIZE = 100 * 1024
 
 _LOGGER_NAME_TMPL = 'projects/{}/logs/appengine.googleapis.com%2Fapp.shutdown'
-
 
 
 def _get_gae_instance():
@@ -81,7 +81,7 @@ def _write_stacktrace_log(client, traces):
         'labels': {
             'project_id': client.project,
             'version_id': gae_version,
-             'module_id': gae_service,
+            'module_id': gae_service,
         },
     }
 
@@ -92,7 +92,7 @@ def _write_stacktrace_log(client, traces):
         'appengine.googleapis.com/module_id': gae_service,
     }
 
-    split_payloads = _split_entry(_helper.to_bytes(text_payload))
+    split_payloads = _split_entry(_helpers._to_bytes(text_payload))
     entries = [{'text_payload': payload} for payload in split_payloads]
 
     client.logging_api.write_entries(
