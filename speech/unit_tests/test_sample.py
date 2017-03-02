@@ -31,9 +31,9 @@ class TestSample(unittest.TestCase):
     def test_initialize_sample(self):
         from google.cloud.speech.encoding import Encoding
 
-        sample = self._make_one(source_uri=self.AUDIO_SOURCE_URI,
-                                encoding=Encoding.FLAC,
-                                sample_rate=self.SAMPLE_RATE)
+        sample = self._make_one(
+            source_uri=self.AUDIO_SOURCE_URI, encoding=Encoding.FLAC,
+            sample_rate=self.SAMPLE_RATE)
         self.assertEqual(sample.source_uri, self.AUDIO_SOURCE_URI)
         self.assertEqual(sample.encoding, Encoding.FLAC)
         self.assertEqual(sample.sample_rate, self.SAMPLE_RATE)
@@ -42,17 +42,19 @@ class TestSample(unittest.TestCase):
         from io import BytesIO
 
         with self.assertRaises(ValueError):
-            self._make_one(content='awefawagaeragere',
-                           source_uri=self.AUDIO_SOURCE_URI)
+            self._make_one(
+                content='awefawagaeragere', source_uri=self.AUDIO_SOURCE_URI)
 
         with self.assertRaises(ValueError):
-            self._make_one(stream=BytesIO(b'awefawagaeragere'),
-                           source_uri=self.AUDIO_SOURCE_URI)
+            self._make_one(
+                stream=BytesIO(b'awefawagaeragere'),
+                source_uri=self.AUDIO_SOURCE_URI)
 
         with self.assertRaises(ValueError):
-            self._make_one(content='awefawagaeragere',
-                           stream=BytesIO(b'awefawagaeragere'),
-                           source_uri=self.AUDIO_SOURCE_URI)
+            self._make_one(
+                content='awefawagaeragere',
+                stream=BytesIO(b'awefawagaeragere'),
+                source_uri=self.AUDIO_SOURCE_URI)
 
     def test_stream_property(self):
         from io import BytesIO
@@ -60,8 +62,9 @@ class TestSample(unittest.TestCase):
 
         data = b'abc 1 2 3 4'
         stream = BytesIO(data)
-        sample = self._make_one(stream=stream, encoding=Encoding.FLAC,
-                                sample_rate=self.SAMPLE_RATE)
+        sample = self._make_one(
+            stream=stream, encoding=Encoding.FLAC,
+            sample_rate=self.SAMPLE_RATE)
         self.assertEqual(sample.stream, stream)
         self.assertEqual(sample.stream.read(), data)
 
@@ -71,8 +74,9 @@ class TestSample(unittest.TestCase):
 
         test_bytes = b'testing 1 2 3'
 
-        sample = Sample(content=test_bytes, encoding=speech.Encoding.FLAC,
-                        sample_rate=self.SAMPLE_RATE)
+        sample = Sample(
+            content=test_bytes, encoding=speech.Encoding.FLAC,
+            sample_rate=self.SAMPLE_RATE)
         self.assertEqual(sample.content, test_bytes)
         self.assertEqual(sample.encoding, speech.Encoding.FLAC)
         self.assertEqual(sample.sample_rate, self.SAMPLE_RATE)
@@ -81,15 +85,15 @@ class TestSample(unittest.TestCase):
         from google.cloud.speech.encoding import Encoding
 
         with self.assertRaises(ValueError):
-            self._make_one(source_uri=self.AUDIO_SOURCE_URI,
-                           sample_rate=7999)
+            self._make_one(
+                source_uri=self.AUDIO_SOURCE_URI, sample_rate=7999)
         with self.assertRaises(ValueError):
-            self._make_one(source_uri=self.AUDIO_SOURCE_URI,
-                           sample_rate=48001)
+            self._make_one(
+                source_uri=self.AUDIO_SOURCE_URI, sample_rate=48001)
 
-        sample = self._make_one(source_uri=self.AUDIO_SOURCE_URI,
-                                sample_rate=self.SAMPLE_RATE,
-                                encoding=Encoding.FLAC)
+        sample = self._make_one(
+            source_uri=self.AUDIO_SOURCE_URI, sample_rate=self.SAMPLE_RATE,
+            encoding=Encoding.FLAC)
         self.assertEqual(sample.sample_rate, self.SAMPLE_RATE)
         self.assertEqual(sample.encoding, Encoding.FLAC)
 
@@ -97,13 +101,13 @@ class TestSample(unittest.TestCase):
         from google.cloud.speech.encoding import Encoding
 
         with self.assertRaises(ValueError):
-            self._make_one(source_uri=self.AUDIO_SOURCE_URI,
-                           sample_rate=self.SAMPLE_RATE,
-                           encoding='OGG')
+            self._make_one(
+                source_uri=self.AUDIO_SOURCE_URI, sample_rate=self.SAMPLE_RATE,
+                encoding='OGG')
         with self.assertRaises(ValueError):
-            self._make_one(source_uri=self.AUDIO_SOURCE_URI,
-                           sample_rate=self.SAMPLE_RATE)
-        sample = self._make_one(source_uri=self.AUDIO_SOURCE_URI,
-                                sample_rate=self.SAMPLE_RATE,
-                                encoding=Encoding.FLAC)
+            self._make_one(
+                source_uri=self.AUDIO_SOURCE_URI, sample_rate=self.SAMPLE_RATE)
+        sample = self._make_one(
+            source_uri=self.AUDIO_SOURCE_URI, sample_rate=self.SAMPLE_RATE,
+            encoding=Encoding.FLAC)
         self.assertEqual(sample.encoding, Encoding.FLAC)
