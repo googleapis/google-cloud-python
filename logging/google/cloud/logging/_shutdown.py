@@ -122,8 +122,8 @@ def _report_stacktraces(
     for thread_id, stack in sys._current_frames().items():
         traces += '\n# ThreadID: {}'.format(thread_id)
         for filename, lineno, name, _ in traceback.extract_stack(stack):
-            traces += 'File: {}, line {}, in {}'.format(
-                filename, lineno, name)
+            traces.append('File: {}, line {}, in {}'.format(
+                filename, lineno, name))
 
     _write_stacktrace_log(client, ''.join(traces))
 
