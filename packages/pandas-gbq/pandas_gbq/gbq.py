@@ -639,14 +639,12 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
              **kwargs):
     r"""Load data from Google BigQuery.
 
-    THIS IS AN EXPERIMENTAL LIBRARY
-
     The main method a user calls to execute a Query in Google BigQuery
     and read results into a pandas DataFrame.
 
     Google BigQuery API Client Library v2 for Python is used.
-    Documentation is available at
-    https://developers.google.com/api-client-library/python/apis/bigquery/v2
+    Documentation is available `here
+    <https://developers.google.com/api-client-library/python/apis/bigquery/v2>`__
 
     Authentication to the Google BigQuery service is via OAuth 2.0.
 
@@ -697,7 +695,7 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
             configuration = {'query': {'useQueryCache': False}}
 
         For more information see `BigQuery SQL Reference
-        <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`
+        <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query>`__
 
     Returns
     -------
@@ -767,14 +765,12 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
            verbose=True, reauth=False, if_exists='fail', private_key=None):
     """Write a DataFrame to a Google BigQuery table.
 
-    THIS IS AN EXPERIMENTAL LIBRARY
-
     The main method a user calls to export pandas DataFrame contents to
     Google BigQuery table.
 
     Google BigQuery API Client Library v2 for Python is used.
-    Documentation is available at
-    https://developers.google.com/api-client-library/python/apis/bigquery/v2
+    Documentation is available `here
+    <https://developers.google.com/api-client-library/python/apis/bigquery/v2>`__
 
     Authentication to the Google BigQuery service is via OAuth 2.0.
 
