@@ -206,9 +206,12 @@ class _Connection(object):
             mutation_results=mutation_results)
 
     def begin_transaction(self, project):
+        import mock
+
         self._begun = project
         if self._side_effect is None:
-            return self._xact_id
+            return mock.Mock(
+                transaction=self._xact_id, spec=['transaction'])
         else:
             raise self._side_effect
 
