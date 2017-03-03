@@ -200,6 +200,7 @@ class Transaction(Batch):
         - Sets the current transaction's ID to None.
         """
         try:
+            # No need to use the response it contains nothing.
             self._client._connection.rollback(self.project, self._id)
         finally:
             super(Transaction, self).rollback()
