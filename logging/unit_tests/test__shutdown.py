@@ -75,10 +75,16 @@ class Test_report_stacktraces(unittest.TestCase):
         return _report_stacktraces(client, signal, frame)
 
     def test_report_stacktraces(self):
+        import re
         patch = mock.patch(
             'google.cloud.logging._shutdown._write_stacktrace_log')
         with patch as write_log_mock:
             self._call_fut(mock.Mock(), mock.Mock(), mock.Mock())
 
             traces = write_log_mock.call_args[0][1]
-        self.assertIn('test__shutdown', traces)
+
+        match = re.match(
+            '.*ThreadID: .*File:.*test__shutdown.*',
+            traces,
+            re.DOTALL)
+        self.assertIsNotNone(match)
