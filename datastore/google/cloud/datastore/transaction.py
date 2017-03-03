@@ -184,8 +184,9 @@ class Transaction(Batch):
         """
         super(Transaction, self).begin()
         try:
-            self._id = self._client._connection.begin_transaction(
+            response_pb = self._client._connection.begin_transaction(
                 self.project)
+            self._id = response_pb.transaction
         except:  # noqa: E722 do not use bare except, specify exception instead
             self._status = self._ABORTED
             raise
