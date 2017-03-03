@@ -448,11 +448,14 @@ class Connection(connection_module.Connection):
         :type transaction_id: str
         :param transaction_id: The transaction ID returned from
                                :meth:`begin_transaction`.
+
+        :rtype: :class:`.datastore_pb2.RollbackResponse`
+        :returns: The returned protobuf response object.
         """
         request = _datastore_pb2.RollbackRequest()
         request.transaction = transaction_id
-        # Nothing to do with this response, so just execute the method.
-        self._datastore_api.rollback(project, request)
+        # Response is empty (i.e. no fields) but we return it anyway.
+        return self._datastore_api.rollback(project, request)
 
     def allocate_ids(self, project, key_pbs):
         """Obtain backend-generated IDs for a set of keys.
