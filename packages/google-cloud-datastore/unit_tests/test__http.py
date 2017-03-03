@@ -767,26 +767,31 @@ class TestConnection(unittest.TestCase):
     def test_rollback_ok(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        PROJECT = 'PROJECT'
-        TRANSACTION = b'xact'
-
+        project = 'PROJECT'
+        transaction = b'xact'
         rsp_pb = datastore_pb2.RollbackResponse()
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
+
+        # Make request.
         conn = self._make_one(client)
-        URI = '/'.join([
+        response = conn.rollback(project, transaction)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':rollback',
+            project + ':rollback',
         ])
-        self.assertIsNone(conn.rollback(PROJECT, TRANSACTION))
         cw = http._called_with
-        self._verify_protobuf_call(cw, URI, conn)
-        rq_class = datastore_pb2.RollbackRequest
-        request = rq_class()
+        self._verify_protobuf_call(cw, uri, conn)
+        request = datastore_pb2.RollbackRequest()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, TRANSACTION)
+        self.assertEqual(request.transaction, transaction)
 
     def test_allocate_ids_empty(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
