@@ -15,4 +15,7 @@
 """Google Cloud Bigtable API package."""
 
 
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-bigtable').version
+
 from google.cloud.bigtable.client import Client
