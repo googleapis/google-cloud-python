@@ -7,7 +7,9 @@
 # Packages
 *.egg
 *.egg-info
+*/setup_base
 dist
+*/setup_base
 build
 eggs
 parts
