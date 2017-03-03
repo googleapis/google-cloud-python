@@ -940,7 +940,17 @@ class _MockConnection(object):
         self._lookup_cw.append((project, key_pbs, eventual, transaction_id))
         triple, self._lookup = self._lookup[0], self._lookup[1:]
         results, missing, deferred = triple
-        return results, missing, deferred
+
+        entity_results_found = [
+            mock.Mock(entity=result, spec=['entity']) for result in results]
+        entity_results_missing = [
+            mock.Mock(entity=missing_entity, spec=['entity'])
+            for missing_entity in missing]
+        return mock.Mock(
+            found=entity_results_found,
+            missing=entity_results_missing,
+            deferred=deferred,
+            spec=['found', 'missing', 'deferred'])
 
     def commit(self, project, commit_request, transaction_id):
         from google.cloud.proto.datastore.v1 import datastore_pb2
