@@ -116,28 +116,29 @@ def _extended_lookup(connection, project, key_pbs,
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
 
-        results_found, missing_found, deferred_found = connection.lookup(
+        lookup_response = connection.lookup(
             project=project,
             key_pbs=key_pbs,
             eventual=eventual,
             transaction_id=transaction_id,
         )
 
-        results.extend(results_found)
+        # Accumulate the new results.
+        results.extend(result.entity for result in lookup_response.found)
 
         if missing is not None:
-            missing.extend(missing_found)
+            missing.extend(result.entity for result in lookup_response.missing)
 
         if deferred is not None:
-            deferred.extend(deferred_found)
+            deferred.extend(lookup_response.deferred)
             break
 
-        if len(deferred_found) == 0:
+        if len(lookup_response.deferred) == 0:
             break
 
         # We have deferred keys, and the user didn't ask to know about
         # them, so retry (but only with the deferred ones).
-        key_pbs = deferred_found
+        key_pbs = lookup_response.deferred
 
     return results
 

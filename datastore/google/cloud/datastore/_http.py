@@ -326,23 +326,14 @@ class Connection(connection_module.Connection):
                                the given transaction.  Incompatible with
                                ``eventual==True``.
 
-        :rtype: tuple
-        :returns: A triple of (``results``, ``missing``, ``deferred``) where
-                  both ``results`` and ``missing`` are lists of
-                  :class:`.entity_pb2.Entity`
-                  and ``deferred`` is a list of
-                  :class:`.entity_pb2.Key`.
+        :rtype: :class:`.datastore_pb2.LookupResponse`
+        :returns: The returned protobuf for the lookup request.
         """
         lookup_request = _datastore_pb2.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
         _add_keys_to_request(lookup_request.keys, key_pbs)
 
-        lookup_response = self._datastore_api.lookup(project, lookup_request)
-
-        results = [result.entity for result in lookup_response.found]
-        missing = [result.entity for result in lookup_response.missing]
-
-        return results, missing, list(lookup_response.deferred)
+        return self._datastore_api.lookup(project, lookup_request)
 
     def run_query(self, project, query_pb, namespace=None,
                   eventual=False, transaction_id=None):
