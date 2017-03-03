@@ -791,55 +791,68 @@ class TestConnection(unittest.TestCase):
     def test_allocate_ids_empty(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        PROJECT = 'PROJECT'
+        project = 'PROJECT'
         rsp_pb = datastore_pb2.AllocateIdsResponse()
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
+
+        # Make request.
         conn = self._make_one(client)
-        URI = '/'.join([
+        response = conn.allocate_ids(project, [])
+
+        # Check the result and verify the callers.
+        self.assertEqual(list(response.keys), [])
+        self.assertEqual(response, rsp_pb)
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':allocateIds',
+            project + ':allocateIds',
         ])
-        self.assertEqual(conn.allocate_ids(PROJECT, []), [])
         cw = http._called_with
-        self._verify_protobuf_call(cw, URI, conn)
-        rq_class = datastore_pb2.AllocateIdsRequest
-        request = rq_class()
+        self._verify_protobuf_call(cw, uri, conn)
+        request = datastore_pb2.AllocateIdsRequest()
         request.ParseFromString(cw['body'])
         self.assertEqual(list(request.keys), [])
 
     def test_allocate_ids_non_empty(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        PROJECT = 'PROJECT'
+        project = 'PROJECT'
         before_key_pbs = [
-            self._make_key_pb(PROJECT, id_=None),
-            self._make_key_pb(PROJECT, id_=None),
+            self._make_key_pb(project, id_=None),
+            self._make_key_pb(project, id_=None),
         ]
         after_key_pbs = [
-            self._make_key_pb(PROJECT),
-            self._make_key_pb(PROJECT, id_=2345),
+            self._make_key_pb(project),
+            self._make_key_pb(project, id_=2345),
         ]
         rsp_pb = datastore_pb2.AllocateIdsResponse()
         rsp_pb.keys.add().CopyFrom(after_key_pbs[0])
         rsp_pb.keys.add().CopyFrom(after_key_pbs[1])
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
+
+        # Make request.
         conn = self._make_one(client)
-        URI = '/'.join([
+        response = conn.allocate_ids(project, before_key_pbs)
+
+        # Check the result and verify the callers.
+        self.assertEqual(list(response.keys), after_key_pbs)
+        self.assertEqual(response, rsp_pb)
+        uri = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
             'projects',
-            PROJECT + ':allocateIds',
+            project + ':allocateIds',
         ])
-        self.assertEqual(conn.allocate_ids(PROJECT, before_key_pbs),
-                         after_key_pbs)
         cw = http._called_with
-        self._verify_protobuf_call(cw, URI, conn)
-        rq_class = datastore_pb2.AllocateIdsRequest
-        request = rq_class()
+        self._verify_protobuf_call(cw, uri, conn)
+        request = datastore_pb2.AllocateIdsRequest()
         request.ParseFromString(cw['body'])
         self.assertEqual(len(request.keys), len(before_key_pbs))
         for key_before, key_after in zip(before_key_pbs, request.keys):

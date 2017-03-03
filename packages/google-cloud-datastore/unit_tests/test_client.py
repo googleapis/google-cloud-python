@@ -149,7 +149,7 @@ class TestClient(unittest.TestCase):
         # this test would fail artificially.
         patch = mock.patch(
             'google.cloud.datastore.client._base_default_project',
-            new=lambda project: None)
+            return_value=None)
         with patch:
             self.assertRaises(EnvironmentError, self._make_one, None)
 
@@ -679,18 +679,18 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(client._connection._commit_cw), 0)
 
     def test_allocate_ids_w_partial_key(self):
-        NUM_IDS = 2
+        num_ids = 2
 
-        INCOMPLETE_KEY = _Key(self.PROJECT)
-        INCOMPLETE_KEY._id = None
+        incomplete_key = _Key(self.PROJECT)
+        incomplete_key._id = None
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
-        result = client.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
+        result = client.allocate_ids(incomplete_key, num_ids)
 
         # Check the IDs returned.
-        self.assertEqual([key._id for key in result], list(range(NUM_IDS)))
+        self.assertEqual([key._id for key in result], list(range(num_ids)))
 
     def test_allocate_ids_with_completed_key(self):
         creds = _make_credentials()
@@ -954,7 +954,8 @@ class _MockConnection(object):
     def allocate_ids(self, project, key_pbs):
         self._alloc_cw.append((project, key_pbs))
         num_pbs = len(key_pbs)
-        return [_KeyPB(i) for i in list(range(num_pbs))]
+        keys = [_KeyPB(i) for i in list(range(num_pbs))]
+        return mock.Mock(keys=keys, spec=['keys'])
 
 
 class _NoCommitBatch(object):
