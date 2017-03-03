@@ -36,39 +36,24 @@ class Test__make_data_stub(unittest.TestCase):
 
         return _make_data_stub(client)
 
-    def test_without_emulator(self):
-        from google.cloud._testing import _Monkey
+    @mock.patch('google.cloud.bigtable.client.make_secure_stub',
+                return_value=mock.sentinel.stub)
+    def test_without_emulator(self, make_stub):
         from google.cloud.bigtable import client as MUT
 
         credentials = _make_credentials()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
-        fake_stub = object()
-        make_secure_stub_args = []
-
-        def mock_make_secure_stub(*args, **kwargs):
-            make_secure_stub_args.append(args)
-            make_secure_stub_args.append(kwargs)
-            return fake_stub
-
-        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._call_fut(client)
-
-        extra_options = {'extra_options': (
-            ('grpc.max_message_length', 104857600),
-            ('grpc.max_receive_message_length', 104857600)
-        )}
-        self.assertIs(result, fake_stub)
-        self.assertEqual(make_secure_stub_args, [
-            (
-                client.credentials,
-                client.user_agent,
-                MUT.bigtable_pb2.BigtableStub,
-                MUT.DATA_API_HOST,
-            ),
-            extra_options,
-        ])
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        make_stub.assert_called_once_with(
+            client.credentials,
+            client.user_agent,
+            MUT.bigtable_pb2.BigtableStub,
+            MUT.DATA_API_HOST,
+            extra_options=MUT._GRPC_MAX_LENGTH_OPTIONS,
+        )
 
     def test_with_emulator(self):
         from google.cloud._testing import _Monkey
@@ -103,33 +88,24 @@ class Test__make_instance_stub(unittest.TestCase):
 
         return _make_instance_stub(client)
 
-    def test_without_emulator(self):
-        from google.cloud._testing import _Monkey
+    @mock.patch('google.cloud.bigtable.client.make_secure_stub',
+                return_value=mock.sentinel.stub)
+    def test_without_emulator(self, make_stub):
         from google.cloud.bigtable import client as MUT
 
         credentials = _make_credentials()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
-        fake_stub = object()
-        make_secure_stub_args = []
-
-        def mock_make_secure_stub(*args):
-            make_secure_stub_args.append(args)
-            return fake_stub
-
-        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._call_fut(client)
-
-        self.assertIs(result, fake_stub)
-        self.assertEqual(make_secure_stub_args, [
-            (
-                client.credentials,
-                client.user_agent,
-                MUT.bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
-                MUT.INSTANCE_ADMIN_HOST,
-            ),
-        ])
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        make_stub.assert_called_once_with(
+            client.credentials,
+            client.user_agent,
+            MUT.bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
+            MUT.INSTANCE_ADMIN_HOST,
+            extra_options=MUT._GRPC_EXTRA_OPTIONS,
+        )
 
     def test_with_emulator(self):
         from google.cloud._testing import _Monkey
@@ -164,35 +140,25 @@ class Test__make_operations_stub(unittest.TestCase):
 
         return _make_operations_stub(client)
 
-    def test_without_emulator(self):
+    @mock.patch('google.cloud.bigtable.client.make_secure_stub',
+                return_value=mock.sentinel.stub)
+    def test_without_emulator(self, make_stub):
         from google.longrunning import operations_grpc
-
-        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         credentials = _make_credentials()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
-        fake_stub = object()
-        make_secure_stub_args = []
-
-        def mock_make_secure_stub(*args):
-            make_secure_stub_args.append(args)
-            return fake_stub
-
-        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._call_fut(client)
-
-        self.assertIs(result, fake_stub)
-        self.assertEqual(make_secure_stub_args, [
-            (
-                client.credentials,
-                client.user_agent,
-                operations_grpc.OperationsStub,
-                MUT.OPERATIONS_API_HOST,
-            ),
-        ])
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        make_stub.assert_called_once_with(
+            client.credentials,
+            client.user_agent,
+            operations_grpc.OperationsStub,
+            MUT.OPERATIONS_API_HOST,
+            extra_options=MUT._GRPC_EXTRA_OPTIONS,
+        )
 
     def test_with_emulator(self):
         from google.longrunning import operations_grpc
@@ -229,33 +195,24 @@ class Test__make_table_stub(unittest.TestCase):
 
         return _make_table_stub(client)
 
-    def test_without_emulator(self):
-        from google.cloud._testing import _Monkey
+    @mock.patch('google.cloud.bigtable.client.make_secure_stub',
+                return_value=mock.sentinel.stub)
+    def test_without_emulator(self, make_stub):
         from google.cloud.bigtable import client as MUT
 
         credentials = _make_credentials()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
-        fake_stub = object()
-        make_secure_stub_args = []
-
-        def mock_make_secure_stub(*args):
-            make_secure_stub_args.append(args)
-            return fake_stub
-
-        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._call_fut(client)
-
-        self.assertIs(result, fake_stub)
-        self.assertEqual(make_secure_stub_args, [
-            (
-                client.credentials,
-                client.user_agent,
-                MUT.bigtable_table_admin_pb2.BigtableTableAdminStub,
-                MUT.TABLE_ADMIN_HOST,
-            ),
-        ])
+        result = self._call_fut(client)
+        self.assertIs(result, mock.sentinel.stub)
+        make_stub.assert_called_once_with(
+            client.credentials,
+            client.user_agent,
+            MUT.bigtable_table_admin_pb2.BigtableTableAdminStub,
+            MUT.TABLE_ADMIN_HOST,
+            extra_options=MUT._GRPC_EXTRA_OPTIONS,
+        )
 
     def test_with_emulator(self):
         from google.cloud._testing import _Monkey
