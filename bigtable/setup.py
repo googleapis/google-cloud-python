@@ -56,7 +56,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-bigtable',
-    version='0.23.0',
+    version='0.23.1',
     description='Python Client for Google Cloud Bigtable',
     long_description=README,
     namespace_packages=[
