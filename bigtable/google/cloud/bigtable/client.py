@@ -32,21 +32,24 @@ In the hierarchy of API concepts
 import os
 
 import google.auth.credentials
+from google.gax.utils import metrics
 from google.longrunning import operations_grpc
 
 from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
+from google.cloud._http import DEFAULT_USER_AGENT
+from google.cloud.client import _ClientFactoryMixin
+from google.cloud.client import _ClientProjectMixin
+from google.cloud.credentials import get_credentials
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
+
+from google.cloud.bigtable import __version__
 from google.cloud.bigtable._generated import bigtable_instance_admin_pb2
 from google.cloud.bigtable._generated import bigtable_pb2
 from google.cloud.bigtable._generated import bigtable_table_admin_pb2
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
-from google.cloud.client import _ClientFactoryMixin
-from google.cloud.client import _ClientProjectMixin
-from google.cloud._http import DEFAULT_USER_AGENT
-from google.cloud.credentials import get_credentials
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 
 TABLE_ADMIN_HOST = 'bigtableadmin.googleapis.com'
@@ -67,10 +70,17 @@ DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
 READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
+_METRICS_HEADERS = (
+    ('gccl', __version__),
+)
+_HEADER_STR = metrics.stringify(metrics.fill(_METRICS_HEADERS))
+_GRPC_EXTRA_OPTIONS = (
+    ('x-goog-api-client', _HEADER_STR),
+)
 # NOTE: 'grpc.max_message_length' will no longer be recognized in
 #       grpcio 1.1 and later.
 _MAX_MSG_LENGTH_100MB = 100 * 1024 * 1024
-_GRPC_MAX_LENGTH_OPTIONS = (
+_GRPC_MAX_LENGTH_OPTIONS = _GRPC_EXTRA_OPTIONS + (
     ('grpc.max_message_length', _MAX_MSG_LENGTH_100MB),
     ('grpc.max_receive_message_length', _MAX_MSG_LENGTH_100MB),
 )
@@ -107,7 +117,7 @@ def _make_instance_stub(client):
         return make_secure_stub(
             client.credentials, client.user_agent,
             bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
-            INSTANCE_ADMIN_HOST)
+            INSTANCE_ADMIN_HOST, extra_options=_GRPC_EXTRA_OPTIONS)
     else:
         return make_insecure_stub(
             bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
@@ -127,9 +137,10 @@ def _make_operations_stub(client):
     :returns: A gRPC stub object.
     """
     if client.emulator_host is None:
-        return make_secure_stub(client.credentials, client.user_agent,
-                                operations_grpc.OperationsStub,
-                                OPERATIONS_API_HOST)
+        return make_secure_stub(
+            client.credentials, client.user_agent,
+            operations_grpc.OperationsStub,
+            OPERATIONS_API_HOST, extra_options=_GRPC_EXTRA_OPTIONS)
     else:
         return make_insecure_stub(operations_grpc.OperationsStub,
                                   client.emulator_host)
@@ -148,7 +159,7 @@ def _make_table_stub(client):
         return make_secure_stub(
             client.credentials, client.user_agent,
             bigtable_table_admin_pb2.BigtableTableAdminStub,
-            TABLE_ADMIN_HOST)
+            TABLE_ADMIN_HOST, extra_options=_GRPC_EXTRA_OPTIONS)
     else:
         return make_insecure_stub(
             bigtable_table_admin_pb2.BigtableTableAdminStub,
