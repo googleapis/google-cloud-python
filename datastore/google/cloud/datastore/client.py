@@ -425,10 +425,10 @@ class Client(ClientWithProject):
         incomplete_key_pbs = [incomplete_key_pb] * num_ids
 
         conn = self._connection
-        allocated_key_pbs = conn.allocate_ids(incomplete_key.project,
-                                              incomplete_key_pbs)
+        response_pb = conn.allocate_ids(
+            incomplete_key.project, incomplete_key_pbs)
         allocated_ids = [allocated_key_pb.path[-1].id
-                         for allocated_key_pb in allocated_key_pbs]
+                         for allocated_key_pb in response_pb.keys]
         return [incomplete_key.completed_key(allocated_id)
                 for allocated_id in allocated_ids]
 

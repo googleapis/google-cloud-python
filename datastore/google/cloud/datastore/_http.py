@@ -466,14 +466,12 @@ class Connection(connection_module.Connection):
                        :class:`.entity_pb2.Key`
         :param key_pbs: The keys for which the backend should allocate IDs.
 
-        :rtype: list of :class:`.entity_pb2.Key`
-        :returns: An equal number of keys,  with IDs filled in by the backend.
+        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
+        :returns: The protobuf response from an allocate IDs request.
         """
         request = _datastore_pb2.AllocateIdsRequest()
         _add_keys_to_request(request.keys, key_pbs)
-        # Nothing to do with this response, so just execute the method.
-        response = self._datastore_api.allocate_ids(project, request)
-        return list(response.keys)
+        return self._datastore_api.allocate_ids(project, request)
 
 
 def _set_read_options(request, eventual, transaction_id):
