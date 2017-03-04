@@ -216,16 +216,29 @@ def _check_if_can_get_correct_default_credentials():
 def clean_gbq_environment(dataset_prefix, private_key=None):
     dataset = gbq._Dataset(_get_project_id(), private_key=private_key)
     all_datasets = dataset.datasets()
-    for i in range(1, 10):
-        dataset_id = dataset_prefix + str(i)
-        if dataset_id in all_datasets:
-            table = gbq._Table(_get_project_id(), dataset_id,
-                               private_key=private_key)
-            all_tables = dataset.tables(dataset_id)
-            for table_id in all_tables:
-                table.delete(table_id)
 
-            dataset.delete(dataset_id)
+    retry = 3
+    while retry > 0:
+        try:
+            retry = retry - 1
+            for i in range(1, 10):
+                dataset_id = dataset_prefix + str(i)
+                if dataset_id in all_datasets:
+                    table = gbq._Table(_get_project_id(), dataset_id,
+                                       private_key=private_key)
+                    all_tables = dataset.tables(dataset_id)
+                    for table_id in all_tables:
+                        table.delete(table_id)
+
+                    dataset.delete(dataset_id)
+            retry = 0
+        except gbq.GenericGBQException as ex:
+            # Build in retry logic to work around the following error :
+            # An internal error occurred and the request could not be...
+            if 'An internal error occurred' in ex.message and retry > 0:
+                pass
+            else:
+                raise ex
 
 
 def make_mixed_dataframe_v2(test_size):
@@ -519,7 +532,8 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
-        pass
+        self.gbq_connector = gbq.GbqConnector(
+            _get_project_id(), private_key=_get_private_key_path())
 
     @classmethod
     def tearDownClass(cls):
@@ -714,6 +728,16 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                   'b'], 'string_3': ['c']})[col_order]
         tm.assert_frame_equal(result_frame, correct_frame)
 
+    def test_read_gbq_raises_invalid_column_order(self):
+        query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
+        col_order = ['string_aaa', 'string_1', 'string_2']
+
+        # Column string_aaa does not exist. Should raise InvalidColumnOrder
+        with tm.assertRaises(gbq.InvalidColumnOrder):
+            gbq.read_gbq(query, project_id=_get_project_id(),
+                         col_order=col_order,
+                         private_key=_get_private_key_path())
+
     def test_column_order_plus_index(self):
         query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
         col_order = ['string_3', 'string_2']
@@ -725,6 +749,16 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         correct_frame.set_index('string_1', inplace=True)
         correct_frame = correct_frame[col_order]
         tm.assert_frame_equal(result_frame, correct_frame)
+
+    def test_read_gbq_raises_invalid_index_column(self):
+        query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
+        col_order = ['string_3', 'string_2']
+
+        # Column string_bbb does not exist. Should raise InvalidIndexColumn
+        with tm.assertRaises(gbq.InvalidIndexColumn):
+            gbq.read_gbq(query, project_id=_get_project_id(),
+                         index_col='string_bbb', col_order=col_order,
+                         private_key=_get_private_key_path())
 
     def test_malformed_query(self):
         with tm.assertRaises(gbq.GenericGBQException):
@@ -903,6 +937,41 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                          private_key=_get_private_key_path(),
                          configuration=config)
 
+    def test_configuration_raises_value_error_with_multiple_config(self):
+        sql_statement = 'SELECT 1'
+        config = {
+            'query': {
+                "query": sql_statement,
+                "useQueryCache": False,
+            },
+            'load': {
+                "query": sql_statement,
+                "useQueryCache": False,
+            }
+        }
+        # Test that only ValueError is raised with multiple configurations
+        with tm.assertRaises(ValueError):
+            gbq.read_gbq(sql_statement, project_id=_get_project_id(),
+                         private_key=_get_private_key_path(),
+                         configuration=config)
+
+    def test_query_response_bytes(self):
+        self.assertEqual(self.gbq_connector.sizeof_fmt(999), "999.0 B")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1024), "1.0 KB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1099), "1.1 KB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1044480), "1020.0 KB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1048576), "1.0 MB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1048576000),
+                         "1000.0 MB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1073741824), "1.0 GB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1.099512E12), "1.0 TB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1.125900E15), "1.0 PB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1.152922E18), "1.0 EB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1.180592E21), "1.0 ZB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1.208926E24), "1.0 YB")
+        self.assertEqual(self.gbq_connector.sizeof_fmt(1.208926E28),
+                         "10000.0 YB")
+
 
 class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
     # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
@@ -1035,6 +1104,16 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                               private_key=_get_private_key_path())
         self.assertEqual(result['num_rows'][0], 5)
 
+    def test_upload_data_if_table_exists_raises_value_error(self):
+        test_id = "4"
+        test_size = 10
+        df = make_mixed_dataframe_v2(test_size)
+
+        # Test invalid value for if_exists parameter raises value error
+        with tm.assertRaises(ValueError):
+            gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
+                       if_exists='xxxxx', private_key=_get_private_key_path())
+
     def test_google_upload_errors_should_raise_exception(self):
         raise pytest.skip("buggy test")
 
@@ -1062,13 +1141,17 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
 
     def test_create_table(self):
         test_id = "6"
-        test_schema = {'fields': [{'name': 'A', 'type': 'FLOAT'},
-                                  {'name': 'B', 'type': 'FLOAT'},
-                                  {'name': 'C', 'type': 'STRING'},
-                                  {'name': 'D', 'type': 'TIMESTAMP'}]}
-        self.table.create(TABLE_ID + test_id, test_schema)
+        schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
+        self.table.create(TABLE_ID + test_id, schema)
         self.assertTrue(self.table.exists(TABLE_ID + test_id),
                         'Expected table to exist')
+
+    def test_create_table_already_exists(self):
+        test_id = "6"
+        schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
+        self.table.create(TABLE_ID + test_id, schema)
+        with tm.assertRaises(gbq.TableCreationError):
+            self.table.create(TABLE_ID + test_id, schema)
 
     def test_table_does_not_exist(self):
         test_id = "7"
@@ -1085,6 +1168,10 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         self.table.delete(TABLE_ID + test_id)
         self.assertTrue(not self.table.exists(
             TABLE_ID + test_id), 'Expected table not to exist')
+
+    def test_delete_table_not_found(self):
+        with tm.assertRaises(gbq.NotFoundException):
+            self.table.delete(TABLE_ID + "not_found")
 
     def test_list_table(self):
         test_id = "9"
@@ -1210,12 +1297,23 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         self.assertTrue(dataset_id in self.dataset.datasets(),
                         'Expected dataset to exist')
 
+    def test_create_dataset_already_exists(self):
+        dataset_id = self.dataset_prefix + "3"
+        self.dataset.create(dataset_id)
+        with tm.assertRaises(gbq.DatasetCreationError):
+            self.dataset.create(dataset_id)
+
     def test_delete_dataset(self):
         dataset_id = self.dataset_prefix + "4"
         self.dataset.create(dataset_id)
         self.dataset.delete(dataset_id)
         self.assertTrue(dataset_id not in self.dataset.datasets(),
                         'Expected dataset not to exist')
+
+    def test_delete_dataset_not_found(self):
+        dataset_id = self.dataset_prefix + "not_found"
+        with tm.assertRaises(gbq.NotFoundException):
+            self.dataset.delete(dataset_id)
 
     def test_dataset_exists(self):
         dataset_id = self.dataset_prefix + "5"

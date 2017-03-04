@@ -97,6 +97,15 @@ class InvalidColumnOrder(PandasError, ValueError):
     pass
 
 
+class InvalidIndexColumn(PandasError, ValueError):
+    """
+    Raised when the provided index column for output
+    results DataFrame does not match the schema
+    returned by BigQuery.
+    """
+    pass
+
+
 class InvalidPageToken(PandasError, ValueError):
     """
     Raised when Google BigQuery fails to return,
@@ -308,9 +317,9 @@ class GbqConnector(object):
 
     # http://stackoverflow.com/questions/1094841/reusable-library-to-get-human-readable-version-of-file-size
     @staticmethod
-    def sizeof_fmt(num, suffix='b'):
+    def sizeof_fmt(num, suffix='B'):
         fmt = "%3.1f %s%s"
-        for unit in ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z']:
+        for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
             if abs(num) < 1024.0:
                 return fmt % (num, unit, suffix)
             num /= 1024.0
@@ -729,7 +738,7 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
         if index_col in final_df.columns:
             final_df.set_index(index_col, inplace=True)
         else:
-            raise InvalidColumnOrder(
+            raise InvalidIndexColumn(
                 'Index column "{0}" does not exist in DataFrame.'
                 .format(index_col)
             )
@@ -1048,9 +1057,6 @@ class _Dataset(GbqConnector):
 
                 dataset_response = list_dataset_response.get('datasets')
                 next_page_token = list_dataset_response.get('nextPageToken')
-
-                if not dataset_response:
-                    return dataset_list
 
                 for row_num, raw_row in enumerate(dataset_response):
                     dataset_list.append(
