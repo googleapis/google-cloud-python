@@ -3,10 +3,10 @@ sudo: false
 language: python
 
 env:
-  - PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false'
-  - PYTHON=3.4 PANDAS=0.18.1 COVERAGE='false'
-  - PYTHON=3.5 PANDAS=0.19.2 COVERAGE='true'
-  - PYTHON=3.6 PANDAS=0.19.2 COVERAGE='false'
+  - PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='false'
+  - PYTHON=3.4 PANDAS=0.18.1 COVERAGE='false' LINT='false'
+  - PYTHON=3.5 PANDAS=0.19.2 COVERAGE='true' LINT='false'
+  - PYTHON=3.6 PANDAS=0.19.2 COVERAGE='false' LINT='true'
 
 before_install:
   - echo "before_install"
@@ -32,7 +32,5 @@ install:
 
 script:
   - pytest -s -v --cov=pandas_gbq --cov-report xml:/tmp/pytest-cov.xml pandas_gbq
-  - flake8 pandas_gbq -v
-
-after_success:
   - if [[ $COVERAGE == 'true' ]]; then codecov ; fi
+  - if [[ $LINT == 'true' ]]; flake8 pandas_gbq -v ; fi
