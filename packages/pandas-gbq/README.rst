@@ -8,7 +8,7 @@
 pandas-gbq
 ==========
 
-|Build Status| |Version Status|
+|Build Status| |Version Status| |Coverage Status|
 
 **pandas-gbq** is a package providing an interface to the Google Big Query interface from pandas
 
