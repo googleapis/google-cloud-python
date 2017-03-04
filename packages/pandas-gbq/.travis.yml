@@ -33,4 +33,4 @@ install:
 script:
   - pytest -s -v --cov=pandas_gbq --cov-report xml:/tmp/pytest-cov.xml pandas_gbq
   - if [[ $COVERAGE == 'true' ]]; then codecov ; fi
-  - if [[ $LINT == 'true' ]]; flake8 pandas_gbq -v ; fi
+  - if [[ $LINT == 'true' ]]; then flake8 pandas_gbq -v ; fi
