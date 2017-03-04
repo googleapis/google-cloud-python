@@ -2,6 +2,8 @@
    :target: https://travis-ci.org/pydata/pandas-gbq
 .. |Version Status| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
    :target: https://pypi.python.org/pypi/pandas-gbq/
+.. |Coverage Status| image:: https://img.shields.io/codecov/c/github/pydata/pandas-gbq.svg
+   :target: https://codecov.io/gh/pydata/pandas-gbq/
 
 pandas-gbq
 ==========
