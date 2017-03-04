@@ -45,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -205,11 +206,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -276,8 +280,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -290,19 +296,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      
-    <li>google.cloud.vision.feature</li>
+        
+      <li>google.cloud.vision.feature</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -332,13 +355,17 @@
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CROP_HINTS</span> <span class="o">=</span> <span class="s1">&#39;CROP_HINTS&#39;</span>
+    <span class="n">DOCUMENT_TEXT_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;DOCUMENT_TEXT_DETECTION&#39;</span>
     <span class="n">FACE_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;FACE_DETECTION&#39;</span>
+    <span class="n">IMAGE_PROPERTIES</span> <span class="o">=</span> <span class="s1">&#39;IMAGE_PROPERTIES&#39;</span>
     <span class="n">LANDMARK_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LANDMARK_DETECTION&#39;</span>
     <span class="n">LOGO_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LOGO_DETECTION&#39;</span>
     <span class="n">LABEL_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LABEL_DETECTION&#39;</span>
     <span class="n">TEXT_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;TEXT_DETECTION&#39;</span>
     <span class="n">SAFE_SEARCH_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;SAFE_SEARCH_DETECTION&#39;</span>
-    <span class="n">IMAGE_PROPERTIES</span> <span class="o">=</span> <span class="s1">&#39;IMAGE_PROPERTIES&#39;</span></div>
+    <span class="n">IMAGE_PROPERTIES</span> <span class="o">=</span> <span class="s1">&#39;IMAGE_PROPERTIES&#39;</span>
+    <span class="n">WEB_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;WEB_DETECTION&#39;</span></div>
 
 
 <div class="viewcode-block" id="Feature"><a class="viewcode-back" href="../../../../vision-feature.html#google.cloud.vision.feature.Feature">[docs]</a><span class="k">class</span> <span class="nc">Feature</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -395,6 +422,9 @@
 </pre></div>
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -428,7 +458,8 @@
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../../_static/jquery.js"></script>

@@ -46,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -206,11 +207,14 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -277,8 +281,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -287,23 +293,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Vision Annotations</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Vision Annotations</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/vision-annotations.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -314,7 +337,7 @@
 <p>Annotations management for Vision API responses.</p>
 <dl class="class">
 <dt id="google.cloud.vision.annotations.Annotations">
-<em class="property">class </em><code class="descclassname">google.cloud.vision.annotations.</code><code class="descname">Annotations</code><span class="sig-paren">(</span><em>faces=()</em>, <em>properties=()</em>, <em>labels=()</em>, <em>landmarks=()</em>, <em>logos=()</em>, <em>safe_searches=()</em>, <em>texts=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/annotations.html#Annotations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.annotations.Annotations" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.vision.annotations.</code><code class="descname">Annotations</code><span class="sig-paren">(</span><em>crop_hints=()</em>, <em>faces=()</em>, <em>full_texts=()</em>, <em>properties=()</em>, <em>labels=()</em>, <em>landmarks=()</em>, <em>logos=()</em>, <em>safe_searches=()</em>, <em>texts=()</em>, <em>web=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/annotations.html#Annotations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.annotations.Annotations" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Helper class to bundle annotation responses.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -322,7 +345,11 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>crop_hints</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of
+<code class="xref py py-class docutils literal"><span class="pre">CropHintsAnnotation</span></code>.</li>
 <li><strong>faces</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="vision-face.html#google.cloud.vision.face.Face" title="google.cloud.vision.face.Face"><code class="xref py py-class docutils literal"><span class="pre">Face</span></code></a>.</li>
+<li><strong>full_texts</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of
+<a class="reference internal" href="vision-text.html#google.cloud.vision.text.TextAnnotation" title="google.cloud.vision.text.TextAnnotation"><code class="xref py py-class docutils literal"><span class="pre">TextAnnotation</span></code></a>.</li>
 <li><strong>properties</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation" title="google.cloud.vision.color.ImagePropertiesAnnotation"><code class="xref py py-class docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code></a>.</li>
 <li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of
 <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</li>
@@ -333,6 +360,7 @@
 <li><strong>safe_searches</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="vision-safe-search.html#google.cloud.vision.safe_search.SafeSearchAnnotation" title="google.cloud.vision.safe_search.SafeSearchAnnotation"><code class="xref py py-class docutils literal"><span class="pre">SafeSearchAnnotation</span></code></a></li>
 <li><strong>texts</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of
 <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</li>
+<li><strong>web</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="vision-web.html#google.cloud.vision.web.WebDetection" title="google.cloud.vision.web.WebDetection"><code class="xref py py-class docutils literal"><span class="pre">WebDetection</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -380,6 +408,9 @@
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -422,7 +453,8 @@
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

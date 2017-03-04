@@ -46,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -206,11 +207,14 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -277,8 +281,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -287,23 +293,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Blobs / Objects</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Blobs / Objects</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/storage-blobs.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -1149,6 +1172,27 @@ not been deleted, this will never be set.</td>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="google.cloud.storage.blob.Blob.update_storage_class">
+<code class="descname">update_storage_class</code><span class="sig-paren">(</span><em>new_class</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.update_storage_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.update_storage_class" title="Permalink to this definition">#</a></dt>
+<dd><p>Update blob&#8217;s storage class via a rewrite-in-place.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/storage/docs/per-object-storage-class">https://cloud.google.com/storage/docs/per-object-storage-class</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>new_class</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; new storage class for the object</li>
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.storage.blob.Blob.updated">
 <code class="descname">updated</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.updated" title="Permalink to this definition">#</a></dt>
@@ -1281,7 +1325,7 @@ API documents for details.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> (<em>bytes</em><em> or </em><em>text</em>) &#8211; The data to store in this blob.  If the value is
+<li><strong>data</strong> (<em>bytes</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The data to store in this blob.  If the value is
 text, it will be encoded as UTF-8.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Optional type of content being uploaded. Defaults
 to <code class="docutils literal"><span class="pre">'text/plain'</span></code>.</li>
@@ -1300,6 +1344,9 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -1343,7 +1390,8 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

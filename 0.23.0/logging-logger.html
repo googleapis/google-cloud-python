@@ -46,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -206,11 +207,14 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -277,8 +281,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -287,23 +293,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Logger</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Logger</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/logging-logger.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -592,7 +615,7 @@ the entry.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>text</strong> (<em>text</em>) &#8211; the log message.</li>
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the log message.</li>
 <li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current logger.</li>
@@ -626,6 +649,9 @@ the entry</li>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -669,7 +695,8 @@ the entry</li>
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

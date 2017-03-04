@@ -207,7 +207,7 @@ If ``interim_results`` is set to :data:`True`, interim results
     >>> from google.cloud import speech
     >>> client = speech.Client()
     >>> with open('./hello.wav', 'rb') as stream:
-    ...     sample = client.sample(content=stream,
+    ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
     ...     for results in sample.streaming_recognize(interim_results=True):

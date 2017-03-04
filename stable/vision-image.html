@@ -46,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -206,6 +207,7 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
@@ -216,6 +218,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -282,8 +286,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -292,23 +298,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Vision Image</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Vision Image</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/vision-image.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -331,7 +354,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>content</strong> (<em>bytes</em>) &#8211; Byte stream of an image.</li>
 <li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Filename to image.</li>
-<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Google Cloud Storage URI of image.</li>
+<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URL or Google Cloud Storage URI of image.</li>
 <li><strong>client</strong> (<a class="reference internal" href="vision-client.html#google.cloud.vision.client.Client" title="google.cloud.vision.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; Instance of Vision client.</li>
 </ul>
 </td>
@@ -391,6 +414,31 @@ annotation to perform.</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.vision.image.Image.detect_crop_hints">
+<code class="descname">detect_crop_hints</code><span class="sig-paren">(</span><em>aspect_ratios=None</em>, <em>limit=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/image.html#Image.detect_crop_hints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.image.Image.detect_crop_hints" title="Permalink to this definition">#</a></dt>
+<dd><p>Detect crop hints in image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>aspect_ratios</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) List of floats i.e. 4/3 == 1.33333. A
+maximum of 16 aspect ratios can be given.</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The number of crop hints to detect.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of <code class="xref py py-class docutils literal"><span class="pre">CropHints</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.vision.image.Image.detect_faces">
 <code class="descname">detect_faces</code><span class="sig-paren">(</span><em>limit=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/image.html#Image.detect_faces"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.image.Image.detect_faces" title="Permalink to this definition">#</a></dt>
 <dd><p>Detect faces in image.</p>
@@ -403,6 +451,24 @@ annotation to perform.</td>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of <a class="reference internal" href="vision-face.html#google.cloud.vision.face.Face" title="google.cloud.vision.face.Face"><code class="xref py py-class docutils literal"><span class="pre">Face</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision.image.Image.detect_full_text">
+<code class="descname">detect_full_text</code><span class="sig-paren">(</span><em>limit=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/image.html#Image.detect_full_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.image.Image.detect_full_text" title="Permalink to this definition">#</a></dt>
+<dd><p>Detect a full document&#8217;s text.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of documents to detect.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of <a class="reference internal" href="vision-text.html#google.cloud.vision.text.TextAnnotation" title="google.cloud.vision.text.TextAnnotation"><code class="xref py py-class docutils literal"><span class="pre">TextAnnotation</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -506,6 +572,25 @@ annotation to perform.</td>
 <dt id="google.cloud.vision.image.Image.detect_text">
 <code class="descname">detect_text</code><span class="sig-paren">(</span><em>limit=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/image.html#Image.detect_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.image.Image.detect_text" title="Permalink to this definition">#</a></dt>
 <dd><p>Detect text in an image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The maximum instances of text to find.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
+<a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision.image.Image.detect_web">
+<code class="descname">detect_web</code><span class="sig-paren">(</span><em>limit=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/image.html#Image.detect_web"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.image.Image.detect_web" title="Permalink to this definition">#</a></dt>
+<dd><p>Detect similar images elsewhere on the web.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -918,6 +1003,9 @@ longitude.</td>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -960,7 +1048,8 @@ longitude.</td>
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

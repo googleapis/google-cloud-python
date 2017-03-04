@@ -45,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -205,11 +206,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -276,8 +280,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -290,19 +296,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      
-    <li>google.cloud.storage.blob</li>
+        
+      <li>google.cloud.storage.blob</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -322,6 +345,8 @@
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
+
+<span class="c1"># pylint: disable=too-many-lines</span>
 
 <span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Storage blobs.&quot;&quot;&quot;</span>
 
@@ -383,6 +408,29 @@
 
     <span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">1024</span>
     <span class="sd">&quot;&quot;&quot;Number (256 KB, in bytes) that must divide the chunk size.&quot;&quot;&quot;</span>
+
+    <span class="n">_STORAGE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;NEARLINE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;MULTI_REGIONAL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;REGIONAL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;COLDLINE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;STANDARD&#39;</span><span class="p">,</span>  <span class="c1"># alias for MULTI_REGIONAL/REGIONAL, based on location</span>
+    <span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Allowed values for :attr:`storage_class`.</span>
+
+<span class="sd">    See:</span>
+<span class="sd">    https://cloud.google.com/storage/docs/json_api/v1/objects#storageClass</span>
+<span class="sd">    https://cloud.google.com/storage/docs/per-object-storage-class</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">       This list does not include &#39;DURABLE_REDUCED_AVAILABILITY&#39;, which</span>
+<span class="sd">       is only documented for buckets (and deprectated.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">       The documentation does *not* mention &#39;STANDARD&#39;, but it is the value</span>
+<span class="sd">       assigned by the back-end for objects created in buckets with &#39;STANDARD&#39;</span>
+<span class="sd">       set as their &#39;storage_class&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
@@ -970,7 +1018,7 @@
 <span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
 <span class="sd">           API documents for details.</span>
 
-<span class="sd">        :type data: bytes or text</span>
+<span class="sd">        :type data: bytes or str</span>
 <span class="sd">        :param data: The data to store in this blob.  If the value is</span>
 <span class="sd">                     text, it will be encoded as UTF-8.</span>
 
@@ -1162,6 +1210,33 @@
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span>
 
         <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">],</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span></div>
+
+<div class="viewcode-block" id="Blob.update_storage_class"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.update_storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">update_storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_class</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update blob&#39;s storage class via a rewrite-in-place.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/storage/docs/per-object-storage-class</span>
+
+<span class="sd">        :type new_class: str</span>
+<span class="sd">        :param new_class: new storage class for the object</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client`</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_class</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_STORAGE_CLASSES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid storage class: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_class</span><span class="p">,))</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
+        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/rewriteTo&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;storageClass&#39;</span><span class="p">:</span> <span class="n">new_class</span><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span></div>
 
     <span class="n">cache_control</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;cacheControl&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Cache-Control&#39; header for this object.</span>
@@ -1493,6 +1568,9 @@
 </pre></div>
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -1526,7 +1604,8 @@
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../../_static/jquery.js"></script>

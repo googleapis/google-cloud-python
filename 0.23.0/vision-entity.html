@@ -37,7 +37,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="google-cloud 0.23.0 documentation" href="index.html"/>
         <link rel="next" title="Vision Feature" href="vision-feature.html"/>
-        <link rel="prev" title="Vision Image Properties" href="vision-color.html"/> 
+        <link rel="prev" title="Vision Crop Hint" href="vision-crop-hint.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -46,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -206,6 +207,7 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vision Entity</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.entity">Entity</a></li>
 </ul>
@@ -214,6 +216,8 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -280,8 +284,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -290,23 +296,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Vision Entity</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Vision Entity</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/vision-entity.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -480,6 +503,9 @@ of object detected in an image.</td>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -488,7 +514,7 @@ of object detected in an image.</td>
         <a href="vision-feature.html" class="btn btn-neutral float-right" title="Vision Feature" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="vision-color.html" class="btn btn-neutral" title="Vision Image Properties" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="vision-crop-hint.html" class="btn btn-neutral" title="Vision Crop Hint" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -522,7 +548,8 @@ of object detected in an image.</td>
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

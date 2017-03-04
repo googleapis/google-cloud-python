@@ -45,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -205,11 +206,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -276,8 +280,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -290,19 +296,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      
-    <li>google.cloud.storage.bucket</li>
+        
+      <li>google.cloud.storage.bucket</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -401,8 +424,20 @@
 <span class="sd">    This is used in Bucket.delete() and Bucket.make_public().</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_STORAGE_CLASSES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;STANDARD&#39;</span><span class="p">,</span> <span class="s1">&#39;NEARLINE&#39;</span><span class="p">,</span> <span class="s1">&#39;DURABLE_REDUCED_AVAILABILITY&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;MULTI_REGIONAL&#39;</span><span class="p">,</span> <span class="s1">&#39;REGIONAL&#39;</span><span class="p">,</span> <span class="s1">&#39;COLDLINE&#39;</span><span class="p">)</span>
+    <span class="n">_STORAGE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;MULTI_REGIONAL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;REGIONAL&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;NEARLINE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;COLDLINE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;STANDARD&#39;</span><span class="p">,</span>  <span class="c1"># alias for MULTI_REGIONAL/REGIONAL, based on location</span>
+        <span class="s1">&#39;DURABLE_REDUCED_AVAILABILITY&#39;</span><span class="p">,</span>  <span class="c1"># deprecated</span>
+    <span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Allowed values for :attr:`storage_class`.</span>
+
+<span class="sd">    See:</span>
+<span class="sd">    https://cloud.google.com/storage/docs/json_api/v1/buckets#storageClass</span>
+<span class="sd">    https://cloud.google.com/storage/docs/storage-classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
@@ -1222,6 +1257,9 @@
 </pre></div>
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -1255,7 +1293,8 @@
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../../_static/jquery.js"></script>

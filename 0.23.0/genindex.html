@@ -45,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -205,11 +206,14 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -276,8 +280,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -290,17 +296,34 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Index</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Index</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -557,9 +580,11 @@
         <li><a href="vision-image.html#google.cloud.vision.geometry.Bounds">(class in google.cloud.vision.geometry)</a>
 </li>
       </ul></li>
-      <li><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.bounds">bounds (google.cloud.vision.entity.EntityAnnotation attribute)</a>
+      <li><a href="vision-crop-hint.html#google.cloud.vision.crop_hint.CropHint.bounds">bounds (google.cloud.vision.crop_hint.CropHint attribute)</a>
 
       <ul>
+        <li><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.bounds">(google.cloud.vision.entity.EntityAnnotation attribute)</a>
+</li>
         <li><a href="vision-face.html#google.cloud.vision.face.Face.bounds">(google.cloud.vision.face.Face attribute)</a>
 </li>
       </ul></li>
@@ -790,6 +815,8 @@
 </li>
         <li><a href="speech-result.html#google.cloud.speech.result.StreamingSpeechResult.confidence">(google.cloud.speech.result.StreamingSpeechResult attribute)</a>
 </li>
+        <li><a href="vision-crop-hint.html#google.cloud.vision.crop_hint.CropHint.confidence">(google.cloud.vision.crop_hint.CropHint attribute)</a>
+</li>
       </ul></li>
       <li><a href="runtimeconfig-config.html#google.cloud.runtimeconfig.config.Config">Config (class in google.cloud.runtimeconfig.config)</a>
 </li>
@@ -931,6 +958,10 @@
         <li><a href="spanner-client-api.html#google.cloud.spanner.client.Client.credentials">(google.cloud.spanner.client.Client attribute)</a>
 </li>
       </ul></li>
+      <li><a href="vision-feature.html#google.cloud.vision.feature.FeatureTypes.CROP_HINTS">CROP_HINTS (google.cloud.vision.feature.FeatureTypes attribute)</a>
+</li>
+      <li><a href="vision-crop-hint.html#google.cloud.vision.crop_hint.CropHint">CropHint (class in google.cloud.vision.crop_hint)</a>
+</li>
       <li><a href="datastore-batches.html#google.cloud.datastore.batch.Batch.current">current() (google.cloud.datastore.batch.Batch method)</a>
 
       <ul>
@@ -1047,14 +1078,14 @@
 </li>
       <li><a href="storage-buckets.html#google.cloud.storage.bucket.Bucket.delete_blobs">delete_blobs() (google.cloud.storage.bucket.Bucket method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bigtable-row.html#google.cloud.bigtable.row.ConditionalRow.delete_cell">delete_cell() (google.cloud.bigtable.row.ConditionalRow method)</a>
 
       <ul>
         <li><a href="bigtable-row.html#google.cloud.bigtable.row.DirectRow.delete_cell">(google.cloud.bigtable.row.DirectRow method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bigtable-row.html#google.cloud.bigtable.row.ConditionalRow.delete_cells">delete_cells() (google.cloud.bigtable.row.ConditionalRow method)</a>
 
       <ul>
@@ -1078,6 +1109,8 @@
 </li>
         <li><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.description">(google.cloud.vision.entity.EntityAnnotation attribute)</a>
 </li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebEntity.description">(google.cloud.vision.web.WebEntity attribute)</a>
+</li>
       </ul></li>
       <li><a href="bigquery-job.html#google.cloud.bigquery.job.QueryJob.destination">destination (google.cloud.bigquery.job.QueryJob attribute)</a>
 </li>
@@ -1091,7 +1124,11 @@
         <li><a href="vision-image.html#google.cloud.vision.image.Image.detect">(google.cloud.vision.image.Image method)</a>
 </li>
       </ul></li>
+      <li><a href="vision-image.html#google.cloud.vision.image.Image.detect_crop_hints">detect_crop_hints() (google.cloud.vision.image.Image method)</a>
+</li>
       <li><a href="vision-image.html#google.cloud.vision.image.Image.detect_faces">detect_faces() (google.cloud.vision.image.Image method)</a>
+</li>
+      <li><a href="vision-image.html#google.cloud.vision.image.Image.detect_full_text">detect_full_text() (google.cloud.vision.image.Image method)</a>
 </li>
       <li><a href="vision-image.html#google.cloud.vision.image.Image.detect_labels">detect_labels() (google.cloud.vision.image.Image method)</a>
 </li>
@@ -1106,6 +1143,8 @@
       <li><a href="vision-image.html#google.cloud.vision.image.Image.detect_safe_search">detect_safe_search() (google.cloud.vision.image.Image method)</a>
 </li>
       <li><a href="vision-image.html#google.cloud.vision.image.Image.detect_text">detect_text() (google.cloud.vision.image.Image method)</a>
+</li>
+      <li><a href="vision-image.html#google.cloud.vision.image.Image.detect_web">detect_web() (google.cloud.vision.image.Image method)</a>
 </li>
       <li><a href="vision-face.html#google.cloud.vision.face.Face.detection_confidence">detection_confidence (google.cloud.vision.face.Face attribute)</a>
 </li>
@@ -1130,6 +1169,8 @@
       <li><a href="language-client.html#google.cloud.language.client.Client.document_from_text">document_from_text() (google.cloud.language.client.Client method)</a>
 </li>
       <li><a href="language-client.html#google.cloud.language.client.Client.document_from_url">document_from_url() (google.cloud.language.client.Client method)</a>
+</li>
+      <li><a href="vision-feature.html#google.cloud.vision.feature.FeatureTypes.DOCUMENT_TEXT_DETECTION">DOCUMENT_TEXT_DETECTION (google.cloud.vision.feature.FeatureTypes attribute)</a>
 </li>
       <li><a href="pubsub-iam.html#google.cloud.pubsub.iam.Policy.domain">domain() (google.cloud.pubsub.iam.Policy static method)</a>
 
@@ -1206,6 +1247,8 @@
       <li><a href="storage-acl.html#google.cloud.storage.acl.ACL.entity_from_dict">entity_from_dict() (google.cloud.storage.acl.ACL method)</a>
 </li>
       <li><a href="datastore-helpers.html#google.cloud.datastore.helpers.entity_from_protobuf">entity_from_protobuf() (in module google.cloud.datastore.helpers)</a>
+</li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebEntity.entity_id">entity_id (google.cloud.vision.web.WebEntity attribute)</a>
 </li>
       <li><a href="datastore-helpers.html#google.cloud.datastore.helpers.entity_to_protobuf">entity_to_protobuf() (in module google.cloud.datastore.helpers)</a>
 </li>
@@ -1483,6 +1526,8 @@
 </li>
         <li><a href="vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.from_api_repr">(google.cloud.vision.color.ImagePropertiesAnnotation class method)</a>
 </li>
+        <li><a href="vision-crop-hint.html#google.cloud.vision.crop_hint.CropHint.from_api_repr">(google.cloud.vision.crop_hint.CropHint class method)</a>
+</li>
         <li><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.from_api_repr">(google.cloud.vision.entity.EntityAnnotation class method)</a>
 </li>
         <li><a href="vision-face.html#google.cloud.vision.face.Angles.from_api_repr">(google.cloud.vision.face.Angles class method)</a>
@@ -1504,6 +1549,16 @@
         <li><a href="vision-image.html#google.cloud.vision.geometry.Position.from_api_repr">(google.cloud.vision.geometry.Position class method)</a>
 </li>
         <li><a href="vision-safe-search.html#google.cloud.vision.safe_search.SafeSearchAnnotation.from_api_repr">(google.cloud.vision.safe_search.SafeSearchAnnotation class method)</a>
+</li>
+        <li><a href="vision-text.html#google.cloud.vision.text.TextAnnotation.from_api_repr">(google.cloud.vision.text.TextAnnotation class method)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebDetection.from_api_repr">(google.cloud.vision.web.WebDetection class method)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebEntity.from_api_repr">(google.cloud.vision.web.WebEntity class method)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebImage.from_api_repr">(google.cloud.vision.web.WebImage class method)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebPage.from_api_repr">(google.cloud.vision.web.WebPage class method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1539,6 +1594,8 @@
 </li>
         <li><a href="vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.from_pb">(google.cloud.vision.color.ImagePropertiesAnnotation class method)</a>
 </li>
+        <li><a href="vision-crop-hint.html#google.cloud.vision.crop_hint.CropHint.from_pb">(google.cloud.vision.crop_hint.CropHint class method)</a>
+</li>
         <li><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.from_pb">(google.cloud.vision.entity.EntityAnnotation class method)</a>
 </li>
         <li><a href="vision-face.html#google.cloud.vision.face.Angles.from_pb">(google.cloud.vision.face.Angles class method)</a>
@@ -1561,6 +1618,16 @@
 </li>
         <li><a href="vision-safe-search.html#google.cloud.vision.safe_search.SafeSearchAnnotation.from_pb">(google.cloud.vision.safe_search.SafeSearchAnnotation class method)</a>
 </li>
+        <li><a href="vision-text.html#google.cloud.vision.text.TextAnnotation.from_pb">(google.cloud.vision.text.TextAnnotation class method)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebDetection.from_pb">(google.cloud.vision.web.WebDetection class method)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebEntity.from_pb">(google.cloud.vision.web.WebEntity class method)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebImage.from_pb">(google.cloud.vision.web.WebImage class method)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebPage.from_pb">(google.cloud.vision.web.WebPage class method)</a>
+</li>
       </ul></li>
       <li><a href="bigquery-query.html#google.cloud.bigquery.query.QueryResults.from_query_job">from_query_job() (google.cloud.bigquery.query.QueryResults class method)</a>
 </li>
@@ -1570,6 +1637,8 @@
         <li><a href="google-cloud-api.html#google.cloud.client.ClientWithProject.from_service_account_json">(google.cloud.client.ClientWithProject method)</a>
 </li>
       </ul></li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebDetection.full_matching_images">full_matching_images (google.cloud.vision.web.WebDetection attribute)</a>
+</li>
       <li><a href="logging-logger.html#google.cloud.logging.logger.Logger.full_name">full_name (google.cloud.logging.logger.Logger attribute)</a>
 
       <ul>
@@ -1742,12 +1811,12 @@
 </li>
       <li><a href="logging-client.html#module-google.cloud.logging.client">google.cloud.logging.client (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="logging-entries.html#module-google.cloud.logging.entries">google.cloud.logging.entries (module)</a>
 </li>
       <li><a href="logging-handlers-app-engine.html#module-google.cloud.logging.handlers.app_engine">google.cloud.logging.handlers.app_engine (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="logging-handlers-container-engine.html#module-google.cloud.logging.handlers.container_engine">google.cloud.logging.handlers.container_engine (module)</a>
 </li>
       <li><a href="logging-handlers.html#module-google.cloud.logging.handlers.handlers">google.cloud.logging.handlers.handlers (module)</a>
@@ -1854,6 +1923,8 @@
 </li>
       <li><a href="vision-color.html#module-google.cloud.vision.color">google.cloud.vision.color (module)</a>
 </li>
+      <li><a href="vision-crop-hint.html#module-google.cloud.vision.crop_hint">google.cloud.vision.crop_hint (module)</a>
+</li>
       <li><a href="vision-entity.html#module-google.cloud.vision.entity">google.cloud.vision.entity (module)</a>
 </li>
       <li><a href="vision-face.html#module-google.cloud.vision.face">google.cloud.vision.face (module)</a>
@@ -1867,6 +1938,10 @@
       <li><a href="vision-image.html#module-google.cloud.vision.likelihood">google.cloud.vision.likelihood (module)</a>
 </li>
       <li><a href="vision-safe-search.html#module-google.cloud.vision.safe_search">google.cloud.vision.safe_search (module)</a>
+</li>
+      <li><a href="vision-text.html#module-google.cloud.vision.text">google.cloud.vision.text (module)</a>
+</li>
+      <li><a href="vision-web.html#module-google.cloud.vision.web">google.cloud.vision.web (module)</a>
 </li>
       <li><a href="bigquery-usage.html#index-0">GOOGLE_APPLICATION_CREDENTIALS</a>
 </li>
@@ -1946,12 +2021,14 @@
 </li>
       <li><a href="vision-batch.html#google.cloud.vision.batch.Batch.images">images (google.cloud.vision.batch.Batch attribute)</a>
 </li>
-      <li><a href="bigtable-row.html#google.cloud.bigtable.row.AppendRow.increment_cell_value">increment_cell_value() (google.cloud.bigtable.row.AppendRow method)</a>
+      <li><a href="vision-crop-hint.html#google.cloud.vision.crop_hint.CropHint.importance_fraction">importance_fraction (google.cloud.vision.crop_hint.CropHint attribute)</a>
 </li>
-      <li><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.input_file_bytes">input_file_bytes (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
+      <li><a href="bigtable-row.html#google.cloud.bigtable.row.AppendRow.increment_cell_value">increment_cell_value() (google.cloud.bigtable.row.AppendRow method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.input_file_bytes">input_file_bytes (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
+</li>
       <li><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.input_files">input_files (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
 </li>
       <li><a href="bigquery-table.html#google.cloud.bigquery.table.Table.insert_data">insert_data() (google.cloud.bigquery.table.Table method)</a>
@@ -2493,7 +2570,11 @@
 </li>
         <li><a href="iterators.html#google.cloud.iterator.Iterator.pages">(google.cloud.iterator.Iterator attribute)</a>
 </li>
+        <li><a href="vision-text.html#google.cloud.vision.text.TextAnnotation.pages">(google.cloud.vision.text.TextAnnotation attribute)</a>
+</li>
       </ul></li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebDetection.pages_with_matching_images">pages_with_matching_images (google.cloud.vision.web.WebDetection attribute)</a>
+</li>
       <li><a href="vision-face.html#google.cloud.vision.face.Angles.pan">pan (google.cloud.vision.face.Angles attribute)</a>
 </li>
       <li><a href="datastore-keys.html#google.cloud.datastore.key.Key.parent">parent (google.cloud.datastore.key.Key attribute)</a>
@@ -2501,6 +2582,8 @@
       <li><a href="monitoring-group.html#google.cloud.monitoring.group.Group.parent_name">parent_name (google.cloud.monitoring.group.Group attribute)</a>
 </li>
       <li><a href="logging-entries.html#google.cloud.logging.entries.ProtobufEntry.parse_message">parse_message() (google.cloud.logging.entries.ProtobufEntry method)</a>
+</li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebDetection.partial_matching_images">partial_matching_images (google.cloud.vision.web.WebDetection attribute)</a>
 </li>
       <li><a href="bigtable-row-data.html#google.cloud.bigtable.row_data.PartialCellData">PartialCellData (class in google.cloud.bigtable.row_data)</a>
 </li>
@@ -2606,14 +2689,14 @@
 </li>
       <li><a href="bigquery-job.html#google.cloud.bigquery.job.QueryJob.priority">priority (google.cloud.bigquery.job.QueryJob attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bigquery-client.html#google.cloud.bigquery.client.Project">Project (class in google.cloud.bigquery.client)</a>
 
       <ul>
         <li><a href="resource-manager-project.html#google.cloud.resource_manager.project.Project">(class in google.cloud.resource_manager.project)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset.project">project (google.cloud.bigquery.dataset.Dataset attribute)</a>
 
       <ul>
@@ -3033,6 +3116,12 @@
       <ul>
         <li><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.score">(google.cloud.vision.entity.EntityAnnotation attribute)</a>
 </li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebEntity.score">(google.cloud.vision.web.WebEntity attribute)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebImage.score">(google.cloud.vision.web.WebImage attribute)</a>
+</li>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebPage.score">(google.cloud.vision.web.WebPage attribute)</a>
+</li>
       </ul></li>
       <li><a href="monitoring-query.html#google.cloud.monitoring.query.Query.select_group">select_group() (google.cloud.monitoring.query.Query method)</a>
 </li>
@@ -3096,10 +3185,10 @@
         <li><a href="spanner-session-api.html#google.cloud.spanner.pool.AbstractSessionPool.session">(google.cloud.spanner.pool.AbstractSessionPool method)</a>
 </li>
       </ul></li>
-      <li><a href="spanner-session-api.html#google.cloud.spanner.session.Session.session_id">session_id (google.cloud.spanner.session.Session attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="spanner-session-api.html#google.cloud.spanner.session.Session.session_id">session_id (google.cloud.spanner.session.Session attribute)</a>
+</li>
       <li><a href="spanner-session-api.html#google.cloud.spanner.pool.SessionCheckout">SessionCheckout (class in google.cloud.spanner.pool)</a>
 </li>
       <li><a href="bigtable-row.html#google.cloud.bigtable.row.ConditionalRow.set_cell">set_cell() (google.cloud.bigtable.row.ConditionalRow method)</a>
@@ -3264,7 +3353,11 @@
 </li>
       <li><a href="google-cloud-api.html#google.cloud.exceptions.TemporaryRedirect">TemporaryRedirect</a>
 </li>
+      <li><a href="vision-text.html#google.cloud.vision.text.TextAnnotation.text">text (google.cloud.vision.text.TextAnnotation attribute)</a>
+</li>
       <li><a href="vision-feature.html#google.cloud.vision.feature.FeatureTypes.TEXT_DETECTION">TEXT_DETECTION (google.cloud.vision.feature.FeatureTypes attribute)</a>
+</li>
+      <li><a href="vision-text.html#google.cloud.vision.text.TextAnnotation">TextAnnotation (class in google.cloud.vision.text)</a>
 </li>
       <li><a href="logging-entries.html#google.cloud.logging.entries.TextEntry">TextEntry (class in google.cloud.logging.entries)</a>
 </li>
@@ -3450,6 +3543,8 @@
       </ul></li>
       <li><a href="spanner-database-api.html#google.cloud.spanner.database.Database.update_ddl">update_ddl() (google.cloud.spanner.database.Database method)</a>
 </li>
+      <li><a href="storage-blobs.html#google.cloud.storage.blob.Blob.update_storage_class">update_storage_class() (google.cloud.storage.blob.Blob method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="runtimeconfig-variable.html#google.cloud.runtimeconfig.variable.Variable.update_time">update_time (google.cloud.runtimeconfig.variable.Variable attribute)</a>
@@ -3468,6 +3563,12 @@
 </li>
       <li><a href="vision-face.html#google.cloud.vision.face.LandmarkTypes.UPPER_LIP">UPPER_LIP (google.cloud.vision.face.LandmarkTypes attribute)</a>
 </li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebImage.url">url (google.cloud.vision.web.WebImage attribute)</a>
+
+      <ul>
+        <li><a href="vision-web.html#google.cloud.vision.web.WebPage.url">(google.cloud.vision.web.WebPage attribute)</a>
+</li>
+      </ul></li>
       <li><a href="bigquery-job.html#google.cloud.bigquery.job.QueryJob.use_legacy_sql">use_legacy_sql (google.cloud.bigquery.job.QueryJob attribute)</a>
 
       <ul>
@@ -3548,6 +3649,20 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="vision-feature.html#google.cloud.vision.feature.FeatureTypes.WEB_DETECTION">WEB_DETECTION (google.cloud.vision.feature.FeatureTypes attribute)</a>
+</li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebDetection.web_entities">web_entities (google.cloud.vision.web.WebDetection attribute)</a>
+</li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebDetection">WebDetection (class in google.cloud.vision.web)</a>
+</li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebEntity">WebEntity (class in google.cloud.vision.web)</a>
+</li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebImage">WebImage (class in google.cloud.vision.web)</a>
+</li>
+      <li><a href="vision-web.html#google.cloud.vision.web.WebPage">WebPage (class in google.cloud.vision.web)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="language-responses.html#google.cloud.language.entity.EntityType.WORK_OF_ART">WORK_OF_ART (google.cloud.language.entity.EntityType attribute)</a>
 </li>
       <li><a href="bigquery-job.html#google.cloud.bigquery.job.CopyJob.write_disposition">write_disposition (google.cloud.bigquery.job.CopyJob attribute)</a>
@@ -3558,8 +3673,6 @@
         <li><a href="bigquery-job.html#google.cloud.bigquery.job.QueryJob.write_disposition">(google.cloud.bigquery.job.QueryJob attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="monitoring-client.html#google.cloud.monitoring.client.Client.write_point">write_point() (google.cloud.monitoring.client.Client method)</a>
 </li>
       <li><a href="monitoring-client.html#google.cloud.monitoring.client.Client.write_time_series">write_time_series() (google.cloud.monitoring.client.Client method)</a>
@@ -3610,6 +3723,9 @@
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -3643,7 +3759,8 @@
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

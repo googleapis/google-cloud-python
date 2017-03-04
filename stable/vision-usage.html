@@ -46,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -210,6 +211,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#manual-detection">Manual Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#crop-hints">Crop Hints</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#face-detection">Face Detection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#label-detection">Label Detection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#landmark-detection">Landmark Detection</a></li>
@@ -218,6 +220,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#text-detection">Text Detection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#image-properties">Image Properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#batch-image-detection">Batch image detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#web-detection">Web Detection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#no-results-found">No results found</a></li>
 </ul>
 </li>
@@ -225,11 +228,14 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -296,8 +302,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -306,23 +314,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Using the Vision API</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Using the Vision API</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/vision-usage.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -406,6 +431,26 @@ data from sources such as a Google Cloud Storage URI, raw bytes, or a file.</p>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">logo</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
 <span class="go">&#39;google&#39;</span>
 <span class="go">&#39;github&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="crop-hints">
+<h2>Crop Hints<a class="headerlink" href="#crop-hints" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_crop_hints" title="google.cloud.vision.image.Image.detect_crop_hints"><code class="xref py py-meth docutils literal"><span class="pre">detect_crop_hints()</span></code></a> will attempt to find
+boundaries that contain interesting data which can be used to crop an image.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-test-bucket/image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">crop_hints</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_crop_hints</span><span class="p">(</span><span class="n">aspect_ratios</span><span class="o">=</span><span class="p">[</span><span class="mf">1.3333</span><span class="p">],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_hint</span> <span class="o">=</span> <span class="n">crop_hints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_hint</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
+<span class="go">77</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_hint</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
+<span class="go">102</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_hint</span><span class="o">.</span><span class="n">confidence</span>
+<span class="go">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_hint</span><span class="o">.</span><span class="n">importance_fraction</span>
+<span class="go">1.22000002861</span>
 </pre></div>
 </div>
 </div>
@@ -595,6 +640,39 @@ image and determine the dominant colors in the image.</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="web-detection">
+<h2>Web Detection<a class="headerlink" href="#web-detection" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_web" title="google.cloud.vision.image.Image.detect_web"><code class="xref py py-meth docutils literal"><span class="pre">detect_web()</span></code></a> search for images on the
+web that are similar to the image you have.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">web_images</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_web</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">full_matching_image</span> <span class="ow">in</span> <span class="n">web_images</span><span class="o">.</span><span class="n">full_matching_images</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">full_matching_image</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+<span class="go">====================</span>
+<span class="go">&#39;https://example.com/image.jpg&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">partial_matching_image</span> <span class="ow">in</span> <span class="n">web_images</span><span class="o">.</span><span class="n">partial_matching_images</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">partial_matching_image</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+<span class="go">====================</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page_with_matching_images</span> <span class="ow">in</span> <span class="n">web_images</span><span class="o">.</span><span class="n">pages_with_matching_images</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">page_with_matching_images</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+<span class="go">====================</span>
+<span class="go">&#39;https://example.com/portfolio/&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">web_images</span><span class="o">.</span><span class="n">web_entities</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="go">====================</span>
+<span class="go">&#39;Mount Rushmore National Memorial&#39;</span>
+<span class="go">====================</span>
+<span class="go">&#39;Landmark&#39;</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="no-results-found">
 <h2>No results found<a class="headerlink" href="#no-results-found" title="Permalink to this headline">#</a></h2>
 <p>If no results for the detection performed can be extracted from the image, then
@@ -613,6 +691,9 @@ an empty list is returned. This behavior is similiar with all detection types.</
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -656,7 +737,8 @@ an empty list is returned. This behavior is similiar with all detection types.</
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

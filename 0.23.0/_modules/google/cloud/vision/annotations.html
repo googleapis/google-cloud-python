@@ -45,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -205,11 +206,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-batch.html">Vision Batch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-crop-hint.html">Vision Crop Hint</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-text.html">Vision Full Text</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-web.html">Vision Web Annotations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -276,8 +280,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../index.html">google-cloud</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">google-cloud</a>
+        
       </nav>
 
 
@@ -290,19 +296,36 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      
-    <li>google.cloud.vision.annotations</li>
+        
+      <li>google.cloud.vision.annotations</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -323,36 +346,54 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
+<span class="c1"># pylint: disable=too-many-arguments</span>
 <span class="sd">&quot;&quot;&quot;Annotations management for Vision API responses.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.vision.color</span> <span class="k">import</span> <span class="n">ImagePropertiesAnnotation</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.crop_hint</span> <span class="k">import</span> <span class="n">CropHint</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.entity</span> <span class="k">import</span> <span class="n">EntityAnnotation</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.face</span> <span class="k">import</span> <span class="n">Face</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.safe_search</span> <span class="k">import</span> <span class="n">SafeSearchAnnotation</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.text</span> <span class="k">import</span> <span class="n">TextAnnotation</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.web</span> <span class="k">import</span> <span class="n">WebDetection</span>
 
 
+<span class="n">_CROP_HINTS_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;cropHintsAnnotation&#39;</span>
 <span class="n">_FACE_ANNOTATIONS</span> <span class="o">=</span> <span class="s1">&#39;faceAnnotations&#39;</span>
+<span class="n">_FULL_TEXT_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;fullTextAnnotation&#39;</span>
 <span class="n">_IMAGE_PROPERTIES_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;imagePropertiesAnnotation&#39;</span>
 <span class="n">_SAFE_SEARCH_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;safeSearchAnnotation&#39;</span>
+<span class="n">_WEB_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;webDetection&#39;</span>
 
 <span class="n">_KEY_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">_CROP_HINTS_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;crop_hints&#39;</span><span class="p">,</span>
     <span class="n">_FACE_ANNOTATIONS</span><span class="p">:</span> <span class="s1">&#39;faces&#39;</span><span class="p">,</span>
+    <span class="n">_FULL_TEXT_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;full_texts&#39;</span><span class="p">,</span>
     <span class="n">_IMAGE_PROPERTIES_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;properties&#39;</span><span class="p">,</span>
     <span class="s1">&#39;labelAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;labels&#39;</span><span class="p">,</span>
     <span class="s1">&#39;landmarkAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;landmarks&#39;</span><span class="p">,</span>
     <span class="s1">&#39;logoAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;logos&#39;</span><span class="p">,</span>
     <span class="n">_SAFE_SEARCH_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;safe_searches&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;textAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;texts&#39;</span>
+    <span class="s1">&#39;textAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;texts&#39;</span><span class="p">,</span>
+    <span class="n">_WEB_DETECTION</span><span class="p">:</span> <span class="s1">&#39;web&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <div class="viewcode-block" id="Annotations"><a class="viewcode-back" href="../../../../vision-annotations.html#google.cloud.vision.annotations.Annotations">[docs]</a><span class="k">class</span> <span class="nc">Annotations</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper class to bundle annotation responses.</span>
 
+<span class="sd">    :type crop_hints: list</span>
+<span class="sd">    :param crop_hints: List of</span>
+<span class="sd">                  :class:`~google.cloud.vision.crop_hint.CropHintsAnnotation`.</span>
+
 <span class="sd">    :type faces: list</span>
 <span class="sd">    :param faces: List of :class:`~google.cloud.vision.face.Face`.</span>
+
+<span class="sd">    :type full_texts: list</span>
+<span class="sd">    :param full_texts: List of</span>
+<span class="sd">                       :class:`~google.cloud.vision.text.TextAnnotation`.</span>
 
 <span class="sd">    :type properties: list</span>
 <span class="sd">    :param properties:</span>
@@ -377,16 +418,23 @@
 <span class="sd">    :type texts: list</span>
 <span class="sd">    :param texts: List of</span>
 <span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
+
+<span class="sd">    :type web: list</span>
+<span class="sd">    :param web: List of :class:`~google.cloud.vision.web.WebDetection`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="p">(),</span> <span class="n">properties</span><span class="o">=</span><span class="p">(),</span> <span class="n">labels</span><span class="o">=</span><span class="p">(),</span> <span class="n">landmarks</span><span class="o">=</span><span class="p">(),</span>
-                 <span class="n">logos</span><span class="o">=</span><span class="p">(),</span> <span class="n">safe_searches</span><span class="o">=</span><span class="p">(),</span> <span class="n">texts</span><span class="o">=</span><span class="p">()):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">crop_hints</span><span class="o">=</span><span class="p">(),</span> <span class="n">faces</span><span class="o">=</span><span class="p">(),</span> <span class="n">full_texts</span><span class="o">=</span><span class="p">(),</span> <span class="n">properties</span><span class="o">=</span><span class="p">(),</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="p">(),</span> <span class="n">landmarks</span><span class="o">=</span><span class="p">(),</span> <span class="n">logos</span><span class="o">=</span><span class="p">(),</span> <span class="n">safe_searches</span><span class="o">=</span><span class="p">(),</span>
+                 <span class="n">texts</span><span class="o">=</span><span class="p">(),</span> <span class="n">web</span><span class="o">=</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crop_hints</span> <span class="o">=</span> <span class="n">crop_hints</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full_texts</span> <span class="o">=</span> <span class="n">full_texts</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">properties</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">landmarks</span> <span class="o">=</span> <span class="n">landmarks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logos</span> <span class="o">=</span> <span class="n">logos</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">safe_searches</span> <span class="o">=</span> <span class="n">safe_searches</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">texts</span> <span class="o">=</span> <span class="n">texts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">web</span> <span class="o">=</span> <span class="n">web</span>
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Annotations.from_api_repr"><a class="viewcode-back" href="../../../../vision-annotations.html#google.cloud.vision.annotations.Annotations.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
@@ -432,7 +480,9 @@
 <span class="sd">    :returns: Dictionary populated with entities from response.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;crop_hints&#39;</span><span class="p">:</span> <span class="n">_make_crop_hints_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">crop_hints_annotation</span><span class="p">),</span>
         <span class="s1">&#39;faces&#39;</span><span class="p">:</span> <span class="n">_make_faces_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">face_annotations</span><span class="p">),</span>
+        <span class="s1">&#39;full_texts&#39;</span><span class="p">:</span> <span class="n">_make_full_text_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">full_text_annotation</span><span class="p">),</span>
         <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">label_annotations</span><span class="p">),</span>
         <span class="s1">&#39;landmarks&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">landmark_annotations</span><span class="p">),</span>
         <span class="s1">&#39;logos&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">logo_annotations</span><span class="p">),</span>
@@ -441,7 +491,22 @@
         <span class="s1">&#39;safe_searches&#39;</span><span class="p">:</span> <span class="n">_make_safe_search_from_pb</span><span class="p">(</span>
             <span class="n">image</span><span class="o">.</span><span class="n">safe_search_annotation</span><span class="p">),</span>
         <span class="s1">&#39;texts&#39;</span><span class="p">:</span> <span class="n">_make_entity_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">text_annotations</span><span class="p">),</span>
+        <span class="s1">&#39;web&#39;</span><span class="p">:</span> <span class="n">_make_web_detection_from_pb</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">web_detection</span><span class="p">)</span>
     <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_make_crop_hints_from_pb</span><span class="p">(</span><span class="n">crop_hints</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create list of ``CropHint`` objects from a protobuf response.</span>
+
+<span class="sd">    :type crop_hints: list</span>
+<span class="sd">    :param crop_hints: List of</span>
+<span class="sd">                       :class:`google.cloud.grpc.vision.v1.\</span>
+<span class="sd">                       image_annotator_pb2.CropHintsAnnotation`</span>
+
+<span class="sd">    :rtype: list</span>
+<span class="sd">    :returns: List of ``CropHint`` objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">CropHint</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">hint</span><span class="p">)</span> <span class="k">for</span> <span class="n">hint</span> <span class="ow">in</span> <span class="n">crop_hints</span><span class="o">.</span><span class="n">crop_hints</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_make_entity_from_pb</span><span class="p">(</span><span class="n">annotations</span><span class="p">):</span>
@@ -468,6 +533,19 @@
 <span class="sd">    :returns: List of ``Face``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">Face</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_make_full_text_from_pb</span><span class="p">(</span><span class="n">full_text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create text annotation object from protobuf response.</span>
+
+<span class="sd">    :type full_text: :class:`~google.cloud.proto.vision.v1.\</span>
+<span class="sd">                     text_annotation_pb2.TextAnnotation`</span>
+<span class="sd">    :param full_text: Protobuf instance of ``TextAnnotation``.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.vision.text.TextAnnotation`</span>
+<span class="sd">    :returns: Instance of ``TextAnnotation``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">TextAnnotation</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">full_text</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_make_image_properties_from_pb</span><span class="p">(</span><span class="n">image_properties</span><span class="p">):</span>
@@ -497,6 +575,19 @@
     <span class="k">return</span> <span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">safe_search</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">_make_web_detection_from_pb</span><span class="p">(</span><span class="n">annotation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create ``WebDetection`` object from a protobuf response.</span>
+
+<span class="sd">    :type annotation: :class:`~google.cloud.proto.vision.v1.web_detection_pb2\</span>
+<span class="sd">                      .WebDetection`</span>
+<span class="sd">    :param annotation: Protobuf instance of ``WebDetection``.</span>
+
+<span class="sd">    :rtype: :class: `~google.cloud.vision.web.WebDetection`</span>
+<span class="sd">    :returns: Instance of ``WebDetection``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">WebDetection</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">_entity_from_response_type</span><span class="p">(</span><span class="n">feature_type</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON result to an entity type based on the feature.</span>
 
@@ -518,12 +609,23 @@
         <span class="k">return</span> <span class="n">ImagePropertiesAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_SAFE_SEARCH_ANNOTATION</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_WEB_DETECTION</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">WebDetection</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_CROP_HINTS_ANNOTATION</span><span class="p">:</span>
+        <span class="n">crop_hints</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cropHints&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">detected_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="n">CropHint</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">crop_hints</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_FULL_TEXT_ANNOTATION</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TextAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
             <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EntityAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">detected_objects</span>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -558,7 +660,8 @@
             VERSION:'0.23.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../../_static/jquery.js"></script>
