@@ -51,7 +51,7 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.23.1, < 0.24dev',
-    'grpcio >= 1.0.2, < 2.0dev',
+    'google-gax>=0.15.7, <0.16dev',
     'gapic-google-cloud-datastore-v1 >= 0.15.0, < 0.16dev',
 ]
 
