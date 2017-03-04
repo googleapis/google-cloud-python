@@ -17,15 +17,24 @@
 
 import contextlib
 
+from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
+from google.gax.utils import metrics
 from grpc import StatusCode
 
 from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
 from google.cloud import exceptions
 
-from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
+from google.cloud.datastore import __version__
 
 
+_METRICS_HEADERS = (
+    ('gccl', __version__),
+)
+_HEADER_STR = metrics.stringify(metrics.fill(_METRICS_HEADERS))
+_GRPC_EXTRA_OPTIONS = (
+    ('x-goog-api-client', _HEADER_STR),
+)
 _GRPC_ERROR_MAPPING = {
     StatusCode.UNKNOWN: exceptions.InternalServerError,
     StatusCode.INVALID_ARGUMENT: exceptions.BadRequest,
@@ -85,10 +94,10 @@ class _DatastoreAPIOverGRPC(object):
 
     def __init__(self, connection, secure):
         if secure:
-            self._stub = make_secure_stub(connection.credentials,
-                                          connection.USER_AGENT,
-                                          datastore_pb2_grpc.DatastoreStub,
-                                          connection.host)
+            self._stub = make_secure_stub(
+                connection.credentials, connection.USER_AGENT,
+                datastore_pb2_grpc.DatastoreStub, connection.host,
+                extra_options=_GRPC_EXTRA_OPTIONS)
         else:
             self._stub = make_insecure_stub(datastore_pb2_grpc.DatastoreStub,
                                             connection.host)

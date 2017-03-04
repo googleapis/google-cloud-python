@@ -97,7 +97,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
         return _DatastoreAPIOverGRPC
 
-    def _make_one(self, stub, connection=None, secure=True, mock_args=None):
+    def _make_one(self, stub, connection=None, secure=True):
         if connection is None:
             connection = mock.Mock(
                 credentials=object(),
@@ -106,27 +106,21 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
                 spec=['credentials', 'host', 'USER_AGENT'],
             )
 
-        if mock_args is None:
-            mock_args = []
-
-        def mock_make_stub(*args):
-            mock_args.append(args)
-            return stub
-
         if secure:
             patch = mock.patch(
                 'google.cloud.datastore._gax.make_secure_stub',
-                new=mock_make_stub)
+                return_value=stub)
         else:
             patch = mock.patch(
                 'google.cloud.datastore._gax.make_insecure_stub',
-                new=mock_make_stub)
+                return_value=stub)
 
-        with patch:
-            return self._get_target_class()(connection, secure)
+        with patch as make_stub_mock:
+            api_obj = self._get_target_class()(connection, secure)
+            return api_obj, make_stub_mock
 
     def test_constructor(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
+        import google.cloud.datastore._gax as MUT
 
         conn = mock.Mock(
             credentials=object(),
@@ -136,17 +130,17 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         )
 
         stub = _GRPCStub()
-        mock_args = []
-        datastore_api = self._make_one(stub, connection=conn,
-                                       mock_args=mock_args)
-        self.assertIs(datastore_api._stub, stub)
+        datastore_api, make_stub_mock = self._make_one(
+            stub, connection=conn)
 
-        self.assertEqual(mock_args, [(
+        self.assertIs(datastore_api._stub, stub)
+        make_stub_mock.assert_called_once_with(
             conn.credentials,
             conn.USER_AGENT,
-            datastore_pb2_grpc.DatastoreStub,
+            MUT.datastore_pb2_grpc.DatastoreStub,
             conn.host,
-        )])
+            extra_options=MUT._GRPC_EXTRA_OPTIONS,
+        )
 
     def test_constructor_insecure(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
@@ -158,21 +152,19 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         )
 
         stub = _GRPCStub()
-        mock_args = []
-        datastore_api = self._make_one(stub, connection=conn,
-                                       secure=False,
-                                       mock_args=mock_args)
-        self.assertIs(datastore_api._stub, stub)
+        datastore_api, make_stub_mock = self._make_one(
+            stub, connection=conn, secure=False)
 
-        self.assertEqual(mock_args, [(
+        self.assertIs(datastore_api._stub, stub)
+        make_stub_mock.assert_called_once_with(
             datastore_pb2_grpc.DatastoreStub,
             conn.host,
-        )])
+        )
 
     def test_lookup(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
+        datastore_api, _ = self._make_one(stub=stub)
 
         request_pb = mock.Mock(project_id=None, spec=['project_id'])
         project = 'PROJECT'
@@ -185,7 +177,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_run_query(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
+        datastore_api, _ = self._make_one(stub=stub)
 
         request_pb = mock.Mock(project_id=None, spec=['project_id'])
         project = 'PROJECT'
@@ -197,7 +189,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
     def _run_query_failure_helper(self, exc, err_class):
         stub = _GRPCStub(side_effect=exc)
-        datastore_api = self._make_one(stub=stub)
+        datastore_api, _ = self._make_one(stub=stub)
 
         request_pb = mock.Mock(project_id=None, spec=['project_id'])
         project = 'PROJECT'
@@ -225,7 +217,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_begin_transaction(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
+        datastore_api, _ = self._make_one(stub=stub)
 
         request_pb = mock.Mock(project_id=None, spec=['project_id'])
         project = 'PROJECT'
@@ -239,7 +231,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_commit_success(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
+        datastore_api, _ = self._make_one(stub=stub)
 
         request_pb = mock.Mock(project_id=None, spec=['project_id'])
         project = 'PROJECT'
@@ -252,7 +244,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_rollback(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
+        datastore_api, _ = self._make_one(stub=stub)
 
         request_pb = mock.Mock(project_id=None, spec=['project_id'])
         project = 'PROJECT'
@@ -265,7 +257,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_allocate_ids(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._make_one(stub=stub)
+        datastore_api, _ = self._make_one(stub=stub)
 
         request_pb = mock.Mock(project_id=None, spec=['project_id'])
         project = 'PROJECT'
