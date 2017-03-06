@@ -467,6 +467,19 @@ class Connection(connection_module.Connection):
         return self._datastore_api.allocate_ids(project, request)
 
 
+class HTTPDatastoreAPI(object):
+    """An API object that sends proto-over-HTTP requests.
+
+    Intended to provide the same methods as the GAPIC ``DatastoreClient``.
+
+    :type client: :class:`~google.cloud.datastore.client.Client`
+    :param client: The client that provides configuration.
+    """
+
+    def __init__(self, client):
+        self.client = client
+
+
 def _set_read_options(request, eventual, transaction_id):
     """Validate rules for read options, and assign to the request.
 
