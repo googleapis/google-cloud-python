@@ -51,22 +51,6 @@ register_type(admin_v1_pb2.CreateDatabaseMetadata)
 register_type(admin_v1_pb2.UpdateDatabaseDdlMetadata)
 
 
-class _BrokenResultFuture(_OperationFuture):
-    """An _OperationFuture subclass that is permissive about type mismatches
-    in results, and simply returns an empty-ish object if they happen.
-
-    This class exists to get past a contra-spec result on
-    `update_database_ddl`; since the result is empty there is no
-    critical loss.
-    """
-    @functools.wraps(_OperationFuture.result)
-    def result(self, *args, **kwargs):
-        try:
-            return super(_BrokenResultFuture, self).result(*args, **kwargs)
-        except TypeError:
-            return self._result_type()
-
-
 class Database(object):
     """Representation of a Cloud Spanner Database.
 
@@ -280,7 +264,6 @@ class Database(object):
         try:
             future = api.update_database_ddl(
                 self.name, ddl_statements, '', options=options)
-            future.__class__ = _BrokenResultFuture
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(self.name)
