@@ -1,10 +1,10 @@
-Install pandas-gbq
-==================
+Installation
+============
 
 You can install pandas-gbq with ``conda``, ``pip``, or by installing from source.
 
 Conda
-~~~~~
+-----
 
 .. code-block:: shell
 
