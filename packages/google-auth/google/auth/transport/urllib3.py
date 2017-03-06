@@ -30,7 +30,12 @@ try:
 except ImportError:  # pragma: NO COVER
     certifi = None
 
-import urllib3
+try:
+    import urllib3
+except ImportError:  # pragma: NO COVER
+    raise ImportError(
+        'The urllib3 library is not installed, please install the urllib3 '
+        'package to use the urllib3 transport.')
 import urllib3.exceptions
 
 from google.auth import exceptions

@@ -16,7 +16,12 @@
 
 from __future__ import absolute_import
 
-import grpc
+try:
+    import grpc
+except ImportError:  # pragma: NO COVER
+    raise ImportError(
+        'gRPC is not installed, please install the grpcio package to use the '
+        'gRPC transport.')
 import six
 
 
