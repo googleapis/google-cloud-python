@@ -35,6 +35,13 @@ except ImportError:  # pragma: NO COVER
 
 DATASTORE_API_HOST = 'datastore.googleapis.com'
 """Datastore API request host."""
+API_BASE_URL = 'https://' + DATASTORE_API_HOST
+"""The base of the API call URL."""
+API_VERSION = 'v1'
+"""The version of the API, used in building the API call's URL."""
+API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
+                    '/{project}:{method}')
+"""A template for the URL of a particular API call."""
 
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
@@ -67,12 +74,12 @@ def _request(connection, project, method, data):
     headers = {
         'Content-Type': 'application/x-protobuf',
         'Content-Length': str(len(data)),
-        'User-Agent': connection.USER_AGENT,
+        'User-Agent': connection_module.DEFAULT_USER_AGENT,
         connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
     }
+    api_url = build_api_url(project, method, connection.api_base_url)
     headers, content = connection.http.request(
-        uri=connection.build_api_url(project=project, method=method),
-        method='POST', headers=headers, body=data)
+        uri=api_url, method='POST', headers=headers, body=data)
 
     status = headers['status']
     if status != '200':
@@ -111,6 +118,31 @@ def _rpc(connection, project, method, request_pb, response_pb_cls):
     response = _request(connection=connection, project=project,
                         method=method, data=request_pb.SerializeToString())
     return response_pb_cls.FromString(response)
+
+
+def build_api_url(project, method, base_url):
+    """Construct the URL for a particular API call.
+
+    This method is used internally to come up with the URL to use when
+    making RPCs to the Cloud Datastore API.
+
+    :type project: str
+    :param project: The project to connect to. This is
+                    usually your project name in the cloud console.
+
+    :type method: str
+    :param method: The API method to call (e.g. 'runQuery', 'lookup').
+
+    :type base_url: str
+    :param base_url: The base URL where the API lives.
+                     You shouldn't have to provide this.
+
+    :rtype: str
+    :returns: The API URL created.
+    """
+    return API_URL_TEMPLATE.format(
+        api_base=base_url, api_version=API_VERSION,
+        project=project, method=method)
 
 
 class _DatastoreAPIOverHttp(object):
@@ -238,16 +270,6 @@ class Connection(connection_module.Connection):
     :param client: The client that owns the current connection.
     """
 
-    API_BASE_URL = 'https://' + DATASTORE_API_HOST
-    """The base of the API call URL."""
-
-    API_VERSION = 'v1'
-    """The version of the API, used in building the API call's URL."""
-
-    API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
-                        '/{project}:{method}')
-    """A template for the URL of a particular API call."""
-
     def __init__(self, client):
         super(Connection, self).__init__(client)
         try:
@@ -256,42 +278,12 @@ class Connection(connection_module.Connection):
             secure = False
         except KeyError:
             self.host = DATASTORE_API_HOST
-            self.api_base_url = self.__class__.API_BASE_URL
+            self.api_base_url = API_BASE_URL
             secure = True
         if _USE_GRPC:
             self._datastore_api = _DatastoreAPIOverGRPC(self, secure=secure)
         else:
             self._datastore_api = _DatastoreAPIOverHttp(self)
-
-    def build_api_url(self, project, method, base_url=None,
-                      api_version=None):
-        """Construct the URL for a particular API call.
-
-        This method is used internally to come up with the URL to use when
-        making RPCs to the Cloud Datastore API.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type method: str
-        :param method: The API method to call (e.g. 'runQuery', 'lookup').
-
-        :type base_url: str
-        :param base_url: The base URL where the API lives.
-                         You shouldn't have to provide this.
-
-        :type api_version: str
-        :param api_version: The version of the API to connect to.
-                            You shouldn't have to provide this.
-
-        :rtype: str
-        :returns: The API URL created.
-        """
-        return self.API_URL_TEMPLATE.format(
-            api_base=(base_url or self.api_base_url),
-            api_version=(api_version or self.API_VERSION),
-            project=project, method=method)
 
     def lookup(self, project, key_pbs,
                eventual=False, transaction_id=None):
