@@ -17,6 +17,108 @@ import unittest
 import mock
 
 
+class Test__request(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.datastore._http import _request
+
+        return _request(*args, **kwargs)
+
+    def test_success(self):
+        from google.cloud import _http as connection_module
+        from google.cloud.datastore._http import _CLIENT_INFO
+
+        project = 'PROJECT'
+        method = 'METHOD'
+        data = b'DATA'
+        uri = 'http://api-url'
+
+        # Make mock Connection object with canned response.
+        conn = _Connection(uri)
+        response_data = 'CONTENT'
+        http = conn.http = Http({'status': '200'}, response_data)
+
+        # Call actual function under test.
+        response = self._call_fut(conn, project, method, data)
+        self.assertEqual(response, response_data)
+
+        # Check that the mocks were called as expected.
+        called_with = http._called_with
+        self.assertEqual(len(called_with), 4)
+        self.assertEqual(called_with['uri'], uri)
+        self.assertEqual(called_with['method'], 'POST')
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'User-Agent': conn.USER_AGENT,
+            'Content-Length': '4',
+            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+        }
+        self.assertEqual(called_with['headers'], expected_headers)
+        self.assertEqual(called_with['body'], data)
+        self.assertEqual(conn.build_kwargs,
+                         [{'method': method, 'project': project}])
+
+    def test_failure(self):
+        from google.cloud.exceptions import BadRequest
+        from google.rpc import code_pb2
+        from google.rpc import status_pb2
+
+        project = 'PROJECT'
+        method = 'METHOD'
+        data = 'DATA'
+        uri = 'http://api-url'
+
+        # Make mock Connection object with canned response.
+        conn = _Connection(uri)
+        error = status_pb2.Status()
+        error.message = 'Entity value is indexed.'
+        error.code = code_pb2.FAILED_PRECONDITION
+        conn.http = Http({'status': '400'}, error.SerializeToString())
+
+        # Call actual function under test.
+        with self.assertRaises(BadRequest) as exc:
+            self._call_fut(conn, project, method, data)
+
+        # Check that the mocks were called as expected.
+        expected_message = '400 Entity value is indexed.'
+        self.assertEqual(str(exc.exception), expected_message)
+        self.assertEqual(conn.build_kwargs,
+                         [{'method': method, 'project': project}])
+
+
+class Test__rpc(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.datastore._http import _rpc
+
+        return _rpc(*args, **kwargs)
+
+    def test_it(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        connection = object()
+        project = 'projectOK'
+        method = 'beginTransaction'
+        request_pb = datastore_pb2.BeginTransactionRequest(
+            project_id=project)
+
+        response_pb = datastore_pb2.BeginTransactionResponse(
+            transaction=b'7830rmc')
+        patch = mock.patch('google.cloud.datastore._http._request',
+                           return_value=response_pb.SerializeToString())
+        with patch as mock_request:
+            result = self._call_fut(
+                connection, project, method, request_pb,
+                datastore_pb2.BeginTransactionResponse)
+            self.assertEqual(result, response_pb)
+
+            mock_request.assert_called_once_with(
+                connection=connection, data=request_pb.SerializeToString(),
+                method=method, project=project)
+
+
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
     @staticmethod
@@ -28,98 +130,30 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test__rpc(self):
-        from google.cloud import _http as connection_module
-        from google.cloud.datastore._http import _CLIENT_INFO
+    def test_constructor(self):
+        connection = object()
+        ds_api = self._make_one(connection)
+        self.assertIs(ds_api.connection, connection)
 
-        class ReqPB(object):
+    def test_lookup(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
-            def SerializeToString(self):
-                return REQPB
+        connection = object()
+        ds_api = self._make_one(connection)
 
-        class RspPB(object):
+        project = 'project'
+        request_pb = object()
 
-            def __init__(self, pb):
-                self._pb = pb
+        patch = mock.patch(
+            'google.cloud.datastore._http._rpc',
+            return_value=mock.sentinel.looked_up)
+        with patch as mock_rpc:
+            result = ds_api.lookup(project, request_pb)
+            self.assertIs(result, mock.sentinel.looked_up)
 
-            @classmethod
-            def FromString(cls, pb):
-                return cls(pb)
-
-        REQPB = b'REQPB'
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        URI = 'http://api-url'
-        conn = _Connection(URI)
-        datastore_api = self._make_one(conn)
-        http = conn.http = Http({'status': '200'}, 'CONTENT')
-        response = datastore_api._rpc(PROJECT, METHOD, ReqPB(), RspPB)
-        self.assertIsInstance(response, RspPB)
-        self.assertEqual(response._pb, 'CONTENT')
-        called_with = http._called_with
-        self.assertEqual(len(called_with), 4)
-        self.assertEqual(called_with['uri'], URI)
-        self.assertEqual(called_with['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'User-Agent': conn.USER_AGENT,
-            'Content-Length': '5',
-            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
-        }
-        self.assertEqual(called_with['headers'], expected_headers)
-        self.assertEqual(called_with['body'], REQPB)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
-
-    def test__request_w_200(self):
-        from google.cloud import _http as connection_module
-        from google.cloud.datastore._http import _CLIENT_INFO
-
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        DATA = b'DATA'
-        URI = 'http://api-url'
-        conn = _Connection(URI)
-        datastore_api = self._make_one(conn)
-        http = conn.http = Http({'status': '200'}, 'CONTENT')
-        self.assertEqual(datastore_api._request(PROJECT, METHOD, DATA),
-                         'CONTENT')
-        called_with = http._called_with
-        self.assertEqual(len(called_with), 4)
-        self.assertEqual(called_with['uri'], URI)
-        self.assertEqual(called_with['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'User-Agent': conn.USER_AGENT,
-            'Content-Length': '4',
-            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
-        }
-        self.assertEqual(called_with['headers'], expected_headers)
-        self.assertEqual(called_with['body'], DATA)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
-
-    def test__request_not_200(self):
-        from google.cloud.exceptions import BadRequest
-        from google.rpc import status_pb2
-
-        error = status_pb2.Status()
-        error.message = 'Entity value is indexed.'
-        error.code = 9  # FAILED_PRECONDITION
-
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        DATA = 'DATA'
-        URI = 'http://api-url'
-        conn = _Connection(URI)
-        datastore_api = self._make_one(conn)
-        conn.http = Http({'status': '400'}, error.SerializeToString())
-        with self.assertRaises(BadRequest) as exc:
-            datastore_api._request(PROJECT, METHOD, DATA)
-        expected_message = '400 Entity value is indexed.'
-        self.assertEqual(str(exc.exception), expected_message)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
+            mock_rpc.assert_called_once_with(
+                connection, project, 'lookup', request_pb,
+                datastore_pb2.LookupResponse)
 
 
 class TestConnection(unittest.TestCase):
