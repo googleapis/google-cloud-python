@@ -57,7 +57,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-vision',
-    version='0.90.0',
+    version='0.23.3',
     description='Python Client for Google Cloud Vision',
     long_description=README,
     namespace_packages=[
