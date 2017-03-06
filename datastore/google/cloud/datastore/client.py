@@ -21,6 +21,7 @@ from google.cloud._helpers import (
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_DATASET
+from google.cloud.environment_vars import GCD_HOST
 
 from google.cloud.datastore._http import Connection
 from google.cloud.datastore._http import HTTPDatastoreAPI
@@ -40,6 +41,8 @@ except ImportError:  # pragma: NO COVER
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
+_DATASTORE_BASE_URL = 'https://datastore.googleapis.com'
+"""Datastore API request URL base."""
 
 _USE_GAX = _HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
 
@@ -195,7 +198,6 @@ class Client(ClientWithProject):
                  credentials=None, http=None, use_gax=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
-        self._connection = Connection(self)
         self.namespace = namespace
         self._batch_stack = _LocalStack()
         self._datastore_api_internal = None
@@ -203,6 +205,14 @@ class Client(ClientWithProject):
             self._use_gax = _USE_GAX
         else:
             self._use_gax = use_gax
+        try:
+            host = os.environ[GCD_HOST]
+            self._base_url = 'http://' + host
+        except KeyError:
+            self._base_url = _DATASTORE_BASE_URL
+        # NOTE: Make sure all properties are set before passing to
+        #       ``Connection`` (e.g. ``_base_url``).
+        self._connection = Connection(self)
 
     @staticmethod
     def _determine_default(project):

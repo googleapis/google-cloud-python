@@ -155,13 +155,15 @@ class TestClient(unittest.TestCase):
             self.assertRaises(EnvironmentError, self._make_one, None)
 
     def test_constructor_w_implicit_inputs(self):
-        OTHER = 'other'
+        from google.cloud.datastore.client import _DATASTORE_BASE_URL
+
+        other = 'other'
         creds = _make_credentials()
         default_called = []
 
         def fallback_mock(project):
             default_called.append(project)
-            return project or OTHER
+            return project or other
 
         klass = self._get_target_class()
         patch1 = mock.patch(
@@ -175,31 +177,36 @@ class TestClient(unittest.TestCase):
             with patch2:
                 client = klass()
 
-        self.assertEqual(client.project, OTHER)
+        self.assertEqual(client.project, other)
         self.assertIsNone(client.namespace)
         self.assertIsInstance(client._connection, _MockConnection)
         self.assertIs(client._credentials, creds)
         self.assertIsNone(client._http_internal)
+        self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
+
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
         self.assertEqual(default_called, [None])
 
     def test_constructor_w_explicit_inputs(self):
-        OTHER = 'other'
-        NAMESPACE = 'namespace'
+        from google.cloud.datastore.client import _DATASTORE_BASE_URL
+
+        other = 'other'
+        namespace = 'namespace'
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=OTHER,
-                                namespace=NAMESPACE,
+        client = self._make_one(project=other,
+                                namespace=namespace,
                                 credentials=creds,
                                 http=http)
-        self.assertEqual(client.project, OTHER)
-        self.assertEqual(client.namespace, NAMESPACE)
+        self.assertEqual(client.project, other)
+        self.assertEqual(client.namespace, namespace)
         self.assertIsInstance(client._connection, _MockConnection)
         self.assertIs(client._credentials, creds)
         self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
+        self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
 
     def test_constructor_use_gax_default(self):
         import google.cloud.datastore.client as MUT
@@ -227,6 +234,20 @@ class TestClient(unittest.TestCase):
                 project=project, credentials=creds, http=http,
                 use_gax=True)
             self.assertTrue(client4._use_gax)
+
+    def test_constructor_gcd_host(self):
+        from google.cloud.environment_vars import GCD_HOST
+
+        host = 'localhost:1234'
+        fake_environ = {GCD_HOST: host}
+        project = 'PROJECT'
+        creds = _make_credentials()
+        http = object()
+
+        with mock.patch('os.environ', new=fake_environ):
+            client = self._make_one(
+                project=project, credentials=creds, http=http)
+            self.assertEqual(client._base_url, 'http://' + host)
 
     def test__datastore_api_property_gax(self):
         client = self._make_one(
