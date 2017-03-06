@@ -206,33 +206,19 @@ class TestConnection(unittest.TestCase):
             project + ':' + method,
         ])
 
-    def test_default_url(self):
-        from google.cloud.datastore._http import API_BASE_URL
-
-        conn = self._make_one(object())
-        self.assertEqual(conn.api_base_url, API_BASE_URL)
-
-    def test_custom_url_from_env(self):
-        from google.cloud._http import API_BASE_URL
-        from google.cloud.environment_vars import GCD_HOST
-
-        HOST = 'CURR_HOST'
-        fake_environ = {GCD_HOST: HOST}
-
-        with mock.patch('os.environ', new=fake_environ):
-            conn = self._make_one(object())
-
-        self.assertNotEqual(conn.api_base_url, API_BASE_URL)
-        self.assertEqual(conn.api_base_url, 'http://' + HOST)
+    def test_inherited_url(self):
+        client = mock.Mock(_base_url='test.invalid', spec=['_base_url'])
+        conn = self._make_one(client)
+        self.assertEqual(conn.api_base_url, client._base_url)
 
     def test_constructor(self):
-        client = object()
+        client = mock.Mock(spec=['_base_url'])
         conn = self._make_one(client)
         self.assertIs(conn._client, client)
 
     def test_constructor_without_grpc(self):
         connections = []
-        client = object()
+        client = mock.Mock(spec=['_base_url'])
         return_val = object()
 
         def mock_api(connection):
@@ -250,23 +236,17 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(connections, [conn])
 
     def test_constructor_with_grpc(self):
-        api_args = []
-        client = object()
-        return_val = object()
-
-        def mock_api(connection, secure):
-            api_args.append((connection, secure))
-            return return_val
+        client = mock.Mock(spec=['_base_url'])
 
         patch = mock.patch(
             'google.cloud.datastore._http._DatastoreAPIOverGRPC',
-            new=mock_api)
-        with patch:
+            return_value=mock.sentinel.ds_api)
+        with patch as mock_klass:
             conn = self._make_one(client, use_grpc=True)
+            mock_klass.assert_called_once_with(conn)
 
         self.assertIs(conn._client, client)
-        self.assertIs(conn._datastore_api, return_val)
-        self.assertEqual(api_args, [(conn, True)])
+        self.assertIs(conn._datastore_api, mock.sentinel.ds_api)
 
     def test_lookup_single_key_empty_response(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
@@ -277,7 +257,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -306,7 +287,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -333,7 +315,9 @@ class TestConnection(unittest.TestCase):
         PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
         key_pb = self._make_key_pb(PROJECT)
-        conn = self._make_one(object())
+
+        client = mock.Mock(spec=['_base_url'])
+        conn = self._make_one(client)
         self.assertRaises(ValueError, conn.lookup, PROJECT, key_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
@@ -347,7 +331,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -381,7 +366,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -414,7 +400,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -449,7 +436,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -486,7 +474,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -532,7 +521,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -568,7 +558,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -603,7 +594,9 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._make_one(object())
+
+        client = mock.Mock(spec=['_base_url'])
+        conn = self._make_one(client)
         self.assertRaises(ValueError, conn.run_query, PROJECT, q_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
@@ -623,7 +616,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -655,7 +649,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -682,7 +677,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -712,7 +708,8 @@ class TestConnection(unittest.TestCase):
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
         conn = self._make_one(client)
         uri = self._build_expected_url(conn, project, 'commit')
 
@@ -743,7 +740,8 @@ class TestConnection(unittest.TestCase):
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
         conn = self._make_one(client)
         uri = self._build_expected_url(conn, project, 'commit')
 
@@ -769,7 +767,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -792,7 +791,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
@@ -826,7 +826,8 @@ class TestConnection(unittest.TestCase):
 
         # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(_http=http, spec=['_http'])
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
 
         # Make request.
         conn = self._make_one(client)
