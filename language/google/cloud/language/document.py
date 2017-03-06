@@ -18,6 +18,7 @@ A document is used to hold text to be analyzed and annotated.
 """
 
 import collections
+import sys
 
 from google.cloud.language import api_responses
 from google.cloud.language.entity import Entity
@@ -63,6 +64,17 @@ class Encoding(object):
 
     UTF32 = 'UTF32'
     """UTF-32 encoding type."""
+
+    @classmethod
+    def get_default(cls):
+        """Return the appropriate default encoding on this system.
+
+        :rtype: str
+        :returns: The correct default encoding on this system.
+        """
+        if sys.maxunicode == 65535:
+            return cls.UTF16
+        return cls.UTF32
 
 
 class Document(object):
@@ -115,7 +127,7 @@ class Document(object):
     """HTML document type."""
 
     def __init__(self, client, content=None, gcs_url=None, doc_type=PLAIN_TEXT,
-                 language=None, encoding=Encoding.UTF8):
+                 language=None, encoding=Encoding.get_default()):
         if content is not None and gcs_url is not None:
             raise ValueError('A Document cannot contain both local text and '
                              'a link to text in a Google Cloud Storage object')
