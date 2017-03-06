@@ -105,6 +105,19 @@ def make_mock_client(response):
     return mock.Mock(_connection=connection, spec=Client)
 
 
+class TestEncoding(unittest.TestCase):
+    def test_default_low_maxunicode(self):
+        import sys
+        import mock
+
+        from google.cloud.language.document import Encoding
+
+        with mock.patch.dict(sys.__dict__, maxunicode=65535):
+            self.assertEqual(Encoding.get_default(), Encoding.UTF16)
+        with mock.patch.dict(sys.__dict__, maxunicode=1114111):
+            self.assertEqual(Encoding.get_default(), Encoding.UTF32)
+
+
 class TestDocument(unittest.TestCase):
 
     @staticmethod
@@ -127,7 +140,7 @@ class TestDocument(unittest.TestCase):
         self.assertIsNone(document.gcs_url)
         self.assertIsNone(document.language)
         self.assertEqual(document.doc_type, MUT.Document.PLAIN_TEXT)
-        self.assertEqual(document.encoding, MUT.Encoding.UTF8)
+        self.assertEqual(document.encoding, MUT.Encoding.get_default())
 
     def test_constructor_explicit(self):
         import google.cloud.language.document as MUT
@@ -287,7 +300,7 @@ class TestDocument(unittest.TestCase):
 
         # Verify the request.
         expected = self._expected_data(
-            content, encoding_type=Encoding.UTF8)
+            content, encoding_type=Encoding.get_default())
         client._connection.api_request.assert_called_once_with(
             path='analyzeEntities', method='POST', data=expected)
 
@@ -428,7 +441,7 @@ class TestDocument(unittest.TestCase):
 
         # Verify the request.
         expected = self._expected_data(
-            content, encoding_type=Encoding.UTF8)
+            content, encoding_type=Encoding.get_default())
         client._connection.api_request.assert_called_once_with(
             path='analyzeSyntax', method='POST', data=expected)
 
@@ -506,7 +519,7 @@ class TestDocument(unittest.TestCase):
 
         # Verify the request.
         expected = self._expected_data(
-            ANNOTATE_CONTENT, encoding_type=Encoding.UTF8,
+            ANNOTATE_CONTENT, encoding_type=Encoding.get_default(),
             extract_sentiment=include_sentiment,
             extract_entities=include_entities,
             extract_syntax=include_syntax)
