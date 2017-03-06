@@ -269,6 +269,37 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             [(request_pb, 'AllocateIds')])
 
 
+@unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+class Test_make_datastore_api(unittest.TestCase):
+
+    def _call_fut(self, client):
+        from google.cloud.datastore._gax import make_datastore_api
+
+        return make_datastore_api(client)
+
+    @mock.patch(
+        'google.cloud.gapic.datastore.v1.datastore_client.DatastoreClient',
+        SERVICE_ADDRESS='datastore.mock.mock',
+        return_value=mock.sentinel.ds_client)
+    @mock.patch('google.cloud.datastore._gax.make_secure_channel',
+                return_value=mock.sentinel.channel)
+    def test_it(self, make_chan, mock_klass):
+        from google.cloud._http import DEFAULT_USER_AGENT
+        from google.cloud.datastore import __version__
+
+        client = mock.Mock(
+            _credentials=mock.sentinel.credentials, spec=['_credentials'])
+        ds_api = self._call_fut(client)
+        self.assertIs(ds_api, mock.sentinel.ds_client)
+
+        make_chan.assert_called_once_with(
+            mock.sentinel.credentials, DEFAULT_USER_AGENT,
+            mock_klass.SERVICE_ADDRESS)
+        mock_klass.assert_called_once_with(
+            channel=mock.sentinel.channel, lib_name='gccl',
+            lib_version=__version__)
+
+
 class _GRPCStub(object):
 
     def __init__(self, return_val=None, side_effect=Exception):
