@@ -21,6 +21,7 @@ from google.cloud.gapic.datastore.v1 import datastore_client
 from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
 from google.gax.utils import metrics
 from grpc import StatusCode
+import six
 
 from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_channel
@@ -90,20 +91,20 @@ class _DatastoreAPIOverGRPC(object):
     :type connection: :class:`Connection`
     :param connection: A connection object that contains helpful
                        information for making requests.
-
-    :type secure: bool
-    :param secure: Flag indicating if a secure stub connection is needed.
     """
 
-    def __init__(self, connection, secure):
-        if secure:
+    def __init__(self, connection):
+        parse_result = six.moves.urllib_parse.urlparse(
+            connection.api_base_url)
+        host = parse_result.hostname
+        if parse_result.scheme == 'https':
             self._stub = make_secure_stub(
-                connection.credentials, connection.USER_AGENT,
-                datastore_pb2_grpc.DatastoreStub, connection.host,
+                connection.credentials, DEFAULT_USER_AGENT,
+                datastore_pb2_grpc.DatastoreStub, host,
                 extra_options=_GRPC_EXTRA_OPTIONS)
         else:
-            self._stub = make_insecure_stub(datastore_pb2_grpc.DatastoreStub,
-                                            connection.host)
+            self._stub = make_insecure_stub(
+                datastore_pb2_grpc.DatastoreStub, host)
 
     def lookup(self, project, request_pb):
         """Perform a ``lookup`` request.
