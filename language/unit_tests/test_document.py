@@ -14,8 +14,6 @@
 
 import unittest
 
-import mock
-
 
 ANNOTATE_NAME = 'Moon'
 ANNOTATE_CONTENT = 'A cow jumped over the %s.' % (ANNOTATE_NAME,)
@@ -110,6 +108,8 @@ def make_mock_client(response):
 class TestEncoding(unittest.TestCase):
     def test_default_low_maxunicode(self):
         import sys
+        import mock
+
         from google.cloud.language.document import Encoding
 
         with mock.patch.dict(sys.__dict__, maxunicode=65535):
