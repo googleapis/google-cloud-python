@@ -35,18 +35,24 @@ except ImportError:  # pragma: NO COVER
 
 DATASTORE_API_HOST = 'datastore.googleapis.com'
 """Datastore API request host."""
+API_BASE_URL = 'https://' + DATASTORE_API_HOST
+"""The base of the API call URL."""
+API_VERSION = 'v1'
+"""The version of the API, used in building the API call's URL."""
+API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
+                    '/{project}:{method}')
+"""A template for the URL of a particular API call."""
 
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 _CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(__version__)
 
 
-def _request(connection, project, method, data):
+def _request(http, project, method, data, base_url):
     """Make a request over the Http transport to the Cloud Datastore API.
 
-    :type connection: :class:`Connection`
-    :param connection: A connection object that contains helpful
-                       information for making requests.
+    :type http: :class:`~httplib2.Http`
+    :param http: HTTP object to make requests.
 
     :type project: str
     :param project: The project to make the request for.
@@ -59,6 +65,9 @@ def _request(connection, project, method, data):
     :param data: The data to send with the API call.
                  Typically this is a serialized Protobuf string.
 
+    :type base_url: str
+    :param base_url: The base URL where the API lives.
+
     :rtype: str
     :returns: The string response content from the API call.
     :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the
@@ -67,12 +76,12 @@ def _request(connection, project, method, data):
     headers = {
         'Content-Type': 'application/x-protobuf',
         'Content-Length': str(len(data)),
-        'User-Agent': connection.USER_AGENT,
+        'User-Agent': connection_module.DEFAULT_USER_AGENT,
         connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
     }
-    headers, content = connection.http.request(
-        uri=connection.build_api_url(project=project, method=method),
-        method='POST', headers=headers, body=data)
+    api_url = build_api_url(project, method, base_url)
+    headers, content = http.request(
+        uri=api_url, method='POST', headers=headers, body=data)
 
     status = headers['status']
     if status != '200':
@@ -83,12 +92,11 @@ def _request(connection, project, method, data):
     return content
 
 
-def _rpc(connection, project, method, request_pb, response_pb_cls):
+def _rpc(http, project, method, base_url, request_pb, response_pb_cls):
     """Make a protobuf RPC request.
 
-    :type connection: :class:`Connection`
-    :param connection: A connection object that contains helpful
-                       information for making requests.
+    :type http: :class:`~httplib2.Http`
+    :param http: HTTP object to make requests.
 
     :type project: str
     :param project: The project to connect to. This is
@@ -96,6 +104,9 @@ def _rpc(connection, project, method, request_pb, response_pb_cls):
 
     :type method: str
     :param method: The name of the method to invoke.
+
+    :type base_url: str
+    :param base_url: The base URL where the API lives.
 
     :type request_pb: :class:`google.protobuf.message.Message` instance
     :param request_pb: the protobuf instance representing the request.
@@ -108,9 +119,34 @@ def _rpc(connection, project, method, request_pb, response_pb_cls):
     :rtype: :class:`google.protobuf.message.Message`
     :returns: The RPC message parsed from the response.
     """
-    response = _request(connection=connection, project=project,
-                        method=method, data=request_pb.SerializeToString())
+    req_data = request_pb.SerializeToString()
+    response = _request(
+        http, project, method, req_data, base_url)
     return response_pb_cls.FromString(response)
+
+
+def build_api_url(project, method, base_url):
+    """Construct the URL for a particular API call.
+
+    This method is used internally to come up with the URL to use when
+    making RPCs to the Cloud Datastore API.
+
+    :type project: str
+    :param project: The project to connect to. This is
+                    usually your project name in the cloud console.
+
+    :type method: str
+    :param method: The API method to call (e.g. 'runQuery', 'lookup').
+
+    :type base_url: str
+    :param base_url: The base URL where the API lives.
+
+    :rtype: str
+    :returns: The API URL created.
+    """
+    return API_URL_TEMPLATE.format(
+        api_base=base_url, api_version=API_VERSION,
+        project=project, method=method)
 
 
 class _DatastoreAPIOverHttp(object):
@@ -142,8 +178,9 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.LookupResponse`
         :returns: The returned protobuf response object.
         """
-        return _rpc(self.connection, project, 'lookup', request_pb,
-                    _datastore_pb2.LookupResponse)
+        return _rpc(self.connection.http, project, 'lookup',
+                    self.connection.api_base_url,
+                    request_pb, _datastore_pb2.LookupResponse)
 
     def run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
@@ -158,8 +195,9 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.RunQueryResponse`
         :returns: The returned protobuf response object.
         """
-        return _rpc(self.connection, project, 'runQuery', request_pb,
-                    _datastore_pb2.RunQueryResponse)
+        return _rpc(self.connection.http, project, 'runQuery',
+                    self.connection.api_base_url,
+                    request_pb, _datastore_pb2.RunQueryResponse)
 
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
@@ -175,8 +213,9 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
         :returns: The returned protobuf response object.
         """
-        return _rpc(self.connection, project, 'beginTransaction', request_pb,
-                    _datastore_pb2.BeginTransactionResponse)
+        return _rpc(self.connection.http, project, 'beginTransaction',
+                    self.connection.api_base_url,
+                    request_pb, _datastore_pb2.BeginTransactionResponse)
 
     def commit(self, project, request_pb):
         """Perform a ``commit`` request.
@@ -191,8 +230,9 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.CommitResponse`
         :returns: The returned protobuf response object.
         """
-        return _rpc(self.connection, project, 'commit', request_pb,
-                    _datastore_pb2.CommitResponse)
+        return _rpc(self.connection.http, project, 'commit',
+                    self.connection.api_base_url,
+                    request_pb, _datastore_pb2.CommitResponse)
 
     def rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
@@ -207,8 +247,9 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.RollbackResponse`
         :returns: The returned protobuf response object.
         """
-        return _rpc(self.connection, project, 'rollback', request_pb,
-                    _datastore_pb2.RollbackResponse)
+        return _rpc(self.connection.http, project, 'rollback',
+                    self.connection.api_base_url,
+                    request_pb, _datastore_pb2.RollbackResponse)
 
     def allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
@@ -223,8 +264,9 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
         :returns: The returned protobuf response object.
         """
-        return _rpc(self.connection, project, 'allocateIds', request_pb,
-                    _datastore_pb2.AllocateIdsResponse)
+        return _rpc(self.connection.http, project, 'allocateIds',
+                    self.connection.api_base_url,
+                    request_pb, _datastore_pb2.AllocateIdsResponse)
 
 
 class Connection(connection_module.Connection):
@@ -238,16 +280,6 @@ class Connection(connection_module.Connection):
     :param client: The client that owns the current connection.
     """
 
-    API_BASE_URL = 'https://' + DATASTORE_API_HOST
-    """The base of the API call URL."""
-
-    API_VERSION = 'v1'
-    """The version of the API, used in building the API call's URL."""
-
-    API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
-                        '/{project}:{method}')
-    """A template for the URL of a particular API call."""
-
     def __init__(self, client):
         super(Connection, self).__init__(client)
         try:
@@ -256,42 +288,12 @@ class Connection(connection_module.Connection):
             secure = False
         except KeyError:
             self.host = DATASTORE_API_HOST
-            self.api_base_url = self.__class__.API_BASE_URL
+            self.api_base_url = API_BASE_URL
             secure = True
         if _USE_GRPC:
             self._datastore_api = _DatastoreAPIOverGRPC(self, secure=secure)
         else:
             self._datastore_api = _DatastoreAPIOverHttp(self)
-
-    def build_api_url(self, project, method, base_url=None,
-                      api_version=None):
-        """Construct the URL for a particular API call.
-
-        This method is used internally to come up with the URL to use when
-        making RPCs to the Cloud Datastore API.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type method: str
-        :param method: The API method to call (e.g. 'runQuery', 'lookup').
-
-        :type base_url: str
-        :param base_url: The base URL where the API lives.
-                         You shouldn't have to provide this.
-
-        :type api_version: str
-        :param api_version: The version of the API to connect to.
-                            You shouldn't have to provide this.
-
-        :rtype: str
-        :returns: The API URL created.
-        """
-        return self.API_URL_TEMPLATE.format(
-            api_base=(base_url or self.api_base_url),
-            api_version=(api_version or self.API_VERSION),
-            project=project, method=method)
 
     def lookup(self, project, key_pbs,
                eventual=False, transaction_id=None):
