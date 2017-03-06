@@ -76,7 +76,7 @@ class TestLanguage(unittest.TestCase):
         self.assertGreater(entity1.salience, 0.0)
         # Other mentions may occur, e.g. "painter".
         self.assertIn(entity1.name, entity1.mentions)
-        self.assertEqual(entity1.wikipedia_url,
+        self.assertEqual(entity1.metadata['wikipedia_url'],
                          'http://en.wikipedia.org/wiki/Caravaggio')
         self.assertIsInstance(entity1.metadata, dict)
         # Verify entity 2.
@@ -84,7 +84,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity2.entity_type, EntityType.LOCATION)
         self.assertGreater(entity2.salience, 0.0)
         self.assertEqual(entity2.mentions, [entity2.name])
-        self.assertEqual(entity2.wikipedia_url,
+        self.assertEqual(entity2.metadata['wikipedia_url'],
                          'http://en.wikipedia.org/wiki/Italy')
         self.assertIsInstance(entity2.metadata, dict)
         # Verify entity 3.
@@ -95,7 +95,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity3.mentions, [entity3.name])
         wiki_url = ('http://en.wikipedia.org/wiki/'
                     'The_Calling_of_St_Matthew_(Caravaggio)')
-        self.assertEqual(entity3.wikipedia_url, wiki_url)
+        self.assertEqual(entity3.metadata['wikipedia_url'], wiki_url)
         self.assertIsInstance(entity3.metadata, dict)
 
     def test_analyze_entities(self):
