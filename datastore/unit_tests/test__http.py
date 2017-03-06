@@ -34,30 +34,27 @@ class Test__request(unittest.TestCase):
         data = b'DATA'
         uri = 'http://api-url'
 
-        # Make mock Connection object with canned response.
-        conn = _Connection(uri)
+        # Make mock HTTP object with canned response.
         response_data = 'CONTENT'
-        http = conn.http = Http({'status': '200'}, response_data)
+        http = Http({'status': '200'}, response_data)
 
         # Call actual function under test.
-        response = self._call_fut(conn, project, method, data)
+        response = self._call_fut(http, project, method, data, uri)
         self.assertEqual(response, response_data)
 
         # Check that the mocks were called as expected.
         called_with = http._called_with
         self.assertEqual(len(called_with), 4)
-        self.assertEqual(called_with['uri'], uri)
+        self.assertTrue(called_with['uri'].startswith(uri))
         self.assertEqual(called_with['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': connection_module.DEFAULT_USER_AGENT,
             'Content-Length': '4',
             connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
         }
         self.assertEqual(called_with['headers'], expected_headers)
         self.assertEqual(called_with['body'], data)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': method, 'project': project}])
 
     def test_failure(self):
         from google.cloud.exceptions import BadRequest
@@ -69,22 +66,19 @@ class Test__request(unittest.TestCase):
         data = 'DATA'
         uri = 'http://api-url'
 
-        # Make mock Connection object with canned response.
-        conn = _Connection(uri)
+        # Make mock HTTP object with canned response.
         error = status_pb2.Status()
         error.message = 'Entity value is indexed.'
         error.code = code_pb2.FAILED_PRECONDITION
-        conn.http = Http({'status': '400'}, error.SerializeToString())
+        http = Http({'status': '400'}, error.SerializeToString())
 
         # Call actual function under test.
         with self.assertRaises(BadRequest) as exc:
-            self._call_fut(conn, project, method, data)
+            self._call_fut(http, project, method, data, uri)
 
         # Check that the mocks were called as expected.
         expected_message = '400 Entity value is indexed.'
         self.assertEqual(str(exc.exception), expected_message)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': method, 'project': project}])
 
 
 class Test__rpc(unittest.TestCase):
@@ -98,9 +92,10 @@ class Test__rpc(unittest.TestCase):
     def test_it(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        connection = object()
+        http = object()
         project = 'projectOK'
         method = 'beginTransaction'
+        base_url = 'test.invalid'
         request_pb = datastore_pb2.BeginTransactionRequest(
             project_id=project)
 
@@ -110,13 +105,13 @@ class Test__rpc(unittest.TestCase):
                            return_value=response_pb.SerializeToString())
         with patch as mock_request:
             result = self._call_fut(
-                connection, project, method, request_pb,
-                datastore_pb2.BeginTransactionResponse)
+                http, project, method, base_url,
+                request_pb, datastore_pb2.BeginTransactionResponse)
             self.assertEqual(result, response_pb)
 
             mock_request.assert_called_once_with(
-                connection=connection, data=request_pb.SerializeToString(),
-                method=method, project=project)
+                http, project, method, request_pb.SerializeToString(),
+                base_url)
 
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
@@ -138,7 +133,8 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
     def test_lookup(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        connection = object()
+        connection = mock.Mock(
+            api_base_url='test.invalid', spec=['http', 'api_base_url'])
         ds_api = self._make_one(connection)
 
         project = 'project'
@@ -152,8 +148,9 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
             self.assertIs(result, mock.sentinel.looked_up)
 
             mock_rpc.assert_called_once_with(
-                connection, project, 'lookup', request_pb,
-                datastore_pb2.LookupResponse)
+                connection.http, project, 'lookup',
+                connection.api_base_url,
+                request_pb, datastore_pb2.LookupResponse)
 
 
 class TestConnection(unittest.TestCase):
@@ -198,10 +195,22 @@ class TestConnection(unittest.TestCase):
         }
         self.assertEqual(called_with['headers'], expected_headers)
 
+    @staticmethod
+    def _build_expected_url(connection, project, method):
+        from google.cloud.datastore._http import API_VERSION
+
+        return '/'.join([
+            connection.api_base_url,
+            API_VERSION,
+            'projects',
+            project + ':' + method,
+        ])
+
     def test_default_url(self):
-        klass = self._get_target_class()
+        from google.cloud.datastore._http import API_BASE_URL
+
         conn = self._make_one(object())
-        self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
+        self.assertEqual(conn.api_base_url, API_BASE_URL)
 
     def test_custom_url_from_env(self):
         from google.cloud._http import API_BASE_URL
@@ -259,33 +268,6 @@ class TestConnection(unittest.TestCase):
         self.assertIs(conn._datastore_api, return_val)
         self.assertEqual(api_args, [(conn, True)])
 
-    def test_build_api_url_w_default_base_version(self):
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        conn = self._make_one(object())
-        URI = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        self.assertEqual(conn.build_api_url(PROJECT, METHOD), URI)
-
-    def test_build_api_url_w_explicit_base_version(self):
-        BASE = 'http://example.com/'
-        VER = '3.1415926'
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        conn = self._make_one(object())
-        URI = '/'.join([
-            BASE,
-            VER,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        self.assertEqual(conn.build_api_url(PROJECT, METHOD, BASE, VER),
-                         URI)
-
     def test_lookup_single_key_empty_response(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
@@ -303,12 +285,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':lookup',
-        ])
+        uri = self._build_expected_url(conn, project, 'lookup')
         self.assertEqual(len(response.found), 0)
         self.assertEqual(len(response.missing), 0)
         self.assertEqual(len(response.deferred), 0)
@@ -337,12 +314,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':lookup',
-        ])
+        uri = self._build_expected_url(conn, project, 'lookup')
         self.assertEqual(len(response.found), 0)
         self.assertEqual(len(response.missing), 0)
         self.assertEqual(len(response.deferred), 0)
@@ -383,12 +355,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':lookup',
-        ])
+        uri = self._build_expected_url(conn, project, 'lookup')
         self.assertEqual(len(response.found), 0)
         self.assertEqual(len(response.missing), 0)
         self.assertEqual(len(response.deferred), 0)
@@ -422,12 +389,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':lookup',
-        ])
+        uri = self._build_expected_url(conn, project, 'lookup')
         self.assertEqual(len(response.found), 1)
         self.assertEqual(len(response.missing), 0)
         self.assertEqual(len(response.deferred), 0)
@@ -460,12 +422,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':lookup',
-        ])
+        uri = self._build_expected_url(conn, project, 'lookup')
         self.assertEqual(len(response.found), 0)
         self.assertEqual(len(response.missing), 0)
         self.assertEqual(len(response.deferred), 0)
@@ -500,12 +457,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':lookup',
-        ])
+        uri = self._build_expected_url(conn, project, 'lookup')
         self.assertEqual(len(response.found), 0)
         self.assertEqual(len(response.deferred), 0)
         missing_keys = [result.entity.key for result in response.missing]
@@ -542,12 +494,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':lookup',
-        ])
+        uri = self._build_expected_url(conn, project, 'lookup')
         self.assertEqual(len(response.found), 0)
         self.assertEqual(len(response.missing), 0)
         self.assertEqual(list(response.deferred), [key_pb1, key_pb2])
@@ -593,12 +540,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':runQuery',
-        ])
+        uri = self._build_expected_url(conn, project, 'runQuery')
         cw = http._called_with
         self._verify_protobuf_call(cw, uri, conn)
         request = datastore_pb2.RunQueryRequest()
@@ -635,12 +577,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':runQuery',
-        ])
+        uri = self._build_expected_url(conn, project, 'runQuery')
         cw = http._called_with
         self._verify_protobuf_call(cw, uri, conn)
         request = datastore_pb2.RunQueryRequest()
@@ -694,12 +631,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':runQuery',
-        ])
+        uri = self._build_expected_url(conn, project, 'runQuery')
         cw = http._called_with
         self._verify_protobuf_call(cw, uri, conn)
         request = datastore_pb2.RunQueryRequest()
@@ -733,12 +665,7 @@ class TestConnection(unittest.TestCase):
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
         cw = http._called_with
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':runQuery',
-        ])
+        uri = self._build_expected_url(conn, project, 'runQuery')
         self._verify_protobuf_call(cw, uri, conn)
         request = datastore_pb2.RunQueryRequest()
         request.ParseFromString(cw['body'])
@@ -763,12 +690,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':beginTransaction',
-        ])
+        uri = self._build_expected_url(conn, project, 'beginTransaction')
         cw = http._called_with
         self._verify_protobuf_call(cw, uri, conn)
         request = datastore_pb2.BeginTransactionRequest()
@@ -792,12 +714,7 @@ class TestConnection(unittest.TestCase):
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':commit',
-        ])
+        uri = self._build_expected_url(conn, project, 'commit')
 
         result = conn.commit(project, req_pb, None)
         self.assertEqual(result, rsp_pb)
@@ -828,12 +745,7 @@ class TestConnection(unittest.TestCase):
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':commit',
-        ])
+        uri = self._build_expected_url(conn, project, 'commit')
 
         result = conn.commit(project, req_pb, b'xact')
         self.assertEqual(result, rsp_pb)
@@ -865,12 +777,7 @@ class TestConnection(unittest.TestCase):
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':rollback',
-        ])
+        uri = self._build_expected_url(conn, project, 'rollback')
         cw = http._called_with
         self._verify_protobuf_call(cw, uri, conn)
         request = datastore_pb2.RollbackRequest()
@@ -894,12 +801,7 @@ class TestConnection(unittest.TestCase):
         # Check the result and verify the callers.
         self.assertEqual(list(response.keys), [])
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':allocateIds',
-        ])
+        uri = self._build_expected_url(conn, project, 'allocateIds')
         cw = http._called_with
         self._verify_protobuf_call(cw, uri, conn)
         request = datastore_pb2.AllocateIdsRequest()
@@ -933,12 +835,7 @@ class TestConnection(unittest.TestCase):
         # Check the result and verify the callers.
         self.assertEqual(list(response.keys), after_key_pbs)
         self.assertEqual(response, rsp_pb)
-        uri = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            project + ':allocateIds',
-        ])
+        uri = self._build_expected_url(conn, project, 'allocateIds')
         cw = http._called_with
         self._verify_protobuf_call(cw, uri, conn)
         request = datastore_pb2.AllocateIdsRequest()
@@ -978,17 +875,3 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
-
-
-class _Connection(object):
-
-    host = None
-    USER_AGENT = 'you-sir-age-int'
-
-    def __init__(self, api_url):
-        self.api_url = api_url
-        self.build_kwargs = []
-
-    def build_api_url(self, **kwargs):
-        self.build_kwargs.append(kwargs)
-        return self.api_url
