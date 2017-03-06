@@ -34,13 +34,12 @@ class Test__request(unittest.TestCase):
         data = b'DATA'
         uri = 'http://api-url'
 
-        # Make mock Connection object with canned response.
-        conn = _Connection(uri)
+        # Make mock HTTP object with canned response.
         response_data = 'CONTENT'
-        http = conn.http = Http({'status': '200'}, response_data)
+        http = Http({'status': '200'}, response_data)
 
         # Call actual function under test.
-        response = self._call_fut(conn, project, method, data)
+        response = self._call_fut(http, project, method, data, uri)
         self.assertEqual(response, response_data)
 
         # Check that the mocks were called as expected.
@@ -67,17 +66,15 @@ class Test__request(unittest.TestCase):
         data = 'DATA'
         uri = 'http://api-url'
 
-        # Make mock Connection object with canned response.
-        conn = _Connection(uri)
-        conn.api_base_url = uri
+        # Make mock HTTP object with canned response.
         error = status_pb2.Status()
         error.message = 'Entity value is indexed.'
         error.code = code_pb2.FAILED_PRECONDITION
-        conn.http = Http({'status': '400'}, error.SerializeToString())
+        http = Http({'status': '400'}, error.SerializeToString())
 
         # Call actual function under test.
         with self.assertRaises(BadRequest) as exc:
-            self._call_fut(conn, project, method, data)
+            self._call_fut(http, project, method, data, uri)
 
         # Check that the mocks were called as expected.
         expected_message = '400 Entity value is indexed.'
@@ -95,9 +92,10 @@ class Test__rpc(unittest.TestCase):
     def test_it(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        connection = object()
+        http = object()
         project = 'projectOK'
         method = 'beginTransaction'
+        base_url = 'test.invalid'
         request_pb = datastore_pb2.BeginTransactionRequest(
             project_id=project)
 
@@ -107,13 +105,13 @@ class Test__rpc(unittest.TestCase):
                            return_value=response_pb.SerializeToString())
         with patch as mock_request:
             result = self._call_fut(
-                connection, project, method, request_pb,
-                datastore_pb2.BeginTransactionResponse)
+                http, project, method, base_url,
+                request_pb, datastore_pb2.BeginTransactionResponse)
             self.assertEqual(result, response_pb)
 
             mock_request.assert_called_once_with(
-                connection=connection, data=request_pb.SerializeToString(),
-                method=method, project=project)
+                http, project, method, request_pb.SerializeToString(),
+                base_url)
 
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
@@ -135,7 +133,8 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
     def test_lookup(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        connection = object()
+        connection = mock.Mock(
+            api_base_url='test.invalid', spec=['http', 'api_base_url'])
         ds_api = self._make_one(connection)
 
         project = 'project'
@@ -149,8 +148,9 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
             self.assertIs(result, mock.sentinel.looked_up)
 
             mock_rpc.assert_called_once_with(
-                connection, project, 'lookup', request_pb,
-                datastore_pb2.LookupResponse)
+                connection.http, project, 'lookup',
+                connection.api_base_url,
+                request_pb, datastore_pb2.LookupResponse)
 
 
 class TestConnection(unittest.TestCase):
@@ -875,12 +875,3 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
-
-
-class _Connection(object):
-
-    host = None
-    http = None
-
-    def __init__(self, api_base_url):
-        self.api_base_url = api_base_url
