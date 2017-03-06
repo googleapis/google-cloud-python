@@ -41,6 +41,78 @@ _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 _CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(__version__)
 
 
+def _request(connection, project, method, data):
+    """Make a request over the Http transport to the Cloud Datastore API.
+
+    :type connection: :class:`Connection`
+    :param connection: A connection object that contains helpful
+                       information for making requests.
+
+    :type project: str
+    :param project: The project to make the request for.
+
+    :type method: str
+    :param method: The API call method name (ie, ``runQuery``,
+                   ``lookup``, etc)
+
+    :type data: str
+    :param data: The data to send with the API call.
+                 Typically this is a serialized Protobuf string.
+
+    :rtype: str
+    :returns: The string response content from the API call.
+    :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the
+             response code is not 200 OK.
+    """
+    headers = {
+        'Content-Type': 'application/x-protobuf',
+        'Content-Length': str(len(data)),
+        'User-Agent': connection.USER_AGENT,
+        connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
+    }
+    headers, content = connection.http.request(
+        uri=connection.build_api_url(project=project, method=method),
+        method='POST', headers=headers, body=data)
+
+    status = headers['status']
+    if status != '200':
+        error_status = status_pb2.Status.FromString(content)
+        raise exceptions.make_exception(
+            headers, error_status.message, use_json=False)
+
+    return content
+
+
+def _rpc(connection, project, method, request_pb, response_pb_cls):
+    """Make a protobuf RPC request.
+
+    :type connection: :class:`Connection`
+    :param connection: A connection object that contains helpful
+                       information for making requests.
+
+    :type project: str
+    :param project: The project to connect to. This is
+                    usually your project name in the cloud console.
+
+    :type method: str
+    :param method: The name of the method to invoke.
+
+    :type request_pb: :class:`google.protobuf.message.Message` instance
+    :param request_pb: the protobuf instance representing the request.
+
+    :type response_pb_cls: A :class:`google.protobuf.message.Message`
+                           subclass.
+    :param response_pb_cls: The class used to unmarshall the response
+                            protobuf.
+
+    :rtype: :class:`google.protobuf.message.Message`
+    :returns: The RPC message parsed from the response.
+    """
+    response = _request(connection=connection, project=project,
+                        method=method, data=request_pb.SerializeToString())
+    return response_pb_cls.FromString(response)
+
+
 class _DatastoreAPIOverHttp(object):
     """Helper mapping datastore API methods.
 
@@ -57,68 +129,6 @@ class _DatastoreAPIOverHttp(object):
     def __init__(self, connection):
         self.connection = connection
 
-    def _request(self, project, method, data):
-        """Make a request over the Http transport to the Cloud Datastore API.
-
-        :type project: str
-        :param project: The project to make the request for.
-
-        :type method: str
-        :param method: The API call method name (ie, ``runQuery``,
-                       ``lookup``, etc)
-
-        :type data: str
-        :param data: The data to send with the API call.
-                     Typically this is a serialized Protobuf string.
-
-        :rtype: str
-        :returns: The string response content from the API call.
-        :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the
-                 response code is not 200 OK.
-        """
-        headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': str(len(data)),
-            'User-Agent': self.connection.USER_AGENT,
-            connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
-        }
-        headers, content = self.connection.http.request(
-            uri=self.connection.build_api_url(project=project, method=method),
-            method='POST', headers=headers, body=data)
-
-        status = headers['status']
-        if status != '200':
-            error_status = status_pb2.Status.FromString(content)
-            raise exceptions.make_exception(
-                headers, error_status.message, use_json=False)
-
-        return content
-
-    def _rpc(self, project, method, request_pb, response_pb_cls):
-        """Make a protobuf RPC request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type method: str
-        :param method: The name of the method to invoke.
-
-        :type request_pb: :class:`google.protobuf.message.Message` instance
-        :param request_pb: the protobuf instance representing the request.
-
-        :type response_pb_cls: A :class:`google.protobuf.message.Message`
-                               subclass.
-        :param response_pb_cls: The class used to unmarshall the response
-                                protobuf.
-
-        :rtype: :class:`google.protobuf.message.Message`
-        :returns: The RPC message parsed from the response.
-        """
-        response = self._request(project=project, method=method,
-                                 data=request_pb.SerializeToString())
-        return response_pb_cls.FromString(response)
-
     def lookup(self, project, request_pb):
         """Perform a ``lookup`` request.
 
@@ -132,8 +142,8 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.LookupResponse`
         :returns: The returned protobuf response object.
         """
-        return self._rpc(project, 'lookup', request_pb,
-                         _datastore_pb2.LookupResponse)
+        return _rpc(self.connection, project, 'lookup', request_pb,
+                    _datastore_pb2.LookupResponse)
 
     def run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
@@ -148,8 +158,8 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.RunQueryResponse`
         :returns: The returned protobuf response object.
         """
-        return self._rpc(project, 'runQuery', request_pb,
-                         _datastore_pb2.RunQueryResponse)
+        return _rpc(self.connection, project, 'runQuery', request_pb,
+                    _datastore_pb2.RunQueryResponse)
 
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
@@ -165,8 +175,8 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
         :returns: The returned protobuf response object.
         """
-        return self._rpc(project, 'beginTransaction', request_pb,
-                         _datastore_pb2.BeginTransactionResponse)
+        return _rpc(self.connection, project, 'beginTransaction', request_pb,
+                    _datastore_pb2.BeginTransactionResponse)
 
     def commit(self, project, request_pb):
         """Perform a ``commit`` request.
@@ -181,8 +191,8 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.CommitResponse`
         :returns: The returned protobuf response object.
         """
-        return self._rpc(project, 'commit', request_pb,
-                         _datastore_pb2.CommitResponse)
+        return _rpc(self.connection, project, 'commit', request_pb,
+                    _datastore_pb2.CommitResponse)
 
     def rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
@@ -197,8 +207,8 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.RollbackResponse`
         :returns: The returned protobuf response object.
         """
-        return self._rpc(project, 'rollback', request_pb,
-                         _datastore_pb2.RollbackResponse)
+        return _rpc(self.connection, project, 'rollback', request_pb,
+                    _datastore_pb2.RollbackResponse)
 
     def allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
@@ -213,8 +223,8 @@ class _DatastoreAPIOverHttp(object):
         :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
         :returns: The returned protobuf response object.
         """
-        return self._rpc(project, 'allocateIds', request_pb,
-                         _datastore_pb2.AllocateIdsResponse)
+        return _rpc(self.connection, project, 'allocateIds', request_pb,
+                    _datastore_pb2.AllocateIdsResponse)
 
 
 class Connection(connection_module.Connection):
