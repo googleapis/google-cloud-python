@@ -15,8 +15,6 @@
 
 import unittest
 
-import mock
-
 from google.cloud.spanner import __version__
 
 from google.cloud._testing import _GAXBaseAPI

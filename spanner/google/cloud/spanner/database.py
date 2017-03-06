@@ -14,12 +14,10 @@
 
 """User friendly container for Cloud Spanner Database."""
 
-import functools
 import re
 
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.gax import _OperationFuture
 from google.cloud.proto.spanner.admin.database.v1 import (
     spanner_database_admin_pb2 as admin_v1_pb2)
 from google.cloud.gapic.spanner.v1.spanner_client import SpannerClient
