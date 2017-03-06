@@ -17,6 +17,13 @@ Installation
 ------------
 
 
+Install latest release version via conda
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: shell
+
+   $ conda install pandas-gbq --channel conda-forge
+
 Install latest release version via pip
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
