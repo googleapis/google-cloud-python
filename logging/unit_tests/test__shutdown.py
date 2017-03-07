@@ -17,56 +17,67 @@ import unittest
 import mock
 
 
-class Test_setup_shutdown_stracktrace_reporting(unittest.TestCase):
+class Test_setup_stacktrace_crash_report(unittest.TestCase):
 
     def _call_fut(self, request):
         from google.cloud.logging._shutdown import (
             setup_stacktrace_crash_report)
         return setup_stacktrace_crash_report(request)
 
-    def test_setup_shutdown_stacktrace_reporting_no_gae(self):
-        with self.assertRaises(RuntimeError):
-            self._call_fut(mock.Mock())
+    def test_outside_of_gae(self):
+        is_on_gae_patch = mock.patch(
+            'google.cloud.logging._shutdown._is_on_appengine',
+            return_value=False)
+        with is_on_gae_patch:
+            with self.assertRaises(RuntimeError):
+                self._call_fut(mock.sentinel.client)
 
-    def test_setup_shutdown_stacktrace_reporting(self):
+    def test_success(self):
+        import signal
         from google.cloud.logging._environment_vars import (
-            _APPENGINE_FLEXIBLE_ENV_VM)
-        from google.cloud._testing import _Monkey
-        import os
+            APPENGINE_FLEXIBLE_ENV_VM)
 
         signal_patch = mock.patch('google.cloud.logging._shutdown.signal')
+        environ_patch = mock.patch(
+            'os.environ',
+            new={APPENGINE_FLEXIBLE_ENV_VM: 'True'})
 
-        with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
+        with environ_patch:
             with signal_patch as signal_mock:
-                self._call_fut(mock.Mock())
+                signal_mock.SIGTERM = signal.SIGTERM
+                self._call_fut(mock.sentinel.client)
                 self.assertTrue(signal_mock.signal.called)
+                positional = signal_mock.signal.call_args[0]
+                self.assertEqual(positional[0], signal.SIGTERM)
+                self.assertTrue(callable(type(positional[1])))
 
 
 class Test_write_stackrace_log(unittest.TestCase):
 
     def _call_fut(self, client, traces):
-        from google.cloud.logging._shutdown import (
-            _write_stacktrace_log
-        )
+        from google.cloud.logging._shutdown import (_write_stacktrace_log)
         return _write_stacktrace_log(client, traces)
 
     def test_write_stracktrace_log(self):
-        from google.cloud._testing import _Monkey
-        import os
+        from google.cloud.logging._gax import _LoggingAPI
 
-        mock_client = mock.Mock()
+        mock_client = mock.Mock(spec=['project'])
+        mock_client.logging_api = mock.Mock(spec=_LoggingAPI)
 
         trace = 'a simple stack trace'
-        with _Monkey(os, environ={'GAE_INSTANCE': 'myversion'}):
+        environ_patch = mock.patch(
+            'os.environ', new={'GAE_INSTANCE': 'myversion'})
+        with environ_patch:
             self._call_fut(mock_client, trace)
-            called = mock_client.logging_api.write_entries.call_args
-
+            self.assertEqual(
+                len(mock_client.logging_api.write_entries.mock_calls), 1)
+            positional, _ = mock_client.logging_api.write_entries.call_args
         expected_payload = 'myversion\nThread traces\n{}'.format(
             trace).encode('utf-8')
-        self.assertEqual(called[0][0], [{'text_payload': expected_payload}])
+        self.assertEqual(positional[0], [{'text_payload': expected_payload}])
 
 
-class Test_report_stacktraces(unittest.TestCase):
+class Test__report_stacktraces(unittest.TestCase):
 
     def _call_fut(self, client, signal, frame):
         from google.cloud.logging._shutdown import (
@@ -74,12 +85,12 @@ class Test_report_stacktraces(unittest.TestCase):
         )
         return _report_stacktraces(client, signal, frame)
 
-    def test_report_stacktraces(self):
+    def test_success(self):
         import re
         patch = mock.patch(
             'google.cloud.logging._shutdown._write_stacktrace_log')
         with patch as write_log_mock:
-            self._call_fut(mock.Mock(), mock.Mock(), mock.Mock())
+            self._call_fut(mock.sentinel.client, None, None)
 
             traces = write_log_mock.call_args[0][1]
 

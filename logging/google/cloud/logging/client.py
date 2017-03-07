@@ -31,9 +31,9 @@ else:
 
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
-from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
-from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
-from google.cloud.logging._environment_vars import _CONTAINER_ENGINE_ENV
+from google.cloud.logging._environment_vars import APPENGINE_FLEXIBLE_ENV_VM
+from google.cloud.logging._environment_vars import APPENGINE_FLEXIBLE_ENV_FLEX
+from google.cloud.logging._environment_vars import CONTAINER_ENGINE_ENV
 from google.cloud.logging._http import Connection
 from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging._http import _MetricsAPI as JSONMetricsAPI
@@ -292,10 +292,10 @@ class Client(ClientWithProject):
         :rtype: :class:`logging.Handler`
         :returns: The default log handler based on the environment
         """
-        if (_APPENGINE_FLEXIBLE_ENV_VM in os.environ or
-                _APPENGINE_FLEXIBLE_ENV_FLEX in os.environ):
+        if (APPENGINE_FLEXIBLE_ENV_VM in os.environ or
+                APPENGINE_FLEXIBLE_ENV_FLEX in os.environ):
             return AppEngineHandler()
-        elif _CONTAINER_ENGINE_ENV in os.environ:
+        elif CONTAINER_ENGINE_ENV in os.environ:
             return ContainerEngineHandler()
         else:
             return CloudLoggingHandler(self)

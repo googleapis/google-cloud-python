@@ -20,10 +20,10 @@ import signal
 import sys
 import traceback
 
-from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_VM
-from google.cloud.logging._environment_vars import _APPENGINE_FLEXIBLE_ENV_FLEX
-from google.cloud.logging._environment_vars import _GAE_SERVICE
-from google.cloud.logging._environment_vars import _GAE_VERSION
+from google.cloud.logging._environment_vars import APPENGINE_FLEXIBLE_ENV_VM
+from google.cloud.logging._environment_vars import APPENGINE_FLEXIBLE_ENV_FLEX
+from google.cloud.logging._environment_vars import GAE_SERVICE
+from google.cloud.logging._environment_vars import GAE_VERSION
 from google.cloud import _helpers
 
 import six
@@ -36,17 +36,17 @@ _LOGGER_NAME_TMPL = 'projects/{}/logs/appengine.googleapis.com%2Fapp.shutdown'
 
 def _get_gae_instance():
     """Returns the App Engine Flexible instance."""
-    return os.getenv(_APPENGINE_FLEXIBLE_ENV_FLEX)
+    return os.getenv(APPENGINE_FLEXIBLE_ENV_FLEX)
 
 
 def _get_gae_service():
     """Returns the App Engine Flexible service."""
-    return os.getenv(_GAE_SERVICE)
+    return os.getenv(GAE_SERVICE)
 
 
 def _get_gae_version():
     """Returns the App Engine Flexible version."""
-    return os.getenv(_GAE_VERSION)
+    return os.getenv(GAE_VERSION)
 
 
 def _split_entry(payload):
@@ -101,8 +101,8 @@ def _write_stacktrace_log(client, traces):
 
 def _is_on_appengine():
     """Returns True if the environment is detected as App Engine flexible."""
-    return (os.getenv(_APPENGINE_FLEXIBLE_ENV_VM) or os.getenv(
-        _APPENGINE_FLEXIBLE_ENV_FLEX))
+    return (os.getenv(APPENGINE_FLEXIBLE_ENV_VM) or os.getenv(
+        APPENGINE_FLEXIBLE_ENV_FLEX))
 
 
 def _report_stacktraces(
@@ -113,10 +113,14 @@ def _report_stacktraces(
     :param client: Stackdriver logging client.
 
     :type signal_: int
-    :param signal_: Signal number.
+    :param signal_: Signal number. Unused parameter since this function always
+                    expects SIGTERM, but the parameter is required to match
+                    the function signature for a signal handler.
 
     :type frame: frame object
-    :param frame: The current stack frame.
+    :param frame: The current stack frame. Unused parameter, this parameter
+                  is required to match the function signature for a signal
+                  handler.
     """
     traces = []
     for thread_id, stack in sys._current_frames().items():

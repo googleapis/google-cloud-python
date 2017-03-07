@@ -14,19 +14,17 @@
 
 """Environment variables used by the package."""
 
-_APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
+APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
 """Environment variable set in App Engine when vm:true is set."""
 
-
-_APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
+APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
 """Environment variable set in App Engine when env:flex is set."""
 
-
-_CONTAINER_ENGINE_ENV = 'KUBERNETES_SERVICE'
+CONTAINER_ENGINE_ENV = 'KUBERNETES_SERVICE'
 """Environment variable set in a Google Container Engine environment."""
 
-_GAE_SERVICE = 'GAE_SERVICE'
+GAE_SERVICE = 'GAE_SERVICE'
 """Environment variable in the App Engine Flex env that indicates version."""
 
-_GAE_VERSION = 'GAE_VERSION'
+GAE_VERSION = 'GAE_VERSION'
 """Environment variable in the App Engine Flex env that indicates version."""
