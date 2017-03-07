@@ -20,7 +20,6 @@ from google.rpc import status_pb2
 
 from google.cloud import _http as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
-from google.cloud.environment_vars import GCD_HOST
 from google.cloud import exceptions
 from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
 
@@ -282,16 +281,9 @@ class Connection(connection_module.Connection):
 
     def __init__(self, client):
         super(Connection, self).__init__(client)
-        try:
-            self.host = os.environ[GCD_HOST]
-            self.api_base_url = 'http://' + self.host
-            secure = False
-        except KeyError:
-            self.host = DATASTORE_API_HOST
-            self.api_base_url = API_BASE_URL
-            secure = True
+        self.api_base_url = client._base_url
         if _USE_GRPC:
-            self._datastore_api = _DatastoreAPIOverGRPC(self, secure=secure)
+            self._datastore_api = _DatastoreAPIOverGRPC(self)
         else:
             self._datastore_api = _DatastoreAPIOverHttp(self)
 
