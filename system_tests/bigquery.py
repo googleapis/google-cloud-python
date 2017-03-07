@@ -542,6 +542,14 @@ class TestBigQuery(unittest.TestCase):
                 'expected': {'_field_1': 1, '_field_2': 2},
             },
             {
+                'sql': 'SELECT ((1, 2), (3, 4), 5)',
+                'expected': {
+                    '_field_1': {'_field_1': 1, '_field_2': 2},
+                    '_field_2': {'_field_1': 3, '_field_2': 4},
+                    '_field_3': 5,
+                },
+            },
+            {
                 'sql': 'SELECT [1, 2, 3]',
                 'expected': [1, 2, 3],
             },
