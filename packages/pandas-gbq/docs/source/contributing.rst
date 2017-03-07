@@ -37,21 +37,21 @@ Bug reports must:
 
 #. Include a short, self-contained Python snippet reproducing the problem.
    You can format the code nicely by using `GitHub Flavored Markdown
-   <http://github.github.com/github-flavored-markdown/>`_::
+   <http://github.github.com/github-flavored-markdown/>`__
 
-      ```python
+   .. code-block:: python
+
       >>> from pandas_gbq import gbq
       >>> df = gbq.read_gbq(...)
       ...
-      ```
 
-#. Include the full version string of *pandas-gbq*. ::
+#. Include the full version string of *pandas-gbq*.
 
-      ```python
+   .. code-block:: python
+
       >>> import pandas_gbq
       >>> pandas_gbq.__version__
       ...
-      ```
 
 #. Explain why the current behavior is wrong/not desired and what you expect instead.
 
@@ -282,7 +282,7 @@ directive. This should also be put in the docstring when adding a new function
 or method.
 
 Contributing your changes to *pandas-gbq*
-=====================================
+=========================================
 
 Committing your code
 --------------------

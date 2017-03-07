@@ -1,7 +1,7 @@
 .. _create_tables:
 
-Creating BigQuery Tables
-========================
+Creating Tables
+===============
 
 .. code-block:: ipython
 

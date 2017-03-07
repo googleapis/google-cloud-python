@@ -1,7 +1,7 @@
 .. _reader:
 
-Reading
-=======
+Reading Tables
+==============
 
 Suppose you want to load all data from an existing BigQuery table : `test_dataset.test_table`
 into a DataFrame using the :func:`~read_gbq` function.

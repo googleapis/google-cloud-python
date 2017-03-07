@@ -30,6 +30,7 @@ Contents:
    writing.rst
    tables.rst
    api.rst
+   contributing.rst
    changelog.rst
 
 
