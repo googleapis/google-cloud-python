@@ -250,23 +250,6 @@ class _DatastoreAPIOverHttp(object):
                     self.connection.api_base_url,
                     request_pb, _datastore_pb2.RollbackResponse)
 
-    def allocate_ids(self, project, request_pb):
-        """Perform an ``allocateIds`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.AllocateIdsRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
-        :returns: The returned protobuf response object.
-        """
-        return _rpc(self.connection.http, project, 'allocateIds',
-                    self.connection.api_base_url,
-                    request_pb, _datastore_pb2.AllocateIdsResponse)
-
 
 class Connection(connection_module.Connection):
     """A connection to the Google Cloud Datastore via the Protobuf API.
@@ -451,25 +434,6 @@ class Connection(connection_module.Connection):
         # Response is empty (i.e. no fields) but we return it anyway.
         return self._datastore_api.rollback(project, request)
 
-    def allocate_ids(self, project, key_pbs):
-        """Obtain backend-generated IDs for a set of keys.
-
-        Maps the ``DatastoreService.AllocateIds`` protobuf RPC.
-
-        :type project: str
-        :param project: The project to which the transaction belongs.
-
-        :type key_pbs: list of
-                       :class:`.entity_pb2.Key`
-        :param key_pbs: The keys for which the backend should allocate IDs.
-
-        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
-        :returns: The protobuf response from an allocate IDs request.
-        """
-        request = _datastore_pb2.AllocateIdsRequest()
-        _add_keys_to_request(request.keys, key_pbs)
-        return self._datastore_api.allocate_ids(project, request)
-
 
 class HTTPDatastoreAPI(object):
     """An API object that sends proto-over-HTTP requests.
@@ -482,6 +446,25 @@ class HTTPDatastoreAPI(object):
 
     def __init__(self, client):
         self.client = client
+
+    def allocate_ids(self, project, key_pbs):
+        """Perform an ``allocateIds`` request.
+
+        :type project: str
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type key_pbs: list of :class:`.entity_pb2.Key`
+        :param key_pbs: The keys for which the backend should allocate IDs.
+
+        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb = _datastore_pb2.AllocateIdsRequest()
+        _add_keys_to_request(request_pb.keys, key_pbs)
+        return _rpc(self.client._http, project, 'allocateIds',
+                    self.client._base_url,
+                    request_pb, _datastore_pb2.AllocateIdsResponse)
 
 
 def _set_read_options(request, eventual, transaction_id):
