@@ -15,8 +15,9 @@
 import nox
 
 
+@nox.session
 @nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
-def session_unit_tests(session, python_version):
+def unit_tests(session, python_version):
     """Run the unit test suite."""
 
     # Run unit tests against all supported versions of Python.
@@ -34,8 +35,9 @@ def session_unit_tests(session, python_version):
     )
 
 
+@nox.session
 @nox.parametrize('python_version', ['2.7', '3.6'])
-def session_system_tests(session, python_version):
+def system_tests(session, python_version):
     """Run the system test suite."""
 
     # Run the system tests against latest Python 2 and Python 3 only.
@@ -51,7 +53,8 @@ def session_system_tests(session, python_version):
     session.run('py.test', '--quiet', 'tests/system.py')
 
 
-def session_lint(session):
+@nox.session
+def lint(session):
     """Run flake8.
 
     Returns a failure if flake8 finds linting errors or sufficiently
@@ -63,7 +66,8 @@ def session_lint(session):
     session.run('flake8', 'google/cloud/language')
 
 
-def session_z_cover(session):
+@nox.session
+def cover(session):
     """Run the final coverage report.
 
     This outputs the coverage report aggregating coverage from the unit
