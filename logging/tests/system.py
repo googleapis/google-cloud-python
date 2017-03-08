@@ -30,9 +30,9 @@ from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import SyncTransport
 from google.cloud.logging import client
 
-from retry import RetryErrors
-from retry import RetryResult
-from system_test_utils import unique_resource_id
+from test_utils.retry import RetryErrors
+from test_utils.retry import RetryResult
+from test_utils.system import unique_resource_id
 
 _RESOURCE_ID = unique_resource_id('-')
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
