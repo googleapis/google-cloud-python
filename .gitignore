@@ -25,6 +25,7 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
+.nox
 .tox
 .cache
 
