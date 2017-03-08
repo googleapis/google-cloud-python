@@ -467,8 +467,7 @@ class Client(ClientWithProject):
         incomplete_key_pb = incomplete_key.to_protobuf()
         incomplete_key_pbs = [incomplete_key_pb] * num_ids
 
-        conn = self._connection
-        response_pb = conn.allocate_ids(
+        response_pb = self._datastore_api.allocate_ids(
             incomplete_key.project, incomplete_key_pbs)
         allocated_ids = [allocated_key_pb.path[-1].id
                          for allocated_key_pb in response_pb.keys]
