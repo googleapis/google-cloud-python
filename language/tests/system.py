@@ -18,8 +18,8 @@ from google.cloud import exceptions
 from google.cloud import language
 from google.cloud import storage
 
-from google.cloud._system_test_utils import unique_resource_id
-from google.cloud._system_test_utils.retry import RetryErrors
+from test_utils.system import unique_resource_id
+from test_utils.retry import RetryErrors
 
 
 class Config(object):
