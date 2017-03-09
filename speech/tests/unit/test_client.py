@@ -127,7 +127,7 @@ class TestClient(unittest.TestCase):
         from google.cloud import speech
         from google.cloud.speech.alternative import Alternative
         from google.cloud.speech.result import Result
-        from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
+        from tests.unit._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         _b64_audio_content = _bytes_to_unicode(b64encode(self.AUDIO_CONTENT))
         request = {
@@ -184,7 +184,7 @@ class TestClient(unittest.TestCase):
         from google.cloud import speech
         from google.cloud.speech.alternative import Alternative
         from google.cloud.speech.result import Result
-        from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
+        from tests.unit._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         request = {
             'config': {
@@ -230,7 +230,7 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_with_empty_results_no_gax(self):
         from google.cloud import speech
-        from unit_tests._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
+        from tests.unit._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
@@ -365,7 +365,7 @@ class TestClient(unittest.TestCase):
     def test_async_recognize_no_gax(self):
         from google.cloud import speech
         from google.cloud.speech.operation import Operation
-        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
+        from tests.unit._fixtures import ASYNC_RECOGNIZE_RESPONSE
 
         RETURNED = ASYNC_RECOGNIZE_RESPONSE
 

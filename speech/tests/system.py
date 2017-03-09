@@ -20,9 +20,9 @@ from google.cloud import speech
 from google.cloud import storage
 from google.cloud.speech.alternative import Alternative
 
-from system_test_utils import unique_resource_id
-from retry import RetryErrors
-from retry import RetryResult
+from test_utils.retry import RetryErrors
+from test_utils.retry import RetryResult
+from test_utils.system import unique_resource_id
 
 
 AUDIO_FILE = os.path.join(os.path.dirname(__file__), 'data', 'hello.wav')
