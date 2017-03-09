@@ -31,10 +31,10 @@ from google.cloud.bigtable.row_data import Cell
 from google.cloud.bigtable.row_data import PartialRowData
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
-from retry import RetryErrors
-from retry import RetryResult
-from system_test_utils import EmulatorCreds
-from system_test_utils import unique_resource_id
+from test_utils.retry import RetryErrors
+from test_utils.retry import RetryResult
+from test_utils.system import EmulatorCreds
+from test_utils.system import unique_resource_id
 
 
 LOCATION_ID = 'us-central1-c'

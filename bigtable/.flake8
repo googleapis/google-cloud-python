@@ -1,0 +1,11 @@
+[flake8]
+exclude =
+  # BigTable includes generated code in the manual layer;
+  # do not lint this.
+  google/cloud/bigtable/_generated/*.py,
+
+  # Standard linting exemptions.
+  __pycache__,
+  .git,
+  *.pyc,
+  conf.py

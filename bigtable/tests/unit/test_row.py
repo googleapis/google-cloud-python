@@ -301,7 +301,7 @@ class TestDirectRow(unittest.TestCase):
 
     def test_commit(self):
         from google.protobuf import empty_pb2
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
 
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
@@ -361,7 +361,7 @@ class TestDirectRow(unittest.TestCase):
                 row.commit()
 
     def test_commit_no_mutations(self):
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
 
         row_key = b'row_key'
         client = _Client()
@@ -414,7 +414,7 @@ class TestConditionalRow(unittest.TestCase):
         self.assertIs(false_mutations, row._get_mutations(None))
 
     def test_commit(self):
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable.row_filters import RowSampleFilter
 
         row_key = b'row_key'
@@ -502,7 +502,7 @@ class TestConditionalRow(unittest.TestCase):
                 row.commit()
 
     def test_commit_no_mutations(self):
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
 
         row_key = b'row_key'
         client = _Client()
@@ -582,7 +582,7 @@ class TestAppendRow(unittest.TestCase):
 
     def test_commit(self):
         from google.cloud._testing import _Monkey
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable import row as MUT
 
         row_key = b'row_key'
@@ -637,7 +637,7 @@ class TestAppendRow(unittest.TestCase):
         self.assertEqual(row._rule_pb_list, [])
 
     def test_commit_no_rules(self):
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
 
         row_key = b'row_key'
         client = _Client()
