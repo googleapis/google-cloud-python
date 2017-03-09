@@ -29,7 +29,7 @@ def unit_tests(session, python_version):
 
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet',
-        '--cov=google.cloud.monitoring', '--cov=tests.unit', '--cov-append',
+        '--cov=google.cloud.pubsub', '--cov=tests.unit', '--cov-append',
         '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
         'tests/unit',
     )
@@ -63,7 +63,7 @@ def lint(session):
     session.interpreter = 'python3.6'
     session.install('flake8')
     session.install('.')
-    session.run('flake8', 'google/cloud/monitoring')
+    session.run('flake8', 'google/cloud/pubsub')
 
 
 @nox.session
