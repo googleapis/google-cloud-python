@@ -28,7 +28,7 @@ class TestFace(unittest.TestCase):
         return image_annotator_pb2.FaceAnnotation(*args, **kwargs)
 
     def setUp(self):
-        from unit_tests._fixtures import FACE_DETECTION_RESPONSE
+        from tests.unit._fixtures import FACE_DETECTION_RESPONSE
 
         self.face_annotations = FACE_DETECTION_RESPONSE['responses'][0]
         self.face_class = self._get_target_class()

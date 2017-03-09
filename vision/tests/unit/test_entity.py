@@ -22,7 +22,7 @@ class TestEntityAnnotation(unittest.TestCase):
         return EntityAnnotation
 
     def test_logo_annotation(self):
-        from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
+        from tests.unit._fixtures import LOGO_DETECTION_RESPONSE
 
         entity_class = self._get_target_class()
         logo = entity_class.from_api_repr(

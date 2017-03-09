@@ -24,7 +24,7 @@ class TestSafeSearchAnnotation(unittest.TestCase):
 
     def test_safe_search_annotation(self):
         from google.cloud.vision.likelihood import Likelihood
-        from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
+        from tests.unit._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
         response = SAFE_SEARCH_DETECTION_RESPONSE['responses'][0]
         safe_search_response = response['safeSearchAnnotation']

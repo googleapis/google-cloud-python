@@ -17,6 +17,8 @@
 import os
 import unittest
 
+import six
+
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud import vision
@@ -24,12 +26,11 @@ from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
 
-from system_test_utils import unique_resource_id
-from retry import RetryErrors
-import six
+from test_utils.retry import RetryErrors
+from test_utils.system import unique_resource_id
 
 
-_SYS_TESTS_DIR = os.path.abspath(os.path.dirname(__file__))
+_SYS_TESTS_DIR = os.path.realpath(os.path.dirname(__file__))
 LOGO_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'logo.png')
 FACE_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'faces.jpg')
 LABEL_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'car.jpg')
@@ -141,7 +142,7 @@ class TestVisionClientCropHint(BaseVisionTestCase):
 
         self.assertIsInstance(hint, CropHint)
         self.assertIsInstance(hint.bounds, Bounds)
-        self.assertGreater(hint.bounds.vertices, 1)
+        self.assertGreater(len(hint.bounds.vertices), 1)
         self.assertIsInstance(hint.confidence, (int, float))
         self.assertIsInstance(hint.importance_fraction, float)
 
