@@ -35,3 +35,7 @@ from google.cloud.dns.resource_record_set import ResourceRecordSet
 
 
 SCOPE = Client.SCOPE
+
+
+__all__ = ['__version__', 'Changes', 'Client', 'ManagedZone',
+           'ResourceRecordSet', 'SCOPE']
