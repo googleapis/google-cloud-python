@@ -800,91 +800,74 @@ class TestClient(unittest.TestCase):
                           client.key, KIND, ID, project=self.PROJECT)
 
     def test_key_wo_project(self):
-        KIND = 'KIND'
-        ID = 1234
+        kind = 'KIND'
+        id_ = 1234
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Key', new=_Dummy)
-        with patch:
-            key = client.key(KIND, ID)
-
-        self.assertIsInstance(key, _Dummy)
-        self.assertEqual(key.args, (KIND, ID))
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': None,
-        }
-        self.assertEqual(key.kwargs, expected_kwargs)
+            'google.cloud.datastore.client.Key', spec=['__call__'])
+        with patch as mock_klass:
+            key = client.key(kind, id_)
+            self.assertIs(key, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                kind, id_, project=self.PROJECT, namespace=None)
 
     def test_key_w_namespace(self):
-        KIND = 'KIND'
-        ID = 1234
-        NAMESPACE = object()
+        kind = 'KIND'
+        id_ = 1234
+        namespace = object()
 
         creds = _make_credentials()
-        client = self._make_one(namespace=NAMESPACE, credentials=creds)
+        client = self._make_one(namespace=namespace, credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Key', new=_Dummy)
-        with patch:
-            key = client.key(KIND, ID)
-
-        self.assertIsInstance(key, _Dummy)
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': NAMESPACE,
-        }
-        self.assertEqual(key.kwargs, expected_kwargs)
+            'google.cloud.datastore.client.Key', spec=['__call__'])
+        with patch as mock_klass:
+            key = client.key(kind, id_)
+            self.assertIs(key, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                kind, id_, project=self.PROJECT, namespace=namespace)
 
     def test_key_w_namespace_collision(self):
-        KIND = 'KIND'
-        ID = 1234
-        NAMESPACE1 = object()
-        NAMESPACE2 = object()
+        kind = 'KIND'
+        id_ = 1234
+        namespace1 = object()
+        namespace2 = object()
 
         creds = _make_credentials()
-        client = self._make_one(namespace=NAMESPACE1, credentials=creds)
+        client = self._make_one(namespace=namespace1, credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Key', new=_Dummy)
-        with patch:
-            key = client.key(KIND, ID, namespace=NAMESPACE2)
-
-        self.assertIsInstance(key, _Dummy)
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': NAMESPACE2,
-        }
-        self.assertEqual(key.kwargs, expected_kwargs)
+            'google.cloud.datastore.client.Key', spec=['__call__'])
+        with patch as mock_klass:
+            key = client.key(kind, id_, namespace=namespace2)
+            self.assertIs(key, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                kind, id_, project=self.PROJECT, namespace=namespace2)
 
     def test_batch(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Batch', new=_Dummy)
-        with patch:
+            'google.cloud.datastore.client.Batch', spec=['__call__'])
+        with patch as mock_klass:
             batch = client.batch()
-
-        self.assertIsInstance(batch, _Dummy)
-        self.assertEqual(batch.args, (client,))
-        self.assertEqual(batch.kwargs, {})
+            self.assertIs(batch, mock_klass.return_value)
+            mock_klass.assert_called_once_with(client)
 
     def test_transaction_defaults(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Transaction', new=_Dummy)
-        with patch:
+            'google.cloud.datastore.client.Transaction', spec=['__call__'])
+        with patch as mock_klass:
             xact = client.transaction()
-
-        self.assertIsInstance(xact, _Dummy)
-        self.assertEqual(xact.args, (client,))
-        self.assertEqual(xact.kwargs, {})
+            self.assertIs(xact, mock_klass.return_value)
+            mock_klass.assert_called_once_with(client)
 
     def test_query_w_client(self):
         KIND = 'KIND'
@@ -909,106 +892,80 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Query', new=_Dummy)
-        with patch:
+            'google.cloud.datastore.client.Query', spec=['__call__'])
+        with patch as mock_klass:
             query = client.query()
-
-        self.assertIsInstance(query, _Dummy)
-        self.assertEqual(query.args, (client,))
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': None,
-        }
-        self.assertEqual(query.kwargs, expected_kwargs)
+            self.assertIs(query, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                client, project=self.PROJECT, namespace=None)
 
     def test_query_explicit(self):
-        KIND = 'KIND'
-        NAMESPACE = 'NAMESPACE'
-        ANCESTOR = object()
-        FILTERS = [('PROPERTY', '==', 'VALUE')]
-        PROJECTION = ['__key__']
-        ORDER = ['PROPERTY']
-        DISTINCT_ON = ['DISTINCT_ON']
+        kind = 'KIND'
+        namespace = 'NAMESPACE'
+        ancestor = object()
+        filters = [('PROPERTY', '==', 'VALUE')]
+        projection = ['__key__']
+        order = ['PROPERTY']
+        distinct_on = ['DISTINCT_ON']
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Query', new=_Dummy)
-        with patch:
+            'google.cloud.datastore.client.Query', spec=['__call__'])
+        with patch as mock_klass:
             query = client.query(
-                kind=KIND,
-                namespace=NAMESPACE,
-                ancestor=ANCESTOR,
-                filters=FILTERS,
-                projection=PROJECTION,
-                order=ORDER,
-                distinct_on=DISTINCT_ON,
+                kind=kind,
+                namespace=namespace,
+                ancestor=ancestor,
+                filters=filters,
+                projection=projection,
+                order=order,
+                distinct_on=distinct_on,
+            )
+            self.assertIs(query, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                client,
+                project=self.PROJECT,
+                kind=kind,
+                namespace=namespace,
+                ancestor=ancestor,
+                filters=filters,
+                projection=projection,
+                order=order,
+                distinct_on=distinct_on,
             )
 
-        self.assertIsInstance(query, _Dummy)
-        self.assertEqual(query.args, (client,))
-        kwargs = {
-            'project': self.PROJECT,
-            'kind': KIND,
-            'namespace': NAMESPACE,
-            'ancestor': ANCESTOR,
-            'filters': FILTERS,
-            'projection': PROJECTION,
-            'order': ORDER,
-            'distinct_on': DISTINCT_ON,
-        }
-        self.assertEqual(query.kwargs, kwargs)
-
     def test_query_w_namespace(self):
-        KIND = 'KIND'
-        NAMESPACE = object()
+        kind = 'KIND'
+        namespace = object()
 
         creds = _make_credentials()
-        client = self._make_one(namespace=NAMESPACE, credentials=creds)
+        client = self._make_one(namespace=namespace, credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Query', new=_Dummy)
-        with patch:
-            query = client.query(kind=KIND)
-
-        self.assertIsInstance(query, _Dummy)
-        self.assertEqual(query.args, (client,))
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': NAMESPACE,
-            'kind': KIND,
-        }
-        self.assertEqual(query.kwargs, expected_kwargs)
+            'google.cloud.datastore.client.Query', spec=['__call__'])
+        with patch as mock_klass:
+            query = client.query(kind=kind)
+            self.assertIs(query, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                client, project=self.PROJECT, namespace=namespace, kind=kind)
 
     def test_query_w_namespace_collision(self):
-        KIND = 'KIND'
-        NAMESPACE1 = object()
-        NAMESPACE2 = object()
+        kind = 'KIND'
+        namespace1 = object()
+        namespace2 = object()
 
         creds = _make_credentials()
-        client = self._make_one(namespace=NAMESPACE1, credentials=creds)
+        client = self._make_one(namespace=namespace1, credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Query', new=_Dummy)
-        with patch:
-            query = client.query(kind=KIND, namespace=NAMESPACE2)
-
-        self.assertIsInstance(query, _Dummy)
-        self.assertEqual(query.args, (client,))
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': NAMESPACE2,
-            'kind': KIND,
-        }
-        self.assertEqual(query.kwargs, expected_kwargs)
-
-
-class _Dummy(object):
-
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
+            'google.cloud.datastore.client.Query', spec=['__call__'])
+        with patch as mock_klass:
+            query = client.query(kind=kind, namespace=namespace2)
+            self.assertIs(query, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                client, project=self.PROJECT, namespace=namespace2, kind=kind)
 
 
 class _MockConnection(object):
