@@ -20,9 +20,9 @@ from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import ServiceUnavailable
 from google.cloud import monitoring
 
-from retry import RetryErrors
-from retry import RetryResult
-from system_test_utils import unique_resource_id
+from test_utils.retry import RetryErrors
+from test_utils.retry import RetryResult
+from test_utils.system import unique_resource_id
 
 retry_404 = RetryErrors(NotFound, max_tries=5)
 retry_404_500 = RetryErrors((NotFound, InternalServerError))
