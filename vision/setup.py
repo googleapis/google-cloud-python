@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -52,12 +52,12 @@ SETUP_BASE = {
 REQUIREMENTS = [
     'enum34',
     'google-cloud-core >= 0.23.1, < 0.24dev',
-    'gapic-google-cloud-vision-v1 >= 0.15.2, < 0.16dev',
+    'gapic-google-cloud-vision-v1 >= 0.90.3, < 0.91dev',
 ]
 
 setup(
     name='google-cloud-vision',
-    version='0.23.2',
+    version='0.23.3',
     description='Python Client for Google Cloud Vision',
     long_description=README,
     namespace_packages=[

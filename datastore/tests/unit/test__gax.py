@@ -19,9 +19,6 @@ import mock
 from google.cloud.datastore._http import _HAVE_GRPC
 
 
-USER_AGENT = 'you-sir-age-int'
-
-
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
 class Test__grpc_catch_rendezvous(unittest.TestCase):
 
@@ -98,35 +95,37 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         return _DatastoreAPIOverGRPC
 
     def _make_one(self, stub, connection=None, secure=True):
-        if connection is None:
-            connection = mock.Mock(
-                credentials=object(),
-                host='CURR_HOST',
-                USER_AGENT=USER_AGENT,
-                spec=['credentials', 'host', 'USER_AGENT'],
-            )
-
         if secure:
             patch = mock.patch(
                 'google.cloud.datastore._gax.make_secure_stub',
                 return_value=stub)
+            base_url = 'https://test.invalid'
         else:
             patch = mock.patch(
                 'google.cloud.datastore._gax.make_insecure_stub',
                 return_value=stub)
+            base_url = 'http://test.invalid'
+
+        if connection is None:
+            connection = mock.Mock(
+                credentials=object(),
+                api_base_url=base_url,
+                spec=['credentials', 'api_base_url'],
+            )
 
         with patch as make_stub_mock:
-            api_obj = self._get_target_class()(connection, secure)
+            api_obj = self._get_target_class()(connection)
             return api_obj, make_stub_mock
 
     def test_constructor(self):
+        from google.cloud._http import DEFAULT_USER_AGENT
         import google.cloud.datastore._gax as MUT
 
+        host = 'test.invalid'
         conn = mock.Mock(
             credentials=object(),
-            host='CURR_HOST',
-            USER_AGENT=USER_AGENT,
-            spec=['credentials', 'host', 'USER_AGENT'],
+            api_base_url='https://' + host,
+            spec=['credentials', 'api_base_url'],
         )
 
         stub = _GRPCStub()
@@ -136,19 +135,20 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertIs(datastore_api._stub, stub)
         make_stub_mock.assert_called_once_with(
             conn.credentials,
-            conn.USER_AGENT,
+            DEFAULT_USER_AGENT,
             MUT.datastore_pb2_grpc.DatastoreStub,
-            conn.host,
+            host,
             extra_options=MUT._GRPC_EXTRA_OPTIONS,
         )
 
     def test_constructor_insecure(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
 
+        host = 'test.invalid'
         conn = mock.Mock(
             credentials=object(),
-            host='CURR_HOST:1234',
-            spec=['credentials', 'host'],
+            api_base_url='http://' + host,
+            spec=['credentials', 'api_base_url'],
         )
 
         stub = _GRPCStub()
@@ -158,7 +158,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertIs(datastore_api._stub, stub)
         make_stub_mock.assert_called_once_with(
             datastore_pb2_grpc.DatastoreStub,
-            conn.host,
+            host,
         )
 
     def test_lookup(self):
@@ -267,6 +267,37 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertEqual(
             stub.method_calls,
             [(request_pb, 'AllocateIds')])
+
+
+@unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+class Test_make_datastore_api(unittest.TestCase):
+
+    def _call_fut(self, client):
+        from google.cloud.datastore._gax import make_datastore_api
+
+        return make_datastore_api(client)
+
+    @mock.patch(
+        'google.cloud.gapic.datastore.v1.datastore_client.DatastoreClient',
+        SERVICE_ADDRESS='datastore.mock.mock',
+        return_value=mock.sentinel.ds_client)
+    @mock.patch('google.cloud.datastore._gax.make_secure_channel',
+                return_value=mock.sentinel.channel)
+    def test_it(self, make_chan, mock_klass):
+        from google.cloud._http import DEFAULT_USER_AGENT
+        from google.cloud.datastore import __version__
+
+        client = mock.Mock(
+            _credentials=mock.sentinel.credentials, spec=['_credentials'])
+        ds_api = self._call_fut(client)
+        self.assertIs(ds_api, mock.sentinel.ds_client)
+
+        make_chan.assert_called_once_with(
+            mock.sentinel.credentials, DEFAULT_USER_AGENT,
+            mock_klass.SERVICE_ADDRESS)
+        mock_klass.assert_called_once_with(
+            channel=mock.sentinel.channel, lib_name='gccl',
+            lib_version=__version__)
 
 
 class _GRPCStub(object):

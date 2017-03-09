@@ -15,6 +15,8 @@
 
 import unittest
 
+import mock
+
 
 class TestCell(unittest.TestCase):
 
@@ -383,7 +385,7 @@ class TestPartialRowsData(unittest.TestCase):
     def test__save_row_no_cell(self):
         ROW_KEY = 'RK'
         prd = self._make_one([])
-        row = prd._row = _Dummy(row_key=ROW_KEY)
+        row = prd._row = mock.Mock(row_key=ROW_KEY, spec=['row_key'])
         prd._cell = None
         prd._save_current_row()
         self.assertIs(prd._rows[ROW_KEY], row)
@@ -670,12 +672,6 @@ class _MockCancellableIterator(object):
 
     def __next__(self):  # pragma: NO COVER Py3k
         return self.next()
-
-
-class _Dummy(object):
-
-    def __init__(self, **kw):
-        self.__dict__.update(kw)
 
 
 class _PartialCellData(object):

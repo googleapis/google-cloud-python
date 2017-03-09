@@ -479,6 +479,46 @@ class TestBigQuery(unittest.TestCase):
         # raise an error, and that the job completed (in the `retry()`
         # above).
 
+    def test_sync_query_w_legacy_sql_types(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
+        stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
+        zoned = naive.replace(tzinfo=UTC)
+        EXAMPLES = [
+            {
+                'sql': 'SELECT 1',
+                'expected': 1,
+            },
+            {
+                'sql': 'SELECT 1.3',
+                'expected': 1.3,
+            },
+            {
+                'sql': 'SELECT TRUE',
+                'expected': True,
+            },
+            {
+                'sql': 'SELECT "ABC"',
+                'expected': 'ABC',
+            },
+            {
+                'sql': 'SELECT CAST("foo" AS BYTES)',
+                'expected': b'foo',
+            },
+            {
+                'sql': 'SELECT CAST("%s" AS TIMESTAMP)' % (stamp,),
+                'expected': zoned,
+            },
+        ]
+        for example in EXAMPLES:
+            query = Config.CLIENT.run_sync_query(example['sql'])
+            query.use_legacy_sql = True
+            query.run()
+            self.assertEqual(len(query.rows), 1)
+            self.assertEqual(len(query.rows[0]), 1)
+            self.assertEqual(query.rows[0][0], example['expected'])
+
     def test_sync_query_w_standard_sql_types(self):
         import datetime
         from google.cloud._helpers import UTC
@@ -486,7 +526,7 @@ class TestBigQuery(unittest.TestCase):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery._helpers import StructQueryParameter
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
-        stamp = "%s %s" % (naive.date().isoformat(), naive.time().isoformat())
+        stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
         zoned_param = ScalarQueryParameter(
             name='zoned', type_='TIMESTAMP', value=zoned)
@@ -540,6 +580,14 @@ class TestBigQuery(unittest.TestCase):
             {
                 'sql': 'SELECT (1, 2)',
                 'expected': {'_field_1': 1, '_field_2': 2},
+            },
+            {
+                'sql': 'SELECT ((1, 2), (3, 4), 5)',
+                'expected': {
+                    '_field_1': {'_field_1': 1, '_field_2': 2},
+                    '_field_2': {'_field_1': 3, '_field_2': 4},
+                    '_field_3': 5,
+                },
             },
             {
                 'sql': 'SELECT [1, 2, 3]',

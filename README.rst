@@ -22,6 +22,7 @@ Cloud Platform services:
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
+-  `Google Cloud Vision`_ (`Vision README`_)
 
 **Beta** indicates that the client library for a particular service is
 mostly stable and is being prepared for release. Issues and requests
@@ -39,7 +40,6 @@ Cloud Platform services:
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)
--  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Cloud Spanner`_ (`Cloud Spanner README`_)

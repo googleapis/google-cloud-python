@@ -15,8 +15,6 @@
 
 import unittest
 
-import mock
-
 from google.cloud.spanner import __version__
 
 from google.cloud._testing import _GAXBaseAPI
@@ -1008,28 +1006,6 @@ class TestSnapshotCheckout(_BaseTest):
                 raise Testing()
 
         self.assertIs(pool._session, session)
-
-
-class TestBrokenResultFuture(unittest.TestCase):
-    def test_result_normal(self):
-        from google.gax import _OperationFuture
-        from google.cloud.spanner.database import _BrokenResultFuture
-
-        with mock.patch.object(_OperationFuture, 'result') as super_result:
-            super_result.return_value = 'foo'
-            brf = _BrokenResultFuture(object(), object(), str, object())
-            self.assertEqual(brf.result(), 'foo')
-            super_result.assert_called_once()
-
-    def test_result_valueerror(self):
-        from google.gax import _OperationFuture
-        from google.cloud.spanner.database import _BrokenResultFuture
-
-        with mock.patch.object(_OperationFuture, 'result') as super_result:
-            super_result.side_effect = TypeError
-            brf = _BrokenResultFuture(object(), object(), str, object())
-            self.assertEqual(brf.result(), '')
-            super_result.assert_called_once()
 
 
 class _Client(object):

@@ -138,13 +138,14 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _make_one(self, project=PROJECT, namespace=None,
-                  credentials=None, http=None):
+                  credentials=None, http=None, use_gax=None):
         return self._get_target_class()(project=project,
                                         namespace=namespace,
                                         credentials=credentials,
-                                        http=http)
+                                        http=http,
+                                        use_gax=use_gax)
 
-    def test_ctor_w_project_no_environ(self):
+    def test_constructor_w_project_no_environ(self):
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
         patch = mock.patch(
@@ -153,14 +154,16 @@ class TestClient(unittest.TestCase):
         with patch:
             self.assertRaises(EnvironmentError, self._make_one, None)
 
-    def test_ctor_w_implicit_inputs(self):
-        OTHER = 'other'
+    def test_constructor_w_implicit_inputs(self):
+        from google.cloud.datastore.client import _DATASTORE_BASE_URL
+
+        other = 'other'
         creds = _make_credentials()
         default_called = []
 
         def fallback_mock(project):
             default_called.append(project)
-            return project or OTHER
+            return project or other
 
         klass = self._get_target_class()
         patch1 = mock.patch(
@@ -174,31 +177,113 @@ class TestClient(unittest.TestCase):
             with patch2:
                 client = klass()
 
-        self.assertEqual(client.project, OTHER)
+        self.assertEqual(client.project, other)
         self.assertIsNone(client.namespace)
         self.assertIsInstance(client._connection, _MockConnection)
         self.assertIs(client._credentials, creds)
         self.assertIsNone(client._http_internal)
+        self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
+
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
         self.assertEqual(default_called, [None])
 
-    def test_ctor_w_explicit_inputs(self):
-        OTHER = 'other'
-        NAMESPACE = 'namespace'
+    def test_constructor_w_explicit_inputs(self):
+        from google.cloud.datastore.client import _DATASTORE_BASE_URL
+
+        other = 'other'
+        namespace = 'namespace'
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=OTHER,
-                                namespace=NAMESPACE,
+        client = self._make_one(project=other,
+                                namespace=namespace,
                                 credentials=creds,
                                 http=http)
-        self.assertEqual(client.project, OTHER)
-        self.assertEqual(client.namespace, NAMESPACE)
+        self.assertEqual(client.project, other)
+        self.assertEqual(client.namespace, namespace)
         self.assertIsInstance(client._connection, _MockConnection)
         self.assertIs(client._credentials, creds)
         self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
+        self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
+
+    def test_constructor_use_gax_default(self):
+        import google.cloud.datastore.client as MUT
+
+        project = 'PROJECT'
+        creds = _make_credentials()
+        http = object()
+
+        with mock.patch.object(MUT, '_USE_GAX', new=True):
+            client1 = self._make_one(
+                project=project, credentials=creds, http=http)
+            self.assertTrue(client1._use_gax)
+            # Explicitly over-ride the environment.
+            client2 = self._make_one(
+                project=project, credentials=creds, http=http,
+                use_gax=False)
+            self.assertFalse(client2._use_gax)
+
+        with mock.patch.object(MUT, '_USE_GAX', new=False):
+            client3 = self._make_one(
+                project=project, credentials=creds, http=http)
+            self.assertFalse(client3._use_gax)
+            # Explicitly over-ride the environment.
+            client4 = self._make_one(
+                project=project, credentials=creds, http=http,
+                use_gax=True)
+            self.assertTrue(client4._use_gax)
+
+    def test_constructor_gcd_host(self):
+        from google.cloud.environment_vars import GCD_HOST
+
+        host = 'localhost:1234'
+        fake_environ = {GCD_HOST: host}
+        project = 'PROJECT'
+        creds = _make_credentials()
+        http = object()
+
+        with mock.patch('os.environ', new=fake_environ):
+            client = self._make_one(
+                project=project, credentials=creds, http=http)
+            self.assertEqual(client._base_url, 'http://' + host)
+
+    def test__datastore_api_property_gax(self):
+        client = self._make_one(
+            project='prahj-ekt', credentials=_make_credentials(),
+            http=object(), use_gax=True)
+
+        self.assertIsNone(client._datastore_api_internal)
+        patch = mock.patch(
+            'google.cloud.datastore.client.make_datastore_api',
+            return_value=mock.sentinel.ds_api)
+        with patch as make_api:
+            ds_api = client._datastore_api
+            self.assertIs(ds_api, mock.sentinel.ds_api)
+            make_api.assert_called_once_with(client)
+            self.assertIs(
+                client._datastore_api_internal, mock.sentinel.ds_api)
+            # Make sure the cached value is used.
+            self.assertEqual(make_api.call_count, 1)
+            self.assertIs(
+                client._datastore_api, mock.sentinel.ds_api)
+            self.assertEqual(make_api.call_count, 1)
+
+    def test__datastore_api_property_http(self):
+        from google.cloud.datastore._http import HTTPDatastoreAPI
+
+        client = self._make_one(
+            project='prahj-ekt', credentials=_make_credentials(),
+            http=object(), use_gax=False)
+
+        self.assertIsNone(client._datastore_api_internal)
+        ds_api = client._datastore_api
+        self.assertIsInstance(ds_api, HTTPDatastoreAPI)
+        self.assertIs(ds_api.client, client)
+        # Make sure the cached value is used.
+        self.assertIs(client._datastore_api_internal, ds_api)
+        self.assertIs(client._datastore_api, ds_api)
 
     def test__push_batch_and__pop_batch(self):
         creds = _make_credentials()
@@ -685,7 +770,12 @@ class TestClient(unittest.TestCase):
         incomplete_key._id = None
 
         creds = _make_credentials()
-        client = self._make_one(credentials=creds)
+        client = self._make_one(credentials=creds, use_gax=False)
+        allocated = mock.Mock(
+            keys=[_KeyPB(i) for i in range(num_ids)], spec=['keys'])
+        alloc_ids = mock.Mock(return_value=allocated, spec=[])
+        ds_api = mock.Mock(allocate_ids=alloc_ids, spec=['allocate_ids'])
+        client._datastore_api_internal = ds_api
 
         result = client.allocate_ids(incomplete_key, num_ids)
 
@@ -710,91 +800,74 @@ class TestClient(unittest.TestCase):
                           client.key, KIND, ID, project=self.PROJECT)
 
     def test_key_wo_project(self):
-        KIND = 'KIND'
-        ID = 1234
+        kind = 'KIND'
+        id_ = 1234
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Key', new=_Dummy)
-        with patch:
-            key = client.key(KIND, ID)
-
-        self.assertIsInstance(key, _Dummy)
-        self.assertEqual(key.args, (KIND, ID))
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': None,
-        }
-        self.assertEqual(key.kwargs, expected_kwargs)
+            'google.cloud.datastore.client.Key', spec=['__call__'])
+        with patch as mock_klass:
+            key = client.key(kind, id_)
+            self.assertIs(key, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                kind, id_, project=self.PROJECT, namespace=None)
 
     def test_key_w_namespace(self):
-        KIND = 'KIND'
-        ID = 1234
-        NAMESPACE = object()
+        kind = 'KIND'
+        id_ = 1234
+        namespace = object()
 
         creds = _make_credentials()
-        client = self._make_one(namespace=NAMESPACE, credentials=creds)
+        client = self._make_one(namespace=namespace, credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Key', new=_Dummy)
-        with patch:
-            key = client.key(KIND, ID)
-
-        self.assertIsInstance(key, _Dummy)
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': NAMESPACE,
-        }
-        self.assertEqual(key.kwargs, expected_kwargs)
+            'google.cloud.datastore.client.Key', spec=['__call__'])
+        with patch as mock_klass:
+            key = client.key(kind, id_)
+            self.assertIs(key, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                kind, id_, project=self.PROJECT, namespace=namespace)
 
     def test_key_w_namespace_collision(self):
-        KIND = 'KIND'
-        ID = 1234
-        NAMESPACE1 = object()
-        NAMESPACE2 = object()
+        kind = 'KIND'
+        id_ = 1234
+        namespace1 = object()
+        namespace2 = object()
 
         creds = _make_credentials()
-        client = self._make_one(namespace=NAMESPACE1, credentials=creds)
+        client = self._make_one(namespace=namespace1, credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Key', new=_Dummy)
-        with patch:
-            key = client.key(KIND, ID, namespace=NAMESPACE2)
-
-        self.assertIsInstance(key, _Dummy)
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': NAMESPACE2,
-        }
-        self.assertEqual(key.kwargs, expected_kwargs)
+            'google.cloud.datastore.client.Key', spec=['__call__'])
+        with patch as mock_klass:
+            key = client.key(kind, id_, namespace=namespace2)
+            self.assertIs(key, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                kind, id_, project=self.PROJECT, namespace=namespace2)
 
     def test_batch(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Batch', new=_Dummy)
-        with patch:
+            'google.cloud.datastore.client.Batch', spec=['__call__'])
+        with patch as mock_klass:
             batch = client.batch()
-
-        self.assertIsInstance(batch, _Dummy)
-        self.assertEqual(batch.args, (client,))
-        self.assertEqual(batch.kwargs, {})
+            self.assertIs(batch, mock_klass.return_value)
+            mock_klass.assert_called_once_with(client)
 
     def test_transaction_defaults(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Transaction', new=_Dummy)
-        with patch:
+            'google.cloud.datastore.client.Transaction', spec=['__call__'])
+        with patch as mock_klass:
             xact = client.transaction()
-
-        self.assertIsInstance(xact, _Dummy)
-        self.assertEqual(xact.args, (client,))
-        self.assertEqual(xact.kwargs, {})
+            self.assertIs(xact, mock_klass.return_value)
+            mock_klass.assert_called_once_with(client)
 
     def test_query_w_client(self):
         KIND = 'KIND'
@@ -819,106 +892,80 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Query', new=_Dummy)
-        with patch:
+            'google.cloud.datastore.client.Query', spec=['__call__'])
+        with patch as mock_klass:
             query = client.query()
-
-        self.assertIsInstance(query, _Dummy)
-        self.assertEqual(query.args, (client,))
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': None,
-        }
-        self.assertEqual(query.kwargs, expected_kwargs)
+            self.assertIs(query, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                client, project=self.PROJECT, namespace=None)
 
     def test_query_explicit(self):
-        KIND = 'KIND'
-        NAMESPACE = 'NAMESPACE'
-        ANCESTOR = object()
-        FILTERS = [('PROPERTY', '==', 'VALUE')]
-        PROJECTION = ['__key__']
-        ORDER = ['PROPERTY']
-        DISTINCT_ON = ['DISTINCT_ON']
+        kind = 'KIND'
+        namespace = 'NAMESPACE'
+        ancestor = object()
+        filters = [('PROPERTY', '==', 'VALUE')]
+        projection = ['__key__']
+        order = ['PROPERTY']
+        distinct_on = ['DISTINCT_ON']
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Query', new=_Dummy)
-        with patch:
+            'google.cloud.datastore.client.Query', spec=['__call__'])
+        with patch as mock_klass:
             query = client.query(
-                kind=KIND,
-                namespace=NAMESPACE,
-                ancestor=ANCESTOR,
-                filters=FILTERS,
-                projection=PROJECTION,
-                order=ORDER,
-                distinct_on=DISTINCT_ON,
+                kind=kind,
+                namespace=namespace,
+                ancestor=ancestor,
+                filters=filters,
+                projection=projection,
+                order=order,
+                distinct_on=distinct_on,
+            )
+            self.assertIs(query, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                client,
+                project=self.PROJECT,
+                kind=kind,
+                namespace=namespace,
+                ancestor=ancestor,
+                filters=filters,
+                projection=projection,
+                order=order,
+                distinct_on=distinct_on,
             )
 
-        self.assertIsInstance(query, _Dummy)
-        self.assertEqual(query.args, (client,))
-        kwargs = {
-            'project': self.PROJECT,
-            'kind': KIND,
-            'namespace': NAMESPACE,
-            'ancestor': ANCESTOR,
-            'filters': FILTERS,
-            'projection': PROJECTION,
-            'order': ORDER,
-            'distinct_on': DISTINCT_ON,
-        }
-        self.assertEqual(query.kwargs, kwargs)
-
     def test_query_w_namespace(self):
-        KIND = 'KIND'
-        NAMESPACE = object()
+        kind = 'KIND'
+        namespace = object()
 
         creds = _make_credentials()
-        client = self._make_one(namespace=NAMESPACE, credentials=creds)
+        client = self._make_one(namespace=namespace, credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Query', new=_Dummy)
-        with patch:
-            query = client.query(kind=KIND)
-
-        self.assertIsInstance(query, _Dummy)
-        self.assertEqual(query.args, (client,))
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': NAMESPACE,
-            'kind': KIND,
-        }
-        self.assertEqual(query.kwargs, expected_kwargs)
+            'google.cloud.datastore.client.Query', spec=['__call__'])
+        with patch as mock_klass:
+            query = client.query(kind=kind)
+            self.assertIs(query, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                client, project=self.PROJECT, namespace=namespace, kind=kind)
 
     def test_query_w_namespace_collision(self):
-        KIND = 'KIND'
-        NAMESPACE1 = object()
-        NAMESPACE2 = object()
+        kind = 'KIND'
+        namespace1 = object()
+        namespace2 = object()
 
         creds = _make_credentials()
-        client = self._make_one(namespace=NAMESPACE1, credentials=creds)
+        client = self._make_one(namespace=namespace1, credentials=creds)
 
         patch = mock.patch(
-            'google.cloud.datastore.client.Query', new=_Dummy)
-        with patch:
-            query = client.query(kind=KIND, namespace=NAMESPACE2)
-
-        self.assertIsInstance(query, _Dummy)
-        self.assertEqual(query.args, (client,))
-        expected_kwargs = {
-            'project': self.PROJECT,
-            'namespace': NAMESPACE2,
-            'kind': KIND,
-        }
-        self.assertEqual(query.kwargs, expected_kwargs)
-
-
-class _Dummy(object):
-
-    def __init__(self, *args, **kwargs):
-        self.args = args
-        self.kwargs = kwargs
+            'google.cloud.datastore.client.Query', spec=['__call__'])
+        with patch as mock_klass:
+            query = client.query(kind=kind, namespace=namespace2)
+            self.assertIs(query, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                client, project=self.PROJECT, namespace=namespace2, kind=kind)
 
 
 class _MockConnection(object):
@@ -930,8 +977,6 @@ class _MockConnection(object):
         self._lookup = []
         self._commit_cw = []
         self._commit = []
-        self._alloc_cw = []
-        self._alloc = []
 
     def _add_lookup_result(self, results=(), missing=(), deferred=()):
         self._lookup.append((list(results), list(missing), list(deferred)))
@@ -960,12 +1005,6 @@ class _MockConnection(object):
         mutation_results = [
             datastore_pb2.MutationResult(key=key) for key in keys]
         return datastore_pb2.CommitResponse(mutation_results=mutation_results)
-
-    def allocate_ids(self, project, key_pbs):
-        self._alloc_cw.append((project, key_pbs))
-        num_pbs = len(key_pbs)
-        keys = [_KeyPB(i) for i in list(range(num_pbs))]
-        return mock.Mock(keys=keys, spec=['keys'])
 
 
 class _NoCommitBatch(object):
