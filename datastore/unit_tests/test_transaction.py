@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestTransaction(unittest.TestCase):
 
@@ -77,15 +79,18 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(connection._begun, _PROJECT)
 
     def test_begin_tombstoned(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection(234)
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        id_ = 234
+        connection = _Connection(id_)
+        ds_api = mock.Mock(spec=['rollback'])
+        client = _Client(project, connection, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
-        self.assertEqual(xact.id, 234)
-        self.assertEqual(connection._begun, _PROJECT)
+        self.assertEqual(xact.id, id_)
+        self.assertEqual(connection._begun, project)
 
         xact.rollback()
+        ds_api.rollback.assert_called_once_with(project, id_)
         self.assertIsNone(xact.id)
 
         self.assertRaises(ValueError, xact.begin)
@@ -104,14 +109,16 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(connection._begun, _PROJECT)
 
     def test_rollback(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection(234)
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        id_ = 234
+        connection = _Connection(id_)
+        ds_api = mock.Mock(spec=['rollback'])
+        client = _Client(project, connection, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
         xact.rollback()
+        ds_api.rollback.assert_called_once_with(project, id_)
         self.assertIsNone(xact.id)
-        self.assertEqual(connection._rolled_back, (_PROJECT, 234))
 
     def test_commit_no_partial_keys(self):
         _PROJECT = 'PROJECT'
@@ -161,19 +168,21 @@ class TestTransaction(unittest.TestCase):
         class Foo(Exception):
             pass
 
-        _PROJECT = 'PROJECT'
-        connection = _Connection(234)
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        id_ = 234
+        connection = _Connection(id_)
+        ds_api = mock.Mock(spec=['rollback'])
+        client = _Client(project, connection, datastore_api=ds_api)
         xact = self._make_one(client)
         xact._mutation = object()
         try:
             with xact:
-                self.assertEqual(xact.id, 234)
-                self.assertEqual(connection._begun, _PROJECT)
+                self.assertEqual(xact.id, id_)
+                self.assertEqual(connection._begun, project)
                 raise Foo()
         except Foo:
             self.assertIsNone(xact.id)
-            self.assertEqual(connection._rolled_back, (_PROJECT, 234))
+            ds_api.rollback.assert_called_once_with(project, id_)
         self.assertIsNone(connection._committed)
         self.assertIsNone(xact.id)
 
@@ -192,7 +201,6 @@ def _make_key(kind, id_, project):
 class _Connection(object):
     _marker = object()
     _begun = None
-    _rolled_back = None
     _committed = None
     _side_effect = None
 
@@ -206,17 +214,12 @@ class _Connection(object):
             mutation_results=mutation_results)
 
     def begin_transaction(self, project):
-        import mock
-
         self._begun = project
         if self._side_effect is None:
             return mock.Mock(
                 transaction=self._xact_id, spec=['transaction'])
         else:
             raise self._side_effect
-
-    def rollback(self, project, transaction_id):
-        self._rolled_back = project, transaction_id
 
     def commit(self, project, commit_request, transaction_id):
         self._committed = (project, commit_request, transaction_id)
@@ -234,9 +237,11 @@ class _Entity(dict):
 
 class _Client(object):
 
-    def __init__(self, project, connection, namespace=None):
+    def __init__(self, project, connection,
+                 datastore_api=None, namespace=None):
         self.project = project
         self._connection = connection
+        self._datastore_api = datastore_api
         self.namespace = namespace
         self._batches = []
 
