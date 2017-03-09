@@ -190,7 +190,7 @@ class TestCluster(unittest.TestCase):
         self.assertNotEqual(cluster1, cluster2)
 
     def test_reload(self):
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         SERVE_NODES = 31
@@ -235,7 +235,7 @@ class TestCluster(unittest.TestCase):
         from google.cloud.operation import Operation
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
 
         SERVE_NODES = 4
         client = _Client(self.PROJECT)
@@ -285,7 +285,7 @@ class TestCluster(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
@@ -345,7 +345,7 @@ class TestCluster(unittest.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from unit_tests._testing import _FakeStub
+        from tests.unit._testing import _FakeStub
 
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
