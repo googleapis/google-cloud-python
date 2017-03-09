@@ -19,10 +19,10 @@ import unittest
 from google.cloud import bigquery
 from google.cloud.exceptions import Forbidden
 
-from retry import RetryErrors
-from retry import RetryInstanceState
-from retry import RetryResult
-from system_test_utils import unique_resource_id
+from test_utils.retry import RetryErrors
+from test_utils.retry import RetryInstanceState
+from test_utils.retry import RetryResult
+from test_utils.system import unique_resource_id
 
 
 def _has_rows(result):

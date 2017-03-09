@@ -34,3 +34,9 @@ from google.cloud.bigquery.dataset import AccessGrant
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
+
+__all__ = [
+    '__version__', 'AccessGrant', 'ArrayQueryParameter', 'Client',
+    'Dataset', 'ScalarQueryParameter', 'SchemaField', 'StructQueryParameter',
+    'Table',
+]
