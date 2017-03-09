@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestBatch(unittest.TestCase):
 
@@ -27,28 +29,24 @@ class TestBatch(unittest.TestCase):
         return self._get_target_class()(client)
 
     def test_ctor(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-
-        _PROJECT = 'PROJECT'
-        _NAMESPACE = 'NAMESPACE'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection, _NAMESPACE)
+        project = 'PROJECT'
+        namespace = 'NAMESPACE'
+        client = _Client(project, namespace=namespace)
         batch = self._make_one(client)
 
-        self.assertEqual(batch.project, _PROJECT)
+        self.assertEqual(batch.project, project)
         self.assertIs(batch._client, client)
-        self.assertEqual(batch.namespace, _NAMESPACE)
+        self.assertEqual(batch.namespace, namespace)
         self.assertIsNone(batch._id)
         self.assertEqual(batch._status, batch._INITIAL)
-        self.assertIsInstance(batch._commit_request,
-                              datastore_pb2.CommitRequest)
-        self.assertIs(batch.mutations, batch._commit_request.mutations)
+        self.assertEqual(batch._mutations, [])
         self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        project = 'PROJECT'
+        client = _Client(project)
         batch1 = self._make_one(client)
         batch2 = self._make_one(client)
         self.assertIsNone(batch1.current())
@@ -64,19 +62,22 @@ class TestBatch(unittest.TestCase):
         self.assertIsNone(batch1.current())
         self.assertIsNone(batch2.current())
 
+        commit_method = client._datastore_api.commit
+        self.assertEqual(commit_method.call_count, 2)
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        commit_method.assert_called_with(project, mode, [], transaction=None)
+
     def test_put_entity_wo_key(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
 
         batch.begin()
         self.assertRaises(ValueError, batch.put, _Entity())
 
     def test_put_entity_wrong_status(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
         entity = _Entity()
         entity.key = _Key('OTHER')
@@ -85,9 +86,8 @@ class TestBatch(unittest.TestCase):
         self.assertRaises(ValueError, batch.put, entity)
 
     def test_put_entity_w_key_wrong_project(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
         entity = _Entity()
         entity.key = _Key('OTHER')
@@ -96,13 +96,12 @@ class TestBatch(unittest.TestCase):
         self.assertRaises(ValueError, batch.put, entity)
 
     def test_put_entity_w_partial_key(self):
-        _PROJECT = 'PROJECT'
-        _PROPERTIES = {'foo': 'bar'}
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        properties = {'foo': 'bar'}
+        client = _Client(project)
         batch = self._make_one(client)
-        entity = _Entity(_PROPERTIES)
-        key = entity.key = _Key(_PROJECT)
+        entity = _Entity(properties)
+        key = entity.key = _Key(project)
         key._id = None
 
         batch.begin()
@@ -115,19 +114,18 @@ class TestBatch(unittest.TestCase):
     def test_put_entity_w_completed_key(self):
         from google.cloud.datastore.helpers import _property_tuples
 
-        _PROJECT = 'PROJECT'
-        _PROPERTIES = {
+        project = 'PROJECT'
+        properties = {
             'foo': 'bar',
             'baz': 'qux',
             'spam': [1, 2, 3],
             'frotz': [],  # will be ignored
         }
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        client = _Client(project)
         batch = self._make_one(client)
-        entity = _Entity(_PROPERTIES)
+        entity = _Entity(properties)
         entity.exclude_from_indexes = ('baz', 'spam')
-        key = entity.key = _Key(_PROJECT)
+        key = entity.key = _Key(project)
 
         batch.begin()
         batch.put(entity)
@@ -147,31 +145,28 @@ class TestBatch(unittest.TestCase):
         self.assertFalse('frotz' in prop_dict)
 
     def test_delete_wrong_status(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
-        key = _Key(_PROJECT)
+        key = _Key(project)
         key._id = None
 
         self.assertEqual(batch._status, batch._INITIAL)
         self.assertRaises(ValueError, batch.delete, key)
 
     def test_delete_w_partial_key(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
-        key = _Key(_PROJECT)
+        key = _Key(project)
         key._id = None
 
         batch.begin()
         self.assertRaises(ValueError, batch.delete, key)
 
     def test_delete_w_key_wrong_project(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
         key = _Key('OTHER')
 
@@ -179,11 +174,10 @@ class TestBatch(unittest.TestCase):
         self.assertRaises(ValueError, batch.delete, key)
 
     def test_delete_w_completed_key(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
-        key = _Key(_PROJECT)
+        key = _Key(project)
 
         batch.begin()
         batch.delete(key)
@@ -192,24 +186,24 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(mutated_key, key._key)
 
     def test_begin(self):
-        _PROJECT = 'PROJECT'
-        client = _Client(_PROJECT, None)
+        project = 'PROJECT'
+        client = _Client(project, None)
         batch = self._make_one(client)
         self.assertEqual(batch._status, batch._INITIAL)
         batch.begin()
         self.assertEqual(batch._status, batch._IN_PROGRESS)
 
     def test_begin_fail(self):
-        _PROJECT = 'PROJECT'
-        client = _Client(_PROJECT, None)
+        project = 'PROJECT'
+        client = _Client(project, None)
         batch = self._make_one(client)
         batch._status = batch._IN_PROGRESS
         with self.assertRaises(ValueError):
             batch.begin()
 
     def test_rollback(self):
-        _PROJECT = 'PROJECT'
-        client = _Client(_PROJECT, None)
+        project = 'PROJECT'
+        client = _Client(project, None)
         batch = self._make_one(client)
         batch.begin()
         self.assertEqual(batch._status, batch._IN_PROGRESS)
@@ -217,17 +211,18 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch._status, batch._ABORTED)
 
     def test_rollback_wrong_status(self):
-        _PROJECT = 'PROJECT'
-        client = _Client(_PROJECT, None)
+        project = 'PROJECT'
+        client = _Client(project, None)
         batch = self._make_one(client)
 
         self.assertEqual(batch._status, batch._INITIAL)
         self.assertRaises(ValueError, batch.rollback)
 
     def test_commit(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
 
         self.assertEqual(batch._status, batch._INITIAL)
@@ -236,23 +231,25 @@ class TestBatch(unittest.TestCase):
         batch.commit()
         self.assertEqual(batch._status, batch._FINISHED)
 
-        self.assertEqual(connection._committed,
-                         [(_PROJECT, batch._commit_request, None)])
+        commit_method = client._datastore_api.commit
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        commit_method.assert_called_with(project, mode, [], transaction=None)
 
     def test_commit_wrong_status(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        client = _Client(project)
         batch = self._make_one(client)
 
         self.assertEqual(batch._status, batch._INITIAL)
         self.assertRaises(ValueError, batch.commit)
 
     def test_commit_w_partial_key_entities(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
         project = 'PROJECT'
         new_id = 1234
-        connection = _Connection(new_id)
-        client = _Client(project, connection)
+        ds_api = _make_datastore_api(new_id)
+        client = _Client(project, datastore_api=ds_api)
         batch = self._make_one(client)
         entity = _Entity({})
         key = entity.key = _Key(project)
@@ -265,19 +262,21 @@ class TestBatch(unittest.TestCase):
         batch.commit()
         self.assertEqual(batch._status, batch._FINISHED)
 
-        self.assertEqual(connection._committed,
-                         [(project, batch._commit_request, None)])
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        ds_api.commit.assert_called_once_with(
+            project, mode, [], transaction=None)
         self.assertFalse(entity.key.is_partial)
         self.assertEqual(entity.key._id, new_id)
 
     def test_as_context_mgr_wo_error(self):
-        _PROJECT = 'PROJECT'
-        _PROPERTIES = {'foo': 'bar'}
-        connection = _Connection()
-        entity = _Entity(_PROPERTIES)
-        key = entity.key = _Key(_PROJECT)
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        properties = {'foo': 'bar'}
+        entity = _Entity(properties)
+        key = entity.key = _Key(project)
+
+        client = _Client(project)
         self.assertEqual(list(client._batches), [])
 
         with self._make_one(client) as batch:
@@ -288,19 +287,22 @@ class TestBatch(unittest.TestCase):
 
         mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key._key)
-        self.assertEqual(connection._committed,
-                         [(_PROJECT, batch._commit_request, None)])
+        commit_method = client._datastore_api.commit
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        commit_method.assert_called_with(
+            project, mode, batch.mutations, transaction=None)
 
     def test_as_context_mgr_nested(self):
-        _PROJECT = 'PROJECT'
-        _PROPERTIES = {'foo': 'bar'}
-        connection = _Connection()
-        entity1 = _Entity(_PROPERTIES)
-        key1 = entity1.key = _Key(_PROJECT)
-        entity2 = _Entity(_PROPERTIES)
-        key2 = entity2.key = _Key(_PROJECT)
+        from google.cloud.proto.datastore.v1 import datastore_pb2
 
-        client = _Client(_PROJECT, connection)
+        project = 'PROJECT'
+        properties = {'foo': 'bar'}
+        entity1 = _Entity(properties)
+        key1 = entity1.key = _Key(project)
+        entity2 = _Entity(properties)
+        key2 = entity2.key = _Key(project)
+
+        client = _Client(project)
         self.assertEqual(list(client._batches), [])
 
         with self._make_one(client) as batch1:
@@ -320,18 +322,21 @@ class TestBatch(unittest.TestCase):
         mutated_entity2 = _mutated_pb(self, batch2.mutations, 'upsert')
         self.assertEqual(mutated_entity2.key, key2._key)
 
-        self.assertEqual(connection._committed,
-                         [(_PROJECT, batch2._commit_request, None),
-                          (_PROJECT, batch1._commit_request, None)])
+        commit_method = client._datastore_api.commit
+        self.assertEqual(commit_method.call_count, 2)
+        mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        commit_method.assert_called_with(
+            project, mode, batch1.mutations, transaction=None)
+        commit_method.assert_called_with(
+            project, mode, batch2.mutations, transaction=None)
 
     def test_as_context_mgr_w_error(self):
-        _PROJECT = 'PROJECT'
-        _PROPERTIES = {'foo': 'bar'}
-        connection = _Connection()
-        entity = _Entity(_PROPERTIES)
-        key = entity.key = _Key(_PROJECT)
+        project = 'PROJECT'
+        properties = {'foo': 'bar'}
+        entity = _Entity(properties)
+        key = entity.key = _Key(project)
 
-        client = _Client(_PROJECT, connection)
+        client = _Client(project)
         self.assertEqual(list(client._batches), [])
 
         try:
@@ -346,7 +351,6 @@ class TestBatch(unittest.TestCase):
 
         mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key._key)
-        self.assertEqual(connection._committed, [])
 
     def test_as_context_mgr_enter_fails(self):
         klass = self._get_target_class()
@@ -409,24 +413,6 @@ class Test__parse_commit_response(unittest.TestCase):
         self.assertEqual(result, (index_updates, keys))
 
 
-class _Connection(object):
-    _marker = object()
-    _save_result = (False, None)
-
-    def __init__(self, *new_key_ids):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-
-        self._committed = []
-        mutation_results = [
-            _make_mutation(key_id) for key_id in new_key_ids]
-        self._commit_response_pb = datastore_pb2.CommitResponse(
-            mutation_results=mutation_results)
-
-    def commit(self, project, commit_request, transaction_id):
-        self._committed.append((project, commit_request, transaction_id))
-        return self._commit_response_pb
-
-
 class _Entity(dict):
     key = None
     exclude_from_indexes = ()
@@ -434,7 +420,6 @@ class _Entity(dict):
 
 
 class _Key(object):
-    _MARKER = object()
     _kind = 'KIND'
     _key = 'KEY'
     _path = None
@@ -471,9 +456,11 @@ class _Key(object):
 
 class _Client(object):
 
-    def __init__(self, project, connection, namespace=None):
+    def __init__(self, project, datastore_api=None, namespace=None):
         self.project = project
-        self._connection = connection
+        if datastore_api is None:
+            datastore_api = _make_datastore_api()
+        self._datastore_api = datastore_api
         self.namespace = namespace
         self._batches = []
 
@@ -516,3 +503,17 @@ def _make_mutation(id_):
     elem.kind = 'Kind'
     elem.id = id_
     return datastore_pb2.MutationResult(key=key)
+
+
+def _make_commit_response(*new_key_ids):
+    from google.cloud.proto.datastore.v1 import datastore_pb2
+
+    mutation_results = [
+        _make_mutation(key_id) for key_id in new_key_ids]
+    return datastore_pb2.CommitResponse(mutation_results=mutation_results)
+
+
+def _make_datastore_api(*new_key_ids):
+    commit_method = mock.Mock(
+        return_value=_make_commit_response(*new_key_ids), spec=[])
+    return mock.Mock(commit=commit_method, spec=['commit'])

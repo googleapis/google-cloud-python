@@ -662,6 +662,23 @@ class TestConnection(unittest.TestCase):
         # The RPC-over-HTTP request does not set the project in the request.
         self.assertEqual(request.project_id, u'')
 
+
+class TestHTTPDatastoreAPI(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.datastore._http import HTTPDatastoreAPI
+
+        return HTTPDatastoreAPI
+
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
+
+    def test_constructor(self):
+        client = object()
+        ds_api = self._make_one(client)
+        self.assertIs(ds_api.client, client)
+
     def test_commit_wo_transaction(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
@@ -675,19 +692,23 @@ class TestConnection(unittest.TestCase):
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(
             _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
-        conn = self._make_one(client)
-        uri = _build_expected_url(conn.api_base_url, project, 'commit')
 
-        result = conn.commit(project, req_pb, None)
+        # Make request.
+        rq_class = datastore_pb2.CommitRequest
+        ds_api = self._make_one(client)
+        mode = rq_class.NON_TRANSACTIONAL
+        result = ds_api.commit(project, mode, [mutation])
+
+        # Check the result and verify the callers.
         self.assertEqual(result, rsp_pb)
-
-        # Verify the caller.
+        uri = _build_expected_url(client._base_url, project, 'commit')
         cw = http._called_with
         _verify_protobuf_call(self, cw, uri)
-        rq_class = datastore_pb2.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'')
@@ -707,41 +728,28 @@ class TestConnection(unittest.TestCase):
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
+
+        # Create mock HTTP and client with response.
         http = Http({'status': '200'}, rsp_pb.SerializeToString())
         client = mock.Mock(
             _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
-        conn = self._make_one(client)
-        uri = _build_expected_url(conn.api_base_url, project, 'commit')
 
-        result = conn.commit(project, req_pb, b'xact')
+        # Make request.
+        rq_class = datastore_pb2.CommitRequest
+        ds_api = self._make_one(client)
+        mode = rq_class.TRANSACTIONAL
+        result = ds_api.commit(project, mode, [mutation], transaction=b'xact')
+
+        # Check the result and verify the callers.
         self.assertEqual(result, rsp_pb)
-
-        # Verify the caller.
+        uri = _build_expected_url(client._base_url, project, 'commit')
         cw = http._called_with
         _verify_protobuf_call(self, cw, uri)
-        rq_class = datastore_pb2.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'xact')
         self.assertEqual(list(request.mutations), [mutation])
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
-
-
-class TestHTTPDatastoreAPI(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.datastore._http import HTTPDatastoreAPI
-
-        return HTTPDatastoreAPI
-
-    def _make_one(self, *args, **kwargs):
-        return self._get_target_class()(*args, **kwargs)
-
-    def test_constructor(self):
-        client = object()
-        ds_api = self._make_one(client)
-        self.assertIs(ds_api.client, client)
 
     def test_rollback_ok(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2

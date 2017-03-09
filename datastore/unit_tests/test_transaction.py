@@ -29,25 +29,24 @@ class TestTransaction(unittest.TestCase):
         return self._get_target_class()(client, **kw)
 
     def test_ctor_defaults(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-
-        _PROJECT = 'PROJECT'
+        project = 'PROJECT'
         connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        client = _Client(project, connection)
         xact = self._make_one(client)
-        self.assertEqual(xact.project, _PROJECT)
+        self.assertEqual(xact.project, project)
         self.assertIs(xact._client, client)
         self.assertIsNone(xact.id)
         self.assertEqual(xact._status, self._get_target_class()._INITIAL)
-        self.assertIsInstance(xact._commit_request,
-                              datastore_pb2.CommitRequest)
-        self.assertIs(xact.mutations, xact._commit_request.mutations)
+        self.assertEqual(xact._mutations, [])
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        project = 'PROJECT'
+        id_ = 678
+        connection = _Connection(id_)
+        client = _Client(project, connection)
         xact1 = self._make_one(client)
         xact2 = self._make_one(client)
         self.assertIsNone(xact1.current())
@@ -69,36 +68,41 @@ class TestTransaction(unittest.TestCase):
         self.assertIsNone(xact1.current())
         self.assertIsNone(xact2.current())
 
+        client._datastore_api.rollback.assert_not_called()
+        commit_method = client._datastore_api.commit
+        self.assertEqual(commit_method.call_count, 2)
+        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        commit_method.assert_called_with(project, mode, [], transaction=id_)
+
     def test_begin(self):
-        _PROJECT = 'PROJECT'
+        project = 'PROJECT'
         connection = _Connection(234)
-        client = _Client(_PROJECT, connection)
+        client = _Client(project, connection)
         xact = self._make_one(client)
         xact.begin()
         self.assertEqual(xact.id, 234)
-        self.assertEqual(connection._begun, _PROJECT)
+        self.assertEqual(connection._begun, project)
 
     def test_begin_tombstoned(self):
         project = 'PROJECT'
         id_ = 234
         connection = _Connection(id_)
-        ds_api = mock.Mock(spec=['rollback'])
-        client = _Client(project, connection, datastore_api=ds_api)
+        client = _Client(project, connection)
         xact = self._make_one(client)
         xact.begin()
         self.assertEqual(xact.id, id_)
         self.assertEqual(connection._begun, project)
 
         xact.rollback()
-        ds_api.rollback.assert_called_once_with(project, id_)
+        client._datastore_api.rollback.assert_called_once_with(project, id_)
         self.assertIsNone(xact.id)
 
         self.assertRaises(ValueError, xact.begin)
 
     def test_begin_w_begin_transaction_failure(self):
-        _PROJECT = 'PROJECT'
+        project = 'PROJECT'
         connection = _Connection(234)
-        client = _Client(_PROJECT, connection)
+        client = _Client(project, connection)
         xact = self._make_one(client)
 
         connection._side_effect = RuntimeError
@@ -106,61 +110,74 @@ class TestTransaction(unittest.TestCase):
             xact.begin()
 
         self.assertIsNone(xact.id)
-        self.assertEqual(connection._begun, _PROJECT)
+        self.assertEqual(connection._begun, project)
 
     def test_rollback(self):
         project = 'PROJECT'
         id_ = 234
         connection = _Connection(id_)
-        ds_api = mock.Mock(spec=['rollback'])
-        client = _Client(project, connection, datastore_api=ds_api)
+        client = _Client(project, connection)
         xact = self._make_one(client)
         xact.begin()
         xact.rollback()
-        ds_api.rollback.assert_called_once_with(project, id_)
+        client._datastore_api.rollback.assert_called_once_with(project, id_)
         self.assertIsNone(xact.id)
 
     def test_commit_no_partial_keys(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection(234)
-        client = _Client(_PROJECT, connection)
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        project = 'PROJECT'
+        id_ = 234
+        connection = _Connection(id_)
+
+        client = _Client(project, connection)
         xact = self._make_one(client)
-        xact._commit_request = commit_request = object()
         xact.begin()
         xact.commit()
-        self.assertEqual(connection._committed,
-                         (_PROJECT, commit_request, 234))
+
+        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        client._datastore_api.commit.assert_called_once_with(
+            project, mode, [], transaction=id_)
         self.assertIsNone(xact.id)
 
     def test_commit_w_partial_keys(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
         project = 'PROJECT'
         kind = 'KIND'
-        id_ = 123
-        key = _make_key(kind, id_, project)
-        connection = _Connection(234, keys=[key])
-        client = _Client(project, connection)
+        id1 = 123
+        key = _make_key(kind, id1, project)
+        ds_api = _make_datastore_api(key)
+        id2 = 234
+        connection = _Connection(id2)
+        client = _Client(project, connection, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
         entity = _Entity()
         xact.put(entity)
-        xact._commit_request = commit_request = object()
         xact.commit()
-        self.assertEqual(connection._committed,
-                         (project, commit_request, 234))
+
+        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        ds_api.commit.assert_called_once_with(
+            project, mode, xact.mutations, transaction=id2)
         self.assertIsNone(xact.id)
-        self.assertEqual(entity.key.path, [{'kind': kind, 'id': id_}])
+        self.assertEqual(entity.key.path, [{'kind': kind, 'id': id1}])
 
     def test_context_manager_no_raise(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection(234)
-        client = _Client(_PROJECT, connection)
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        project = 'PROJECT'
+        id_ = 234
+        connection = _Connection(id_)
+        client = _Client(project, connection)
         xact = self._make_one(client)
-        xact._commit_request = commit_request = object()
         with xact:
-            self.assertEqual(xact.id, 234)
-            self.assertEqual(connection._begun, _PROJECT)
-        self.assertEqual(connection._committed,
-                         (_PROJECT, commit_request, 234))
+            self.assertEqual(xact.id, id_)
+            self.assertEqual(connection._begun, project)
+
+        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        client._datastore_api.commit.assert_called_once_with(
+            project, mode, [], transaction=id_)
         self.assertIsNone(xact.id)
 
     def test_context_manager_w_raise(self):
@@ -171,8 +188,7 @@ class TestTransaction(unittest.TestCase):
         project = 'PROJECT'
         id_ = 234
         connection = _Connection(id_)
-        ds_api = mock.Mock(spec=['rollback'])
-        client = _Client(project, connection, datastore_api=ds_api)
+        client = _Client(project, connection)
         xact = self._make_one(client)
         xact._mutation = object()
         try:
@@ -182,8 +198,10 @@ class TestTransaction(unittest.TestCase):
                 raise Foo()
         except Foo:
             self.assertIsNone(xact.id)
-            ds_api.rollback.assert_called_once_with(project, id_)
-        self.assertIsNone(connection._committed)
+            client._datastore_api.rollback.assert_called_once_with(
+                project, id_)
+
+        client._datastore_api.commit.assert_not_called()
         self.assertIsNone(xact.id)
 
 
@@ -199,19 +217,11 @@ def _make_key(kind, id_, project):
 
 
 class _Connection(object):
-    _marker = object()
     _begun = None
-    _committed = None
     _side_effect = None
 
-    def __init__(self, xact_id=123, keys=()):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-
+    def __init__(self, xact_id=123):
         self._xact_id = xact_id
-        mutation_results = [
-            datastore_pb2.MutationResult(key=key) for key in keys]
-        self._commit_response_pb = datastore_pb2.CommitResponse(
-            mutation_results=mutation_results)
 
     def begin_transaction(self, project):
         self._begun = project
@@ -220,10 +230,6 @@ class _Connection(object):
                 transaction=self._xact_id, spec=['transaction'])
         else:
             raise self._side_effect
-
-    def commit(self, project, commit_request, transaction_id):
-        self._committed = (project, commit_request, transaction_id)
-        return self._commit_response_pb
 
 
 class _Entity(dict):
@@ -241,6 +247,8 @@ class _Client(object):
                  datastore_api=None, namespace=None):
         self.project = project
         self._connection = connection
+        if datastore_api is None:
+            datastore_api = _make_datastore_api()
         self._datastore_api = datastore_api
         self.namespace = namespace
         self._batches = []
@@ -270,3 +278,17 @@ class _NoCommitBatch(object):
 
     def __exit__(self, *args):
         self._client._pop_batch()
+
+
+def _make_commit_response(*keys):
+    from google.cloud.proto.datastore.v1 import datastore_pb2
+
+    mutation_results = [
+        datastore_pb2.MutationResult(key=key) for key in keys]
+    return datastore_pb2.CommitResponse(mutation_results=mutation_results)
+
+
+def _make_datastore_api(*keys):
+    commit_method = mock.Mock(
+        return_value=_make_commit_response(*keys), spec=[])
+    return mock.Mock(commit=commit_method, spec=['commit', 'rollback'])
