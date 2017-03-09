@@ -77,7 +77,7 @@ class Batch(object):
 
     def __init__(self, client):
         self._client = client
-        self._commit_request = _datastore_pb2.CommitRequest()
+        self._mutations = []
         self._partial_key_entities = []
         self._status = self._INITIAL
 
@@ -110,7 +110,8 @@ class Batch(object):
         :returns: The newly created entity protobuf that will be
                   updated and sent with a commit.
         """
-        new_mutation = self.mutations.add()
+        new_mutation = _datastore_pb2.Mutation()
+        self._mutations.append(new_mutation)
         return new_mutation.insert
 
     def _add_complete_key_entity_pb(self):
@@ -123,7 +124,8 @@ class Batch(object):
         # We use ``upsert`` for entities with completed keys, rather than
         # ``insert`` or ``update``, in order not to create race conditions
         # based on prior existence / removal of the entity.
-        new_mutation = self.mutations.add()
+        new_mutation = _datastore_pb2.Mutation()
+        self._mutations.append(new_mutation)
         return new_mutation.upsert
 
     def _add_delete_key_pb(self):
@@ -133,7 +135,8 @@ class Batch(object):
         :returns: The newly created key protobuf that will be
                   deleted when sent with a commit.
         """
-        new_mutation = self.mutations.add()
+        new_mutation = _datastore_pb2.Mutation()
+        self._mutations.append(new_mutation)
         return new_mutation.delete
 
     @property
@@ -150,7 +153,7 @@ class Batch(object):
         :returns: The list of :class:`.datastore_pb2.Mutation`
                   protobufs to be sent in the commit request.
         """
-        return self._commit_request.mutations
+        return self._mutations
 
     def put(self, entity):
         """Remember an entity's state to be saved during :meth:`commit`.
@@ -237,9 +240,13 @@ class Batch(object):
 
         This is called by :meth:`commit`.
         """
-        # NOTE: ``self._commit_request`` will be modified.
-        commit_response_pb = self._client._connection.commit(
-            self.project, self._commit_request, self._id)
+        if self._id is None:
+            mode = _datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+        else:
+            mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
+
+        commit_response_pb = self._client._datastore_api.commit(
+            self.project, mode, self._mutations, transaction=self._id)
         _, updated_keys = _parse_commit_response(commit_response_pb)
         # If the back-end returns without error, we are guaranteed that
         # :meth:`Connection.commit` will return keys that match (length and
