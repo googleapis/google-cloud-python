@@ -770,7 +770,12 @@ class TestClient(unittest.TestCase):
         incomplete_key._id = None
 
         creds = _make_credentials()
-        client = self._make_one(credentials=creds)
+        client = self._make_one(credentials=creds, use_gax=False)
+        allocated = mock.Mock(
+            keys=[_KeyPB(i) for i in range(num_ids)], spec=['keys'])
+        alloc_ids = mock.Mock(return_value=allocated, spec=[])
+        ds_api = mock.Mock(allocate_ids=alloc_ids, spec=['allocate_ids'])
+        client._datastore_api_internal = ds_api
 
         result = client.allocate_ids(incomplete_key, num_ids)
 
@@ -1015,8 +1020,6 @@ class _MockConnection(object):
         self._lookup = []
         self._commit_cw = []
         self._commit = []
-        self._alloc_cw = []
-        self._alloc = []
 
     def _add_lookup_result(self, results=(), missing=(), deferred=()):
         self._lookup.append((list(results), list(missing), list(deferred)))
@@ -1045,12 +1048,6 @@ class _MockConnection(object):
         mutation_results = [
             datastore_pb2.MutationResult(key=key) for key in keys]
         return datastore_pb2.CommitResponse(mutation_results=mutation_results)
-
-    def allocate_ids(self, project, key_pbs):
-        self._alloc_cw.append((project, key_pbs))
-        num_pbs = len(key_pbs)
-        keys = [_KeyPB(i) for i in list(range(num_pbs))]
-        return mock.Mock(keys=keys, spec=['keys'])
 
 
 class _NoCommitBatch(object):
