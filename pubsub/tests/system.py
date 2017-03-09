@@ -23,11 +23,11 @@ import httplib2
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from google.cloud.pubsub import client
 
-from retry import RetryInstanceState
-from retry import RetryResult
-from retry import RetryErrors
-from system_test_utils import EmulatorCreds
-from system_test_utils import unique_resource_id
+from test_utils.retry import RetryInstanceState
+from test_utils.retry import RetryResult
+from test_utils.retry import RetryErrors
+from test_utils.system import EmulatorCreds
+from test_utils.system import unique_resource_id
 
 
 def _unavailable(exc):
