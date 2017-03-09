@@ -16,6 +16,7 @@
 
 
 import contextlib
+import sys
 
 from google.cloud.gapic.datastore.v1 import datastore_client
 from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
@@ -79,14 +80,16 @@ def _grpc_catch_rendezvous():
         if error_class is None:
             raise
         else:
-            raise error_class(exc.cause.details())
+            new_exc = error_class(exc.cause.details())
+            six.reraise(error_class, new_exc, sys.exc_info()[2])
     except exceptions.GrpcRendezvous as exc:
         error_code = exc.code()
         error_class = _GRPC_ERROR_MAPPING.get(error_code)
         if error_class is None:
             raise
         else:
-            raise error_class(exc.details())
+            new_exc = error_class(exc.details())
+            six.reraise(error_class, new_exc, sys.exc_info()[2])
 
 
 class _DatastoreAPIOverGRPC(object):
