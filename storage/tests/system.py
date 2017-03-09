@@ -24,8 +24,8 @@ from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud.storage._helpers import _base64_md5hash
 
-from system_test_utils import unique_resource_id
-from retry import RetryErrors
+from test_utils.retry import RetryErrors
+from test_utils.system import unique_resource_id
 
 
 HTTP = httplib2.Http()
@@ -120,15 +120,16 @@ class TestStorageBuckets(unittest.TestCase):
 
 class TestStorageFiles(unittest.TestCase):
 
+    DIRNAME = os.path.realpath(os.path.dirname(__file__))
     FILES = {
         'logo': {
-            'path': 'system_tests/data/CloudPlatform_128px_Retina.png',
+            'path': DIRNAME + '/data/CloudPlatform_128px_Retina.png',
         },
         'big': {
-            'path': 'system_tests/data/five-point-one-mb-file.zip',
+            'path': DIRNAME + '/data/five-point-one-mb-file.zip',
         },
         'simple': {
-            'path': 'system_tests/data/simple.txt',
+            'path': DIRNAME + '/data/simple.txt',
         }
     }
 
