@@ -30,7 +30,7 @@ class Transaction(Batch):
     .. testsetup:: txn-put-multi, txn-api
 
        from google.cloud import datastore
-       from datastore import Config  # system tests
+       from tests.system.test_system import Config  # system tests
 
        client = datastore.Client()
        key1 = client.key('_Doctest')
@@ -93,7 +93,7 @@ class Transaction(Batch):
        .. testsetup:: txn-entity-key, txn-entity-key-after, txn-manual
 
           from google.cloud import datastore
-          from datastore import Config  # system tests
+          from tests.system.test_system import Config  # system tests
 
           client = datastore.Client()
 
