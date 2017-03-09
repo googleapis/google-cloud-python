@@ -726,31 +726,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(list(request.mutations), [mutation])
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
-    def test_rollback_ok(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-
-        project = 'PROJECT'
-        transaction = b'xact'
-        rsp_pb = datastore_pb2.RollbackResponse()
-
-        # Create mock HTTP and client with response.
-        http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(
-            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
-
-        # Make request.
-        conn = self._make_one(client)
-        response = conn.rollback(project, transaction)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb)
-        uri = _build_expected_url(conn.api_base_url, project, 'rollback')
-        cw = http._called_with
-        _verify_protobuf_call(self, cw, uri)
-        request = datastore_pb2.RollbackRequest()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, transaction)
-
 
 class TestHTTPDatastoreAPI(unittest.TestCase):
 
@@ -768,6 +743,31 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         ds_api = self._make_one(client)
         self.assertIs(ds_api.client, client)
 
+    def test_rollback_ok(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        project = 'PROJECT'
+        transaction = b'xact'
+        rsp_pb = datastore_pb2.RollbackResponse()
+
+        # Create mock HTTP and client with response.
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
+
+        # Make request.
+        ds_api = self._make_one(client)
+        response = ds_api.rollback(project, transaction)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = _build_expected_url(client._base_url, project, 'rollback')
+        cw = http._called_with
+        _verify_protobuf_call(self, cw, uri)
+        request = datastore_pb2.RollbackRequest()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, transaction)
+
     def test_allocate_ids_empty(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
 
@@ -784,8 +784,8 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         response = ds_api.allocate_ids(project, [])
 
         # Check the result and verify the callers.
-        self.assertEqual(list(response.keys), [])
         self.assertEqual(response, rsp_pb)
+        self.assertEqual(list(response.keys), [])
         uri = _build_expected_url(client._base_url, project, 'allocateIds')
         cw = http._called_with
         _verify_protobuf_call(self, cw, uri)
