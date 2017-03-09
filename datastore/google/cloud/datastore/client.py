@@ -488,7 +488,7 @@ class Client(ClientWithProject):
         .. testsetup:: query-page
 
            from google.cloud import datastore
-           from datastore import Config  # system tests
+           from tests.system.test_system import Config  # system tests
 
            client = datastore.Client()
 
@@ -511,7 +511,7 @@ class Client(ClientWithProject):
            >>> first_page = next(pages)
            >>> first_page_entities = list(first_page)
            >>> query_iter.next_page_token
-           '...'
+           b'...'
 
         :type kwargs: dict
         :param kwargs: Parameters for initializing and instance of
