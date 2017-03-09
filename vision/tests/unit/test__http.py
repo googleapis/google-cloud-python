@@ -147,7 +147,7 @@ class Test_HTTPVisionAPI(unittest.TestCase):
         from google.cloud.vision.feature import FeatureTypes
         from google.cloud.vision.image import Image
         from google.cloud.vision.likelihood import Likelihood
-        from unit_tests._fixtures import MULTIPLE_RESPONSE
+        from tests.unit._fixtures import MULTIPLE_RESPONSE
 
         client = mock.Mock(spec_set=['_connection'])
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
