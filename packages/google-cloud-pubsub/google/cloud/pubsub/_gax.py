@@ -148,7 +148,7 @@ class _PublisherAPI(object):
                 raise NotFound(topic_path)
             raise
 
-    def topic_publish(self, topic_path, messages):
+    def topic_publish(self, topic_path, messages, timeout=30):
         """API call:  publish one or more messages to a topic
 
         See:
@@ -161,12 +161,15 @@ class _PublisherAPI(object):
         :type messages: list of dict
         :param messages: messages to be published.
 
+        :type timeout: int
+        :param timeout: (Optional) Timeout seconds.
+
         :rtype: list of string
         :returns: list of opaque IDs for published messages.
         :raises: :exc:`google.cloud.exceptions.NotFound` if the topic does not
                     exist
         """
-        options = CallOptions(is_bundling=False)
+        options = CallOptions(is_bundling=False, timeout=timeout)
         message_pbs = [_message_pb_from_mapping(message)
                        for message in messages]
         try:
