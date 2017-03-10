@@ -19,3 +19,4 @@ jobs:
             for TARGET in $(circleci tests glob */nox.py | circleci tests split --split-by=timings); do
               nox -f $TARGET
             done
+    working_directory: ~/google-cloud-python/
