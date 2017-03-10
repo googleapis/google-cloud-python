@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run:
           name: Install nox.
-          command: pip install https://github.com/lukesneeringer/nox.git # nox-automation
+          command: pip install https://github.com/lukesneeringer/nox/archive/session-order.zip  # nox-automation >= 0.10.0
       - run:
           name: Run tests for each API.
           command: |
