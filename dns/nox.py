@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 import nox
 
 
@@ -24,12 +26,13 @@ def unit_tests(session, python_version):
     session.interpreter = 'python%s' % python_version
 
     # Install all test dependencies, then install this package in-place.
+    session.chdir(os.path.dirname(__file__))
     session.install('mock', 'pytest', 'pytest-cov', '../core/')
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet',
-        '--cov=google.cloud.datastore', '--cov=tests.unit', '--cov-append',
+        '--cov=google.cloud.dns', '--cov=tests.unit', '--cov-append',
         '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
         'tests/unit',
     )
@@ -43,9 +46,10 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
+    session.chdir(os.path.dirname(__file__))
     session.install('flake8')
     session.install('.')
-    session.run('flake8', 'google/cloud/datastore')
+    session.run('flake8', 'google/cloud/dns')
 
 
 @nox.session
@@ -56,6 +60,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.interpreter = 'python3.6'
+    session.chdir(os.path.dirname(__file__))
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')

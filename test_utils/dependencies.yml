@@ -1,0 +1,27 @@
+---
+# This file maintains a dependency chain for client libraries.
+#
+# Changes to any dependency should ensure that system tests for the
+# downstream library also run.
+#
+# Core is assumed to be a dependency of everything and is not explicitly
+# listed in this file.
+#
+# A library is considered a dependency of another if EITHER:
+#   - It is included as a dependency in setup.py (true dependency).
+#   - It is included as a dependency in nox.py for system tests
+#     (system test dependency).
+bigquery:
+  - storage
+error_reporting:
+  - logging  # true dependency
+language:
+  - storage
+logging:
+  - bigquery
+  - pubsub
+  - storage
+speech:
+  - storage
+vision:
+  - storage

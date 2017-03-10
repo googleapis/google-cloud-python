@@ -1,0 +1,18 @@
+---
+version: 2
+jobs:
+  build:
+    docker:
+      - image: python:3.6
+      - image: python:3.5
+      - image: python:3.4
+      - image: python:2.7
+    parallelism: 4
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install https://github.com/lukesneeringer/nox.git # nox-automation
+      - run:
+          name: Run tests for each API.
+          command: circleci tests glob */nox.py | circleci tests split --split-by=timings
