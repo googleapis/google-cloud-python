@@ -27,8 +27,8 @@ from test_utils.retry import RetryInstanceState
 from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
 
-IS_TRAVIS = os.getenv('TRAVIS') == 'true'
-CREATE_INSTANCE = IS_TRAVIS or os.getenv(
+IS_CIRCLE = os.getenv('CIRCLECI') == 'true'
+CREATE_INSTANCE = IS_CIRCLE or os.getenv(
     'GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE') is not None
 
 if CREATE_INSTANCE:

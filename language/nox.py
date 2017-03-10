@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 import nox
 
 
@@ -24,6 +26,7 @@ def unit_tests(session, python_version):
     session.interpreter = 'python%s' % python_version
 
     # Install all test dependencies, then install this package in-place.
+    session.chdir(os.path.dirname(__file__))
     session.install('mock', 'pytest', 'pytest-cov', '../core/')
     session.install('-e', '.')
 
@@ -40,11 +43,16 @@ def unit_tests(session, python_version):
 def system_tests(session, python_version):
     """Run the system test suite."""
 
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        return
+
     # Run the system tests against latest Python 2 and Python 3 only.
     session.interpreter = 'python%s' % python_version
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
+    session.chdir(os.path.dirname(__file__))
     session.install('mock', 'pytest',
                     '../core/', '../storage/', '../test_utils/')
     session.install('.')
@@ -61,6 +69,7 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
+    session.chdir(os.path.dirname(__file__))
     session.install('flake8')
     session.install('.')
     session.run('flake8', 'google/cloud/language')
@@ -74,6 +83,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.interpreter = 'python3.6'
+    session.chdir(os.path.dirname(__file__))
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
