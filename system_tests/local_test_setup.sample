@@ -1,3 +1,0 @@
-export GOOGLE_APPLICATION_CREDENTIALS="app_credentials.json.sample"
-export GOOGLE_CLOUD_TESTING_REMOTE="upstream"
-export GOOGLE_CLOUD_TESTING_BRANCH="master"
