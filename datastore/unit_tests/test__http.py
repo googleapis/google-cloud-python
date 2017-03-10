@@ -634,34 +634,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.partition_id.namespace_id, namespace)
         self.assertEqual(request.query, q_pb)
 
-    def test_begin_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-
-        project = 'PROJECT'
-        transaction = b'TRANSACTION'
-        rsp_pb = datastore_pb2.BeginTransactionResponse()
-        rsp_pb.transaction = transaction
-
-        # Create mock HTTP and client with response.
-        http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(
-            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
-
-        # Make request.
-        conn = self._make_one(client)
-        response = conn.begin_transaction(project)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb)
-        uri = _build_expected_url(
-            conn.api_base_url, project, 'beginTransaction')
-        cw = http._called_with
-        _verify_protobuf_call(self, cw, uri)
-        request = datastore_pb2.BeginTransactionRequest()
-        request.ParseFromString(cw['body'])
-        # The RPC-over-HTTP request does not set the project in the request.
-        self.assertEqual(request.project_id, u'')
-
 
 class TestHTTPDatastoreAPI(unittest.TestCase):
 
@@ -678,6 +650,34 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         client = object()
         ds_api = self._make_one(client)
         self.assertIs(ds_api.client, client)
+
+    def test_begin_transaction(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        project = 'PROJECT'
+        transaction = b'TRANSACTION'
+        rsp_pb = datastore_pb2.BeginTransactionResponse()
+        rsp_pb.transaction = transaction
+
+        # Create mock HTTP and client with response.
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
+
+        # Make request.
+        ds_api = self._make_one(client)
+        response = ds_api.begin_transaction(project)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = _build_expected_url(
+            client._base_url, project, 'beginTransaction')
+        cw = http._called_with
+        _verify_protobuf_call(self, cw, uri)
+        request = datastore_pb2.BeginTransactionRequest()
+        request.ParseFromString(cw['body'])
+        # The RPC-over-HTTP request does not set the project in the request.
+        self.assertEqual(request.project_id, u'')
 
     def test_commit_wo_transaction(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
