@@ -645,6 +645,7 @@ class TestClient(unittest.TestCase):
         self.assertRaises(ValueError, client.put_multi, Entity())
 
     def test_put_multi_no_batch_w_partial_key(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.helpers import _property_tuples
 
         entity = _Entity(foo=u'bar')
@@ -654,17 +655,23 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         key_pb = _make_key(234)
-        client._connection._commit.append([key_pb])
+        ds_api = _make_datastore_api(key_pb)
+        client._datastore_api_internal = ds_api
 
         result = client.put_multi([entity])
         self.assertIsNone(result)
 
-        self.assertEqual(len(client._connection._commit_cw), 1)
-        (project,
-         commit_req, transaction_id) = client._connection._commit_cw[0]
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(ds_api.commit.call_count, 1)
+        _, positional, keyword = ds_api.commit.mock_calls[0]
+        self.assertEqual(keyword, {'transaction': None})
 
-        mutated_entity = _mutated_pb(self, commit_req.mutations, 'insert')
+        self.assertEqual(len(positional), 3)
+        self.assertEqual(positional[0], self.PROJECT)
+        self.assertEqual(
+            positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
+
+        mutations = positional[2]
+        mutated_entity = _mutated_pb(self, mutations, 'insert')
         self.assertEqual(mutated_entity.key, key.to_protobuf())
 
         prop_list = list(_property_tuples(mutated_entity))
@@ -672,8 +679,6 @@ class TestClient(unittest.TestCase):
         name, value_pb = prop_list[0]
         self.assertEqual(name, 'foo')
         self.assertEqual(value_pb.string_value, u'bar')
-
-        self.assertIsNone(transaction_id)
 
     def test_put_multi_existing_batch_w_completed_key(self):
         from google.cloud.datastore.helpers import _property_tuples
@@ -715,31 +720,43 @@ class TestClient(unittest.TestCase):
     def test_delete_multi_no_keys(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
+        client._datastore_api_internal = _make_datastore_api()
+
         result = client.delete_multi([])
         self.assertIsNone(result)
-        self.assertEqual(len(client._connection._commit_cw), 0)
+        client._datastore_api_internal.commit.assert_not_called()
 
     def test_delete_multi_no_batch(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
         key = _Key(self.PROJECT)
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client._connection._commit.append([])
+        ds_api = _make_datastore_api()
+        client._datastore_api_internal = ds_api
 
         result = client.delete_multi([key])
         self.assertIsNone(result)
-        self.assertEqual(len(client._connection._commit_cw), 1)
-        (project,
-         commit_req, transaction_id) = client._connection._commit_cw[0]
-        self.assertEqual(project, self.PROJECT)
 
-        mutated_key = _mutated_pb(self, commit_req.mutations, 'delete')
+        self.assertEqual(ds_api.commit.call_count, 1)
+        _, positional, keyword = ds_api.commit.mock_calls[0]
+        self.assertEqual(keyword, {'transaction': None})
+
+        self.assertEqual(len(positional), 3)
+        self.assertEqual(positional[0], self.PROJECT)
+        self.assertEqual(
+            positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
+
+        mutations = positional[2]
+        mutated_key = _mutated_pb(self, mutations, 'delete')
         self.assertEqual(mutated_key, key.to_protobuf())
-        self.assertIsNone(transaction_id)
 
     def test_delete_multi_w_existing_batch(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
+        client._datastore_api_internal = _make_datastore_api()
+
         key = _Key(self.PROJECT)
 
         with _NoCommitBatch(client) as CURR_BATCH:
@@ -748,11 +765,13 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(result)
         mutated_key = _mutated_pb(self, CURR_BATCH.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
-        self.assertEqual(len(client._connection._commit_cw), 0)
+        client._datastore_api_internal.commit.assert_not_called()
 
     def test_delete_multi_w_existing_transaction(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
+        client._datastore_api_internal = _make_datastore_api()
+
         key = _Key(self.PROJECT)
 
         with _NoCommitTransaction(client) as CURR_XACT:
@@ -761,7 +780,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(result)
         mutated_key = _mutated_pb(self, CURR_XACT.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
-        self.assertEqual(len(client._connection._commit_cw), 0)
+        client._datastore_api_internal.commit.assert_not_called()
 
     def test_allocate_ids_w_partial_key(self):
         num_ids = 2
@@ -975,8 +994,6 @@ class _MockConnection(object):
         self.http = http
         self._lookup_cw = []
         self._lookup = []
-        self._commit_cw = []
-        self._commit = []
 
     def _add_lookup_result(self, results=(), missing=(), deferred=()):
         self._lookup.append((list(results), list(missing), list(deferred)))
@@ -996,15 +1013,6 @@ class _MockConnection(object):
             missing=entity_results_missing,
             deferred=deferred,
             spec=['found', 'missing', 'deferred'])
-
-    def commit(self, project, commit_request, transaction_id):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-
-        self._commit_cw.append((project, commit_request, transaction_id))
-        keys, self._commit = self._commit[0], self._commit[1:]
-        mutation_results = [
-            datastore_pb2.MutationResult(key=key) for key in keys]
-        return datastore_pb2.CommitResponse(mutation_results=mutation_results)
 
 
 class _NoCommitBatch(object):
@@ -1121,3 +1129,17 @@ def _make_key(id_):
     elem = key.path.add()
     elem.id = id_
     return key
+
+
+def _make_commit_response(*keys):
+    from google.cloud.proto.datastore.v1 import datastore_pb2
+
+    mutation_results = [
+        datastore_pb2.MutationResult(key=key) for key in keys]
+    return datastore_pb2.CommitResponse(mutation_results=mutation_results)
+
+
+def _make_datastore_api(*keys):
+    commit_method = mock.Mock(
+        return_value=_make_commit_response(*keys), spec=[])
+    return mock.Mock(commit=commit_method, spec=['commit'])
