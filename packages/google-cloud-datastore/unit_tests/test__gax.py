@@ -240,20 +240,6 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         exc = GrpcRendezvous(exc_state, None, None, None)
         self._run_query_failure_helper(exc, BadRequest)
 
-    def test_begin_transaction(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api, _ = self._make_one(stub=stub)
-
-        request_pb = mock.Mock(project_id=None, spec=['project_id'])
-        project = 'PROJECT'
-        result = datastore_api.begin_transaction(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(
-            stub.method_calls,
-            [(request_pb, 'BeginTransaction')])
-
 
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
 class TestGAPICDatastoreAPI(unittest.TestCase):
@@ -338,6 +324,3 @@ class _GRPCStub(object):
 
     def RunQuery(self, request_pb):
         return self._method(request_pb, 'RunQuery')
-
-    def BeginTransaction(self, request_pb):
-        return self._method(request_pb, 'BeginTransaction')
