@@ -152,24 +152,6 @@ class _DatastoreAPIOverGRPC(object):
         with _grpc_catch_rendezvous():
             return self._stub.RunQuery(request_pb)
 
-    def begin_transaction(self, project, request_pb):
-        """Perform a ``beginTransaction`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb:
-            :class:`.datastore_pb2.BeginTransactionRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.BeginTransaction(request_pb)
-
 
 class GAPICDatastoreAPI(datastore_client.DatastoreClient):
     """An API object that sends proto-over-gRPC requests.
