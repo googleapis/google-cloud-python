@@ -249,7 +249,7 @@ class Batch(object):
             self.project, mode, self._mutations, transaction=self._id)
         _, updated_keys = _parse_commit_response(commit_response_pb)
         # If the back-end returns without error, we are guaranteed that
-        # :meth:`Connection.commit` will return keys that match (length and
+        # ``commit`` will return keys that match (length and
         # order) directly ``_partial_key_entities``.
         for new_key_pb, entity in zip(updated_keys,
                                       self._partial_key_entities):

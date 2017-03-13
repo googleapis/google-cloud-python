@@ -14,22 +14,13 @@
 
 """Connections to Google Cloud Datastore API servers."""
 
-import os
-
 from google.rpc import status_pb2
 
 from google.cloud import _http as connection_module
-from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud import exceptions
 from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
 
 from google.cloud.datastore import __version__
-try:
-    from google.cloud.datastore._gax import _DatastoreAPIOverGRPC
-    _HAVE_GRPC = True
-except ImportError:  # pragma: NO COVER
-    _DatastoreAPIOverGRPC = None
-    _HAVE_GRPC = False
 
 
 DATASTORE_API_HOST = 'datastore.googleapis.com'
@@ -42,8 +33,6 @@ API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
                     '/{project}:{method}')
 """A template for the URL of a particular API call."""
 
-_DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
-_USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 _CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(__version__)
 
 
@@ -148,110 +137,6 @@ def build_api_url(project, method, base_url):
         project=project, method=method)
 
 
-class _DatastoreAPIOverHttp(object):
-    """Helper mapping datastore API methods.
-
-    Makes requests to send / receive protobuf content over HTTP/1.1.
-
-    Methods make bare API requests without any helpers for constructing
-    the requests or parsing the responses.
-
-    :type connection: :class:`Connection`
-    :param connection: A connection object that contains helpful
-                       information for making requests.
-    """
-
-    def __init__(self, connection):
-        self.connection = connection
-
-    def lookup(self, project, request_pb):
-        """Perform a ``lookup`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.LookupRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.LookupResponse`
-        :returns: The returned protobuf response object.
-        """
-        return _rpc(self.connection.http, project, 'lookup',
-                    self.connection.api_base_url,
-                    request_pb, _datastore_pb2.LookupResponse)
-
-
-class Connection(connection_module.Connection):
-    """A connection to the Google Cloud Datastore via the Protobuf API.
-
-    This class should understand only the basic types (and protobufs)
-    in method arguments, however it should be capable of returning advanced
-    types.
-
-    :type client: :class:`~google.cloud.datastore.client.Client`
-    :param client: The client that owns the current connection.
-    """
-
-    def __init__(self, client):
-        super(Connection, self).__init__(client)
-        self.api_base_url = client._base_url
-        if _USE_GRPC:
-            self._datastore_api = _DatastoreAPIOverGRPC(self)
-        else:
-            self._datastore_api = _DatastoreAPIOverHttp(self)
-
-    def lookup(self, project, key_pbs,
-               eventual=False, transaction_id=None):
-        """Lookup keys from a project in the Cloud Datastore.
-
-        Maps the ``DatastoreService.Lookup`` protobuf RPC.
-
-        This uses mostly protobufs
-        (:class:`.entity_pb2.Key` as input and :class:`.entity_pb2.Entity`
-        as output). It is used under the hood in
-        :meth:`Client.get() <.datastore.client.Client.get>`:
-
-        .. code-block:: python
-
-          >>> from google.cloud import datastore
-          >>> client = datastore.Client(project='project')
-          >>> key = client.key('MyKind', 1234)
-          >>> client.get(key)
-          [<Entity object>]
-
-        Using a :class:`Connection` directly:
-
-        .. code-block:: python
-
-          >>> connection.lookup('project', [key.to_protobuf()])
-          [<Entity protobuf>]
-
-        :type project: str
-        :param project: The project to look up the keys in.
-
-        :type key_pbs: list of
-                       :class:`.entity_pb2.Key`
-        :param key_pbs: The keys to retrieve from the datastore.
-
-        :type eventual: bool
-        :param eventual: If False (the default), request ``STRONG`` read
-                         consistency.  If True, request ``EVENTUAL`` read
-                         consistency.
-
-        :type transaction_id: str
-        :param transaction_id: If passed, make the request in the scope of
-                               the given transaction.  Incompatible with
-                               ``eventual==True``.
-
-        :rtype: :class:`.datastore_pb2.LookupResponse`
-        :returns: The returned protobuf for the lookup request.
-        """
-        lookup_request = _datastore_pb2.LookupRequest(keys=key_pbs)
-        _set_read_options(lookup_request, eventual, transaction_id)
-        return self._datastore_api.lookup(project, lookup_request)
-
-
 class HTTPDatastoreAPI(object):
     """An API object that sends proto-over-HTTP requests.
 
@@ -263,6 +148,34 @@ class HTTPDatastoreAPI(object):
 
     def __init__(self, client):
         self.client = client
+
+    def lookup(self, project, read_options, key_pbs):
+        """Perform a ``lookup`` request.
+
+        :type project: str
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type read_options: :class:`.datastore_pb2.ReadOptions`
+        :param read_options: The options for this lookup. Contains a
+                             either the transaction for the read or
+                             ``STRONG`` or ``EVENTUAL`` read consistency.
+
+        :type key_pbs: list of
+                       :class:`.entity_pb2.Key`
+        :param key_pbs: The keys to retrieve from the datastore.
+
+        :rtype: :class:`.datastore_pb2.LookupResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb = _datastore_pb2.LookupRequest(
+            project_id=project,
+            read_options=read_options,
+            keys=key_pbs,
+        )
+        return _rpc(self.client._http, project, 'lookup',
+                    self.client._base_url,
+                    request_pb, _datastore_pb2.LookupResponse)
 
     def run_query(self, project, partition_id, read_options,
                   query=None, gql_query=None):
@@ -390,21 +303,3 @@ class HTTPDatastoreAPI(object):
         return _rpc(self.client._http, project, 'allocateIds',
                     self.client._base_url,
                     request_pb, _datastore_pb2.AllocateIdsResponse)
-
-
-def _set_read_options(request, eventual, transaction_id):
-    """Validate rules for read options, and assign to the request.
-
-    Helper method for ``lookup()`` and ``run_query``.
-
-    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the
-             ``transaction_id`` is not ``None``.
-    """
-    if eventual and (transaction_id is not None):
-        raise ValueError('eventual must be False when in a transaction')
-
-    opts = request.read_options
-    if eventual:
-        opts.read_consistency = _datastore_pb2.ReadOptions.EVENTUAL
-    elif transaction_id:
-        opts.transaction = transaction_id
