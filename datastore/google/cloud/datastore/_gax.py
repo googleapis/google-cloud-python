@@ -135,23 +135,6 @@ class _DatastoreAPIOverGRPC(object):
         with _grpc_catch_rendezvous():
             return self._stub.Lookup(request_pb)
 
-    def run_query(self, project, request_pb):
-        """Perform a ``runQuery`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.RunQueryRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.RunQueryResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.RunQuery(request_pb)
-
 
 class GAPICDatastoreAPI(datastore_client.DatastoreClient):
     """An API object that sends proto-over-gRPC requests.
