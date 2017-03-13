@@ -16,9 +16,12 @@
 
 
 import contextlib
+import sys
 
 from google.cloud.gapic.datastore.v1 import datastore_client
 from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
+from google.gax.errors import GaxError
+from google.gax.grpc import exc_to_code
 from google.gax.utils import metrics
 from grpc import StatusCode
 import six
@@ -71,13 +74,22 @@ def _grpc_catch_rendezvous():
     """
     try:
         yield
+    except GaxError as exc:
+        error_code = exc_to_code(exc.cause)
+        error_class = _GRPC_ERROR_MAPPING.get(error_code)
+        if error_class is None:
+            raise
+        else:
+            new_exc = error_class(exc.cause.details())
+            six.reraise(error_class, new_exc, sys.exc_info()[2])
     except exceptions.GrpcRendezvous as exc:
         error_code = exc.code()
         error_class = _GRPC_ERROR_MAPPING.get(error_code)
         if error_class is None:
             raise
         else:
-            raise error_class(exc.details())
+            new_exc = error_class(exc.details())
+            six.reraise(error_class, new_exc, sys.exc_info()[2])
 
 
 class _DatastoreAPIOverGRPC(object):
@@ -140,74 +152,38 @@ class _DatastoreAPIOverGRPC(object):
         with _grpc_catch_rendezvous():
             return self._stub.RunQuery(request_pb)
 
-    def begin_transaction(self, project, request_pb):
-        """Perform a ``beginTransaction`` request.
 
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
+class GAPICDatastoreAPI(datastore_client.DatastoreClient):
+    """An API object that sends proto-over-gRPC requests.
 
-        :type request_pb:
-            :class:`.datastore_pb2.BeginTransactionRequest`
-        :param request_pb: The request protobuf object.
+    A light wrapper around the parent class, with exception re-mapping
+    provided (from GaxError to our native errors).
 
-        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.BeginTransaction(request_pb)
+    :type args: tuple
+    :param args: Positional arguments to pass to constructor.
 
-    def commit(self, project, request_pb):
+    :type kwargs: dict
+    :param kwargs: Keyword arguments to pass to constructor.
+    """
+
+    def commit(self, *args, **kwargs):
         """Perform a ``commit`` request.
 
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
+        A light wrapper around the the base method from the parent class.
+        Intended to provide exception re-mapping (from GaxError to our
+        native errors).
 
-        :type request_pb: :class:`.datastore_pb2.CommitRequest`
-        :param request_pb: The request protobuf object.
+        :type args: tuple
+        :param args: Positional arguments to pass to base method.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to pass to base method.
 
         :rtype: :class:`.datastore_pb2.CommitResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb.project_id = project
         with _grpc_catch_rendezvous():
-            return self._stub.Commit(request_pb)
-
-    def rollback(self, project, request_pb):
-        """Perform a ``rollback`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.RollbackRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.RollbackResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.Rollback(request_pb)
-
-    def allocate_ids(self, project, request_pb):
-        """Perform an ``allocateIds`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.AllocateIdsRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.AllocateIds(request_pb)
+            return super(GAPICDatastoreAPI, self).commit(*args, **kwargs)
 
 
 def make_datastore_api(client):
@@ -222,5 +198,5 @@ def make_datastore_api(client):
     channel = make_secure_channel(
         client._credentials, DEFAULT_USER_AGENT,
         datastore_client.DatastoreClient.SERVICE_ADDRESS)
-    return datastore_client.DatastoreClient(
+    return GAPICDatastoreAPI(
         channel=channel, lib_name='gccl', lib_version=__version__)

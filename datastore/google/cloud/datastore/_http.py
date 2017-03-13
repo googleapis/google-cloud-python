@@ -198,41 +198,6 @@ class _DatastoreAPIOverHttp(object):
                     self.connection.api_base_url,
                     request_pb, _datastore_pb2.RunQueryResponse)
 
-    def begin_transaction(self, project, request_pb):
-        """Perform a ``beginTransaction`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb:
-            :class:`.datastore_pb2.BeginTransactionRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
-        :returns: The returned protobuf response object.
-        """
-        return _rpc(self.connection.http, project, 'beginTransaction',
-                    self.connection.api_base_url,
-                    request_pb, _datastore_pb2.BeginTransactionResponse)
-
-    def commit(self, project, request_pb):
-        """Perform a ``commit`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.CommitRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.CommitResponse`
-        :returns: The returned protobuf response object.
-        """
-        return _rpc(self.connection.http, project, 'commit',
-                    self.connection.api_base_url,
-                    request_pb, _datastore_pb2.CommitResponse)
-
 
 class Connection(connection_module.Connection):
     """A connection to the Google Cloud Datastore via the Protobuf API.
@@ -352,51 +317,6 @@ class Connection(connection_module.Connection):
         request.query.CopyFrom(query_pb)
         return self._datastore_api.run_query(project, request)
 
-    def begin_transaction(self, project):
-        """Begin a transaction.
-
-        Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
-
-        :type project: str
-        :param project: The project to which the transaction applies.
-
-        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
-        :returns: The serialized transaction that was begun.
-        """
-        request = _datastore_pb2.BeginTransactionRequest()
-        return self._datastore_api.begin_transaction(project, request)
-
-    def commit(self, project, request, transaction_id):
-        """Commit mutations in context of current transaction (if any).
-
-        Maps the ``DatastoreService.Commit`` protobuf RPC.
-
-        :type project: str
-        :param project: The project to which the transaction applies.
-
-        :type request: :class:`.datastore_pb2.CommitRequest`
-        :param request: The protobuf with the mutations being committed.
-
-        :type transaction_id: str
-        :param transaction_id: (Optional) The transaction ID returned from
-                               :meth:`begin_transaction`.  Non-transactional
-                               batches must pass ``None``.
-
-        .. note::
-
-            This method will mutate ``request`` before using it.
-
-        :rtype: :class:`.datastore_pb2.CommitResponse`
-        :returns: The protobuf response from a commit request.
-        """
-        if transaction_id:
-            request.mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
-            request.transaction = transaction_id
-        else:
-            request.mode = _datastore_pb2.CommitRequest.NON_TRANSACTIONAL
-
-        return self._datastore_api.commit(project, request)
-
 
 class HTTPDatastoreAPI(object):
     """An API object that sends proto-over-HTTP requests.
@@ -409,6 +329,54 @@ class HTTPDatastoreAPI(object):
 
     def __init__(self, client):
         self.client = client
+
+    def begin_transaction(self, project):
+        """Perform a ``beginTransaction`` request.
+
+        :type project: str
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb = _datastore_pb2.BeginTransactionRequest()
+        return _rpc(self.client._http, project, 'beginTransaction',
+                    self.client._base_url,
+                    request_pb, _datastore_pb2.BeginTransactionResponse)
+
+    def commit(self, project, mode, mutations, transaction=None):
+        """Perform a ``commit`` request.
+
+        :type project: str
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type mode: :class:`.gapic.datastore.v1.enums.CommitRequest.Mode`
+        :param mode: The type of commit to perform. Expected to be one of
+                     ``TRANSACTIONAL`` or ``NON_TRANSACTIONAL``.
+
+        :type mutations: list
+        :param mutations: List of :class:`.datastore_pb2.Mutation`, the
+                          mutations to perform.
+
+        :type transaction: bytes
+        :param transaction: (Optional) The transaction ID returned from
+                            :meth:`begin_transaction`.  Non-transactional
+                            commits must pass :data:`None`.
+
+        :rtype: :class:`.datastore_pb2.CommitResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb = _datastore_pb2.CommitRequest(
+            project_id=project,
+            mode=mode,
+            transaction=transaction,
+            mutations=mutations,
+        )
+        return _rpc(self.client._http, project, 'commit',
+                    self.client._base_url,
+                    request_pb, _datastore_pb2.CommitResponse)
 
     def rollback(self, project, transaction_id):
         """Perform a ``rollback`` request.

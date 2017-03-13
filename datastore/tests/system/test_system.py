@@ -43,12 +43,10 @@ class Config(object):
 
 
 def clone_client(client):
-    # Fool the Client constructor to avoid creating a new connection.
-    cloned_client = datastore.Client(project=client.project,
-                                     namespace=client.namespace,
-                                     http=object())
-    cloned_client._connection = client._connection
-    return cloned_client
+    return datastore.Client(project=client.project,
+                            namespace=client.namespace,
+                            credentials=client._credentials,
+                            http=client._http)
 
 
 def setUpModule():

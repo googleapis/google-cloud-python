@@ -34,6 +34,14 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
         else:
             raise exc
 
+    @staticmethod
+    def _make_rendezvous(status_code, details):
+        from grpc._channel import _RPCState
+        from google.cloud.exceptions import GrpcRendezvous
+
+        exc_state = _RPCState((), None, None, status_code, details)
+        return GrpcRendezvous(exc_state, None, None, None)
+
     def test_success(self):
         expected = object()
         with self._call_fut():
@@ -42,39 +50,30 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
 
     def test_failure_aborted(self):
         from grpc import StatusCode
-        from grpc._channel import _RPCState
         from google.cloud.exceptions import Conflict
-        from google.cloud.exceptions import GrpcRendezvous
 
         details = 'Bad things.'
-        exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
-        exc = GrpcRendezvous(exc_state, None, None, None)
+        exc = self._make_rendezvous(StatusCode.ABORTED, details)
         with self.assertRaises(Conflict):
             with self._call_fut():
                 self._fake_method(exc)
 
     def test_failure_invalid_argument(self):
         from grpc import StatusCode
-        from grpc._channel import _RPCState
         from google.cloud.exceptions import BadRequest
-        from google.cloud.exceptions import GrpcRendezvous
 
         details = ('Cannot have inequality filters on multiple '
                    'properties: [created, priority]')
-        exc_state = _RPCState((), None, None,
-                              StatusCode.INVALID_ARGUMENT, details)
-        exc = GrpcRendezvous(exc_state, None, None, None)
+        exc = self._make_rendezvous(StatusCode.INVALID_ARGUMENT, details)
         with self.assertRaises(BadRequest):
             with self._call_fut():
                 self._fake_method(exc)
 
     def test_failure_cancelled(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
         from google.cloud.exceptions import GrpcRendezvous
+        from grpc import StatusCode
 
-        exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
-        exc = GrpcRendezvous(exc_state, None, None, None)
+        exc = self._make_rendezvous(StatusCode.CANCELLED, None)
         with self.assertRaises(GrpcRendezvous):
             with self._call_fut():
                 self._fake_method(exc)
@@ -82,6 +81,33 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
     def test_commit_failure_non_grpc_err(self):
         exc = RuntimeError('Not a gRPC error')
         with self.assertRaises(RuntimeError):
+            with self._call_fut():
+                self._fake_method(exc)
+
+    def test_gax_error(self):
+        from google.gax.errors import GaxError
+        from grpc import StatusCode
+        from google.cloud.exceptions import Forbidden
+
+        # First, create low-level GrpcRendezvous exception.
+        details = 'Some error details.'
+        cause = self._make_rendezvous(StatusCode.PERMISSION_DENIED, details)
+        # Then put it into a high-level GaxError.
+        msg = 'GAX Error content.'
+        exc = GaxError(msg, cause=cause)
+
+        with self.assertRaises(Forbidden):
+            with self._call_fut():
+                self._fake_method(exc)
+
+    def test_gax_error_not_mapped(self):
+        from google.gax.errors import GaxError
+        from grpc import StatusCode
+
+        cause = self._make_rendezvous(StatusCode.CANCELLED, None)
+        exc = GaxError(None, cause=cause)
+
+        with self.assertRaises(GaxError):
             with self._call_fut():
                 self._fake_method(exc)
 
@@ -214,59 +240,38 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         exc = GrpcRendezvous(exc_state, None, None, None)
         self._run_query_failure_helper(exc, BadRequest)
 
-    def test_begin_transaction(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api, _ = self._make_one(stub=stub)
 
-        request_pb = mock.Mock(project_id=None, spec=['project_id'])
-        project = 'PROJECT'
-        result = datastore_api.begin_transaction(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(
-            stub.method_calls,
-            [(request_pb, 'BeginTransaction')])
+@unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+class TestGAPICDatastoreAPI(unittest.TestCase):
 
-    def test_commit_success(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api, _ = self._make_one(stub=stub)
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.datastore._gax import GAPICDatastoreAPI
 
-        request_pb = mock.Mock(project_id=None, spec=['project_id'])
-        project = 'PROJECT'
-        result = datastore_api.commit(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Commit')])
+        return GAPICDatastoreAPI
 
-    def test_rollback(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api, _ = self._make_one(stub=stub)
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
 
-        request_pb = mock.Mock(project_id=None, spec=['project_id'])
-        project = 'PROJECT'
-        result = datastore_api.rollback(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Rollback')])
+    def test_commit(self):
+        from google.cloud.gapic.datastore.v1 import datastore_client
 
-    def test_allocate_ids(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api, _ = self._make_one(stub=stub)
+        patch1 = mock.patch.object(
+            datastore_client.DatastoreClient, '__init__',
+            return_value=None)
+        patch2 = mock.patch.object(datastore_client.DatastoreClient, 'commit')
+        patch3 = mock.patch(
+            'google.cloud.datastore._gax._grpc_catch_rendezvous')
 
-        request_pb = mock.Mock(project_id=None, spec=['project_id'])
-        project = 'PROJECT'
-        result = datastore_api.allocate_ids(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(
-            stub.method_calls,
-            [(request_pb, 'AllocateIds')])
+        with patch1 as mock_constructor:
+            ds_api = self._make_one()
+            mock_constructor.assert_called_once_with()
+            with patch2 as mock_commit:
+                with patch3 as mock_catch_rendezvous:
+                    mock_catch_rendezvous.assert_not_called()
+                    ds_api.commit(1, 2, a=3)
+                    mock_commit.assert_called_once_with(1, 2, a=3)
+                    mock_catch_rendezvous.assert_called_once_with()
 
 
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
@@ -278,12 +283,12 @@ class Test_make_datastore_api(unittest.TestCase):
         return make_datastore_api(client)
 
     @mock.patch(
-        'google.cloud.gapic.datastore.v1.datastore_client.DatastoreClient',
-        SERVICE_ADDRESS='datastore.mock.mock',
+        'google.cloud.datastore._gax.GAPICDatastoreAPI',
         return_value=mock.sentinel.ds_client)
     @mock.patch('google.cloud.datastore._gax.make_secure_channel',
                 return_value=mock.sentinel.channel)
     def test_it(self, make_chan, mock_klass):
+        from google.cloud.gapic.datastore.v1 import datastore_client
         from google.cloud._http import DEFAULT_USER_AGENT
         from google.cloud.datastore import __version__
 
@@ -294,7 +299,7 @@ class Test_make_datastore_api(unittest.TestCase):
 
         make_chan.assert_called_once_with(
             mock.sentinel.credentials, DEFAULT_USER_AGENT,
-            mock_klass.SERVICE_ADDRESS)
+            datastore_client.DatastoreClient.SERVICE_ADDRESS)
         mock_klass.assert_called_once_with(
             channel=mock.sentinel.channel, lib_name='gccl',
             lib_version=__version__)
@@ -319,15 +324,3 @@ class _GRPCStub(object):
 
     def RunQuery(self, request_pb):
         return self._method(request_pb, 'RunQuery')
-
-    def BeginTransaction(self, request_pb):
-        return self._method(request_pb, 'BeginTransaction')
-
-    def Commit(self, request_pb):
-        return self._method(request_pb, 'Commit')
-
-    def Rollback(self, request_pb):
-        return self._method(request_pb, 'Rollback')
-
-    def AllocateIds(self, request_pb):
-        return self._method(request_pb, 'AllocateIds')
