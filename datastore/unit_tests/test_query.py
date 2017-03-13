@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestQuery(unittest.TestCase):
 
@@ -28,10 +30,8 @@ class TestQuery(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def _make_client(self, connection=None):
-        if connection is None:
-            connection = _Connection()
-        return _Client(self._PROJECT, connection)
+    def _make_client(self):
+        return _Client(self._PROJECT)
 
     def test_ctor_defaults(self):
         client = self._make_client()
@@ -319,8 +319,7 @@ class TestQuery(unittest.TestCase):
     def test_fetch_defaults_w_client_attr(self):
         from google.cloud.datastore.query import Iterator
 
-        connection = _Connection()
-        client = self._make_client(connection)
+        client = self._make_client()
         query = self._make_one(client)
         iterator = query.fetch()
 
@@ -333,9 +332,8 @@ class TestQuery(unittest.TestCase):
     def test_fetch_w_explicit_client(self):
         from google.cloud.datastore.query import Iterator
 
-        connection = _Connection()
-        client = self._make_client(connection)
-        other_client = self._make_client(connection)
+        client = self._make_client()
+        other_client = self._make_client()
         query = self._make_one(client)
         iterator = query.fetch(limit=7, offset=8, client=other_client)
         self.assertIsInstance(iterator, Iterator)
@@ -400,7 +398,7 @@ class TestIterator(unittest.TestCase):
         from google.cloud.proto.datastore.v1 import query_pb2
         from google.cloud.datastore.query import Query
 
-        client = _Client(None, None)
+        client = _Client(None)
         query = Query(client)
         iterator = self._make_one(query, client)
 
@@ -412,7 +410,7 @@ class TestIterator(unittest.TestCase):
         from google.cloud.proto.datastore.v1 import query_pb2
         from google.cloud.datastore.query import Query
 
-        client = _Client(None, None)
+        client = _Client(None)
         query = Query(client)
         limit = 15
         offset = 9
@@ -489,17 +487,24 @@ class TestIterator(unittest.TestCase):
         with self.assertRaises(ValueError):
             iterator._process_query_results(response_pb)
 
-    def test__next_page(self):
+    def _next_page_helper(self, txn_id=None):
         from google.cloud.iterator import Page
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
         from google.cloud.proto.datastore.v1 import query_pb2
         from google.cloud.datastore.query import Query
 
-        connection = _Connection()
         more_enum = query_pb2.QueryResultBatch.NOT_FINISHED
         result = _make_query_response([], b'', more_enum, 0)
-        connection._results = [result]
         project = 'prujekt'
-        client = _Client(project, connection)
+        ds_api = _make_datastore_api(result)
+        if txn_id is None:
+            client = _Client(project, datastore_api=ds_api)
+        else:
+            transaction = mock.Mock(id=txn_id, spec=['id'])
+            client = _Client(
+                project, datastore_api=ds_api, transaction=transaction)
+
         query = Query(client)
         iterator = self._make_one(query, client)
 
@@ -507,25 +512,34 @@ class TestIterator(unittest.TestCase):
         self.assertIsInstance(page, Page)
         self.assertIs(page._parent, iterator)
 
-        self.assertEqual(connection._called_with, [{
-            'query_pb': query_pb2.Query(),
-            'project': project,
-            'namespace': None,
-            'transaction_id': None,
-        }])
+        partition_id = entity_pb2.PartitionId(project_id=project)
+        if txn_id is None:
+            read_options = datastore_pb2.ReadOptions()
+        else:
+            read_options = datastore_pb2.ReadOptions(transaction=txn_id)
+        empty_query = query_pb2.Query()
+        ds_api.run_query.assert_called_once_with(
+            project, partition_id, read_options, query=empty_query)
+
+    def test__next_page(self):
+        self._next_page_helper()
+
+    def test__next_page_in_transaction(self):
+        txn_id = b'1xo1md\xe2\x98\x83'
+        self._next_page_helper(txn_id)
 
     def test__next_page_no_more(self):
         from google.cloud.datastore.query import Query
 
-        connection = _Connection()
-        client = _Client(None, connection)
+        ds_api = _make_datastore_api()
+        client = _Client(None, datastore_api=ds_api)
         query = Query(client)
         iterator = self._make_one(query, client)
         iterator._more_results = False
 
         page = iterator._next_page()
         self.assertIsNone(page)
-        self.assertEqual(connection._called_with, [])
+        ds_api.run_query.assert_not_called()
 
 
 class Test__item_to_entity(unittest.TestCase):
@@ -674,32 +688,18 @@ class _Query(object):
         self.distinct_on = distinct_on
 
 
-class _Connection(object):
-
-    _called_with = None
-    _cursor = b'\x00'
-    _skipped = 0
-
-    def __init__(self):
-        self._results = []
-        self._called_with = []
-
-    def run_query(self, **kw):
-        self._called_with.append(kw)
-        result, self._results = self._results[0], self._results[1:]
-        return result
-
-
 class _Client(object):
 
-    def __init__(self, project, connection, namespace=None):
+    def __init__(self, project, datastore_api=None, namespace=None,
+                 transaction=None):
         self.project = project
-        self._connection = connection
+        self._datastore_api = datastore_api
         self.namespace = namespace
+        self._transaction = transaction
 
     @property
     def current_transaction(self):
-        pass
+        return self._transaction
 
 
 def _make_entity(kind, id_, project):
@@ -729,3 +729,8 @@ def _make_query_response(
             ],
         ),
     )
+
+
+def _make_datastore_api(result=None):
+    run_query = mock.Mock(return_value=result, spec=[])
+    return mock.Mock(run_query=run_query, spec=['run_query'])

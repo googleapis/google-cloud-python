@@ -161,13 +161,6 @@ class TestConnection(unittest.TestCase):
 
         return Connection
 
-    def _make_query_pb(self, kind):
-        from google.cloud.proto.datastore.v1 import query_pb2
-
-        pb = query_pb2.Query()
-        pb.kind.add().name = kind
-        return pb
-
     def _make_one(self, client, use_grpc=False):
         with mock.patch('google.cloud.datastore._http._USE_GRPC',
                         new=use_grpc):
@@ -279,14 +272,14 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, b'')
 
     def test_lookup_single_key_empty_response_w_eventual_and_transaction(self):
-        PROJECT = 'PROJECT'
-        TRANSACTION = b'TRANSACTION'
-        key_pb = _make_key_pb(PROJECT)
+        project = 'PROJECT'
+        transaction = b'TRANSACTION'
+        key_pb = _make_key_pb(project)
 
         client = mock.Mock(spec=['_base_url'])
         conn = self._make_one(client)
-        self.assertRaises(ValueError, conn.lookup, PROJECT, key_pb,
-                          eventual=True, transaction_id=TRANSACTION)
+        self.assertRaises(ValueError, conn.lookup, project, [key_pb],
+                          eventual=True, transaction_id=transaction)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
@@ -472,168 +465,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb1, keys[0])
         self.assertEqual(key_pb2, keys[1])
 
-    def test_run_query_w_eventual_no_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
-
-        project = 'PROJECT'
-        kind = 'Nonesuch'
-        cursor = b'\x00'
-        q_pb = self._make_query_pb(kind)
-        rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.end_cursor = cursor
-        no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
-        rsp_pb.batch.more_results = no_more
-        rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-
-        # Create mock HTTP and client with response.
-        http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(
-            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
-
-        # Make request.
-        conn = self._make_one(client)
-        response = conn.run_query(project, q_pb, eventual=True)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb)
-        uri = _build_expected_url(conn.api_base_url, project, 'runQuery')
-        cw = http._called_with
-        _verify_protobuf_call(self, cw, uri)
-        request = datastore_pb2.RunQueryRequest()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace_id, '')
-        self.assertEqual(request.query, q_pb)
-        self.assertEqual(request.read_options.read_consistency,
-                         datastore_pb2.ReadOptions.EVENTUAL)
-        self.assertEqual(request.read_options.transaction, b'')
-
-    def test_run_query_wo_eventual_w_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
-
-        project = 'PROJECT'
-        kind = 'Nonesuch'
-        cursor = b'\x00'
-        transaction = b'TRANSACTION'
-        q_pb = self._make_query_pb(kind)
-        rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.end_cursor = cursor
-        no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
-        rsp_pb.batch.more_results = no_more
-        rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-
-        # Create mock HTTP and client with response.
-        http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(
-            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
-
-        # Make request.
-        conn = self._make_one(client)
-        response = conn.run_query(
-            project, q_pb, transaction_id=transaction)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb)
-        uri = _build_expected_url(conn.api_base_url, project, 'runQuery')
-        cw = http._called_with
-        _verify_protobuf_call(self, cw, uri)
-        request = datastore_pb2.RunQueryRequest()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace_id, '')
-        self.assertEqual(request.query, q_pb)
-        self.assertEqual(
-            request.read_options.read_consistency,
-            datastore_pb2.ReadOptions.READ_CONSISTENCY_UNSPECIFIED)
-        self.assertEqual(request.read_options.transaction, transaction)
-
-    def test_run_query_w_eventual_and_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
-
-        PROJECT = 'PROJECT'
-        KIND = 'Nonesuch'
-        CURSOR = b'\x00'
-        TRANSACTION = b'TRANSACTION'
-        q_pb = self._make_query_pb(KIND)
-        rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.end_cursor = CURSOR
-        no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
-        rsp_pb.batch.more_results = no_more
-        rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-
-        client = mock.Mock(spec=['_base_url'])
-        conn = self._make_one(client)
-        self.assertRaises(ValueError, conn.run_query, PROJECT, q_pb,
-                          eventual=True, transaction_id=TRANSACTION)
-
-    def test_run_query_wo_namespace_empty_result(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
-
-        project = 'PROJECT'
-        kind = 'Nonesuch'
-        cursor = b'\x00'
-        q_pb = self._make_query_pb(kind)
-        rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.end_cursor = cursor
-        no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
-        rsp_pb.batch.more_results = no_more
-        rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-
-        # Create mock HTTP and client with response.
-        http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(
-            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
-
-        # Make request.
-        conn = self._make_one(client)
-        response = conn.run_query(project, q_pb)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb)
-        uri = _build_expected_url(conn.api_base_url, project, 'runQuery')
-        cw = http._called_with
-        _verify_protobuf_call(self, cw, uri)
-        request = datastore_pb2.RunQueryRequest()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace_id, '')
-        self.assertEqual(request.query, q_pb)
-
-    def test_run_query_w_namespace_nonempty_result(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import entity_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
-
-        project = 'PROJECT'
-        kind = 'Kind'
-        entity = entity_pb2.Entity()
-        q_pb = self._make_query_pb(kind)
-        rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.entity_results.add(entity=entity)
-        rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        rsp_pb.batch.more_results = query_pb2.QueryResultBatch.NO_MORE_RESULTS
-
-        # Create mock HTTP and client with response.
-        http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        client = mock.Mock(
-            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
-
-        # Make request.
-        conn = self._make_one(client)
-        namespace = 'NS'
-        response = conn.run_query(project, q_pb, namespace=namespace)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb)
-        cw = http._called_with
-        uri = _build_expected_url(conn.api_base_url, project, 'runQuery')
-        _verify_protobuf_call(self, cw, uri)
-        request = datastore_pb2.RunQueryRequest()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace_id, namespace)
-        self.assertEqual(request.query, q_pb)
-
 
 class TestHTTPDatastoreAPI(unittest.TestCase):
 
@@ -646,10 +477,182 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @staticmethod
+    def _make_query_pb(kind):
+        from google.cloud.proto.datastore.v1 import query_pb2
+
+        return query_pb2.Query(
+            kind=[query_pb2.KindExpression(name=kind)],
+        )
+
     def test_constructor(self):
         client = object()
         ds_api = self._make_one(client)
         self.assertIs(ds_api.client, client)
+
+    def test_run_query_w_eventual_no_transaction(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
+
+        project = 'PROJECT'
+        kind = 'Nonesuch'
+        cursor = b'\x00'
+        query_pb = self._make_query_pb(kind)
+        partition_id = entity_pb2.PartitionId(project_id=project)
+        read_options = datastore_pb2.ReadOptions(
+            read_consistency=datastore_pb2.ReadOptions.EVENTUAL)
+        rsp_pb = datastore_pb2.RunQueryResponse(
+            batch=query_pb2.QueryResultBatch(
+                entity_result_type=query_pb2.EntityResult.FULL,
+                end_cursor=cursor,
+                more_results=query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+            )
+        )
+
+        # Create mock HTTP and client with response.
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
+
+        # Make request.
+        ds_api = self._make_one(client)
+        response = ds_api.run_query(
+            project, partition_id, read_options, query=query_pb)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = _build_expected_url(client._base_url, project, 'runQuery')
+        cw = http._called_with
+        _verify_protobuf_call(self, cw, uri)
+        request = datastore_pb2.RunQueryRequest()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.partition_id, partition_id)
+        self.assertEqual(request.query, query_pb)
+        self.assertEqual(request.read_options, read_options)
+
+    def test_run_query_wo_eventual_w_transaction(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
+
+        project = 'PROJECT'
+        kind = 'Nonesuch'
+        cursor = b'\x00'
+        transaction = b'TRANSACTION'
+        query_pb = self._make_query_pb(kind)
+        partition_id = entity_pb2.PartitionId(project_id=project)
+        read_options = datastore_pb2.ReadOptions(transaction=transaction)
+        rsp_pb = datastore_pb2.RunQueryResponse(
+            batch=query_pb2.QueryResultBatch(
+                entity_result_type=query_pb2.EntityResult.FULL,
+                end_cursor=cursor,
+                more_results=query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+            )
+        )
+
+        # Create mock HTTP and client with response.
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
+
+        # Make request.
+        ds_api = self._make_one(client)
+        response = ds_api.run_query(
+            project, partition_id, read_options, query=query_pb)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = _build_expected_url(client._base_url, project, 'runQuery')
+        cw = http._called_with
+        _verify_protobuf_call(self, cw, uri)
+        request = datastore_pb2.RunQueryRequest()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.partition_id, partition_id)
+        self.assertEqual(request.query, query_pb)
+        self.assertEqual(request.read_options, read_options)
+
+    def test_run_query_wo_namespace_empty_result(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
+
+        project = 'PROJECT'
+        kind = 'Nonesuch'
+        cursor = b'\x00'
+        query_pb = self._make_query_pb(kind)
+        partition_id = entity_pb2.PartitionId(project_id=project)
+        read_options = datastore_pb2.ReadOptions()
+        rsp_pb = datastore_pb2.RunQueryResponse(
+            batch=query_pb2.QueryResultBatch(
+                entity_result_type=query_pb2.EntityResult.FULL,
+                end_cursor=cursor,
+                more_results=query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+            )
+        )
+
+        # Create mock HTTP and client with response.
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
+
+        # Make request.
+        ds_api = self._make_one(client)
+        response = ds_api.run_query(
+            project, partition_id, read_options, query=query_pb)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        uri = _build_expected_url(client._base_url, project, 'runQuery')
+        cw = http._called_with
+        _verify_protobuf_call(self, cw, uri)
+        request = datastore_pb2.RunQueryRequest()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.partition_id, partition_id)
+        self.assertEqual(request.query, query_pb)
+        self.assertEqual(request.read_options, read_options)
+
+    def test_run_query_w_namespace_nonempty_result(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import query_pb2
+
+        project = 'PROJECT'
+        kind = 'Kind'
+        namespace = 'NS'
+        query_pb = self._make_query_pb(kind)
+        partition_id = entity_pb2.PartitionId(
+            project_id=project, namespace_id=namespace)
+        read_options = datastore_pb2.ReadOptions()
+        rsp_pb = datastore_pb2.RunQueryResponse(
+            batch=query_pb2.QueryResultBatch(
+                entity_result_type=query_pb2.EntityResult.FULL,
+                entity_results=[
+                    query_pb2.EntityResult(entity=entity_pb2.Entity()),
+                ],
+                more_results=query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+            )
+        )
+
+        # Create mock HTTP and client with response.
+        http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        client = mock.Mock(
+            _http=http, _base_url='test.invalid', spec=['_http', '_base_url'])
+
+        # Make request.
+        ds_api = self._make_one(client)
+        response = ds_api.run_query(
+            project, partition_id, read_options, query=query_pb)
+
+        # Check the result and verify the callers.
+        self.assertEqual(response, rsp_pb)
+        cw = http._called_with
+        uri = _build_expected_url(client._base_url, project, 'runQuery')
+        _verify_protobuf_call(self, cw, uri)
+        request = datastore_pb2.RunQueryRequest()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.partition_id, partition_id)
+        self.assertEqual(request.query, query_pb)
 
     def test_begin_transaction(self):
         from google.cloud.proto.datastore.v1 import datastore_pb2
