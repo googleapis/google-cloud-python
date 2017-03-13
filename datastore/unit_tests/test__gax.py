@@ -200,46 +200,6 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertEqual(stub.method_calls,
                          [(request_pb, 'Lookup')])
 
-    def test_run_query(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api, _ = self._make_one(stub=stub)
-
-        request_pb = mock.Mock(project_id=None, spec=['project_id'])
-        project = 'PROJECT'
-        result = datastore_api.run_query(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'RunQuery')])
-
-    def _run_query_failure_helper(self, exc, err_class):
-        stub = _GRPCStub(side_effect=exc)
-        datastore_api, _ = self._make_one(stub=stub)
-
-        request_pb = mock.Mock(project_id=None, spec=['project_id'])
-        project = 'PROJECT'
-        with self.assertRaises(err_class):
-            datastore_api.run_query(project, request_pb)
-
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'RunQuery')])
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_run_query_invalid_argument(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import BadRequest
-        from google.cloud.exceptions import GrpcRendezvous
-
-        details = ('Cannot have inequality filters on multiple '
-                   'properties: [created, priority]')
-        exc_state = _RPCState((), None, None,
-                              StatusCode.INVALID_ARGUMENT, details)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        self._run_query_failure_helper(exc, BadRequest)
-
 
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
 class TestGAPICDatastoreAPI(unittest.TestCase):
@@ -307,20 +267,13 @@ class Test_make_datastore_api(unittest.TestCase):
 
 class _GRPCStub(object):
 
-    def __init__(self, return_val=None, side_effect=Exception):
+    def __init__(self, return_val=None):
         self.return_val = return_val
-        self.side_effect = side_effect
         self.method_calls = []
 
     def _method(self, request_pb, name):
         self.method_calls.append((request_pb, name))
-        if self.side_effect is Exception:
-            return self.return_val
-        else:
-            raise self.side_effect
+        return self.return_val
 
     def Lookup(self, request_pb):
         return self._method(request_pb, 'Lookup')
-
-    def RunQuery(self, request_pb):
-        return self._method(request_pb, 'RunQuery')
