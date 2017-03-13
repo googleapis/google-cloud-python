@@ -14,11 +14,14 @@ jobs:
           command: apt-get install -y git python3.4 python3.5 python3.6
       - run:
           name: Install nox.
-          command: pip install https://github.com/lukesneeringer/nox/archive/session-order.zip  # nox-automation >= 0.10.0
+          command: pip install nox-automation>=0.10.0
       - checkout
       - run:
           name: Decrypt credentials.
-          command: openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" -in /home/ubuntu/gcp/test_utils/credentials.json.enc -out /home/ubuntu/credentials.json
+          command: |
+            if [ -z "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+              openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" -in /home/ubuntu/gcp/test_utils/credentials.json.enc -out "$GOOGLE_APPLICATION_CREDENTIALS"
+            fi
       - run:
           name: Run tests for each API.
           command: |
