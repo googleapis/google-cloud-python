@@ -16,7 +16,7 @@ import unittest
 
 import mock
 
-from google.cloud.datastore._http import _HAVE_GRPC
+from google.cloud.datastore.client import _HAVE_GRPC
 
 
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
@@ -112,95 +112,6 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
                 self._fake_method(exc)
 
 
-class Test_DatastoreAPIOverGRPC(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.datastore._gax import _DatastoreAPIOverGRPC
-
-        return _DatastoreAPIOverGRPC
-
-    def _make_one(self, stub, connection=None, secure=True):
-        if secure:
-            patch = mock.patch(
-                'google.cloud.datastore._gax.make_secure_stub',
-                return_value=stub)
-            base_url = 'https://test.invalid'
-        else:
-            patch = mock.patch(
-                'google.cloud.datastore._gax.make_insecure_stub',
-                return_value=stub)
-            base_url = 'http://test.invalid'
-
-        if connection is None:
-            connection = mock.Mock(
-                credentials=object(),
-                api_base_url=base_url,
-                spec=['credentials', 'api_base_url'],
-            )
-
-        with patch as make_stub_mock:
-            api_obj = self._get_target_class()(connection)
-            return api_obj, make_stub_mock
-
-    def test_constructor(self):
-        from google.cloud._http import DEFAULT_USER_AGENT
-        import google.cloud.datastore._gax as MUT
-
-        host = 'test.invalid'
-        conn = mock.Mock(
-            credentials=object(),
-            api_base_url='https://' + host,
-            spec=['credentials', 'api_base_url'],
-        )
-
-        stub = _GRPCStub()
-        datastore_api, make_stub_mock = self._make_one(
-            stub, connection=conn)
-
-        self.assertIs(datastore_api._stub, stub)
-        make_stub_mock.assert_called_once_with(
-            conn.credentials,
-            DEFAULT_USER_AGENT,
-            MUT.datastore_pb2_grpc.DatastoreStub,
-            host,
-            extra_options=MUT._GRPC_EXTRA_OPTIONS,
-        )
-
-    def test_constructor_insecure(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
-
-        host = 'test.invalid'
-        conn = mock.Mock(
-            credentials=object(),
-            api_base_url='http://' + host,
-            spec=['credentials', 'api_base_url'],
-        )
-
-        stub = _GRPCStub()
-        datastore_api, make_stub_mock = self._make_one(
-            stub, connection=conn, secure=False)
-
-        self.assertIs(datastore_api._stub, stub)
-        make_stub_mock.assert_called_once_with(
-            datastore_pb2_grpc.DatastoreStub,
-            host,
-        )
-
-    def test_lookup(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api, _ = self._make_one(stub=stub)
-
-        request_pb = mock.Mock(project_id=None, spec=['project_id'])
-        project = 'PROJECT'
-        result = datastore_api.lookup(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Lookup')])
-
-
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
 class TestGAPICDatastoreAPI(unittest.TestCase):
 
@@ -263,17 +174,3 @@ class Test_make_datastore_api(unittest.TestCase):
         mock_klass.assert_called_once_with(
             channel=mock.sentinel.channel, lib_name='gccl',
             lib_version=__version__)
-
-
-class _GRPCStub(object):
-
-    def __init__(self, return_val=None):
-        self.return_val = return_val
-        self.method_calls = []
-
-    def _method(self, request_pb, name):
-        self.method_calls.append((request_pb, name))
-        return self.return_val
-
-    def Lookup(self, request_pb):
-        return self._method(request_pb, 'Lookup')
