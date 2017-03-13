@@ -3,20 +3,26 @@ version: 2
 jobs:
   build:
     docker:
-      - image: python:3.6
-      - image: python:3.5
-      - image: python:3.4
-      - image: python:2.7
+      - image: mrupgrade/deadsnakes:2.7
     parallelism: 4
     steps:
-      - checkout
+      - run:
+          name: Update apt packages.
+          command: apt-get update -qq
+      - run:
+          name: Install apt dependencies.
+          command: apt-get install -y git python3.4 python3.5 python3.6
       - run:
           name: Install nox.
           command: pip install https://github.com/lukesneeringer/nox/archive/session-order.zip  # nox-automation >= 0.10.0
+      - checkout
+      - run:
+          name: Decrypt credentials.
+          command: openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" -in /home/ubuntu/gcp/test_utils/credentials.json.enc -out /home/ubuntu/credentials.json
       - run:
           name: Run tests for each API.
           command: |
-            for TARGET in $(circleci tests glob */nox.py | circleci tests split --split-by=timings); do
+            for TARGET in $(circleci tests glob */nox.py | circleci tests split --split-by=timings --total 4); do
               nox -f $TARGET
             done
-    working_directory: ~/google-cloud-python/
+    working_directory: /home/ubuntu/gcp/
