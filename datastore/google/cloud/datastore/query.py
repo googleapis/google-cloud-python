@@ -362,8 +362,6 @@ class Query(object):
 
         :rtype: :class:`Iterator`
         :returns: The iterator for the query.
-        :raises: ValueError if ``connection`` is not passed and no implicit
-                 default has been set.
         """
         if client is None:
             client = self._client
