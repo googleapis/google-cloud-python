@@ -196,7 +196,6 @@ class Transaction(Batch):
 
         This method has necessary side-effects:
 
-        - Sets the current connection's transaction reference to None.
         - Sets the current transaction's ID to None.
         """
         try:

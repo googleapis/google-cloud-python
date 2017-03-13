@@ -15,6 +15,8 @@
 
 import os
 
+from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
+
 from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import (
     _determine_default_project as _base_default_project)
@@ -23,7 +25,6 @@ from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_DATASET
 from google.cloud.environment_vars import GCD_HOST
 
-from google.cloud.datastore._http import Connection
 from google.cloud.datastore._http import HTTPDatastoreAPI
 from google.cloud.datastore import helpers
 from google.cloud.datastore.batch import Batch
@@ -78,15 +79,18 @@ def _determine_default_project(project=None):
     return project
 
 
-def _extended_lookup(connection, project, key_pbs,
+def _extended_lookup(datastore_api, project, key_pbs,
                      missing=None, deferred=None,
                      eventual=False, transaction_id=None):
     """Repeat lookup until all keys found (unless stop requested).
 
     Helper function for :meth:`Client.get_multi`.
 
-    :type connection: :class:`google.cloud.datastore._http.Connection`
-    :param connection: The connection used to connect to datastore.
+    :type datastore_api:
+        :class:`google.cloud.datastore._http.HTTPDatastoreAPI`
+        or :class:`google.cloud.datastore._gax.GAPICDatastoreAPI`
+    :param datastore_api: The datastore API object used to connect
+                          to datastore.
 
     :type project: str
     :param project: The project to make the request for.
@@ -127,15 +131,11 @@ def _extended_lookup(connection, project, key_pbs,
     results = []
 
     loop_num = 0
+    read_options = _get_read_options(eventual, transaction_id)
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
-
-        lookup_response = connection.lookup(
-            project=project,
-            key_pbs=key_pbs,
-            eventual=eventual,
-            transaction_id=transaction_id,
-        )
+        lookup_response = datastore_api.lookup(
+            project, read_options, key_pbs)
 
         # Accumulate the new results.
         results.extend(result.entity for result in lookup_response.found)
@@ -210,9 +210,6 @@ class Client(ClientWithProject):
             self._base_url = 'http://' + host
         except KeyError:
             self._base_url = _DATASTORE_BASE_URL
-        # NOTE: Make sure all properties are set before passing to
-        #       ``Connection`` (e.g. ``_base_url``).
-        self._connection = Connection(self)
 
     @staticmethod
     def _determine_default(project):
@@ -347,7 +344,7 @@ class Client(ClientWithProject):
             transaction = self.current_transaction
 
         entity_pbs = _extended_lookup(
-            connection=self._connection,
+            datastore_api=self._datastore_api,
             project=self.project,
             key_pbs=[k.to_protobuf() for k in keys],
             missing=missing,
@@ -569,3 +566,34 @@ class Client(ClientWithProject):
         if 'namespace' not in kwargs:
             kwargs['namespace'] = self.namespace
         return Query(self, **kwargs)
+
+
+def _get_read_options(eventual, transaction_id):
+    """Validate rules for read options, and assign to the request.
+
+    Helper method for ``lookup()`` and ``run_query``.
+
+    :type eventual: bool
+    :param eventual: Flag indicating if ``EVENTUAL`` or ``STRONG``
+                     consistency should be used.
+
+    :type transaction_id: bytes
+    :param transaction_id: A transaction identifier (may be null).
+
+    :rtype: :class:`.datastore_pb2.ReadOptions`
+    :returns: The read options corresponding to the inputs.
+    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the
+             ``transaction_id`` is not ``None``.
+    """
+    if transaction_id is None:
+        if eventual:
+            return _datastore_pb2.ReadOptions(
+                read_consistency=_datastore_pb2.ReadOptions.EVENTUAL)
+        else:
+            return _datastore_pb2.ReadOptions()
+    else:
+        if eventual:
+            raise ValueError('eventual must be False when in a transaction')
+        else:
+            return _datastore_pb2.ReadOptions(
+                transaction=transaction_id)
