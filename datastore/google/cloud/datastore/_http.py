@@ -181,23 +181,6 @@ class _DatastoreAPIOverHttp(object):
                     self.connection.api_base_url,
                     request_pb, _datastore_pb2.LookupResponse)
 
-    def run_query(self, project, request_pb):
-        """Perform a ``runQuery`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.RunQueryRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.RunQueryResponse`
-        :returns: The returned protobuf response object.
-        """
-        return _rpc(self.connection.http, project, 'runQuery',
-                    self.connection.api_base_url,
-                    request_pb, _datastore_pb2.RunQueryResponse)
-
 
 class Connection(connection_module.Connection):
     """A connection to the Google Cloud Datastore via the Protobuf API.
@@ -264,58 +247,9 @@ class Connection(connection_module.Connection):
         :rtype: :class:`.datastore_pb2.LookupResponse`
         :returns: The returned protobuf for the lookup request.
         """
-        lookup_request = _datastore_pb2.LookupRequest()
+        lookup_request = _datastore_pb2.LookupRequest(keys=key_pbs)
         _set_read_options(lookup_request, eventual, transaction_id)
-        _add_keys_to_request(lookup_request.keys, key_pbs)
-
         return self._datastore_api.lookup(project, lookup_request)
-
-    def run_query(self, project, query_pb, namespace=None,
-                  eventual=False, transaction_id=None):
-        """Run a query on the Cloud Datastore.
-
-        Maps the ``DatastoreService.RunQuery`` protobuf RPC.
-
-        Given a Query protobuf, sends a ``runQuery`` request to the
-        Cloud Datastore API and returns a list of entity protobufs
-        matching the query.
-
-        You typically wouldn't use this method directly, in favor of the
-        :meth:`google.cloud.datastore.query.Query.fetch` method.
-
-        Under the hood, the :class:`google.cloud.datastore.query.Query` class
-        uses this method to fetch data.
-
-        :type project: str
-        :param project: The project over which to run the query.
-
-        :type query_pb: :class:`.query_pb2.Query`
-        :param query_pb: The Protobuf representing the query to run.
-
-        :type namespace: str
-        :param namespace: The namespace over which to run the query.
-
-        :type eventual: bool
-        :param eventual: If False (the default), request ``STRONG`` read
-                         consistency.  If True, request ``EVENTUAL`` read
-                         consistency.
-
-        :type transaction_id: str
-        :param transaction_id: If passed, make the request in the scope of
-                               the given transaction.  Incompatible with
-                               ``eventual==True``.
-
-        :rtype: :class:`.datastore_pb2.RunQueryResponse`
-        :returns: The protobuf response from a ``runQuery`` request.
-        """
-        request = _datastore_pb2.RunQueryRequest()
-        _set_read_options(request, eventual, transaction_id)
-
-        if namespace:
-            request.partition_id.namespace_id = namespace
-
-        request.query.CopyFrom(query_pb)
-        return self._datastore_api.run_query(project, request)
 
 
 class HTTPDatastoreAPI(object):
@@ -329,6 +263,45 @@ class HTTPDatastoreAPI(object):
 
     def __init__(self, client):
         self.client = client
+
+    def run_query(self, project, partition_id, read_options,
+                  query=None, gql_query=None):
+        """Perform a ``runQuery`` request.
+
+        :type project: str
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type partition_id: :class:`.entity_pb2.PartitionId`
+        :param partition_id: Partition ID corresponding to an optional
+                             namespace and project ID.
+
+        :type read_options: :class:`.datastore_pb2.ReadOptions`
+        :param read_options: The options for this query. Contains a
+                             either the transaction for the read or
+                             ``STRONG`` or ``EVENTUAL`` read consistency.
+
+        :type query: :class:`.query_pb2.Query`
+        :param query: (Optional) The query protobuf to run. At most one of
+                      ``query`` and ``gql_query`` can be specified.
+
+        :type gql_query: :class:`.query_pb2.GqlQuery`
+        :param gql_query: (Optional) The GQL query to run. At most one of
+                          ``query`` and ``gql_query`` can be specified.
+
+        :rtype: :class:`.datastore_pb2.RunQueryResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb = _datastore_pb2.RunQueryRequest(
+            project_id=project,
+            partition_id=partition_id,
+            read_options=read_options,
+            query=query,
+            gql_query=gql_query,
+        )
+        return _rpc(self.client._http, project, 'runQuery',
+                    self.client._base_url,
+                    request_pb, _datastore_pb2.RunQueryResponse)
 
     def begin_transaction(self, project):
         """Perform a ``beginTransaction`` request.
@@ -391,8 +364,10 @@ class HTTPDatastoreAPI(object):
         :rtype: :class:`.datastore_pb2.RollbackResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.RollbackRequest()
-        request_pb.transaction = transaction_id
+        request_pb = _datastore_pb2.RollbackRequest(
+            project_id=project,
+            transaction=transaction_id,
+        )
         # Response is empty (i.e. no fields) but we return it anyway.
         return _rpc(self.client._http, project, 'rollback',
                     self.client._base_url,
@@ -411,8 +386,7 @@ class HTTPDatastoreAPI(object):
         :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.AllocateIdsRequest()
-        _add_keys_to_request(request_pb.keys, key_pbs)
+        request_pb = _datastore_pb2.AllocateIdsRequest(keys=key_pbs)
         return _rpc(self.client._http, project, 'allocateIds',
                     self.client._base_url,
                     request_pb, _datastore_pb2.AllocateIdsResponse)
@@ -434,16 +408,3 @@ def _set_read_options(request, eventual, transaction_id):
         opts.read_consistency = _datastore_pb2.ReadOptions.EVENTUAL
     elif transaction_id:
         opts.transaction = transaction_id
-
-
-def _add_keys_to_request(request_field_pb, key_pbs):
-    """Add protobuf keys to a request object.
-
-    :type request_field_pb: `RepeatedCompositeFieldContainer`
-    :param request_field_pb: A repeated proto field that contains keys.
-
-    :type key_pbs: list of :class:`.entity_pb2.Key`
-    :param key_pbs: The keys to add to a request.
-    """
-    for key_pb in key_pbs:
-        request_field_pb.add().CopyFrom(key_pb)
