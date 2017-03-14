@@ -4,7 +4,6 @@ jobs:
   build:
     docker:
       - image: mrupgrade/deadsnakes:2.7
-    parallelism: 4
     steps:
       - run:
           name: Update apt packages.
@@ -20,12 +19,39 @@ jobs:
           name: Decrypt credentials.
           command: |
             if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
-              openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" -in /home/ubuntu/gcp/test_utils/credentials.json.enc -out "$GOOGLE_APPLICATION_CREDENTIALS"
+              openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" \
+                  -in /home/ubuntu/gcp/test_utils/credentials.json.enc \
+                  -out "$GOOGLE_APPLICATION_CREDENTIALS"
+            else
+              echo "No credentials. System tests will not run."
             fi
+      - run:
+          name: INFO - Declare target packages (changed packages and dependencies).
+          command: python test_utils/scripts/get_target_packages.py
       - run:
           name: Run tests for each API.
           command: |
-            for TARGET in $(circleci tests glob */nox.py | circleci tests split --split-by=timings --total 4); do
-              nox -f $TARGET
+            for TARGET in $(python test_utils/scripts/get_target_packages.py); do
+              nox -f $TARGET/nox.py
             done
+      - run:
+          name: Push to google-cloud-python-private.
+          type: deploy
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "master" ]] && \
+                [[ -z "$CIRCLE_PR_NUMBER" ]] && \
+                [[ -z "$CIRCLE_TAG" ]]; then
+              git remote add private git@github.com:GoogleCloudPlatform/google-cloud-python-private.git
+              git push private master
+            else
+              echo "Not on master; skipping private push."
+            fi
+      - run:
+          name: Update the docs.
+          type: deploy
+          command: |
+            pip install sphinx sphinx_rtd_theme
+            ./test_utils/scripts/update_docs.sh
+
+
     working_directory: /var/code/gcp/
