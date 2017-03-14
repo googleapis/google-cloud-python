@@ -78,15 +78,8 @@ the document's type is plain text:
      >>> document.doc_type == language.Document.PLAIN_TEXT
      True
 
-In addition, the document's language defaults to the language on
-the client
-
-  .. code-block:: python
-
-     >>> document.language
-     'en-US'
-     >>> document.language == client.language
-     True
+The document's language defaults to ``None``, which will cause the API to
+auto-detect the language.
 
 In addition, the
 :meth:`~google.cloud.language.client.Client.document_from_html`,
@@ -161,31 +154,27 @@ metadata and other properties.
      >>> text_content = ("Michelangelo Caravaggio, Italian painter, is "
      ...                 "known for 'The Calling of Saint Matthew'.")
      >>> document = client.document(text_content)
-     >>> entities = document.analyze_entities()
-     >>> for entity in entities:
+     >>> entity_response = document.analyze_entities()
+     >>> for entity in entity_response.entities:
      ...     print('=' * 20)
      ...     print('         name: %s' % (entity.name,))
      ...     print('         type: %s' % (entity.entity_type,))
-     ...     print('wikipedia_url: %s' % (entity.wikipedia_url,))
      ...     print('     metadata: %s' % (entity.metadata,))
      ...     print('     salience: %s' % (entity.salience,))
      ====================
               name: Michelangelo Caravaggio
               type: PERSON
-     wikipedia_url: http://en.wikipedia.org/wiki/Caravaggio
-          metadata: {}
+          metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Caravaggio'}
           salience: 0.7615959
      ====================
               name: Italian
               type: LOCATION
-     wikipedia_url: http://en.wikipedia.org/wiki/Italy
-          metadata: {}
+          metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Caravaggio'}
           salience: 0.19960518
      ====================
               name: The Calling of Saint Matthew
               type: EVENT
-     wikipedia_url: http://en.wikipedia.org/wiki/The_Calling_of_St_Matthew_(Caravaggio)
-          metadata: {}
+          metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Caravaggio'}
           salience: 0.038798928
 
 Analyze Sentiment
@@ -200,7 +189,8 @@ only supports English text.
 
      >>> text_content = "Jogging isn't very fun."
      >>> document = client.document(text_content)
-     >>> sentiment = document.analyze_sentiment()
+     >>> sentiment_response = document.analyze_sentiment()
+     >>> sentiment = sentiment_response.sentiment
      >>> print(sentiment.score)
      -1
      >>> print(sentiment.magnitude)
@@ -265,14 +255,12 @@ the response is :data:`None`.
      ...     print('=' * 20)
      ...     print('         name: %s' % (entity.name,))
      ...     print('         type: %s' % (entity.entity_type,))
-     ...     print('wikipedia_url: %s' % (entity.wikipedia_url,))
      ...     print('     metadata: %s' % (entity.metadata,))
      ...     print('     salience: %s' % (entity.salience,))
      ====================
               name: Moon
               type: LOCATION
-     wikipedia_url: http://en.wikipedia.org/wiki/Natural_satellite
-          metadata: {}
+          metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Natural_satellite'}
           salience: 0.11793101
 
 .. _Features: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText#Features

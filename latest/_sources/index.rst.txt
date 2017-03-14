@@ -12,43 +12,6 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Datastore
-
-  datastore-usage
-  Client <datastore-client>
-  datastore-entities
-  datastore-keys
-  datastore-queries
-  datastore-transactions
-  datastore-batches
-  datastore-helpers
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Storage
-
-  Client <storage-client>
-  storage-blobs
-  storage-buckets
-  storage-acl
-  storage-batch
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Pub/Sub
-
-  pubsub-usage
-  Client <pubsub-client>
-  pubsub-topic
-  pubsub-subscription
-  pubsub-message
-  pubsub-iam
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
   :caption: BigQuery
 
   bigquery-usage
@@ -62,7 +25,7 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Cloud Bigtable
+  :caption: BigTable
 
   bigtable-usage
   bigtable-client-intro
@@ -81,11 +44,16 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Resource Manager
+  :caption: Datastore
 
-  Overview <resource-manager-api>
-  resource-manager-client
-  resource-manager-project
+  datastore-usage
+  Client <datastore-client>
+  datastore-entities
+  datastore-keys
+  datastore-queries
+  datastore-transactions
+  datastore-batches
+  datastore-helpers
 
 .. toctree::
   :maxdepth: 0
@@ -101,72 +69,6 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Stackdriver Logging
-
-  logging-usage
-  Client <logging-client>
-  logging-logger
-  logging-entries
-  logging-metric
-  logging-sink
-  logging-stdlib-usage
-  logging-handlers
-  logging-handlers-app-engine
-  logging-handlers-container-engine
-  logging-transports-sync
-  logging-transports-thread
-  logging-transports-base
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Stackdriver Error Reporting
-
-  error-reporting-usage
-  Client <error-reporting-client>
-  error-reporting-util
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Stackdriver Monitoring
-
-  monitoring-usage
-  Client <monitoring-client>
-  monitoring-metric
-  monitoring-resource
-  monitoring-group
-  monitoring-query
-  monitoring-timeseries
-  monitoring-label
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Translate
-
-  translate-usage
-  Client <translate-client>
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Vision
-
-  vision-usage
-  vision-annotations
-  vision-batch
-  vision-client
-  vision-color
-  vision-entity
-  vision-feature
-  vision-face
-  vision-image
-  vision-safe-search
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
   :caption: Natural Language
 
   language-usage
@@ -177,15 +79,23 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Speech
+  :caption: Pub/Sub
 
-  speech-usage
-  Client <speech-client>
-  speech-encoding
-  speech-operation
-  speech-result
-  speech-sample
-  speech-alternative
+  pubsub-usage
+  Client <pubsub-client>
+  pubsub-topic
+  pubsub-subscription
+  pubsub-message
+  pubsub-iam
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Resource Manager
+
+  Overview <resource-manager-api>
+  resource-manager-client
+  resource-manager-project
 
 .. toctree::
   :maxdepth: 0
@@ -222,6 +132,99 @@
   spanner-batch-api
   spanner-transaction-api
   spanner-streamed-api
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Speech
+
+  speech-usage
+  Client <speech-client>
+  speech-encoding
+  speech-operation
+  speech-result
+  speech-sample
+  speech-alternative
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Stackdriver Error Reporting
+
+  error-reporting-usage
+  Client <error-reporting-client>
+  error-reporting-util
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Stackdriver Logging
+
+  logging-usage
+  Client <logging-client>
+  logging-logger
+  logging-entries
+  logging-metric
+  logging-sink
+  logging-stdlib-usage
+  logging-handlers
+  logging-handlers-app-engine
+  logging-handlers-container-engine
+  logging-transports-sync
+  logging-transports-thread
+  logging-transports-base
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Stackdriver Monitoring
+
+  monitoring-usage
+  Client <monitoring-client>
+  monitoring-metric
+  monitoring-resource
+  monitoring-group
+  monitoring-query
+  monitoring-timeseries
+  monitoring-label
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Storage
+
+  Client <storage-client>
+  storage-blobs
+  storage-buckets
+  storage-acl
+  storage-batch
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Translate
+
+  translate-usage
+  Client <translate-client>
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Vision
+
+  vision-usage
+  vision-annotations
+  vision-batch
+  vision-client
+  vision-color
+  vision-crop-hint
+  vision-entity
+  vision-feature
+  vision-face
+  vision-image
+  vision-safe-search
+  vision-text
+  vision-web
 
 .. toctree::
   :maxdepth: 0
