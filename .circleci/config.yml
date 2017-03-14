@@ -28,4 +28,24 @@ jobs:
             for TARGET in $(circleci tests glob */nox.py | circleci tests split --split-by=timings --total 4); do
               nox -f $TARGET
             done
+      - run:
+          name: Push to google-cloud-python-private.
+          type: deploy
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "master" ]] && \
+                [[ -z "$CIRCLE_PR_NUMBER" ]] && \
+                [[ -z "$CIRCLE_TAG" ]]; then
+              git remote add private git@github.com:GoogleCloudPlatform/google-cloud-python-private.git
+              git push private master
+            else
+              echo "Not on master; skipping private push."
+            fi
+      - run:
+          name: Update the docs.
+          type: deploy
+          command: |
+            pip install sphinx sphinx_rtd_theme
+            ./test_utils/scripts/update_docs.sh
+
+
     working_directory: /var/code/gcp/
