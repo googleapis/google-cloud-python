@@ -43,7 +43,8 @@ class Query(object):
     stored in the Cloud Datastore.
 
     :type client: :class:`google.cloud.datastore.client.Client`
-    :param client: The client used to connect to Datastore.
+    :param client: The client used to connect to Datastore. If the client is
+                   empty, it must be provided during the fetch call.
 
     :type kind: str
     :param kind: The kind to query.
@@ -102,8 +103,8 @@ class Query(object):
 
         self._client = client
         self._kind = kind
-        self._project = project or client.project
-        self._namespace = namespace or client.namespace
+        self._project = project or getattr(self._client, 'project', None)
+        self._namespace = namespace or getattr(self._client, 'namespace', None)
         self._ancestor = ancestor
         self._filters = []
         # Verify filters passed in.
@@ -120,7 +121,7 @@ class Query(object):
         :rtype: str
         :returns: The project for the query.
         """
-        return self._project or self._client.project
+        return self._project or getattr(self._client, 'project', None)
 
     @property
     def namespace(self):
@@ -129,7 +130,7 @@ class Query(object):
         :rtype: str or None
         :returns: the namespace assigned to this query
         """
-        return self._namespace or self._client.namespace
+        return self._namespace or getattr(self._client, 'namespace', None)
 
     @namespace.setter
     def namespace(self, value):
@@ -365,6 +366,11 @@ class Query(object):
         """
         if client is None:
             client = self._client
+
+        if not self.project:
+            msg = ("Project cannot be empty, either provide it at query"
+                   "construction time or through the client")
+            raise ValueError(msg)
 
         return Iterator(
             self, client, limit=limit, offset=offset,
