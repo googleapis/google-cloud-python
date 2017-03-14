@@ -26,7 +26,7 @@ jobs:
               echo "No credentials. System tests will not run."
             fi
       - run:
-          name: INFO: Declare target packages (changed packages and dependencies).
+          name: [INFO] Declare target packages (changed packages and dependencies).
           command: python test_utils/scripts/get_target_packages.py
       - run:
           name: Run tests for each API.
