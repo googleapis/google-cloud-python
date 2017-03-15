@@ -3,17 +3,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: mrupgrade/deadsnakes:2.7
+      - image: googleapis/python-multi:2017.03
     steps:
-      - run:
-          name: Update apt packages.
-          command: apt-get update -qq
-      - run:
-          name: Install apt dependencies.
-          command: apt-get install -y git python3.4 python3.5 python3.6
-      - run:
-          name: Install nox.
-          command: pip install nox-automation
       - checkout
       - run:
           name: Decrypt credentials.
@@ -27,11 +18,11 @@ jobs:
             fi
       - run:
           name: INFO - Declare target packages (changed packages and dependencies).
-          command: python test_utils/scripts/get_target_packages.py
+          command: python3.6 test_utils/scripts/get_target_packages.py
       - run:
           name: Run tests for each API.
           command: |
-            for TARGET in $(python test_utils/scripts/get_target_packages.py); do
+            for TARGET in $(python3.6 test_utils/scripts/get_target_packages.py); do
               nox -f $TARGET/nox.py
             done
       - run:
