@@ -38,6 +38,12 @@ jobs:
               nox -f core/nox.py
             fi
       - run:
+          name: Run tests - google.cloud.logging
+          command: |
+            if [[ -n $(grep logging ~/target_packages) ]]; then
+              nox -f logging/nox.py
+            fi
+      - run:
           name: Run tests - google.cloud.bigquery
           command: |
             if [[ -n $(grep bigquery ~/target_packages) ]]; then
@@ -72,12 +78,6 @@ jobs:
           command: |
             if [[ -n $(grep language ~/target_packages) ]]; then
               nox -f language/nox.py
-            fi
-      - run:
-          name: Run tests - google.cloud.logging
-          command: |
-            if [[ -n $(grep logging ~/target_packages) ]]; then
-              nox -f logging/nox.py
             fi
       - run:
           name: Run tests - google.cloud.monitoring
