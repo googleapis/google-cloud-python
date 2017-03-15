@@ -33,7 +33,6 @@ from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
 from grpc import StatusCode
 
-from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
@@ -452,8 +451,6 @@ def _log_entry_mapping_to_pb(mapping):
     the keys expected in the JSON API.
     """
     entry_pb = LogEntry()
-    if 'timestamp' in mapping:
-        mapping['timestamp'] = _datetime_to_rfc3339(mapping['timestamp'])
     ParseDict(mapping, entry_pb)
     return entry_pb
 

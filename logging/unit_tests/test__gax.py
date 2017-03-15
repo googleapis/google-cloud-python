@@ -412,7 +412,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             'severity': SEVERITY,
             'labels': LABELS,
             'insertId': IID,
-            'timestamp': NOW,
+            'timestamp': NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
             'httpRequest': REQUEST,
             'operation': OPERATION,
         }
