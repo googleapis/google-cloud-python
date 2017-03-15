@@ -51,7 +51,12 @@ Annotations = collections.namedtuple(
 
 
 class Encoding(object):
-    """Document text encoding types."""
+    """The encoding type used to calculate offsets.
+
+    Represents the text encoding that the caller uses to process the output.
+    The API provides the beginning offsets for various outputs, such as tokens
+    and mentions.
+    """
 
     NONE = 'NONE'
     """Unspecified encoding type."""
