@@ -17,6 +17,7 @@ import os
 import sys
 import time
 
+import google.auth.credentials
 from google.auth.environment_vars import CREDENTIALS as TEST_CREDENTIALS
 
 
@@ -29,16 +30,28 @@ Please check the CONTRIBUTING guide for instructions.
 """
 
 
-class EmulatorCreds(object):
+class EmulatorCreds(google.auth.credentials.Credentials):
     """A mock credential object.
 
     Used to avoid unnecessary token refreshing or reliance on the network
     while an emulator is running.
     """
 
-    @staticmethod
-    def create_scoped_required():
-        return False
+    def __init__(self):  # pylint: disable=super-init-not-called
+        self.token = b'seekrit'
+        self.expiry = None
+
+    @property
+    def valid(self):
+        """Would-be validity check of the credentials.
+
+        Always is :data:`True`.
+        """
+        return True
+
+    def refresh(self, unused_request):  # pylint: disable=unused-argument
+        """Off-limits implementation for abstract method."""
+        raise RuntimeError('Should never be refreshed.')
 
 
 def check_environ():
