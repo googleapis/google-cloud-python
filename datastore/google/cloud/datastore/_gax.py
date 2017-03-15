@@ -22,6 +22,7 @@ from google.cloud.gapic.datastore.v1 import datastore_client
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.gax.utils import metrics
+from grpc import insecure_channel
 from grpc import StatusCode
 import six
 
@@ -131,8 +132,14 @@ def make_datastore_api(client):
     :rtype: :class:`.datastore.v1.datastore_client.DatastoreClient`
     :returns: A datastore API instance with the proper credentials.
     """
-    channel = make_secure_channel(
-        client._credentials, DEFAULT_USER_AGENT,
-        datastore_client.DatastoreClient.SERVICE_ADDRESS)
+    parse_result = six.moves.urllib_parse.urlparse(
+        client._base_url)
+    host = parse_result.netloc
+    if parse_result.scheme == 'https':
+        channel = make_secure_channel(
+            client._credentials, DEFAULT_USER_AGENT, host)
+    else:
+        channel = insecure_channel(host)
+
     return GAPICDatastoreAPI(
         channel=channel, lib_name='gccl', lib_version=__version__)
