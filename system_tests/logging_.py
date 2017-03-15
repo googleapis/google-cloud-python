@@ -130,6 +130,21 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
 
+    def test_log_text_with_timestamp(self):
+        import datetime
+
+        text_payload = 'System test: test_log_text_with_timestamp'
+        logger = Config.CLIENT.logger(self._logger_name())
+        now = datetime.datetime.utcnow()
+
+        self.to_delete.append(logger)
+
+        logger.log_text(text_payload, timestamp=now)
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, text_payload)
+        # self.assertEqual(entries[0].timestamp, now)
+
     def test_log_text_w_metadata(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
         INSERT_ID = 'INSERTID'
