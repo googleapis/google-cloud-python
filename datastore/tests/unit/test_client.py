@@ -120,17 +120,6 @@ class TestClient(unittest.TestCase):
 
     PROJECT = 'PROJECT'
 
-    def setUp(self):
-        from google.cloud.datastore import client as MUT
-
-        self.original_cnxn_class = MUT.Connection
-        MUT.Connection = _MockConnection
-
-    def tearDown(self):
-        from google.cloud.datastore import client as MUT
-
-        MUT.Connection = self.original_cnxn_class
-
     @staticmethod
     def _get_target_class():
         from google.cloud.datastore.client import Client
@@ -179,7 +168,6 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(client.project, other)
         self.assertIsNone(client.namespace)
-        self.assertIsInstance(client._connection, _MockConnection)
         self.assertIs(client._credentials, creds)
         self.assertIsNone(client._http_internal)
         self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
@@ -201,7 +189,6 @@ class TestClient(unittest.TestCase):
                                 http=http)
         self.assertEqual(client.project, other)
         self.assertEqual(client.namespace, namespace)
-        self.assertIsInstance(client._connection, _MockConnection)
         self.assertIs(client._credentials, creds)
         self.assertIs(client._http_internal, http)
         self.assertIsNone(client.current_batch)
@@ -355,17 +342,25 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results, [])
 
     def test_get_multi_miss(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.key import Key
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client._connection._add_lookup_result()
+        ds_api = _make_datastore_api()
+        client._datastore_api_internal = ds_api
+
         key = Key('Kind', 1234, project=self.PROJECT)
         results = client.get_multi([key])
         self.assertEqual(results, [])
 
+        read_options = datastore_pb2.ReadOptions()
+        ds_api.lookup.assert_called_once_with(
+            self.PROJECT, read_options, [key.to_protobuf()])
+
     def test_get_multi_miss_w_missing(self):
         from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
@@ -381,14 +376,21 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         # Set missing entity on mock connection.
-        client._connection._add_lookup_result(missing=[missed])
+        lookup_response = _make_lookup_response(missing=[missed])
+        ds_api = _make_datastore_api(lookup_response=lookup_response)
+        client._datastore_api_internal = ds_api
 
         key = Key(KIND, ID, project=self.PROJECT)
         missing = []
         entities = client.get_multi([key], missing=missing)
         self.assertEqual(entities, [])
-        self.assertEqual([missed.key.to_protobuf() for missed in missing],
-                         [key.to_protobuf()])
+        key_pb = key.to_protobuf()
+        self.assertEqual(
+            [missed.key.to_protobuf() for missed in missing], [key_pb])
+
+        read_options = datastore_pb2.ReadOptions()
+        ds_api.lookup.assert_called_once_with(
+            self.PROJECT, read_options, [key_pb])
 
     def test_get_multi_w_missing_non_empty(self):
         from google.cloud.datastore.key import Key
@@ -413,22 +415,31 @@ class TestClient(unittest.TestCase):
                           [key], deferred=deferred)
 
     def test_get_multi_miss_w_deferred(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.key import Key
 
         key = Key('Kind', 1234, project=self.PROJECT)
+        key_pb = key.to_protobuf()
 
         # Set deferred entity on mock connection.
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client._connection._add_lookup_result(deferred=[key.to_protobuf()])
+        lookup_response = _make_lookup_response(deferred=[key_pb])
+        ds_api = _make_datastore_api(lookup_response=lookup_response)
+        client._datastore_api_internal = ds_api
 
         deferred = []
         entities = client.get_multi([key], deferred=deferred)
         self.assertEqual(entities, [])
-        self.assertEqual([def_key.to_protobuf() for def_key in deferred],
-                         [key.to_protobuf()])
+        self.assertEqual(
+            [def_key.to_protobuf() for def_key in deferred], [key_pb])
+
+        read_options = datastore_pb2.ReadOptions()
+        ds_api.lookup.assert_called_once_with(
+            self.PROJECT, read_options, [key_pb])
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.proto.datastore.v1 import entity_pb2
         from google.cloud.datastore.entity import Entity
         from google.cloud.datastore.key import Key
@@ -445,9 +456,15 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        # mock up two separate requests
-        client._connection._add_lookup_result([entity1_pb], deferred=[key2_pb])
-        client._connection._add_lookup_result([entity2_pb])
+        # Mock up two separate requests. Using an iterable as side_effect
+        # allows multiple return values.
+        lookup_response1 = _make_lookup_response(
+            results=[entity1_pb], deferred=[key2_pb])
+        lookup_response2 = _make_lookup_response(results=[entity2_pb])
+        ds_api = _make_datastore_api()
+        ds_api.lookup = mock.Mock(
+            side_effect=[lookup_response1, lookup_response2], spec=[])
+        client._datastore_api_internal = ds_api
 
         missing = []
         found = client.get_multi([key1, key2], missing=missing)
@@ -463,102 +480,104 @@ class TestClient(unittest.TestCase):
         self.assertEqual(found[1].key.path, key2.path)
         self.assertEqual(found[1].key.project, key2.project)
 
-        cw = client._connection._lookup_cw
-        self.assertEqual(len(cw), 2)
-
-        ds_id, k_pbs, eventual, tid = cw[0]
-        self.assertEqual(ds_id, self.PROJECT)
-        self.assertEqual(len(k_pbs), 2)
-        self.assertEqual(key1_pb, k_pbs[0])
-        self.assertEqual(key2_pb, k_pbs[1])
-        self.assertFalse(eventual)
-        self.assertIsNone(tid)
-
-        ds_id, k_pbs, eventual, tid = cw[1]
-        self.assertEqual(ds_id, self.PROJECT)
-        self.assertEqual(len(k_pbs), 1)
-        self.assertEqual(key2_pb, k_pbs[0])
-        self.assertFalse(eventual)
-        self.assertIsNone(tid)
+        self.assertEqual(ds_api.lookup.call_count, 2)
+        read_options = datastore_pb2.ReadOptions()
+        ds_api.lookup.assert_any_call(
+            self.PROJECT, read_options, [key2_pb])
+        ds_api.lookup.assert_any_call(
+            self.PROJECT, read_options, [key1_pb, key2_pb])
 
     def test_get_multi_hit(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.key import Key
 
-        KIND = 'Kind'
-        ID = 1234
-        PATH = [{'kind': KIND, 'id': ID}]
+        kind = 'Kind'
+        id_ = 1234
+        path = [{'kind': kind, 'id': id_}]
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
+        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client._connection._add_lookup_result([entity_pb])
+        lookup_response = _make_lookup_response(results=[entity_pb])
+        ds_api = _make_datastore_api(lookup_response=lookup_response)
+        client._datastore_api_internal = ds_api
 
-        key = Key(KIND, ID, project=self.PROJECT)
+        key = Key(kind, id_, project=self.PROJECT)
         result, = client.get_multi([key])
         new_key = result.key
 
         # Check the returned value is as expected.
         self.assertIsNot(new_key, key)
         self.assertEqual(new_key.project, self.PROJECT)
-        self.assertEqual(new_key.path, PATH)
+        self.assertEqual(new_key.path, path)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
+        read_options = datastore_pb2.ReadOptions()
+        ds_api.lookup.assert_called_once_with(
+            self.PROJECT, read_options, [key.to_protobuf()])
+
     def test_get_multi_hit_w_transaction(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.key import Key
 
-        TXN_ID = '123'
-        KIND = 'Kind'
-        ID = 1234
-        PATH = [{'kind': KIND, 'id': ID}]
+        txn_id = b'123'
+        kind = 'Kind'
+        id_ = 1234
+        path = [{'kind': kind, 'id': id_}]
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
+        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client._connection._add_lookup_result([entity_pb])
+        lookup_response = _make_lookup_response(results=[entity_pb])
+        ds_api = _make_datastore_api(lookup_response=lookup_response)
+        client._datastore_api_internal = ds_api
 
-        key = Key(KIND, ID, project=self.PROJECT)
+        key = Key(kind, id_, project=self.PROJECT)
         txn = client.transaction()
-        txn._id = TXN_ID
+        txn._id = txn_id
         result, = client.get_multi([key], transaction=txn)
         new_key = result.key
 
         # Check the returned value is as expected.
         self.assertIsNot(new_key, key)
         self.assertEqual(new_key.project, self.PROJECT)
-        self.assertEqual(new_key.path, PATH)
+        self.assertEqual(new_key.path, path)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
-        cw = client._connection._lookup_cw
-        self.assertEqual(len(cw), 1)
-        _, _, _, transaction_id = cw[0]
-        self.assertEqual(transaction_id, TXN_ID)
+        read_options = datastore_pb2.ReadOptions(transaction=txn_id)
+        ds_api.lookup.assert_called_once_with(
+            self.PROJECT, read_options, [key.to_protobuf()])
 
     def test_get_multi_hit_multiple_keys_same_project(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.datastore.key import Key
 
-        KIND = 'Kind'
-        ID1 = 1234
-        ID2 = 2345
+        kind = 'Kind'
+        id1 = 1234
+        id2 = 2345
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb1 = _make_entity_pb(self.PROJECT, KIND, ID1)
-        entity_pb2 = _make_entity_pb(self.PROJECT, KIND, ID2)
+        entity_pb1 = _make_entity_pb(self.PROJECT, kind, id1)
+        entity_pb2 = _make_entity_pb(self.PROJECT, kind, id2)
 
         # Make a connection to return the entity pbs.
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client._connection._add_lookup_result([entity_pb1, entity_pb2])
+        lookup_response = _make_lookup_response(
+            results=[entity_pb1, entity_pb2])
+        ds_api = _make_datastore_api(lookup_response=lookup_response)
+        client._datastore_api_internal = ds_api
 
-        key1 = Key(KIND, ID1, project=self.PROJECT)
-        key2 = Key(KIND, ID2, project=self.PROJECT)
+        key1 = Key(kind, id1, project=self.PROJECT)
+        key2 = Key(kind, id2, project=self.PROJECT)
         retrieved1, retrieved2 = client.get_multi([key1, key2])
 
         # Check values match.
@@ -566,6 +585,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(dict(retrieved1), {})
         self.assertEqual(retrieved2.key.path, key2.path)
         self.assertEqual(dict(retrieved2), {})
+
+        read_options = datastore_pb2.ReadOptions()
+        ds_api.lookup.assert_called_once_with(
+            self.PROJECT, read_options,
+            [key1.to_protobuf(), key2.to_protobuf()])
 
     def test_get_multi_hit_multiple_keys_different_project(self):
         from google.cloud.datastore.key import Key
@@ -588,18 +612,20 @@ class TestClient(unittest.TestCase):
     def test_get_multi_max_loops(self):
         from google.cloud.datastore.key import Key
 
-        KIND = 'Kind'
-        ID = 1234
+        kind = 'Kind'
+        id_ = 1234
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
+        entity_pb = _make_entity_pb(self.PROJECT, kind, id_, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        client._connection._add_lookup_result([entity_pb])
+        lookup_response = _make_lookup_response(results=[entity_pb])
+        ds_api = _make_datastore_api(lookup_response=lookup_response)
+        client._datastore_api_internal = ds_api
 
-        key = Key(KIND, ID, project=self.PROJECT)
+        key = Key(kind, id_, project=self.PROJECT)
         deferred = []
         missing = []
 
@@ -614,6 +640,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(result, [])
         self.assertEqual(missing, [])
         self.assertEqual(deferred, [])
+        ds_api.lookup.assert_not_called()
 
     def test_put(self):
         _called_with = []
@@ -987,32 +1014,39 @@ class TestClient(unittest.TestCase):
                 client, project=self.PROJECT, namespace=namespace2, kind=kind)
 
 
-class _MockConnection(object):
+class Test__get_read_options(unittest.TestCase):
 
-    def __init__(self, credentials=None, http=None):
-        self.credentials = credentials
-        self.http = http
-        self._lookup_cw = []
-        self._lookup = []
+    def _call_fut(self, eventual, transaction_id):
+        from google.cloud.datastore.client import _get_read_options
 
-    def _add_lookup_result(self, results=(), missing=(), deferred=()):
-        self._lookup.append((list(results), list(missing), list(deferred)))
+        return _get_read_options(eventual, transaction_id)
 
-    def lookup(self, project, key_pbs, eventual=False, transaction_id=None):
-        self._lookup_cw.append((project, key_pbs, eventual, transaction_id))
-        triple, self._lookup = self._lookup[0], self._lookup[1:]
-        results, missing, deferred = triple
+    def test_eventual_w_transaction(self):
+        with self.assertRaises(ValueError):
+            self._call_fut(True, b'123')
 
-        entity_results_found = [
-            mock.Mock(entity=result, spec=['entity']) for result in results]
-        entity_results_missing = [
-            mock.Mock(entity=missing_entity, spec=['entity'])
-            for missing_entity in missing]
-        return mock.Mock(
-            found=entity_results_found,
-            missing=entity_results_missing,
-            deferred=deferred,
-            spec=['found', 'missing', 'deferred'])
+    def test_eventual_wo_transaction(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        read_options = self._call_fut(True, None)
+        expected = datastore_pb2.ReadOptions(
+            read_consistency=datastore_pb2.ReadOptions.EVENTUAL)
+        self.assertEqual(read_options, expected)
+
+    def test_default_w_transaction(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        txn_id = b'123abc-easy-as'
+        read_options = self._call_fut(False, txn_id)
+        expected = datastore_pb2.ReadOptions(transaction=txn_id)
+        self.assertEqual(read_options, expected)
+
+    def test_default_wo_transaction(self):
+        from google.cloud.proto.datastore.v1 import datastore_pb2
+
+        read_options = self._call_fut(False, None)
+        expected = datastore_pb2.ReadOptions()
+        self.assertEqual(read_options, expected)
 
 
 class _NoCommitBatch(object):
@@ -1139,7 +1173,26 @@ def _make_commit_response(*keys):
     return datastore_pb2.CommitResponse(mutation_results=mutation_results)
 
 
-def _make_datastore_api(*keys):
+def _make_lookup_response(results=(), missing=(), deferred=()):
+    entity_results_found = [
+        mock.Mock(entity=result, spec=['entity']) for result in results]
+    entity_results_missing = [
+        mock.Mock(entity=missing_entity, spec=['entity'])
+        for missing_entity in missing]
+    return mock.Mock(
+        found=entity_results_found,
+        missing=entity_results_missing,
+        deferred=deferred,
+        spec=['found', 'missing', 'deferred'])
+
+
+def _make_datastore_api(*keys, **kwargs):
     commit_method = mock.Mock(
         return_value=_make_commit_response(*keys), spec=[])
-    return mock.Mock(commit=commit_method, spec=['commit'])
+    lookup_response = kwargs.pop(
+        'lookup_response', _make_lookup_response())
+    lookup_method = mock.Mock(
+        return_value=lookup_response, spec=[])
+    return mock.Mock(
+        commit=commit_method, lookup=lookup_method,
+        spec=['commit', 'lookup'])

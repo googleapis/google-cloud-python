@@ -20,6 +20,8 @@ from google.cloud._helpers import _ensure_tuple_or_list
 from google.cloud.iterator import Iterator as BaseIterator
 from google.cloud.iterator import Page
 
+from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
+from google.cloud.proto.datastore.v1 import entity_pb2 as _entity_pb2
 from google.cloud.proto.datastore.v1 import query_pb2 as _query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
@@ -360,8 +362,6 @@ class Query(object):
 
         :rtype: :class:`Iterator`
         :returns: The iterator for the query.
-        :raises: ValueError if ``connection`` is not passed and no implicit
-                 default has been set.
         """
         if client is None:
             client = self._client
@@ -479,14 +479,22 @@ class Iterator(BaseIterator):
         if not self._more_results:
             return None
 
-        pb = self._build_protobuf()
+        query_pb = self._build_protobuf()
         transaction = self.client.current_transaction
+        if transaction is None:
+            read_options = _datastore_pb2.ReadOptions()
+        else:
+            read_options = _datastore_pb2.ReadOptions(
+                transaction=transaction.id)
 
-        response_pb = self.client._connection.run_query(
-            query_pb=pb,
-            project=self._query.project,
-            namespace=self._query.namespace,
-            transaction_id=transaction and transaction.id,
+        partition_id = _entity_pb2.PartitionId(
+            project_id=self._query.project,
+            namespace_id=self._query.namespace)
+        response_pb = self.client._datastore_api.run_query(
+            self._query.project,
+            partition_id,
+            read_options,
+            query=query_pb,
         )
         entity_pbs = self._process_query_results(response_pb)
         return Page(self, entity_pbs, self._item_to_value)

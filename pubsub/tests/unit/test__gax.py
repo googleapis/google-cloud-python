@@ -274,12 +274,13 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
         MESSAGE = {'data': B64, 'attributes': {'foo': 'bar'}}
+        timeout = 120  # 120 seconds or 2 minutes
         gax_api = _GAXPublisherAPI()
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
-            api.topic_publish(self.TOPIC_PATH, [MESSAGE])
+            api.topic_publish(self.TOPIC_PATH, [MESSAGE], timeout=timeout)
 
         topic_path, message_pbs, options = gax_api._publish_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
@@ -287,6 +288,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(message_pb.data, B64)
         self.assertEqual(message_pb.attributes, {'foo': 'bar'})
         self.assertEqual(options.is_bundling, False)
+        self.assertEqual(options.timeout, timeout)
 
     def test_topic_publish_error(self):
         import base64

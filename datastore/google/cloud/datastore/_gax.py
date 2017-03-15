@@ -19,16 +19,13 @@ import contextlib
 import sys
 
 from google.cloud.gapic.datastore.v1 import datastore_client
-from google.cloud.proto.datastore.v1 import datastore_pb2_grpc
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.gax.utils import metrics
 from grpc import StatusCode
 import six
 
-from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_channel
-from google.cloud._helpers import make_secure_stub
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud import exceptions
 
@@ -90,67 +87,6 @@ def _grpc_catch_rendezvous():
         else:
             new_exc = error_class(exc.details())
             six.reraise(error_class, new_exc, sys.exc_info()[2])
-
-
-class _DatastoreAPIOverGRPC(object):
-    """Helper mapping datastore API methods.
-
-    Makes requests to send / receive protobuf content over gRPC.
-
-    Methods make bare API requests without any helpers for constructing
-    the requests or parsing the responses.
-
-    :type connection: :class:`Connection`
-    :param connection: A connection object that contains helpful
-                       information for making requests.
-    """
-
-    def __init__(self, connection):
-        parse_result = six.moves.urllib_parse.urlparse(
-            connection.api_base_url)
-        host = parse_result.hostname
-        if parse_result.scheme == 'https':
-            self._stub = make_secure_stub(
-                connection.credentials, DEFAULT_USER_AGENT,
-                datastore_pb2_grpc.DatastoreStub, host,
-                extra_options=_GRPC_EXTRA_OPTIONS)
-        else:
-            self._stub = make_insecure_stub(
-                datastore_pb2_grpc.DatastoreStub, host)
-
-    def lookup(self, project, request_pb):
-        """Perform a ``lookup`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.LookupRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.LookupResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.Lookup(request_pb)
-
-    def run_query(self, project, request_pb):
-        """Perform a ``runQuery`` request.
-
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type request_pb: :class:`.datastore_pb2.RunQueryRequest`
-        :param request_pb: The request protobuf object.
-
-        :rtype: :class:`.datastore_pb2.RunQueryResponse`
-        :returns: The returned protobuf response object.
-        """
-        request_pb.project_id = project
-        with _grpc_catch_rendezvous():
-            return self._stub.RunQuery(request_pb)
 
 
 class GAPICDatastoreAPI(datastore_client.DatastoreClient):
