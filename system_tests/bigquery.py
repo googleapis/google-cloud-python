@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import operator
+import os
 
 import unittest
 
@@ -25,12 +27,23 @@ from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
+WHERE = os.path.abspath(os.path.dirname(__file__))
+
+
 def _has_rows(result):
     return len(result) > 0
 
 
 def _make_dataset_name(prefix):
     return '%s%s' % (prefix, unique_resource_id())
+
+
+def _load_json_schema(filename='bigquery_test_schema.json'):
+    from google.cloud.bigquery.table import _parse_schema_resource
+    json_filename = os.path.join(WHERE, filename)
+
+    with open(json_filename, 'r') as schema_file:
+        return _parse_schema_resource(json.load(schema_file))
 
 
 def _rate_limit_exceeded(forbidden):
@@ -650,3 +663,18 @@ class TestBigQuery(unittest.TestCase):
         dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
         table = dataset.table(TABLE_NAME)
         self._fetch_single_page(table)
+
+    def test_create_table_nested_schema(self):
+        table_name = 'test_table'
+        dataset = Config.CLIENT.dataset(
+            _make_dataset_name('create_table_nested_schema'))
+        self.assertFalse(dataset.exists())
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        table = dataset.table(table_name, schema=_load_json_schema())
+        table.create()
+        self.to_delete.insert(0, table)
+        self.assertTrue(table.exists())
+        self.assertEqual(table.name, table_name)
