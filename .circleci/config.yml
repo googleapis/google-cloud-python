@@ -4,6 +4,7 @@ jobs:
   build:
     docker:
       - image: googleapis/nox:0.10.0
+    parallelism: 3
     steps:
       - checkout
       - run:
