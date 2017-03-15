@@ -58,7 +58,7 @@ class Query(object):
         (Optional) The namespace to which to restrict results.  If not passed,
         uses the client's value.
 
-    :type ancestor: :class:`google.cloud.datastore.key.Key`
+    :type ancestor: :class:`~google.cloud.datastore.key.Key`
     :param ancestor:
         (Optional) key of the ancestor to which this query's results are
         restricted.
@@ -173,7 +173,7 @@ class Query(object):
     def ancestor(self):
         """The ancestor key for the query.
 
-        :rtype: Key or None
+        :rtype: :class:`~google.cloud.datastore.key.Key` or None
         :returns: The ancestor for the query.
         """
         return self._ancestor
@@ -182,7 +182,7 @@ class Query(object):
     def ancestor(self, value):
         """Set the ancestor for the query
 
-        :type value: Key
+        :type value: :class:`~google.cloud.datastore.key.Key`
         :param value: the new ancestor key
         """
         if not isinstance(value, Key):
