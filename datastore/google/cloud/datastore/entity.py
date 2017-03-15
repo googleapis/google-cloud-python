@@ -43,7 +43,7 @@ class Entity(dict):
     .. testsetup:: entity-ctor
 
        from google.cloud import datastore
-       from datastore import Config  # system tests
+       from tests.system.test_system import Config  # system tests
 
        client = datastore.Client()
        key = client.key('EntityKind', 1234, namespace='_Doctest')
@@ -56,7 +56,7 @@ class Entity(dict):
     .. doctest:: entity-ctor
 
        >>> client.get(key)
-       <Entity(u'EntityKind', 1234L) {u'property': 'value'}>
+       <Entity('EntityKind', 1234) {'property': 'value'}>
 
     You can the set values on the entity just like you would on any
     other dictionary.
