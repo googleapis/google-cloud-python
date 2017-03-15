@@ -68,6 +68,9 @@ class Entity(object):
 
     :type metadata: dict
     :param metadata: The metadata associated with the entity.
+                     Wikipedia URLs and Knowledge Graph MIDs are
+                     provided, if available. The associated keys are
+                     "wikipedia_url" and "mid", respectively.
 
     :type salience: float
     :param salience: The prominence of the entity / phrase within the text
