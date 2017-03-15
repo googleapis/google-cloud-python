@@ -25,7 +25,7 @@ def docs(session):
     session.interpreter = 'python3.6'
 
     # Install Sphinx and also all of the google-cloud-* packages.
-    session.chdir(os.path.dirname(__file__))
+    session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install('sphinx', 'sphinx_rtd_theme')
     session.install(
         'core/', 'bigquery/', 'bigtable/', 'datastore/', 'error_reporting/',
@@ -36,4 +36,4 @@ def docs(session):
     session.install('.')
 
     # Build the docs!
-    session.run('./test_utils/scripts/update_docs.sh')
+    session.run('bash', './test_utils/scripts/update_docs.sh')
