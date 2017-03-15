@@ -49,9 +49,5 @@ jobs:
       - run:
           name: Update the docs
           type: deploy
-          command: |
-            pip install sphinx sphinx_rtd_theme
-            ./test_utils/scripts/update_docs.sh
-
-
+          command: nox -e docs
     working_directory: /var/code/gcp/

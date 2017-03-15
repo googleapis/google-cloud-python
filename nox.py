@@ -36,4 +36,4 @@ def docs(session):
     session.install('.')
 
     # Build the docs!
-    session.run('./test_utils/scripts/update_docs.sh')
+    session.run('bash', './test_utils/scripts/update_docs.sh')
