@@ -667,10 +667,13 @@ class TestBatch(unittest.TestCase):
             'type': 'global',
         }
         ENTRIES = [
-            {'textPayload': TEXT, 'insertId': IID1, 'timestamp': TIMESTAMP1},
-            {'jsonPayload': STRUCT, 'insertId': IID2, 'timestamp': TIMESTAMP2},
+            {'textPayload': TEXT, 'insertId': IID1,
+             'timestamp': TIMESTAMP1.strftime("%Y-%m-%dT%H:%M:%S.%fZ")},
+            {'jsonPayload': STRUCT, 'insertId': IID2,
+             'timestamp': TIMESTAMP2.strftime("%Y-%m-%dT%H:%M:%S.%fZ")},
             {'protoPayload': json.loads(MessageToJson(message)),
-             'insertId': IID3, 'timestamp': TIMESTAMP3},
+             'insertId': IID3,
+             'timestamp': TIMESTAMP3.strftime("%Y-%m-%dT%H:%M:%S.%fZ")},
         ]
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
