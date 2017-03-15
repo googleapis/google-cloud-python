@@ -137,21 +137,6 @@ def get_changed_packages(file_list):
 
 
 if __name__ == '__main__':
-    # If there is no SSH config available, try to write one to avoid
-    # SSH hanging on prompts, but be timid and do not plow over one that
-    # is already there.
-    SSH_CONFIG = """Host *
-        StrictHostKeyChecking no
-        UserKnownHostsFile /dev/null
-        LogLevel QUIET
-    """
-    if not os.path.isfile('/etc/ssh/ssh_config'):
-        print('this is running')
-        os.mkdir('/etc/ssh/')
-        with open('/etc/ssh/ssh_config', 'w') as ssh_config:
-            ssh_config.write(SSH_CONFIG)
-        print('this ran successully')
-
     # Figure out what packages have changed.
     file_list = get_changed_files()
     for package in sorted(get_changed_packages(file_list)):
