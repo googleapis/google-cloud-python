@@ -55,8 +55,9 @@ def get_baseline():
     ])
     if ci_non_master:
         subprocess.run(['git', 'remote', 'add', 'baseline',
-                        'git@github.com:GoogleCloudPlatform/%s' % GITHUB_REPO])
-        subprocess.run(['git', 'pull', 'baseline'])
+                        'git@github.com:GoogleCloudPlatform/%s' % GITHUB_REPO],
+                        stderr=subprocess.DEVNULL)
+        subprocess.run(['git', 'pull', 'baseline'], stderr=subprocess.DEVNULL)
         return 'baseline/master'
 
     # If environment variables are set identifying what the master tip is,
@@ -88,9 +89,14 @@ def get_changed_files():
         return None
 
     # Return a list of altered files.
-    return subprocess.check_output([
-        'git', 'diff', '--name-only', '%s..HEAD' % baseline,
-    ]).decode('utf8').strip().split('\n')
+    try:
+        return subprocess.check_output([
+            'git', 'diff', '--name-only', '%s..HEAD' % baseline,
+        ], stderr=subprocess.DEVNULL).decode('utf8').strip().split('\n')
+    except subprocess.CalledProcessError:
+        warnings.warn('Unable to perform git diff; falling back to assuming '
+                      'all packages have changed.')
+        return None
 
 
 def get_changed_packages(file_list):
