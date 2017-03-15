@@ -53,12 +53,36 @@ def system_tests(session, python_version):
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
+    session.install('mock', 'pytest', '../core/', '../test_utils/')
+    session.install('.')
+
+    # Run py.test against the system tests.
+    session.run('py.test', '--quiet', 'tests/system')
+
+
+@nox.session
+def doctests(session):
+    """Run the system test suite."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        return
+
+    # Doctests run against Python 3.6 only.
+    # It is difficult to make doctests run against both Python 2 and Python 3
+    # because they test string output equivalence, which is difficult to
+    # make match (e.g. unicode literals starting with "u").
+    session.interpreter = 'python3.6'
+
+    # Install all test dependencies, then install this package into the
+    # virutalenv's dist-packages.
+    session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install('mock', 'pytest', 'sphinx',
                     '../core/', '../test_utils/')
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system')
+    session.run('py.test', '--quiet', 'tests/doctests.py')
 
 
 @nox.session

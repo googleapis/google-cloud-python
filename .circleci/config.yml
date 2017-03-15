@@ -10,8 +10,9 @@ jobs:
           name: Decrypt credentials
           command: |
             if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+              apt-get update && apt-get install -y openssl
               openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" \
-                  -in /home/ubuntu/gcp/test_utils/credentials.json.enc \
+                  -in /var/code/gcp/test_utils/credentials.json.enc \
                   -out "$GOOGLE_APPLICATION_CREDENTIALS"
             else
               echo "No credentials. System tests will not run."
@@ -26,9 +27,10 @@ jobs:
               " >> ~/.ssh/known_hosts
             fi
       - run:
-          name: INFO - Declare target packages (changed packages and dependencies).
+          name: Declare target packages (changed packages and dependencies).
           command: |
             python3.6 test_utils/scripts/get_target_packages.py > ~/target_packages
+            cat ~/target_packages
       - run:
           name: Run tests - google.cloud.core
           command: |

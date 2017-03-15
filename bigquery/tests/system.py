@@ -38,7 +38,7 @@ def _make_dataset_name(prefix):
     return '%s%s' % (prefix, unique_resource_id())
 
 
-def _load_json_schema(filename='bigquery_test_schema.json'):
+def _load_json_schema(filename='data/schema.json'):
     from google.cloud.bigquery.table import _parse_schema_resource
     json_filename = os.path.join(WHERE, filename)
 
