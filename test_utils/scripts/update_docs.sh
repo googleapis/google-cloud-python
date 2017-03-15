@@ -46,7 +46,7 @@ git submodule add -q -b gh-pages \
     ${GH_PAGES_DIR}
 
 # Determine if we are building a new tag or are building docs
-# for master. Then build new docset in docs/_build from master.
+# for master. Then build new docs in docs/_build from master.
 if [[ -n "${CIRCLE_TAG}" ]]; then
     # Sphinx will use the package version by default.
     build_docs
@@ -55,8 +55,8 @@ else
 fi
 
 # Get the current version. Assumes the PWD is the root of the git repo.
-# We run this after `tox -e docs` to make sure the `docs` env is
-# set up.
+# This is only likely to work from within nox, because the environment
+# must be set up.
 CURRENT_VERSION=$(python scripts/get_version.py)
 
 # Update gh-pages with the created docs.

@@ -137,4 +137,8 @@ jobs:
           name: Update the docs
           type: deploy
           command: nox -e docs
+      - run:
+          name: Push to PyPI (if this is a release tag).
+          type: deploy
+          command: test_utils/scripts/circleci/twine_upload.sh
     working_directory: /var/code/gcp/
