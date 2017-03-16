@@ -1,3 +1,2 @@
-include README.rst
-graft google
-global-exclude *.pyc __pycache__
+include README.rst LICENSE CHANGELOG.rst
+recursive-include tests *
