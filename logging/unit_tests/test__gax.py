@@ -369,6 +369,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from datetime import datetime
         from google.logging.type.log_severity_pb2 import WARNING
         from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
+        from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import UTC, _pb_timestamp_to_datetime
 
         NOW = datetime.utcnow().replace(tzinfo=UTC)
@@ -412,7 +413,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             'severity': SEVERITY,
             'labels': LABELS,
             'insertId': IID,
-            'timestamp': NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+            'timestamp': _datetime_to_rfc3339(NOW),
             'httpRequest': REQUEST,
             'operation': OPERATION,
         }
