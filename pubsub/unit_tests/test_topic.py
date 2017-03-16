@@ -880,8 +880,8 @@ class TestBatch(unittest.TestCase):
                 commit.assert_not_called()
 
                 # Publish another message and observe the commit.
-                batch.publish('The final call to trigger a commit, because '
-                              'this message is sufficiently long.')
+                batch.publish(u'The final call to trigger a commit, because '
+                              u'this message is sufficiently long.')
                 commit.assert_called_once_with()
 
             # There should be a second commit after the context manager
