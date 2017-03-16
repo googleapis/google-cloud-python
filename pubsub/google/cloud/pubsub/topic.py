@@ -435,14 +435,14 @@ class Batch(object):
     :type max_messages: float
 
     :param max_size: The maximum size that the serialized messages can be
-                     before automatically commiting. Defaults to just under
-                     10 MB.
+                     before automatically commiting. Defaults to 9 MB
+                     (slightly less than the API limit).
     :type max_size: int
     """
     _INFINITY = float('inf')
 
     def __init__(self, topic, client, max_interval=_INFINITY,
-                 max_messages=_INFINITY, max_size=10e6):
+                 max_messages=_INFINITY, max_size=1024 * 1024 * 9):
         self.topic = topic
         self.messages = []
         self.message_ids = []
