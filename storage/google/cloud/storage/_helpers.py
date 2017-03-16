@@ -18,6 +18,7 @@ These are *not* part of the API.
 """
 
 import base64
+import re
 from hashlib import md5
 
 
@@ -33,7 +34,12 @@ class _PropertyMixin(object):
     """
 
     def __init__(self, name=None):
-        self.name = name
+        if name is None or (re.match(r'\w', name[0]) and
+                            re.match(r'\w', name[-1])):
+            self.name = name
+        else:
+            raise ValueError(
+                'Bucket names must start and end with a number or letter.')
         self._properties = {}
         self._changes = set()
 
