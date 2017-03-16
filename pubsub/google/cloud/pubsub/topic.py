@@ -14,7 +14,11 @@
 
 """Define API Topics."""
 
+import base64
+import json
 import time
+
+import six
 
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
@@ -426,11 +430,16 @@ class Batch(object):
                          before automatically commiting. Defaults to infinity
                          (off).
     :type max_messages: float
+
+    :param max_size: The maximum size that the serialized messages can be
+                     before automatically commiting. Defaults to just under
+                     10 MB.
+    :type max_size: int
     """
     _INFINITY = float('inf')
 
     def __init__(self, topic, client, max_interval=_INFINITY,
-                 max_messages=_INFINITY):
+                 max_messages=_INFINITY, max_size=10e6):
         self.topic = topic
         self.messages = []
         self.message_ids = []
@@ -440,9 +449,12 @@ class Batch(object):
         # is exceeded, then the .publish() method will imply a commit.
         self._max_interval = max_interval
         self._max_messages = max_messages
+        self._max_size = max_size
 
-        # Set the initial starting timestamp (used against the interval).
+        # Set the initial starting timestamp (used against the interval)
+        # and initial size.
         self._start_timestamp = time.time()
+        self._current_size = 0
 
     def __enter__(self):
         return self
@@ -464,21 +476,38 @@ class Batch(object):
         :param attrs: key-value pairs to send as message attributes
         """
         self.topic._timestamp_message(attrs)
-        self.messages.append(
-            {'data': message,
-             'attributes': attrs})
+
+        # Append the message to the list of messages..
+        item = {'attributes': attrs, 'data': message}
+        self.messages.append(item)
+
+        # Determine the approximate size of the message, and increment
+        # the current batch size appropriately.
+        encoded = b''
+        if isinstance(message, six.text_type):
+            encoded += base64.b64encode(message.encode('utf8'))
+        else:
+            encoded += base64.b64encode(message)
+        encoded += base64.b64encode(
+            json.dumps(attrs, ensure_ascii=False).encode('utf8'),
+        )
+        self._current_size += len(encoded)
 
         # If too much time has elapsed since the first message
         # was added, autocommit.
         now = time.time()
         if now - self._start_timestamp > self._max_interval:
             self.commit()
-            self._start_timestamp = now
             return
 
         # If the number of messages on the list is greater than the
         # maximum allowed, autocommit (with the batch's client).
         if len(self.messages) >= self._max_messages:
+            self.commit()
+            return
+
+        # If we have reached the max size, autocommit.
+        if self._current_size >= self._max_size:
             self.commit()
             return
 
@@ -499,3 +528,5 @@ class Batch(object):
         message_ids = api.topic_publish(self.topic.full_name, self.messages[:])
         self.message_ids.extend(message_ids)
         del self.messages[:]
+        self._start_timestamp = time.time()
+        self._current_size = 0
