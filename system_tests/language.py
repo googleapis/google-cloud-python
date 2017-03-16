@@ -75,7 +75,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity1.entity_type, EntityType.PERSON)
         self.assertGreater(entity1.salience, 0.0)
         # Other mentions may occur, e.g. "painter".
-        self.assertIn(entity1.name, entity1.mentions)
+        self.assertIn(entity1.name, [str(i) for i in entity1.mentions])
         self.assertEqual(entity1.metadata['wikipedia_url'],
                          'http://en.wikipedia.org/wiki/Caravaggio')
         self.assertIsInstance(entity1.metadata, dict)
@@ -83,7 +83,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity2.name, self.NAME2)
         self.assertEqual(entity2.entity_type, EntityType.LOCATION)
         self.assertGreater(entity2.salience, 0.0)
-        self.assertEqual(entity2.mentions, [entity2.name])
+        self.assertEqual([str(i) for i in entity2.mentions], [entity2.name])
         self.assertEqual(entity2.metadata['wikipedia_url'],
                          'http://en.wikipedia.org/wiki/Italy')
         self.assertIsInstance(entity2.metadata, dict)
@@ -92,7 +92,7 @@ class TestLanguage(unittest.TestCase):
         choices = (EntityType.EVENT, EntityType.WORK_OF_ART)
         self.assertIn(entity3.entity_type, choices)
         self.assertGreater(entity3.salience, 0.0)
-        self.assertEqual(entity3.mentions, [entity3.name])
+        self.assertEqual([str(i) for i in entity3.mentions], [entity3.name])
         wiki_url = ('http://en.wikipedia.org/wiki/'
                     'The_Calling_of_St_Matthew_(Caravaggio)')
         self.assertEqual(entity3.metadata['wikipedia_url'], wiki_url)

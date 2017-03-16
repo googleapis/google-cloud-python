@@ -84,7 +84,8 @@ def _get_entities(include_entities):
                         'text': {
                             'content': ANNOTATE_NAME,
                             'beginOffset': -1
-                        }
+                        },
+                        'type': 'TYPE_UNKNOWN',
                     }
                 ]
             },
@@ -215,7 +216,8 @@ class TestDocument(unittest.TestCase):
         else:
             self.assertEqual(entity.metadata, {})
         self.assertEqual(entity.salience, salience)
-        self.assertEqual(entity.mentions, [name])
+        self.assertEqual(len(entity.mentions), 1)
+        self.assertEqual(entity.mentions[0].text.content, name)
 
     @staticmethod
     def _expected_data(content, encoding_type=None,
@@ -265,7 +267,8 @@ class TestDocument(unittest.TestCase):
                             'text': {
                                 'content': name1,
                                 'beginOffset': -1
-                            }
+                            },
+                            'type': 'TYPE_UNKNOWN',
                         }
                     ]
                 },
@@ -280,6 +283,7 @@ class TestDocument(unittest.TestCase):
                                 'content': name2,
                                 'beginOffset': -1,
                             },
+                            'type': 'PROPER',
                         },
                     ],
                 },

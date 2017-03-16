@@ -18,7 +18,10 @@ import unittest
 
 class TestEntityResponse(unittest.TestCase):
     ENTITY_DICT = {
-        'mentions': [{'text': {'content': 'Italian'}}],
+        'mentions': [{
+            'text': {'content': 'Italian', 'beginOffset': 0},
+            'type': 'PROPER',
+        }],
         'metadata': {'wikipedia_url': 'http://en.wikipedia.org/wiki/Italy'},
         'name': 'Italian',
         'salience': 0.15,
@@ -46,12 +49,14 @@ class TestEntityResponse(unittest.TestCase):
 
     def _verify_entity_response(self, entity_response):
         from google.cloud.language.entity import EntityType
+        from google.cloud.language.entity import Mention
 
         self.assertEqual(len(entity_response.entities), 1)
         entity = entity_response.entities[0]
         self.assertEqual(entity.name, 'Italian')
         self.assertEqual(len(entity.mentions), 1)
-        self.assertEqual(entity.mentions[0], 'Italian')
+        self.assertIsInstance(entity.mentions[0], Mention)
+        self.assertEqual(str(entity.mentions[0]), 'Italian')
         self.assertTrue(entity.metadata['wikipedia_url'].endswith('Italy'))
         self.assertAlmostEqual(entity.salience, 0.15)
         self.assertEqual(entity.entity_type, EntityType.LOCATION)
