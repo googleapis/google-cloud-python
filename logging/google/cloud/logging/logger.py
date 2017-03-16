@@ -476,7 +476,7 @@ class Batch(object):
             if http_req is not None:
                 info['httpRequest'] = http_req
             if timestamp is not None:
-                info['timestamp'] = timestamp
+                info['timestamp'] = _datetime_to_rfc3339(timestamp)
             entries.append(info)
 
         client.logging_api.write_entries(entries, **kwargs)
