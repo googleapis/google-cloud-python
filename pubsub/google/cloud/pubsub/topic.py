@@ -259,7 +259,7 @@ class Topic(object):
         message_ids = api.topic_publish(self.full_name, [message_data])
         return message_ids[0]
 
-    def batch(self, client=None):
+    def batch(self, client=None, **kwargs):
         """Return a batch to use as a context manager.
 
         Example:
@@ -279,11 +279,15 @@ class Topic(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
+        :type kwargs: dict
+        :param kwargs: Keyword arguments passed to the
+                       :class:`~google.cloud.pubsub.topic.Batch` constructor.
+
         :rtype: :class:`Batch`
         :returns: A batch to use as a context manager.
         """
         client = self._require_client(client)
-        return Batch(self, client)
+        return Batch(self, client, **kwargs)
 
     def list_subscriptions(self, page_size=None, page_token=None, client=None):
         """List subscriptions for the project associated with this client.
