@@ -18,10 +18,9 @@ import base64
 import json
 import time
 
-import six
-
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
+from google.cloud._helpers import _to_bytes
 from google.cloud.exceptions import NotFound
 from google.cloud.pubsub._helpers import topic_name_from_path
 from google.cloud.pubsub.iam import Policy
@@ -487,11 +486,7 @@ class Batch(object):
 
         # Determine the approximate size of the message, and increment
         # the current batch size appropriately.
-        encoded = b''
-        if isinstance(message, six.text_type):
-            encoded += base64.b64encode(message.encode('utf8'))
-        else:
-            encoded += base64.b64encode(message)
+        encoded = base64.b64encode(_to_bytes(message))
         encoded += base64.b64encode(
             json.dumps(attrs, ensure_ascii=False).encode('utf8'),
         )
