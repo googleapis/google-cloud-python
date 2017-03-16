@@ -158,19 +158,44 @@ class Test_make_datastore_api(unittest.TestCase):
         return_value=mock.sentinel.ds_client)
     @mock.patch('google.cloud.datastore._gax.make_secure_channel',
                 return_value=mock.sentinel.channel)
-    def test_it(self, make_chan, mock_klass):
+    def test_live_api(self, make_chan, mock_klass):
         from google.cloud.gapic.datastore.v1 import datastore_client
         from google.cloud._http import DEFAULT_USER_AGENT
         from google.cloud.datastore import __version__
 
+        host = datastore_client.DatastoreClient.SERVICE_ADDRESS
+        base_url = 'https://' + host
         client = mock.Mock(
-            _credentials=mock.sentinel.credentials, spec=['_credentials'])
+            _base_url=base_url,
+            _credentials=mock.sentinel.credentials,
+            spec=['_base_url', '_credentials'])
         ds_api = self._call_fut(client)
         self.assertIs(ds_api, mock.sentinel.ds_client)
 
         make_chan.assert_called_once_with(
-            mock.sentinel.credentials, DEFAULT_USER_AGENT,
-            datastore_client.DatastoreClient.SERVICE_ADDRESS)
+            mock.sentinel.credentials, DEFAULT_USER_AGENT, host)
+        mock_klass.assert_called_once_with(
+            channel=mock.sentinel.channel, lib_name='gccl',
+            lib_version=__version__)
+
+    @mock.patch(
+        'google.cloud.datastore._gax.GAPICDatastoreAPI',
+        return_value=mock.sentinel.ds_client)
+    @mock.patch('google.cloud.datastore._gax.insecure_channel',
+                return_value=mock.sentinel.channel)
+    def test_emulator(self, make_chan, mock_klass):
+        from google.cloud.datastore import __version__
+
+        host = 'localhost:8901'
+        base_url = 'http://' + host
+        client = mock.Mock(
+            _base_url=base_url,
+            _credentials=mock.sentinel.credentials,
+            spec=['_base_url', '_credentials'])
+        ds_api = self._call_fut(client)
+        self.assertIs(ds_api, mock.sentinel.ds_client)
+
+        make_chan.assert_called_once_with(host)
         mock_klass.assert_called_once_with(
             channel=mock.sentinel.channel, lib_name='gccl',
             lib_version=__version__)
