@@ -60,8 +60,8 @@ _GRPC_ERROR_MAPPING = {
 
 
 @contextlib.contextmanager
-def _grpc_catch_rendezvous():
-    """Remap gRPC exceptions that happen in context.
+def _catch_remap_gax_error():
+    """Remap GAX exceptions that happen in context.
 
     .. _code.proto: https://github.com/googleapis/googleapis/blob/\
                     master/google/rpc/code.proto
@@ -79,14 +79,6 @@ def _grpc_catch_rendezvous():
             raise
         else:
             new_exc = error_class(exc.cause.details())
-            six.reraise(error_class, new_exc, sys.exc_info()[2])
-    except exceptions.GrpcRendezvous as exc:
-        error_code = exc.code()
-        error_class = _GRPC_ERROR_MAPPING.get(error_code)
-        if error_class is None:
-            raise
-        else:
-            new_exc = error_class(exc.details())
             six.reraise(error_class, new_exc, sys.exc_info()[2])
 
 
@@ -119,7 +111,7 @@ class GAPICDatastoreAPI(datastore_client.DatastoreClient):
         :rtype: :class:`.datastore_pb2.LookupResponse`
         :returns: The returned protobuf response object.
         """
-        with _grpc_catch_rendezvous():
+        with _catch_remap_gax_error():
             return super(GAPICDatastoreAPI, self).lookup(*args, **kwargs)
 
     def run_query(self, *args, **kwargs):
@@ -138,7 +130,7 @@ class GAPICDatastoreAPI(datastore_client.DatastoreClient):
         :rtype: :class:`.datastore_pb2.RunQueryResponse`
         :returns: The returned protobuf response object.
         """
-        with _grpc_catch_rendezvous():
+        with _catch_remap_gax_error():
             return super(GAPICDatastoreAPI, self).run_query(*args, **kwargs)
 
     def begin_transaction(self, *args, **kwargs):
@@ -157,7 +149,7 @@ class GAPICDatastoreAPI(datastore_client.DatastoreClient):
         :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
         :returns: The returned protobuf response object.
         """
-        with _grpc_catch_rendezvous():
+        with _catch_remap_gax_error():
             return super(GAPICDatastoreAPI, self).begin_transaction(
                 *args, **kwargs)
 
@@ -177,7 +169,7 @@ class GAPICDatastoreAPI(datastore_client.DatastoreClient):
         :rtype: :class:`.datastore_pb2.CommitResponse`
         :returns: The returned protobuf response object.
         """
-        with _grpc_catch_rendezvous():
+        with _catch_remap_gax_error():
             return super(GAPICDatastoreAPI, self).commit(*args, **kwargs)
 
     def rollback(self, *args, **kwargs):
@@ -196,7 +188,7 @@ class GAPICDatastoreAPI(datastore_client.DatastoreClient):
         :rtype: :class:`.datastore_pb2.RollbackResponse`
         :returns: The returned protobuf response object.
         """
-        with _grpc_catch_rendezvous():
+        with _catch_remap_gax_error():
             return super(GAPICDatastoreAPI, self).rollback(*args, **kwargs)
 
     def allocate_ids(self, *args, **kwargs):
@@ -215,7 +207,7 @@ class GAPICDatastoreAPI(datastore_client.DatastoreClient):
         :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
         :returns: The returned protobuf response object.
         """
-        with _grpc_catch_rendezvous():
+        with _catch_remap_gax_error():
             return super(GAPICDatastoreAPI, self).allocate_ids(
                 *args, **kwargs)
 
