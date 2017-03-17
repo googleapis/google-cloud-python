@@ -33,7 +33,7 @@ def _operation_complete(result):
     return result
 
 
-def _wait_until_complete(operation, max_attempts=5):
+def _wait_until_complete(operation, max_attempts=10):
     """Wait until an operation has completed.
 
     :type operation: :class:`google.cloud.operation.Operation`
