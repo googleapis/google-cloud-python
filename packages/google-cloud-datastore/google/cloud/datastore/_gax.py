@@ -103,6 +103,64 @@ class GAPICDatastoreAPI(datastore_client.DatastoreClient):
     :param kwargs: Keyword arguments to pass to constructor.
     """
 
+    def lookup(self, *args, **kwargs):
+        """Perform a ``lookup`` request.
+
+        A light wrapper around the the base method from the parent class.
+        Intended to provide exception re-mapping (from GaxError to our
+        native errors).
+
+        :type args: tuple
+        :param args: Positional arguments to pass to base method.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to pass to base method.
+
+        :rtype: :class:`.datastore_pb2.LookupResponse`
+        :returns: The returned protobuf response object.
+        """
+        with _grpc_catch_rendezvous():
+            return super(GAPICDatastoreAPI, self).lookup(*args, **kwargs)
+
+    def run_query(self, *args, **kwargs):
+        """Perform a ``runQuery`` request.
+
+        A light wrapper around the the base method from the parent class.
+        Intended to provide exception re-mapping (from GaxError to our
+        native errors).
+
+        :type args: tuple
+        :param args: Positional arguments to pass to base method.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to pass to base method.
+
+        :rtype: :class:`.datastore_pb2.RunQueryResponse`
+        :returns: The returned protobuf response object.
+        """
+        with _grpc_catch_rendezvous():
+            return super(GAPICDatastoreAPI, self).run_query(*args, **kwargs)
+
+    def begin_transaction(self, *args, **kwargs):
+        """Perform a ``beginTransaction`` request.
+
+        A light wrapper around the the base method from the parent class.
+        Intended to provide exception re-mapping (from GaxError to our
+        native errors).
+
+        :type args: tuple
+        :param args: Positional arguments to pass to base method.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to pass to base method.
+
+        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
+        :returns: The returned protobuf response object.
+        """
+        with _grpc_catch_rendezvous():
+            return super(GAPICDatastoreAPI, self).begin_transaction(
+                *args, **kwargs)
+
     def commit(self, *args, **kwargs):
         """Perform a ``commit`` request.
 
@@ -121,6 +179,45 @@ class GAPICDatastoreAPI(datastore_client.DatastoreClient):
         """
         with _grpc_catch_rendezvous():
             return super(GAPICDatastoreAPI, self).commit(*args, **kwargs)
+
+    def rollback(self, *args, **kwargs):
+        """Perform a ``rollback`` request.
+
+        A light wrapper around the the base method from the parent class.
+        Intended to provide exception re-mapping (from GaxError to our
+        native errors).
+
+        :type args: tuple
+        :param args: Positional arguments to pass to base method.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to pass to base method.
+
+        :rtype: :class:`.datastore_pb2.RollbackResponse`
+        :returns: The returned protobuf response object.
+        """
+        with _grpc_catch_rendezvous():
+            return super(GAPICDatastoreAPI, self).rollback(*args, **kwargs)
+
+    def allocate_ids(self, *args, **kwargs):
+        """Perform an ``allocateIds`` request.
+
+        A light wrapper around the the base method from the parent class.
+        Intended to provide exception re-mapping (from GaxError to our
+        native errors).
+
+        :type args: tuple
+        :param args: Positional arguments to pass to base method.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to pass to base method.
+
+        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
+        :returns: The returned protobuf response object.
+        """
+        with _grpc_catch_rendezvous():
+            return super(GAPICDatastoreAPI, self).allocate_ids(
+                *args, **kwargs)
 
 
 def make_datastore_api(client):
