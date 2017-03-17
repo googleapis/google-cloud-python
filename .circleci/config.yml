@@ -41,7 +41,7 @@ jobs:
           name: Run tests - google.cloud.bigquery
           command: |
             if [[ -n $(grep bigquery ~/target_packages) ]]; then
-              nox -f bigquery/nox.py
+              nox -f bigquery/noxfile.py
             fi
       - run:
           name: Run tests - google.cloud.bigtable
