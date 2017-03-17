@@ -30,7 +30,8 @@ class _PropertyMixin(object):
       - path
 
     :type name: str
-    :param name: The name of the object.
+    :param name: The name of the object. Bucket names must start and end with a
+                 number or letter.
     """
 
     def __init__(self, name=None):
