@@ -18,8 +18,26 @@ These are *not* part of the API.
 """
 
 import base64
-import re
 from hashlib import md5
+
+
+def _validate_name(name):
+    """Pre-flight ``Bucket`` name validation.
+
+    :type name: str or :data:`NoneType`
+    :param name: Proposed bucket name.
+
+    :rtype: str or :data:`NoneType`
+    :returns: ``name`` if valid.
+    """
+    if name is None:
+        return
+
+    # The first and las characters must be alphanumeric.
+    if not all([name[0].isalnum(), name[-1].isalnum()]):
+        raise ValueError(
+            'Bucket names must start and end with a number or letter.')
+    return name
 
 
 class _PropertyMixin(object):
@@ -35,12 +53,7 @@ class _PropertyMixin(object):
     """
 
     def __init__(self, name=None):
-        if name is None or (re.match(r'\w', name[0]) and
-                            re.match(r'\w', name[-1])):
-            self.name = name
-        else:
-            raise ValueError(
-                'Bucket names must start and end with a number or letter.')
+        self.name = _validate_name(name)
         self._properties = {}
         self._changes = set()
 
