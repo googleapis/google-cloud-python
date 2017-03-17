@@ -38,12 +38,6 @@ jobs:
               nox -f core/nox.py
             fi
       - run:
-          name: Run tests - google.cloud.logging
-          command: |
-            if [[ -n $(grep logging ~/target_packages) ]]; then
-              nox -f logging/nox.py
-            fi
-      - run:
           name: Run tests - google.cloud.bigquery
           command: |
             if [[ -n $(grep bigquery ~/target_packages) ]]; then
@@ -78,6 +72,12 @@ jobs:
           command: |
             if [[ -n $(grep language ~/target_packages) ]]; then
               nox -f language/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.logging
+          command: |
+            if [[ -n $(grep logging ~/target_packages) ]]; then
+              nox -f logging/nox.py
             fi
       - run:
           name: Run tests - google.cloud.monitoring
@@ -133,12 +133,10 @@ jobs:
             if [[ -n $(grep vision ~/target_packages) ]]; then
               nox -f vision/nox.py
             fi
-      - run:
+      - deploy:
           name: Update the docs
-          type: deploy
           command: nox -e docs
-      - run:
+      - deploy:
           name: Push to PyPI (if this is a release tag).
-          type: deploy
           command: test_utils/scripts/circleci/twine_upload.sh
     working_directory: /var/code/gcp/

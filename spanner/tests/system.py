@@ -216,12 +216,12 @@ class TestDatabaseAdminAPI(unittest.TestCase):
         self.to_delete.append(temp_db)
 
         # We want to make sure the operation completes.
-        create_op.result(60)  # raises on failure / timeout.
+        create_op.result(90)  # raises on failure / timeout.
 
         operation = temp_db.update_ddl(DDL_STATEMENTS)
 
         # We want to make sure the operation completes.
-        operation.result(30)  # raises on failure / timeout.
+        operation.result(90)  # raises on failure / timeout.
 
         temp_db.reload()
 

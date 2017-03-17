@@ -19,10 +19,11 @@ set -ev
 # If this is not a CircleCI tag, no-op.
 if [[ -z "$CIRCLE_TAG" ]]; then
   echo "This is not a release tag. Doing nothing."
+  exit 0
 fi
 
 # H/T: http://stackoverflow.com/a/246128/1068170
-SCRIPT="$(dirname "${BASH_SOURCE[0]}")/circleci_tagged_pkg.py"
+SCRIPT="$(dirname "${BASH_SOURCE[0]}")/get_tagged_package.py"
 # Determine the package directory being deploying on this tag.
 PKG_DIR="$(python ${SCRIPT})"
 

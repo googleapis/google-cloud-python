@@ -114,7 +114,7 @@ class TestLogging(unittest.TestCase):
         self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
-        retry = RetryErrors(NotFound)
+        retry = RetryErrors(NotFound, max_tries=10)
         for doomed in self.to_delete:
             retry(doomed.delete)()
         logging.getLogger().handlers = self._handlers_cache[:]
@@ -447,7 +447,7 @@ class TestLogging(unittest.TestCase):
 
     def test_update_sink(self):
         SINK_NAME = 'test-update-sink%s' % (_RESOURCE_ID,)
-        retry = RetryErrors(Conflict)
+        retry = RetryErrors(Conflict, max_tries=10)
         bucket_uri = self._init_storage_bucket()
         dataset_uri = self._init_bigquery_dataset()
         UPDATED_FILTER = 'logName:syslog'
