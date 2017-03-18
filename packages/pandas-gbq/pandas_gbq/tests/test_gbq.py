@@ -13,9 +13,8 @@ import numpy as np
 from distutils.version import StrictVersion
 from pandas import compat
 
-from pandas import NaT
 from pandas.compat import u, range
-from pandas.core.frame import DataFrame
+from pandas import NaT, DataFrame
 from pandas_gbq import gbq
 import pandas.util.testing as tm
 from pandas.compat.numpy import np_datetime64_compat
