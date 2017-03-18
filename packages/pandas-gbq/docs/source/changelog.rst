@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.4 / 2017-??-??
+0.1.4 / 2017-03-17
 ------------------
 
 - ``InvalidIndexColumn`` will be raised instead of ``InvalidColumnOrder`` in ``read_gbq`` when the index column specified does not exist in the BigQuery schema. :issue:`6`

@@ -12,8 +12,7 @@
         python setup.py register sdist bdist_wheel --universal
         twine upload dist/*
 
-*   Update anaconda recipe.
+*  Do a pull-request to the feedstock on `pandas-gbq-feedstock <https://github.com/conda-forge/pandas-gbq-feedstock/>`__
 
-    This should happen automatically within a day or two.
-
-*   Update conda recipe feedstock on `conda-forge <https://conda-forge.github.io/>`_.
+        update the version
+        update the SHA256 (retrieve from PyPI)
