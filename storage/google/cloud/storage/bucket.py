@@ -81,7 +81,8 @@ class Bucket(_PropertyMixin):
                    for the bucket (which requires a project).
 
     :type name: str
-    :param name: The name of the bucket.
+    :param name: The name of the bucket. Bucket names must start and end with a
+                 number or letter.
     """
 
     _MAX_OBJECTS_FOR_ITERATION = 256
