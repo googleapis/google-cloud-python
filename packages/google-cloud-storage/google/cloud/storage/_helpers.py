@@ -21,6 +21,25 @@ import base64
 from hashlib import md5
 
 
+def _validate_name(name):
+    """Pre-flight ``Bucket`` name validation.
+
+    :type name: str or :data:`NoneType`
+    :param name: Proposed bucket name.
+
+    :rtype: str or :data:`NoneType`
+    :returns: ``name`` if valid.
+    """
+    if name is None:
+        return
+
+    # The first and las characters must be alphanumeric.
+    if not all([name[0].isalnum(), name[-1].isalnum()]):
+        raise ValueError(
+            'Bucket names must start and end with a number or letter.')
+    return name
+
+
 class _PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated propertties.
 
@@ -29,11 +48,12 @@ class _PropertyMixin(object):
       - path
 
     :type name: str
-    :param name: The name of the object.
+    :param name: The name of the object. Bucket names must start and end with a
+                 number or letter.
     """
 
     def __init__(self, name=None):
-        self.name = name
+        self.name = _validate_name(name)
         self._properties = {}
         self._changes = set()
 
