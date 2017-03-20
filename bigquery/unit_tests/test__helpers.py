@@ -145,7 +145,7 @@ class Test_bytes_from_json(unittest.TestCase):
         import base64
 
         expected = b'Wonderful!'
-        encoded = base64.encodestring(expected)
+        encoded = base64.standard_b64encode(expected)
         coerced = self._call_fut(encoded, object())
         self.assertEqual(coerced, expected)
 
@@ -153,7 +153,7 @@ class Test_bytes_from_json(unittest.TestCase):
         import base64
 
         expected = b'Wonderful!'
-        encoded = base64.encodestring(expected).decode('ascii')
+        encoded = base64.standard_b64encode(expected).decode('ascii')
         coerced = self._call_fut(encoded, object())
         self.assertEqual(coerced, expected)
 
@@ -558,7 +558,7 @@ class Test_bytes_to_json(unittest.TestCase):
         import base64
 
         source = b'source'
-        expected = base64.encodestring(source)
+        expected = base64.standard_b64encode(source)
         self.assertEqual(self._call_fut(source), expected)
 
 

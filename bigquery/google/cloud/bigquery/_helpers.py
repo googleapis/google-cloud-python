@@ -58,7 +58,7 @@ def _string_from_json(value, _):
 def _bytes_from_json(value, field):
     """Base64-decode value"""
     if _not_null(value, field):
-        return base64.decodestring(_to_bytes(value))
+        return base64.standard_b64decode(_to_bytes(value))
 
 
 def _timestamp_from_json(value, field):
@@ -143,7 +143,7 @@ def _bool_to_json(value):
 def _bytes_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, bytes):
-        value = base64.encodestring(value)
+        value = base64.standard_b64encode(value)
     return value
 
 
