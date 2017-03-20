@@ -14,41 +14,47 @@ environment:
     # See: http://www.appveyor.com/docs/installed-software#python
 
     # Python 2.7.11 is the latest Python 2.7 with a Windows installer
-    # Python 2.7.11 is the overall latest
+    # Python 2.7.13 is the overall latest
     # https://www.python.org/ftp/python/2.7.11/
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.11"
+      PYTHON_MAXMIN_VERSION: "2.7"
       PYTHON_ARCH: "32"
       NOX_ENV: "unit_tests(python_version='2.7')"
 
     - PYTHON: "C:\\Python27-x64"
       PYTHON_VERSION: "2.7.11"
+      PYTHON_MAXMIN_VERSION: "2.7"
       PYTHON_ARCH: "64"
       NOX_ENV: "unit_tests(python_version='2.7')"
 
     # Python 3.4.4 is the latest Python 3.4 with a Windows installer
-    # Python 3.4.4 is the overall latest
+    # Python 3.4.6 is the overall latest
     # https://www.python.org/ftp/python/3.4.4/
     - PYTHON: "C:\\Python34"
       PYTHON_VERSION: "3.4.4"
+      PYTHON_MAXMIN_VERSION: "3.4"
       PYTHON_ARCH: "32"
       NOX_ENV: "unit_tests(python_version='3.4')"
 
     - PYTHON: "C:\\Python34-x64"
       PYTHON_VERSION: "3.4.4"
+      PYTHON_MAXMIN_VERSION: "3.4"
       PYTHON_ARCH: "64"
       NOX_ENV: "unit_tests(python_version='3.4')"
 
     # Python 3.5.1 is the latest Python 3.5 with a Windows installer
-    # Python 3.5.1 is the overall latest
+    # Python 3.5.3 is the overall latest
     # https://www.python.org/ftp/python/3.5.1/
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.1"
+      PYTHON_MAXMIN_VERSION: "3.5"
       PYTHON_ARCH: "32"
       NOX_ENV: "unit_tests(python_version='3.5')"
 
     - PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.1"
+      PYTHON_MAXMIN_VERSION: "3.5"
       PYTHON_ARCH: "64"
       NOX_ENV: "unit_tests(python_version='3.5')"
 
@@ -67,6 +73,9 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+
+  # Copy the Python executable to the Unix-style executable (e.g. python3.5).
+  - "copy %PYTHON%\\python.exe %PYTHON%\\python%PYTHON_MAJMIN_VERSION%.exe"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
