@@ -621,7 +621,7 @@ class Test_datetime_to_json(unittest.TestCase):
         from google.cloud._helpers import UTC
 
         when = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=UTC)
-        self.assertEqual(self._call_fut(when), '2016-12-03T14:11:27.123456Z')
+        self.assertEqual(self._call_fut(when), '2016-12-03T14:11:27.123456')
 
 
 class Test_date_to_json(unittest.TestCase):
@@ -1017,7 +1017,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
                 'type': 'DATETIME',
             },
             'parameterValue': {
-                'value': _datetime_to_rfc3339(now),
+                'value': _datetime_to_rfc3339(now)[:-1],  # strip trailing 'Z'
             },
         }
         klass = self._get_target_class()
