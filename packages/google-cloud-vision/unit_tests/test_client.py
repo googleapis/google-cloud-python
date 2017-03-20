@@ -309,7 +309,7 @@ class TestClient(unittest.TestCase):
         api = client._vision_api
         api._connection = _Connection(returned)
         image = client.image(source_uri=IMAGE_SOURCE)
-        full_text = image.detect_full_text(limit=2)
+        full_text = image.detect_full_text(language_hints=['en'], limit=2)
 
         self.assertIsInstance(full_text, TextAnnotation)
         self.assertEqual(full_text.text, 'The Republic\nBy Plato')
@@ -324,7 +324,11 @@ class TestClient(unittest.TestCase):
 
         image_request = api._connection._requested[0]['data']['requests'][0]
         self.assertEqual(
-            image_request['image']['source']['gcs_image_uri'], IMAGE_SOURCE)
+            image_request['image']['source']['gcsImageUri'], IMAGE_SOURCE)
+        self.assertEqual(
+            len(image_request['imageContext']['languageHints']), 1)
+        self.assertEqual(
+            image_request['imageContext']['languageHints'][0], 'en')
         self.assertEqual(image_request['features'][0]['maxResults'], 2)
         self.assertEqual(
             image_request['features'][0]['type'], 'DOCUMENT_TEXT_DETECTION')
