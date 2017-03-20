@@ -779,10 +779,35 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(list(batch.messages), [MESSAGE1, MESSAGE2])
         self.assertEqual(getattr(api, '_topic_published', self), self)
 
+    def test_batch_messages(self):
+        # Establish that a batch actually batches messsages in the expected
+        # way.
+        client = _Client(project='PROJECT')
+        topic = _Topic(name='TOPIC')
+
+        # Track commits, but do not perform them.
+        Batch = self._get_target_class()
+        with mock.patch.object(Batch, 'commit') as commit:
+            with self._make_one(topic, client=client) as batch:
+                self.assertIsInstance(batch, Batch)
+
+                # Publish four messages and establish that the batch does
+                # not commit.
+                for i in range(0, 4):
+                    batch.publish('Batch message %d.' % (i,))
+                    commit.assert_not_called()
+
+                # Check the contents of the batch.
+                self.assertEqual(batch.messages, [
+                    {'data': 'Batch message 0.', 'attributes': {}},
+                    {'data': 'Batch message 1.', 'attributes': {}},
+                    {'data': 'Batch message 2.', 'attributes': {}},
+                    {'data': 'Batch message 3.', 'attributes': {}},
+                ])
+
     def test_message_count_autocommit(self):
-        """Establish that if the batch is assigned to take a maximum
-        number of messages, that it commits when it reaches that maximum.
-        """
+        # Establish that if the batch is assigned to take a maximum
+        # number of messages, that it commits when it reaches that maximum.
         client = _Client(project='PROJECT')
         topic = _Topic(name='TOPIC')
 
@@ -795,17 +820,11 @@ class TestBatch(unittest.TestCase):
                 # Publish four messages and establish that the batch does
                 # not commit.
                 for i in range(0, 4):
-                    batch.publish({
-                        'attributes': {},
-                        'data': 'Batch message %d.' % (i,),
-                    })
+                    batch.publish('Batch message %d.' % (i,))
                     commit.assert_not_called()
 
                 # Publish a fifth message and observe the commit.
-                batch.publish({
-                    'attributes': {},
-                    'data': 'The final call to trigger a commit!',
-                })
+                batch.publish('The final call to trigger a commit!')
                 commit.assert_called_once_with()
 
             # There should be a second commit after the context manager
@@ -814,9 +833,8 @@ class TestBatch(unittest.TestCase):
 
     @mock.patch('time.time')
     def test_message_time_autocommit(self, mock_time):
-        """Establish that if the batch is sufficiently old, that it commits
-        the next time it receives a publish.
-        """
+        # Establish that if the batch is sufficiently old, that it commits
+        # the next time it receives a publish.
         client = _Client(project='PROJECT')
         topic = _Topic(name='TOPIC')
 
@@ -830,20 +848,40 @@ class TestBatch(unittest.TestCase):
                 # Publish some messages and establish that the batch does
                 # not commit.
                 for i in range(0, 10):
-                    batch.publish({
-                        'attributes': {},
-                        'data': 'Batch message %d.' % (i,),
-                    })
+                    batch.publish('Batch message %d.' % (i,))
                     commit.assert_not_called()
 
                 # Move time ahead so that this batch is too old.
                 mock_time.return_value = 10.0
 
                 # Publish another message and observe the commit.
-                batch.publish({
-                    'attributes': {},
-                    'data': 'The final call to trigger a commit!',
-                })
+                batch.publish('The final call to trigger a commit!')
+                commit.assert_called_once_with()
+
+            # There should be a second commit after the context manager
+            # exits.
+            self.assertEqual(commit.call_count, 2)
+
+    def test_message_size_autocommit(self):
+        # Establish that if the batch is sufficiently large, that it
+        # auto-commits.
+        client = _Client(project='PROJECT')
+        topic = _Topic(name='TOPIC')
+
+        # Track commits, but do not perform them.
+        Batch = self._get_target_class()
+        with mock.patch.object(Batch, 'commit') as commit:
+            with self._make_one(topic, client=client, max_size=100) as batch:
+                self.assertIsInstance(batch, Batch)
+
+                # Publish a short (< 100 bytes) message and establish that
+                # the batch does not commit.
+                batch.publish(b'foo')
+                commit.assert_not_called()
+
+                # Publish another message and observe the commit.
+                batch.publish(u'The final call to trigger a commit, because '
+                              u'this message is sufficiently long.')
                 commit.assert_called_once_with()
 
             # There should be a second commit after the context manager
