@@ -653,6 +653,7 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
+        from google.cloud._helpers import _datetime_to_rfc3339
 
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
@@ -667,10 +668,13 @@ class TestBatch(unittest.TestCase):
             'type': 'global',
         }
         ENTRIES = [
-            {'textPayload': TEXT, 'insertId': IID1, 'timestamp': TIMESTAMP1},
-            {'jsonPayload': STRUCT, 'insertId': IID2, 'timestamp': TIMESTAMP2},
+            {'textPayload': TEXT, 'insertId': IID1,
+             'timestamp': _datetime_to_rfc3339(TIMESTAMP1)},
+            {'jsonPayload': STRUCT, 'insertId': IID2,
+             'timestamp': _datetime_to_rfc3339(TIMESTAMP2)},
             {'protoPayload': json.loads(MessageToJson(message)),
-             'insertId': IID3, 'timestamp': TIMESTAMP3},
+             'insertId': IID3,
+             'timestamp': _datetime_to_rfc3339(TIMESTAMP3)},
         ]
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()

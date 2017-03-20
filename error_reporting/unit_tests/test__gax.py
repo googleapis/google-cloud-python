@@ -30,8 +30,8 @@ class Test_make_report_error_api(unittest.TestCase):
 
         client = mock.Mock(
             _credentials=mock.sentinel.credentials,
-            project='prahj-ekt',
-            spec=['project', '_credentials'],
+            _project='prahj-ekt',
+            spec=['_project', '_credentials'],
         )
 
         # Mock out the constructor for the GAPIC client.
@@ -52,7 +52,7 @@ class Test_make_report_error_api(unittest.TestCase):
 
         # Assert that the final error client has the project in
         # the expected location.
-        self.assertIs(report_error_client._project, client.project)
+        self.assertIs(report_error_client._project, client._project)
 
 
 class Test_ErrorReportingGaxApi(unittest.TestCase):
