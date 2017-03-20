@@ -18,13 +18,13 @@ environment:
     # https://www.python.org/ftp/python/2.7.11/
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.11"
-      PYTHON_MAXMIN_VERSION: "2.7"
+      PYTHON_MAJMIN_VERSION: "2.7"
       PYTHON_ARCH: "32"
       NOX_ENV: "unit_tests(python_version='2.7')"
 
     - PYTHON: "C:\\Python27-x64"
       PYTHON_VERSION: "2.7.11"
-      PYTHON_MAXMIN_VERSION: "2.7"
+      PYTHON_MAJMIN_VERSION: "2.7"
       PYTHON_ARCH: "64"
       NOX_ENV: "unit_tests(python_version='2.7')"
 
@@ -33,13 +33,13 @@ environment:
     # https://www.python.org/ftp/python/3.4.4/
     - PYTHON: "C:\\Python34"
       PYTHON_VERSION: "3.4.4"
-      PYTHON_MAXMIN_VERSION: "3.4"
+      PYTHON_MAJMIN_VERSION: "3.4"
       PYTHON_ARCH: "32"
       NOX_ENV: "unit_tests(python_version='3.4')"
 
     - PYTHON: "C:\\Python34-x64"
       PYTHON_VERSION: "3.4.4"
-      PYTHON_MAXMIN_VERSION: "3.4"
+      PYTHON_MAJMIN_VERSION: "3.4"
       PYTHON_ARCH: "64"
       NOX_ENV: "unit_tests(python_version='3.4')"
 
@@ -48,13 +48,13 @@ environment:
     # https://www.python.org/ftp/python/3.5.1/
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.1"
-      PYTHON_MAXMIN_VERSION: "3.5"
+      PYTHON_MAJMIN_VERSION: "3.5"
       PYTHON_ARCH: "32"
       NOX_ENV: "unit_tests(python_version='3.5')"
 
     - PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.1"
-      PYTHON_MAXMIN_VERSION: "3.5"
+      PYTHON_MAJMIN_VERSION: "3.5"
       PYTHON_ARCH: "64"
       NOX_ENV: "unit_tests(python_version='3.5')"
 
