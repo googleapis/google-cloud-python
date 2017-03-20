@@ -41,7 +41,7 @@ def make_report_error_api(client):
         report_errors_service_client.ReportErrorsServiceClient.SERVICE_ADDRESS)
     gax_client = report_errors_service_client.ReportErrorsServiceClient(
         channel=channel, lib_name='gccl', lib_version=__version__)
-    return _ErrorReportingGaxApi(gax_client, client.project)
+    return _ErrorReportingGaxApi(gax_client, client._project)
 
 
 class _ErrorReportingGaxApi(object):

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import logging
 import unittest
 
@@ -19,6 +20,7 @@ from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from grpc import StatusCode
 
+from google.cloud._helpers import UTC
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import TooManyRequests
@@ -129,6 +131,19 @@ class TestLogging(unittest.TestCase):
         entries = _list_entries(logger)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
+
+    def test_log_text_with_timestamp(self):
+        text_payload = 'System test: test_log_text_with_timestamp'
+        logger = Config.CLIENT.logger(self._logger_name())
+        now = datetime.datetime.utcnow()
+
+        self.to_delete.append(logger)
+
+        logger.log_text(text_payload, timestamp=now)
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, text_payload)
+        self.assertEqual(entries[0].timestamp, now.replace(tzinfo=UTC))
 
     def test_log_text_w_metadata(self):
         TEXT_PAYLOAD = 'System test: test_log_text'

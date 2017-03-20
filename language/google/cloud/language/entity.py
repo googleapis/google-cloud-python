@@ -46,6 +46,80 @@ class EntityType(object):
     """Other entity type (i.e. known but not classified)."""
 
 
+class MentionType(object):
+    """List of possible mention types."""
+
+    TYPE_UNKNOWN = 'TYPE_UNKNOWN'
+    """Unknown mention type"""
+
+    PROPER = 'PROPER'
+    """Proper name"""
+
+    COMMON = 'COMMON'
+    """Common noun (or noun compound)"""
+
+
+class Mention(object):
+    """A Google Cloud Natural Language API mention.
+
+    Represents a mention for an entity in the text. Currently, proper noun
+    mentions are supported.
+    """
+    def __init__(self, text, mention_type):
+        self.text = text
+        self.mention_type = mention_type
+
+    def __str__(self):
+        return str(self.text)
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        """Convert a Mention from the JSON API into an :class:`Mention`.
+
+        :param payload: dict
+        :type payload: The value from the backend.
+
+        :rtype: :class:`Mention`
+        :returns: The mention parsed from the API representation.
+        """
+        text = TextSpan.from_api_repr(payload['text'])
+        mention_type = payload['type']
+        return cls(text, mention_type)
+
+
+class TextSpan(object):
+    """A span of text from Google Cloud Natural Language API.
+
+    Represents a word or phrase of text, as well as its offset
+    from the original document.
+    """
+    def __init__(self, content, begin_offset):
+        self.content = content
+        self.begin_offset = begin_offset
+
+    def __str__(self):
+        """Return the string representation of this TextSpan.
+
+        :rtype: str
+        :returns: The text content
+        """
+        return self.content
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        """Convert a TextSpan from the JSON API into an :class:`TextSpan`.
+
+        :param payload: dict
+        :type payload: The value from the backend.
+
+        :rtype: :class:`TextSpan`
+        :returns: The text span parsed from the API representation.
+        """
+        content = payload['content']
+        begin_offset = payload['beginOffset']
+        return cls(content=content, begin_offset=begin_offset)
+
+
 class Entity(object):
     """A Google Cloud Natural Language API entity.
 
@@ -101,6 +175,5 @@ class Entity(object):
         entity_type = payload['type']
         metadata = payload['metadata']
         salience = payload['salience']
-        mentions = [value['text']['content']
-                    for value in payload['mentions']]
+        mentions = [Mention.from_api_repr(val) for val in payload['mentions']]
         return cls(name, entity_type, metadata, salience, mentions)

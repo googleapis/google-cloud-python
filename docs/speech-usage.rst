@@ -165,7 +165,7 @@ speech data to possible text alternatives on the fly.
     >>> from google.cloud import speech
     >>> client = speech.Client()
     >>> with open('./hello.wav', 'rb') as stream:
-    ...     sample = client.sample(content=stream,
+    ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
     ...     results = list(sample.streaming_recognize())
@@ -188,7 +188,7 @@ See: `Single Utterance`_
 .. code-block:: python
 
     >>> with open('./hello_pause_goodbye.wav', 'rb') as stream:
-    ...     sample = client.sample(content=stream,
+    ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
     ...     responses = sample.streaming_recognize(single_utterance=True)
