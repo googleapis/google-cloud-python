@@ -88,6 +88,16 @@ build_script:
 
 test_script:
   - "%CMD_IN_ENV% pip list"
+
+  # AppVeyor gets confused by a nox.py file in the root, and tries to
+  # import from it instead of importing actual nox.
+  #
+  # This is an annoying problem, but we do not need to build docs here,
+  # so this is a hack-solution to get around it. I am okay with this in the
+  # short term because docs will move into their own packages soon, and this
+  # file will disappear completely.
+  - '%CMD_IN_ENV% del nox.py'
+
   # Run the project tests
   - '%CMD_IN_ENV% nox -f bigquery/nox.py -e "%NOX_ENV%'
   - '%CMD_IN_ENV% nox -f bigtable/nox.py -e "%NOX_ENV%'
