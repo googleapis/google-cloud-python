@@ -868,11 +868,14 @@ class Blob(_PropertyMixin):
             method='POST', path=source.path + '/rewriteTo' + self.path,
             query_params=query_params, data=self._properties, headers=headers,
             _target_object=self)
-        self._set_properties(api_response['resource'])
         rewritten = int(api_response['totalBytesRewritten'])
         size = int(api_response['objectSize'])
 
+        # The resource key is set if and only if the API response is
+        # completely done. Additionally, there is no rewrite token to return
+        # in this case.
         if api_response['done']:
+            self._set_properties(api_response['resource'])
             return None, rewritten, size
 
         return api_response['rewriteToken'], rewritten, size
