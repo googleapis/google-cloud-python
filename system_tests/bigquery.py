@@ -538,17 +538,32 @@ class TestBigQuery(unittest.TestCase):
         from google.cloud.bigquery._helpers import ArrayQueryParameter
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery._helpers import StructQueryParameter
-        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
-        stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
-        zoned = naive.replace(tzinfo=UTC)
-        zoned_param = ScalarQueryParameter(
-            name='zoned', type_='TIMESTAMP', value=zoned)
         question = 'What is the answer to life, the universe, and everything?'
         question_param = ScalarQueryParameter(
             name='question', type_='STRING', value=question)
         answer = 42
         answer_param = ScalarQueryParameter(
             name='answer', type_='INT64', value=answer)
+        pi = 3.1415926
+        pi_param = ScalarQueryParameter(
+            name='pi', type_='FLOAT64', value=pi)
+        truthy = True
+        truthy_param = ScalarQueryParameter(
+            name='truthy', type_='BOOL', value=truthy)
+        beef = b'DEADBEEF'
+        beef_param = ScalarQueryParameter(
+            name='beef', type_='BYTES', value=beef)
+        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
+        stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
+        naive_param = ScalarQueryParameter(
+            name='naive', type_='DATETIME', value=naive)
+        naive_date_param = ScalarQueryParameter(
+            name='naive_date', type_='DATE', value=naive.date())
+        naive_time_param = ScalarQueryParameter(
+            name='naive_time', type_='TIME', value=naive.time())
+        zoned = naive.replace(tzinfo=UTC)
+        zoned_param = ScalarQueryParameter(
+            name='zoned', type_='TIMESTAMP', value=zoned)
         array_param = ArrayQueryParameter(
             name='array_param', array_type='INT64', values=[1, 2])
         struct_param = StructQueryParameter(
@@ -628,6 +643,46 @@ class TestBigQuery(unittest.TestCase):
             {
                 'sql': 'SELECT ARRAY(SELECT STRUCT([1, 2]))',
                 'expected': [{u'_field_1': [1, 2]}],
+            },
+            {
+                'sql': 'SELECT @question',
+                'expected': question,
+                'query_parameters': [question_param],
+            },
+            {
+                'sql': 'SELECT @answer',
+                'expected': answer,
+                'query_parameters': [answer_param],
+            },
+            {
+                'sql': 'SELECT @pi',
+                'expected': pi,
+                'query_parameters': [pi_param],
+            },
+            {
+                'sql': 'SELECT @truthy',
+                'expected': truthy,
+                'query_parameters': [truthy_param],
+            },
+            {
+                'sql': 'SELECT @beef',
+                'expected': beef,
+                'query_parameters': [beef_param],
+            },
+            {
+                'sql': 'SELECT @naive',
+                'expected': naive,
+                'query_parameters': [naive_param],
+            },
+            {
+                'sql': 'SELECT @naive_date',
+                'expected': naive.date(),
+                'query_parameters': [naive_date_param],
+            },
+            {
+                'sql': 'SELECT @naive_time',
+                'expected': naive.time(),
+                'query_parameters': [naive_time_param],
             },
             {
                 'sql': 'SELECT @zoned',
