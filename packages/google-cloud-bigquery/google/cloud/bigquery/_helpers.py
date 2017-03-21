@@ -542,6 +542,9 @@ class StructQueryParameter(AbstractQueryParameter):
             if isinstance(sub, self.__class__):
                 types[sub.name] = 'STRUCT'
                 values[sub.name] = sub
+            elif isinstance(sub, ArrayQueryParameter):
+                types[sub.name] = 'ARRAY'
+                values[sub.name] = sub
             else:
                 types[sub.name] = sub.type_
                 values[sub.name] = sub.value
@@ -591,7 +594,7 @@ class StructQueryParameter(AbstractQueryParameter):
         values = {}
         for name, value in self.struct_values.items():
             type_ = self.struct_types[name]
-            if type_ == 'STRUCT':
+            if type_ in ('STRUCT', 'ARRAY'):
                 repr_ = value.to_api_repr()
                 s_types[name] = {'name': name, 'type': repr_['parameterType']}
                 values[name] = repr_['parameterValue']
