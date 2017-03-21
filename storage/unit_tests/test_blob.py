@@ -1288,6 +1288,33 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s/compose' % DESTINATION)
         self.assertEqual(kw[0]['data'], SENT)
 
+    def test_rewrite_response_without_resource(self):
+        from six.moves.http_client import OK
+
+        SOURCE_BLOB = 'source'
+        DEST_BLOB = 'dest'
+        DEST_BUCKET = 'other-bucket'
+        TOKEN = 'TOKEN'
+        RESPONSE = {
+            'totalBytesRewritten': 33,
+            'objectSize': 42,
+            'done': False,
+            'rewriteToken': TOKEN,
+        }
+        response = ({'status': OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        source_bucket = _Bucket(client=client)
+        source_blob = self._make_one(SOURCE_BLOB, bucket=source_bucket)
+        dest_bucket = _Bucket(client=client, name=DEST_BUCKET)
+        dest_blob = self._make_one(DEST_BLOB, bucket=dest_bucket)
+
+        token, rewritten, size = dest_blob.rewrite(source_blob)
+
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(rewritten, 33)
+        self.assertEqual(size, 42)
+
     def test_rewrite_other_bucket_other_name_no_encryption_partial(self):
         from six.moves.http_client import OK
 
