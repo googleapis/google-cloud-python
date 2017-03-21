@@ -664,6 +664,45 @@ class TestBigQuery(unittest.TestCase):
         table = dataset.table(TABLE_NAME)
         self._fetch_single_page(table)
 
+    def test_insert_nested_nested(self):
+        # See #2951
+        SF = bigquery.SchemaField
+        schema = [
+            SF('string_col', 'STRING', mode='NULLABLE'),
+            SF('record_col', 'RECORD', mode='NULLABLE', fields=[
+                SF('nested_string', 'STRING', mode='NULLABLE'),
+                SF('nested_repeated', 'INTEGER', mode='REPEATED'),
+                SF('nested_record', 'RECORD', mode='NULLABLE', fields=[
+                    SF('nested_nested_string', 'STRING', mode='NULLABLE'),
+                ]),
+            ]),
+        ]
+        record = {
+            'nested_string': 'another string value',
+            'nested_repeated': [0, 1, 2],
+            'nested_record': {'nested_nested_string': 'some deep insight'},
+        }
+        to_insert = [
+            ('Some value', record)
+        ]
+        table_name = 'test_table'
+        dataset = Config.CLIENT.dataset(
+            _make_dataset_name('issue_2951'))
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        table = dataset.table(table_name, schema=schema)
+        table.create()
+        self.to_delete.insert(0, table)
+
+        table.insert_data(to_insert)
+
+        retry = RetryResult(_has_rows, max_tries=8)
+        rows = retry(self._fetch_single_page)(table)
+
+        self.assertEqual(rows, to_insert)
+
     def test_create_table_nested_schema(self):
         table_name = 'test_table'
         dataset = Config.CLIENT.dataset(

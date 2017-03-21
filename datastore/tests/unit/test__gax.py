@@ -20,12 +20,12 @@ from google.cloud.datastore.client import _HAVE_GRPC
 
 
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-class Test__grpc_catch_rendezvous(unittest.TestCase):
+class Test__catch_remap_gax_error(unittest.TestCase):
 
     def _call_fut(self):
-        from google.cloud.datastore._gax import _grpc_catch_rendezvous
+        from google.cloud.datastore._gax import _catch_remap_gax_error
 
-        return _grpc_catch_rendezvous()
+        return _catch_remap_gax_error()
 
     @staticmethod
     def _fake_method(exc, result=None):
@@ -48,37 +48,7 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
             result = self._fake_method(None, expected)
         self.assertIs(result, expected)
 
-    def test_failure_aborted(self):
-        from grpc import StatusCode
-        from google.cloud.exceptions import Conflict
-
-        details = 'Bad things.'
-        exc = self._make_rendezvous(StatusCode.ABORTED, details)
-        with self.assertRaises(Conflict):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_failure_invalid_argument(self):
-        from grpc import StatusCode
-        from google.cloud.exceptions import BadRequest
-
-        details = ('Cannot have inequality filters on multiple '
-                   'properties: [created, priority]')
-        exc = self._make_rendezvous(StatusCode.INVALID_ARGUMENT, details)
-        with self.assertRaises(BadRequest):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_failure_cancelled(self):
-        from google.cloud.exceptions import GrpcRendezvous
-        from grpc import StatusCode
-
-        exc = self._make_rendezvous(StatusCode.CANCELLED, None)
-        with self.assertRaises(GrpcRendezvous):
-            with self._call_fut():
-                self._fake_method(exc)
-
-    def test_commit_failure_non_grpc_err(self):
+    def test_non_grpc_err(self):
         exc = RuntimeError('Not a gRPC error')
         with self.assertRaises(RuntimeError):
             with self._call_fut():
@@ -132,7 +102,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
             return_value=None)
         patch2 = mock.patch.object(datastore_client.DatastoreClient, 'lookup')
         patch3 = mock.patch(
-            'google.cloud.datastore._gax._grpc_catch_rendezvous')
+            'google.cloud.datastore._gax._catch_remap_gax_error')
 
         with patch1 as mock_constructor:
             ds_api = self._make_one()
@@ -153,7 +123,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
         patch2 = mock.patch.object(
             datastore_client.DatastoreClient, 'run_query')
         patch3 = mock.patch(
-            'google.cloud.datastore._gax._grpc_catch_rendezvous')
+            'google.cloud.datastore._gax._catch_remap_gax_error')
 
         with patch1 as mock_constructor:
             ds_api = self._make_one()
@@ -174,7 +144,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
         patch2 = mock.patch.object(
             datastore_client.DatastoreClient, 'begin_transaction')
         patch3 = mock.patch(
-            'google.cloud.datastore._gax._grpc_catch_rendezvous')
+            'google.cloud.datastore._gax._catch_remap_gax_error')
 
         with patch1 as mock_constructor:
             ds_api = self._make_one()
@@ -195,7 +165,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
             return_value=None)
         patch2 = mock.patch.object(datastore_client.DatastoreClient, 'commit')
         patch3 = mock.patch(
-            'google.cloud.datastore._gax._grpc_catch_rendezvous')
+            'google.cloud.datastore._gax._catch_remap_gax_error')
 
         with patch1 as mock_constructor:
             ds_api = self._make_one()
@@ -216,7 +186,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
         patch2 = mock.patch.object(
             datastore_client.DatastoreClient, 'rollback')
         patch3 = mock.patch(
-            'google.cloud.datastore._gax._grpc_catch_rendezvous')
+            'google.cloud.datastore._gax._catch_remap_gax_error')
 
         with patch1 as mock_constructor:
             ds_api = self._make_one()
@@ -237,7 +207,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
         patch2 = mock.patch.object(
             datastore_client.DatastoreClient, 'allocate_ids')
         patch3 = mock.patch(
-            'google.cloud.datastore._gax._grpc_catch_rendezvous')
+            'google.cloud.datastore._gax._catch_remap_gax_error')
 
         with patch1 as mock_constructor:
             ds_api = self._make_one()
