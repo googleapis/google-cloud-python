@@ -500,18 +500,23 @@ class ArrayQueryParameter(AbstractQueryParameter):
         :returns: JSON mapping
         """
         values = self.values
-        converter = _SCALAR_VALUE_TO_JSON.get(self.array_type)
-        if converter is not None:
-            values = [converter(value) for value in values]
+        if self.array_type == 'RECORD':
+            reprs = [value.to_api_repr() for value in values]
+            a_type = reprs[0]['parameterType']
+            a_values = [repr_['parameterValue'] for repr_ in reprs]
+        else:
+            a_type = {'type': self.array_type}
+            converter = _SCALAR_VALUE_TO_JSON.get(self.array_type)
+            if converter is not None:
+                values = [converter(value) for value in values]
+            a_values = [{'value': value} for value in values]
         resource = {
             'parameterType': {
                 'type': 'ARRAY',
-                'arrayType': {
-                    'type': self.array_type,
-                },
+                'arrayType': a_type,
             },
             'parameterValue': {
-                'arrayValues': [{'value': value} for value in values],
+                'arrayValues': a_values,
             },
         }
         if self.name is not None:
