@@ -14,10 +14,13 @@
 
 """Define API Topics."""
 
+import base64
+import json
 import time
 
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
+from google.cloud._helpers import _to_bytes
 from google.cloud.exceptions import NotFound
 from google.cloud.pubsub._helpers import topic_name_from_path
 from google.cloud.pubsub.iam import Policy
@@ -255,7 +258,7 @@ class Topic(object):
         message_ids = api.topic_publish(self.full_name, [message_data])
         return message_ids[0]
 
-    def batch(self, client=None):
+    def batch(self, client=None, **kwargs):
         """Return a batch to use as a context manager.
 
         Example:
@@ -275,11 +278,15 @@ class Topic(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
+        :type kwargs: dict
+        :param kwargs: Keyword arguments passed to the
+                       :class:`~google.cloud.pubsub.topic.Batch` constructor.
+
         :rtype: :class:`Batch`
         :returns: A batch to use as a context manager.
         """
         client = self._require_client(client)
-        return Batch(self, client)
+        return Batch(self, client, **kwargs)
 
     def list_subscriptions(self, page_size=None, page_token=None, client=None):
         """List subscriptions for the project associated with this client.
@@ -426,23 +433,30 @@ class Batch(object):
                          before automatically commiting. Defaults to infinity
                          (off).
     :type max_messages: float
+
+    :param max_size: The maximum size that the serialized messages can be
+                     before automatically commiting. Defaults to 9 MB
+                     (slightly less than the API limit).
+    :type max_size: int
     """
     _INFINITY = float('inf')
 
     def __init__(self, topic, client, max_interval=_INFINITY,
-                 max_messages=_INFINITY):
+                 max_messages=_INFINITY, max_size=1024 * 1024 * 9):
         self.topic = topic
+        self.client = client
         self.messages = []
         self.message_ids = []
-        self.client = client
 
         # Set the autocommit rules. If the interval or number of messages
         # is exceeded, then the .publish() method will imply a commit.
         self._max_interval = max_interval
         self._max_messages = max_messages
+        self._max_size = max_size
 
-        # Set the initial starting timestamp (used against the interval).
-        self._start_timestamp = time.time()
+        # Set up the initial state, initializing messages, the starting
+        # timestamp, etc.
+        self._reset_state()
 
     def __enter__(self):
         return self
@@ -454,6 +468,13 @@ class Batch(object):
     def __iter__(self):
         return iter(self.message_ids)
 
+    def _reset_state(self):
+        """Reset the state of this batch."""
+
+        del self.messages[:]
+        self._start_timestamp = time.time()
+        self._current_size = 0
+
     def publish(self, message, **attrs):
         """Emulate publishing a message, but save it.
 
@@ -464,21 +485,34 @@ class Batch(object):
         :param attrs: key-value pairs to send as message attributes
         """
         self.topic._timestamp_message(attrs)
-        self.messages.append(
-            {'data': message,
-             'attributes': attrs})
+
+        # Append the message to the list of messages..
+        item = {'attributes': attrs, 'data': message}
+        self.messages.append(item)
+
+        # Determine the approximate size of the message, and increment
+        # the current batch size appropriately.
+        encoded = base64.b64encode(_to_bytes(message))
+        encoded += base64.b64encode(
+            json.dumps(attrs, ensure_ascii=False).encode('utf8'),
+        )
+        self._current_size += len(encoded)
 
         # If too much time has elapsed since the first message
         # was added, autocommit.
         now = time.time()
         if now - self._start_timestamp > self._max_interval:
             self.commit()
-            self._start_timestamp = now
             return
 
         # If the number of messages on the list is greater than the
         # maximum allowed, autocommit (with the batch's client).
         if len(self.messages) >= self._max_messages:
+            self.commit()
+            return
+
+        # If we have reached the max size, autocommit.
+        if self._current_size >= self._max_size:
             self.commit()
             return
 
@@ -498,4 +532,4 @@ class Batch(object):
         api = client.publisher_api
         message_ids = api.topic_publish(self.topic.full_name, self.messages[:])
         self.message_ids.extend(message_ids)
-        del self.messages[:]
+        self._reset_state()

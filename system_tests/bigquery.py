@@ -538,17 +538,32 @@ class TestBigQuery(unittest.TestCase):
         from google.cloud.bigquery._helpers import ArrayQueryParameter
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery._helpers import StructQueryParameter
-        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
-        stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
-        zoned = naive.replace(tzinfo=UTC)
-        zoned_param = ScalarQueryParameter(
-            name='zoned', type_='TIMESTAMP', value=zoned)
         question = 'What is the answer to life, the universe, and everything?'
         question_param = ScalarQueryParameter(
             name='question', type_='STRING', value=question)
         answer = 42
         answer_param = ScalarQueryParameter(
             name='answer', type_='INT64', value=answer)
+        pi = 3.1415926
+        pi_param = ScalarQueryParameter(
+            name='pi', type_='FLOAT64', value=pi)
+        truthy = True
+        truthy_param = ScalarQueryParameter(
+            name='truthy', type_='BOOL', value=truthy)
+        beef = b'DEADBEEF'
+        beef_param = ScalarQueryParameter(
+            name='beef', type_='BYTES', value=beef)
+        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
+        stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
+        naive_param = ScalarQueryParameter(
+            name='naive', type_='DATETIME', value=naive)
+        naive_date_param = ScalarQueryParameter(
+            name='naive_date', type_='DATE', value=naive.date())
+        naive_time_param = ScalarQueryParameter(
+            name='naive_time', type_='TIME', value=naive.time())
+        zoned = naive.replace(tzinfo=UTC)
+        zoned_param = ScalarQueryParameter(
+            name='zoned', type_='TIMESTAMP', value=zoned)
         array_param = ArrayQueryParameter(
             name='array_param', array_type='INT64', values=[1, 2])
         struct_param = StructQueryParameter(
@@ -630,6 +645,46 @@ class TestBigQuery(unittest.TestCase):
                 'expected': [{u'_field_1': [1, 2]}],
             },
             {
+                'sql': 'SELECT @question',
+                'expected': question,
+                'query_parameters': [question_param],
+            },
+            {
+                'sql': 'SELECT @answer',
+                'expected': answer,
+                'query_parameters': [answer_param],
+            },
+            {
+                'sql': 'SELECT @pi',
+                'expected': pi,
+                'query_parameters': [pi_param],
+            },
+            {
+                'sql': 'SELECT @truthy',
+                'expected': truthy,
+                'query_parameters': [truthy_param],
+            },
+            {
+                'sql': 'SELECT @beef',
+                'expected': beef,
+                'query_parameters': [beef_param],
+            },
+            {
+                'sql': 'SELECT @naive',
+                'expected': naive,
+                'query_parameters': [naive_param],
+            },
+            {
+                'sql': 'SELECT @naive_date',
+                'expected': naive.date(),
+                'query_parameters': [naive_date_param],
+            },
+            {
+                'sql': 'SELECT @naive_time',
+                'expected': naive.time(),
+                'query_parameters': [naive_time_param],
+            },
+            {
                 'sql': 'SELECT @zoned',
                 'expected': zoned,
                 'query_parameters': [zoned_param],
@@ -663,6 +718,45 @@ class TestBigQuery(unittest.TestCase):
         dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
         table = dataset.table(TABLE_NAME)
         self._fetch_single_page(table)
+
+    def test_insert_nested_nested(self):
+        # See #2951
+        SF = bigquery.SchemaField
+        schema = [
+            SF('string_col', 'STRING', mode='NULLABLE'),
+            SF('record_col', 'RECORD', mode='NULLABLE', fields=[
+                SF('nested_string', 'STRING', mode='NULLABLE'),
+                SF('nested_repeated', 'INTEGER', mode='REPEATED'),
+                SF('nested_record', 'RECORD', mode='NULLABLE', fields=[
+                    SF('nested_nested_string', 'STRING', mode='NULLABLE'),
+                ]),
+            ]),
+        ]
+        record = {
+            'nested_string': 'another string value',
+            'nested_repeated': [0, 1, 2],
+            'nested_record': {'nested_nested_string': 'some deep insight'},
+        }
+        to_insert = [
+            ('Some value', record)
+        ]
+        table_name = 'test_table'
+        dataset = Config.CLIENT.dataset(
+            _make_dataset_name('issue_2951'))
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        table = dataset.table(table_name, schema=schema)
+        table.create()
+        self.to_delete.insert(0, table)
+
+        table.insert_data(to_insert)
+
+        retry = RetryResult(_has_rows, max_tries=8)
+        rows = retry(self._fetch_single_page)(table)
+
+        self.assertEqual(rows, to_insert)
 
     def test_create_table_nested_schema(self):
         table_name = 'test_table'
