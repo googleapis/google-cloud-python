@@ -102,13 +102,13 @@ class TestVisionFullText(unittest.TestCase):
         client = Config.CLIENT
         with open(FULL_TEXT_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
-        full_text = image.detect_full_text()
+        full_text = image.detect_full_text(language_hints=['en'])
         self._assert_full_text(full_text)
 
     def test_detect_full_text_filename(self):
         client = Config.CLIENT
         image = client.image(filename=FULL_TEXT_FILE)
-        full_text = image.detect_full_text()
+        full_text = image.detect_full_text(language_hints=['en'])
         self._assert_full_text(full_text)
 
     def test_detect_full_text_gcs(self):
@@ -123,7 +123,7 @@ class TestVisionFullText(unittest.TestCase):
 
         client = Config.CLIENT
         image = client.image(source_uri=source_uri)
-        full_text = image.detect_full_text()
+        full_text = image.detect_full_text(language_hints=['en'])
         self._assert_full_text(full_text)
 
 
