@@ -1089,6 +1089,12 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
 
+def _make_subparam(name, type_, value):
+    from google.cloud.bigquery._helpers import ScalarQueryParameter
+
+    return ScalarQueryParameter(name, type_, value)
+
+
 class Test_ArrayQueryParameter(unittest.TestCase):
 
     @staticmethod
@@ -1230,6 +1236,36 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         param = klass.positional(array_type='UNKNOWN', values=['unknown'])
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
+    def test_to_api_repr_w_record_type(self):
+        from google.cloud.bigquery._helpers import StructQueryParameter
+
+        EXPECTED = {
+            'parameterType': {
+                'type': 'ARRAY',
+                'arrayType': {
+                    'type': 'STRUCT',
+                    'structTypes': [
+                        {'name': 'foo', 'type': {'type': 'STRING'}},
+                        {'name': 'bar', 'type': {'type': 'INT64'}},
+                    ],
+                },
+            },
+            'parameterValue': {
+                'arrayValues': [{
+                    'structValues': {
+                        'foo': {'value': 'Foo'},
+                        'bar': {'value': '123'},
+                    }
+                }]
+            },
+        }
+        one = _make_subparam('foo', 'STRING', 'Foo')
+        another = _make_subparam('bar', 'INT64', 123)
+        struct = StructQueryParameter.positional(one, another)
+        klass = self._get_target_class()
+        param = klass.positional(array_type='RECORD', values=[struct])
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
 
 class Test_StructQueryParameter(unittest.TestCase):
 
@@ -1242,23 +1278,17 @@ class Test_StructQueryParameter(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    @staticmethod
-    def _make_subparam(name, type_, value):
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
-
-        return ScalarQueryParameter(name, type_, value)
-
     def test_ctor(self):
-        sub_1 = self._make_subparam('bar', 'INT64', 123)
-        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        sub_1 = _make_subparam('bar', 'INT64', 123)
+        sub_2 = _make_subparam('baz', 'STRING', 'abc')
         param = self._make_one('foo', sub_1, sub_2)
         self.assertEqual(param.name, 'foo')
         self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
         self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
 
     def test_positional(self):
-        sub_1 = self._make_subparam('bar', 'INT64', 123)
-        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        sub_1 = _make_subparam('bar', 'INT64', 123)
+        sub_2 = _make_subparam('baz', 'STRING', 'abc')
         klass = self._get_target_class()
         param = klass.positional(sub_1, sub_2)
         self.assertEqual(param.name, None)
@@ -1327,8 +1357,8 @@ class Test_StructQueryParameter(unittest.TestCase):
                 },
             },
         }
-        sub_1 = self._make_subparam('bar', 'INT64', 123)
-        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        sub_1 = _make_subparam('bar', 'INT64', 123)
+        sub_2 = _make_subparam('baz', 'STRING', 'abc')
         param = self._make_one('foo', sub_1, sub_2)
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
@@ -1348,8 +1378,8 @@ class Test_StructQueryParameter(unittest.TestCase):
                 },
             },
         }
-        sub_1 = self._make_subparam('bar', 'INT64', 123)
-        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        sub_1 = _make_subparam('bar', 'INT64', 123)
+        sub_2 = _make_subparam('baz', 'STRING', 'abc')
         klass = self._get_target_class()
         param = klass.positional(sub_1, sub_2)
         self.assertEqual(param.to_api_repr(), EXPECTED)
