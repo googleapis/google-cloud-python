@@ -182,17 +182,28 @@ class Image(object):
         annotations = self.detect(features)
         return annotations[0].faces
 
-    def detect_full_text(self, limit=10):
+    def detect_full_text(self, language_hints=None, limit=10):
         """Detect a full document's text.
 
+        :type language_hints: list
+        :param language_hints: (Optional) A list of BCP-47 language codes. See:
+                               https://cloud.google.com/vision/docs/languages
+
         :type limit: int
-        :param limit: The number of documents to detect.
+        :param limit: (Optional) The number of documents to detect.
 
         :rtype: list
         :returns: List of :class:`~google.cloud.vision.text.TextAnnotation`.
         """
-        features = [Feature(FeatureTypes.DOCUMENT_TEXT_DETECTION, limit)]
-        annotations = self.detect(features)
+        feature_type = image_annotator_pb2.Feature.DOCUMENT_TEXT_DETECTION
+        feature = image_annotator_pb2.Feature(type=feature_type,
+                                              max_results=limit)
+        image = _to_gapic_image(self)
+        image_context = image_annotator_pb2.ImageContext(
+            language_hints=language_hints)
+        request = image_annotator_pb2.AnnotateImageRequest(
+            image=image, features=[feature], image_context=image_context)
+        annotations = self._detect_annotation_from_pb([request])
         return annotations[0].full_texts
 
     def detect_labels(self, limit=10):
