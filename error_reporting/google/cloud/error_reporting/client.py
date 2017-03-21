@@ -157,7 +157,7 @@ class Client(ClientWithProject):
                 self._report_errors_api = make_report_error_api(self)
             else:
                 self._report_errors_api = _ErrorReportingLoggingAPI(
-                    self.project, self._credentials, self._http_internal)
+                    self.project, self._credentials, self._http)
         return self._report_errors_api
 
     def _build_error_report(self,
