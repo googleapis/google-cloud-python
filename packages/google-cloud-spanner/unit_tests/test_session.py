@@ -847,15 +847,15 @@ class _SpannerApi(_GAXBaseAPI):
     def _trailing_metadata(self):
         from google.protobuf.duration_pb2 import Duration
         from google.rpc.error_details_pb2 import RetryInfo
-        from grpc._common import cygrpc_metadata
+        from grpc._common import to_cygrpc_metadata
 
         if self._commit_abort_retry_nanos is None:
-            return cygrpc_metadata(())
+            return to_cygrpc_metadata(())
         retry_info = RetryInfo(
             retry_delay=Duration(
                 seconds=self._commit_abort_retry_seconds,
                 nanos=self._commit_abort_retry_nanos))
-        return cygrpc_metadata([
+        return to_cygrpc_metadata([
             ('google.rpc.retryinfo-bin', retry_info.SerializeToString())])
 
     def commit(self, session, mutations,
