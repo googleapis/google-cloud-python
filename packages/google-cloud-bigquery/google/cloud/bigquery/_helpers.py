@@ -21,10 +21,11 @@ import datetime
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _time_from_iso8601_time_naive
 from google.cloud._helpers import _to_bytes
+
+_RFC3339_MICROS_NO_ZULU = '%Y-%m-%dT%H:%M:%S.%f'
 
 
 def _not_null(value, field):
@@ -58,7 +59,7 @@ def _string_from_json(value, _):
 def _bytes_from_json(value, field):
     """Base64-decode value"""
     if _not_null(value, field):
-        return base64.decodestring(_to_bytes(value))
+        return base64.standard_b64decode(_to_bytes(value))
 
 
 def _timestamp_from_json(value, field):
@@ -143,7 +144,7 @@ def _bool_to_json(value):
 def _bytes_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, bytes):
-        value = base64.encodestring(value)
+        value = base64.standard_b64encode(value)
     return value
 
 
@@ -161,7 +162,7 @@ def _timestamp_to_json(value):
 def _datetime_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, datetime.datetime):
-        value = _datetime_to_rfc3339(value)
+        value = value.strftime(_RFC3339_MICROS_NO_ZULU)
     return value
 
 
