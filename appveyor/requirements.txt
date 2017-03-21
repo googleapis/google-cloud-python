@@ -3,4 +3,6 @@
 # pip will build them from source using the MSVC compiler matching the
 # target Python version and architecture
 wheel
-nox-automation
+
+https://github.com/lukesneeringer/nox/archive/windows.zip
+# nox-automation
