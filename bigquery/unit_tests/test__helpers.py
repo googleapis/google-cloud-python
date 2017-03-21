@@ -1384,6 +1384,36 @@ class Test_StructQueryParameter(unittest.TestCase):
         param = klass.positional(sub_1, sub_2)
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
+    def test_to_api_repr_w_nested_array(self):
+        from google.cloud.bigquery._helpers import ArrayQueryParameter
+
+        EXPECTED = {
+            'name': 'foo',
+            'parameterType': {
+                'type': 'STRUCT',
+                'structTypes': [
+                    {'name': 'bar', 'type': {'type': 'STRING'}},
+                    {'name': 'baz', 'type': {
+                        'type': 'ARRAY',
+                        'arrayType': {'type': 'INT64'},
+                    }},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {
+                    'bar': {'value': 'abc'},
+                    'baz': {'arrayValues': [
+                        {'value': '123'},
+                        {'value': '456'},
+                    ]},
+                },
+            },
+        }
+        scalar = _make_subparam('bar', 'STRING', 'abc')
+        array = ArrayQueryParameter('baz', 'INT64', [123, 456])
+        param = self._make_one('foo', scalar, array)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
     def test_to_api_repr_w_nested_struct(self):
         EXPECTED = {
             'name': 'foo',
