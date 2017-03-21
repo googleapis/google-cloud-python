@@ -653,6 +653,25 @@ class TestBigQuery(unittest.TestCase):
             name='array_param', array_type='INT64', values=[1, 2])
         struct_param = StructQueryParameter(
             'hitchhiker', question_param, answer_param)
+        phred_name = 'Phred Phlyntstone'
+        phred_name_param = ScalarQueryParameter(
+            name='name', type_='STRING', value=phred_name)
+        phred_age = 32
+        phred_age_param = ScalarQueryParameter(
+            name='age', type_='INT64', value=phred_age)
+        phred_param = StructQueryParameter(
+            None, phred_name_param, phred_age_param)
+        bharney_name = 'Bharney Rhubbyl'
+        bharney_name_param = ScalarQueryParameter(
+            name='name', type_='STRING', value=bharney_name)
+        bharney_age = 31
+        bharney_age_param = ScalarQueryParameter(
+            name='age', type_='INT64', value=bharney_age)
+        bharney_param = StructQueryParameter(
+            None, bharney_name_param, bharney_age_param)
+        characters_param = ArrayQueryParameter(
+            name=None, array_type='RECORD',
+            values=[phred_param, bharney_param])
         EXAMPLES = [
             {
                 'sql': 'SELECT @question',
@@ -708,6 +727,14 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT (@hitchhiker.question, @hitchhiker.answer)',
                 'expected': ({'_field_1': question, '_field_2': answer}),
                 'query_parameters': [struct_param],
+            },
+            {
+                'sql': 'SELECT ?',
+                'expected': [
+                    {'name': phred_name, 'age': phred_age},
+                    {'name': bharney_name, 'age': bharney_age},
+                ],
+                'query_parameters': [characters_param],
             },
         ]
         for example in EXAMPLES:
