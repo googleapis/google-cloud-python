@@ -678,6 +678,10 @@ class TestBigQuery(unittest.TestCase):
             'sidekick', bharney_name_param, bharney_age_param)
         roles_param = StructQueryParameter(
             'roles', hero_param, sidekick_param)
+        friends_param = ArrayQueryParameter(
+            name='friends', array_type='STRING',
+            values=[phred_name, bharney_name])
+        with_friends_param = StructQueryParameter(None, friends_param)
         EXAMPLES = [
             {
                 'sql': 'SELECT @question',
@@ -749,6 +753,13 @@ class TestBigQuery(unittest.TestCase):
                     'sidekick': {'name': bharney_name, 'age': bharney_age},
                 },
                 'query_parameters': [roles_param],
+            },
+            {
+                'sql': 'SELECT ?',
+                'expected': {
+                    'friends': [phred_name, bharney_name],
+                },
+                'query_parameters': [with_friends_param],
             },
         ]
         for example in EXAMPLES:
