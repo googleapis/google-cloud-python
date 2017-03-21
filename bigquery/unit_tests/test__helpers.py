@@ -1384,6 +1384,39 @@ class Test_StructQueryParameter(unittest.TestCase):
         param = klass.positional(sub_1, sub_2)
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
+    def test_to_api_repr_w_nested_struct(self):
+        EXPECTED = {
+            'name': 'foo',
+            'parameterType': {
+                'type': 'STRUCT',
+                'structTypes': [
+                    {'name': 'bar', 'type': {'type': 'STRING'}},
+                    {'name': 'baz', 'type': {
+                        'type': 'STRUCT',
+                        'structTypes': [
+                            {'name': 'qux', 'type': {'type': 'INT64'}},
+                            {'name': 'spam', 'type': {'type': 'BOOL'}},
+                        ],
+                    }},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {
+                    'bar': {'value': 'abc'},
+                    'baz': {'structValues': {
+                        'qux': {'value': '123'},
+                        'spam': {'value': 'true'},
+                    }},
+                },
+            },
+        }
+        scalar_1 = _make_subparam('bar', 'STRING', 'abc')
+        scalar_2 = _make_subparam('qux', 'INT64', 123)
+        scalar_3 = _make_subparam('spam', 'BOOL', True)
+        sub = self._make_one('baz', scalar_2, scalar_3)
+        param = self._make_one('foo', scalar_1, sub)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
 
 class Test_QueryParametersProperty(unittest.TestCase):
 

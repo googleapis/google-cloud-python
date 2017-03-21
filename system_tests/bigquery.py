@@ -672,6 +672,12 @@ class TestBigQuery(unittest.TestCase):
         characters_param = ArrayQueryParameter(
             name=None, array_type='RECORD',
             values=[phred_param, bharney_param])
+        hero_param = StructQueryParameter(
+            'hero', phred_name_param, phred_age_param)
+        sidekick_param = StructQueryParameter(
+            'sidekick', bharney_name_param, bharney_age_param)
+        roles_param = StructQueryParameter(
+            'roles', hero_param, sidekick_param)
         EXAMPLES = [
             {
                 'sql': 'SELECT @question',
@@ -735,6 +741,14 @@ class TestBigQuery(unittest.TestCase):
                     {'name': bharney_name, 'age': bharney_age},
                 ],
                 'query_parameters': [characters_param],
+            },
+            {
+                'sql': 'SELECT @roles',
+                'expected': {
+                    'hero': {'name': phred_name, 'age': phred_age},
+                    'sidekick': {'name': bharney_name, 'age': bharney_age},
+                },
+                'query_parameters': [roles_param],
             },
         ]
         for example in EXAMPLES:
