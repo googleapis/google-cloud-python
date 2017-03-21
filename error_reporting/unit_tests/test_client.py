@@ -52,14 +52,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(positional), 1)
         return positional[0]
 
-    @mock.patch(
-        'google.cloud.error_reporting.client._determine_default_project')
+    @mock.patch('google.cloud.client._determine_default_project')
     def test_ctor_default(self, default_mock):
         credentials = _make_credentials()
+        default_mock.return_value = 'foo'
         client = self._make_one(credentials=credentials)
         self.assertEqual(client.service, client.DEFAULT_SERVICE)
         self.assertEqual(client.version, None)
-        default_mock.assert_called_once_with()
+        default_mock.assert_called_once_with(None)
 
     def test_ctor_params(self):
         credentials = _make_credentials()
