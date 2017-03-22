@@ -315,7 +315,7 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name, client=client)
 
-    def download_to_file(self, file_obj, client=None):
+    def download_to_file(self, file_obj, client=None, range_bytes=None):
         """Download the contents of this blob into a file-like object.
 
         .. note::
@@ -344,6 +344,9 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type range_bytes: tuple
+        :param range_bytes: (Optional). Range of bytes to download.
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         client = self._require_client(client)
@@ -368,9 +371,10 @@ class Blob(_PropertyMixin):
         # build_api_url) are also defined on the Batch class, but we just
         # use the wrapped connection since it has all three (http,
         # API_BASE_URL and build_api_url).
-        download.initialize_download(request, client._base_connection.http)
+        download.initialize_download(request, client._base_connection.http,
+                                     range_bytes=range_bytes)
 
-    def download_to_filename(self, filename, client=None):
+    def download_to_filename(self, filename, client=None, range_bytes=None):
         """Download the contents of this blob into a named file.
 
         :type filename: str
@@ -381,15 +385,20 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type range_bytes: tuple
+        :param range_bytes: (Optional). Range of bytes to download.
+
+
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj, client=client)
+            self.download_to_file(file_obj, client=client,
+                                  range_bytes=range_bytes)
 
         mtime = time.mktime(self.updated.timetuple())
         os.utime(file_obj.name, (mtime, mtime))
 
-    def download_as_string(self, client=None):
+    def download_as_string(self, client=None, range_bytes=None):
         """Download the contents of this blob as a string.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -397,12 +406,16 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
+        :type range_bytes: tuple
+        :param range_bytes: (Optional). Range of bytes to download.
+
         :rtype: bytes
         :returns: The data stored in this blob.
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer, client=client)
+        self.download_to_file(string_buffer, client=client,
+                              range_bytes=range_bytes)
         return string_buffer.getvalue()
 
     def _create_upload(

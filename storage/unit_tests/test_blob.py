@@ -461,6 +461,28 @@ class Test_Blob(unittest.TestCase):
         fetched = blob.download_as_string()
         self.assertEqual(fetched, b'abcdef')
 
+    def test_download_range_bytes(self):
+        from six.moves.http_client import OK
+        from six.moves.http_client import PARTIAL_CONTENT
+        BLOB_NAME = 'blob-name'
+        chunk1_response = {'status': PARTIAL_CONTENT,
+                           'content-range': 'bytes 0-2/6'}
+        chunk2_response = {'status': OK,
+                           'content-range': 'bytes 3-5/6'}
+        connection = _Connection(
+            (chunk1_response, b'abc'),
+            (chunk2_response, b'def'),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        MEDIA_LINK = 'http://example.com/media/'
+        properties = {'mediaLink': MEDIA_LINK}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 3
+        fetched = blob.download_as_string(range_bytes=(0, 2))
+        self.assertEqual(fetched, b'abc')
+
     def test_upload_from_file_size_failure(self):
         BLOB_NAME = 'blob-name'
         connection = _Connection()

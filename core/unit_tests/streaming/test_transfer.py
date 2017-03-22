@@ -301,6 +301,23 @@ class Test_Download(unittest.TestCase):
         self.assertIs(download.http, http)
         self.assertEqual(download.url, request.url)
 
+    def test_initialize_w_range_bytes(self):
+        from six.moves import http_client
+        from google.cloud._testing import _Monkey
+        from google.cloud.streaming import transfer as MUT
+        request = _Request()
+        http = object()
+        download = self._make_one(_Stream(), auto_transfer=True)
+
+        response = _makeResponse(http_client.OK)
+        requester = _MakeRequest(response)
+
+        with _Monkey(MUT, make_api_request=requester):
+            download.initialize_download(request, http, range_bytes=(1, 100))
+
+        self.assertEqual(download.total_size, 100)
+        self.assertEqual(request.headers['range'], 'bytes=1-100')
+
     def test_initialize_download_w_autotransfer_failing(self):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
