@@ -37,6 +37,9 @@ def main():
     python_files = [
         candidate for candidate in candidates if candidate.endswith('.py')]
 
+    python_files = [
+        candidate for candidate in python_files if os.path.isfile(candidate)]
+
     if not python_files:
         print('No Python files to lint, exiting.')
     else:
