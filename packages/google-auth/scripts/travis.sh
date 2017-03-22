@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -eo pipefail
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT=$( dirname "$DIR" )
 
@@ -36,4 +38,12 @@ if [[ -n $SYSTEM_TEST ]]; then
 fi
 
 # Run tox.
+echo "Running tox..."
 tox
+
+# Run tox for sub-packages.
+if [[ $TOXENV != "docs"  && -z $SYSTEM_TEST ]]; then
+    echo "Running tox for httplib2_transport..."
+    cd httplib2_transport
+    tox
+fi
