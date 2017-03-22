@@ -17,16 +17,10 @@ For allowed roles / permissions, see:
 https://cloud.google.com/pubsub/access_control#permissions
 """
 
-# Generic IAM roles
-
-OWNER_ROLE = 'roles/owner'
-"""Generic role implying all rights to an object."""
-
-EDITOR_ROLE = 'roles/editor'
-"""Generic role implying rights to modify an object."""
-
-VIEWER_ROLE = 'roles/viewer'
-"""Generic role implying rights to access an object."""
+from google.cloud.iam import OWNER_ROLE
+from google.cloud.iam import EDITOR_ROLE
+from google.cloud.iam import VIEWER_ROLE
+from google.cloud.iam import Policy as _BasePolicy
 
 # Pubsub-specific IAM roles
 
@@ -94,8 +88,8 @@ PUBSUB_SUBSCRIPTIONS_UPDATE = 'pubsub.subscriptions.update'
 """Permission: update subscriptions."""
 
 
-class Policy(object):
-    """Combined IAM Policy / Bindings.
+class Policy(_BasePolicy):
+    """IAM Policy / Bindings.
 
     See:
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy
@@ -107,125 +101,44 @@ class Policy(object):
     :type version: int
     :param version: unique version of the policy
     """
+    _OWNER_ROLES = (OWNER_ROLE, PUBSUB_ADMIN_ROLE)
+    _EDITOR_ROLES = (EDITOR_ROLE, PUBSUB_EDITOR_ROLE)
+    _VIEWER_ROLES = (VIEWER_ROLE, PUBSUB_VIEWER_ROLE)
+
     def __init__(self, etag=None, version=None):
-        self.etag = etag
-        self.version = version
-        self.owners = set()
-        self.editors = set()
-        self.viewers = set()
+        super(Policy, self).__init__(etag, version)
         self.publishers = set()
         self.subscribers = set()
 
-    @staticmethod
-    def user(email):
-        """Factory method for a user member.
+    def _bind_custom_role(self, role, members):
+        """Bind an API-specific role to members.
 
-        :type email: str
-        :param email: E-mail for this particular user.
+        Helper for :meth:`from_api_repr`.
 
-        :rtype: str
-        :returns: A member string corresponding to the given user.
+        :type role: str
+        :param role: role to bind.
+
+        :type members: set of str
+        :param members: member IDs to be bound to the role.
+
+        Subclasses may override.
         """
-        return 'user:%s' % (email,)
+        if role == PUBSUB_PUBLISHER_ROLE:
+            self.publishers |= members
+        elif role == PUBSUB_SUBSCRIBER_ROLE:
+            self.subscribers |= members
+        else:
+            super(Policy, self)._bind_custom_role(role, members)
 
-    @staticmethod
-    def service_account(email):
-        """Factory method for a service account member.
+    def _role_bindings(self):
+        """Enumerate members bound to roles for the policy.
 
-        :type email: str
-        :param email: E-mail for this particular service account.
+        Helper for :meth:`to_api_repr`.
 
-        :rtype: str
-        :returns: A member string corresponding to the given service account.
+        :rtype: list of mapping
+        :returns: zero or more mappings describing roles / members bound by
+                  the policy.
         """
-        return 'serviceAccount:%s' % (email,)
-
-    @staticmethod
-    def group(email):
-        """Factory method for a group member.
-
-        :type email: str
-        :param email: An id or e-mail for this particular group.
-
-        :rtype: str
-        :returns: A member string corresponding to the given group.
-        """
-        return 'group:%s' % (email,)
-
-    @staticmethod
-    def domain(domain):
-        """Factory method for a domain member.
-
-        :type domain: str
-        :param domain: The domain for this member.
-
-        :rtype: str
-        :returns: A member string corresponding to the given domain.
-        """
-        return 'domain:%s' % (domain,)
-
-    @staticmethod
-    def all_users():
-        """Factory method for a member representing all users.
-
-        :rtype: str
-        :returns: A member string representing all users.
-        """
-        return 'allUsers'
-
-    @staticmethod
-    def authenticated_users():
-        """Factory method for a member representing all authenticated users.
-
-        :rtype: str
-        :returns: A member string representing all authenticated users.
-        """
-        return 'allAuthenticatedUsers'
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Create a policy from the resource returned from the API.
-
-        :type resource: dict
-        :param resource: resource returned from the ``getIamPolicy`` API.
-
-        :rtype: :class:`Policy`
-        :returns: the parsed policy
-        """
-        version = resource.get('version')
-        etag = resource.get('etag')
-        policy = cls(etag, version)
-        for binding in resource.get('bindings', ()):
-            role = binding['role']
-            members = set(binding['members'])
-            if role in (OWNER_ROLE, PUBSUB_ADMIN_ROLE):
-                policy.owners |= members
-            elif role in (EDITOR_ROLE, PUBSUB_EDITOR_ROLE):
-                policy.editors |= members
-            elif role in (VIEWER_ROLE, PUBSUB_VIEWER_ROLE):
-                policy.viewers |= members
-            elif role == PUBSUB_PUBLISHER_ROLE:
-                policy.publishers |= members
-            elif role == PUBSUB_SUBSCRIBER_ROLE:
-                policy.subscribers |= members
-            else:
-                raise ValueError('Unknown role: %s' % (role,))
-        return policy
-
-    def to_api_repr(self):
-        """Construct a Policy resource.
-
-        :rtype: dict
-        :returns: a resource to be passed to the ``setIamPolicy`` API.
-        """
-        resource = {}
-
-        if self.etag is not None:
-            resource['etag'] = self.etag
-
-        if self.version is not None:
-            resource['version'] = self.version
-
         bindings = []
 
         if self.owners:
@@ -253,7 +166,4 @@ class Policy(object):
                 {'role': PUBSUB_SUBSCRIBER_ROLE,
                  'members': sorted(self.subscribers)})
 
-        if bindings:
-            resource['bindings'] = bindings
-
-        return resource
+        return bindings
