@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: googleapis/nox:0.11.0
+      - image: googleapis/nox:0.11.1
     steps:
       - checkout
       - run:
