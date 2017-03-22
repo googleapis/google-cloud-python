@@ -157,24 +157,26 @@ URI to allow the credentials to be automatically refreshed::
         client_secret='client_secret')
 
 
-This library has some helpers for integrating with `requests-oauthlib`_ to
-provide support for obtaining user credentials. You can use
-:func:`google.oauth2.oauthlib.credentials_from_session` to obtain
+There is a separate library, `google-auth-oauthlib`_, that has some helpers
+for integrating with `requests-oauthlib`_ to provide support for obtaining
+user credentials. You can use
+:func:`google_auth_oauthlib.helpers.credentials_from_session` to obtain
 :class:`google.oauth2.credentials.Credentials` from a 
 :class:`requests_oauthlib.OAuth2Session` as above::
 
-    import google.oauth2.oauthlib
+    from google_auth_oauthlib.helpers import credentials_from_session
 
-    google_auth_credentials = google.oauth2.oauthlib.credentials_from_session(
-        oauth2session)
+    google_auth_credentials = credentials_from_session(oauth2session)
 
-You can also use :class:`google.oauth2.flow.Flow` to perform the OAuth 2.0
-Authorization Grant Flow to obtain credentials using `requests-oauthlib`_.
+You can also use :class:`google_auth_oauthlib.flow.Flow` to perform the OAuth
+2.0 Authorization Grant Flow to obtain credentials using `requests-oauthlib`_.
 
 .. _OAuth 2.0:
     https://developers.google.com/identity/protocols/OAuth2
 .. _oauthlib:
     https://oauthlib.readthedocs.io/en/latest/
+.. _google-auth-oauthlib:
+    https://pypi.python.org/pypi/google-auth-oauthlib
 .. _requests-oauthlib:
     https://requests-oauthlib.readthedocs.io/en/latest/
 
