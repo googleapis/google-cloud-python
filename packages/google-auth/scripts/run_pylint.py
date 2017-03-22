@@ -20,6 +20,7 @@ the fly based on programmatic defaults.
 
 from __future__ import print_function
 
+import argparse
 import collections
 import copy
 import io
@@ -236,6 +237,12 @@ def make_rc(base_cfg, target_filename,
 
 def main():
     """Script entry point. Lints both sets of files."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--library-filesets', nargs='+', default=[])
+    parser.add_argument('--test-filesets', nargs='+', default=[])
+
+    args = parser.parse_args()
+
     default_config = read_config(get_default_config())
     make_rc(default_config, PRODUCTION_RC,
             additions=_PRODUCTION_RC_ADDITIONS,
@@ -243,11 +250,11 @@ def main():
     make_rc(default_config, TEST_RC,
             additions=_TEST_RC_ADDITIONS,
             replacements=_TEST_RC_REPLACEMENTS)
-    lint_fileset('google', rc_filename=PRODUCTION_RC,
-                 description='Library')
-    lint_fileset('tests', 'system_tests', rc_filename=TEST_RC,
-                 description='Test')
 
+    lint_fileset(*args.library_filesets, rc_filename=PRODUCTION_RC,
+                 description='Library')
+    lint_fileset(*args.test_filesets, rc_filename=TEST_RC,
+                 description='Test')
 
 if __name__ == '__main__':
     main()

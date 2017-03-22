@@ -14,21 +14,17 @@
 
 """OAuth 2.0 Authorization Flow
 
-.. warning::
-    This module is experimental and is subject to change signficantly
-    within major version releases.
-
 This module provides integration with `requests-oauthlib`_ for running the
 `OAuth 2.0 Authorization Flow`_ and acquiring user credentials.
 
 Here's an example of using the flow with the installed application
 authorization flow::
 
-    import google.oauth2.flow
+    from google_auth_oauthlib.flow import Flow
 
     # Create the flow using the client secrets file from the Google API
     # Console.
-    flow = google.oauth2.flow.Flow.from_client_secrets_file(
+    flow = Flow.from_client_secrets_file(
         'path/to/client_secrets.json',
         scopes=['profile', 'email'],
         redirect_uri='urn:ietf:wg:oauth:2.0:oob')
@@ -57,7 +53,8 @@ import json
 
 import google.auth.transport.requests
 import google.oauth2.credentials
-import google.oauth2.oauthlib
+
+import google_auth_oauthlib.helpers
 
 
 class Flow(object):
@@ -133,7 +130,7 @@ class Flow(object):
                 'Client secrets must be for a web or installed app.')
 
         session, client_config = (
-            google.oauth2.oauthlib.session_from_client_config(
+            google_auth_oauthlib.helpers.session_from_client_config(
                 client_config, scopes, **kwargs))
 
         return cls(session, client_type, client_config)
@@ -240,7 +237,7 @@ class Flow(object):
         Raises:
             ValueError: If there is no access token in the session.
         """
-        return google.oauth2.oauthlib.credentials_from_session(
+        return google_auth_oauthlib.helpers.credentials_from_session(
             self.oauth2session, self.client_config)
 
     def authorized_session(self):

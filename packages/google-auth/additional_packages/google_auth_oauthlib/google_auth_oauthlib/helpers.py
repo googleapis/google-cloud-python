@@ -12,15 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Integration with oauthlib
-
-.. warning::
-    This module is experimental and is subject to change signficantly
-    within major version releases.
+"""Integration helpers.
 
 This module provides helpers for integrating with `requests-oauthlib`_.
 Typically, you'll want to use the higher-level helpers in
-:mod:`google.oauth2.flow`.
+:mod:`google_auth_oauthlib.flow`.
 
 .. _requests-oauthlib: http://requests-oauthlib.readthedocs.io/en/stable/
 """

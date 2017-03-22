@@ -43,7 +43,14 @@ tox
 
 # Run tox for sub-packages.
 if [[ $TOXENV != "docs"  && -z $SYSTEM_TEST ]]; then
-    echo "Running tox for httplib2_transport..."
-    cd httplib2_transport
-    tox
+    echo "Running tox for google_auth_httplib2..."
+    cd additional_packages/google_auth_httplib2
+    # --workdir is specified to avoid path names being too long, which
+    # causes subprocess calls to hit the execve character limit.
+    # See https://github.com/pypa/virtualenv/issues/596
+    tox --workdir ~/.tox-httplib2
+    cd $ROOT
+    echo "Running tox for google_auth_oauthlib..."
+    cd additional_packages/google_auth_oauthlib
+    tox --workdir  ~/.tox-oauthlib
 fi

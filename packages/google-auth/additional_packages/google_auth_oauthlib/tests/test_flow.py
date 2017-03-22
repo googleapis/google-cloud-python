@@ -18,9 +18,9 @@ import os
 import mock
 import pytest
 
-from google.oauth2 import flow
+from google_auth_oauthlib import flow
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 CLIENT_SECRETS_FILE = os.path.join(DATA_DIR, 'client_secrets.json')
 
 with open(CLIENT_SECRETS_FILE, 'r') as fh:

@@ -18,9 +18,9 @@ import os
 import mock
 import pytest
 
-from google.oauth2 import oauthlib
+from google_auth_oauthlib import helpers
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 CLIENT_SECRETS_FILE = os.path.join(DATA_DIR, 'client_secrets.json')
 
 with open(CLIENT_SECRETS_FILE, 'r') as fh:
@@ -28,7 +28,7 @@ with open(CLIENT_SECRETS_FILE, 'r') as fh:
 
 
 def test_session_from_client_config_web():
-    session, config = oauthlib.session_from_client_config(
+    session, config = helpers.session_from_client_config(
         CLIENT_SECRETS_INFO, scopes=mock.sentinel.scopes)
 
     assert config == CLIENT_SECRETS_INFO
@@ -38,7 +38,7 @@ def test_session_from_client_config_web():
 
 def test_session_from_client_config_installed():
     info = {'installed': CLIENT_SECRETS_INFO['web']}
-    session, config = oauthlib.session_from_client_config(
+    session, config = helpers.session_from_client_config(
         info, scopes=mock.sentinel.scopes)
     assert config == info
     assert session.client_id == info['installed']['client_id']
@@ -47,16 +47,16 @@ def test_session_from_client_config_installed():
 
 def test_session_from_client_config_bad_format():
     with pytest.raises(ValueError):
-        oauthlib.session_from_client_config({}, scopes=[])
+        helpers.session_from_client_config({}, scopes=[])
 
 
 def test_session_from_client_config_missing_keys():
     with pytest.raises(ValueError):
-        oauthlib.session_from_client_config({'web': {}}, scopes=[])
+        helpers.session_from_client_config({'web': {}}, scopes=[])
 
 
 def test_session_from_client_secrets_file():
-    session, config = oauthlib.session_from_client_secrets_file(
+    session, config = helpers.session_from_client_secrets_file(
         CLIENT_SECRETS_FILE, scopes=mock.sentinel.scopes)
     assert config == CLIENT_SECRETS_INFO
     assert session.client_id == CLIENT_SECRETS_INFO['web']['client_id']
@@ -65,7 +65,7 @@ def test_session_from_client_secrets_file():
 
 @pytest.fixture
 def session():
-    session, _ = oauthlib.session_from_client_config(
+    session, _ = helpers.session_from_client_config(
         CLIENT_SECRETS_INFO, scopes=mock.sentinel.scopes)
     yield session
 
@@ -76,7 +76,7 @@ def test_credentials_from_session(session):
         'refresh_token': mock.sentinel.refresh_token
     }
 
-    credentials = oauthlib.credentials_from_session(
+    credentials = helpers.credentials_from_session(
         session, CLIENT_SECRETS_INFO['web'])
 
     assert credentials.token == mock.sentinel.access_token
@@ -89,4 +89,4 @@ def test_credentials_from_session(session):
 
 def test_bad_credentials(session):
     with pytest.raises(ValueError):
-        oauthlib.credentials_from_session(session)
+        helpers.credentials_from_session(session)

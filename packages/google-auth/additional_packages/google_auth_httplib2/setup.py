@@ -14,31 +14,27 @@
 
 import io
 
-from setuptools import find_packages
 from setuptools import setup
 
 
 DEPENDENCIES = (
-    'pyasn1>=0.1.7',
-    'pyasn1-modules>=0.0.5',
-    'rsa>=3.1.4',
-    'six>=1.9.0',
+    'google-auth'
 )
 
 
 with io.open('README.rst', 'r') as fh:
     long_description = fh.read()
 
+
 setup(
-    name='google-auth',
-    version='0.8.0',
+    name='google-auth-httplib2',
+    version='0.0.2',
     author='Google Cloud Platform',
     author_email='jonwayne+google-auth@google.com',
     description='Google Authentication Library',
     long_description=long_description,
     url='https://github.com/GoogleCloudPlatform/google-auth-library-python',
-    packages=find_packages(exclude=('tests*', 'system_tests*')),
-    namespace_packages=('google',),
+    py_modules=['google_auth_httplib2'],
     install_requires=DEPENDENCIES,
     license='Apache 2.0',
     keywords='google auth oauth client',
@@ -49,7 +45,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: POSIX',
