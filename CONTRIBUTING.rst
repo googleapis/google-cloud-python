@@ -7,7 +7,7 @@ Contributing
 #. Make sure that your commit messages clearly describe the changes.
 #. Send a pull request. (Please Read: `Faster Pull Request Reviews`_)
 
-.. _Faster Pull Request Reviews: https://github.com/kubernetes/kubernetes/blob/master/docs/devel/faster_reviews.md
+.. _Faster Pull Request Reviews: https://github.com/kubernetes/community/blob/master/contributors/devel/faster_reviews.md
 
 .. contents:: Here are some guidelines for hacking on ``google-cloud-python``.
 
