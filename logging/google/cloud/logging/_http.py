@@ -53,8 +53,8 @@ class _LoggingAPI(object):
     """Helper mapping logging-related APIs.
 
     See:
-    https://cloud.google.com/logging/docs/api/reference/rest/v2/entries
-    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
 
     :type client: :class:`~google.cloud.logging.client.Client`
     :param client: The client used to make API requests.
@@ -69,7 +69,7 @@ class _LoggingAPI(object):
         """Return a page of log entry resources.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/list
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
 
         :type projects: list of strings
         :param projects: project IDs to include. If not passed,
@@ -128,7 +128,7 @@ class _LoggingAPI(object):
         """API call:  log an entry resource via a POST request
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
 
         :type entries: sequence of mapping
         :param entries: the log entry resources to log.
@@ -162,7 +162,7 @@ class _LoggingAPI(object):
         """API call:  delete all entries in a logger via a DELETE request
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs/delete
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs/delete
 
         :type project: str
         :param project: ID of project containing the log entries to delete
@@ -178,7 +178,7 @@ class _SinksAPI(object):
     """Helper mapping sink-related APIs.
 
     See:
-    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks
 
     :type client: :class:`~google.cloud.logging.client.Client`
     :param client: The client used to make API requests.
@@ -191,7 +191,7 @@ class _SinksAPI(object):
         """List sinks for the project associated with this client.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/list
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/list
 
         :type project: str
         :param project: ID of the project whose sinks are to be listed.
@@ -225,7 +225,7 @@ class _SinksAPI(object):
         """API call:  create a sink resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/create
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create
 
         :type project: str
         :param project: ID of the project in which to create the sink.
@@ -253,7 +253,7 @@ class _SinksAPI(object):
         """API call:  retrieve a sink resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/get
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/get
 
         :type project: str
         :param project: ID of the project containing the sink.
@@ -271,7 +271,7 @@ class _SinksAPI(object):
         """API call:  update a sink resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/update
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/update
 
         :type project: str
         :param project: ID of the project containing the sink.
@@ -299,7 +299,7 @@ class _SinksAPI(object):
         """API call:  delete a sink resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/delete
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/delete
 
         :type project: str
         :param project: ID of the project containing the sink.
@@ -315,7 +315,7 @@ class _MetricsAPI(object):
     """Helper mapping sink-related APIs.
 
     See:
-    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics
 
     :type client: :class:`~google.cloud.logging.client.Client`
     :param client: The client used to make API requests.
@@ -328,7 +328,7 @@ class _MetricsAPI(object):
         """List metrics for the project associated with this client.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/list
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/list
 
         :type project: str
         :param project: ID of the project whose metrics are to be listed.
@@ -362,7 +362,7 @@ class _MetricsAPI(object):
         """API call:  create a metric resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/create
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/create
 
         :type project: str
         :param project: ID of the project in which to create the metric.
@@ -389,7 +389,7 @@ class _MetricsAPI(object):
         """API call:  retrieve a metric resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/get
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/get
 
         :type project: str
         :param project: ID of the project containing the metric.
@@ -407,7 +407,7 @@ class _MetricsAPI(object):
         """API call:  update a metric resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/update
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/update
 
         :type project: str
         :param project: ID of the project containing the metric.
@@ -434,7 +434,7 @@ class _MetricsAPI(object):
         """API call:  delete a metric resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/delete
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/delete
 
         :type project: str
         :param project: ID of the project containing the metric.
