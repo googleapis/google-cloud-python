@@ -48,6 +48,7 @@ ACCEPTED_VERSIONS = {
     (2, 7): 'py27',
     (3, 4): 'py34',
     (3, 5): 'py35',
+    (3, 6): 'py36',
 }
 UNSET_SENTINEL = object()  # Sentinel for argparser
 
