@@ -500,18 +500,23 @@ class ArrayQueryParameter(AbstractQueryParameter):
         :returns: JSON mapping
         """
         values = self.values
-        converter = _SCALAR_VALUE_TO_JSON.get(self.array_type)
-        if converter is not None:
-            values = [converter(value) for value in values]
+        if self.array_type == 'RECORD':
+            reprs = [value.to_api_repr() for value in values]
+            a_type = reprs[0]['parameterType']
+            a_values = [repr_['parameterValue'] for repr_ in reprs]
+        else:
+            a_type = {'type': self.array_type}
+            converter = _SCALAR_VALUE_TO_JSON.get(self.array_type)
+            if converter is not None:
+                values = [converter(value) for value in values]
+            a_values = [{'value': value} for value in values]
         resource = {
             'parameterType': {
                 'type': 'ARRAY',
-                'arrayType': {
-                    'type': self.array_type,
-                },
+                'arrayType': a_type,
             },
             'parameterValue': {
-                'arrayValues': [{'value': value} for value in values],
+                'arrayValues': a_values,
             },
         }
         if self.name is not None:
@@ -531,9 +536,18 @@ class StructQueryParameter(AbstractQueryParameter):
     """
     def __init__(self, name, *sub_params):
         self.name = name
-        self.struct_types = OrderedDict(
-            (sub.name, sub.type_) for sub in sub_params)
-        self.struct_values = {sub.name: sub.value for sub in sub_params}
+        types = self.struct_types = OrderedDict()
+        values = self.struct_values = {}
+        for sub in sub_params:
+            if isinstance(sub, self.__class__):
+                types[sub.name] = 'STRUCT'
+                values[sub.name] = sub
+            elif isinstance(sub, ArrayQueryParameter):
+                types[sub.name] = 'ARRAY'
+                values[sub.name] = sub
+            else:
+                types[sub.name] = sub.type_
+                values[sub.name] = sub.value
 
     @classmethod
     def positional(cls, *sub_params):
@@ -576,21 +590,25 @@ class StructQueryParameter(AbstractQueryParameter):
         :rtype: dict
         :returns: JSON mapping
         """
-        types = [
-            {'name': key, 'type': {'type': value}}
-            for key, value in self.struct_types.items()
-        ]
+        s_types = {}
         values = {}
         for name, value in self.struct_values.items():
-            converter = _SCALAR_VALUE_TO_JSON.get(self.struct_types[name])
-            if converter is not None:
-                value = converter(value)
-            values[name] = {'value': value}
+            type_ = self.struct_types[name]
+            if type_ in ('STRUCT', 'ARRAY'):
+                repr_ = value.to_api_repr()
+                s_types[name] = {'name': name, 'type': repr_['parameterType']}
+                values[name] = repr_['parameterValue']
+            else:
+                s_types[name] = {'name': name, 'type': {'type': type_}}
+                converter = _SCALAR_VALUE_TO_JSON.get(type_)
+                if converter is not None:
+                    value = converter(value)
+                values[name] = {'value': value}
 
         resource = {
             'parameterType': {
                 'type': 'STRUCT',
-                'structTypes': types,
+                'structTypes': [s_types[key] for key in self.struct_types],
             },
             'parameterValue': {
                 'structValues': values,
