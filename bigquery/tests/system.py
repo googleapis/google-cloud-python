@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+import datetime
 import json
 import operator
 import os
-
+import time
 import unittest
 
 from google.cloud import bigquery
+from google.cloud._helpers import UTC
 from google.cloud.exceptions import Forbidden
 
 from test_utils.retry import RetryErrors
@@ -40,6 +43,7 @@ def _make_dataset_name(prefix):
 
 def _load_json_schema(filename='data/schema.json'):
     from google.cloud.bigquery.table import _parse_schema_resource
+
     json_filename = os.path.join(WHERE, filename)
 
     with open(json_filename, 'r') as schema_file:
@@ -289,9 +293,6 @@ class TestBigQuery(unittest.TestCase):
         return list(page)
 
     def test_insert_data_then_dump_table(self):
-        import datetime
-        from google.cloud._helpers import UTC
-
         NOW_SECONDS = 1448911495.484366
         NOW = datetime.datetime.utcfromtimestamp(
             NOW_SECONDS).replace(tzinfo=UTC)
@@ -493,8 +494,6 @@ class TestBigQuery(unittest.TestCase):
         # above).
 
     def test_sync_query_w_legacy_sql_types(self):
-        import datetime
-        from google.cloud._helpers import UTC
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
@@ -533,22 +532,35 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(query.rows[0][0], example['expected'])
 
     def test_sync_query_w_standard_sql_types(self):
-        import datetime
-        from google.cloud._helpers import UTC
         from google.cloud.bigquery._helpers import ArrayQueryParameter
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery._helpers import StructQueryParameter
-        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
-        stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
-        zoned = naive.replace(tzinfo=UTC)
-        zoned_param = ScalarQueryParameter(
-            name='zoned', type_='TIMESTAMP', value=zoned)
         question = 'What is the answer to life, the universe, and everything?'
         question_param = ScalarQueryParameter(
             name='question', type_='STRING', value=question)
         answer = 42
         answer_param = ScalarQueryParameter(
             name='answer', type_='INT64', value=answer)
+        pi = 3.1415926
+        pi_param = ScalarQueryParameter(
+            name='pi', type_='FLOAT64', value=pi)
+        truthy = True
+        truthy_param = ScalarQueryParameter(
+            name='truthy', type_='BOOL', value=truthy)
+        beef = b'DEADBEEF'
+        beef_param = ScalarQueryParameter(
+            name='beef', type_='BYTES', value=beef)
+        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
+        stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
+        naive_param = ScalarQueryParameter(
+            name='naive', type_='DATETIME', value=naive)
+        naive_date_param = ScalarQueryParameter(
+            name='naive_date', type_='DATE', value=naive.date())
+        naive_time_param = ScalarQueryParameter(
+            name='naive_time', type_='TIME', value=naive.time())
+        zoned = naive.replace(tzinfo=UTC)
+        zoned_param = ScalarQueryParameter(
+            name='zoned', type_='TIMESTAMP', value=zoned)
         array_param = ArrayQueryParameter(
             name='array_param', array_type='INT64', values=[1, 2])
         struct_param = StructQueryParameter(
@@ -630,6 +642,46 @@ class TestBigQuery(unittest.TestCase):
                 'expected': [{u'_field_1': [1, 2]}],
             },
             {
+                'sql': 'SELECT @question',
+                'expected': question,
+                'query_parameters': [question_param],
+            },
+            {
+                'sql': 'SELECT @answer',
+                'expected': answer,
+                'query_parameters': [answer_param],
+            },
+            {
+                'sql': 'SELECT @pi',
+                'expected': pi,
+                'query_parameters': [pi_param],
+            },
+            {
+                'sql': 'SELECT @truthy',
+                'expected': truthy,
+                'query_parameters': [truthy_param],
+            },
+            {
+                'sql': 'SELECT @beef',
+                'expected': beef,
+                'query_parameters': [beef_param],
+            },
+            {
+                'sql': 'SELECT @naive',
+                'expected': naive,
+                'query_parameters': [naive_param],
+            },
+            {
+                'sql': 'SELECT @naive_date',
+                'expected': naive.date(),
+                'query_parameters': [naive_date_param],
+            },
+            {
+                'sql': 'SELECT @naive_time',
+                'expected': naive.time(),
+                'query_parameters': [naive_time_param],
+            },
+            {
                 'sql': 'SELECT @zoned',
                 'expected': zoned,
                 'query_parameters': [zoned_param],
@@ -703,7 +755,8 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(rows, to_insert)
 
-    def test_create_table_nested_schema(self):
+    def test_create_table_insert_fetch_nested_schema(self):
+
         table_name = 'test_table'
         dataset = Config.CLIENT.dataset(
             _make_dataset_name('create_table_nested_schema'))
@@ -712,8 +765,58 @@ class TestBigQuery(unittest.TestCase):
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
 
-        table = dataset.table(table_name, schema=_load_json_schema())
+        schema = _load_json_schema()
+        table = dataset.table(table_name, schema=schema)
         table.create()
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
         self.assertEqual(table.name, table_name)
+
+        to_insert = []
+        # Data is in "JSON Lines" format, see http://jsonlines.org/
+        json_filename = os.path.join(WHERE, 'bigquery_test_data.jsonl')
+        with open(json_filename) as rows_file:
+            for line in rows_file:
+                mapping = json.loads(line)
+                to_insert.append(
+                    tuple(mapping[field.name] for field in schema))
+
+        errors = table.insert_data(to_insert)
+        self.assertEqual(len(errors), 0)
+
+        retry = RetryResult(_has_rows, max_tries=8)
+        fetched = retry(self._fetch_single_page)(table)
+        self.assertEqual(len(fetched), len(to_insert))
+
+        for found, expected in zip(sorted(fetched), sorted(to_insert)):
+            self.assertEqual(found[0], expected[0])            # Name
+            self.assertEqual(found[1], int(expected[1]))       # Age
+            self.assertEqual(found[2], expected[2])            # Weight
+            self.assertEqual(found[3], expected[3])            # IsMagic
+
+            self.assertEqual(len(found[4]), len(expected[4]))  # Spells
+            for f_spell, e_spell in zip(found[4], expected[4]):
+                self.assertEqual(f_spell['Name'], e_spell['Name'])
+                parts = time.strptime(
+                    e_spell['LastUsed'], '%Y-%m-%d %H:%M:%S UTC')
+                e_used = datetime.datetime(*parts[0:6], tzinfo=UTC)
+                self.assertEqual(f_spell['LastUsed'], e_used)
+                self.assertEqual(f_spell['DiscoveredBy'],
+                                 e_spell['DiscoveredBy'])
+                self.assertEqual(f_spell['Properties'], e_spell['Properties'])
+
+                e_icon = base64.standard_b64decode(
+                    e_spell['Icon'].encode('ascii'))
+                self.assertEqual(f_spell['Icon'], e_icon)
+
+            parts = time.strptime(expected[5], '%H:%M:%S')
+            e_teatime = datetime.time(*parts[3:6])
+            self.assertEqual(found[5], e_teatime)              # TeaTime
+
+            parts = time.strptime(expected[6], '%Y-%m-%d')
+            e_nextvac = datetime.date(*parts[0:3])
+            self.assertEqual(found[6], e_nextvac)              # NextVacation
+
+            parts = time.strptime(expected[7], '%Y-%m-%dT%H:%M:%S')
+            e_favtime = datetime.datetime(*parts[0:6])
+            self.assertEqual(found[7], e_favtime)              # FavoriteTime

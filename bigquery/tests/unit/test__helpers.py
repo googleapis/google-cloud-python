@@ -145,7 +145,7 @@ class Test_bytes_from_json(unittest.TestCase):
         import base64
 
         expected = b'Wonderful!'
-        encoded = base64.encodestring(expected)
+        encoded = base64.standard_b64encode(expected)
         coerced = self._call_fut(encoded, object())
         self.assertEqual(coerced, expected)
 
@@ -153,7 +153,7 @@ class Test_bytes_from_json(unittest.TestCase):
         import base64
 
         expected = b'Wonderful!'
-        encoded = base64.encodestring(expected).decode('ascii')
+        encoded = base64.standard_b64encode(expected).decode('ascii')
         coerced = self._call_fut(encoded, object())
         self.assertEqual(coerced, expected)
 
@@ -558,7 +558,7 @@ class Test_bytes_to_json(unittest.TestCase):
         import base64
 
         source = b'source'
-        expected = base64.encodestring(source)
+        expected = base64.standard_b64encode(source)
         self.assertEqual(self._call_fut(source), expected)
 
 
@@ -621,7 +621,7 @@ class Test_datetime_to_json(unittest.TestCase):
         from google.cloud._helpers import UTC
 
         when = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=UTC)
-        self.assertEqual(self._call_fut(when), '2016-12-03T14:11:27.123456Z')
+        self.assertEqual(self._call_fut(when), '2016-12-03T14:11:27.123456')
 
 
 class Test_date_to_json(unittest.TestCase):
@@ -1017,7 +1017,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
                 'type': 'DATETIME',
             },
             'parameterValue': {
-                'value': _datetime_to_rfc3339(now),
+                'value': _datetime_to_rfc3339(now)[:-1],  # strip trailing 'Z'
             },
         }
         klass = self._get_target_class()

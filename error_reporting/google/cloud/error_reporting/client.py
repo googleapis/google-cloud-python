@@ -23,7 +23,7 @@ try:
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
 
-from google.cloud._helpers import _determine_default_project
+from google.cloud.client import ClientWithProject
 from google.cloud.error_reporting._logging import _ErrorReportingLoggingAPI
 from google.cloud.environment_vars import DISABLE_GRPC
 
@@ -74,7 +74,7 @@ class HTTPContext(object):
         self.remoteIp = remote_ip
 
 
-class Client(object):
+class Client(ClientWithProject):
     """Error Reporting client. Currently Error Reporting is done by creating
     a Logging client.
 
@@ -125,13 +125,8 @@ class Client(object):
                  service=None,
                  version=None,
                  use_gax=None):
-        if project is None:
-            self._project = _determine_default_project()
-        else:
-            self._project = project
-        self._credentials = credentials
-        self._http = http
-
+        super(Client, self).__init__(project=project, credentials=credentials,
+                                     http=http)
         self._report_errors_api = None
 
         self.service = service if service else self.DEFAULT_SERVICE
@@ -162,7 +157,7 @@ class Client(object):
                 self._report_errors_api = make_report_error_api(self)
             else:
                 self._report_errors_api = _ErrorReportingLoggingAPI(
-                    self._project, self._credentials, self._http)
+                    self.project, self._credentials, self._http)
         return self._report_errors_api
 
     def _build_error_report(self,
