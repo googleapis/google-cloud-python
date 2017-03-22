@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
+
 from setuptools import find_packages
 from setuptools import setup
 
@@ -28,7 +30,7 @@ EXTRA_OAUTHLIB_DEPENDENCIES = (
 )
 
 
-with open('README.rst', 'r') as fh:
+with io.open('README.rst', 'r') as fh:
     long_description = fh.read()
 
 setup(
