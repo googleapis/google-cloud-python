@@ -18,7 +18,7 @@ Batches provide the ability to execute multiple operations
 in a single request to the Cloud Datastore API.
 
 See
-https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations
+https://cloud.google.com/datastore/docs/concepts/entities#batch_operations
 """
 
 from google.cloud.datastore import helpers
