@@ -143,8 +143,8 @@ class Client(ClientWithProject):
         """Helper for logging-related API calls.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
 
         :rtype:
             :class:`_gax._ErrorReportingGaxApi`

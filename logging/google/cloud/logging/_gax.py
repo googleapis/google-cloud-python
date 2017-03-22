@@ -194,7 +194,7 @@ class _SinksAPI(object):
         """API call:  create a sink resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/create
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create
 
         :type project: str
         :param project: ID of the project in which to create the sink.
@@ -343,7 +343,7 @@ class _MetricsAPI(object):
         """API call:  create a metric resource.
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/create
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/create
 
         :type project: str
         :param project: ID of the project in which to create the metric.
