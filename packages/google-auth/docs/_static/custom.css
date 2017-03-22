@@ -1,5 +1,9 @@
-div.document {
-    width: 1040px;
+@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono');
+
+@media screen and (min-width: 1080px) {
+    div.document {
+        width: 1040px;
+    }
 }
 
 code.descname {
