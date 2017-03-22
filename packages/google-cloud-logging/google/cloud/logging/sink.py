@@ -21,7 +21,7 @@ class Sink(object):
     """Sinks represent filtered exports for log entries.
 
     See:
-    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks
 
     :type name: str
     :param name: the name of the sink
@@ -107,7 +107,7 @@ class Sink(object):
         """API call:  create the sink via a PUT request
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/create
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -122,7 +122,7 @@ class Sink(object):
         """API call:  test for the existence of the sink via a GET request
 
         See
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/get
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/get
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -145,7 +145,7 @@ class Sink(object):
         """API call:  sync local sink configuration via a GET request
 
         See
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/get
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/get
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -161,7 +161,7 @@ class Sink(object):
         """API call:  update sink configuration via a PUT request
 
         See
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/update
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/update
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -176,7 +176,7 @@ class Sink(object):
         """API call:  delete a sink via a DELETE request
 
         See
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/delete
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/delete
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
