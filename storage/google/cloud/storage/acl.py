@@ -133,6 +133,9 @@ class _ACLEntity(object):
 
         :type role: str
         :param role: The role to add to the entity.
+
+        :rtype: ~`google.cloud.storage.acl._ACLEntity`
+        :returns: self
         """
         self.roles.add(role)
         return self
@@ -142,6 +145,9 @@ class _ACLEntity(object):
 
         :type role: str
         :param role: The role to remove from the entity.
+
+        :rtype: ~`google.cloud.storage.acl._ACLEntity`
+        :returns: self
         """
         if role in self.roles:
             self.roles.remove(role)
