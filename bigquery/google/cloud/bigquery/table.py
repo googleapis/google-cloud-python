@@ -363,7 +363,43 @@ class Table(object):
         """
         if not isinstance(value, six.string_types):
             raise ValueError("Pass a string")
-        self._properties['view'] = {'query': value}
+        if 'view' in self._properties:
+            self._properties['view']['query'] = value
+        else:
+            self._properties['view'] = {
+                'query': value,
+                'useLegacySql': True
+            }
+
+    @property
+    def view_use_legacy_sql(self):
+        """Boolean value definin SQL dialect of a view.
+
+        :rtype: bool, or ``NoneType``
+        :returns: boolean indicating whether the view uses standard
+                  or legacy SQL
+        """
+        view = self._properties.get('view')
+        if view is not None:
+            return view.get('useLegacySql', True)
+
+    @view_use_legacy_sql.setter
+    def view_use_legacy_sql(self, value):
+        """Update SQL dialect for view
+
+        :type value: bool
+        :param value: Whether to use legacy SQL
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, bool):
+            raise ValueError("Pass a boolean value")
+        if 'view' in self._properties:
+            self._properties['view']['useLegacySql'] = value
+        else:
+            self._properties['view'] = {
+                'useLegacySql': value
+            }
 
     @view_query.deleter
     def view_query(self):
@@ -469,6 +505,8 @@ class Table(object):
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
+            if self.view_use_legacy_sql is not None:
+                view['useLegacySql'] = self.view_use_legacy_sql
         elif self._schema:
             resource['schema'] = {
                 'fields': _build_schema_resource(self._schema)
@@ -544,6 +582,7 @@ class Table(object):
               location=_MARKER,
               expires=_MARKER,
               view_query=_MARKER,
+              view_use_legacy_sql=_MARKER,
               schema=_MARKER):
         """API call:  update individual table properties via a PATCH request
 
@@ -570,6 +609,9 @@ class Table(object):
 
         :type view_query: str
         :param view_query: SQL query defining the table as a view
+
+        :type view_use_legacy_sql: str
+        :param view_use_legacy_sql: Boolean indicating view_query dialect
 
         :type schema: list of :class:`SchemaField`
         :param schema: fields describing the schema
@@ -599,7 +641,16 @@ class Table(object):
             if view_query is None:
                 partial['view'] = None
             else:
-                partial['view'] = {'query': view_query}
+                partial['view'] = {
+                    'query': view_query,
+                    'useLegacySql': True
+                }
+
+        if view_use_legacy_sql is not _MARKER:
+            if 'view' in partial:
+                partial['view']['useLegacySql'] = view_use_legacy_sql
+            else:
+                partial['view'] = {'useLegacySql': view_use_legacy_sql}
 
         if schema is not _MARKER:
             if schema is None:

@@ -124,8 +124,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         if 'view' in resource:
             self.assertEqual(table.view_query, resource['view']['query'])
+            self.assertEqual(table.view_use_legacy_sql, resource['view']['useLegacySql'])
         else:
             self.assertIsNone(table.view_query)
+            self.assertIsNone(table.view_use_legacy_sql)
 
         if 'schema' in resource:
             self._verifySchema(table.schema, resource)
@@ -160,6 +162,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.location)
         self.assertIsNone(table.view_query)
+        self.assertIsNone(table.view_use_legacy_sql)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -357,6 +360,20 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.view_query = 'select * from foo'
         del table.view_query
         self.assertIsNone(table.view_query)
+
+    def test_view_use_legacy_sql_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset)
+        with self.assertRaises(ValueError):
+            table.use_legacy_sql = 12345
+
+    def test_view_use_legacy_sql_setter(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset)
+        table.use_legacy_sql = False
+        self.assertFalse(table.use_legacy_sql)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -653,6 +670,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
         QUERY = 'select fullname, age from person_ages'
+        LEGACY_SQL = False
         RESOURCE = self._makeResource()
         RESOURCE['description'] = DESCRIPTION
         RESOURCE['friendlyName'] = TITLE
@@ -661,6 +679,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         RESOURCE['view'] = {}
         RESOURCE['view']['query'] = QUERY
+        RESOURCE['view']['useLegacySql'] = LEGACY_SQL
         RESOURCE['type'] = 'VIEW'
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -689,7 +708,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'tableId': self.TABLE_NAME},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
-            'view': {'query': QUERY},
+            'view': {
+                'query': QUERY,
+                'useLegacySql': LEGACY_SQL
+            },
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -850,9 +872,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         QUERY = 'select fullname, age from person_ages'
+        LEGACY_SQL = True
         LOCATION = 'EU'
         RESOURCE = self._makeResource()
-        RESOURCE['view'] = {'query': QUERY}
+        RESOURCE['view'] = {'query': QUERY, 'useLegacySql': LEGACY_SQL}
         RESOURCE['type'] = 'VIEW'
         RESOURCE['location'] = LOCATION
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
@@ -876,7 +899,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['method'], 'PATCH')
         self.assertEqual(req['path'], '/%s' % PATH)
         SENT = {
-            'view': {'query': QUERY},
+            'view': {'query': QUERY, 'useLegacySql': LEGACY_SQL},
             'location': LOCATION,
             'expirationTime': _millis(self.EXP_TIME),
             'schema': {'fields': [
@@ -961,13 +984,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
         DEF_TABLE_EXP = 12345
         LOCATION = 'EU'
         QUERY = 'select fullname, age from person_ages'
+        LEGACY_SQL = True
         RESOURCE = self._makeResource()
         RESOURCE['defaultTableExpirationMs'] = 12345
         RESOURCE['location'] = LOCATION
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
                                           tzinfo=UTC)
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
-        RESOURCE['view'] = {'query': QUERY}
+        RESOURCE['view'] = {'query': QUERY, 'useLegacySql': LEGACY_SQL}
         RESOURCE['type'] = 'VIEW'
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -994,7 +1018,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                  'tableId': self.TABLE_NAME},
             'expirationTime': _millis(self.EXP_TIME),
             'location': 'EU',
-            'view': {'query': QUERY},
+            'view': {'query': QUERY, 'useLegacySql': LEGACY_SQL},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
