@@ -44,7 +44,7 @@ class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
 
     See:
-    https://cloud.google.com/bigquery/docs/reference/v2/tables
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
     :type name: str
     :param name: the name of the table
@@ -482,7 +482,7 @@ class Table(object):
         """API call:  create the dataset via a PUT request
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/insert
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -500,7 +500,7 @@ class Table(object):
         """API call:  test for the existence of the table via a GET request
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/get
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -524,7 +524,7 @@ class Table(object):
         """API call:  refresh table properties via a GET request
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/get
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -548,7 +548,7 @@ class Table(object):
         """API call:  update individual table properties via a PATCH request
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/patch
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/patch
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -616,7 +616,7 @@ class Table(object):
         """API call:  update table properties via a PUT request
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/update
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -632,7 +632,7 @@ class Table(object):
         """API call:  delete the table via a DELETE request
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/delete
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -646,7 +646,7 @@ class Table(object):
         """API call:  fetch the table data via a GET request
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/tabledata/list
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list
 
         .. note::
 
@@ -695,7 +695,7 @@ class Table(object):
         """API call:  insert table data via a POST request
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/tabledata/insertAll
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
         :type rows: list of tuples
         :param rows: Row data to be inserted. Each tuple should contain data
