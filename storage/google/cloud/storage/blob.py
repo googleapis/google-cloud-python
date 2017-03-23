@@ -943,7 +943,7 @@ class Blob(_PropertyMixin):
     content_language = _scalar_property('contentLanguage')
     """HTTP 'Content-Language' header for this object.
 
-    See: http://tools.ietf.org/html/bcp47 and
+    See: https://tools.ietf.org/html/bcp47 and
          https://cloud.google.com/storage/docs/json_api/v1/objects
 
     If the property is not set locally, returns ``None``.
@@ -965,7 +965,7 @@ class Blob(_PropertyMixin):
     crc32c = _scalar_property('crc32c')
     """CRC32C checksum for this object.
 
-    See: http://tools.ietf.org/html/rfc4960#appendix-B and
+    See: https://tools.ietf.org/html/rfc4960#appendix-B and
          https://cloud.google.com/storage/docs/json_api/v1/objects
 
     If the property is not set locally, returns ``None``.
@@ -992,7 +992,7 @@ class Blob(_PropertyMixin):
     def etag(self):
         """Retrieve the ETag for the object.
 
-        See: http://tools.ietf.org/html/rfc2616#section-3.11 and
+        See: https://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
@@ -1029,7 +1029,7 @@ class Blob(_PropertyMixin):
     md5_hash = _scalar_property('md5Hash')
     """MD5 hash for this object.
 
-    See: http://tools.ietf.org/html/rfc4960#appendix-B and
+    See: https://tools.ietf.org/html/rfc4960#appendix-B and
          https://cloud.google.com/storage/docs/json_api/v1/objects
 
     If the property is not set locally, returns ``None``.
