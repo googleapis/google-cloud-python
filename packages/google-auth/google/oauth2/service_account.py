@@ -70,6 +70,7 @@ specific subject using :meth:`~Credentials.with_subject`.
 .. _RFC 7523: https://tools.ietf.org/html/rfc7523
 """
 
+import copy
 import datetime
 
 from google.auth import _helpers
@@ -245,6 +246,29 @@ class Credentials(credentials.Signing,
             token_uri=self._token_uri,
             subject=subject,
             additional_claims=self._additional_claims.copy())
+
+    def with_claims(self, additional_claims):
+        """Returns a copy of these credentials with modified claims.
+
+        Args:
+            additional_claims (Mapping[str, str]): Any additional claims for
+                the JWT payload. This will be merged with the current
+                additional claims.
+
+        Returns:
+            google.auth.service_account.Credentials: A new credentials
+                instance.
+        """
+        new_additional_claims = copy.deepcopy(self._additional_claims)
+        new_additional_claims.update(additional_claims or {})
+
+        return Credentials(
+            self._signer,
+            service_account_email=self._service_account_email,
+            scopes=self._scopes,
+            token_uri=self._token_uri,
+            subject=self._subject,
+            additional_claims=new_additional_claims)
 
     def _make_authorization_grant_assertion(self):
         """Create the OAuth 2.0 assertion.

@@ -134,6 +134,10 @@ class TestCredentials(object):
         credentials = self.credentials.with_scopes(scopes)
         assert credentials._scopes == scopes
 
+    def test_with_claims(self):
+        new_credentials = self.credentials.with_claims({'meep': 'moop'})
+        assert new_credentials._additional_claims == {'meep': 'moop'}
+
     def test__make_authorization_grant_assertion(self):
         token = self.credentials._make_authorization_grant_assertion()
         payload = jwt.decode(token, PUBLIC_CERT_BYTES)
