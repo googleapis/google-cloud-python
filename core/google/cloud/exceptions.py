@@ -15,6 +15,7 @@
 """Custom exceptions for :mod:`google.cloud` package.
 
 See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
+See: https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
 """
 
 # Avoid the grpc and google.cloud.grpc collision.
@@ -70,6 +71,11 @@ class GoogleCloudError(Exception):
         :returns: a list of mappings describing each error.
         """
         return [copy.deepcopy(error) for error in self._errors]
+
+
+class GoogleCloudRPCError(GoogleCloudError):
+    """Base error class for RPC errors that do not map directly to HTTP errors.
+    """
 
 
 class Redirection(GoogleCloudError):
@@ -181,8 +187,22 @@ class ServiceUnavailable(ServerError):
 
 
 class GatewayTimeout(ServerError):
-    """Excepption mapping a `504 Gateway Timeout'` response."""
+    """Exception mapping a '504 Gateway Timeout' response."""
     code = 504
+
+
+class RPCServerError(GoogleCloudRPCError):
+    """Base for 5xx-like RPC errors:  (abstract)"""
+
+
+class Unknown(RPCServerError):
+    """Exception mapping a '2 UNKNOWN' RPC error."""
+    code = 2
+
+
+class DataLoss(RPCServerError):
+    """Exception mapping a '15 DATA LOSS' RPC error."""
+    code = 15
 
 
 def make_exception(response, content, error_info=None, use_json=True):
@@ -245,8 +265,11 @@ def _walk_subclasses(klass):
             yield subsub
 
 
-# Build the code->exception class mapping.
+# Build the HTTP code->exception class mapping, excluding RPC-only exceptions.
 for _eklass in _walk_subclasses(GoogleCloudError):
+    if issubclass(_eklass, GoogleCloudRPCError):
+        continue
+
     code = getattr(_eklass, 'code', None)
     if code is not None:
         _HTTP_CODE_TO_EXCEPTION[code] = _eklass

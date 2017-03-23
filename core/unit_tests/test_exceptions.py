@@ -47,6 +47,14 @@ class Test_GoogleCloudError(unittest.TestCase):
         self.assertEqual(e.message, 'Testing')
         self.assertEqual(list(e.errors), [ERROR])
 
+    def test_rpc_only_errors_not_exported(self):
+        from google.cloud.exceptions import GoogleCloudRPCError
+        from google.cloud.exceptions import _HTTP_CODE_TO_EXCEPTION
+
+        http_exceptions = _HTTP_CODE_TO_EXCEPTION.values()
+        self.assertFalse(
+            any([issubclass(e, GoogleCloudRPCError) for e in http_exceptions]))
+
 
 class Test_make_exception(unittest.TestCase):
 
