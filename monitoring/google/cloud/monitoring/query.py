@@ -163,7 +163,9 @@ class Query(object):
     def select_interval(self, end_time, start_time=None):
         """Copy the query and set the query time interval.
 
-        Example::
+        Example:
+
+        .. code-block:: python
 
             import datetime
 
@@ -196,7 +198,9 @@ class Query(object):
     def select_group(self, group_id):
         """Copy the query and add filtering by group.
 
-        Example::
+        Example:
+
+        .. code-block:: python
 
             query = query.select_group('1234567')
 
@@ -216,7 +220,9 @@ class Query(object):
         This is only useful if the target project represents a Stackdriver
         account containing the specified monitored projects.
 
-        Examples::
+        Examples:
+
+        .. code-block:: python
 
             query = query.select_projects('project-1')
             query = query.select_projects('project-1', 'project-2')
@@ -235,31 +241,43 @@ class Query(object):
     def select_resources(self, *args, **kwargs):
         """Copy the query and add filtering by resource labels.
 
-        Examples::
+        Examples:
+
+        .. code-block:: python
 
             query = query.select_resources(zone='us-central1-a')
             query = query.select_resources(zone_prefix='europe-')
             query = query.select_resources(resource_type='gce_instance')
 
         A keyword argument ``<label>=<value>`` ordinarily generates a filter
-        expression of the form::
+        expression of the form:
+
+        .. code-block:: python
 
             resource.label.<label> = "<value>"
 
         However, by adding ``"_prefix"`` or ``"_suffix"`` to the keyword,
         you can specify a partial match.
 
-        ``<label>_prefix=<value>`` generates::
+        ``<label>_prefix=<value>`` generates:
+
+        .. code-block:: python
 
             resource.label.<label> = starts_with("<value>")
 
-        ``<label>_suffix=<value>`` generates::
+        ``<label>_suffix=<value>`` generates:
+
+        .. code-block:: python
 
             resource.label.<label> = ends_with("<value>")
 
         As a special case, ``"resource_type"`` is treated as a special
         pseudo-label corresponding to the filter object ``resource.type``.
-        For example, ``resource_type=<value>`` generates::
+        For example, ``resource_type=<value>`` generates:
+
+        .. code-block:: python
+
+            resource.label.<label> = ends_with("<value>")
 
             resource.type = "<value>"
 
@@ -293,43 +311,77 @@ class Query(object):
     def select_metrics(self, *args, **kwargs):
         """Copy the query and add filtering by metric labels.
 
-        Examples::
+        Examples:
+
+        .. code-block:: python
 
             query = query.select_metrics(instance_name='myinstance')
             query = query.select_metrics(instance_name_prefix='mycluster-')
+            query = query.select_metrics(
+                metric_type='compute.googleapis.com/instance/cpu/utilization')
 
         A keyword argument ``<label>=<value>`` ordinarily generates a filter
-        expression of the form::
+        expression of the form:
+
+        .. code-block:: python
 
             metric.label.<label> = "<value>"
 
         However, by adding ``"_prefix"`` or ``"_suffix"`` to the keyword,
         you can specify a partial match.
 
-        ``<label>_prefix=<value>`` generates::
+        ``<label>_prefix=<value>`` generates:
+
+        .. code-block:: python
 
             metric.label.<label> = starts_with("<value>")
 
-        ``<label>_suffix=<value>`` generates::
+        ``<label>_suffix=<value>`` generates:
+
+        .. code-block:: python
 
             metric.label.<label> = ends_with("<value>")
+
+        As a special case, ``"metric_type"`` is treated as a special
+        pseudo-label corresponding to the filter object ``metric.type``.
+        For example, ``metric_type=<value>`` generates:
+
+        .. code-block:: python
+
+            metric.type = "<value>"
+
+        See the `supported metrics`_.
+
+        .. note::
+
+            Currently, the query can only support a single metric type. Given
+            this, prefix and suffix filtering is not supported for
+            ``"metric_type"``.
 
         If the label's value type is ``INT64``, a similar notation can be
         used to express inequalities:
 
-        ``<label>_less=<value>`` generates::
+        ``<label>_less=<value>`` generates:
+
+        .. code-block:: python
 
             metric.label.<label> < <value>
 
-        ``<label>_lessequal=<value>`` generates::
+        ``<label>_lessequal=<value>`` generates:
+
+        .. code-block:: python
 
             metric.label.<label> <= <value>
 
-        ``<label>_greater=<value>`` generates::
+        ``<label>_greater=<value>`` generates:
+
+        .. code-block:: python
 
             metric.label.<label> > <value>
 
-        ``<label>_greaterequal=<value>`` generates::
+        ``<label>_greaterequal=<value>`` generates:
+
+        .. code-block:: python
 
             metric.label.<label> >= <value>
 
@@ -344,6 +396,8 @@ class Query(object):
 
         :rtype: :class:`Query`
         :returns: The new query object.
+
+        .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
         """
         new_query = self.copy()
         new_query._filter.select_metrics(*args, **kwargs)
@@ -355,11 +409,15 @@ class Query(object):
         If ``per_series_aligner`` is not :data:`Aligner.ALIGN_NONE`, each time
         series will contain data points only on the period boundaries.
 
-        Example::
+        Example:
+
+        .. code-block:: python
 
             query = query.align(Aligner.ALIGN_MEAN, minutes=5)
 
-        It is also possible to specify the aligner as a literal string::
+        It is also possible to specify the aligner as a literal string:
+
+        .. code-block:: python
 
             query = query.align('ALIGN_MEAN', minutes=5)
 
@@ -398,7 +456,9 @@ class Query(object):
         data points.
 
         For example, you could request an aggregated time series for each
-        combination of project and zone as follows::
+        combination of project and zone as follows:
+
+        .. code-block:: python
 
             query = query.reduce(Reducer.REDUCE_MEAN,
                                  'resource.project_id', 'resource.zone')
@@ -435,7 +495,9 @@ class Query(object):
         containing points ordered from oldest to newest.
 
         Note that the :class:`Query` object itself is an iterable, such that
-        the following are equivalent::
+        the following are equivalent:
+
+        .. code-block:: python
 
             for timeseries in query:
                 ...
@@ -558,7 +620,9 @@ class Query(object):
 
             Use of this method requires that you have :mod:`pandas` installed.
 
-        Examples::
+        Examples:
+
+        .. code-block:: python
 
             # Generate a dataframe with a multi-level column header including
             # the resource type and all available resource and metric labels.
@@ -630,6 +694,10 @@ class _Filter(object):
 
         See :meth:`Query.select_metrics`.
         """
+        new_metric_type = kwargs.pop('metric_type', None)
+        if new_metric_type is not None:
+            self.metric_type = new_metric_type
+
         self.metric_label_filter = _build_label_filter('metric',
                                                        *args, **kwargs)
 

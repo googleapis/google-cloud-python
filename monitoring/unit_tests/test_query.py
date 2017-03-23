@@ -211,13 +211,15 @@ class TestQuery(unittest.TestCase):
 
     def test_filter_by_metrics(self):
         INSTANCE = 'my-instance'
+        NEW_METRIC_TYPE = 'compute.googleapis.com/instance/utilization'
         client = _Client(project=PROJECT, connection=_Connection())
         query = self._make_one(client, METRIC_TYPE)
-        query = query.select_metrics(instance_name=INSTANCE)
+        query = query.select_metrics(metric_type=NEW_METRIC_TYPE,
+                                     instance_name=INSTANCE)
         expected = (
             'metric.type = "{type}"'
             ' AND metric.label.instance_name = "{instance}"'
-        ).format(type=METRIC_TYPE, instance=INSTANCE)
+        ).format(type=NEW_METRIC_TYPE, instance=INSTANCE)
         self.assertEqual(query.filter, expected)
 
     def test_request_parameters_minimal(self):
@@ -528,14 +530,26 @@ class Test_Filter(unittest.TestCase):
         obj.projects = 'project-1', 'project-2'
         obj.select_resources(resource_type='some-resource',
                              resource_label='foo')
-        obj.select_metrics(metric_label_prefix='bar-')
+        obj.select_metrics(metric_type='some-metric',
+                           metric_label_prefix='bar-')
 
         expected = (
-            'metric.type = "{type}"'
+            'metric.type = "some-metric"'
             ' AND group.id = "1234567"'
             ' AND project = "project-1" OR project = "project-2"'
             ' AND resource.label.resource_label = "foo"'
             ' AND resource.type = "some-resource"'
+            ' AND metric.label.metric_label = starts_with("bar-")'
+        )
+
+        self.assertEqual(str(obj), expected)
+
+    def test_select_metrics_without_type(self):
+        obj = self._make_one(METRIC_TYPE)
+        obj.select_metrics(metric_label_prefix='bar-')
+
+        expected = (
+            'metric.type = "{type}"'
             ' AND metric.label.metric_label = starts_with("bar-")'
         ).format(type=METRIC_TYPE)
 
