@@ -53,9 +53,49 @@ class Policy(object):
     def __init__(self, etag=None, version=None):
         self.etag = etag
         self.version = version
-        self.owners = set()
-        self.editors = set()
-        self.viewers = set()
+        self.bindings = {}
+
+    @property
+    def owners(self):
+        """Legacy access to owner role."""
+        result = set()
+        for role in self._OWNER_ROLES:
+            for member in self.bindings.get(role, ()):
+                result.add(member)
+        return result
+
+    @owners.setter
+    def owners(self, value):
+        """Update owners."""
+        self.bindings[OWNER_ROLE] = list(value)
+
+    @property
+    def editors(self):
+        """Legacy access to editor role."""
+        result = set()
+        for role in self._EDITOR_ROLES:
+            for member in self.bindings.get(role, ()):
+                result.add(member)
+        return result
+
+    @editors.setter
+    def editors(self, value):
+        """Update editors."""
+        self.bindings[EDITOR_ROLE] = list(value)
+
+    @property
+    def viewers(self):
+        """Legacy access to viewer role."""
+        result = set()
+        for role in self._VIEWER_ROLES:
+            for member in self.bindings.get(role, ()):
+                result.add(member)
+        return result
+
+    @viewers.setter
+    def viewers(self, value):
+        """Update viewers."""
+        self.bindings[VIEWER_ROLE] = list(value)
 
     @staticmethod
     def user(email):
@@ -123,22 +163,6 @@ class Policy(object):
         """
         return 'allAuthenticatedUsers'
 
-    def _bind_custom_role(self, role, members):  # pylint: disable=no-self-use
-        """Bind an API-specific role to members.
-
-        Helper for :meth:`from_api_repr`.
-
-        :type role: str
-        :param role: role to bind.
-
-        :type members: set of str
-        :param members: member IDs to be bound to the role.
-
-        Subclasses may override.
-        """
-        raise ValueError(
-            'Unknown binding: role=%s, members=%s' % (role, members))
-
     @classmethod
     def from_api_repr(cls, resource):
         """Create a policy from the resource returned from the API.
@@ -154,46 +178,9 @@ class Policy(object):
         policy = cls(etag, version)
         for binding in resource.get('bindings', ()):
             role = binding['role']
-            members = set(binding['members'])
-            if role in cls._OWNER_ROLES:
-                policy.owners |= members
-            elif role in cls._EDITOR_ROLES:
-                policy.editors |= members
-            elif role in cls._VIEWER_ROLES:
-                policy.viewers |= members
-            else:
-                policy._bind_custom_role(role, members)
+            members = sorted(binding['members'])
+            policy.bindings[role] = members
         return policy
-
-    def _role_bindings(self):
-        """Enumerate members bound to roles for the policy.
-
-        Helper for :meth:`to_api_repr`.
-
-        :rtype: list of mapping
-        :returns: zero or more mappings describing roles / members bound by
-                  the policy.
-
-        Subclasses may override.
-        """
-        bindings = []
-
-        if self.owners:
-            bindings.append(
-                {'role': OWNER_ROLE,
-                 'members': sorted(self.owners)})
-
-        if self.editors:
-            bindings.append(
-                {'role': EDITOR_ROLE,
-                 'members': sorted(self.editors)})
-
-        if self.viewers:
-            bindings.append(
-                {'role': VIEWER_ROLE,
-                 'members': sorted(self.viewers)})
-
-        return bindings
 
     def to_api_repr(self):
         """Construct a Policy resource.
@@ -209,9 +196,9 @@ class Policy(object):
         if self.version is not None:
             resource['version'] = self.version
 
-        bindings = self._role_bindings()
-
-        if bindings:
-            resource['bindings'] = bindings
+        if len(self.bindings) > 0:
+            resource['bindings'] = [
+                {'role': role, 'members': members}
+                for role, members in sorted(self.bindings.items())]
 
         return resource
