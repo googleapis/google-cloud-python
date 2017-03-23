@@ -302,7 +302,7 @@ class _AsyncJob(_BaseJob):
         """API call:  begin the job via a POST request
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/insert
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -324,7 +324,7 @@ class _AsyncJob(_BaseJob):
         """API call:  test for the existence of the job via a GET request
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -348,7 +348,7 @@ class _AsyncJob(_BaseJob):
         """API call:  refresh job properties via a GET request
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -365,7 +365,7 @@ class _AsyncJob(_BaseJob):
         """API call:  cancel job via a POST request
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/cancel
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -498,57 +498,57 @@ class LoadTableFromStorageJob(_AsyncJob):
 
     allow_jagged_rows = _TypedProperty('allow_jagged_rows', bool)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowJaggedRows
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowJaggedRows
     """
 
     allow_quoted_newlines = _TypedProperty('allow_quoted_newlines', bool)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowQuotedNewlines
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
     """
 
     create_disposition = CreateDisposition('create_disposition')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition
     """
 
     encoding = Encoding('encoding')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.encoding
     """
 
     field_delimiter = _TypedProperty('field_delimiter', six.string_types)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.fieldDelimiter
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.fieldDelimiter
     """
 
     ignore_unknown_values = _TypedProperty('ignore_unknown_values', bool)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.ignoreUnknownValues
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.ignoreUnknownValues
     """
 
     max_bad_records = _TypedProperty('max_bad_records', six.integer_types)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.maxBadRecords
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
     """
 
     quote_character = _TypedProperty('quote_character', six.string_types)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.quote
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
     """
 
     skip_leading_rows = _TypedProperty('skip_leading_rows', six.integer_types)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.skipLeadingRows
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
     """
 
     source_format = SourceFormat('source_format')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceFormat
     """
 
     write_disposition = WriteDisposition('write_disposition')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
     """
 
     def _populate_config_resource(self, configuration):
@@ -673,12 +673,12 @@ class CopyJob(_AsyncJob):
 
     create_disposition = CreateDisposition('create_disposition')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.createDisposition
     """
 
     write_disposition = WriteDisposition('write_disposition')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition
     """
 
     def _populate_config_resource(self, configuration):
@@ -796,22 +796,22 @@ class ExtractTableToStorageJob(_AsyncJob):
 
     compression = Compression('compression')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.compression
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.compression
     """
 
     destination_format = DestinationFormat('destination_format')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.destinationFormat
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat
     """
 
     field_delimiter = _TypedProperty('field_delimiter', six.string_types)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.fieldDelimiter
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.fieldDelimiter
     """
 
     print_header = _TypedProperty('print_header', bool)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.printHeader
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader
     """
 
     def _populate_config_resource(self, configuration):
@@ -937,32 +937,32 @@ class QueryJob(_AsyncJob):
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.allowLargeResults
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults
     """
 
     create_disposition = CreateDisposition('create_disposition')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.createDisposition
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
     """
 
     default_dataset = _TypedProperty('default_dataset', Dataset)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.defaultDataset
     """
 
     destination = _TypedProperty('destination', Table)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
     """
 
     flatten_results = _TypedProperty('flatten_results', bool)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.flattenResults
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults
     """
 
     priority = QueryPriority('priority')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
     """
 
     query_parameters = QueryParametersProperty()
@@ -971,7 +971,7 @@ class QueryJob(_AsyncJob):
 
     use_query_cache = _TypedProperty('use_query_cache', bool)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache
     """
 
     use_legacy_sql = _TypedProperty('use_legacy_sql', bool)
@@ -988,17 +988,17 @@ class QueryJob(_AsyncJob):
 
     write_disposition = WriteDisposition('write_disposition')
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
     """
 
     maximum_billing_tier = _TypedProperty('maximum_billing_tier', int)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.maximumBillingTier
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
     """
 
     maximum_bytes_billed = _TypedProperty('maximum_bytes_billed', int)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.maximumBytesBilled
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
     """
 
     def _destination_table_resource(self):

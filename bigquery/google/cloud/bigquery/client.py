@@ -85,7 +85,7 @@ class Client(ClientWithProject):
         """List projects for the project associated with this client.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/projects/list
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list
 
         :type max_results: int
         :param max_results: maximum number of projects to return, If not
@@ -110,7 +110,7 @@ class Client(ClientWithProject):
         """List datasets for the project associated with this client.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/datasets/list
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list
 
         :type include_all: bool
         :param include_all: True if results include hidden datasets.
@@ -182,7 +182,7 @@ class Client(ClientWithProject):
         """List jobs for the project associated with this client.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/list
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list
 
         :type max_results: int
         :param max_results: maximum number of jobs to return, If not
@@ -226,7 +226,7 @@ class Client(ClientWithProject):
         """Construct a job for loading data into a table from CloudStorage.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load
 
         :type job_name: str
         :param job_name: Name of the job.
@@ -248,7 +248,7 @@ class Client(ClientWithProject):
         """Construct a job for copying one or more tables into another table.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy
 
         :type job_name: str
         :param job_name: Name of the job.
@@ -268,7 +268,7 @@ class Client(ClientWithProject):
         """Construct a job for extracting a table into Cloud Storage files.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
 
         :type job_name: str
         :param job_name: Name of the job.
@@ -292,7 +292,7 @@ class Client(ClientWithProject):
         """Construct a job for running a SQL query asynchronously.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
 
         :type job_name: str
         :param job_name: Name of the job.
