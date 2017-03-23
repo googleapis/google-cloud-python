@@ -28,7 +28,6 @@ def unit_tests(session, python_version):
     session.interpreter = 'python%s' % python_version
 
     # Install all test dependencies, then install this package in-place.
-    session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install('mock', 'pytest', 'pytest-cov',
                     'grpcio >= 1.0.2')
     session.install('-e', '.')
@@ -49,7 +48,6 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install('flake8')
     session.install('.')
     session.run('flake8', 'google/cloud/core')
@@ -63,7 +61,6 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.interpreter = 'python3.6'
-    session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
