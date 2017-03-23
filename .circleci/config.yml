@@ -1,0 +1,142 @@
+---
+version: 2
+jobs:
+  build:
+    docker:
+      - image: googleapis/nox:0.11.2
+    steps:
+      - checkout
+      - run:
+          name: Decrypt credentials
+          command: |
+            if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+              apt-get update && apt-get install -y openssl
+              openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" \
+                  -in /var/code/gcp/test_utils/credentials.json.enc \
+                  -out "$GOOGLE_APPLICATION_CREDENTIALS"
+            else
+              echo "No credentials. System tests will not run."
+            fi
+      - run:
+          name: Add GitHub public key to known hosts
+          command: |
+            mkdir -p ~/.ssh/
+            if [[ ! -f ~/.ssh/known_hosts ]] || ! grep "github.com" ~/.ssh/known_hosts; then
+              echo "
+            github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+              " >> ~/.ssh/known_hosts
+            fi
+      - run:
+          name: Declare target packages (changed packages and dependencies).
+          command: |
+            python3.6 test_utils/scripts/get_target_packages.py > ~/target_packages
+            cat ~/target_packages
+      - run:
+          name: Run tests - google.cloud.core
+          command: |
+            if [[ -n $(grep core ~/target_packages) ]]; then
+              nox -f core/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.bigquery
+          command: |
+            if [[ -n $(grep bigquery ~/target_packages) ]]; then
+              nox -f bigquery/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.bigtable
+          command: |
+            if [[ -n $(grep bigtable ~/target_packages) ]]; then
+              nox -f bigtable/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.datastore
+          command: |
+            if [[ -n $(grep datastore ~/target_packages) ]]; then
+              nox -f datastore/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.dns
+          command: |
+            if [[ -n $(grep dns ~/target_packages) ]]; then
+              nox -f dns/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.error_reporting
+          command: |
+            if [[ -n $(grep error_reporting ~/target_packages) ]]; then
+              nox -f error_reporting/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.language
+          command: |
+            if [[ -n $(grep language ~/target_packages) ]]; then
+              nox -f language/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.logging
+          command: |
+            if [[ -n $(grep logging ~/target_packages) ]]; then
+              nox -f logging/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.monitoring
+          command: |
+            if [[ -n $(grep monitoring ~/target_packages) ]]; then
+              nox -f monitoring/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.pubsub
+          command: |
+            if [[ -n $(grep pubsub ~/target_packages) ]]; then
+              nox -f pubsub/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.resource_manager
+          command: |
+            if [[ -n $(grep resource_manager ~/target_packages) ]]; then
+              nox -f resource_manager/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.runtimeconfig
+          command: |
+            if [[ -n $(grep runtimeconfig ~/target_packages) ]]; then
+              nox -f runtimeconfig/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.spanner
+          command: |
+            if [[ -n $(grep spanner ~/target_packages) ]]; then
+              nox -f spanner/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.speech
+          command: |
+            if [[ -n $(grep speech ~/target_packages) ]]; then
+              nox -f speech/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.storage
+          command: |
+            if [[ -n $(grep storage ~/target_packages) ]]; then
+              nox -f storage/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.translate
+          command: |
+            if [[ -n $(grep translate ~/target_packages) ]]; then
+              nox -f translate/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.vision
+          command: |
+            if [[ -n $(grep vision ~/target_packages) ]]; then
+              nox -f vision/nox.py
+            fi
+      - deploy:
+          name: Update the docs
+          command: nox -e docs
+      - deploy:
+          name: Push to PyPI (if this is a release tag).
+          command: test_utils/scripts/circleci/twine_upload.sh
+    working_directory: /var/code/gcp/

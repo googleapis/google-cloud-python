@@ -63,3 +63,6 @@ from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
 from google.cloud.datastore.query import Query
 from google.cloud.datastore.transaction import Transaction
+
+__all__ = ['__version__', 'Batch', 'Client', 'Entity', 'Key', 'Query',
+           'Transaction']

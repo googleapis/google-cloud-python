@@ -1,29 +1,6 @@
-language: python
-sudo: false
-
-addons:
-  apt:
-    sources:
-    - deadsnakes
-    packages:
-    - python3.5
-
-install:
-  - pip install --upgrade pip tox
-
-script:
-  - python2.7 scripts/run_unit_tests.py
-  - if [[ "${TRAVIS_EVENT_TYPE}" != "pull_request" ]]; then python3.4 scripts/run_unit_tests.py; fi
-  - python3.5 scripts/run_unit_tests.py
-  - python scripts/run_unit_tests.py --tox-env cover
-  - tox -e lint
-  - tox -e system-tests
-  - tox -e system-tests3
-  - scripts/update_docs.sh
-
-after_success:
-  - scripts/coveralls.sh
-
-cache:
-  directories:
-    - ${HOME}/.cache/pip
+---
+# Exclude Travis completely.
+# We can remove this file post-merge.
+branches:
+  exclude:
+    - /.*/

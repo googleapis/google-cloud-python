@@ -25,3 +25,5 @@ ASCENDING = 'timestamp asc'
 """Query string to order by ascending timestamps."""
 DESCENDING = 'timestamp desc'
 """Query string to order by decending timestamps."""
+
+__all__ = ['__version__', 'ASCENDING', 'Client', 'DESCENDING']
