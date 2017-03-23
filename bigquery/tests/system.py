@@ -532,39 +532,9 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(query.rows[0][0], example['expected'])
 
     def test_sync_query_w_standard_sql_types(self):
-        from google.cloud.bigquery._helpers import ArrayQueryParameter
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
-        from google.cloud.bigquery._helpers import StructQueryParameter
-        question = 'What is the answer to life, the universe, and everything?'
-        question_param = ScalarQueryParameter(
-            name='question', type_='STRING', value=question)
-        answer = 42
-        answer_param = ScalarQueryParameter(
-            name='answer', type_='INT64', value=answer)
-        pi = 3.1415926
-        pi_param = ScalarQueryParameter(
-            name='pi', type_='FLOAT64', value=pi)
-        truthy = True
-        truthy_param = ScalarQueryParameter(
-            name='truthy', type_='BOOL', value=truthy)
-        beef = b'DEADBEEF'
-        beef_param = ScalarQueryParameter(
-            name='beef', type_='BYTES', value=beef)
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
-        naive_param = ScalarQueryParameter(
-            name='naive', type_='DATETIME', value=naive)
-        naive_date_param = ScalarQueryParameter(
-            name='naive_date', type_='DATE', value=naive.date())
-        naive_time_param = ScalarQueryParameter(
-            name='naive_time', type_='TIME', value=naive.time())
         zoned = naive.replace(tzinfo=UTC)
-        zoned_param = ScalarQueryParameter(
-            name='zoned', type_='TIMESTAMP', value=zoned)
-        array_param = ArrayQueryParameter(
-            name='array_param', array_type='INT64', values=[1, 2])
-        struct_param = StructQueryParameter(
-            'hitchhiker', question_param, answer_param)
         EXAMPLES = [
             {
                 'sql': 'SELECT 1',
@@ -641,6 +611,78 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT ARRAY(SELECT STRUCT([1, 2]))',
                 'expected': [{u'_field_1': [1, 2]}],
             },
+        ]
+        for example in EXAMPLES:
+            query = Config.CLIENT.run_sync_query(example['sql'])
+            query.use_legacy_sql = False
+            query.run()
+            self.assertEqual(len(query.rows), 1)
+            self.assertEqual(len(query.rows[0]), 1)
+            self.assertEqual(query.rows[0][0], example['expected'])
+
+    def test_sync_query_w_query_params(self):
+        from google.cloud.bigquery._helpers import ArrayQueryParameter
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        from google.cloud.bigquery._helpers import StructQueryParameter
+        question = 'What is the answer to life, the universe, and everything?'
+        question_param = ScalarQueryParameter(
+            name='question', type_='STRING', value=question)
+        answer = 42
+        answer_param = ScalarQueryParameter(
+            name='answer', type_='INT64', value=answer)
+        pi = 3.1415926
+        pi_param = ScalarQueryParameter(
+            name='pi', type_='FLOAT64', value=pi)
+        truthy = True
+        truthy_param = ScalarQueryParameter(
+            name='truthy', type_='BOOL', value=truthy)
+        beef = b'DEADBEEF'
+        beef_param = ScalarQueryParameter(
+            name='beef', type_='BYTES', value=beef)
+        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
+        naive_param = ScalarQueryParameter(
+            name='naive', type_='DATETIME', value=naive)
+        naive_date_param = ScalarQueryParameter(
+            name='naive_date', type_='DATE', value=naive.date())
+        naive_time_param = ScalarQueryParameter(
+            name='naive_time', type_='TIME', value=naive.time())
+        zoned = naive.replace(tzinfo=UTC)
+        zoned_param = ScalarQueryParameter(
+            name='zoned', type_='TIMESTAMP', value=zoned)
+        array_param = ArrayQueryParameter(
+            name='array_param', array_type='INT64', values=[1, 2])
+        struct_param = StructQueryParameter(
+            'hitchhiker', question_param, answer_param)
+        phred_name = 'Phred Phlyntstone'
+        phred_name_param = ScalarQueryParameter(
+            name='name', type_='STRING', value=phred_name)
+        phred_age = 32
+        phred_age_param = ScalarQueryParameter(
+            name='age', type_='INT64', value=phred_age)
+        phred_param = StructQueryParameter(
+            None, phred_name_param, phred_age_param)
+        bharney_name = 'Bharney Rhubbyl'
+        bharney_name_param = ScalarQueryParameter(
+            name='name', type_='STRING', value=bharney_name)
+        bharney_age = 31
+        bharney_age_param = ScalarQueryParameter(
+            name='age', type_='INT64', value=bharney_age)
+        bharney_param = StructQueryParameter(
+            None, bharney_name_param, bharney_age_param)
+        characters_param = ArrayQueryParameter(
+            name=None, array_type='RECORD',
+            values=[phred_param, bharney_param])
+        hero_param = StructQueryParameter(
+            'hero', phred_name_param, phred_age_param)
+        sidekick_param = StructQueryParameter(
+            'sidekick', bharney_name_param, bharney_age_param)
+        roles_param = StructQueryParameter(
+            'roles', hero_param, sidekick_param)
+        friends_param = ArrayQueryParameter(
+            name='friends', array_type='STRING',
+            values=[phred_name, bharney_name])
+        with_friends_param = StructQueryParameter(None, friends_param)
+        EXAMPLES = [
             {
                 'sql': 'SELECT @question',
                 'expected': question,
@@ -696,11 +738,34 @@ class TestBigQuery(unittest.TestCase):
                 'expected': ({'_field_1': question, '_field_2': answer}),
                 'query_parameters': [struct_param],
             },
+            {
+                'sql': 'SELECT ?',
+                'expected': [
+                    {'name': phred_name, 'age': phred_age},
+                    {'name': bharney_name, 'age': bharney_age},
+                ],
+                'query_parameters': [characters_param],
+            },
+            {
+                'sql': 'SELECT @roles',
+                'expected': {
+                    'hero': {'name': phred_name, 'age': phred_age},
+                    'sidekick': {'name': bharney_name, 'age': bharney_age},
+                },
+                'query_parameters': [roles_param],
+            },
+            {
+                'sql': 'SELECT ?',
+                'expected': {
+                    'friends': [phred_name, bharney_name],
+                },
+                'query_parameters': [with_friends_param],
+            },
         ]
         for example in EXAMPLES:
             query = Config.CLIENT.run_sync_query(
                 example['sql'],
-                query_parameters=example.get('query_parameters', ()))
+                query_parameters=example['query_parameters'])
             query.use_legacy_sql = False
             query.run()
             self.assertEqual(len(query.rows), 1)
