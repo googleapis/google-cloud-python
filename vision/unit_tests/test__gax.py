@@ -224,6 +224,32 @@ class TestGAXClient(unittest.TestCase):
             self.assertIsInstance(annotation, Annotations)
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
+    def test_handle_retry_error(self):
+        from grpc._channel import _Rendezvous
+        from google.gax.errors import GaxError
+        from google.gax.errors import RetryError
+        from google.cloud.proto.vision.v1 import image_annotator_pb2
+
+        client = mock.Mock(spec_set=['_credentials'])
+        request = image_annotator_pb2.AnnotateImageRequest()
+
+        # In the case of a RetryError being raised, we want to get to the root
+        # exception. i.e. RetryError.cause.exception()
+        mock_rendezvous = mock.Mock(spec=_Rendezvous)
+        mock_rendezvous.exception.return_value = GaxError('gax')
+
+        with mock.patch('google.cloud.vision._gax.image_annotator_client.'
+                        'ImageAnnotatorClient'):
+            gax_api = self._make_one(client)
+
+        gax_api._annotator_client = mock.Mock(
+            spec_set=['batch_annotate_images'])
+
+        gax_api._annotator_client.batch_annotate_images = mock.Mock(
+            side_effect=RetryError('retry', cause=mock_rendezvous))
+        with self.assertRaises(GaxError):
+            gax_api.annotate(requests_pb=[request])
+
 
 class Test__to_gapic_feature(unittest.TestCase):
     def _call_fut(self, feature):
