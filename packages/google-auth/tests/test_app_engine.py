@@ -17,6 +17,7 @@ import datetime
 import mock
 import pytest
 
+from google.auth import _helpers
 from google.auth import app_engine
 
 
@@ -111,7 +112,7 @@ class TestCredentials(object):
 
     @mock.patch(
         'google.auth._helpers.utcnow',
-        return_value=datetime.datetime.min)
+        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW)
     def test_refresh(self, now_mock, app_identity_mock):
         token = 'token'
         ttl = 100
@@ -124,7 +125,7 @@ class TestCredentials(object):
             credentials.scopes, credentials._service_account_id)
         assert credentials.token == token
         assert credentials.expiry == (
-            datetime.datetime.min + datetime.timedelta(seconds=ttl))
+            now_mock() + datetime.timedelta(seconds=ttl))
         assert credentials.valid
         assert not credentials.expired
 

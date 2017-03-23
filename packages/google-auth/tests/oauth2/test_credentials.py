@@ -53,7 +53,8 @@ class TestCredentials(object):
 
     @mock.patch('google.oauth2._client.refresh_grant', autospec=True)
     @mock.patch(
-        'google.auth._helpers.utcnow', return_value=datetime.datetime.min)
+        'google.auth._helpers.utcnow',
+        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW)
     def test_refresh_success(self, now_mock, refresh_grant_mock):
         token = 'token'
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)

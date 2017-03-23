@@ -17,6 +17,7 @@ import datetime
 import mock
 import pytest
 
+from google.auth import _helpers
 from google.auth import exceptions
 from google.auth.compute_engine import credentials
 
@@ -38,7 +39,8 @@ class TestCredentials(object):
         assert self.credentials.service_account_email == 'default'
 
     @mock.patch(
-        'google.auth._helpers.utcnow', return_value=datetime.datetime.min)
+        'google.auth._helpers.utcnow',
+        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW)
     @mock.patch('google.auth.compute_engine._metadata.get')
     def test_refresh_success(self, get_mock, now_mock):
         get_mock.side_effect = [{
@@ -57,7 +59,7 @@ class TestCredentials(object):
         # Check that the credentials have the token and proper expiration
         assert self.credentials.token == 'token'
         assert self.credentials.expiry == (
-            datetime.datetime.min + datetime.timedelta(seconds=500))
+            now_mock() + datetime.timedelta(seconds=500))
 
         # Check the credential info
         assert (self.credentials.service_account_email ==

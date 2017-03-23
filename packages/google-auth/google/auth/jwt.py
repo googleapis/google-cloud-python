@@ -52,8 +52,7 @@ from google.auth import crypt
 import google.auth.credentials
 
 
-_DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in sections
-_CLOCK_SKEW_SECS = 300  # 5 minutes in seconds
+_DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 
 
 def encode(signer, payload, header=None, key_id=None):
@@ -161,21 +160,25 @@ def _verify_iat_and_exp(payload):
     """
     now = _helpers.datetime_to_secs(_helpers.utcnow())
 
-    # Make sure the iat and exp claims are present
+    # Make sure the iat and exp claims are present.
     for key in ('iat', 'exp'):
         if key not in payload:
             raise ValueError(
                 'Token does not contain required claim {}'.format(key))
 
-    # Make sure the token wasn't issued in the future
+    # Make sure the token wasn't issued in the future.
     iat = payload['iat']
-    earliest = iat - _CLOCK_SKEW_SECS
+    # Err on the side of accepting a token that is slightly early to account
+    # for clock skew.
+    earliest = iat - _helpers.CLOCK_SKEW_SECS
     if now < earliest:
         raise ValueError('Token used too early, {} < {}'.format(now, iat))
 
-    # Make sure the token wasn't issue in the past
+    # Make sure the token wasn't issued in the past.
     exp = payload['exp']
-    latest = exp + _CLOCK_SKEW_SECS
+    # Err on the side of accepting a token that is slightly out of date
+    # to account for clow skew.
+    latest = exp + _helpers.CLOCK_SKEW_SECS
     if latest < now:
         raise ValueError('Token expired, {} < {}'.format(latest, now))
 

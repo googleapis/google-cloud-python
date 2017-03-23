@@ -22,6 +22,10 @@ import six
 from six.moves import urllib
 
 
+CLOCK_SKEW_SECS = 300  # 5 minutes in seconds
+CLOCK_SKEW = datetime.timedelta(seconds=CLOCK_SKEW_SECS)
+
+
 def copy_docstring(source_class):
     """Decorator that copies a method's docstring from another class.
 

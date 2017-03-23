@@ -14,6 +14,7 @@
 
 import datetime
 
+from google.auth import _helpers
 from google.auth import credentials
 
 
@@ -37,8 +38,21 @@ def test_expired_and_valid():
     assert credentials.valid
     assert not credentials.expired
 
+    # Set the expiration in the past, but because of clock skew accomodation
+    # the credentials should still be valid.
     credentials.expiry = (
-        datetime.datetime.utcnow() - datetime.timedelta(seconds=60))
+        datetime.datetime.utcnow() -
+        datetime.timedelta(seconds=1))
+
+    assert credentials.valid
+    assert not credentials.expired
+
+    # Set the credentials far enough in the past to exceed the clock skew
+    # accomodation. They should now be expired.
+    credentials.expiry = (
+        datetime.datetime.utcnow() -
+        _helpers.CLOCK_SKEW -
+        datetime.timedelta(seconds=1))
 
     assert not credentials.valid
     assert credentials.expired
