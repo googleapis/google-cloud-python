@@ -151,6 +151,22 @@ class TestPolicy(unittest.TestCase):
         policy = self._make_one('DEADBEEF')
         self.assertEqual(policy.to_api_repr(), {'etag': 'DEADBEEF'})
 
+    def test_to_api_repr_binding_wo_members(self):
+        policy = self._make_one()
+        policy.bindings['empty'] = []
+        self.assertEqual(policy.to_api_repr(), {})
+
+    def test_to_api_repr_binding_w_duplicates(self):
+        from google.cloud.iam import OWNER_ROLE
+
+        OWNER = 'group:cloud-logs@google.com'
+        policy = self._make_one()
+        policy.owners = [OWNER, OWNER]
+        self.assertEqual(
+            policy.to_api_repr(), {
+                'bindings': [{'role': OWNER_ROLE, 'members': [OWNER]}],
+            })
+
     def test_to_api_repr_full(self):
         import operator
         from google.cloud.iam import (

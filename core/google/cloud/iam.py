@@ -197,8 +197,13 @@ class Policy(object):
             resource['version'] = self.version
 
         if len(self.bindings) > 0:
-            resource['bindings'] = [
-                {'role': role, 'members': members}
-                for role, members in sorted(self.bindings.items())]
+            bindings = resource['bindings'] = []
+            for role, members in sorted(self.bindings.items()):
+                if len(members) > 0:
+                    bindings.append(
+                        {'role': role, 'members': sorted(set(members))})
+
+            if len(bindings) == 0:
+                del resource['bindings']
 
         return resource
