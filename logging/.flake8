@@ -1,0 +1,6 @@
+[flake8]
+exclude =
+  __pycache__,
+  .git,
+  *.pyc,
+  conf.py

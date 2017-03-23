@@ -21,3 +21,5 @@ __version__ = get_distribution('google-cloud-language').version
 from google.cloud.language.client import Client
 from google.cloud.language.document import Document
 from google.cloud.language.document import Encoding
+
+__all__ = ['Client', 'Document', 'Encoding', '__version__']

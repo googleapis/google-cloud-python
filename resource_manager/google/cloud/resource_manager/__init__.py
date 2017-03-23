@@ -23,3 +23,5 @@ from google.cloud.resource_manager.project import Project
 
 
 SCOPE = Client.SCOPE
+
+__all__ = ['__version__', 'Client', 'Project', 'SCOPE']

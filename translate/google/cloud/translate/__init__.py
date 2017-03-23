@@ -21,3 +21,6 @@ __version__ = get_distribution('google-cloud-translate').version
 from google.cloud.translate.client import BASE
 from google.cloud.translate.client import Client
 from google.cloud.translate.client import NMT
+
+
+__all__ = ['__version__', 'BASE', 'Client', 'NMT']
