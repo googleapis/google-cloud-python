@@ -13,6 +13,10 @@ environment:
     # a later point release.
     # See: http://www.appveyor.com/docs/installed-software#python
 
+    # We test on 32-bit Python 2.7, and 64-bit Python 3.x.
+    # This is because it takes too long to serially go through six to eight
+    # iterations.
+
     # Python 2.7.11 is the latest Python 2.7 with a Windows installer
     # Python 2.7.11 is the overall latest
     # https://www.python.org/ftp/python/2.7.11/
@@ -21,32 +25,9 @@ environment:
       PYTHON_ARCH: "32"
       TOX_ENV: "py27"
 
-    - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.11"
-      PYTHON_ARCH: "64"
-      TOX_ENV: "py27"
-
-    # Python 3.4.4 is the latest Python 3.4 with a Windows installer
-    # Python 3.4.4 is the overall latest
-    # https://www.python.org/ftp/python/3.4.4/
-    - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.4"
-      PYTHON_ARCH: "32"
-      TOX_ENV: "py34"
-
-    - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.4"
-      PYTHON_ARCH: "64"
-      TOX_ENV: "py34"
-
     # Python 3.5.1 is the latest Python 3.5 with a Windows installer
     # Python 3.5.1 is the overall latest
     # https://www.python.org/ftp/python/3.5.1/
-    - PYTHON: "C:\\Python35"
-      PYTHON_VERSION: "3.5.1"
-      PYTHON_ARCH: "32"
-      TOX_ENV: "py35"
-
     - PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.1"
       PYTHON_ARCH: "64"
