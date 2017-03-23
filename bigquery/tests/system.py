@@ -774,7 +774,7 @@ class TestBigQuery(unittest.TestCase):
 
         to_insert = []
         # Data is in "JSON Lines" format, see http://jsonlines.org/
-        json_filename = os.path.join(WHERE, 'bigquery_test_data.jsonl')
+        json_filename = os.path.join(WHERE, 'data', 'characters.jsonl')
         with open(json_filename) as rows_file:
             for line in rows_file:
                 mapping = json.loads(line)
