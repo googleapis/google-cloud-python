@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import unittest
 
 from google.cloud.exceptions import BadRequest
@@ -201,18 +202,23 @@ class TestMonitoring(unittest.TestCase):
 
         retry_500(client.write_point)(metric, resource, VALUE)
 
-        def _query_timeseries_with_retries():
-            MAX_RETRIES = 7
+        MAX_RETRIES = 7
 
-            def _has_timeseries(result):
-                return len(list(result)) > 0
+        # need to wrap built-in function for decorators to work
+        def list_timeseries(query):
+            return list(query)
 
-            retry_result = RetryResult(_has_timeseries,
-                                       max_tries=MAX_RETRIES)(client.query)
-            return RetryErrors(BadRequest, max_tries=MAX_RETRIES)(retry_result)
+        def _has_timeseries(results):
+            return len(results) > 0
 
-        query = _query_timeseries_with_retries()(METRIC_TYPE, minutes=5)
-        timeseries_list = list(query)
+        end_time = datetime.datetime.utcnow()
+        query = client.query(METRIC_TYPE, end_time=end_time, minutes=5)
+
+        retry_result = RetryResult(_has_timeseries, max_tries=MAX_RETRIES)(
+            list_timeseries)
+        timeseries_list = RetryErrors(BadRequest, max_tries=MAX_RETRIES)(
+            retry_result)(query)
+
         self.assertEqual(len(timeseries_list), 1)
         timeseries = timeseries_list[0]
         self.assertEqual(timeseries.metric, metric)
