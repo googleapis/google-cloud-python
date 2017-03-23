@@ -1,6 +1,18 @@
 Changelog
 =========
 
+v0.9.0
+------
+
+- Added ``service_account.Credentials.with_claims``. (#140)
+- Moved ``google.auth.oauthlib`` and ``google.auth.flow`` to a new separate package ``google_auth_oauthlib``. (#137, #139, #135, #126)
+- Added ``InstalledAppFlow`` to ``google_auth_oauthlib``. (#128)
+- Fixed some packaging and documentation issues. (#131)
+- Added a helpful error message when importing optional dependencies. (#125)
+- Made all properties required to reconstruct ``google.oauth2.credentials.Credentials`` public. (#124)
+- Added official Python 3.6 support. (#102)
+- Added ``jwt.Credentials.from_signing_credentials`` and removed ``service_account.Credentials.to_jwt_credentials``. (#120)
+
 v0.8.0
 ------
 
