@@ -71,7 +71,8 @@ def client_bucket_acl(client, to_delete):
     # [END acl_save]
 
     # [START acl_revoke_write]
-    acl.all().grant_read().revoke_write()
+    acl.all().grant_read()
+    acl.all().revoke_write()
     # [END acl_revoke_write]
 
     # [START acl_save_bucket]
