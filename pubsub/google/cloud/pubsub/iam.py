@@ -17,9 +17,11 @@ For allowed roles / permissions, see:
 https://cloud.google.com/pubsub/access_control#permissions
 """
 
-from google.cloud.iam import OWNER_ROLE
-from google.cloud.iam import EDITOR_ROLE
-from google.cloud.iam import VIEWER_ROLE
+# pylint: disable=unused-import
+from google.cloud.iam import OWNER_ROLE   # noqa - backward compat
+from google.cloud.iam import EDITOR_ROLE  # noqa - backward compat
+from google.cloud.iam import VIEWER_ROLE  # noqa - backward compat
+# pylint: enable=unused-import
 from google.cloud.iam import Policy as _BasePolicy
 
 # Pubsub-specific IAM roles
@@ -94,76 +96,32 @@ class Policy(_BasePolicy):
     See:
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Binding
-
-    :type etag: str
-    :param etag: ETag used to identify a unique of the policy
-
-    :type version: int
-    :param version: unique version of the policy
     """
     _OWNER_ROLES = (OWNER_ROLE, PUBSUB_ADMIN_ROLE)
+    """Roles mapped onto our ``owners`` attribute."""
+
     _EDITOR_ROLES = (EDITOR_ROLE, PUBSUB_EDITOR_ROLE)
+    """Roles mapped onto our ``editors`` attribute."""
+
     _VIEWER_ROLES = (VIEWER_ROLE, PUBSUB_VIEWER_ROLE)
+    """Roles mapped onto our ``viewers`` attribute."""
 
-    def __init__(self, etag=None, version=None):
-        super(Policy, self).__init__(etag, version)
-        self.publishers = set()
-        self.subscribers = set()
+    @property
+    def publishers(self):
+        """Legacy access to owner role."""
+        return self.bindings.get(PUBSUB_PUBLISHER_ROLE, ())
 
-    def _bind_custom_role(self, role, members):
-        """Bind an API-specific role to members.
+    @publishers.setter
+    def publishers(self, value):
+        """Update publishers."""
+        self.bindings[PUBSUB_PUBLISHER_ROLE] = list(value)
 
-        Helper for :meth:`from_api_repr`.
+    @property
+    def subscribers(self):
+        """Legacy access to owner role."""
+        return self.bindings.get(PUBSUB_SUBSCRIBER_ROLE, ())
 
-        :type role: str
-        :param role: role to bind.
-
-        :type members: set of str
-        :param members: member IDs to be bound to the role.
-
-        Subclasses may override.
-        """
-        if role == PUBSUB_PUBLISHER_ROLE:
-            self.publishers |= members
-        elif role == PUBSUB_SUBSCRIBER_ROLE:
-            self.subscribers |= members
-        else:
-            super(Policy, self)._bind_custom_role(role, members)
-
-    def _role_bindings(self):
-        """Enumerate members bound to roles for the policy.
-
-        Helper for :meth:`to_api_repr`.
-
-        :rtype: list of mapping
-        :returns: zero or more mappings describing roles / members bound by
-                  the policy.
-        """
-        bindings = []
-
-        if self.owners:
-            bindings.append(
-                {'role': PUBSUB_ADMIN_ROLE,
-                 'members': sorted(self.owners)})
-
-        if self.editors:
-            bindings.append(
-                {'role': PUBSUB_EDITOR_ROLE,
-                 'members': sorted(self.editors)})
-
-        if self.viewers:
-            bindings.append(
-                {'role': PUBSUB_VIEWER_ROLE,
-                 'members': sorted(self.viewers)})
-
-        if self.publishers:
-            bindings.append(
-                {'role': PUBSUB_PUBLISHER_ROLE,
-                 'members': sorted(self.publishers)})
-
-        if self.subscribers:
-            bindings.append(
-                {'role': PUBSUB_SUBSCRIBER_ROLE,
-                 'members': sorted(self.subscribers)})
-
-        return bindings
+    @subscribers.setter
+    def subscribers(self, value):
+        """Update subscribers."""
+        self.bindings[PUBSUB_SUBSCRIBER_ROLE] = list(value)
