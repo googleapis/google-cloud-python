@@ -107,7 +107,7 @@ codes; at the time, only English, Spanish, and Japanese `are supported`_.
 However, the ``analyzeSentiment`` method `only supports`_ English text.
 
 .. _are supported: https://cloud.google.com/natural-language/docs/
-.. _only supports: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeSentiment#body.request_body.FIELDS.document
+.. _only supports: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment#body.request_body.FIELDS.document
 
 The document type (``doc_type``) value can be one of
 :attr:`Document.PLAIN_TEXT <google.cloud.language.document.Document.PLAIN_TEXT>` or
@@ -134,9 +134,9 @@ The document type can be specified with the ``doc_type`` argument:
      >>> document = client.document_from_url(
      ...     gcs_url, doc_type=language.Document.HTML)
 
-.. _analyzeEntities: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeEntities
-.. _analyzeSentiment: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeSentiment
-.. _annotateText: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText
+.. _analyzeEntities: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeEntities
+.. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment
+.. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText
 .. _Document: https://cloud.google.com/natural-language/reference/rest/v1beta1/Document
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
@@ -263,4 +263,4 @@ the response is :data:`None`.
           metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Natural_satellite'}
           salience: 0.11793101
 
-.. _Features: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText#Features
+.. _Features: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText#Features
