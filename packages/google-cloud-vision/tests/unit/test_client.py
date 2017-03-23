@@ -81,7 +81,7 @@ class TestClient(unittest.TestCase):
     def test_face_annotation(self):
         from google.cloud.vision.annotations import Annotations
         from google.cloud.vision.feature import Feature, FeatureTypes
-        from unit_tests._fixtures import FACE_DETECTION_RESPONSE
+        from tests.unit._fixtures import FACE_DETECTION_RESPONSE
 
         returned = FACE_DETECTION_RESPONSE
         request = {
@@ -157,8 +157,8 @@ class TestClient(unittest.TestCase):
         import copy
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
-        from unit_tests._fixtures import LABEL_DETECTION_RESPONSE
-        from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
+        from tests.unit._fixtures import LABEL_DETECTION_RESPONSE
+        from tests.unit._fixtures import LOGO_DETECTION_RESPONSE
 
         returned = copy.deepcopy(LABEL_DETECTION_RESPONSE)
         logos = copy.deepcopy(LOGO_DETECTION_RESPONSE['responses'][0])
@@ -214,7 +214,7 @@ class TestClient(unittest.TestCase):
 
     def test_detect_crop_hints_from_source(self):
         from google.cloud.vision.crop_hint import CropHint
-        from unit_tests._fixtures import CROP_HINTS_RESPONSE
+        from tests.unit._fixtures import CROP_HINTS_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -237,7 +237,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
-        from unit_tests._fixtures import FACE_DETECTION_RESPONSE
+        from tests.unit._fixtures import FACE_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -259,7 +259,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_detection_from_content(self):
         from google.cloud.vision.face import Face
-        from unit_tests._fixtures import FACE_DETECTION_RESPONSE
+        from tests.unit._fixtures import FACE_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -300,7 +300,7 @@ class TestClient(unittest.TestCase):
 
     def test_detect_full_text_annotation(self):
         from google.cloud.vision.text import TextAnnotation
-        from unit_tests._fixtures import FULL_TEXT_RESPONSE
+        from tests.unit._fixtures import FULL_TEXT_RESPONSE
 
         returned = FULL_TEXT_RESPONSE
         credentials = _make_credentials()
@@ -335,7 +335,7 @@ class TestClient(unittest.TestCase):
 
     def test_label_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import LABEL_DETECTION_RESPONSE
+        from tests.unit._fixtures import LABEL_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -375,7 +375,7 @@ class TestClient(unittest.TestCase):
 
     def test_landmark_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import LANDMARK_DETECTION_RESPONSE
+        from tests.unit._fixtures import LANDMARK_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
@@ -401,7 +401,7 @@ class TestClient(unittest.TestCase):
 
     def test_landmark_detection_from_content(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import LANDMARK_DETECTION_RESPONSE
+        from tests.unit._fixtures import LANDMARK_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -436,7 +436,7 @@ class TestClient(unittest.TestCase):
 
     def test_logo_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
+        from tests.unit._fixtures import LOGO_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -457,7 +457,7 @@ class TestClient(unittest.TestCase):
 
     def test_logo_detection_from_content(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
+        from tests.unit._fixtures import LOGO_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -477,7 +477,7 @@ class TestClient(unittest.TestCase):
 
     def test_text_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests._fixtures import TEXT_DETECTION_RESPONSE
+        from tests.unit._fixtures import TEXT_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -503,7 +503,7 @@ class TestClient(unittest.TestCase):
     def test_safe_search_detection_from_source(self):
         from google.cloud.vision.likelihood import Likelihood
         from google.cloud.vision.safe_search import SafeSearchAnnotation
-        from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
+        from tests.unit._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -541,7 +541,7 @@ class TestClient(unittest.TestCase):
 
     def test_image_properties_detection_from_source(self):
         from google.cloud.vision.color import ImagePropertiesAnnotation
-        from unit_tests._fixtures import IMAGE_PROPERTIES_RESPONSE
+        from tests.unit._fixtures import IMAGE_PROPERTIES_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -583,7 +583,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.web import WebEntity
         from google.cloud.vision.web import WebImage
         from google.cloud.vision.web import WebPage
-        from unit_tests._fixtures import WEB_DETECTION_RESPONSE
+        from tests.unit._fixtures import WEB_DETECTION_RESPONSE
 
         credentials = _make_credentials()
         client = self._make_one(

@@ -23,7 +23,7 @@ class TestCropHint(unittest.TestCase):
         return CropHint
 
     def test_crop_hint_annotation(self):
-        from unit_tests._fixtures import CROP_HINTS_RESPONSE
+        from tests.unit._fixtures import CROP_HINTS_RESPONSE
         from google.cloud.vision.geometry import Bounds
 
         response = CROP_HINTS_RESPONSE['responses'][0]['cropHintsAnnotation']
