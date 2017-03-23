@@ -30,7 +30,7 @@ class AccessGrant(object):
     ``role`` specified. ``role`` is omitted for a ``view``, since
     ``view`` s are always read-only.
 
-    See https://cloud.google.com/bigquery/docs/reference/v2/datasets.
+    See https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets.
 
     :type role: str
     :param role: Role granted to the entity. One of
@@ -90,7 +90,7 @@ class Dataset(object):
     """Datasets are containers for tables.
 
     See:
-    https://cloud.google.com/bigquery/docs/reference/v2/datasets
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
     :type name: str
     :param name: the name of the dataset
@@ -418,7 +418,7 @@ class Dataset(object):
         """API call:  create the dataset via a PUT request.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/insert
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -435,7 +435,7 @@ class Dataset(object):
         """API call:  test for the existence of the dataset via a GET request
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/datasets/get
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -459,7 +459,7 @@ class Dataset(object):
         """API call:  refresh dataset properties via a GET request.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/datasets/get
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -476,7 +476,7 @@ class Dataset(object):
         """API call:  update individual dataset properties via a PATCH request.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/datasets/patch
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/patch
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -515,7 +515,7 @@ class Dataset(object):
         """API call:  update dataset properties via a PUT request.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/v2/datasets/update
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/update
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -531,7 +531,7 @@ class Dataset(object):
         """API call:  delete the dataset via a DELETE request.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/delete
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -545,7 +545,7 @@ class Dataset(object):
         """List tables for the project associated with this client.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/v2/tables/list
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
 
         :type max_results: int
         :param max_results: (Optional) Maximum number of tables to return.
