@@ -555,11 +555,10 @@ class Test_bytes_to_json(unittest.TestCase):
         self.assertIs(self._call_fut(non_bytes), non_bytes)
 
     def test_w_bytes(self):
-        import base64
-
         source = b'source'
-        expected = base64.standard_b64encode(source)
-        self.assertEqual(self._call_fut(source), expected)
+        expected = u'c291cmNl'
+        converted = self._call_fut(source)
+        self.assertEqual(converted, expected)
 
 
 class Test_timestamp_to_json(unittest.TestCase):
