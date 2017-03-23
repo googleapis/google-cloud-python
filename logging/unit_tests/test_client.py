@@ -563,7 +563,7 @@ class TestClient(unittest.TestCase):
         import os
         from google.cloud._testing import _Monkey
         from google.cloud._testing import _tempdir
-        from google.cloud.logging.client import _APPENGINE_FLEXIBLE_ENV_VM
+        from google.cloud.logging.client import APPENGINE_FLEXIBLE_ENV_VM
         from google.cloud.logging.handlers import app_engine as _MUT
         from google.cloud.logging.handlers import AppEngineHandler
 
@@ -574,7 +574,7 @@ class TestClient(unittest.TestCase):
         with _tempdir() as tempdir:
             temp_log_path = os.path.join(tempdir, '{pid}')
             with _Monkey(_MUT, _LOG_PATH_TEMPLATE=temp_log_path):
-                with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
+                with _Monkey(os, environ={APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
                     handler = client.get_default_handler()
                     handler.close()  # allow tempdir cleanup on Windows
 
@@ -583,14 +583,14 @@ class TestClient(unittest.TestCase):
     def test_get_default_handler_container_engine(self):
         import os
         from google.cloud._testing import _Monkey
-        from google.cloud.logging.client import _CONTAINER_ENGINE_ENV
+        from google.cloud.logging.client import CONTAINER_ENGINE_ENV
         from google.cloud.logging.handlers import ContainerEngineHandler
 
         client = self._make_one(project=self.PROJECT,
                                 credentials=_make_credentials(),
                                 use_gax=False)
 
-        with _Monkey(os, environ={_CONTAINER_ENGINE_ENV: 'True'}):
+        with _Monkey(os, environ={CONTAINER_ENGINE_ENV: 'True'}):
             handler = client.get_default_handler()
 
         self.assertIsInstance(handler, ContainerEngineHandler)
@@ -631,6 +631,20 @@ class TestClient(unittest.TestCase):
                 deepcopy.assert_called_once_with(client._http)
 
         setup_logging.assert_called()
+
+    def test_enable_shutdown_logging(self):
+        credentials = _make_credentials()
+        shutdown_patch = mock.patch(
+            'google.cloud.logging.client.setup_stacktrace_crash_report')
+        with shutdown_patch as shutdown_mock:
+            client = self._make_one(project=self.PROJECT,
+                                    credentials=credentials,
+                                    use_gax=False)
+            client.enable_shutdown_logging(thread_dump=False)
+            shutdown_mock.assert_not_called()
+
+            client.enable_shutdown_logging(thread_dump=True)
+            shutdown_mock.assert_called()
 
 
 class _Connection(object):
