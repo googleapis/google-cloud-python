@@ -69,8 +69,8 @@ class Client(BaseClient):
 
         Response
 
-        See: https://cloud.google.com/translate/v2/\
-        discovering-supported-languages-with-rest
+        See:
+        https://cloud.google.com/translate/docs/discovering-supported-languages
 
         :type target_language: str
         :param target_language: (Optional) The language used to localize
@@ -96,8 +96,7 @@ class Client(BaseClient):
     def detect_language(self, values):
         """Detect the language of a string or list of strings.
 
-        See: https://cloud.google.com/translate/v2/\
-        detecting-language-with-rest
+        See: https://cloud.google.com/translate/docs/detecting-language
 
         :type values: str or list
         :param values: String or list of strings that will have
