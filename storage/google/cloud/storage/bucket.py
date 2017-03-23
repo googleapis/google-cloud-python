@@ -552,7 +552,7 @@ class Bucket(_PropertyMixin):
     def etag(self):
         """Retrieve the ETag for the bucket.
 
-        See: http://tools.ietf.org/html/rfc2616#section-3.11 and
+        See: https://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
@@ -594,7 +594,7 @@ class Bucket(_PropertyMixin):
     """Retrieve location configured for this bucket.
 
     See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
-    https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+    https://cloud.google.com/storage/docs/bucket-locations
 
     If the property is not set locally, returns ``None``.
 
@@ -604,7 +604,7 @@ class Bucket(_PropertyMixin):
     def get_logging(self):
         """Return info about access logging for this bucket.
 
-        See: https://cloud.google.com/storage/docs/accesslogs#status
+        See: https://cloud.google.com/storage/docs/access-logs#status
 
         :rtype: dict or None
         :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``
@@ -616,7 +616,7 @@ class Bucket(_PropertyMixin):
     def enable_logging(self, bucket_name, object_prefix=''):
         """Enable access logging for this bucket.
 
-        See: https://cloud.google.com/storage/docs/accesslogs
+        See: https://cloud.google.com/storage/docs/access-logs
 
         :type bucket_name: str
         :param bucket_name: name of bucket in which to store access logs
@@ -630,7 +630,7 @@ class Bucket(_PropertyMixin):
     def disable_logging(self):
         """Disable access logging for this bucket.
 
-        See: https://cloud.google.com/storage/docs/accesslogs#disabling
+        See: https://cloud.google.com/storage/docs/access-logs#disabling
         """
         self._patch_property('logging', None)
 
@@ -755,7 +755,7 @@ class Bucket(_PropertyMixin):
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
 
-        See: https://developers.google.com/storage/docs/website-configuration
+        See: https://cloud.google.com/storage/docs/hosting-static-website
 
         .. note::
           This (apparently) only works

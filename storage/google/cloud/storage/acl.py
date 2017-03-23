@@ -196,7 +196,7 @@ class ACL(object):
         'bucketOwnerFullControl',
     ])
     """See:
-    https://cloud.google.com/storage/docs/access-control#predefined-acl
+    https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
     """
 
     loaded = False

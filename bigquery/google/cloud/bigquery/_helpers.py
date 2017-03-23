@@ -144,7 +144,7 @@ def _bool_to_json(value):
 def _bytes_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, bytes):
-        value = base64.standard_b64encode(value)
+        value = base64.standard_b64encode(value).decode('ascii')
     return value
 
 
