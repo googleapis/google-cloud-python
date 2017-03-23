@@ -19,8 +19,7 @@ class Encoding(object):
     """Audio encoding types.
 
     See:
-    https://cloud.google.com/speech/reference/rest/v1beta1/\
-    RecognitionConfig#AudioEncoding
+    https://cloud.google.com/speech/reference/rest/v1beta1/RecognitionConfig#AudioEncoding
     """
 
     LINEAR16 = 'LINEAR16'
