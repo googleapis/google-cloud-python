@@ -30,6 +30,19 @@ retry_500 = RetryErrors(InternalServerError)
 retry_503 = RetryErrors(ServiceUnavailable)
 
 
+def _has_timeseries(result):
+    """Return True if a time series query has non-empty results."""
+    return len(list(result)) > 0
+
+UNKNOWN_METRIC_ERROR = ('The provided filter doesn\'t refer to any known '
+                        'metric.')
+
+
+def _unknown_metric(result):
+    """Return True if the error describes writing to an unknown metric.."""
+    return UNKNOWN_METRIC_ERROR in result.message
+
+
 class TestMonitoring(unittest.TestCase):
 
     def test_fetch_metric_descriptor(self):
@@ -203,13 +216,10 @@ class TestMonitoring(unittest.TestCase):
 
         def _query_timeseries_with_retries():
             MAX_RETRIES = 7
-
-            def _has_timeseries(result):
-                return len(list(result)) > 0
-
             retry_result = RetryResult(_has_timeseries,
                                        max_tries=MAX_RETRIES)(client.query)
-            return RetryErrors(BadRequest, max_tries=MAX_RETRIES)(retry_result)
+            return RetryErrors(BadRequest, error_predicate=_unknown_metric,
+                               max_tries=MAX_RETRIES)(retry_result)
 
         query = _query_timeseries_with_retries()(METRIC_TYPE, minutes=5)
         timeseries_list = list(query)
