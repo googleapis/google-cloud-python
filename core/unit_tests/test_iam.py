@@ -33,6 +33,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.owners), [])
         self.assertEqual(list(policy.editors), [])
         self.assertEqual(list(policy.viewers), [])
+        self.assertEqual(dict(policy.bindings), {})
 
     def test_ctor_explicit(self):
         VERSION = 17
@@ -43,6 +44,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.owners), [])
         self.assertEqual(list(policy.editors), [])
         self.assertEqual(list(policy.viewers), [])
+        self.assertEqual(dict(policy.bindings), {})
 
     def test_user(self):
         EMAIL = 'phred@example.com'
@@ -87,6 +89,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.owners), [])
         self.assertEqual(list(policy.editors), [])
         self.assertEqual(list(policy.viewers), [])
+        self.assertEqual(dict(policy.bindings), {})
 
     def test_from_api_repr_complete(self):
         from google.cloud.iam import (
@@ -95,8 +98,8 @@ class TestPolicy(unittest.TestCase):
             VIEWER_ROLE,
         )
 
-        OWNER1 = 'user:phred@example.com'
-        OWNER2 = 'group:cloud-logs@google.com'
+        OWNER1 = 'group:cloud-logs@google.com'
+        OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'
         EDITOR2 = 'user:phred@example.com'
         VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
@@ -114,23 +117,31 @@ class TestPolicy(unittest.TestCase):
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'DEADBEEF')
         self.assertEqual(policy.version, 17)
-        self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
+        self.assertEqual(sorted(policy.owners), [OWNER1, OWNER2])
         self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
+        self.assertEqual(
+            dict(policy.bindings), {
+                OWNER_ROLE: [OWNER1, OWNER2],
+                EDITOR_ROLE: [EDITOR1, EDITOR2],
+                VIEWER_ROLE: [VIEWER1, VIEWER2],
+            })
 
-    def test_from_api_repr_bad_role(self):
-        BOGUS1 = 'user:phred@example.com'
-        BOGUS2 = 'group:cloud-logs@google.com'
+    def test_from_api_repr_unknown_role(self):
+        USER = 'user:phred@example.com'
+        GROUP = 'group:cloud-logs@google.com'
         RESOURCE = {
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': 'nonesuch', 'members': [BOGUS1, BOGUS2]},
+                {'role': 'unknown', 'members': [USER, GROUP]},
             ],
         }
         klass = self._get_target_class()
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(RESOURCE)
+        policy = klass.from_api_repr(RESOURCE)
+        self.assertEqual(policy.etag, 'DEADBEEF')
+        self.assertEqual(policy.version, 17)
+        self.assertEqual(policy.bindings, {'unknown': [GROUP, USER]})
 
     def test_to_api_repr_defaults(self):
         policy = self._make_one()
@@ -141,6 +152,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(policy.to_api_repr(), {'etag': 'DEADBEEF'})
 
     def test_to_api_repr_full(self):
+        import operator
         from google.cloud.iam import (
             OWNER_ROLE,
             EDITOR_ROLE,
@@ -153,20 +165,18 @@ class TestPolicy(unittest.TestCase):
         EDITOR2 = 'user:phred@example.com'
         VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
         VIEWER2 = 'user:phred@example.com'
-        EXPECTED = {
-            'etag': 'DEADBEEF',
-            'version': 17,
-            'bindings': [
-                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
-                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
-            ],
-        }
+        BINDINGS = [
+            {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+            {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+            {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+        ]
         policy = self._make_one('DEADBEEF', 17)
-        policy.owners.add(OWNER1)
-        policy.owners.add(OWNER2)
-        policy.editors.add(EDITOR1)
-        policy.editors.add(EDITOR2)
-        policy.viewers.add(VIEWER1)
-        policy.viewers.add(VIEWER2)
-        self.assertEqual(policy.to_api_repr(), EXPECTED)
+        policy.owners = [OWNER1, OWNER2]
+        policy.editors = [EDITOR1, EDITOR2]
+        policy.viewers = [VIEWER1, VIEWER2]
+        resource = policy.to_api_repr()
+        self.assertEqual(resource['etag'], 'DEADBEEF')
+        self.assertEqual(resource['version'], 17)
+        key = operator.itemgetter('role')
+        self.assertEqual(
+            sorted(resource['bindings'], key=key), sorted(BINDINGS, key=key))
