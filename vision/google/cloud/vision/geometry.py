@@ -137,7 +137,7 @@ class Position(object):
     """A 3D position in the image.
 
     See:
-    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Position
+    https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#Position
 
     :type x_coordinate: float
     :param x_coordinate: X position coordinate.
@@ -213,7 +213,7 @@ class Vertex(object):
     """A vertex represents a 2D point in the image.
 
     See:
-    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Vertex
+    https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#Vertex
 
     :type x_coordinate: float
     :param x_coordinate: X position coordinate.
