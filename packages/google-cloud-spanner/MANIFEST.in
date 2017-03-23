@@ -1,4 +1,4 @@
-include README.rst
-graft google
-graft unit_tests
-global-exclude *.pyc
+include README.rst LICENSE
+recursive-include google *.json *.proto
+recursive-include unit_tests *
+global-exclude *.pyc __pycache__

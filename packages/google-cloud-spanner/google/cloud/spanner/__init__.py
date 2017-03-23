@@ -27,3 +27,7 @@ from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import AbstractSessionPool
 from google.cloud.spanner.pool import BurstyPool
 from google.cloud.spanner.pool import FixedSizePool
+
+
+__all__ = ['__version__', 'AbstractSessionPool', 'BurstyPool', 'Client',
+           'FixedSizePool', 'KeyRange', 'KeySet']
