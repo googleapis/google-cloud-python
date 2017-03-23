@@ -22,3 +22,6 @@ from google.cloud.speech.alternative import Alternative
 from google.cloud.speech.client import Client
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
+
+
+__all__ = ['__version__', 'Alternative', 'Client', 'Encoding', 'Operation']
