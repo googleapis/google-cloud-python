@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: googleapis/nox:0.11.1
+      - image: googleapis/nox:0.11.2
     steps:
       - checkout
       - run:
@@ -17,9 +17,6 @@ jobs:
             else
               echo "No credentials. System tests will not run."
             fi
-      - run:
-          name: TEMPORARY - Install working nox.
-          command: pip install --upgrade https://github.com/lukesneeringer/nox/archive/fixrel-take-2.zip
       - run:
           name: Add GitHub public key to known hosts
           command: |
