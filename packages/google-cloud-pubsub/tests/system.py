@@ -252,7 +252,9 @@ class TestPubsub(unittest.TestCase):
 
         if topic.check_iam_permissions([PUBSUB_TOPICS_GET_IAM_POLICY]):
             policy = topic.get_iam_policy()
-            policy.viewers.add(policy.user('jjg@google.com'))
+            viewers = set(policy.viewers)
+            viewers.add(policy.user('jjg@google.com'))
+            policy.viewers = viewers
             new_policy = topic.set_iam_policy(policy)
             self.assertEqual(new_policy.viewers, policy.viewers)
 
@@ -280,6 +282,8 @@ class TestPubsub(unittest.TestCase):
         if subscription.check_iam_permissions(
                 [PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY]):
             policy = subscription.get_iam_policy()
-            policy.viewers.add(policy.user('jjg@google.com'))
+            viewers = set(policy.viewers)
+            viewers.add(policy.user('jjg@google.com'))
+            policy.viewers = viewers
             new_policy = subscription.set_iam_policy(policy)
             self.assertEqual(new_policy.viewers, policy.viewers)
