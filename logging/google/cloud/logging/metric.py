@@ -21,7 +21,7 @@ class Metric(object):
     """Metrics represent named filters for log entries.
 
     See:
-    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics
 
     :type name: str
     :param name: the name of the metric
@@ -103,7 +103,7 @@ class Metric(object):
         """API call:  create the metric via a PUT request
 
         See:
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/create
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/create
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -118,7 +118,7 @@ class Metric(object):
         """API call:  test for the existence of the metric via a GET request
 
         See
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/get
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/get
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -141,7 +141,7 @@ class Metric(object):
         """API call:  sync local metric configuration via a GET request
 
         See
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/get
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/get
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -157,7 +157,7 @@ class Metric(object):
         """API call:  update metric configuration via a PUT request
 
         See
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/update
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/update
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -172,7 +172,7 @@ class Metric(object):
         """API call:  delete a metric via a DELETE request
 
         See
-        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/delete
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/delete
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
