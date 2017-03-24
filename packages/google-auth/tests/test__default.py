@@ -38,9 +38,6 @@ SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, 'service_account.json')
 with open(SERVICE_ACCOUNT_FILE) as fh:
     SERVICE_ACCOUNT_FILE_DATA = json.load(fh)
 
-with open(os.path.join(DATA_DIR, 'cloud_sdk.cfg')) as fh:
-    CLOUD_SDK_CONFIG_DATA = fh.read()
-
 LOAD_FILE_PATCH = mock.patch(
     'google.auth._default._load_credentials_from_file', return_value=(
         mock.sentinel.credentials, mock.sentinel.project_id), autospec=True)

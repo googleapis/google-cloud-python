@@ -1,0 +1,19 @@
+{
+  "configuration": {
+    "active_configuration": "default",
+    "properties": {
+      "core": {
+        "account": "user@example.com",
+        "disable_usage_reporting": "False",
+        "project": "example-project"
+      }
+    }
+  },
+  "credential": {
+    "access_token": "don't use me",
+    "token_expiry": "2017-03-23T23:09:49Z"
+  },
+  "sentinels": {
+    "config_sentinel": "/Users/example/.config/gcloud/config_sentinel"
+  }
+}
