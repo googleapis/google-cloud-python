@@ -89,7 +89,8 @@ Great Britain.
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
-    >>> results = sample.sync_recognize(language_code='en-GB', max_alternatives=2)
+    >>> results = sample.sync_recognize(language_code='en-GB',
+    ...     max_alternatives=2)
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
