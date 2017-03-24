@@ -125,7 +125,7 @@ class TextEntry(_BaseEntry):
     """Entry created with ``textPayload``.
 
     See:
-    https://cloud.google.com/logging/docs/api/reference/rest/Shared.Types/LogEntry
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
     """
     _PAYLOAD_KEY = 'textPayload'
 
@@ -134,7 +134,7 @@ class StructEntry(_BaseEntry):
     """Entry created with ``jsonPayload``.
 
     See:
-    https://cloud.google.com/logging/docs/api/reference/rest/Shared.Types/LogEntry
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
     """
     _PAYLOAD_KEY = 'jsonPayload'
 
@@ -143,7 +143,7 @@ class ProtobufEntry(_BaseEntry):
     """Entry created with ``protoPayload``.
 
     See:
-    https://cloud.google.com/logging/docs/api/reference/rest/Shared.Types/LogEntry
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
     """
     _PAYLOAD_KEY = 'protoPayload'
 

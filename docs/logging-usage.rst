@@ -175,7 +175,7 @@ Make sure that the storage bucket you want to export logs too has
 ``cloud-logs@google.com`` as the owner. See
 `Setting permissions for Cloud Storage`_.
 
-.. _Setting permissions for Cloud Storage: https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs
+.. _Setting permissions for Cloud Storage: https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_cloud_storage
 
 Add ``cloud-logs@google.com`` as the owner of the bucket:
 
@@ -200,7 +200,7 @@ and add ``cloud-logs@google.com`` to a dataset.
 
 See: `Setting permissions for BigQuery`_
 
-.. _Setting permissions for BigQuery: https://cloud.google.com/logging/docs/export/configure_export#manual-access-bq
+.. _Setting permissions for BigQuery: https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_bigquery
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_dataset_permissions]
@@ -223,7 +223,7 @@ and add ``cloud-logs@google.com`` to a topic.
 
 See: `Setting permissions for Pub/Sub`_
 
-.. _Setting permissions for Pub/Sub: https://cloud.google.com/logging/docs/export/configure_export#manual-access-pubsub
+.. _Setting permissions for Pub/Sub: https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_logs_to_cloud_pubsub
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_topic_permissions]
