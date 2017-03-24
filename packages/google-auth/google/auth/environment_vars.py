@@ -37,3 +37,13 @@ credentials."""
 CLOUD_SDK_CONFIG_DIR = 'CLOUDSDK_CONFIG'
 """Environment variable defines the location of Google Cloud SDK's config
 files."""
+
+# These two variables allow for customization of the addresses used when
+# contacting the GCE metadata service.
+GCE_METADATA_ROOT = 'GCE_METADATA_ROOT'
+"""Environment variable providing an alternate hostname or host:port to be
+used for GCE metadata requests."""
+
+GCE_METADATA_IP = 'GCE_METADATA_IP'
+"""Environment variable providing an alternate ip:port to be used for ip-only
+GCE metadata requests."""

@@ -26,15 +26,18 @@ from six.moves import http_client
 from six.moves.urllib import parse as urlparse
 
 from google.auth import _helpers
+from google.auth import environment_vars
 from google.auth import exceptions
 
 _LOGGER = logging.getLogger(__name__)
 
-_METADATA_ROOT = 'http://metadata.google.internal/computeMetadata/v1/'
+_METADATA_ROOT = 'http://{}/computeMetadata/v1/'.format(
+    os.getenv(environment_vars.GCE_METADATA_ROOT, 'metadata.google.internal'))
 
 # This is used to ping the metadata server, it avoids the cost of a DNS
 # lookup.
-_METADATA_IP_ROOT = 'http://169.254.169.254'
+_METADATA_IP_ROOT = 'http://{}'.format(
+    os.getenv(environment_vars.GCE_METADATA_IP, '169.254.169.254'))
 _METADATA_FLAVOR_HEADER = 'metadata-flavor'
 _METADATA_FLAVOR_VALUE = 'Google'
 _METADATA_HEADERS = {_METADATA_FLAVOR_HEADER: _METADATA_FLAVOR_VALUE}

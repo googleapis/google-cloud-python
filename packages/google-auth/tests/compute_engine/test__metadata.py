@@ -14,12 +14,15 @@
 
 import datetime
 import json
+import os
 
 import mock
 import pytest
 from six.moves import http_client
+from six.moves import reload_module
 
 from google.auth import _helpers
+from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth.compute_engine import _metadata
 
@@ -67,6 +70,26 @@ def test_ping_failure_connection_failed(mock_request):
     assert not _metadata.ping(request_mock)
 
 
+def test_ping_success_custom_root(mock_request):
+    request_mock = mock_request('', headers=_metadata._METADATA_HEADERS)
+
+    fake_ip = '1.2.3.4'
+    os.environ[environment_vars.GCE_METADATA_IP] = fake_ip
+    reload_module(_metadata)
+
+    try:
+        assert _metadata.ping(request_mock)
+    finally:
+        del os.environ[environment_vars.GCE_METADATA_IP]
+        reload_module(_metadata)
+
+    request_mock.assert_called_once_with(
+        method='GET',
+        url='http://' + fake_ip,
+        headers=_metadata._METADATA_HEADERS,
+        timeout=_metadata._METADATA_DEFAULT_TIMEOUT)
+
+
 def test_get_success_json(mock_request):
     key, value = 'foo', 'bar'
 
@@ -94,6 +117,26 @@ def test_get_success_text(mock_request):
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS)
     assert result == data
+
+
+def test_get_success_custom_root(mock_request):
+    request_mock = mock_request(
+        '{}', headers={'content-type': 'application/json'})
+
+    fake_root = 'another.metadata.service'
+    os.environ[environment_vars.GCE_METADATA_ROOT] = fake_root
+    reload_module(_metadata)
+
+    try:
+        _metadata.get(request_mock, PATH)
+    finally:
+        del os.environ[environment_vars.GCE_METADATA_ROOT]
+        reload_module(_metadata)
+
+    request_mock.assert_called_once_with(
+        method='GET',
+        url='http://{}/computeMetadata/v1/{}'.format(fake_root, PATH),
+        headers=_metadata._METADATA_HEADERS)
 
 
 def test_get_failure(mock_request):
