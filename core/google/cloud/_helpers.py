@@ -264,7 +264,7 @@ def _time_from_iso8601_time_naive(value):
 
 
 def _rfc3339_to_datetime(dt_str):
-    """Convert a microsecond-precision timetamp to a native datetime.
+    """Convert a microsecond-precision timestamp to a native datetime.
 
     :type dt_str: str
     :param dt_str: The string to convert.
