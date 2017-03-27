@@ -46,19 +46,6 @@ class Test_PropertyMixin(unittest.TestCase):
         mixin = self._make_one()
         self.assertRaises(NotImplementedError, lambda: mixin.client)
 
-    def test_bucket_name_value(self):
-        bucket_name = 'testing123'
-        mixin = self._make_one(name=bucket_name)
-        self.assertEqual(mixin.name, bucket_name)
-
-        bad_start_bucket_name = '/testing123'
-        with self.assertRaises(ValueError):
-            self._make_one(name=bad_start_bucket_name)
-
-        bad_end_bucket_name = 'testing123/'
-        with self.assertRaises(ValueError):
-            self._make_one(name=bad_end_bucket_name)
-
     def test_reload(self):
         connection = _Connection({'foo': 'Foo'})
         client = _Client(connection)
