@@ -25,7 +25,7 @@ def unit_tests(session, python_version):
     """Run the unit test suite."""
 
     # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python%s' % python_version
+    session.interpreter = 'python{}'.format(python_version)
 
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', '../core/')
@@ -49,7 +49,7 @@ def system_tests(session, python_version):
         return
 
     # Run the system tests against latest Python 2 and Python 3 only.
-    session.interpreter = 'python%s' % python_version
+    session.interpreter = 'python{}'.format(python_version)
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
