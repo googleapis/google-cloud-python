@@ -434,7 +434,7 @@ class LandmarkTypes(Enum):
     """A representation of the face detection landmark types.
 
     See:
-    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type_1
+    https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#type_1
     """
     UNKNOWN_LANDMARK = 0
     LEFT_EYE = 1
