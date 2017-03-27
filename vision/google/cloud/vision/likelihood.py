@@ -37,7 +37,7 @@ class Likelihood(Enum):
     """A representation of likelihood to give stable results across upgrades.
 
     See:
-    https://cloud.google.com/vision/reference/rest/v1/images/annotate#likelihood
+    https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#likelihood
     """
     UNKNOWN = 'UNKNOWN'
     VERY_UNLIKELY = 'VERY_UNLIKELY'

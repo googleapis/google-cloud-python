@@ -19,7 +19,7 @@ class FeatureTypes(object):
     """Feature Types to indication which annotations to perform.
 
     See:
-    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type
+    https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#Type
     """
     CROP_HINTS = 'CROP_HINTS'
     DOCUMENT_TEXT_DETECTION = 'DOCUMENT_TEXT_DETECTION'
@@ -45,7 +45,7 @@ class Feature(object):
                         feature type.
 
     See:
-    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Feature
+    https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#Feature
     """
     def __init__(self, feature_type, max_results=1):
         try:
