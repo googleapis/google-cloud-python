@@ -54,8 +54,8 @@ def get_baseline():
         os.environ.get('CIRCLE_PR_NUMBER', ''),
     ])
     if ci_non_master:
-        subprocess.run(['git', 'remote', 'add', 'baseline',
-                        'git@github.com:GoogleCloudPlatform/%s' % GITHUB_REPO],
+        repo_url = 'git@github.com:GoogleCloudPlatform/{}'.format(GITHUB_REPO)
+        subprocess.run(['git', 'remote', 'add', 'baseline', repo_url],
                         stderr=subprocess.DEVNULL)
         subprocess.run(['git', 'pull', 'baseline'], stderr=subprocess.DEVNULL)
         return 'baseline/master'
@@ -91,7 +91,7 @@ def get_changed_files():
     # Return a list of altered files.
     try:
         return subprocess.check_output([
-            'git', 'diff', '--name-only', '%s..HEAD' % baseline,
+            'git', 'diff', '--name-only', '{}..HEAD'.format(baseline),
         ], stderr=subprocess.DEVNULL).decode('utf8').strip().split('\n')
     except subprocess.CalledProcessError:
         warnings.warn('Unable to perform git diff; falling back to assuming '
@@ -109,7 +109,8 @@ def get_changed_packages(file_list):
     all_packages = set()
     for file_ in os.listdir(BASE_DIR):
         abs_file = os.path.realpath(os.path.join(BASE_DIR, file_))
-        if os.path.isdir(abs_file) and os.path.isfile('%s/nox.py' % abs_file):
+        nox_file = os.path.join(abs_file, 'nox.py')
+        if os.path.isdir(abs_file) and os.path.isfile(nox_file):
             all_packages.add(file_)
 
     # If ther is no file list, send down the full package set.
@@ -120,11 +121,11 @@ def get_changed_packages(file_list):
     answer = set()
     for file_ in file_list:
         # Ignore root directory changes (setup.py, .gitignore, etc.).
-        if '/' not in file_:
+        if os.path.sep not in file_:
             continue
 
         # Ignore changes that are not in a package (usually this will be docs).
-        package = file_.split('/')[0]
+        package = file_.split(os.path.sep, 1)[0]
         if package not in all_packages:
             continue
 
@@ -142,8 +143,12 @@ def get_changed_packages(file_list):
     return answer
 
 
-if __name__ == '__main__':
-    # Figure out what packages have changed.
+def main():
+    """Figure out what packages have changed."""
     file_list = get_changed_files()
     for package in sorted(get_changed_packages(file_list)):
         print(package)
+
+
+if __name__ == '__main__':
+    main()
