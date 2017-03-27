@@ -24,7 +24,5 @@ def test_application_default_credentials(verify_refresh):
 
     if EXPECT_PROJECT_ID is not None:
         assert project_id is not None
-    else:
-        assert project_id is None
 
     verify_refresh(credentials)
