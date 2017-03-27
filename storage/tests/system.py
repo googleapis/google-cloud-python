@@ -245,6 +245,27 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(base_contents, copied_contents)
 
 
+class TestUnicode(unittest.TestCase):
+    @unittest.skipIf(six.PY2, 'Unicode URLs only work on Python 3.')
+    def test_fetch_object_and_check_content(self):
+        client = storage.Client()
+        bucket = client.bucket('storage-library-test-bucket')
+
+        # Note: These files are public.
+        # Normalization form C: a single character for e-acute;
+        # URL should end with Cafe%CC%81
+        # Normalization Form D: an ASCII e followed by U+0301 combining
+        # character; URL should end with Caf%C3%A9
+        test_data = {
+            u'Caf\u00e9': b'Normalization Form C',
+            u'Cafe\u0301': b'Normalization Form D',
+        }
+        for blob_name, file_contents in test_data.items():
+            blob = bucket.blob(blob_name)
+            self.assertEqual(blob.name, blob_name)
+            self.assertEqual(blob.download_as_string(), file_contents)
+
+
 class TestStorageListFiles(TestStorageFiles):
 
     FILENAMES = ('CloudLogo1', 'CloudLogo2', 'CloudLogo3')

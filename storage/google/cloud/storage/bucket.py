@@ -29,6 +29,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.iterator import HTTPIterator
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage._helpers import _validate_name
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
@@ -107,6 +108,7 @@ class Bucket(_PropertyMixin):
     """
 
     def __init__(self, client, name=None):
+        name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
         self._client = client
         self._acl = BucketACL(self)
