@@ -22,6 +22,8 @@ from google.cloud.spanner.client import Client
 from google.cloud.spanner.pool import BurstyPool
 from google.cloud.spanner._fixtures import DDL_STATEMENTS
 
+from grpc._channel import _Rendezvous
+
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
 from test_utils.retry import RetryResult
@@ -62,7 +64,6 @@ def _has_all_ddl(database):
 
 
 def setUpModule():
-    from grpc._channel import _Rendezvous
     Config.CLIENT = Client()
     retry = RetryErrors(_Rendezvous, error_predicate=_retry_on_unavailable)
 
@@ -310,6 +311,7 @@ class TestSessionAPI(unittest.TestCase):
         rows = list(snapshot.execute_sql(self.SQL))
         self._check_row_data(rows)
 
+    @RetryErrors(exception=_Rendezvous)
     def test_transaction_read_and_insert_then_rollback(self):
         from google.cloud.spanner import KeySet
         keyset = KeySet(all_=True)
@@ -326,6 +328,7 @@ class TestSessionAPI(unittest.TestCase):
 
         transaction = session.transaction()
         transaction.begin()
+
         rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
         self.assertEqual(rows, [])
 
@@ -339,6 +342,7 @@ class TestSessionAPI(unittest.TestCase):
         rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
         self.assertEqual(rows, [])
 
+    @RetryErrors(exception=_Rendezvous)
     def test_transaction_read_and_insert_or_update_then_commit(self):
         from google.cloud.spanner import KeySet
         keyset = KeySet(all_=True)
