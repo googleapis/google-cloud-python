@@ -16,8 +16,8 @@
 
 set -ev
 
-GH_OWNER="GoogleCloudPlatform"
-GH_PROJECT_NAME="google-cloud-python"
+GH_OWNER='GoogleCloudPlatform'
+GH_PROJECT_NAME='google-cloud-python'
 
 # Function to build the docs.
 function build_docs {
@@ -40,10 +40,9 @@ fi
 
 # Adding GitHub pages branch. `git submodule add` checks it
 # out at HEAD.
-GH_PAGES_DIR="ghpages"
+GH_PAGES_DIR='ghpages'
 git submodule add -q -b gh-pages \
-    "https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME}" \
-    ${GH_PAGES_DIR}
+    "git@github.com:${GH_OWNER}/${GH_PROJECT_NAME}" ${GH_PAGES_DIR}
 
 # Determine if we are building a new tag or are building docs
 # for master. Then build new docs in docs/_build from master.
@@ -87,12 +86,10 @@ if [[ -z "$(git status --porcelain)" ]]; then
 fi
 
 # Commit to gh-pages branch to apply changes.
-git config --global user.email "circle@circleci.com"
-git config --global user.name "CircleCI"
+git config --global user.email "googleapis-publisher@google.com"
+git config --global user.name "Google APIs Publisher"
 git commit -m "Update docs after merge to master."
 
 # NOTE: This may fail if two docs updates (on merges to master)
 #       happen in close proximity.
-git push -q \
-    "https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME}" \
-    HEAD:gh-pages
+git push -q origin HEAD:gh-pages
