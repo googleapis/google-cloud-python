@@ -29,7 +29,7 @@ function build_docs {
 }
 
 # Only update docs if we are on CircleCI.
-if [[ "${CIRCLE_BRANCH}" == "docs" ]] && [[ -z "${CIRCLE_PR_NUMBER}" ]]; then
+if [[ "${CIRCLE_BRANCH}" == "master" ]] && [[ -z "${CIRCLE_PR_NUMBER}" ]]; then
     echo "Building new docs on a merged commit."
 elif [[ -n "${CIRCLE_TAG}" ]]; then
     echo "Building new docs on a tag."

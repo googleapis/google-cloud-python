@@ -145,6 +145,5 @@ def get_changed_packages(file_list):
 
 if __name__ == '__main__':
     file_list = get_changed_files()
-    print('speech')
-    #for package in sorted(get_changed_packages(file_list)):
-    #    print(package)
+    for package in sorted(get_changed_packages(file_list)):
+       print(package)
