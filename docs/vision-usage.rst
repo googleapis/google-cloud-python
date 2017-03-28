@@ -84,15 +84,14 @@ You can call the detection method manually.
     >>> features = [Feature(FeatureTypes.FACE_DETECTION, 5),
     ...             Feature(FeatureTypes.LOGO_DETECTION, 3)]
     >>> annotations = image.detect(features)
-    >>> len(annotations.faces)
+    >>> len(annotations)
     2
-    >>> for face in annotations.faces:
-    ...     print(face.joy_likelihood)
-    0.94099093
-    0.54453093
-    >>> len(annotations.logos)
-    2
-    >>> for logo in annotations.logos:
+    >>> for face in annotations[0].faces:
+    ...     print(face.joy)
+    Likelihood.VERY_LIKELY
+    Likelihood.VERY_LIKELY
+    Likelihood.VERY_LIKELY
+    >>> for logo in annotations[0].logos:
     ...     print(logo.description)
     'google'
     'github'
@@ -140,15 +139,15 @@ was detected.
     >>> faces = image.detect_faces(limit=10)
     >>> first_face = faces[0]
     >>> first_face.landmarks.left_eye.landmark_type
-    <LandmarkTypes.LEFT_EYE: 'LEFT_EYE'>
+    LandmarkTypes.LEFT_EYE
     >>> first_face.landmarks.left_eye.position.x_coordinate
     1301.2404
     >>> first_face.detection_confidence
     0.9863683
     >>> first_face.joy
-    <Likelihood.VERY_LIKELY: 'VERY_LIKELY'>
+    Likelihood.VERY_UNLIKELY
     >>> first_face.anger
-    <Likelihood.VERY_UNLIKELY: 'VERY_UNLIKELY'>
+    Likelihood.VERY_UNLIKELY
 
 
 ***************
@@ -250,13 +249,13 @@ categorize the entire contents of the image under four categories.
     ...     image = client.image(content=image_file.read())
     >>> safe_search = image.detect_safe_search()
     >>> safe_search.adult
-    <Likelihood.VERY_UNLIKELY: 'VERY_UNLIKELY'>
+    Likelihood.VERY_UNLIKELY
     >>> safe_search.spoof
-    <Likelihood.POSSIBLE: 'POSSIBLE'>
+    Likelihood.POSSIBLE
     >>> safe_search.medical
-    <Likelihood.VERY_LIKELY: 'VERY_LIKELY'>
+    Likelihood.VERY_LIKELY
     >>> safe_search.violence
-    <Likelihood.LIKELY: 'LIKELY'>
+    Likelihood.LIKELY
 
 
 **************
@@ -297,9 +296,9 @@ image and determine the dominant colors in the image.
     >>> properties = image.detect_properties()
     >>> colors = properties.colors
     >>> first_color = colors[0]
-    >>> first_color.red
+    >>> first_color.color.red
     244.0
-    >>> first_color.blue
+    >>> first_color.color.blue
     134.0
     >>> first_color.score
     0.65519291
