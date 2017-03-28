@@ -162,7 +162,9 @@ class TestCredentials(object):
     def test_refresh_success(self, jwt_grant_mock):
         token = 'token'
         jwt_grant_mock.return_value = (
-            token, _helpers.utcnow() + datetime.timedelta(seconds=500), None)
+            token,
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {})
         request_mock = mock.Mock()
 
         # Refresh credentials

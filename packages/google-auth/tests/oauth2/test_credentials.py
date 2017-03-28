@@ -58,6 +58,7 @@ class TestCredentials(object):
     def test_refresh_success(self, now_mock, refresh_grant_mock):
         token = 'token'
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
+        grant_response = {'id_token': mock.sentinel.id_token}
         refresh_grant_mock.return_value = (
             # Access token
             token,
@@ -66,7 +67,7 @@ class TestCredentials(object):
             # Expiry,
             expiry,
             # Extra data
-            {})
+            grant_response)
         request_mock = mock.Mock()
 
         # Refresh credentials
@@ -80,6 +81,7 @@ class TestCredentials(object):
         # Check that the credentials have the token and expiry
         assert self.credentials.token == token
         assert self.credentials.expiry == expiry
+        assert self.credentials.id_token == mock.sentinel.id_token
 
         # Check that the credentials are valid (have a token and are not
         # expired)
