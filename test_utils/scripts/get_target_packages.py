@@ -143,12 +143,7 @@ def get_changed_packages(file_list):
     return answer
 
 
-def main():
-    """Figure out what packages have changed."""
+if __name__ == '__main__':
     file_list = get_changed_files()
     for package in sorted(get_changed_packages(file_list)):
-        print(package)
-
-
-if __name__ == '__main__':
-    main()
+       print(package)
