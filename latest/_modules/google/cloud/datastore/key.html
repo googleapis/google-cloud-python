@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.key &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.datastore.key &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -359,7 +359,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.proto.datastore.v1</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
 
 
-<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../../datastore-keys.html#google.cloud.datastore.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An immutable representation of a datastore Key.</span>
 
 <span class="sd">    .. testsetup:: key-ctor</span>
@@ -569,7 +569,7 @@
         <span class="n">cloned_self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
         <span class="k">return</span> <span class="n">cloned_self</span>
 
-<div class="viewcode-block" id="Key.completed_key"><a class="viewcode-back" href="../../../../datastore-keys.html#google.cloud.datastore.key.Key.completed_key">[docs]</a>    <span class="k">def</span> <span class="nf">completed_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_or_name</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.completed_key"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.key.Key.completed_key">[docs]</a>    <span class="k">def</span> <span class="nf">completed_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_or_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates new key from existing partial key by adding final ID/name.</span>
 
 <span class="sd">        :type id_or_name: str or integer</span>
@@ -597,7 +597,7 @@
         <span class="n">new_key</span><span class="o">.</span><span class="n">_flat_path</span> <span class="o">+=</span> <span class="p">(</span><span class="n">id_or_name</span><span class="p">,)</span>
         <span class="k">return</span> <span class="n">new_key</span></div>
 
-<div class="viewcode-block" id="Key.to_protobuf"><a class="viewcode-back" href="../../../../datastore-keys.html#google.cloud.datastore.key.Key.to_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.to_protobuf"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.key.Key.to_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a protobuf corresponding to the key.</span>
 
 <span class="sd">        :rtype: :class:`.entity_pb2.Key`</span>
@@ -802,7 +802,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -130,7 +130,7 @@ Face Detection
 an image and return the coordinates in the image of each `landmark type`_ that
 was detected.
 
-.. _landmark type: https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1
+.. _landmark type: https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#type_1
 
 .. code-block:: python
 

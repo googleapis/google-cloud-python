@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Using the API &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Runtime Configuration Client" href="runtimeconfig-client.html"/>
         <link rel="prev" title="Projects" href="resource-manager-project.html"/> 
 
@@ -340,6 +340,57 @@
   <div class="section" id="module-google.cloud.runtimeconfig">
 <span id="using-the-api"></span><h1>Using the API<a class="headerlink" href="#module-google.cloud.runtimeconfig" title="Permalink to this headline">#</a></h1>
 <p>Google Cloud Runtime Configurator API package.</p>
+<dl class="class">
+<dt id="google.cloud.runtimeconfig.Client">
+<em class="property">class </em><code class="descclassname">google.cloud.runtimeconfig.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/runtimeconfig/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.runtimeconfig.Client" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
+<p>Client to bundle configuration needed for API requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The project which the client acts on behalf of.  If not
+passed, falls back to the default inferred from the environment.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.9.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code> object is
+passed), falls back to the default inferred from the
+environment.</li>
+<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
+<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.runtimeconfig.Client.config">
+<code class="descname">config</code><span class="sig-paren">(</span><em>config_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/runtimeconfig/client.html#Client.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.runtimeconfig.Client.config" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory constructor for config object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will not make an HTTP request; it simply instantiates
+a config object owned by this client.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the config to be instantiated.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="runtimeconfig-config.html#google.cloud.runtimeconfig.config.Config" title="google.cloud.runtimeconfig.config.Config"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.runtimeconfig.config.Config</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The config object created.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -386,7 +437,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.entity &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.datastore.entity &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -357,7 +357,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_ensure_tuple_or_list</span>
 
 
-<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../../datastore-entities.html#google.cloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Entities are akin to rows in a relational database</span>
 
 <span class="sd">    An entity storing the actual instance of data.</span>
@@ -382,7 +382,7 @@
 <span class="sd">    .. testsetup:: entity-ctor</span>
 
 <span class="sd">       from google.cloud import datastore</span>
-<span class="sd">       from datastore import Config  # system tests</span>
+<span class="sd">       from tests.system.test_system import Config  # system tests</span>
 
 <span class="sd">       client = datastore.Client()</span>
 <span class="sd">       key = client.key(&#39;EntityKind&#39;, 1234, namespace=&#39;_Doctest&#39;)</span>
@@ -395,7 +395,7 @@
 <span class="sd">    .. doctest:: entity-ctor</span>
 
 <span class="sd">       &gt;&gt;&gt; client.get(key)</span>
-<span class="sd">       &lt;Entity(u&#39;EntityKind&#39;, 1234L) {u&#39;property&#39;: &#39;value&#39;}&gt;</span>
+<span class="sd">       &lt;Entity(&#39;EntityKind&#39;, 1234) {&#39;property&#39;: &#39;value&#39;}&gt;</span>
 
 <span class="sd">    You can the set values on the entity just like you would on any</span>
 <span class="sd">    other dictionary.</span>
@@ -541,7 +541,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

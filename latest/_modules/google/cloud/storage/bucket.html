@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.bucket &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.storage.bucket &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -368,6 +368,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
+<span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_validate_name</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">DefaultObjectACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">Blob</span>
@@ -420,7 +421,8 @@
 <span class="sd">                   for the bucket (which requires a project).</span>
 
 <span class="sd">    :type name: str</span>
-<span class="sd">    :param name: The name of the bucket.</span>
+<span class="sd">    :param name: The name of the bucket. Bucket names must start and end with a</span>
+<span class="sd">                 number or letter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">=</span> <span class="mi">256</span>
@@ -445,6 +447,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">_validate_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">BucketACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -890,7 +893,7 @@
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ETag for the bucket.</span>
 
-<span class="sd">        See: http://tools.ietf.org/html/rfc2616#section-3.11 and</span>
+<span class="sd">        See: https://tools.ietf.org/html/rfc2616#section-3.11 and</span>
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
@@ -932,7 +935,7 @@
     <span class="sd">&quot;&quot;&quot;Retrieve location configured for this bucket.</span>
 
 <span class="sd">    See: https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
-<span class="sd">    https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</span>
+<span class="sd">    https://cloud.google.com/storage/docs/bucket-locations</span>
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
@@ -942,7 +945,7 @@
 <div class="viewcode-block" id="Bucket.get_logging"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.get_logging">[docs]</a>    <span class="k">def</span> <span class="nf">get_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return info about access logging for this bucket.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/accesslogs#status</span>
+<span class="sd">        See: https://cloud.google.com/storage/docs/access-logs#status</span>
 
 <span class="sd">        :rtype: dict or None</span>
 <span class="sd">        :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``</span>
@@ -954,7 +957,7 @@
 <div class="viewcode-block" id="Bucket.enable_logging"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.enable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">enable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_prefix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable access logging for this bucket.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/accesslogs</span>
+<span class="sd">        See: https://cloud.google.com/storage/docs/access-logs</span>
 
 <span class="sd">        :type bucket_name: str</span>
 <span class="sd">        :param bucket_name: name of bucket in which to store access logs</span>
@@ -968,7 +971,7 @@
 <div class="viewcode-block" id="Bucket.disable_logging"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.disable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">disable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable access logging for this bucket.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/accesslogs#disabling</span>
+<span class="sd">        See: https://cloud.google.com/storage/docs/access-logs#disabling</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
@@ -1093,7 +1096,7 @@
 <div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.configure_website">[docs]</a>    <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure website-related properties.</span>
 
-<span class="sd">        See: https://developers.google.com/storage/docs/website-configuration</span>
+<span class="sd">        See: https://cloud.google.com/storage/docs/hosting-static-website</span>
 
 <span class="sd">        .. note::</span>
 <span class="sd">          This (apparently) only works</span>
@@ -1195,12 +1198,6 @@
 <span class="sd">        `policy documents`_ to allow visitors to a website to upload files to</span>
 <span class="sd">        Google Cloud Storage without giving them direct write access.</span>
 
-<span class="sd">        For example:</span>
-
-<span class="sd">        .. literalinclude:: storage_snippets.py</span>
-<span class="sd">          :start-after: [START policy_document]</span>
-<span class="sd">          :end-before: [END policy_document]</span>
-
 <span class="sd">        .. _policy documents:</span>
 <span class="sd">            https://cloud.google.com/storage/docs/xml-api\</span>
 <span class="sd">            /post-object#policydocument</span>
@@ -1295,7 +1292,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Using the API &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Natural Language Client" href="language-client.html"/>
         <link rel="prev" title="Change Sets" href="dns-changes.html"/> 
 
@@ -392,9 +392,9 @@ UTF-8. To over-ride these values:</p>
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">#</a></h2>
 <p>The Google Natural Language API has three supported methods</p>
 <ul class="simple">
-<li><a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeEntities">analyzeEntities</a></li>
-<li><a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeSentiment">analyzeSentiment</a></li>
-<li><a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText">annotateText</a></li>
+<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeEntities">analyzeEntities</a></li>
+<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment">analyzeSentiment</a></li>
+<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText">annotateText</a></li>
 </ul>
 <p>and each method uses a <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/Document">Document</a> for representing text. To
 create a <a class="reference internal" href="language-document.html#google.cloud.language.document.Document" title="google.cloud.language.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a>,</p>
@@ -441,7 +441,7 @@ over-ridden:</p>
 </div></blockquote>
 <p>The <code class="docutils literal"><span class="pre">language</span></code> argument can be either ISO-639-1 or BCP-47 language
 codes; at the time, only English, Spanish, and Japanese <a class="reference external" href="https://cloud.google.com/natural-language/docs/">are supported</a>.
-However, the <code class="docutils literal"><span class="pre">analyzeSentiment</span></code> method <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeSentiment#body.request_body.FIELDS.document">only supports</a> English text.</p>
+However, the <code class="docutils literal"><span class="pre">analyzeSentiment</span></code> method <a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment#body.request_body.FIELDS.document">only supports</a> English text.</p>
 <p>The document type (<code class="docutils literal"><span class="pre">doc_type</span></code>) value can be one of
 <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.PLAIN_TEXT" title="google.cloud.language.document.Document.PLAIN_TEXT"><code class="xref py py-attr docutils literal"><span class="pre">Document.PLAIN_TEXT</span></code></a> or
 <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.HTML" title="google.cloud.language.document.Document.HTML"><code class="xref py py-attr docutils literal"><span class="pre">Document.HTML</span></code></a>.</p>
@@ -543,7 +543,7 @@ objects extracted from the text (as returned by
 <p>By default <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.annotate_text" title="google.cloud.language.document.Document.annotate_text"><code class="xref py py-meth docutils literal"><span class="pre">annotate_text()</span></code></a> has
 three arguments <code class="docutils literal"><span class="pre">include_syntax</span></code>, <code class="docutils literal"><span class="pre">include_entities</span></code> and
 <code class="docutils literal"><span class="pre">include_sentiment</span></code> which are all <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>. However, each of these
-<a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText#Features">Features</a> can be selectively turned off by setting the corresponding
+<a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText#Features">Features</a> can be selectively turned off by setting the corresponding
 arguments to <a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</p>
 <p>When <code class="docutils literal"><span class="pre">include_syntax=False</span></code>, <code class="docutils literal"><span class="pre">sentences</span></code> and <code class="docutils literal"><span class="pre">tokens</span></code> in the
 response is <a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>. When <code class="docutils literal"><span class="pre">include_sentiment=False</span></code>, <code class="docutils literal"><span class="pre">sentiment</span></code> in
@@ -634,7 +634,7 @@ the response is <a class="reference external" href="https://docs.python.org/2/li
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

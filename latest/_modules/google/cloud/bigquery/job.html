@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.job &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.bigquery.job &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -641,7 +641,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  begin the job via a POST request</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/insert</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -663,7 +663,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  test for the existence of the job via a GET request</span>
 
 <span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -687,7 +687,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  refresh job properties via a GET request</span>
 
 <span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -704,7 +704,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  cancel job via a POST request</span>
 
 <span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/cancel</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -837,57 +837,57 @@
 
     <span class="n">allow_jagged_rows</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;allow_jagged_rows&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowJaggedRows</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowJaggedRows</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">allow_quoted_newlines</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;allow_quoted_newlines&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowQuotedNewlines</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">create_disposition</span> <span class="o">=</span> <span class="n">CreateDisposition</span><span class="p">(</span><span class="s1">&#39;create_disposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">encoding</span> <span class="o">=</span> <span class="n">Encoding</span><span class="p">(</span><span class="s1">&#39;encoding&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.encoding</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">field_delimiter</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;field_delimiter&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.fieldDelimiter</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.fieldDelimiter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">ignore_unknown_values</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;ignore_unknown_values&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.ignoreUnknownValues</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.ignoreUnknownValues</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">max_bad_records</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;max_bad_records&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.maxBadRecords</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">quote_character</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;quote_character&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.quote</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;skip_leading_rows&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.skipLeadingRows</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">source_format</span> <span class="o">=</span> <span class="n">SourceFormat</span><span class="p">(</span><span class="s1">&#39;source_format&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceFormat</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">write_disposition</span> <span class="o">=</span> <span class="n">WriteDisposition</span><span class="p">(</span><span class="s1">&#39;write_disposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_populate_config_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
@@ -1012,12 +1012,12 @@
 
     <span class="n">create_disposition</span> <span class="o">=</span> <span class="n">CreateDisposition</span><span class="p">(</span><span class="s1">&#39;create_disposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.createDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">write_disposition</span> <span class="o">=</span> <span class="n">WriteDisposition</span><span class="p">(</span><span class="s1">&#39;write_disposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_populate_config_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
@@ -1135,22 +1135,22 @@
 
     <span class="n">compression</span> <span class="o">=</span> <span class="n">Compression</span><span class="p">(</span><span class="s1">&#39;compression&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.compression</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.compression</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">destination_format</span> <span class="o">=</span> <span class="n">DestinationFormat</span><span class="p">(</span><span class="s1">&#39;destination_format&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.destinationFormat</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">field_delimiter</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;field_delimiter&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.fieldDelimiter</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.fieldDelimiter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">print_header</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;print_header&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.printHeader</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_populate_config_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
@@ -1276,32 +1276,32 @@
 
     <span class="n">allow_large_results</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;allow_large_results&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.allowLargeResults</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">create_disposition</span> <span class="o">=</span> <span class="n">CreateDisposition</span><span class="p">(</span><span class="s1">&#39;create_disposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.createDisposition</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">default_dataset</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;default_dataset&#39;</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.defaultDataset</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">destination</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;destination&#39;</span><span class="p">,</span> <span class="n">Table</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">flatten_results</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;flatten_results&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.flattenResults</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">priority</span> <span class="o">=</span> <span class="n">QueryPriority</span><span class="p">(</span><span class="s1">&#39;priority&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">query_parameters</span> <span class="o">=</span> <span class="n">QueryParametersProperty</span><span class="p">()</span>
@@ -1310,7 +1310,7 @@
 
     <span class="n">use_query_cache</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;use_query_cache&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;use_legacy_sql&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
@@ -1327,17 +1327,17 @@
 
     <span class="n">write_disposition</span> <span class="o">=</span> <span class="n">WriteDisposition</span><span class="p">(</span><span class="s1">&#39;write_disposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">maximum_billing_tier</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;maximum_billing_tier&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.maximumBillingTier</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">maximum_bytes_billed</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;maximum_bytes_billed&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
-<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.maximumBytesBilled</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_destination_table_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1510,7 +1510,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

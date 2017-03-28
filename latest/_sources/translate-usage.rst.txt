@@ -112,8 +112,8 @@ or to use a non-default target language:
          },
      ]
 
-.. _Google Cloud Translation: https://cloud.google.com/translation
-.. _Pricing: https://cloud.google.com/translation/pricing
-.. _FAQ: https://cloud.google.com/translation/faq
-.. _Identifying your application to Google: https://cloud.google.com/translation/docs/translating-text
-.. _confidence: https://cloud.google.com/translation/docs/detecting-language
+.. _Google Cloud Translation: https://cloud.google.com/translate/
+.. _Pricing: https://cloud.google.com/translate/pricing
+.. _FAQ: https://cloud.google.com/translate/faq
+.. _Identifying your application to Google: https://cloud.google.com/translate/docs/translating-text
+.. _confidence: https://cloud.google.com/translate/docs/detecting-language

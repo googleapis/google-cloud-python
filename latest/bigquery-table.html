@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tables &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Tables &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Query" href="bigquery-query.html"/>
         <link rel="prev" title="Jobs" href="bigquery-job.html"/> 
 
@@ -346,7 +346,7 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Tables represent a set of rows whose values correspond to a schema.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables">https://cloud.google.com/bigquery/docs/reference/v2/tables</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -365,7 +365,7 @@
 <code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/table.html#Table.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the dataset via a PUT request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/insert">https://cloud.google.com/bigquery/docs/reference/v2/tables/insert</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -415,7 +415,7 @@
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/table.html#Table.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the table via a DELETE request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/delete">https://cloud.google.com/bigquery/docs/reference/v2/tables/delete</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -465,7 +465,7 @@
 <code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/table.html#Table.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test for the existence of the table via a GET request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/get">https://cloud.google.com/bigquery/docs/reference/v2/tables/get</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -503,7 +503,7 @@
 <code class="descname">fetch_data</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/table.html#Table.fetch_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.fetch_data" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  fetch the table data via a GET request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tabledata/list">https://cloud.google.com/bigquery/docs/reference/v2/tabledata/list</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list</a></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method assumes that its instance&#8217;s <code class="docutils literal"><span class="pre">schema</span></code> attribute is
@@ -584,7 +584,7 @@ current page: <code class="docutils literal"><span class="pre">iterator.page.num
 <code class="descname">insert_data</code><span class="sig-paren">(</span><em>rows</em>, <em>row_ids=None</em>, <em>skip_invalid_rows=None</em>, <em>ignore_unknown_values=None</em>, <em>template_suffix=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/table.html#Table.insert_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.insert_data" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  insert table data via a POST request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/v2/tabledata/insertAll</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -728,7 +728,7 @@ row.</p>
 <code class="descname">patch</code><span class="sig-paren">(</span><em>client=None</em>, <em>friendly_name=&lt;object object&gt;</em>, <em>description=&lt;object object&gt;</em>, <em>location=&lt;object object&gt;</em>, <em>expires=&lt;object object&gt;</em>, <em>view_query=&lt;object object&gt;</em>, <em>schema=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/table.html#Table.patch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.patch" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update individual table properties via a PATCH request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/patch">https://cloud.google.com/bigquery/docs/reference/v2/tables/patch</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/patch">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/patch</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -790,7 +790,7 @@ row.</p>
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/table.html#Table.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  refresh table properties via a GET request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/get">https://cloud.google.com/bigquery/docs/reference/v2/tables/get</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -873,7 +873,7 @@ row.</p>
 <code class="descname">update</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/table.html#Table.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.update" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update table properties via a PUT request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/update">https://cloud.google.com/bigquery/docs/reference/v2/tables/update</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1016,7 +1016,7 @@ a file opened in text mode.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

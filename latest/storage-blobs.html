@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Blobs / Objects &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Blobs / Objects &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Buckets" href="storage-buckets.html"/>
         <link rel="prev" title="Storage Client" href="storage-client.html"/> 
 
@@ -496,7 +496,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">content_language</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.content_language" title="Permalink to this definition">#</a></dt>
 <dd><p>HTTP &#8216;Content-Language&#8217; header for this object.</p>
 <dl class="docutils">
-<dt>See: <a class="reference external" href="http://tools.ietf.org/html/bcp47">http://tools.ietf.org/html/bcp47</a> and</dt>
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/bcp47">https://tools.ietf.org/html/bcp47</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
 </dl>
 <p>If the property is not set locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</p>
@@ -534,7 +534,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">crc32c</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.crc32c" title="Permalink to this definition">#</a></dt>
 <dd><p>CRC32C checksum for this object.</p>
 <dl class="docutils">
-<dt>See: <a class="reference external" href="http://tools.ietf.org/html/rfc4960#appendix-B">http://tools.ietf.org/html/rfc4960#appendix-B</a> and</dt>
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/rfc4960#appendix-B">https://tools.ietf.org/html/rfc4960#appendix-B</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
 </dl>
 <p>If the property is not set locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</p>
@@ -673,6 +673,7 @@ encryption key:</p>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
     <span class="n">encryption_key</span> <span class="o">=</span> <span class="s1">&#39;c7f32af42e45e85b9848a6a14dd2a8f6&#39;</span>
     <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s1">&#39;secure-data&#39;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
+    <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s1">&#39;my secret message.&#39;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/my-secure-file&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
         <span class="n">blob</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 </pre></div>
@@ -727,7 +728,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">etag</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.etag" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve the ETag for the object.</p>
 <dl class="docutils">
-<dt>See: <a class="reference external" href="http://tools.ietf.org/html/rfc2616#section-3.11">http://tools.ietf.org/html/rfc2616#section-3.11</a> and</dt>
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/rfc2616#section-3.11">https://tools.ietf.org/html/rfc2616#section-3.11</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
 </dl>
 <table class="docutils field-list" frame="void" rules="none">
@@ -877,7 +878,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">md5_hash</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.md5_hash" title="Permalink to this definition">#</a></dt>
 <dd><p>MD5 hash for this object.</p>
 <dl class="docutils">
-<dt>See: <a class="reference external" href="http://tools.ietf.org/html/rfc4960#appendix-B">http://tools.ietf.org/html/rfc4960#appendix-B</a> and</dt>
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/rfc4960#appendix-B">https://tools.ietf.org/html/rfc4960#appendix-B</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
 </dl>
 <p>If the property is not set locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</p>
@@ -1392,7 +1393,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

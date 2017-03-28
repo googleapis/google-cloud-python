@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.batch &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.datastore.batch &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -357,14 +357,14 @@
 <span class="sd">in a single request to the Cloud Datastore API.</span>
 
 <span class="sd">See</span>
-<span class="sd">https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations</span>
+<span class="sd">https://cloud.google.com/datastore/docs/concepts/entities#batch_operations</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.datastore</span> <span class="k">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.proto.datastore.v1</span> <span class="k">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
 
 
-<div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../../datastore-batches.html#google.cloud.datastore.batch.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.batch.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An abstraction representing a collected group of updates / deletes.</span>
 
 <span class="sd">    Used to build up a bulk mutation.</span>
@@ -420,7 +420,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_partial_key_entities</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_INITIAL</span>
 
-<div class="viewcode-block" id="Batch.current"><a class="viewcode-back" href="../../../../datastore-batches.html#google.cloud.datastore.batch.Batch.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.current"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.batch.Batch.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the topmost batch / transaction, or None.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">current_batch</span></div>
 
@@ -494,7 +494,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span>
 
-<div class="viewcode-block" id="Batch.put"><a class="viewcode-back" href="../../../../datastore-batches.html#google.cloud.datastore.batch.Batch.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.put"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.batch.Batch.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remember an entity&#39;s state to be saved during :meth:`commit`.</span>
 
 <span class="sd">        .. note::</span>
@@ -537,7 +537,7 @@
 
         <span class="n">_assign_entity_to_pb</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Batch.delete"><a class="viewcode-back" href="../../../../datastore-batches.html#google.cloud.datastore.batch.Batch.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.delete"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.batch.Batch.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remember a key to be deleted during :meth:`commit`.</span>
 
 <span class="sd">        :type key: :class:`google.cloud.datastore.key.Key`</span>
@@ -559,7 +559,7 @@
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_delete_key_pb</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Batch.begin"><a class="viewcode-back" href="../../../../datastore-batches.html#google.cloud.datastore.batch.Batch.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.begin"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.batch.Batch.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begins a batch.</span>
 
 <span class="sd">        This method is called automatically when entering a with</span>
@@ -595,7 +595,7 @@
             <span class="n">new_id</span> <span class="o">=</span> <span class="n">new_key_pb</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
             <span class="n">entity</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">new_id</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../../datastore-batches.html#google.cloud.datastore.batch.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.batch.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commits the batch.</span>
 
 <span class="sd">        This is called automatically upon exiting a with statement,</span>
@@ -613,7 +613,7 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_FINISHED</span></div>
 
-<div class="viewcode-block" id="Batch.rollback"><a class="viewcode-back" href="../../../../datastore-batches.html#google.cloud.datastore.batch.Batch.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.rollback"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.batch.Batch.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rolls back the current batch.</span>
 
 <span class="sd">        Marks the batch as aborted (can&#39;t be used again).</span>
@@ -712,7 +712,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

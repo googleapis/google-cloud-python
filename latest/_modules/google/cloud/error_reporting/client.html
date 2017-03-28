@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.error_reporting.client &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.error_reporting.client &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -362,7 +362,7 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
     <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_determine_default_project</span>
+<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.error_reporting._logging</span> <span class="k">import</span> <span class="n">_ErrorReportingLoggingAPI</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
 
@@ -413,7 +413,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">remoteIp</span> <span class="o">=</span> <span class="n">remote_ip</span></div>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../error-reporting-client.html#google.cloud.error_reporting.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../error-reporting-client.html#google.cloud.error_reporting.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Error Reporting client. Currently Error Reporting is done by creating</span>
 <span class="sd">    a Logging client.</span>
 
@@ -464,13 +464,8 @@
                  <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">use_gax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">_determine_default_project</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">project</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">credentials</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_http</span> <span class="o">=</span> <span class="n">http</span>
-
+        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                                     <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">service</span> <span class="k">if</span> <span class="n">service</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_SERVICE</span>
@@ -487,8 +482,8 @@
         <span class="sd">&quot;&quot;&quot;Helper for logging-related API calls.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs</span>
 
 <span class="sd">        :rtype:</span>
 <span class="sd">            :class:`_gax._ErrorReportingGaxApi`</span>
@@ -501,7 +496,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="n">make_report_error_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="n">_ErrorReportingLoggingAPI</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span>
 
     <span class="k">def</span> <span class="nf">_build_error_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -721,7 +716,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

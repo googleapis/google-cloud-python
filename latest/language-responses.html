@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Natural Language Response Classes &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Natural Language Response Classes &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="pubsub-usage.html"/>
         <link rel="prev" title="Document" href="language-document.html"/> 
 
@@ -537,7 +537,10 @@ salience and mentions, with entities.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name / phrase identified as the entity.</li>
 <li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of the entity. See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/Entity#Type">EntityType enum</a>.</li>
-<li><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The metadata associated with the entity.</li>
+<li><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The metadata associated with the entity.
+Wikipedia URLs and Knowledge Graph MIDs are
+provided, if available. The associated keys are
+&#8220;wikipedia_url&#8221; and &#8220;mid&#8221;, respectively.</li>
 <li><strong>salience</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The prominence of the entity / phrase within the text
 containing it.</li>
 <li><strong>mentions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of strings that mention the entity.</li>
@@ -617,6 +620,85 @@ containing it.</li>
 <dt id="google.cloud.language.entity.EntityType.WORK_OF_ART">
 <code class="descname">WORK_OF_ART</code><em class="property"> = 'WORK_OF_ART'</em><a class="headerlink" href="#google.cloud.language.entity.EntityType.WORK_OF_ART" title="Permalink to this definition">#</a></dt>
 <dd><p>Work of art entity type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language.entity.Mention">
+<em class="property">class </em><code class="descclassname">google.cloud.language.entity.</code><code class="descname">Mention</code><span class="sig-paren">(</span><em>text</em>, <em>mention_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/entity.html#Mention"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.entity.Mention" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A Google Cloud Natural Language API mention.</p>
+<p>Represents a mention for an entity in the text. Currently, proper noun
+mentions are supported.</p>
+<dl class="classmethod">
+<dt id="google.cloud.language.entity.Mention.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>payload</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/entity.html#Mention.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.entity.Mention.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a Mention from the JSON API into an <a class="reference internal" href="#google.cloud.language.entity.Mention" title="google.cloud.language.entity.Mention"><code class="xref py py-class docutils literal"><span class="pre">Mention</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>payload</strong> (<em>The value from the backend.</em>) &#8211; dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.language.entity.Mention" title="google.cloud.language.entity.Mention"><code class="xref py py-class docutils literal"><span class="pre">Mention</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The mention parsed from the API representation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language.entity.MentionType">
+<em class="property">class </em><code class="descclassname">google.cloud.language.entity.</code><code class="descname">MentionType</code><a class="reference internal" href="_modules/google/cloud/language/entity.html#MentionType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.entity.MentionType" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>List of possible mention types.</p>
+<dl class="attribute">
+<dt id="google.cloud.language.entity.MentionType.COMMON">
+<code class="descname">COMMON</code><em class="property"> = 'COMMON'</em><a class="headerlink" href="#google.cloud.language.entity.MentionType.COMMON" title="Permalink to this definition">#</a></dt>
+<dd><p>Common noun (or noun compound)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language.entity.MentionType.PROPER">
+<code class="descname">PROPER</code><em class="property"> = 'PROPER'</em><a class="headerlink" href="#google.cloud.language.entity.MentionType.PROPER" title="Permalink to this definition">#</a></dt>
+<dd><p>Proper name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language.entity.MentionType.TYPE_UNKNOWN">
+<code class="descname">TYPE_UNKNOWN</code><em class="property"> = 'TYPE_UNKNOWN'</em><a class="headerlink" href="#google.cloud.language.entity.MentionType.TYPE_UNKNOWN" title="Permalink to this definition">#</a></dt>
+<dd><p>Unknown mention type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language.entity.TextSpan">
+<em class="property">class </em><code class="descclassname">google.cloud.language.entity.</code><code class="descname">TextSpan</code><span class="sig-paren">(</span><em>content</em>, <em>begin_offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/entity.html#TextSpan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.entity.TextSpan" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A span of text from Google Cloud Natural Language API.</p>
+<p>Represents a word or phrase of text, as well as its offset
+from the original document.</p>
+<dl class="classmethod">
+<dt id="google.cloud.language.entity.TextSpan.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>payload</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/entity.html#TextSpan.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.entity.TextSpan.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a TextSpan from the JSON API into an <a class="reference internal" href="#google.cloud.language.entity.TextSpan" title="google.cloud.language.entity.TextSpan"><code class="xref py py-class docutils literal"><span class="pre">TextSpan</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>payload</strong> (<em>The value from the backend.</em>) &#8211; dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.language.entity.TextSpan" title="google.cloud.language.entity.TextSpan"><code class="xref py py-class docutils literal"><span class="pre">TextSpan</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The text span parsed from the API representation.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -885,7 +967,7 @@ its own index.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

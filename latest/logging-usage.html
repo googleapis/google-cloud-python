@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Using the API &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Stackdriver Logging Client" href="logging-client.html"/>
         <link rel="prev" title="Error Reporting Utilities" href="error-reporting-util.html"/> 
 
@@ -498,7 +498,7 @@ buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
 <h3>Export to Cloud Storage<a class="headerlink" href="#export-to-cloud-storage" title="Permalink to this headline">#</a></h3>
 <p>Make sure that the storage bucket you want to export logs too has
 <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner. See
-<a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs">Setting permissions for Cloud Storage</a>.</p>
+<a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_cloud_storage">Setting permissions for Cloud Storage</a>.</p>
 <p>Add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner of the bucket:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
 <span class="n">logs_group</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
@@ -520,7 +520,7 @@ buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
 <h3>Export to BigQuery<a class="headerlink" href="#export-to-bigquery" title="Permalink to this headline">#</a></h3>
 <p>To export logs to BigQuery you must log into the Cloud Platform Console
 and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> to a dataset.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export#manual-access-bq">Setting permissions for BigQuery</a></p>
+<p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_bigquery">Setting permissions for BigQuery</a></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">AccessGrant</span>
 <span class="n">grants</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span>
 <span class="n">grants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AccessGrant</span><span class="p">(</span>
@@ -542,7 +542,7 @@ and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.c
 <h3>Export to Pub/Sub<a class="headerlink" href="#export-to-pub-sub" title="Permalink to this headline">#</a></h3>
 <p>To export logs to BigQuery you must log into the Cloud Platform Console
 and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> to a topic.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export#manual-access-pubsub">Setting permissions for Pub/Sub</a></p>
+<p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_logs_to_cloud_pubsub">Setting permissions for Pub/Sub</a></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>  <span class="c1"># API call</span>
 <span class="n">policy</span><span class="o">.</span><span class="n">owners</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">))</span>
 <span class="n">topic</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>  <span class="c1"># API call</span>
@@ -724,7 +724,7 @@ direct API call on each logging statement to write the entry.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

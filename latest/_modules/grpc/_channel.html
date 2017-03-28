@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>grpc._channel &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>grpc._channel &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -382,7 +382,6 @@
 
 <span class="n">_EMPTY_FLAGS</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">_INFINITE_FUTURE</span> <span class="o">=</span> <span class="n">cygrpc</span><span class="o">.</span><span class="n">Timespec</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;+inf&#39;</span><span class="p">))</span>
-<span class="n">_EMPTY_METADATA</span> <span class="o">=</span> <span class="n">cygrpc</span><span class="o">.</span><span class="n">Metadata</span><span class="p">(())</span>
 
 <span class="n">_UNARY_UNARY_INITIAL_DUE</span> <span class="o">=</span> <span class="p">(</span><span class="n">cygrpc</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">send_initial_metadata</span><span class="p">,</span>
                             <span class="n">cygrpc</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">send_message</span><span class="p">,</span>
@@ -477,8 +476,8 @@
         <span class="n">state</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
         <span class="n">state</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">details</span>
         <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">initial_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">state</span><span class="o">.</span><span class="n">initial_metadata</span> <span class="o">=</span> <span class="n">_EMPTY_METADATA</span>
-        <span class="n">state</span><span class="o">.</span><span class="n">trailing_metadata</span> <span class="o">=</span> <span class="n">_EMPTY_METADATA</span>
+            <span class="n">state</span><span class="o">.</span><span class="n">initial_metadata</span> <span class="o">=</span> <span class="n">_common</span><span class="o">.</span><span class="n">EMPTY_METADATA</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">trailing_metadata</span> <span class="o">=</span> <span class="n">_common</span><span class="o">.</span><span class="n">EMPTY_METADATA</span>
 
 
 <span class="k">def</span> <span class="nf">_handle_event</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="p">):</span>
@@ -540,7 +539,7 @@
                 <span class="n">request</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">request_iterator</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
                 <span class="k">break</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception iterating requests!&quot;</span><span class="p">)</span>
                 <span class="n">call</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
                 <span class="n">_abort</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">,</span>
@@ -577,7 +576,7 @@
                     <span class="n">cygrpc</span><span class="o">.</span><span class="n">Operations</span><span class="p">(</span><span class="n">operations</span><span class="p">),</span> <span class="n">event_handler</span><span class="p">)</span>
                 <span class="n">state</span><span class="o">.</span><span class="n">due</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cygrpc</span><span class="o">.</span><span class="n">OperationType</span><span class="o">.</span><span class="n">send_close_from_client</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">stop_consumption_thread</span><span class="p">(</span><span class="n">timeout</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">stop_consumption_thread</span><span class="p">(</span><span class="n">timeout</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
         <span class="k">with</span> <span class="n">state</span><span class="o">.</span><span class="n">condition</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">call</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
@@ -727,13 +726,14 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">condition</span><span class="p">:</span>
             <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">initial_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">_common</span><span class="o">.</span><span class="n">application_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">initial_metadata</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_common</span><span class="o">.</span><span class="n">to_application_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">initial_metadata</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">trailing_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">condition</span><span class="p">:</span>
             <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">trailing_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">_common</span><span class="o">.</span><span class="n">application_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">trailing_metadata</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_common</span><span class="o">.</span><span class="n">to_application_metadata</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">trailing_metadata</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">condition</span><span class="p">:</span>
@@ -774,7 +774,7 @@
     <span class="n">deadline</span><span class="p">,</span> <span class="n">deadline_timespec</span> <span class="o">=</span> <span class="n">_deadline</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
     <span class="n">serialized_request</span> <span class="o">=</span> <span class="n">_common</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">serialized_request</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">_RPCState</span><span class="p">((),</span> <span class="n">_EMPTY_METADATA</span><span class="p">,</span> <span class="n">_EMPTY_METADATA</span><span class="p">,</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">_RPCState</span><span class="p">((),</span> <span class="n">_common</span><span class="o">.</span><span class="n">EMPTY_METADATA</span><span class="p">,</span> <span class="n">_common</span><span class="o">.</span><span class="n">EMPTY_METADATA</span><span class="p">,</span>
                           <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">INTERNAL</span><span class="p">,</span>
                           <span class="s1">&#39;Exception serializing request!&#39;</span><span class="p">)</span>
         <span class="n">rendezvous</span> <span class="o">=</span> <span class="n">_Rendezvous</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
@@ -783,10 +783,10 @@
         <span class="k">return</span> <span class="n">deadline</span><span class="p">,</span> <span class="n">deadline_timespec</span><span class="p">,</span> <span class="n">serialized_request</span><span class="p">,</span> <span class="kc">None</span>
 
 
-<span class="k">def</span> <span class="nf">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">with_call</span><span class="p">,</span> <span class="n">deadline</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">with_call</span><span class="p">,</span> <span class="n">deadline</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">code</span> <span class="ow">is</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">with_call</span><span class="p">:</span>
-            <span class="n">rendezvous</span> <span class="o">=</span> <span class="n">_Rendezvous</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
+            <span class="n">rendezvous</span> <span class="o">=</span> <span class="n">_Rendezvous</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">rendezvous</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">response</span>
@@ -813,7 +813,7 @@
             <span class="n">state</span> <span class="o">=</span> <span class="n">_RPCState</span><span class="p">(</span><span class="n">_UNARY_UNARY_INITIAL_DUE</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="n">operations</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_initial_metadata</span><span class="p">(</span>
-                    <span class="n">_common</span><span class="o">.</span><span class="n">cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
+                    <span class="n">_common</span><span class="o">.</span><span class="n">to_cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_message</span><span class="p">(</span><span class="n">serialized_request</span><span class="p">,</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_close_from_client</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_initial_metadata</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
@@ -838,17 +838,17 @@
             <span class="n">_check_call_error</span><span class="p">(</span><span class="n">call_error</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
             <span class="n">_handle_event</span><span class="p">(</span><span class="n">completion_queue</span><span class="o">.</span><span class="n">poll</span><span class="p">(),</span> <span class="n">state</span><span class="p">,</span>
                           <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">deadline</span>
+            <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">deadline</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">state</span><span class="p">,</span> <span class="n">deadline</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocking</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                                          <span class="n">credentials</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">deadline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocking</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                                               <span class="n">credentials</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">with_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">state</span><span class="p">,</span> <span class="n">deadline</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocking</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                                          <span class="n">credentials</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">deadline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocking</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                                               <span class="n">credentials</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">future</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">state</span><span class="p">,</span> <span class="n">operations</span><span class="p">,</span> <span class="n">deadline</span><span class="p">,</span> <span class="n">deadline_timespec</span><span class="p">,</span> <span class="n">rendezvous</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare</span><span class="p">(</span>
@@ -903,7 +903,7 @@
                     <span class="p">)),</span> <span class="n">event_handler</span><span class="p">)</span>
                 <span class="n">operations</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_initial_metadata</span><span class="p">(</span>
-                        <span class="n">_common</span><span class="o">.</span><span class="n">cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span>
+                        <span class="n">_common</span><span class="o">.</span><span class="n">to_cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span>
                         <span class="n">_EMPTY_FLAGS</span><span class="p">),</span> <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_message</span><span class="p">(</span>
                             <span class="n">serialized_request</span><span class="p">,</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                     <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_close_from_client</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
@@ -943,7 +943,7 @@
                 <span class="kc">None</span><span class="p">)</span>
             <span class="n">operations</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_initial_metadata</span><span class="p">(</span>
-                    <span class="n">_common</span><span class="o">.</span><span class="n">cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
+                    <span class="n">_common</span><span class="o">.</span><span class="n">to_cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_message</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_status_on_client</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),)</span>
             <span class="n">call_error</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">start_client_batch</span><span class="p">(</span>
@@ -958,25 +958,25 @@
                 <span class="n">state</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">notify_all</span><span class="p">()</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">due</span><span class="p">:</span>
                     <span class="k">break</span>
-        <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">deadline</span>
+        <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">deadline</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">request_iterator</span><span class="p">,</span>
                  <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">state</span><span class="p">,</span> <span class="n">deadline</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocking</span><span class="p">(</span><span class="n">request_iterator</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                                          <span class="n">credentials</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">deadline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocking</span><span class="p">(</span><span class="n">request_iterator</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span>
+                                               <span class="n">metadata</span><span class="p">,</span> <span class="n">credentials</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">with_call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                   <span class="n">request_iterator</span><span class="p">,</span>
                   <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">state</span><span class="p">,</span> <span class="n">deadline</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocking</span><span class="p">(</span><span class="n">request_iterator</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                                          <span class="n">credentials</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">deadline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocking</span><span class="p">(</span><span class="n">request_iterator</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span>
+                                               <span class="n">metadata</span><span class="p">,</span> <span class="n">credentials</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_end_unary_response_blocking</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">future</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                <span class="n">request_iterator</span><span class="p">,</span>
@@ -997,7 +997,7 @@
                 <span class="n">event_handler</span><span class="p">)</span>
             <span class="n">operations</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_initial_metadata</span><span class="p">(</span>
-                    <span class="n">_common</span><span class="o">.</span><span class="n">cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
+                    <span class="n">_common</span><span class="o">.</span><span class="n">to_cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_message</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_status_on_client</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),)</span>
             <span class="n">call_error</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">start_client_batch</span><span class="p">(</span>
@@ -1040,7 +1040,7 @@
                 <span class="n">event_handler</span><span class="p">)</span>
             <span class="n">operations</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_send_initial_metadata</span><span class="p">(</span>
-                    <span class="n">_common</span><span class="o">.</span><span class="n">cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
+                    <span class="n">_common</span><span class="o">.</span><span class="n">to_cygrpc_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">),</span> <span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_status_on_client</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),)</span>
             <span class="n">call_error</span> <span class="o">=</span> <span class="n">call</span><span class="o">.</span><span class="n">start_client_batch</span><span class="p">(</span>
                 <span class="n">cygrpc</span><span class="o">.</span><span class="n">Operations</span><span class="p">(</span><span class="n">operations</span><span class="p">),</span> <span class="n">event_handler</span><span class="p">)</span>
@@ -1075,7 +1075,7 @@
                         <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span> <span class="o">=</span> <span class="kc">None</span>
                         <span class="k">return</span>
 
-    <span class="k">def</span> <span class="nf">stop_channel_spin</span><span class="p">(</span><span class="n">timeout</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">stop_channel_spin</span><span class="p">(</span><span class="n">timeout</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
         <span class="k">with</span> <span class="n">state</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span><span class="p">:</span>
@@ -1216,12 +1216,8 @@
 <span class="k">def</span> <span class="nf">_subscribe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">try_to_connect</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">state</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">callbacks_and_connectivities</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">polling</span><span class="p">:</span>
-
-            <span class="k">def</span> <span class="nf">cancel_all_subscriptions</span><span class="p">(</span><span class="n">timeout</span><span class="p">):</span>
-                <span class="n">_moot</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-
             <span class="n">polling_thread</span> <span class="o">=</span> <span class="n">_common</span><span class="o">.</span><span class="n">CleanupThread</span><span class="p">(</span>
-                <span class="n">cancel_all_subscriptions</span><span class="p">,</span>
+                <span class="k">lambda</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">_moot</span><span class="p">(</span><span class="n">state</span><span class="p">),</span>
                 <span class="n">target</span><span class="o">=</span><span class="n">_poll_connectivity</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">try_to_connect</span><span class="p">)))</span>
             <span class="n">polling_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -1349,7 +1345,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

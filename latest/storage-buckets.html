@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Buckets &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -352,7 +352,8 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
 for the bucket (which requires a project).</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the bucket.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the bucket. Bucket names must start and end with a
+number or letter.</li>
 </ul>
 </td>
 </tr>
@@ -406,7 +407,7 @@ API specification.</li>
 <dt id="google.cloud.storage.bucket.Bucket.configure_website">
 <code class="descname">configure_website</code><span class="sig-paren">(</span><em>main_page_suffix=None</em>, <em>not_found_page=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.configure_website"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.configure_website" title="Permalink to this definition">#</a></dt>
 <dd><p>Configure website-related properties.</p>
-<p>See: <a class="reference external" href="https://developers.google.com/storage/docs/website-configuration">https://developers.google.com/storage/docs/website-configuration</a></p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/hosting-static-website">https://cloud.google.com/storage/docs/hosting-static-website</a></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This (apparently) only works
@@ -568,7 +569,8 @@ contains more than 256 objects / blobs.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(),</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">())</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
     <span class="c1"># [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s1">&#39;my-file.txt&#39;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -634,7 +636,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.bucket.Bucket.disable_logging">
 <code class="descname">disable_logging</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.disable_logging" title="Permalink to this definition">#</a></dt>
 <dd><p>Disable access logging for this bucket.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/accesslogs#disabling">https://cloud.google.com/storage/docs/accesslogs#disabling</a></p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/access-logs#disabling">https://cloud.google.com/storage/docs/access-logs#disabling</a></p>
 </dd></dl>
 
 <dl class="method">
@@ -649,7 +651,7 @@ attributes to <code class="docutils literal"><span class="pre">None</span></code
 <dt id="google.cloud.storage.bucket.Bucket.enable_logging">
 <code class="descname">enable_logging</code><span class="sig-paren">(</span><em>bucket_name</em>, <em>object_prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.enable_logging" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable access logging for this bucket.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/accesslogs">https://cloud.google.com/storage/docs/accesslogs</a></p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/access-logs">https://cloud.google.com/storage/docs/access-logs</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -669,7 +671,7 @@ attributes to <code class="docutils literal"><span class="pre">None</span></code
 <code class="descname">etag</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.etag" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve the ETag for the bucket.</p>
 <dl class="docutils">
-<dt>See: <a class="reference external" href="http://tools.ietf.org/html/rfc2616#section-3.11">http://tools.ietf.org/html/rfc2616#section-3.11</a> and</dt>
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/rfc2616#section-3.11">https://tools.ietf.org/html/rfc2616#section-3.11</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
 </dl>
 <table class="docutils field-list" frame="void" rules="none">
@@ -712,35 +714,6 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <p>This method generates and signs a policy document. You can use
 <a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/post-object#policydocument">policy documents</a> to allow visitors to a website to upload files to
 Google Cloud Storage without giving them direct write access.</p>
-<p>For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-    <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="s1">&#39;starts-with&#39;</span><span class="p">,</span> <span class="s1">&#39;$key&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">],</span>
-        <span class="p">{</span><span class="s1">&#39;acl&#39;</span><span class="p">:</span> <span class="s1">&#39;public-read&#39;</span><span class="p">}]</span>
-
-    <span class="n">policy</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">generate_upload_policy</span><span class="p">(</span><span class="n">conditions</span><span class="p">)</span>
-
-    <span class="c1"># Generate an upload form using the form fields.</span>
-    <span class="n">policy_fields</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;</span><span class="si">{key}</span><span class="s1">&quot; value=&quot;</span><span class="si">{value}</span><span class="s1">&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">policy</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="p">)</span>
-
-    <span class="n">upload_form</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;&lt;form action=&quot;http://</span><span class="si">{bucket_name}</span><span class="s1">.storage.googleapis.com&quot;&#39;</span>
-        <span class="s1">&#39;   method=&quot;post&quot;enctype=&quot;multipart/form-data&quot;&gt;&#39;</span>
-        <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;key&quot; value=&quot;&quot;&gt;&#39;</span>
-        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;bucket&quot; value=&quot;</span><span class="si">{bucket_name}</span><span class="s1">&quot;&gt;&#39;</span>
-        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;acl&quot; value=&quot;public-read&quot;&gt;&#39;</span>
-        <span class="s1">&#39;&lt;input name=&quot;file&quot; type=&quot;file&quot;&gt;&#39;</span>
-        <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;&#39;</span>
-        <span class="s1">&#39;</span><span class="si">{policy_fields}</span><span class="s1">&#39;</span>
-        <span class="s1">&#39;&lt;form&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">policy_fields</span><span class="o">=</span><span class="n">policy_fields</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">upload_form</span><span class="p">)</span>
-</pre></div>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -806,7 +779,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.bucket.Bucket.get_logging">
 <code class="descname">get_logging</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.get_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.get_logging" title="Permalink to this definition">#</a></dt>
 <dd><p>Return info about access logging for this bucket.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/accesslogs#status">https://cloud.google.com/storage/docs/accesslogs#status</a></p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/access-logs#status">https://cloud.google.com/storage/docs/access-logs#status</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -905,7 +878,7 @@ in this bucket matching the arguments.</p>
 <code class="descname">location</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.location" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve location configured for this bucket.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
-<a class="reference external" href="https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations">https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</a></p>
+<a class="reference external" href="https://cloud.google.com/storage/docs/bucket-locations">https://cloud.google.com/storage/docs/bucket-locations</a></p>
 <p>If the property is not set locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1210,7 +1183,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

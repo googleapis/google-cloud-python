@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>BigQuery Client &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>BigQuery Client &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Datasets" href="bigquery-dataset.html"/>
         <link rel="prev" title="Using the API" href="bigquery-usage.html"/> 
 
@@ -353,7 +353,7 @@
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of. Will be
 passed when creating a dataset / job.  If not passed,
 falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.8.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.9.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
@@ -378,7 +378,7 @@ that defines <code class="docutils literal"><span class="pre">request()</span></
 <code class="descname">copy_table</code><span class="sig-paren">(</span><em>job_name</em>, <em>destination</em>, <em>*sources</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.copy_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.copy_table" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a job for copying one or more tables into another table.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -430,7 +430,7 @@ the project of the client).</li>
 <code class="descname">extract_table_to_storage</code><span class="sig-paren">(</span><em>job_name</em>, <em>source</em>, <em>*destination_uris</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.extract_table_to_storage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.extract_table_to_storage" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a job for extracting a table into Cloud Storage files.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -482,7 +482,7 @@ table data is to be extracted; in format
 <code class="descname">list_datasets</code><span class="sig-paren">(</span><em>include_all=False</em>, <em>max_results=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.list_datasets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_datasets" title="Permalink to this definition">#</a></dt>
 <dd><p>List datasets for the project associated with this client.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/datasets/list">https://cloud.google.com/bigquery/docs/reference/v2/datasets/list</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -513,7 +513,7 @@ accessible to the current client.</p>
 <code class="descname">list_jobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>all_users=None</em>, <em>state_filter=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.list_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_jobs" title="Permalink to this definition">#</a></dt>
 <dd><p>List jobs for the project associated with this client.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/list">https://cloud.google.com/bigquery/docs/reference/v2/jobs/list</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -552,7 +552,7 @@ state.  One of</p>
 <code class="descname">list_projects</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.list_projects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_projects" title="Permalink to this definition">#</a></dt>
 <dd><p>List projects for the project associated with this client.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/projects/list">https://cloud.google.com/bigquery/docs/reference/v2/projects/list</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -582,7 +582,7 @@ accessible to the current client.</p>
 <code class="descname">load_table_from_storage</code><span class="sig-paren">(</span><em>job_name</em>, <em>destination</em>, <em>*source_uris</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.load_table_from_storage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.load_table_from_storage" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a job for loading data into a table from CloudStorage.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -610,7 +610,7 @@ accessible to the current client.</p>
 <code class="descname">run_async_query</code><span class="sig-paren">(</span><em>job_name</em>, <em>query</em>, <em>udf_resources=()</em>, <em>query_parameters=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.run_async_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.run_async_query" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a job for running a SQL query asynchronously.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -740,7 +740,7 @@ accessible to the current client.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

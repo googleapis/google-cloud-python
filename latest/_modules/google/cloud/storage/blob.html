@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -1207,11 +1207,14 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/rewriteTo&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span>
         <span class="n">rewritten</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;totalBytesRewritten&#39;</span><span class="p">])</span>
         <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;objectSize&#39;</span><span class="p">])</span>
 
+        <span class="c1"># The resource key is set if and only if the API response is</span>
+        <span class="c1"># completely done. Additionally, there is no rewrite token to return</span>
+        <span class="c1"># in this case.</span>
         <span class="k">if</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span>
             <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span>
 
         <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">],</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span></div>
@@ -1279,7 +1282,7 @@
     <span class="n">content_language</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentLanguage&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Language&#39; header for this object.</span>
 
-<span class="sd">    See: http://tools.ietf.org/html/bcp47 and</span>
+<span class="sd">    See: https://tools.ietf.org/html/bcp47 and</span>
 <span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
@@ -1301,7 +1304,7 @@
     <span class="n">crc32c</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;crc32c&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;CRC32C checksum for this object.</span>
 
-<span class="sd">    See: http://tools.ietf.org/html/rfc4960#appendix-B and</span>
+<span class="sd">    See: https://tools.ietf.org/html/rfc4960#appendix-B and</span>
 <span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
@@ -1328,7 +1331,7 @@
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ETag for the object.</span>
 
-<span class="sd">        See: http://tools.ietf.org/html/rfc2616#section-3.11 and</span>
+<span class="sd">        See: https://tools.ietf.org/html/rfc2616#section-3.11 and</span>
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
@@ -1365,7 +1368,7 @@
     <span class="n">md5_hash</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;md5Hash&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;MD5 hash for this object.</span>
 
-<span class="sd">    See: http://tools.ietf.org/html/rfc4960#appendix-B and</span>
+<span class="sd">    See: https://tools.ietf.org/html/rfc4960#appendix-B and</span>
 <span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
@@ -1606,7 +1609,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

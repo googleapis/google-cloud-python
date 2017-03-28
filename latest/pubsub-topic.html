@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Topics &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Topics &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Subscriptions" href="pubsub-subscription.html"/>
         <link rel="prev" title="Pub/Sub Client" href="pubsub-client.html"/> 
 
@@ -561,7 +561,7 @@ from the client.</p>
 
 <dl class="method">
 <dt id="google.cloud.pubsub.topic.Topic.batch">
-<code class="descname">batch</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.batch" title="Permalink to this definition">#</a></dt>
+<code class="descname">batch</code><span class="sig-paren">(</span><em>client=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a batch to use as a context manager.</p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
@@ -579,13 +579,20 @@ raising an exception.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Keyword arguments passed to the
+<a class="reference internal" href="#google.cloud.pubsub.topic.Batch" title="google.cloud.pubsub.topic.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a> constructor.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.pubsub.topic.Batch" title="google.cloud.pubsub.topic.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.pubsub.topic.Batch" title="google.cloud.pubsub.topic.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A batch to use as a context manager.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A batch to use as a context manager.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -734,7 +741,7 @@ accessible to the current topic.</p>
 
 <dl class="class">
 <dt id="google.cloud.pubsub.topic.Batch">
-<em class="property">class </em><code class="descclassname">google.cloud.pubsub.topic.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>topic</em>, <em>client</em>, <em>max_interval=inf</em>, <em>max_messages=inf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Batch" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub.topic.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>topic</em>, <em>client</em>, <em>max_interval=inf</em>, <em>max_messages=inf</em>, <em>max_size=9437184</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Context manager:  collect messages to publish via a single API call.</p>
 <p>Helper returned by :meth:Topic.batch</p>
@@ -755,6 +762,9 @@ reasonably regular intervals. Defaults to infinity
 <li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The maximum number of messages to hold in the batch
 before automatically commiting. Defaults to infinity
 (off).</li>
+<li><strong>max_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The maximum size that the serialized messages can be
+before automatically commiting. Defaults to 9 MB
+(slightly less than the API limit).</li>
 </ul>
 </td>
 </tr>
@@ -842,7 +852,7 @@ before automatically commiting. Defaults to infinity
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

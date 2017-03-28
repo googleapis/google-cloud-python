@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.image &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.vision.image &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -521,17 +521,28 @@
         <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">faces</span></div>
 
-<div class="viewcode-block" id="Image.detect_full_text"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_full_text">[docs]</a>    <span class="k">def</span> <span class="nf">detect_full_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="Image.detect_full_text"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_full_text">[docs]</a>    <span class="k">def</span> <span class="nf">detect_full_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language_hints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect a full document&#39;s text.</span>
 
+<span class="sd">        :type language_hints: list</span>
+<span class="sd">        :param language_hints: (Optional) A list of BCP-47 language codes. See:</span>
+<span class="sd">                               https://cloud.google.com/vision/docs/languages</span>
+
 <span class="sd">        :type limit: int</span>
-<span class="sd">        :param limit: The number of documents to detect.</span>
+<span class="sd">        :param limit: (Optional) The number of documents to detect.</span>
 
 <span class="sd">        :rtype: list</span>
 <span class="sd">        :returns: List of :class:`~google.cloud.vision.text.TextAnnotation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">DOCUMENT_TEXT_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
-        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="n">feature_type</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">Feature</span><span class="o">.</span><span class="n">DOCUMENT_TEXT_DETECTION</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">feature_type</span><span class="p">,</span>
+                                              <span class="n">max_results</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">_to_gapic_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">image_context</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">ImageContext</span><span class="p">(</span>
+            <span class="n">language_hints</span><span class="o">=</span><span class="n">language_hints</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">image_annotator_pb2</span><span class="o">.</span><span class="n">AnnotateImageRequest</span><span class="p">(</span>
+            <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="n">feature</span><span class="p">],</span> <span class="n">image_context</span><span class="o">=</span><span class="n">image_context</span><span class="p">)</span>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation_from_pb</span><span class="p">([</span><span class="n">request</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">full_texts</span></div>
 
 <div class="viewcode-block" id="Image.detect_labels"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_labels">[docs]</a>    <span class="k">def</span> <span class="nf">detect_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
@@ -666,7 +677,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Datasets &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>Datasets &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="index.html"/>
         <link rel="next" title="Jobs" href="bigquery-job.html"/>
         <link rel="prev" title="BigQuery Client" href="bigquery-client.html"/> 
 
@@ -350,7 +350,7 @@
 <code class="docutils literal"><span class="pre">view</span></code> set. And if anything but <code class="docutils literal"><span class="pre">view</span></code> is set, it&#8217;ll also have a
 <code class="docutils literal"><span class="pre">role</span></code> specified. <code class="docutils literal"><span class="pre">role</span></code> is omitted for a <code class="docutils literal"><span class="pre">view</span></code>, since
 <code class="docutils literal"><span class="pre">view</span></code> s are always read-only.</p>
-<p>See <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/datasets">https://cloud.google.com/bigquery/docs/reference/v2/datasets</a>.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -379,7 +379,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessGrant.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset(['specialGroup', 'domain', 'view', 'userByEmail', 'groupByEmail'])</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'groupByEmail', 'domain', 'specialGroup', 'view', 'userByEmail'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
@@ -391,7 +391,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Datasets are containers for tables.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/datasets">https://cloud.google.com/bigquery/docs/reference/v2/datasets</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -429,7 +429,7 @@ the project of the client).</li>
 <code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the dataset via a PUT request.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/insert">https://cloud.google.com/bigquery/docs/reference/v2/tables/insert</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -495,7 +495,7 @@ the project of the client).</li>
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the dataset via a DELETE request.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/delete">https://cloud.google.com/bigquery/docs/reference/v2/tables/delete</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -545,7 +545,7 @@ the project of the client).</li>
 <code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test for the existence of the dataset via a GET request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/datasets/get">https://cloud.google.com/bigquery/docs/reference/v2/datasets/get</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -608,7 +608,7 @@ configuration for the dataset.</li>
 <code class="descname">list_tables</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset.list_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.list_tables" title="Permalink to this definition">#</a></dt>
 <dd><p>List tables for the project associated with this client.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/list">https://cloud.google.com/bigquery/docs/reference/v2/tables/list</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -670,7 +670,7 @@ contained within the current dataset.</p>
 <code class="descname">patch</code><span class="sig-paren">(</span><em>client=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset.patch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.patch" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update individual dataset properties via a PATCH request.</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/datasets/patch">https://cloud.google.com/bigquery/docs/reference/v2/datasets/patch</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/patch">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/patch</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -727,7 +727,7 @@ contained within the current dataset.</p>
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  refresh dataset properties via a GET request.</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/datasets/get">https://cloud.google.com/bigquery/docs/reference/v2/datasets/get</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -785,7 +785,7 @@ contained within the current dataset.</p>
 <code class="descname">update</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.update" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update dataset properties via a PUT request.</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/datasets/update">https://cloud.google.com/bigquery/docs/reference/v2/datasets/update</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/update">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/update</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -846,7 +846,7 @@ contained within the current dataset.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

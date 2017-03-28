@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.transaction &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.datastore.transaction &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -356,7 +356,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.batch</span> <span class="k">import</span> <span class="n">Batch</span>
 
 
-<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../../datastore-transactions.html#google.cloud.datastore.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">Batch</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">Batch</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An abstraction representing datastore Transactions.</span>
 
 <span class="sd">    Transactions can be used to build up a bulk mutation and ensure all</span>
@@ -369,7 +369,7 @@
 <span class="sd">    .. testsetup:: txn-put-multi, txn-api</span>
 
 <span class="sd">       from google.cloud import datastore</span>
-<span class="sd">       from datastore import Config  # system tests</span>
+<span class="sd">       from tests.system.test_system import Config  # system tests</span>
 
 <span class="sd">       client = datastore.Client()</span>
 <span class="sd">       key1 = client.key(&#39;_Doctest&#39;)</span>
@@ -432,7 +432,7 @@
 <span class="sd">       .. testsetup:: txn-entity-key, txn-entity-key-after, txn-manual</span>
 
 <span class="sd">          from google.cloud import datastore</span>
-<span class="sd">          from datastore import Config  # system tests</span>
+<span class="sd">          from tests.system.test_system import Config  # system tests</span>
 
 <span class="sd">          client = datastore.Client()</span>
 
@@ -496,7 +496,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 
-<div class="viewcode-block" id="Transaction.current"><a class="viewcode-back" href="../../../../datastore-transactions.html#google.cloud.datastore.transaction.Transaction.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction.current"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.transaction.Transaction.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the topmost transaction.</span>
 
 <span class="sd">        .. note::</span>
@@ -511,7 +511,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">Transaction</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">top</span></div>
 
-<div class="viewcode-block" id="Transaction.begin"><a class="viewcode-back" href="../../../../datastore-transactions.html#google.cloud.datastore.transaction.Transaction.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction.begin"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.transaction.Transaction.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begins a transaction.</span>
 
 <span class="sd">        This method is called automatically when entering a with</span>
@@ -530,7 +530,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ABORTED</span>
             <span class="k">raise</span></div>
 
-<div class="viewcode-block" id="Transaction.rollback"><a class="viewcode-back" href="../../../../datastore-transactions.html#google.cloud.datastore.transaction.Transaction.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction.rollback"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.transaction.Transaction.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rolls back the current transaction.</span>
 
 <span class="sd">        This method has necessary side-effects:</span>
@@ -545,7 +545,7 @@
             <span class="c1"># Clear our own ID in case this gets accidentally reused.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Transaction.commit"><a class="viewcode-back" href="../../../../datastore-transactions.html#google.cloud.datastore.transaction.Transaction.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction.commit"><a class="viewcode-back" href="../../../../datastore-usage.html#google.cloud.datastore.transaction.Transaction.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commits the transaction.</span>
 
 <span class="sd">        This is called automatically upon exiting a with statement,</span>
@@ -597,7 +597,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

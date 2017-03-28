@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.language.entity &mdash; google-cloud 0a6dc31 documentation</title>
+  <title>google.cloud.language.entity &mdash; google-cloud 6c33693 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0a6dc31 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c33693 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -385,6 +385,80 @@
     <span class="sd">&quot;&quot;&quot;Other entity type (i.e. known but not classified).&quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="MentionType"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.entity.MentionType">[docs]</a><span class="k">class</span> <span class="nc">MentionType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of possible mention types.&quot;&quot;&quot;</span>
+
+    <span class="n">TYPE_UNKNOWN</span> <span class="o">=</span> <span class="s1">&#39;TYPE_UNKNOWN&#39;</span>
+    <span class="sd">&quot;&quot;&quot;Unknown mention type&quot;&quot;&quot;</span>
+
+    <span class="n">PROPER</span> <span class="o">=</span> <span class="s1">&#39;PROPER&#39;</span>
+    <span class="sd">&quot;&quot;&quot;Proper name&quot;&quot;&quot;</span>
+
+    <span class="n">COMMON</span> <span class="o">=</span> <span class="s1">&#39;COMMON&#39;</span>
+    <span class="sd">&quot;&quot;&quot;Common noun (or noun compound)&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Mention"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.entity.Mention">[docs]</a><span class="k">class</span> <span class="nc">Mention</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Google Cloud Natural Language API mention.</span>
+
+<span class="sd">    Represents a mention for an entity in the text. Currently, proper noun</span>
+<span class="sd">    mentions are supported.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">mention_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mention_type</span> <span class="o">=</span> <span class="n">mention_type</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Mention.from_api_repr"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.entity.Mention.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a Mention from the JSON API into an :class:`Mention`.</span>
+
+<span class="sd">        :param payload: dict</span>
+<span class="sd">        :type payload: The value from the backend.</span>
+
+<span class="sd">        :rtype: :class:`Mention`</span>
+<span class="sd">        :returns: The mention parsed from the API representation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">TextSpan</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+        <span class="n">mention_type</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mention_type</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TextSpan"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.entity.TextSpan">[docs]</a><span class="k">class</span> <span class="nc">TextSpan</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A span of text from Google Cloud Natural Language API.</span>
+
+<span class="sd">    Represents a word or phrase of text, as well as its offset</span>
+<span class="sd">    from the original document.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">begin_offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">begin_offset</span> <span class="o">=</span> <span class="n">begin_offset</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the string representation of this TextSpan.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The text content</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="TextSpan.from_api_repr"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.entity.TextSpan.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a TextSpan from the JSON API into an :class:`TextSpan`.</span>
+
+<span class="sd">        :param payload: dict</span>
+<span class="sd">        :type payload: The value from the backend.</span>
+
+<span class="sd">        :rtype: :class:`TextSpan`</span>
+<span class="sd">        :returns: The text span parsed from the API representation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span>
+        <span class="n">begin_offset</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;beginOffset&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">begin_offset</span><span class="o">=</span><span class="n">begin_offset</span><span class="p">)</span></div></div>
+
+
 <div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Google Cloud Natural Language API entity.</span>
 
@@ -407,6 +481,9 @@
 
 <span class="sd">    :type metadata: dict</span>
 <span class="sd">    :param metadata: The metadata associated with the entity.</span>
+<span class="sd">                     Wikipedia URLs and Knowledge Graph MIDs are</span>
+<span class="sd">                     provided, if available. The associated keys are</span>
+<span class="sd">                     &quot;wikipedia_url&quot; and &quot;mid&quot;, respectively.</span>
 
 <span class="sd">    :type salience: float</span>
 <span class="sd">    :param salience: The prominence of the entity / phrase within the text</span>
@@ -437,8 +514,7 @@
         <span class="n">entity_type</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span>
         <span class="n">salience</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;salience&#39;</span><span class="p">]</span>
-        <span class="n">mentions</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="s1">&#39;content&#39;</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;mentions&#39;</span><span class="p">]]</span>
+        <span class="n">mentions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Mention</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;mentions&#39;</span><span class="p">]]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">salience</span><span class="p">,</span> <span class="n">mentions</span><span class="p">)</span></div></div>
 </pre></div>
 
@@ -476,7 +552,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0a6dc31',
+            VERSION:'6c33693',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
