@@ -92,4 +92,4 @@ git commit -m "Update docs after merge to master."
 
 # NOTE: This may fail if two docs updates (on merges to master)
 #       happen in close proximity.
-git push -q git@github.com:${GH_OWNER}/${GH_PROJECT_NAME} HEAD:gh-pages
+git push -q origin HEAD:gh-pages
