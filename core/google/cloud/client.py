@@ -130,7 +130,6 @@ class Client(_ClientFactoryMixin):
 
     def __getstate__(self):
         """Explicitly state that clients are not pickleable."""
-
         raise PicklingError('\n'.join([
             'Pickling client objects is explicitly not supported.',
             'Clients have non-trivial state that is local and unpickleable.',
