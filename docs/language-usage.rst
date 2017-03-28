@@ -41,8 +41,9 @@ UTF-8. To over-ride these values:
 
   .. code-block:: python
 
-     >>> client = language.Client(language='es',
-     ...                          encoding=language.Encoding.UTF16)
+     >>> document = client.document_from_text(
+     ...     text_content, language='es', encoding=language.Encoding.UTF16)
+
 
 The encoding can be one of
 :attr:`Encoding.UTF8 <google.cloud.language.document.Encoding.UTF8>`,
@@ -99,8 +100,8 @@ over-ridden:
      ...   </body>
      ... </html>
      ... """
-     >>> document = client.document_from_html(html_content,
-     ...                                      language='es')
+     >>> document = language.document_from_html(html_content,
+     ...                                        language='es')
 
 The ``language`` argument can be either ISO-639-1 or BCP-47 language
 codes; at the time, only English, Spanish, and Japanese `are supported`_.
@@ -153,7 +154,7 @@ metadata and other properties.
 
      >>> text_content = ("Michelangelo Caravaggio, Italian painter, is "
      ...                 "known for 'The Calling of Saint Matthew'.")
-     >>> document = client.document(text_content)
+     >>> document = language.document.Document(client, content=text_content)
      >>> entity_response = document.analyze_entities()
      >>> for entity in entity_response.entities:
      ...     print('=' * 20)
@@ -188,7 +189,7 @@ only supports English text.
   .. code-block:: python
 
      >>> text_content = "Jogging isn't very fun."
-     >>> document = client.document(text_content)
+     >>> document = language.document.Document(client, content=text_content)
      >>> sentiment_response = document.analyze_sentiment()
      >>> sentiment = sentiment_response.sentiment
      >>> print(sentiment.score)
@@ -229,7 +230,7 @@ the response is :data:`None`.
   .. code-block:: python
 
      >>> text_content = 'The cow jumped over the Moon.'
-     >>> document = client.document(text_content)
+     >>> document = language.document.Document(client, content=text_content)
      >>> annotations = document.annotate_text()
      >>> # Sentences present if include_syntax=True
      >>> print(annotations.sentences)
