@@ -857,12 +857,6 @@ class Bucket(_PropertyMixin):
         `policy documents`_ to allow visitors to a website to upload files to
         Google Cloud Storage without giving them direct write access.
 
-        For example:
-
-        .. literalinclude:: storage_snippets.py
-          :start-after: [START policy_document]
-          :end-before: [END policy_document]
-
         .. _policy documents:
             https://cloud.google.com/storage/docs/xml-api\
             /post-object#policydocument
