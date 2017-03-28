@@ -50,7 +50,10 @@ class TestClient(unittest.TestCase):
     def test_unpickleable(self):
         import pickle
 
-        client = self._make_one()
+        CREDENTIALS = _make_credentials()
+        HTTP = object()
+        
+        client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
         with self.assertRaises(pickle.PicklingError):
             pickle.dumps(client)
 
