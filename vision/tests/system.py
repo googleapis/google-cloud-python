@@ -711,11 +711,12 @@ class TestVisionWebAnnotation(BaseVisionTestCase):
         for web_page in web_images.pages_with_matching_images:
             self._assert_web_page(web_page)
 
+    @RetryErrors(unittest.TestCase.failureException)
     def test_detect_web_images_from_content(self):
         client = Config.CLIENT
         with open(LANDMARK_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
-        limit = 5
+        limit = 3
         web_images = image.detect_web(limit=limit)
         self._assert_web_images(web_images, limit)
 
