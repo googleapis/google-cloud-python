@@ -223,6 +223,39 @@ def list_buckets(client, to_delete):
         to_delete.append(bucket)
 
 
+@snippet
+def policy_document(client, to_delete):
+    # pylint: disable=unused-argument
+    # [START policy_document]
+    bucket = client.bucket('my-bucket')
+    conditions = [
+        ['starts-with', '$key', ''],
+        {'acl': 'public-read'}]
+
+    policy = bucket.generate_upload_policy(conditions)
+
+    # Generate an upload form using the form fields.
+    policy_fields = ''.join(
+        '<input type="hidden" name="{key}" value="{value}">'.format(
+            key=key, value=value)
+        for key, value in policy.items()
+    )
+
+    upload_form = (
+        '<form action="http://{bucket_name}.storage.googleapis.com"'
+        '   method="post" enctype="multipart/form-data">'
+        '<input type="text" name="key" value="my-test-key">'
+        '<input type="hidden" name="bucket" value="{bucket_name}">'
+        '<input type="hidden" name="acl" value="public-read">'
+        '<input name="file" type="file">'
+        '<input type="submit" value="Upload">'
+        '{policy_fields}'
+        '</form>').format(bucket_name=bucket.name, policy_fields=policy_fields)
+
+    print(upload_form)
+    # [END policy_document]
+
+
 def _line_no(func):
     code = getattr(func, '__code__', None) or getattr(func, 'func_code')
     return code.co_firstlineno
