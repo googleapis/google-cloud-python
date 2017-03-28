@@ -72,6 +72,19 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
         self.assertEqual(blob._encryption_key, KEY)
 
+    def test_bucket_name_value(self):
+        bucket_name = 'testing123'
+        mixin = self._make_one(name=bucket_name)
+        self.assertEqual(mixin.name, bucket_name)
+
+        bad_start_bucket_name = '/testing123'
+        with self.assertRaises(ValueError):
+            self._make_one(name=bad_start_bucket_name)
+
+        bad_end_bucket_name = 'testing123/'
+        with self.assertRaises(ValueError):
+            self._make_one(name=bad_end_bucket_name)
+
     def test_exists_miss(self):
         from google.cloud.exceptions import NotFound
 
