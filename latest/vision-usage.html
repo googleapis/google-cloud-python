@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud b01e43a documentation</title>
+  <title>Using the Vision API &mdash; google-cloud 20fcf40 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud b01e43a documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 20fcf40 documentation" href="index.html"/>
         <link rel="next" title="Vision Annotations" href="vision-annotations.html"/>
         <link rel="prev" title="Translation Client" href="translate-client.html"/> 
 
@@ -424,15 +424,14 @@ data from sources such as a Google Cloud Storage URI, raw bytes, or a file.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">FACE_DETECTION</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
 <span class="gp">... </span>            <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LOGO_DETECTION</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">annotations</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="p">)</span>
 <span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">annotations</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">joy_likelihood</span><span class="p">)</span>
-<span class="go">0.94099093</span>
-<span class="go">0.54453093</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="o">.</span><span class="n">logos</span><span class="p">)</span>
-<span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">logo</span> <span class="ow">in</span> <span class="n">annotations</span><span class="o">.</span><span class="n">logos</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">joy</span><span class="p">)</span>
+<span class="go">Likelihood.VERY_LIKELY</span>
+<span class="go">Likelihood.VERY_LIKELY</span>
+<span class="go">Likelihood.VERY_LIKELY</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">logo</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">logos</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">logo</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
 <span class="go">&#39;google&#39;</span>
 <span class="go">&#39;github&#39;</span>
@@ -470,15 +469,15 @@ was detected.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_faces</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">landmark_type</span>
-<span class="go">&lt;LandmarkTypes.LEFT_EYE: &#39;LEFT_EYE&#39;&gt;</span>
+<span class="go">LandmarkTypes.LEFT_EYE</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x_coordinate</span>
 <span class="go">1301.2404</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">detection_confidence</span>
 <span class="go">0.9863683</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">joy</span>
-<span class="go">&lt;Likelihood.VERY_LIKELY: &#39;VERY_LIKELY&#39;&gt;</span>
+<span class="go">Likelihood.VERY_UNLIKELY</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">anger</span>
-<span class="go">&lt;Likelihood.VERY_UNLIKELY: &#39;VERY_UNLIKELY&#39;&gt;</span>
+<span class="go">Likelihood.VERY_UNLIKELY</span>
 </pre></div>
 </div>
 </div>
@@ -565,13 +564,13 @@ canonical version to make it appear funny or offensive.</li>
 <span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_safe_search</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">adult</span>
-<span class="go">&lt;Likelihood.VERY_UNLIKELY: &#39;VERY_UNLIKELY&#39;&gt;</span>
+<span class="go">Likelihood.VERY_UNLIKELY</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">spoof</span>
-<span class="go">&lt;Likelihood.POSSIBLE: &#39;POSSIBLE&#39;&gt;</span>
+<span class="go">Likelihood.POSSIBLE</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">medical</span>
-<span class="go">&lt;Likelihood.VERY_LIKELY: &#39;VERY_LIKELY&#39;&gt;</span>
+<span class="go">Likelihood.VERY_LIKELY</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">violence</span>
-<span class="go">&lt;Likelihood.LIKELY: &#39;LIKELY&#39;&gt;</span>
+<span class="go">Likelihood.LIKELY</span>
 </pre></div>
 </div>
 </div>
@@ -604,9 +603,9 @@ image and determine the dominant colors in the image.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">properties</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_properties</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="n">properties</span><span class="o">.</span><span class="n">colors</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">red</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">red</span>
 <span class="go">244.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">blue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">blue</span>
 <span class="go">134.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">score</span>
 <span class="go">0.65519291</span>
@@ -739,7 +738,7 @@ an empty list is returned. This behavior is similiar with all detection types.</
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'b01e43a',
+            VERSION:'20fcf40',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
