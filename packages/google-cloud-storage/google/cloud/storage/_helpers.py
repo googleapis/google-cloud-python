@@ -53,7 +53,7 @@ class _PropertyMixin(object):
     """
 
     def __init__(self, name=None):
-        self.name = _validate_name(name)
+        self.name = name
         self._properties = {}
         self._changes = set()
 
