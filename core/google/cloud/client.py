@@ -14,6 +14,8 @@
 
 """Base classes for client used to interact with Google Cloud APIs."""
 
+from pickle import PicklingError
+
 import google.auth.credentials
 from google.oauth2 import service_account
 import google_auth_httplib2
@@ -125,6 +127,14 @@ class Client(_ClientFactoryMixin):
         self._credentials = google.auth.credentials.with_scopes_if_required(
             credentials, self.SCOPE)
         self._http_internal = http
+
+    def __getstate__(self):
+        """Explicitly state that clients are not pickleable."""
+
+        raise PicklingError('\n'.join([
+            'Pickling client objects is explicitly not supported.',
+            'Clients have non-trivial state that is local and unpickleable.',
+        ]))
 
     @property
     def _http(self):
