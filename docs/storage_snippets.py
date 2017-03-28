@@ -94,6 +94,7 @@ def download_to_file(client, to_delete):
     bucket = client.get_bucket('my-bucket')
     encryption_key = 'c7f32af42e45e85b9848a6a14dd2a8f6'
     blob = Blob('secure-data', bucket, encryption_key=encryption_key)
+    blob.upload_from_string('my secret message.')
     with open('/tmp/my-secure-file', 'wb') as file_obj:
         blob.download_to_file(file_obj)
     # [END download_to_file]
@@ -138,7 +139,8 @@ def delete_blob(client, to_delete):
     from google.cloud.exceptions import NotFound
     client = storage.Client()
     bucket = client.get_bucket('my-bucket')
-    assert isinstance(bucket.list_blobs(), list)
+    blobs = list(bucket.list_blobs())
+    assert len(blobs) > 0
     # [<Blob: my-bucket, my-file.txt>]
     bucket.delete_blob('my-file.txt')
     try:
@@ -219,39 +221,6 @@ def list_buckets(client, to_delete):
 
     for bucket in client.list_buckets():
         to_delete.append(bucket)
-
-
-@snippet
-def policy_document(client, to_delete):
-    # pylint: disable=unused-argument
-    # [START policy_document]
-    bucket = client.bucket('my-bucket')
-    conditions = [
-        ['starts-with', '$key', ''],
-        {'acl': 'public-read'}]
-
-    policy = bucket.generate_upload_policy(conditions)
-
-    # Generate an upload form using the form fields.
-    policy_fields = ''.join(
-        '<input type="hidden" name="{key}" value="{value}">'.format(
-            key=key, value=value)
-        for key, value in policy.items()
-    )
-
-    upload_form = (
-        '<form action="http://{bucket_name}.storage.googleapis.com"'
-        '   method="post"enctype="multipart/form-data">'
-        '<input type="text" name="key" value="">'
-        '<input type="hidden" name="bucket" value="{bucket_name}">'
-        '<input type="hidden" name="acl" value="public-read">'
-        '<input name="file" type="file">'
-        '<input type="submit" value="Upload">'
-        '{policy_fields}'
-        '<form>').format(bucket_name=bucket.name, policy_fields=policy_fields)
-
-    print(upload_form)
-    # [END policy_document]
 
 
 def _line_no(func):
