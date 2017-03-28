@@ -19,6 +19,8 @@ set -ev
 GH_OWNER='GoogleCloudPlatform'
 GH_PROJECT_NAME='google-cloud-python'
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # Function to build the docs.
 function build_docs {
     rm -rf docs/_build/
@@ -53,10 +55,10 @@ else
     SPHINX_RELEASE=$(git log -1 --pretty=%h) build_docs
 fi
 
-# Get the current version. Assumes the PWD is the root of the git repo.
-# This is only likely to work from within nox, because the environment
-# must be set up.
-CURRENT_VERSION=$(python scripts/get_version.py)
+# Get the current version.
+# This is only likely to work from within nox, because the google-cloud
+# package must be installed.
+CURRENT_VERSION=$(python ${DIR}/get_version.py)
 
 # Update gh-pages with the created docs.
 cd ${GH_PAGES_DIR}
