@@ -45,7 +45,8 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
     def test_report_error_event(self, mocked_cls):
         credentials = _make_credentials()
         logging_api = self._make_one(self.PROJECT, credentials)
-        mocked_cls.assert_called_once_with(self.PROJECT, credentials, None)
+        mocked_cls.assert_called_once_with(
+            self.PROJECT, credentials, _http=None)
         self.assertIs(logging_api.logging_client, mocked_cls.return_value)
 
         logger = mock.Mock(spec=['log_struct'])

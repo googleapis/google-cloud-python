@@ -86,14 +86,14 @@ class Client(ClientWithProject):
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
+                        owned by this client. If not passed (and if no ``_http``
                         object is passed), falls back to the default inferred
                         from the environment.
 
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
-                 ``http`` object is created that is bound to the
-                 ``credentials`` for the current object.
+    :type _http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param _http: An optional HTTP object to make requests. If not passed, an
+                  ``_http`` object is created that is bound to the
+                  ``credentials`` for the current object.
 
     :type service: str
     :param service: An identifier of the service, such as the name of the
@@ -121,12 +121,12 @@ class Client(ClientWithProject):
 
     def __init__(self, project=None,
                  credentials=None,
-                 http=None,
+                 _http=None,
                  service=None,
                  version=None,
                  use_gax=None):
         super(Client, self).__init__(project=project, credentials=credentials,
-                                     http=http)
+                                     _http=_http)
         self._report_errors_api = None
 
         self.service = service if service else self.DEFAULT_SERVICE

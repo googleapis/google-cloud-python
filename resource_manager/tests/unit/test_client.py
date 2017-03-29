@@ -39,7 +39,7 @@ class TestClient(unittest.TestCase):
 
         http = object()
         credentials = _make_credentials()
-        client = self._make_one(credentials=credentials, http=http)
+        client = self._make_one(credentials=credentials, _http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._credentials, credentials)
         self.assertIs(client._http_internal, http)

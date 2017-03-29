@@ -87,14 +87,14 @@ class TestClient(unittest.TestCase):
     def test_ctor(self):
         creds = _make_credentials()
         http = object()
-        client = self._make_one(credentials=creds, http=http)
+        client = self._make_one(credentials=creds, _http=http)
         self.assertTrue(client._credentials is creds)
         self.assertTrue(client._http is http)
 
     def test_ctor_use_gax_preset(self):
         creds = _make_credentials()
         http = object()
-        client = self._make_one(credentials=creds, http=http, use_gax=True)
+        client = self._make_one(credentials=creds, _http=http, use_gax=True)
         self.assertTrue(client._use_gax)
 
     def test_create_sample_from_client(self):

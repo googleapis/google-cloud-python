@@ -127,11 +127,11 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _make_one(self, project=PROJECT, namespace=None,
-                  credentials=None, http=None, use_gax=None):
+                  credentials=None, _http=None, use_gax=None):
         return self._get_target_class()(project=project,
                                         namespace=namespace,
                                         credentials=credentials,
-                                        http=http,
+                                        _http=_http,
                                         use_gax=use_gax)
 
     def test_constructor_w_project_no_environ(self):
@@ -186,7 +186,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=other,
                                 namespace=namespace,
                                 credentials=creds,
-                                http=http)
+                                _http=http)
         self.assertEqual(client.project, other)
         self.assertEqual(client.namespace, namespace)
         self.assertIs(client._credentials, creds)
@@ -204,21 +204,21 @@ class TestClient(unittest.TestCase):
 
         with mock.patch.object(MUT, '_USE_GAX', new=True):
             client1 = self._make_one(
-                project=project, credentials=creds, http=http)
+                project=project, credentials=creds, _http=http)
             self.assertTrue(client1._use_gax)
             # Explicitly over-ride the environment.
             client2 = self._make_one(
-                project=project, credentials=creds, http=http,
+                project=project, credentials=creds, _http=http,
                 use_gax=False)
             self.assertFalse(client2._use_gax)
 
         with mock.patch.object(MUT, '_USE_GAX', new=False):
             client3 = self._make_one(
-                project=project, credentials=creds, http=http)
+                project=project, credentials=creds, _http=http)
             self.assertFalse(client3._use_gax)
             # Explicitly over-ride the environment.
             client4 = self._make_one(
-                project=project, credentials=creds, http=http,
+                project=project, credentials=creds, _http=http,
                 use_gax=True)
             self.assertTrue(client4._use_gax)
 
@@ -233,13 +233,13 @@ class TestClient(unittest.TestCase):
 
         with mock.patch('os.environ', new=fake_environ):
             client = self._make_one(
-                project=project, credentials=creds, http=http)
+                project=project, credentials=creds, _http=http)
             self.assertEqual(client._base_url, 'http://' + host)
 
     def test__datastore_api_property_gax(self):
         client = self._make_one(
             project='prahj-ekt', credentials=_make_credentials(),
-            http=object(), use_gax=True)
+            _http=object(), use_gax=True)
 
         self.assertIsNone(client._datastore_api_internal)
         patch = mock.patch(
@@ -262,7 +262,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(
             project='prahj-ekt', credentials=_make_credentials(),
-            http=object(), use_gax=False)
+            _http=object(), use_gax=False)
 
         self.assertIsNone(client._datastore_api_internal)
         ds_api = client._datastore_api

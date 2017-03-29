@@ -40,7 +40,7 @@ class TestClient(unittest.TestCase):
 
         creds = make_mock_credentials()
         http = object()
-        client = self._make_one(credentials=creds, http=http)
+        client = self._make_one(credentials=creds, _http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
@@ -49,7 +49,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Document
 
         creds = make_mock_credentials()
-        client = self._make_one(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, _http=object())
 
         content = 'abc'
         language = 'es'
@@ -64,7 +64,7 @@ class TestClient(unittest.TestCase):
 
     def test_document_from_text_factory_failure(self):
         creds = make_mock_credentials()
-        client = self._make_one(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, _http=object())
 
         with self.assertRaises(TypeError):
             client.document_from_text('abc', doc_type='foo')
@@ -73,7 +73,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Document
 
         creds = make_mock_credentials()
-        client = self._make_one(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, _http=object())
 
         content = '<html>abc</html>'
         language = 'ja'
@@ -88,7 +88,7 @@ class TestClient(unittest.TestCase):
 
     def test_document_from_html_factory_failure(self):
         creds = make_mock_credentials()
-        client = self._make_one(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, _http=object())
 
         with self.assertRaises(TypeError):
             client.document_from_html('abc', doc_type='foo')
@@ -97,7 +97,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Document
 
         creds = make_mock_credentials()
-        client = self._make_one(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, _http=object())
 
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
         document = client.document_from_gcs_url(gcs_url)
@@ -112,7 +112,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Encoding
 
         creds = make_mock_credentials()
-        client = self._make_one(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, _http=object())
 
         encoding = Encoding.UTF32
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
@@ -130,7 +130,7 @@ class TestClient(unittest.TestCase):
         import warnings
 
         creds = make_mock_credentials()
-        client = self._make_one(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, _http=object())
 
         Client = self._get_target_class()
         with mock.patch.object(Client, 'document_from_gcs_url') as dfgu:

@@ -32,16 +32,16 @@ class Client(BaseClient):
 
     :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed (and if no ``http`` object is
+                        client. If not passed (and if no ``_http`` object is
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type http: :class:`~httplib2.Http`
-    :param http: (Optional) HTTP object to make requests. Can be any object
-                 that defines ``request()`` with the same interface as
-                 :meth:`~httplib2.Http.request`. If not passed, an
-                 ``http`` object is created that is bound to the
-                 ``credentials`` for the current object.
+    :type _http: :class:`~httplib2.Http`
+    :param _http: (Optional) HTTP object to make requests. Can be any object
+                  that defines ``request()`` with the same interface as
+                  :meth:`~httplib2.Http.request`. If not passed, an
+                  ``_http`` object is created that is bound to the
+                  ``credentials`` for the current object.
 
     :type use_gax: bool
     :param use_gax: (Optional) Explicitly specifies whether
@@ -55,8 +55,8 @@ class Client(BaseClient):
 
     _speech_api = None
 
-    def __init__(self, credentials=None, http=None, use_gax=None):
-        super(Client, self).__init__(credentials=credentials, http=http)
+    def __init__(self, credentials=None, _http=None, use_gax=None):
+        super(Client, self).__init__(credentials=credentials, _http=_http)
         # Save on the actual client class whether we use GAX or not.
         if use_gax is None:
             self._use_gax = _USE_GAX

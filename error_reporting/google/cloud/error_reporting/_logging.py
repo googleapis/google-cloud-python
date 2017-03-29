@@ -33,18 +33,18 @@ class _ErrorReportingLoggingAPI(object):
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
+                        owned by this client. If not passed (and if no ``_http``
                         object is passed), falls back to the default inferred
                         from the environment.
 
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
-                 ``http`` object is created that is bound to the
-                 ``credentials`` for the current object.
+    :type _http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param _http: An optional HTTP object to make requests. If not passed, an
+                  ``_http`` object is created that is bound to the
+                  ``credentials`` for the current object.
     """
-    def __init__(self, project, credentials=None, http=None):
+    def __init__(self, project, credentials=None, _http=None):
         self.logging_client = google.cloud.logging.client.Client(
-            project, credentials, http)
+            project, credentials, _http=_http)
 
     def report_error_event(self, error_report):
         """Report error payload.
