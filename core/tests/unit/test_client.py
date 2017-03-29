@@ -52,10 +52,10 @@ class TestClient(unittest.TestCase):
 
         CREDENTIALS = _make_credentials()
         HTTP = object()
-        
+
         client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
         with self.assertRaises(pickle.PicklingError):
-            pickle.dumps(client)
+            pickle.dumps(client_obj)
 
     def test_ctor_defaults(self):
         from google.cloud._testing import _Monkey
