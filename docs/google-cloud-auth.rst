@@ -305,12 +305,12 @@ it is not a strict requirement.
 .. _google-auth: http://google-auth.readthedocs.io/en/stable/
 
 The :class:`Client <google.cloud.client.Client>` constructor accepts an optional
-``http`` argument in place of a ``credentials`` object.
+``_http`` argument in place of a ``credentials`` object.
 If passed, all HTTP requests made by the client will use your
 custom HTTP object.
 
 In order for this to be possible,
-the ``http`` object must do two things:
+the ``_http`` object must do two things:
 
 * Handle authentication on its own
 * Define a method ``request()`` that can subsitute for
