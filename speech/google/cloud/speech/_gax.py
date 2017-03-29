@@ -43,8 +43,14 @@ class GAPICSpeechAPI(object):
 
     :type client: `~google.cloud.core.client.Client`
     :param client: Instance of ``Client`.
+
+    :type client_config: dict
+    :param client_config: A dictionary for call options for each method. See
+                :func:`google.gax.construct_settings` for the structure of
+                this data. Falls back to the default config if not specified
+                or the specified config is missing data points.
     """
-    def __init__(self, client=None):
+    def __init__(self, client=None, client_config=None):
         self._client = client
         credentials = self._client._credentials
         channel = make_secure_channel(
@@ -52,6 +58,7 @@ class GAPICSpeechAPI(object):
             SpeechClient.SERVICE_ADDRESS)
         self._gapic_api = SpeechClient(
             channel=channel,
+            client_config=client_config,
             lib_name='gccl',
             lib_version=__version__,
         )

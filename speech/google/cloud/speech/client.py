@@ -47,7 +47,14 @@ class Client(BaseClient):
     :param use_gax: (Optional) Explicitly specifies whether
                     to use the gRPC transport (via GAX) or HTTP. If unset,
                     falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
-                    variable
+                    variable.
+
+    :type client_config: dict
+    :param client_config: A dictionary for call options for each method. See
+                :func:`google.gax.construct_settings` for the structure of
+                this data. Falls back to the default config if not specified
+                or the specified config is missing data points.
+                Only used with the gRPC transport.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
@@ -55,8 +62,11 @@ class Client(BaseClient):
 
     _speech_api = None
 
-    def __init__(self, credentials=None, http=None, use_gax=None):
+    def __init__(self, credentials=None, http=None, use_gax=None,
+                 client_config=None):
         super(Client, self).__init__(credentials=credentials, http=http)
+        self._client_config = client_config
+
         # Save on the actual client class whether we use GAX or not.
         if use_gax is None:
             self._use_gax = _USE_GAX
@@ -105,7 +115,10 @@ class Client(BaseClient):
         """Helper for speech-related API calls."""
         if self._speech_api is None:
             if self._use_gax:
-                self._speech_api = GAPICSpeechAPI(self)
+                self._speech_api = GAPICSpeechAPI(
+                    self,
+                    client_config=self._client_config,
+                )
             else:
                 self._speech_api = HTTPSpeechAPI(self)
         return self._speech_api

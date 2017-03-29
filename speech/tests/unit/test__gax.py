@@ -63,8 +63,9 @@ class TestGAPICSpeechAPI(unittest.TestCase):
             mock_cnxn.credentials, DEFAULT_USER_AGENT,
             operations_grpc.OperationsStub, OPERATIONS_API_HOST)
         mocked_cls.assert_called_once_with(
-            channel=mock.sentinel.channel, lib_name='gccl',
-            lib_version=__version__)
+            channel=mock.sentinel.channel,
+            client_config=None,
+            lib_name='gccl', lib_version=__version__)
         mocked_channel.assert_called_once_with(
             mock_cnxn.credentials, DEFAULT_USER_AGENT,
             mocked_cls.SERVICE_ADDRESS)
