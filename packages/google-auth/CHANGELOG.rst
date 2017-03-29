@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v0.10.0
+-------
+
+- Added ``jwt.OnDemandCredentials``. (#142)
+- Added new public property ``id_token`` to ``oauth2.credentials.Credentials``. (#150)
+- Added the ability to set the address used to communicate with the Compute Engine metadata server via the ``GCE_METADATA_ROOT`` and ``GCE_METADATA_IP`` environment variables. (#148)
+- Changed the way cloud project IDs are ascertained from the Google Cloud SDK. (#147)
+- Modified expiration logic to add a 5 minute clock skew accommodation. (#145)
+
 v0.9.0
 ------
 

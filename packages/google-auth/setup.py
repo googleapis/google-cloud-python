@@ -32,7 +32,7 @@ with io.open('README.rst', 'r') as fh:
 
 setup(
     name='google-auth',
-    version='0.9.0',
+    version='0.10.0',
     author='Google Cloud Platform',
     author_email='jonwayne+google-auth@google.com',
     description='Google Authentication Library',
