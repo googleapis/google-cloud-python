@@ -24,7 +24,7 @@ from google.cloud.speech._http import HTTPSpeechAPI
 from google.cloud.speech.sample import Sample
 
 
-_USE_GAX = not os.getenv(DISABLE_GRPC, False)
+_USE_GRPC = not os.getenv(DISABLE_GRPC, False)
 
 
 class Client(BaseClient):
@@ -43,11 +43,11 @@ class Client(BaseClient):
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
 
-    :type use_gax: bool
-    :param use_gax: (Optional) Explicitly specifies whether
-                    to use the gRPC transport (via GAX) or HTTP. If unset,
-                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
-                    variable
+    :type _use_grpc: bool
+    :param _use_grpc: (Optional) Explicitly specifies whether
+                      to use the gRPC transport (via GAX) or HTTP. If unset,
+                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
+                      environment variable.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
@@ -55,13 +55,13 @@ class Client(BaseClient):
 
     _speech_api = None
 
-    def __init__(self, credentials=None, _http=None, use_gax=None):
+    def __init__(self, credentials=None, _http=None, _use_grpc=None):
         super(Client, self).__init__(credentials=credentials, _http=_http)
         # Save on the actual client class whether we use GAX or not.
-        if use_gax is None:
-            self._use_gax = _USE_GAX
+        if _use_grpc is None:
+            self._use_grpc = _USE_GRPC
         else:
-            self._use_gax = use_gax
+            self._use_grpc = _use_grpc
 
     def sample(self, content=None, source_uri=None, stream=None, encoding=None,
                sample_rate=None):
@@ -104,7 +104,7 @@ class Client(BaseClient):
     def speech_api(self):
         """Helper for speech-related API calls."""
         if self._speech_api is None:
-            if self._use_gax:
+            if self._use_grpc:
                 self._speech_api = GAPICSpeechAPI(self)
             else:
                 self._speech_api = HTTPSpeechAPI(self)

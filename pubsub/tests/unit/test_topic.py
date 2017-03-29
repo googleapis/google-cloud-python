@@ -324,7 +324,7 @@ class TestTopic(unittest.TestCase):
         from google.cloud.pubsub.subscription import Subscription
 
         client = Client(project=self.PROJECT,
-                        credentials=_make_credentials(), use_gax=False)
+                        credentials=_make_credentials(), _use_grpc=False)
 
         SUB_NAME_1 = 'subscription_1'
         SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
@@ -374,7 +374,7 @@ class TestTopic(unittest.TestCase):
         from google.cloud.pubsub.subscription import Subscription
 
         client = Client(project=self.PROJECT,
-                        credentials=_make_credentials(), use_gax=False)
+                        credentials=_make_credentials(), _use_grpc=False)
 
         SUB_NAME_1 = 'subscription_1'
         SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
@@ -424,7 +424,7 @@ class TestTopic(unittest.TestCase):
         from google.cloud.pubsub.client import Client
 
         client = Client(project=self.PROJECT,
-                        credentials=_make_credentials(), use_gax=False)
+                        credentials=_make_credentials(), _use_grpc=False)
         client._connection = _Connection({})
         topic = self._make_one(self.TOPIC_NAME, client=client)
 

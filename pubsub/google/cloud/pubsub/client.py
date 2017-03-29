@@ -30,17 +30,17 @@ try:
     from google.cloud.pubsub._gax import make_gax_publisher_api
     from google.cloud.pubsub._gax import make_gax_subscriber_api
 except ImportError:  # pragma: NO COVER
-    _HAVE_GAX = False
+    _HAVE_GRPC = False
     GAXPublisherAPI = None
     GAXSubscriberAPI = None
     make_gax_publisher_api = None
     make_gax_subscriber_api = None
 else:
-    _HAVE_GAX = True
+    _HAVE_GRPC = True
 
 
-_DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
-_USE_GAX = _HAVE_GAX and not _DISABLE_GAX
+_DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
+_USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 
 
 class Client(ClientWithProject):
@@ -64,11 +64,11 @@ class Client(ClientWithProject):
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
 
-    :type use_gax: bool
-    :param use_gax: (Optional) Explicitly specifies whether
-                    to use the gRPC transport (via GAX) or HTTP. If unset,
-                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
-                    variable
+    :type _use_grpc: bool
+    :param _use_grpc: (Optional) Explicitly specifies whether
+                      to use the gRPC transport (via GAX) or HTTP. If unset,
+                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
+                      environment variable.
     """
 
     _publisher_api = None
@@ -80,20 +80,20 @@ class Client(ClientWithProject):
     """The scopes required for authenticating as a Cloud Pub/Sub consumer."""
 
     def __init__(self, project=None, credentials=None,
-                 _http=None, use_gax=None):
+                 _http=None, _use_grpc=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
-        if use_gax is None:
-            self._use_gax = _USE_GAX
+        if _use_grpc is None:
+            self._use_grpc = _USE_GRPC
         else:
-            self._use_gax = use_gax
+            self._use_grpc = _use_grpc
 
     @property
     def publisher_api(self):
         """Helper for publisher-related API calls."""
         if self._publisher_api is None:
-            if self._use_gax:
+            if self._use_grpc:
                 if self._connection.in_emulator:
                     generated = make_gax_publisher_api(
                         host=self._connection.host)
@@ -109,7 +109,7 @@ class Client(ClientWithProject):
     def subscriber_api(self):
         """Helper for subscriber-related API calls."""
         if self._subscriber_api is None:
-            if self._use_gax:
+            if self._use_grpc:
                 if self._connection.in_emulator:
                     generated = make_gax_subscriber_api(
                         host=self._connection.host)

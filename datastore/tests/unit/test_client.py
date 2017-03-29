@@ -127,12 +127,12 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _make_one(self, project=PROJECT, namespace=None,
-                  credentials=None, _http=None, use_gax=None):
+                  credentials=None, _http=None, _use_grpc=None):
         return self._get_target_class()(project=project,
                                         namespace=namespace,
                                         credentials=credentials,
                                         _http=_http,
-                                        use_gax=use_gax)
+                                        _use_grpc=_use_grpc)
 
     def test_constructor_w_project_no_environ(self):
         # Some environments (e.g. AppVeyor CI) run in GCE, so
@@ -195,32 +195,32 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(client._batch_stack), [])
         self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
 
-    def test_constructor_use_gax_default(self):
+    def test_constructor_use_grpc_default(self):
         import google.cloud.datastore.client as MUT
 
         project = 'PROJECT'
         creds = _make_credentials()
         http = object()
 
-        with mock.patch.object(MUT, '_USE_GAX', new=True):
+        with mock.patch.object(MUT, '_USE_GRPC', new=True):
             client1 = self._make_one(
                 project=project, credentials=creds, _http=http)
-            self.assertTrue(client1._use_gax)
+            self.assertTrue(client1._use_grpc)
             # Explicitly over-ride the environment.
             client2 = self._make_one(
                 project=project, credentials=creds, _http=http,
-                use_gax=False)
-            self.assertFalse(client2._use_gax)
+                _use_grpc=False)
+            self.assertFalse(client2._use_grpc)
 
-        with mock.patch.object(MUT, '_USE_GAX', new=False):
+        with mock.patch.object(MUT, '_USE_GRPC', new=False):
             client3 = self._make_one(
                 project=project, credentials=creds, _http=http)
-            self.assertFalse(client3._use_gax)
+            self.assertFalse(client3._use_grpc)
             # Explicitly over-ride the environment.
             client4 = self._make_one(
                 project=project, credentials=creds, _http=http,
-                use_gax=True)
-            self.assertTrue(client4._use_gax)
+                _use_grpc=True)
+            self.assertTrue(client4._use_grpc)
 
     def test_constructor_gcd_host(self):
         from google.cloud.environment_vars import GCD_HOST
@@ -239,7 +239,7 @@ class TestClient(unittest.TestCase):
     def test__datastore_api_property_gax(self):
         client = self._make_one(
             project='prahj-ekt', credentials=_make_credentials(),
-            _http=object(), use_gax=True)
+            _http=object(), _use_grpc=True)
 
         self.assertIsNone(client._datastore_api_internal)
         patch = mock.patch(
@@ -262,7 +262,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(
             project='prahj-ekt', credentials=_make_credentials(),
-            _http=object(), use_gax=False)
+            _http=object(), _use_grpc=False)
 
         self.assertIsNone(client._datastore_api_internal)
         ds_api = client._datastore_api
@@ -816,7 +816,7 @@ class TestClient(unittest.TestCase):
         incomplete_key._id = None
 
         creds = _make_credentials()
-        client = self._make_one(credentials=creds, use_gax=False)
+        client = self._make_one(credentials=creds, _use_grpc=False)
         allocated = mock.Mock(
             keys=[_KeyPB(i) for i in range(num_ids)], spec=['keys'])
         alloc_ids = mock.Mock(return_value=allocated, spec=[])

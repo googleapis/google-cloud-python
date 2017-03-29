@@ -78,7 +78,7 @@ class BaseVisionTestCase(unittest.TestCase):
         self.assertIn(likelihood, levels)
 
     def _pb_not_implemented_skip(self, message):
-        if Config.CLIENT._use_gax:
+        if Config.CLIENT._use_grpc:
             self.skipTest(message)
 
 

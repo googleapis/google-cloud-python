@@ -22,12 +22,12 @@ try:
     from google.cloud.logging._gax import make_gax_metrics_api
     from google.cloud.logging._gax import make_gax_sinks_api
 except ImportError:  # pragma: NO COVER
-    _HAVE_GAX = False
+    _HAVE_GRPC = False
     make_gax_logging_api = None
     make_gax_metrics_api = None
     make_gax_sinks_api = None
 else:
-    _HAVE_GAX = True
+    _HAVE_GRPC = True
 
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
@@ -46,8 +46,8 @@ from google.cloud.logging.metric import Metric
 from google.cloud.logging.sink import Sink
 
 
-_DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
-_USE_GAX = _HAVE_GAX and not _DISABLE_GAX
+_DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
+_USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 
 _APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
 """Environment variable set in App Engine when vm:true is set."""
@@ -80,11 +80,11 @@ class Client(ClientWithProject):
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
 
-    :type use_gax: bool
-    :param use_gax: (Optional) Explicitly specifies whether
-                    to use the gRPC transport (via GAX) or HTTP. If unset,
-                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
-                    variable
+    :type _use_grpc: bool
+    :param _use_grpc: (Optional) Explicitly specifies whether
+                      to use the gRPC transport (via GAX) or HTTP. If unset,
+                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
+                      environment variable
     """
 
     _logging_api = None
@@ -98,14 +98,14 @@ class Client(ClientWithProject):
     """The scopes required for authenticating as a Logging consumer."""
 
     def __init__(self, project=None, credentials=None,
-                 _http=None, use_gax=None):
+                 _http=None, _use_grpc=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
-        if use_gax is None:
-            self._use_gax = _USE_GAX
+        if _use_grpc is None:
+            self._use_grpc = _USE_GRPC
         else:
-            self._use_gax = use_gax
+            self._use_grpc = _use_grpc
 
     @property
     def logging_api(self):
@@ -116,7 +116,7 @@ class Client(ClientWithProject):
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
         """
         if self._logging_api is None:
-            if self._use_gax:
+            if self._use_grpc:
                 self._logging_api = make_gax_logging_api(self)
             else:
                 self._logging_api = JSONLoggingAPI(self)
@@ -130,7 +130,7 @@ class Client(ClientWithProject):
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks
         """
         if self._sinks_api is None:
-            if self._use_gax:
+            if self._use_grpc:
                 self._sinks_api = make_gax_sinks_api(self)
             else:
                 self._sinks_api = JSONSinksAPI(self)
@@ -144,7 +144,7 @@ class Client(ClientWithProject):
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics
         """
         if self._metrics_api is None:
-            if self._use_gax:
+            if self._use_grpc:
                 self._metrics_api = make_gax_metrics_api(self)
             else:
                 self._metrics_api = JSONMetricsAPI(self)

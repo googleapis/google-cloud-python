@@ -25,7 +25,7 @@ from google.cloud.vision.batch import Batch
 from google.cloud.vision.image import Image
 
 
-_USE_GAX = not os.getenv(DISABLE_GRPC, False)
+_USE_GRPC = not os.getenv(DISABLE_GRPC, False)
 
 
 class Client(ClientWithProject):
@@ -49,11 +49,11 @@ class Client(ClientWithProject):
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
 
-    :type use_gax: bool
-    :param use_gax: (Optional) Explicitly specifies whether
-                    to use the gRPC transport (via GAX) or HTTP. If unset,
-                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
-                    variable
+    :type _use_grpc: bool
+    :param _use_grpc: (Optional) Explicitly specifies whether
+                      to use the gRPC transport (via GAX) or HTTP. If unset,
+                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
+                      environment variable.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
@@ -62,13 +62,13 @@ class Client(ClientWithProject):
     _vision_api_internal = None
 
     def __init__(self, project=None, credentials=None, _http=None,
-                 use_gax=None):
+                 _use_grpc=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
-        if use_gax is None:
-            self._use_gax = _USE_GAX
+        if _use_grpc is None:
+            self._use_grpc = _USE_GRPC
         else:
-            self._use_gax = use_gax
+            self._use_grpc = _use_grpc
 
     def batch(self):
         """Batch multiple images into a single API request.
@@ -106,7 +106,7 @@ class Client(ClientWithProject):
                   make requests.
         """
         if self._vision_api_internal is None:
-            if self._use_gax:
+            if self._use_grpc:
                 self._vision_api_internal = _GAPICVisionAPI(self)
             else:
                 self._vision_api_internal = _HTTPVisionAPI(self)

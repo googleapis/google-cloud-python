@@ -45,7 +45,7 @@ _MAX_LOOPS = 128
 _DATASTORE_BASE_URL = 'https://datastore.googleapis.com'
 """Datastore API request URL base."""
 
-_USE_GAX = _HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
+_USE_GRPC = _HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
 
 
 def _get_gcd_project():
@@ -184,27 +184,27 @@ class Client(ClientWithProject):
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
 
-    :type use_gax: bool
-    :param use_gax: (Optional) Explicitly specifies whether
-                    to use the gRPC transport (via GAX) or HTTP. If unset,
-                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
-                    variable.
+    :type _use_grpc: bool
+    :param _use_grpc: (Optional) Explicitly specifies whether
+                      to use the gRPC transport (via GAX) or HTTP. If unset,
+                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
+                      environment variable.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/datastore',)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
     def __init__(self, project=None, namespace=None,
-                 credentials=None, _http=None, use_gax=None):
+                 credentials=None, _http=None, _use_grpc=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self.namespace = namespace
         self._batch_stack = _LocalStack()
         self._datastore_api_internal = None
-        if use_gax is None:
-            self._use_gax = _USE_GAX
+        if _use_grpc is None:
+            self._use_grpc = _USE_GRPC
         else:
-            self._use_gax = use_gax
+            self._use_grpc = _use_grpc
         try:
             host = os.environ[GCD_HOST]
             self._base_url = 'http://' + host
@@ -220,7 +220,7 @@ class Client(ClientWithProject):
     def _datastore_api(self):
         """Getter for a wrapped API object."""
         if self._datastore_api_internal is None:
-            if self._use_gax:
+            if self._use_grpc:
                 self._datastore_api_internal = make_datastore_api(self)
             else:
                 self._datastore_api_internal = HTTPDatastoreAPI(self)

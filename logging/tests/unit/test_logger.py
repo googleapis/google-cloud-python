@@ -442,7 +442,7 @@ class TestLogger(unittest.TestCase):
 
         client = Client(project=self.PROJECT,
                         credentials=_make_credentials(),
-                        use_gax=False)
+                        _use_grpc=False)
         returned = {
             'nextPageToken': TOKEN,
         }
@@ -480,7 +480,7 @@ class TestLogger(unittest.TestCase):
         PAGE_SIZE = 42
         client = Client(project=self.PROJECT,
                         credentials=_make_credentials(),
-                        use_gax=False)
+                        _use_grpc=False)
         client._connection = _Connection({})
         logger = self._make_one(self.LOGGER_NAME, client=client)
         iterator = logger.list_entries(
