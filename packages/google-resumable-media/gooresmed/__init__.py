@@ -13,3 +13,12 @@
 # limitations under the License.
 
 """Utilities for Google Media Downloads and Resumable Uploads."""
+
+from gooresmed.download import Download
+from gooresmed.upload import Upload
+
+
+__all__ = [
+    'Download',
+    'Upload',
+]
