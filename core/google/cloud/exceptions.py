@@ -181,7 +181,7 @@ class ServiceUnavailable(ServerError):
 
 
 class GatewayTimeout(ServerError):
-    """Excepption mapping a `504 Gateway Timeout'` response."""
+    """Exception mapping a `504 Gateway Timeout'` response."""
     code = 504
 
 
