@@ -21,3 +21,5 @@ __version__ = get_distribution('google-cloud-error-reporting').version
 from google.cloud.error_reporting.client import Client
 from google.cloud.error_reporting.client import HTTPContext
 from google.cloud.error_reporting.util import build_flask_context
+
+__all__ = ['__version__', 'Client', 'HTTPContext', 'build_flask_context']

@@ -15,14 +15,25 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
-This client library has **beta** support for the following Google
-Cloud Platform services:
+The following client libraries have **GA** support:
 
--  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
+
+**GA** (general availability) indicates that the client library for a
+particular service is stable, and that the code surface will not change in
+backwards-incompatible ways unless either absolutely necessary (e.g. because
+of critical security issues) or with an extensive deprecation period.
+Issues and requests against GA libraries are addressed with the highest
+priority.
+
+The following client libraries have **beta** support:
+
+-  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
+-  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Cloud Translation`_ (`Translation README`_)
 
 **Beta** indicates that the client library for a particular service is
 mostly stable and is being prepared for release. Issues and requests
@@ -37,8 +48,6 @@ Cloud Platform services:
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
--  `Google Cloud Natural Language`_ (`Natural Language README`_)
--  `Google Cloud Translation`_ (`Translation README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)

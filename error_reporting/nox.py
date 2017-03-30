@@ -19,6 +19,9 @@ import os
 import nox
 
 
+LOCAL_DEPS = ('../core/', '../logging/')
+
+
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
 def unit_tests(session, python_version):
@@ -28,14 +31,14 @@ def unit_tests(session, python_version):
     session.interpreter = 'python{}'.format(python_version)
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', '../core/', '../logging/')
+    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet',
-        '--cov=google.cloud.datastore', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
+    session.run(
+        'py.test', '--quiet', '--cov=google.cloud.error_reporting',
+        '--cov=tests.unit', '--cov-append', '--cov-config=.coveragerc',
+        '--cov-report=', '--cov-fail-under=97', 'tests/unit',
     )
 
 
@@ -47,9 +50,9 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8')
+    session.install('flake8', *LOCAL_DEPS)
     session.install('.')
-    session.run('flake8', 'google/cloud/datastore')
+    session.run('flake8', 'google/cloud/error_reporting')
 
 
 @nox.session

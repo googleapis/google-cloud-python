@@ -28,10 +28,10 @@ def docs(session):
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install('sphinx', 'sphinx_rtd_theme')
     session.install(
-        'core/', 'bigquery/', 'bigtable/', 'datastore/', 'error_reporting/',
-        'language/', 'logging/', 'monitoring/', 'pubsub/', 'resource_manager/',
-        'runtimeconfig/', 'spanner/', 'speech/', 'storage/', 'translate/',
-        'vision/',
+        'core/', 'bigquery/', 'bigtable/', 'datastore/', 'dns/', 'language/',
+        'logging/', 'error_reporting/', 'monitoring/', 'pubsub/',
+        'resource_manager/', 'runtimeconfig/', 'spanner/', 'speech/',
+        'storage/', 'translate/', 'vision/',
     )
     session.install('.')
 
