@@ -52,6 +52,7 @@ class CloudLoggingHandler(logging.StreamHandler):
 
     .. code-block:: python
 
+        import logging
         import google.cloud.logging
         from google.cloud.logging.handlers import CloudLoggingHandler
 
@@ -62,7 +63,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         cloud_logger.setLevel(logging.INFO)
         cloud_logger.addHandler(handler)
 
-        cloud.logger.error('bad news')  # API call
+        cloud_logger.error('bad news')  # API call
 
     """
 
@@ -117,7 +118,7 @@ def setup_logging(handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,
 
         client = google.cloud.logging.Client()
         handler = CloudLoggingHandler(client)
-        google.cloud.logging.setup_logging(handler)
+        google.cloud.logging.handlers.setup_logging(handler)
         logging.getLogger().setLevel(logging.DEBUG)
 
         logging.error('bad news')  # API call

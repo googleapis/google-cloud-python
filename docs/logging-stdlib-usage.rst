@@ -53,7 +53,7 @@ You can also exclude certain loggers:
 
 .. code-block:: python
 
-   >>> setup_logging(handler, excluded_loggers=('werkzeug',)))
+   >>> setup_logging(handler, excluded_loggers=('werkzeug',))
 
 
 
@@ -68,4 +68,3 @@ The Python logging handler can use different transports. The default is
 
  1. :class:`google.cloud.logging.handlers.SyncTransport` this handler does a direct API call on each
  logging statement to write the entry.
-
