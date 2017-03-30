@@ -32,6 +32,12 @@ jobs:
             python3.6 test_utils/scripts/get_target_packages.py > ~/target_packages
             cat ~/target_packages
       - run:
+          name: Run tests - google.cloud.error_reporting
+          command: |
+            if [[ -n $(grep error_reporting ~/target_packages) ]]; then
+              nox -f error_reporting/nox.py
+            fi
+      - run:
           name: Run tests - google.cloud.logging
           command: |
             if [[ -n $(grep logging ~/target_packages) ]]; then
