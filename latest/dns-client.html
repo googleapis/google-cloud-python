@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>DNS Client &mdash; google-cloud 5113bff documentation</title>
+  <title>DNS Client &mdash; google-cloud 175a587 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5113bff documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 175a587 documentation" href="index.html"/>
         <link rel="next" title="Managed Zones" href="dns-zone.html"/>
         <link rel="prev" title="Using the API" href="dns-usage.html"/> 
 
@@ -342,7 +342,7 @@
 <p>Client for interacting with the Google Cloud DNS API.</p>
 <dl class="class">
 <dt id="google.cloud.dns.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.dns.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.dns.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -354,14 +354,16 @@
 passed when creating a zone.  If not passed,
 falls back to the default inferred from the environment.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.10.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
-client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code> object is
+client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
-<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
-<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
+<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
+This parameter should be considered private, and could
+change in the future.</li>
 </ul>
 </td>
 </tr>
@@ -475,7 +477,7 @@ to the value of &#8216;dns_name&#8217;.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Google.
+        &copy; Copyright 2014-2017, Google.
 
     </p>
   </div>
@@ -497,7 +499,7 @@ to the value of &#8216;dns_name&#8217;.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5113bff',
+            VERSION:'175a587',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

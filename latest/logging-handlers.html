@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python Logging Module Handler &mdash; google-cloud 5113bff documentation</title>
+  <title>Python Logging Module Handler &mdash; google-cloud 175a587 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5113bff documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 175a587 documentation" href="index.html"/>
         <link rel="next" title="Google App Engine flexible Log Handler" href="logging-handlers-app-engine.html"/>
         <link rel="prev" title="Integration with Python logging module" href="logging-stdlib-usage.html"/> 
 
@@ -370,7 +370,8 @@ option is <a class="reference internal" href="logging-transports-sync.html#googl
 </tbody>
 </table>
 <p>Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">google.cloud.logging</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">google.cloud.logging</span>
 <span class="kn">from</span> <span class="nn">google.cloud.logging.handlers</span> <span class="kn">import</span> <span class="n">CloudLoggingHandler</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
@@ -380,7 +381,7 @@ option is <a class="reference internal" href="logging-transports-sync.html#googl
 <span class="n">cloud_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 <span class="n">cloud_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
 
-<span class="n">cloud</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="n">cloud_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <dl class="method">
@@ -430,7 +431,7 @@ path of the logging client itself.</li>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-<span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+<span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>  <span class="c1"># API call</span>
@@ -462,7 +463,7 @@ path of the logging client itself.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Google.
+        &copy; Copyright 2014-2017, Google.
 
     </p>
   </div>
@@ -484,7 +485,7 @@ path of the logging client itself.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5113bff',
+            VERSION:'175a587',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

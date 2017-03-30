@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Logger &mdash; google-cloud 5113bff documentation</title>
+  <title>Logger &mdash; google-cloud 175a587 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5113bff documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 175a587 documentation" href="index.html"/>
         <link rel="next" title="Entries" href="logging-entries.html"/>
         <link rel="prev" title="Stackdriver Logging Client" href="logging-client.html"/> 
 
@@ -451,7 +451,7 @@ the entry.</li>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Loggers represent named targets for log entries.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs</a></p>
+<a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -498,7 +498,7 @@ via this logger.</li>
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete all entries in a logger via a DELETE request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs/delete">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs/delete</a></p>
+<a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs/delete">https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs/delete</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -522,7 +522,7 @@ via this logger.</li>
 <code class="descname">list_entries</code><span class="sig-paren">(</span><em>projects=None</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.list_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.list_entries" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a page of log entries.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/list">https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/list</a></p>
+<a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -558,7 +558,7 @@ accessible to the current logger.</p>
 <code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_proto" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a protobuf message via a POST request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write">https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</a></p>
+<a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -586,7 +586,7 @@ the entry.</li>
 <code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_struct" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a structured message via a POST request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write">https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</a></p>
+<a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -614,7 +614,7 @@ the entry.</li>
 <code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_text" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a text message via a POST request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write">https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</a></p>
+<a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -675,7 +675,7 @@ the entry</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Google.
+        &copy; Copyright 2014-2017, Google.
 
     </p>
   </div>
@@ -697,7 +697,7 @@ the entry</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5113bff',
+            VERSION:'175a587',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

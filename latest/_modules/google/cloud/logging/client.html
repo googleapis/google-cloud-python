@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.client &mdash; google-cloud 5113bff documentation</title>
+  <title>google.cloud.logging.client &mdash; google-cloud 175a587 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5113bff documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 175a587 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -361,12 +361,12 @@
     <span class="kn">from</span> <span class="nn">google.cloud.logging._gax</span> <span class="k">import</span> <span class="n">make_gax_metrics_api</span>
     <span class="kn">from</span> <span class="nn">google.cloud.logging._gax</span> <span class="k">import</span> <span class="n">make_gax_sinks_api</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
-    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">make_gax_logging_api</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">make_gax_metrics_api</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">make_gax_sinks_api</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
@@ -385,8 +385,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud.logging.sink</span> <span class="k">import</span> <span class="n">Sink</span>
 
 
-<span class="n">_DISABLE_GAX</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="n">_USE_GAX</span> <span class="o">=</span> <span class="n">_HAVE_GAX</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GAX</span>
+<span class="n">_DISABLE_GRPC</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">_USE_GRPC</span> <span class="o">=</span> <span class="n">_HAVE_GRPC</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GRPC</span>
 
 <span class="n">_APPENGINE_FLEXIBLE_ENV_VM</span> <span class="o">=</span> <span class="s1">&#39;GAE_APPENGINE_HOSTNAME&#39;</span>
 <span class="sd">&quot;&quot;&quot;Environment variable set in App Engine when vm:true is set.&quot;&quot;&quot;</span>
@@ -408,22 +408,26 @@
 
 <span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
 <span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        client. If not passed (and if no ``http`` object is</span>
+<span class="sd">                        client. If not passed (and if no ``_http`` object is</span>
 <span class="sd">                        passed), falls back to the default inferred from the</span>
 <span class="sd">                        environment.</span>
 
-<span class="sd">    :type http: :class:`~httplib2.Http`</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests. Can be any object</span>
-<span class="sd">                 that defines ``request()`` with the same interface as</span>
-<span class="sd">                 :meth:`~httplib2.Http.request`. If not passed, an</span>
-<span class="sd">                 ``http`` object is created that is bound to the</span>
-<span class="sd">                 ``credentials`` for the current object.</span>
+<span class="sd">    :type _http: :class:`~httplib2.Http`</span>
+<span class="sd">    :param _http: (Optional) HTTP object to make requests. Can be any object</span>
+<span class="sd">                  that defines ``request()`` with the same interface as</span>
+<span class="sd">                  :meth:`~httplib2.Http.request`. If not passed, an</span>
+<span class="sd">                  ``_http`` object is created that is bound to the</span>
+<span class="sd">                  ``credentials`` for the current object.</span>
+<span class="sd">                  This parameter should be considered private, and could</span>
+<span class="sd">                  change in the future.</span>
 
-<span class="sd">    :type use_gax: bool</span>
-<span class="sd">    :param use_gax: (Optional) Explicitly specifies whether</span>
-<span class="sd">                    to use the gRPC transport (via GAX) or HTTP. If unset,</span>
-<span class="sd">                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment</span>
-<span class="sd">                    variable</span>
+<span class="sd">    :type _use_grpc: bool</span>
+<span class="sd">    :param _use_grpc: (Optional) Explicitly specifies whether</span>
+<span class="sd">                      to use the gRPC transport (via GAX) or HTTP. If unset,</span>
+<span class="sd">                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``</span>
+<span class="sd">                      environment variable</span>
+<span class="sd">                      This parameter should be considered private, and could</span>
+<span class="sd">                      change in the future.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_logging_api</span> <span class="o">=</span> <span class="kc">None</span>
@@ -437,25 +441,25 @@
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Logging consumer.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_gax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_use_grpc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">use_gax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">_USE_GAX</span>
+        <span class="k">if</span> <span class="n">_use_grpc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span> <span class="o">=</span> <span class="n">_USE_GRPC</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span> <span class="o">=</span> <span class="n">_use_grpc</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">logging_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for logging-related API calls.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="o">=</span> <span class="n">make_gax_logging_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="o">=</span> <span class="n">JSONLoggingAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -466,10 +470,10 @@
         <span class="sd">&quot;&quot;&quot;Helper for log sink-related API calls.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sinks_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sinks_api</span> <span class="o">=</span> <span class="n">make_gax_sinks_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sinks_api</span> <span class="o">=</span> <span class="n">JSONSinksAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -480,10 +484,10 @@
         <span class="sd">&quot;&quot;&quot;Helper for log metric-related API calls.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metrics_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_metrics_api</span> <span class="o">=</span> <span class="n">make_gax_metrics_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_metrics_api</span> <span class="o">=</span> <span class="n">JSONMetricsAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -505,7 +509,7 @@
         <span class="sd">&quot;&quot;&quot;Return a page of log entries.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/list</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list</span>
 
 <span class="sd">        :type projects: list of strings</span>
 <span class="sd">        :param projects: project IDs to include. If not passed,</span>
@@ -567,7 +571,7 @@
         <span class="sd">&quot;&quot;&quot;List sinks for the project associated with this client.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/list</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/list</span>
 
 <span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size: maximum number of sinks to return, If not passed,</span>
@@ -612,7 +616,7 @@
         <span class="sd">&quot;&quot;&quot;List metrics for the project associated with this client.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/list</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/list</span>
 
 <span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size: maximum number of metrics to return, If not passed,</span>
@@ -680,7 +684,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Google.
+        &copy; Copyright 2014-2017, Google.
 
     </p>
   </div>
@@ -702,7 +706,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5113bff',
+            VERSION:'175a587',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

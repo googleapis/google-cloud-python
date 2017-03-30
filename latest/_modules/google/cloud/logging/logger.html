@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.logger &mdash; google-cloud 5113bff documentation</title>
+  <title>google.cloud.logging.logger &mdash; google-cloud 175a587 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5113bff documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 175a587 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -363,7 +363,7 @@
     <span class="sd">&quot;&quot;&quot;Loggers represent named targets for log entries.</span>
 
 <span class="sd">    See:</span>
-<span class="sd">    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs</span>
+<span class="sd">    https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs</span>
 
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the logger</span>
@@ -508,7 +508,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  log a text message via a POST request</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</span>
 
 <span class="sd">        :type text: str</span>
 <span class="sd">        :param text: the log message.</span>
@@ -545,7 +545,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  log a structured message via a POST request</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</span>
 
 <span class="sd">        :type info: dict</span>
 <span class="sd">        :param info: the log entry information</span>
@@ -582,7 +582,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  log a protobuf message via a POST request</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list</span>
 
 <span class="sd">        :type message: Protobuf message</span>
 <span class="sd">        :param message: the message to be logged</span>
@@ -618,7 +618,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  delete all entries in a logger via a DELETE request</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs/delete</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs/delete</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.logging.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -633,7 +633,7 @@
         <span class="sd">&quot;&quot;&quot;Return a page of log entries.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/list</span>
+<span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list</span>
 
 <span class="sd">        :type projects: list of strings</span>
 <span class="sd">        :param projects: project IDs to include. If not passed,</span>
@@ -815,7 +815,7 @@
             <span class="k">if</span> <span class="n">http_req</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">http_req</span>
             <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestamp</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
             <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -834,7 +834,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Google.
+        &copy; Copyright 2014-2017, Google.
 
     </p>
   </div>
@@ -856,7 +856,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5113bff',
+            VERSION:'175a587',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
