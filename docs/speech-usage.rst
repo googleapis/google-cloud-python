@@ -77,10 +77,10 @@ Synchronous Recognition
 -----------------------
 
 The :meth:`~google.cloud.speech.Client.sync_recognize` method converts speech
-data to text and returns alternative text transcriptons.
+data to text and returns alternative text transcriptions.
 
 This example uses ``language_code='en-GB'`` to better recognize a dialect from
-Great Britian.
+Great Britain.
 
 .. code-block:: python
 
@@ -90,14 +90,12 @@ Great Britian.
     ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> results = sample.sync_recognize(
-    ...     speech.Encoding.FLAC, 16000,
-    ...     source_uri='gs://my-bucket/recording.flac', language_code='en-GB',
-    ...     max_alternatives=2)
+    ...     language_code='en-GB', max_alternatives=2)
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
     ...         print('transcript: ' + alternative.transcript)
-    ...         print('confidence: ' + alternative.confidence)
+    ...         print('confidence: ' + str(alternative.confidence))
     ====================
     transcript: Hello, this is a test
     confidence: 0.81
@@ -120,7 +118,7 @@ Example of using the profanity filter.
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
     ...         print('transcript: ' + alternative.transcript)
-    ...         print('confidence: ' + alternative.confidence)
+    ...         print('confidence: ' + str(alternative.confidence))
     ====================
     transcript: Hello, this is a f****** test
     confidence: 0.81
@@ -143,7 +141,7 @@ words to the vocabulary of the recognizer.
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
     ...         print('transcript: ' + alternative.transcript)
-    ...         print('confidence: ' + alternative.confidence)
+    ...         print('confidence: ' + str(alternative.confidence))
     ====================
     transcript: Hello, this is a test
     confidence: 0.81
@@ -168,11 +166,15 @@ speech data to possible text alternatives on the fly.
     ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     results = list(sample.streaming_recognize())
-    >>> print(results[0].alternatives[0].transcript)
-    'hello'
-    >>> print(results[0].alternatives[0].confidence)
-    0.973458576
+    ...     results = sample.streaming_recognize()
+    ...     for result in results:
+    ...         for alternative in result.alternatives:
+    ...             print('=' * 20)
+    ...             print('transcript: ' + alternative.transcript)
+    ...             print('confidence: ' + str(alternative.confidence))
+    ====================
+    transcript: hello thank you for using Google Cloud platform
+    confidence: 0.927983105183
 
 
 By default the API will perform continuous recognition
@@ -191,13 +193,15 @@ See: `Single Utterance`_
     ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     responses = sample.streaming_recognize(single_utterance=True)
-    ...     results = list(responses)
-    >>> print(results[0].alternatives[0].transcript)
-    hello
-    >>> print(results[0].alternatives[0].confidence)
-    0.96523453546
-
+    ...     results = sample.streaming_recognize(single_utterance=True)
+    ...     for result in results:
+    ...         for alternative in result.alternatives:
+    ...             print('=' * 20)
+    ...             print('transcript: ' + alternative.transcript)
+    ...             print('confidence: ' + str(alternative.confidence))
+    ====================
+    transcript: testing a pause
+    confidence: 0.933770477772
 
 If ``interim_results`` is set to :data:`True`, interim results
 (tentative hypotheses) may be returned as they become available.
@@ -210,27 +214,25 @@ If ``interim_results`` is set to :data:`True`, interim results
     ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     for results in sample.streaming_recognize(interim_results=True):
-    ...         print('=' * 20)
-    ...         print(results[0].alternatives[0].transcript)
-    ...         print(results[0].alternatives[0].confidence)
-    ...         print(results[0].is_final)
-    ...         print(results[0].stability)
+    ...     results = sample.streaming_recognize(interim_results=True):
+    ...     for result in results:
+    ...         for alternative in result.alternatives:
+    ...             print('=' * 20)
+    ...             print('transcript: ' + alternative.transcript)
+    ...             print('confidence: ' + str(alternative.confidence))
+    ...             print('is_final:' + str(result.is_final))
     ====================
     'he'
     None
     False
-    0.113245
     ====================
     'hell'
     None
     False
-    0.132454
     ====================
     'hello'
     0.973458576
     True
-    0.982345
 
 
 .. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
