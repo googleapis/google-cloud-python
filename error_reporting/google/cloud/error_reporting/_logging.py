@@ -41,6 +41,8 @@ class _ErrorReportingLoggingAPI(object):
     :param _http: An optional HTTP object to make requests. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
     """
     def __init__(self, project, credentials=None, _http=None):
         self.logging_client = google.cloud.logging.client.Client(

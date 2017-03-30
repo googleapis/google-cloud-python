@@ -70,6 +70,8 @@ class Client(ClientWithProject):
                   :meth:`~httplib2.Http.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/bigquery',

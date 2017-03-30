@@ -48,12 +48,16 @@ class Client(ClientWithProject):
                   :meth:`~httplib2.Http.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
 
     :type _use_grpc: bool
     :param _use_grpc: (Optional) Explicitly specifies whether
                       to use the gRPC transport (via GAX) or HTTP. If unset,
                       falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
                       environment variable.
+                      This parameter should be considered private, and could
+                      change in the future.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)

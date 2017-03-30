@@ -107,6 +107,8 @@ class Client(_ClientFactoryMixin):
                   :meth:`~httplib2.Http.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
     """
 
     SCOPE = None
@@ -189,6 +191,8 @@ class ClientWithProject(Client, _ClientProjectMixin):
                   :meth:`~httplib2.Http.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
 
     :raises: :class:`ValueError` if the project is neither passed in nor
              set in the environment.

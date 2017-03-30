@@ -94,6 +94,8 @@ class Client(ClientWithProject):
     :param _http: An optional HTTP object to make requests. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
 
     :type service: str
     :param service: An identifier of the service, such as the name of the
@@ -114,6 +116,8 @@ class Client(ClientWithProject):
                       to use the gRPC transport (via GAX) or HTTP. If unset,
                       falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
                       environment variable.
+                      This parameter should be considered private, and could
+                      change in the future.
 
     :raises: :class:`ValueError` if the project is neither passed in nor
              set in the environment.
