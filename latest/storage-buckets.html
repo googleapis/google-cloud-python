@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 20fcf40 documentation</title>
+  <title>Buckets &mdash; google-cloud 0541dc0 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 20fcf40 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0541dc0 documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -714,6 +714,35 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <p>This method generates and signs a policy document. You can use
 <a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/post-object#policydocument">policy documents</a> to allow visitors to a website to upload files to
 Google Cloud Storage without giving them direct write access.</p>
+<p>For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+    <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s1">&#39;starts-with&#39;</span><span class="p">,</span> <span class="s1">&#39;$key&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">],</span>
+        <span class="p">{</span><span class="s1">&#39;acl&#39;</span><span class="p">:</span> <span class="s1">&#39;public-read&#39;</span><span class="p">}]</span>
+
+    <span class="n">policy</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">generate_upload_policy</span><span class="p">(</span><span class="n">conditions</span><span class="p">)</span>
+
+    <span class="c1"># Generate an upload form using the form fields.</span>
+    <span class="n">policy_fields</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;</span><span class="si">{key}</span><span class="s1">&quot; value=&quot;</span><span class="si">{value}</span><span class="s1">&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">policy</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">upload_form</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;&lt;form action=&quot;http://</span><span class="si">{bucket_name}</span><span class="s1">.storage.googleapis.com&quot;&#39;</span>
+        <span class="s1">&#39;   method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input type=&quot;text&quot; name=&quot;key&quot; value=&quot;my-test-key&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;bucket&quot; value=&quot;</span><span class="si">{bucket_name}</span><span class="s1">&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input type=&quot;hidden&quot; name=&quot;acl&quot; value=&quot;public-read&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input name=&quot;file&quot; type=&quot;file&quot;&gt;&#39;</span>
+        <span class="s1">&#39;&lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;&#39;</span>
+        <span class="s1">&#39;</span><span class="si">{policy_fields}</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;&lt;/form&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">policy_fields</span><span class="o">=</span><span class="n">policy_fields</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">upload_form</span><span class="p">)</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1183,7 +1212,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20fcf40',
+            VERSION:'0541dc0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

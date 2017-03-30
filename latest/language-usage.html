@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 20fcf40 documentation</title>
+  <title>Using the API &mdash; google-cloud 0541dc0 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 20fcf40 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0541dc0 documentation" href="index.html"/>
         <link rel="next" title="Natural Language Client" href="language-client.html"/>
         <link rel="prev" title="Change Sets" href="dns-changes.html"/> 
 
@@ -378,8 +378,8 @@ create an instance of <a class="reference internal" href="language-client.html#g
 <p>By default the <code class="docutils literal"><span class="pre">language</span></code> is <code class="docutils literal"><span class="pre">'en-US'</span></code> and the <code class="docutils literal"><span class="pre">encoding</span></code> is
 UTF-8. To over-ride these values:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">language</span><span class="o">=</span><span class="s1">&#39;es&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                         <span class="n">encoding</span><span class="o">=</span><span class="n">language</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">UTF16</span><span class="p">)</span>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">document_from_text</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">text_content</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;es&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">language</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">UTF16</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -477,7 +477,7 @@ metadata and other properties.</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text_content</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Michelangelo Caravaggio, Italian painter, is &quot;</span>
 <span class="gp">... </span>                <span class="s2">&quot;known for &#39;The Calling of Saint Matthew&#39;.&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">text_content</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">document_from_text</span><span class="p">(</span><span class="n">text_content</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity_response</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">analyze_entities</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entity_response</span><span class="o">.</span><span class="n">entities</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
@@ -512,7 +512,7 @@ analyzes the sentiment of the provided text and returns a
 only supports English text.</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text_content</span> <span class="o">=</span> <span class="s2">&quot;Jogging isn&#39;t very fun.&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">text_content</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">document_from_text</span><span class="p">(</span><span class="n">text_content</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sentiment_response</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">analyze_sentiment</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sentiment</span> <span class="o">=</span> <span class="n">sentiment_response</span><span class="o">.</span><span class="n">sentiment</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">sentiment</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
@@ -551,7 +551,7 @@ the response is <a class="reference external" href="https://docs.python.org/2/li
 the response is <a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text_content</span> <span class="o">=</span> <span class="s1">&#39;The cow jumped over the Moon.&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">text_content</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">document_from_text</span><span class="p">(</span><span class="n">text_content</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">annotations</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">annotate_text</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Sentences present if include_syntax=True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">annotations</span><span class="o">.</span><span class="n">sentences</span><span class="p">)</span>
@@ -634,7 +634,7 @@ the response is <a class="reference external" href="https://docs.python.org/2/li
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'20fcf40',
+            VERSION:'0541dc0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
