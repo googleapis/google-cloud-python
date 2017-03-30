@@ -247,7 +247,7 @@ class Sample(object):
 
         :raises: EnvironmentError if gRPC is not available.
         """
-        if not self._client._use_gax:
+        if not self._client._use_grpc:
             raise EnvironmentError('gRPC is required to use this API.')
 
         api = self._client.speech_api
