@@ -14,27 +14,23 @@
 
 import pytest
 
-
-def make_upload(*args, **kwargs):
-    from gooresmed import upload
-
-    return upload.Upload(*args, **kwargs)
+from gooresmed import upload
 
 
 def test_constructor():
-    upload = make_upload()
+    upload = upload.Upload()
     assert upload.total_bytes is None
     assert upload.bytes_transmitted == 0
     assert upload.chunk_size is None
 
 
 def test_transmit():
-    upload = make_upload()
+    upload = upload.Upload()
     with pytest.raises(NotImplementedError):
         upload.transmit()
 
 
 def test_transmit_chunk():
-    upload = make_upload()
+    upload = upload.Upload()
     with pytest.raises(NotImplementedError):
         upload.transmit_chunk()
