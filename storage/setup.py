@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -55,7 +55,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-storage',
-    version='0.23.1',
+    version='1.0.0',
     description='Python Client for Google Cloud Storage',
     long_description=README,
     namespace_packages=[
