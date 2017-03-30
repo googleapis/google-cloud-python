@@ -44,6 +44,7 @@ SETUP_BASE = {
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet',
     ],
 }
@@ -51,13 +52,13 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'enum34',
-    'google-cloud-core >= 0.23.1, < 0.24dev',
+    'google-cloud-core >= 0.24.0, < 0.25dev',
     'gapic-google-cloud-vision-v1 >= 0.90.3, < 0.91dev',
 ]
 
 setup(
     name='google-cloud-vision',
-    version='0.23.3',
+    version='0.24.0',
     description='Python Client for Google Cloud Vision',
     long_description=README,
     namespace_packages=[
