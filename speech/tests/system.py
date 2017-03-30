@@ -200,6 +200,7 @@ class TestSpeechClient(unittest.TestCase):
 
         with open(AUDIO_FILE, 'rb') as file_obj:
             for results in self._make_streaming_request(file_obj):
+                self.assertIsInstance(results.result_index, int)
                 self._check_results(results.alternatives)
 
     def test_stream_recognize_interim_results(self):
