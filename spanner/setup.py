@@ -44,13 +44,14 @@ SETUP_BASE = {
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet',
     ],
 }
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.23.1, < 0.24dev',
+    'google-cloud-core >= 0.24.0, < 0.25dev',
     'grpcio >= 1.2.0, < 2.0dev',
     'gapic-google-cloud-spanner-v1 >= 0.15.0, < 0.16dev',
     'gapic-google-cloud-spanner-admin-database-v1 >= 0.15.0, < 0.16dev',
@@ -59,7 +60,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-spanner',
-    version='0.23.1',
+    version='0.24.0',
     description='Python Client for Cloud Spanner',
     long_description=README,
     namespace_packages=[

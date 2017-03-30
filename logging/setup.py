@@ -44,13 +44,14 @@ SETUP_BASE = {
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet',
     ],
 }
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.23.1, < 0.24dev',
+    'google-cloud-core >= 0.24.0, < 0.25dev',
     'grpcio >= 1.0.2, < 2.0dev',
     'gapic-google-cloud-logging-v2 >= 0.91.0, < 0.92dev',
 ]

@@ -44,18 +44,19 @@ SETUP_BASE = {
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet',
     ],
 }
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.23.1, < 0.24dev',
+    'google-cloud-core >= 0.24.1, < 0.25dev',
 ]
 
 setup(
     name='google-cloud-monitoring',
-    version='0.23.0',
+    version='0.24.0',
     description='Python Client for Stackdriver Monitoring',
     long_description=README,
     namespace_packages=[
