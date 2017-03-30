@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.resource_manager.client &mdash; google-cloud 2a0ba64 documentation</title>
+  <title>google.cloud.resource_manager.client &mdash; google-cloud 5113bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 2a0ba64 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5113bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -375,24 +375,26 @@
 
 <span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
 <span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        client. If not passed (and if no ``http`` object is</span>
+<span class="sd">                        client. If not passed (and if no ``_http`` object is</span>
 <span class="sd">                        passed), falls back to the default inferred from the</span>
 <span class="sd">                        environment.</span>
 
-<span class="sd">    :type http: :class:`~httplib2.Http`</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests. Can be any object</span>
-<span class="sd">                 that defines ``request()`` with the same interface as</span>
-<span class="sd">                 :meth:`~httplib2.Http.request`. If not passed, an</span>
-<span class="sd">                 ``http`` object is created that is bound to the</span>
-<span class="sd">                 ``credentials`` for the current object.</span>
+<span class="sd">    :type _http: :class:`~httplib2.Http`</span>
+<span class="sd">    :param _http: (Optional) HTTP object to make requests. Can be any object</span>
+<span class="sd">                  that defines ``request()`` with the same interface as</span>
+<span class="sd">                  :meth:`~httplib2.Http.request`. If not passed, an</span>
+<span class="sd">                  ``_http`` object is created that is bound to the</span>
+<span class="sd">                  ``credentials`` for the current object.</span>
+<span class="sd">                  This parameter should be considered private, and could</span>
+<span class="sd">                  change in the future.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Resouce Manager consumer.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
+            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Client.new_project"><a class="viewcode-back" href="../../../../resource-manager-client.html#google.cloud.resource_manager.client.Client.new_project">[docs]</a>    <span class="k">def</span> <span class="nf">new_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -555,7 +557,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'2a0ba64',
+            VERSION:'5113bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

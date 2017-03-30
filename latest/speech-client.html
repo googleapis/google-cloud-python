@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Client &mdash; google-cloud 2a0ba64 documentation</title>
+  <title>Speech Client &mdash; google-cloud 5113bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 2a0ba64 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5113bff documentation" href="index.html"/>
         <link rel="next" title="Speech Encoding" href="speech-encoding.html"/>
         <link rel="prev" title="Using the API" href="speech-usage.html"/> 
 
@@ -342,7 +342,7 @@
 <p>Basic client for Google Cloud Speech API.</p>
 <dl class="class">
 <dt id="google.cloud.speech.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.speech.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em>, <em>use_gax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.speech.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>_http=None</em>, <em>_use_grpc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.Client</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -351,18 +351,22 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.10.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
-client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code> object is
+client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
-<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
-<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
-<li><strong>use_gax</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
+<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
+This parameter should be considered private, and could
+change in the future.</li>
+<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
 to use the gRPC transport (via GAX) or HTTP. If unset,
-falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code> environment
-variable</li>
+falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
+environment variable.
+This parameter should be considered private, and could
+change in the future.</li>
 </ul>
 </td>
 </tr>
@@ -467,7 +471,7 @@ re-sampling).</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2a0ba64',
+            VERSION:'5113bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

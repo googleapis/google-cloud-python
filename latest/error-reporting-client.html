@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Error Reporting Client &mdash; google-cloud 2a0ba64 documentation</title>
+  <title>Error Reporting Client &mdash; google-cloud 5113bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 2a0ba64 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5113bff documentation" href="index.html"/>
         <link rel="next" title="Error Reporting Utilities" href="error-reporting-util.html"/>
         <link rel="prev" title="Using the API" href="error-reporting-usage.html"/> 
 
@@ -342,7 +342,7 @@
 <p>Client for interacting with the Stackdriver Error Reporting API</p>
 <dl class="class">
 <dt id="google.cloud.error_reporting.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.error_reporting.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em>, <em>service=None</em>, <em>version=None</em>, <em>use_gax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/error_reporting/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.error_reporting.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.error_reporting.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em>, <em>service=None</em>, <em>version=None</em>, <em>_use_grpc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/error_reporting/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.error_reporting.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
 <p>Error Reporting client. Currently Error Reporting is done by creating
 a Logging client.</p>
@@ -356,12 +356,14 @@ passed falls back to the default inferred from the
 environment.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
-owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
+owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code>
 object is passed), falls back to the default inferred
 from the environment.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
-<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
-<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
+This parameter should be considered private, and could
+change in the future.</li>
 <li><strong>service</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An identifier of the service, such as the name of the
 executable, job, or Google App Engine service name. This
 field is expected to have a low number of values that are
@@ -371,10 +373,12 @@ which can be changed whenever new code is deployed.</li>
 provided, which could represent a version label or a Git
 SHA-1 hash, for example. If the developer did not provide
 a version, the value is set to default.</li>
-<li><strong>use_gax</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
+<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
 to use the gRPC transport (via GAX) or HTTP. If unset,
-falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code> environment
-variable.</li>
+falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
+environment variable.
+This parameter should be considered private, and could
+change in the future.</li>
 </ul>
 </td>
 </tr>
@@ -551,7 +555,7 @@ provided in the error report.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2a0ba64',
+            VERSION:'5113bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.error_reporting.client &mdash; google-cloud 2a0ba64 documentation</title>
+  <title>google.cloud.error_reporting.client &mdash; google-cloud 5113bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 2a0ba64 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5113bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -358,9 +358,9 @@
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">google.cloud.error_reporting._gax</span> <span class="k">import</span> <span class="n">make_report_error_api</span>
-    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
-    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.error_reporting._logging</span> <span class="k">import</span> <span class="n">_ErrorReportingLoggingAPI</span>
@@ -368,8 +368,8 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="n">_DISABLE_GAX</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="n">_USE_GAX</span> <span class="o">=</span> <span class="n">_HAVE_GAX</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GAX</span>
+<span class="n">_DISABLE_GRPC</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">_USE_GRPC</span> <span class="o">=</span> <span class="n">_HAVE_GRPC</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GRPC</span>
 
 
 <div class="viewcode-block" id="HTTPContext"><a class="viewcode-back" href="../../../../error-reporting-client.html#google.cloud.error_reporting.client.HTTPContext">[docs]</a><span class="k">class</span> <span class="nc">HTTPContext</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -425,14 +425,16 @@
 <span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
 <span class="sd">                       :class:`NoneType`</span>
 <span class="sd">    :param credentials: The OAuth2 Credentials to use for the connection</span>
-<span class="sd">                        owned by this client. If not passed (and if no ``http``</span>
+<span class="sd">                        owned by this client. If not passed (and if no ``_http``</span>
 <span class="sd">                        object is passed), falls back to the default inferred</span>
 <span class="sd">                        from the environment.</span>
 
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: An optional HTTP object to make requests. If not passed, an</span>
-<span class="sd">                 ``http`` object is created that is bound to the</span>
-<span class="sd">                 ``credentials`` for the current object.</span>
+<span class="sd">    :type _http: :class:`httplib2.Http` or class that defines ``request()``.</span>
+<span class="sd">    :param _http: An optional HTTP object to make requests. If not passed, an</span>
+<span class="sd">                  ``_http`` object is created that is bound to the</span>
+<span class="sd">                  ``credentials`` for the current object.</span>
+<span class="sd">                  This parameter should be considered private, and could</span>
+<span class="sd">                  change in the future.</span>
 
 <span class="sd">    :type service: str</span>
 <span class="sd">    :param service: An identifier of the service, such as the name of the</span>
@@ -448,11 +450,13 @@
 <span class="sd">                    SHA-1 hash, for example. If the developer did not provide</span>
 <span class="sd">                    a version, the value is set to default.</span>
 
-<span class="sd">    :type use_gax: bool</span>
-<span class="sd">    :param use_gax: (Optional) Explicitly specifies whether</span>
-<span class="sd">                    to use the gRPC transport (via GAX) or HTTP. If unset,</span>
-<span class="sd">                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment</span>
-<span class="sd">                    variable.</span>
+<span class="sd">    :type _use_grpc: bool</span>
+<span class="sd">    :param _use_grpc: (Optional) Explicitly specifies whether</span>
+<span class="sd">                      to use the gRPC transport (via GAX) or HTTP. If unset,</span>
+<span class="sd">                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``</span>
+<span class="sd">                      environment variable.</span>
+<span class="sd">                      This parameter should be considered private, and could</span>
+<span class="sd">                      change in the future.</span>
 
 <span class="sd">    :raises: :class:`ValueError` if the project is neither passed in nor</span>
 <span class="sd">             set in the environment.</span>
@@ -460,20 +464,20 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">use_gax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">_use_grpc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-                                     <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
+                                     <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">service</span> <span class="k">if</span> <span class="n">service</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_SERVICE</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
-        <span class="k">if</span> <span class="n">use_gax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">_USE_GAX</span>
+        <span class="k">if</span> <span class="n">_use_grpc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span> <span class="o">=</span> <span class="n">_USE_GRPC</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span> <span class="o">=</span> <span class="n">_use_grpc</span>
 
     <span class="n">DEFAULT_SERVICE</span> <span class="o">=</span> <span class="s1">&#39;python&#39;</span>
 
@@ -492,7 +496,7 @@
 <span class="sd">        :returns: A class that implements the report errors API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="n">make_report_error_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_report_errors_api</span> <span class="o">=</span> <span class="n">_ErrorReportingLoggingAPI</span><span class="p">(</span>
@@ -716,7 +720,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'2a0ba64',
+            VERSION:'5113bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.client &mdash; google-cloud 2a0ba64 documentation</title>
+  <title>google.cloud.vision.client &mdash; google-cloud 5113bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 2a0ba64 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5113bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -364,7 +364,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.vision.image</span> <span class="k">import</span> <span class="n">Image</span>
 
 
-<span class="n">_USE_GAX</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">_USE_GRPC</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
@@ -377,22 +377,26 @@
 
 <span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
 <span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        client. If not passed (and if no ``http`` object is</span>
+<span class="sd">                        client. If not passed (and if no ``_http`` object is</span>
 <span class="sd">                        passed), falls back to the default inferred from the</span>
 <span class="sd">                        environment.</span>
 
-<span class="sd">    :type http: :class:`~httplib2.Http`</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests. Can be any object</span>
-<span class="sd">                 that defines ``request()`` with the same interface as</span>
-<span class="sd">                 :meth:`~httplib2.Http.request`. If not passed, an</span>
-<span class="sd">                 ``http`` object is created that is bound to the</span>
-<span class="sd">                 ``credentials`` for the current object.</span>
+<span class="sd">    :type _http: :class:`~httplib2.Http`</span>
+<span class="sd">    :param _http: (Optional) HTTP object to make requests. Can be any object</span>
+<span class="sd">                  that defines ``request()`` with the same interface as</span>
+<span class="sd">                  :meth:`~httplib2.Http.request`. If not passed, an</span>
+<span class="sd">                  ``_http`` object is created that is bound to the</span>
+<span class="sd">                  ``credentials`` for the current object.</span>
+<span class="sd">                  This parameter should be considered private, and could</span>
+<span class="sd">                  change in the future.</span>
 
-<span class="sd">    :type use_gax: bool</span>
-<span class="sd">    :param use_gax: (Optional) Explicitly specifies whether</span>
-<span class="sd">                    to use the gRPC transport (via GAX) or HTTP. If unset,</span>
-<span class="sd">                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment</span>
-<span class="sd">                    variable</span>
+<span class="sd">    :type _use_grpc: bool</span>
+<span class="sd">    :param _use_grpc: (Optional) Explicitly specifies whether</span>
+<span class="sd">                      to use the gRPC transport (via GAX) or HTTP. If unset,</span>
+<span class="sd">                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``</span>
+<span class="sd">                      environment variable.</span>
+<span class="sd">                      This parameter should be considered private, and could</span>
+<span class="sd">                      change in the future.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
@@ -400,14 +404,14 @@
 
     <span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">use_gax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">_use_grpc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">use_gax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">_USE_GAX</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_use_grpc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span> <span class="o">=</span> <span class="n">_USE_GRPC</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span> <span class="o">=</span> <span class="n">_use_grpc</span>
 
 <div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Batch multiple images into a single API request.</span>
@@ -445,7 +449,7 @@
 <span class="sd">                  make requests.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_grpc</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="n">_GAPICVisionAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="n">_HTTPVisionAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -486,7 +490,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'2a0ba64',
+            VERSION:'5113bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

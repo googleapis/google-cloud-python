@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Authentication &mdash; google-cloud 2a0ba64 documentation</title>
+  <title>Authentication &mdash; google-cloud 5113bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 2a0ba64 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5113bff documentation" href="index.html"/>
         <link rel="next" title="Iterators" href="iterators.html"/>
         <link rel="prev" title="Configuration" href="google-cloud-config.html"/> 
 
@@ -617,15 +617,23 @@ you add the correct scopes for the APIs you want to access:</p>
 </div>
 <div class="section" id="advanced-customization">
 <h2>Advanced Customization<a class="headerlink" href="#advanced-customization" title="Permalink to this headline">#</a></h2>
-<p>Though the <code class="docutils literal"><span class="pre">google-cloud-python</span></code> library defaults to using <a class="reference external" href="http://google-auth.readthedocs.io/en/stable/">google-auth</a>
-to sign requests and <code class="docutils literal"><span class="pre">httplib2</span></code> for sending requests,
-it is not a strict requirement.</p>
-<p>The <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> constructor accepts an optional
-<code class="docutils literal"><span class="pre">http</span></code> argument in place of a <code class="docutils literal"><span class="pre">credentials</span></code> object.
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>The developers of this library want to improve our HTTP handling to
+support more situations more easily, and use current tooling.</p>
+<p class="last">In order to allow this, this particular mechanism may have to be altered
+in a backwards-compatible way. Therefore, the following section should
+be considered &#8220;private API&#8221; that is subject to change.</p>
+</div>
+<p>The <code class="docutils literal"><span class="pre">google-cloud-python</span></code> library uses <a class="reference external" href="http://google-auth.readthedocs.io/en/stable/">google-auth</a> to sign
+requests and <code class="docutils literal"><span class="pre">httplib2</span></code> for sending requests.</p>
+<p>This is not a strict requirement:
+The <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> constructor accepts an
+optional <code class="docutils literal"><span class="pre">_http</span></code> argument in place of a <code class="docutils literal"><span class="pre">credentials</span></code> object.
 If passed, all HTTP requests made by the client will use your
 custom HTTP object.</p>
 <p>In order for this to be possible,
-the <code class="docutils literal"><span class="pre">http</span></code> object must do two things:</p>
+the <code class="docutils literal"><span class="pre">_http</span></code> object must do two things:</p>
 <ul class="simple">
 <li>Handle authentication on its own</li>
 <li>Define a method <code class="docutils literal"><span class="pre">request()</span></code> that can subsitute for
@@ -688,7 +696,7 @@ some point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2a0ba64',
+            VERSION:'5113bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
