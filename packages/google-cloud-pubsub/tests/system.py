@@ -53,7 +53,7 @@ def setUpModule():
         credentials = EmulatorCreds()
         http = httplib2.Http()  # Un-authorized.
         Config.CLIENT = client.Client(credentials=credentials,
-                                      http=http)
+                                      _http=http)
     else:
         Config.CLIENT = client.Client()
 
