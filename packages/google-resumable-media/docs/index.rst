@@ -1,19 +1,10 @@
-gooresmed package
-=================
+``gooresmed``
+=============
 
-Submodules
-----------
+.. automodule:: gooresmed
 
 .. toctree::
+   :hidden:
 
    gooresmed.download
    gooresmed.upload
-
-Module contents
----------------
-
-.. automodule:: gooresmed
-    :members:
-    :inherited-members:
-    :undoc-members:
-    :show-inheritance:
