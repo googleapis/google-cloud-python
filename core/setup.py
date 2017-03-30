@@ -44,6 +44,7 @@ SETUP_BASE = {
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet',
     ],
 }
@@ -60,7 +61,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-core',
-    version='0.23.1',
+    version='0.24.0',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[
