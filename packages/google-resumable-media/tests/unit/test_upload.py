@@ -14,23 +14,23 @@
 
 import pytest
 
-from gooresmed import upload
+import gooresmed.upload as upload_mod
 
 
 def test_constructor():
-    upload = upload.Upload()
+    upload = upload_mod.Upload()
     assert upload.total_bytes is None
     assert upload.bytes_transmitted == 0
     assert upload.chunk_size is None
 
 
 def test_transmit():
-    upload = upload.Upload()
+    upload = upload_mod.Upload()
     with pytest.raises(NotImplementedError):
         upload.transmit()
 
 
 def test_transmit_chunk():
-    upload = upload.Upload()
+    upload = upload_mod.Upload()
     with pytest.raises(NotImplementedError):
         upload.transmit_chunk()

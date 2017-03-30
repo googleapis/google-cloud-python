@@ -14,7 +14,7 @@
 
 import pytest
 
-from gooresmed import download
+import gooresmed.download as download_mod
 
 
 EXAMPLE_URL = (
@@ -24,41 +24,41 @@ EXAMPLE_URL = (
 
 def test_add_bytes_range_do_nothing():
     headers = {}
-    ret_val = download._add_bytes_range(None, None, headers)
+    ret_val = download_mod._add_bytes_range(None, None, headers)
     assert ret_val is None
     assert headers == {}
 
 
 def test_add_bytes_range_both_vals():
     headers = {}
-    ret_val = download._add_bytes_range(17, 1997, headers)
+    ret_val = download_mod._add_bytes_range(17, 1997, headers)
     assert ret_val is None
     assert headers == {'Range': 'bytes=17-1997'}
 
 
 def test_add_bytes_range_end_only():
     headers = {}
-    ret_val = download._add_bytes_range(None, 909, headers)
+    ret_val = download_mod._add_bytes_range(None, 909, headers)
     assert ret_val is None
     assert headers == {'Range': 'bytes=0-909'}
 
 
 def test_add_bytes_range_start_only():
     headers = {}
-    ret_val = download._add_bytes_range(3735928559, None, headers)
+    ret_val = download_mod._add_bytes_range(3735928559, None, headers)
     assert ret_val is None
     assert headers == {'Range': 'bytes=3735928559-'}
 
 
 def test_add_bytes_range_start_as_offset():
     headers = {}
-    ret_val = download._add_bytes_range(-123454321, None, headers)
+    ret_val = download_mod._add_bytes_range(-123454321, None, headers)
     assert ret_val is None
     assert headers == {'Range': 'bytes=-123454321'}
 
 
 def test_constructor_defaults():
-    download = download.Download(EXAMPLE_URL)
+    download = download_mod.Download(EXAMPLE_URL)
     assert download.media_url == EXAMPLE_URL
     assert download.start is None
     assert download.end is None
@@ -69,7 +69,7 @@ def test_constructor_defaults():
 def test_constructor_explicit():
     start = 11
     end = 10001
-    download = download.Download(EXAMPLE_URL, start=start, end=end)
+    download = download_mod.Download(EXAMPLE_URL, start=start, end=end)
     assert download.media_url == EXAMPLE_URL
     assert download.start == start
     assert download.end == end
@@ -79,7 +79,7 @@ def test_constructor_explicit():
 
 
 def test_finished_property():
-    download = download.Download(EXAMPLE_URL)
+    download = download_mod.Download(EXAMPLE_URL)
     # Default value of @property.
     assert not download.finished
 
@@ -93,6 +93,6 @@ def test_finished_property():
 
 
 def test_consume():
-    download = download.Download(EXAMPLE_URL)
+    download = download_mod.Download(EXAMPLE_URL)
     with pytest.raises(NotImplementedError):
         download.consume()

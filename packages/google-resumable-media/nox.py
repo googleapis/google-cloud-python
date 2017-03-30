@@ -50,7 +50,20 @@ def docs(session):
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install(
         'sphinx', 'sphinx_rtd_theme', 'sphinx-docstring-typing >= 0.0.3')
-    session.install('.')
+    session.install('-e', '.')
 
     # Build the docs!
     session.run('bash', './scripts/build_docs.sh')
+
+
+@nox.session
+def lint(session):
+    """Run flake8.
+
+    Returns a failure if flake8 finds linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.interpreter = 'python3.6'
+    session.install('flake8')
+    session.install('-e', '.')
+    session.run('flake8', 'gooresmed/', 'tests/')
