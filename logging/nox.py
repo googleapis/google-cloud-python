@@ -20,26 +20,6 @@ import nox
 
 
 @nox.session
-@nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
-def unit_tests(session, python_version):
-    """Run the unit test suite."""
-
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(python_version)
-
-    # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', '../core/')
-    session.install('-e', '.')
-
-    # Run py.test against the unit tests.
-    session.run('py.test', '--quiet',
-        '--cov=google.cloud.logging', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
-    )
-
-
-@nox.session
 @nox.parametrize('python_version', ['2.7', '3.6'])
 def system_tests(session, python_version):
     """Run the system test suite."""
@@ -59,30 +39,4 @@ def system_tests(session, python_version):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
-
-
-@nox.session
-def lint(session):
-    """Run flake8.
-
-    Returns a failure if flake8 finds linting errors or sufficiently
-    serious code quality issues.
-    """
-    session.interpreter = 'python3.6'
-    session.install('flake8')
-    session.install('.')
-    session.run('flake8', 'google/cloud/logging')
-
-
-@nox.session
-def cover(session):
-    """Run the final coverage report.
-
-    This outputs the coverage report aggregating coverage from the unit
-    test runs (not system test runs), and then erases coverage data.
-    """
-    session.interpreter = 'python3.6'
-    session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase')
+    session.run('py.test', '-vv', 'tests/system.py')
