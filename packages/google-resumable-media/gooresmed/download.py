@@ -15,6 +15,56 @@
 """Support for downloading media from Google APIs."""
 
 
+def _add_bytes_range(start, end, headers):
+    """Add a bytes range to a header dictionary.
+
+    Some possible inputs and the corresponding bytes ranges::
+
+       >>> headers = {}
+       >>> _add_bytes_range(None, None, headers)
+       >>> headers
+       {}
+       >>> _add_bytes_range(500, 999, headers)
+       >>> headers['Range']
+       'bytes=500-999'
+       >>> _add_bytes_range(None, 499, headers)
+       >>> headers['Range']
+       'bytes=0-499'
+       >>> _add_bytes_range(-500, None, headers)
+       >>> headers['Range']
+       'bytes=-500'
+       >>> _add_bytes_range(9500, None, headers)
+       >>> headers['Range']
+       'bytes=9500-'
+
+    Args:
+        start (Optional[int]): The first byte in a range. Can be zero,
+            positive, negative or :data:`None`.
+        end (Optional[int]): The last byte in a range. Assumed to be
+            positive.
+        headers (dict): A headers dictionary which can have the
+            bytes range added if at least one of ``start`` or ``end``
+            is not :data:`None`.
+    """
+    if start is None:
+        if end is None:
+            # No range to add.
+            return
+        else:
+            # NOTE: This assumes ``end`` is non-negative.
+            bytes_range = '0-{:d}'.format(end)
+    else:
+        if end is None:
+            if start < 0:
+                bytes_range = str(start)
+            else:
+                bytes_range = '{:d}-'.format(start)
+        else:
+            bytes_range = '{:d}-{:d}'.format(start, end)
+
+    headers['Range'] = 'bytes=' + bytes_range
+
+
 class Download(object):
     """Helper to manage downloading some or all of a resource.
 
@@ -50,6 +100,9 @@ class Download(object):
         """bool: Flag indicating if the download is in progress."""
         self.finished = False
         """bool: Flag indicating if the download has completed."""
+
+        self._headers = {}
+        _add_bytes_range(start, end, self._headers)
 
     def consume(self):
         """Consume the resource to be downloaded."""

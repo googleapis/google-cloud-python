@@ -20,6 +20,47 @@ EXAMPLE_URL = (
     '{BUCKET}/o/{OBJECT}?alt=media')
 
 
+def call__add_bytes_range(*args, **kwargs):
+    from gooresmed import download
+
+    return download._add_bytes_range(*args, **kwargs)
+
+
+def test_add_bytes_range_do_nothing():
+    headers = {}
+    ret_val = call__add_bytes_range(None, None, headers)
+    assert ret_val is None
+    assert headers == {}
+
+
+def test_add_bytes_range_both_vals():
+    headers = {}
+    ret_val = call__add_bytes_range(17, 1997, headers)
+    assert ret_val is None
+    assert headers == {'Range': 'bytes=17-1997'}
+
+
+def test_add_bytes_range_end_only():
+    headers = {}
+    ret_val = call__add_bytes_range(None, 909, headers)
+    assert ret_val is None
+    assert headers == {'Range': 'bytes=0-909'}
+
+
+def test_add_bytes_range_start_only():
+    headers = {}
+    ret_val = call__add_bytes_range(3735928559, None, headers)
+    assert ret_val is None
+    assert headers == {'Range': 'bytes=3735928559-'}
+
+
+def test_add_bytes_range_start_as_offset():
+    headers = {}
+    ret_val = call__add_bytes_range(-123454321, None, headers)
+    assert ret_val is None
+    assert headers == {'Range': 'bytes=-123454321'}
+
+
 def make_download(*args, **kwargs):
     from gooresmed import download
 
@@ -33,6 +74,7 @@ def test_constructor_defaults():
     assert download.end is None
     assert not download.in_progress
     assert not download.finished
+    assert download._headers == {}
 
 
 def test_constructor_explicit():
@@ -44,6 +86,8 @@ def test_constructor_explicit():
     assert download.end == end
     assert not download.in_progress
     assert not download.finished
+    range_bytes = 'bytes={:d}-{:d}'.format(start, end)
+    assert download._headers == {'Range': range_bytes}
 
 
 def test_consume():
