@@ -31,8 +31,8 @@ create an instance of :class:`~google.cloud.speech.client.Client`.
     >>> client = speech.Client()
 
 
-Asychronous Recognition
------------------------
+Asynchronous Recognition
+------------------------
 
 The :meth:`~google.cloud.speech.Client.async_recognize` sends audio data to the
 Speech API and initiates a Long Running Operation. Using this operation, you
