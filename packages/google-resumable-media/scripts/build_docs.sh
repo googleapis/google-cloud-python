@@ -18,26 +18,26 @@
 
 set -e
 
-rm -rf docs/build/* docs/built/* docs/*rst
+rm -rf docs_build/build/* docs/* docs_build/*rst
 OPTIONS="members,inherited-members,undoc-members,show-inheritance"
 SPHINX_APIDOC_OPTIONS="${OPTIONS}" sphinx-apidoc \
   --separate --force \
-  --output-dir docs \
+  --output-dir docs_build/ \
   gooresmed
 # We only have one package, so modules.rst is overkill.
-rm -f docs/modules.rst
-mv docs/gooresmed.rst docs/index.rst
+rm -f docs_build/modules.rst
+mv docs_build/gooresmed.rst docs_build/index.rst
 python scripts/rewrite_index_rst.py
 
 # If anything has changed
-if [[ -n "$(git diff -- docs/)" ]]; then
+if [[ -n "$(git diff -- docs_build/)" ]]; then
     echo "sphinx-apidoc generated changes that are not checked in to version control."
     exit 1
 fi
 
 sphinx-build -W \
   -b html \
-  -d docs/build/doctrees \
-  docs \
-  docs/built
-echo "Build finished. The HTML pages are in docs/built."
+  -d docs_build/build/doctrees \
+  docs_build/ \
+  docs/
+echo "Build finished. The HTML pages are in docs."

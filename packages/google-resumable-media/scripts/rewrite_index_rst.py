@@ -41,7 +41,7 @@ _EXPECTED_AUTOMODULE_LINES = (
     '',
 )
 _CURR_DIR = os.path.dirname(__file__)
-DOCS_DIR = os.path.abspath(os.path.join(_CURR_DIR, '..', 'docs'))
+DOCS_DIR = os.path.abspath(os.path.join(_CURR_DIR, '..', 'docs_build'))
 INDEX_FILE = os.path.join(DOCS_DIR, 'index.rst')
 
 
