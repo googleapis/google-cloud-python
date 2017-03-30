@@ -78,7 +78,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_explicit(self):
         CREDENTIALS = _make_credentials()
         HTTP = object()
-        client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
+        client_obj = self._make_one(credentials=CREDENTIALS, _http=HTTP)
 
         self.assertIs(client_obj._credentials, CREDENTIALS)
         self.assertIs(client_obj._http_internal, HTTP)
@@ -116,7 +116,7 @@ class TestClient(unittest.TestCase):
     def test__http_property_existing(self):
         credentials = _make_credentials()
         http = object()
-        client = self._make_one(credentials=credentials, http=http)
+        client = self._make_one(credentials=credentials, _http=http)
         self.assertIs(client._http_internal, http)
         self.assertIs(client._http, http)
 
@@ -196,7 +196,7 @@ class TestClientWithProject(unittest.TestCase):
         HTTP = object()
         with self.assertRaises(ValueError):
             self._make_one(project=object(), credentials=CREDENTIALS,
-                           http=HTTP)
+                           _http=HTTP)
 
     def _explicit_ctor_helper(self, project):
         import six
@@ -205,7 +205,7 @@ class TestClientWithProject(unittest.TestCase):
         HTTP = object()
 
         client_obj = self._make_one(project=project, credentials=CREDENTIALS,
-                                    http=HTTP)
+                                    _http=HTTP)
 
         if isinstance(project, six.binary_type):
             self.assertEqual(client_obj.project, project.decode('utf-8'))

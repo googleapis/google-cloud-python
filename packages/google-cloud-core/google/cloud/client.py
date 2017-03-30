@@ -74,12 +74,12 @@ class _ClientFactoryMixin(object):
 class Client(_ClientFactoryMixin):
     """Client to bundle configuration needed for API requests.
 
-    Stores ``credentials`` and ``http`` object so that subclasses
+    Stores ``credentials`` and an HTTP object so that subclasses
     can pass them along to a connection class.
 
-    If no value is passed in for ``http``, a :class:`httplib2.Http` object
+    If no value is passed in for ``_http``, a :class:`httplib2.Http` object
     will be created and authorized with the ``credentials``. If not, the
-    ``credentials`` and ``http`` need not be related.
+    ``credentials`` and ``_http`` need not be related.
 
     Callers and subclasses may seek to use the private key from
     ``credentials`` to sign data.
@@ -94,21 +94,23 @@ class Client(_ClientFactoryMixin):
 
     In addition, ``redirections`` and ``connection_type`` may be used.
 
-    A custom ``http`` object will also need to be able to add a bearer token
+    A custom ``_http`` object will also need to be able to add a bearer token
     to API requests and handle token refresh on 401 errors.
 
     :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed (and if no ``http`` object is
+                        client. If not passed (and if no ``_http`` object is
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type http: :class:`~httplib2.Http`
-    :param http: (Optional) HTTP object to make requests. Can be any object
-                 that defines ``request()`` with the same interface as
-                 :meth:`~httplib2.Http.request`. If not passed, an
-                 ``http`` object is created that is bound to the
-                 ``credentials`` for the current object.
+    :type _http: :class:`~httplib2.Http`
+    :param _http: (Optional) HTTP object to make requests. Can be any object
+                  that defines ``request()`` with the same interface as
+                  :meth:`~httplib2.Http.request`. If not passed, an
+                  ``_http`` object is created that is bound to the
+                  ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
     """
 
     SCOPE = None
@@ -117,16 +119,16 @@ class Client(_ClientFactoryMixin):
     Needs to be set by subclasses.
     """
 
-    def __init__(self, credentials=None, http=None):
+    def __init__(self, credentials=None, _http=None):
         if (credentials is not None and
                 not isinstance(
                     credentials, google.auth.credentials.Credentials)):
             raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
-        if credentials is None and http is None:
+        if credentials is None and _http is None:
             credentials = get_credentials()
         self._credentials = google.auth.credentials.with_scopes_if_required(
             credentials, self.SCOPE)
-        self._http_internal = http
+        self._http_internal = _http
 
     def __getstate__(self):
         """Explicitly state that clients are not pickleable."""
@@ -188,21 +190,23 @@ class ClientWithProject(Client, _ClientProjectMixin):
 
     :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed (and if no ``http`` object is
+                        client. If not passed (and if no ``_http`` object is
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type http: :class:`~httplib2.Http`
-    :param http: (Optional) HTTP object to make requests. Can be any object
-                 that defines ``request()`` with the same interface as
-                 :meth:`~httplib2.Http.request`. If not passed, an
-                 ``http`` object is created that is bound to the
-                 ``credentials`` for the current object.
+    :type _http: :class:`~httplib2.Http`
+    :param _http: (Optional) HTTP object to make requests. Can be any object
+                  that defines ``request()`` with the same interface as
+                  :meth:`~httplib2.Http.request`. If not passed, an
+                  ``_http`` object is created that is bound to the
+                  ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
 
     :raises: :class:`ValueError` if the project is neither passed in nor
              set in the environment.
     """
 
-    def __init__(self, project=None, credentials=None, http=None):
+    def __init__(self, project=None, credentials=None, _http=None):
         _ClientProjectMixin.__init__(self, project=project)
-        Client.__init__(self, credentials=credentials, http=http)
+        Client.__init__(self, credentials=credentials, _http=_http)
