@@ -23,11 +23,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
     README = file_obj.read()
 
 
-REQUIREMENTS = [
-    'google-cloud-core == 0.23.1',
-    'google-cloud-bigquery == 0.23.0',
-    'google-cloud-storage == 0.23.1',
-]
+REQUIREMENTS = []
 
 setuptools.setup(
     name='gooresmed',

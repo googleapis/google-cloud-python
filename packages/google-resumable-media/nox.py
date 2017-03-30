@@ -18,6 +18,12 @@ import os
 import nox
 
 
+SYSTEM_TEST_ENV_VARS = (
+    'GOORESMED_BUCKET',
+    'GOOGLE_APPLICATION_CREDENTIALS',
+)
+
+
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
 def unit_tests(session, python_version):
@@ -67,3 +73,31 @@ def lint(session):
     session.install('flake8')
     session.install('-e', '.')
     session.run('flake8', 'gooresmed/', 'tests/')
+
+
+@nox.session
+@nox.parametrize('python_version', ['2.7', '3.6'])
+def system_tests(session, python_version):
+    """Run the system test suite."""
+
+    # Sanity check: environment variables are set.
+    missing = []
+    for env_var in SYSTEM_TEST_ENV_VARS:
+        if env_var not in os.environ:
+            missing.append(env_var)
+    if missing:
+        raise ValueError('Environment variable(s) unset', *missing)
+
+    # Run the system tests against latest Python 2 and Python 3 only.
+    session.interpreter = 'python{}'.format(python_version)
+
+    # Install all test dependencies, then install this package into the
+    # virutalenv's dist-packages.
+    session.install(
+        'mock', 'pytest', 'requests',
+        'google-cloud-core == 0.23.1',
+        'google-cloud-storage == 0.23.1')
+    session.install('-e', '.')
+
+    # Run py.test against the system tests.
+    session.run('py.test', 'tests/system')

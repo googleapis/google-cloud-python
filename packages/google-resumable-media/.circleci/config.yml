@@ -7,6 +7,17 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Decrypt credentials
+          command: |
+            if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+              apt-get update && apt-get install -y openssl
+              openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" \
+                  -in /var/code/gcp/tests/system/credentials.json.enc \
+                  -out "$GOOGLE_APPLICATION_CREDENTIALS"
+            else
+              echo "No credentials. System tests will not run."
+            fi
+      - run:
           name: Run tests
           command: |
             nox
