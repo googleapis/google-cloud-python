@@ -12,9 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import absolute_import
 import os
 
 import nox
+
+
+@nox.session
+@nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
+def unit_tests(session, python_version):
+    """Run the unit test suite."""
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(python_version)
+
+    # Install all test dependencies, then install this package in-place.
+    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run(
+        'py.test',
+        '--cov=gooresmed', '--cov=tests.unit', '--cov-append',
+        '--cov-config=.coveragerc', '--cov-report=',
+        'tests/unit',
+    )
 
 
 @nox.session
@@ -24,7 +46,7 @@ def docs(session):
     # Build docs against the latest version of Python, because we can.
     session.interpreter = 'python3.6'
 
-    # Install Sphinx and also all of the google-cloud-* packages.
+    # Install Sphinx and other dependencies.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install(
         'sphinx', 'sphinx_rtd_theme', 'sphinx-docstring-typing >= 0.0.3')
