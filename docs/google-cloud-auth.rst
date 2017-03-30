@@ -300,19 +300,19 @@ Advanced Customization
 
 .. warning::
 
-    The google-cloud developers want to improve our HTTP handling to
+    The developers of this library want to improve our HTTP handling to
     support more situations more easily, and use current tooling.
 
     In order to allow this, this particular mechanism may have to be altered
     in a backwards-compatible way. Therefore, the following section should
     be considered "private API" that is subject to change.
 
-Though the ``google-cloud-python`` library uses `google-auth`_ to sign
+The ``google-cloud-python`` library uses `google-auth`_ to sign
 requests and ``httplib2`` for sending requests.
 
 .. _google-auth: http://google-auth.readthedocs.io/en/stable/
 
-This is not a stirct requirement:
+This is not a strict requirement:
 The :class:`Client <google.cloud.client.Client>` constructor accepts an
 optional ``_http`` argument in place of a ``credentials`` object.
 If passed, all HTTP requests made by the client will use your
