@@ -170,12 +170,12 @@ speech data to possible text alternatives on the fly.
     ...     for result in results:
     ...         for alternative in result.alternatives:
     ...             print('=' * 20)
-    ...             print('result_index: ' + str(result.result_index))
     ...             print('transcript: ' + alternative.transcript)
     ...             print('confidence: ' + str(alternative.confidence))
     ====================
     transcript: hello thank you for using Google Cloud platform
     confidence: 0.927983105183
+
 
 By default the API will perform continuous recognition
 (continuing to process audio even if the speaker in the audio pauses speaking)
