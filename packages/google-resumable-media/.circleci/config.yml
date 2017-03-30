@@ -1,0 +1,13 @@
+---
+version: 2
+jobs:
+  build:
+    docker:
+      - image: googleapis/nox:0.11.2
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: |
+            nox
+    working_directory: /var/code/gcp/
