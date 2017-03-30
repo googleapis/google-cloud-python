@@ -28,11 +28,11 @@ class Download(object):
     specifying a range.
     """
 
-    in_progress = None
-    finished = None
-
     def __init__(self):
-        raise NotImplementedError
+        self.in_progress = False
+        """bool: Flag indicating if the download is in progress."""
+        self.finished = False
+        """bool: Flag indicating if the download has completed."""
 
     def consume(self):
         """Consume the resource to be downloaded."""

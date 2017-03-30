@@ -15,29 +15,26 @@
 import pytest
 
 
-def get_upload_class():
+def make_upload(*args, **kwargs):
     from gooresmed import upload
 
-    return upload.Upload
-
-
-def make_upload(*args, **kwargs):
-    klass = get_upload_class()
-    return klass(*args, **kwargs)
+    return upload.Upload(*args, **kwargs)
 
 
 def test_constructor():
-    with pytest.raises(NotImplementedError):
-        make_upload()
+    upload = make_upload()
+    assert upload.total_bytes is None
+    assert upload.bytes_transmitted == 0
+    assert upload.chunk_size is None
 
 
 def test_transmit():
-    klass = get_upload_class()
+    upload = make_upload()
     with pytest.raises(NotImplementedError):
-        klass.transmit(None)
+        upload.transmit()
 
 
 def test_transmit_chunk():
-    klass = get_upload_class()
+    upload = make_upload()
     with pytest.raises(NotImplementedError):
-        klass.transmit_chunk(None)
+        upload.transmit_chunk()

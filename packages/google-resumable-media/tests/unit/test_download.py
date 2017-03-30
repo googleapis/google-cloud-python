@@ -15,23 +15,19 @@
 import pytest
 
 
-def get_download_class():
+def make_download(*args, **kwargs):
     from gooresmed import download
 
-    return download.Download
-
-
-def make_download(*args, **kwargs):
-    klass = get_download_class()
-    return klass(*args, **kwargs)
+    return download.Download(*args, **kwargs)
 
 
 def test_constructor():
-    with pytest.raises(NotImplementedError):
-        make_download()
+    download = make_download()
+    assert not download.in_progress
+    assert not download.finished
 
 
 def test_consume():
-    klass = get_download_class()
+    download = make_download()
     with pytest.raises(NotImplementedError):
-        klass.consume(None)
+        download.consume()

@@ -32,12 +32,13 @@ class Upload(object):
     split into smaller chunks as a resumable upload.
     """
 
-    total_bytes = None
-    bytes_transmitted = None
-    chunk_size = None
-
     def __init__(self):
-        raise NotImplementedError
+        self.total_bytes = None
+        """Optional[int]: The total number of bytes to be uploaded."""
+        self.bytes_transmitted = 0
+        """int: The number of bytes that have been transmitted."""
+        self.chunk_size = None
+        """Optional[int]: The maximum size (in bytes) of a request."""
 
     def transmit(self):
         """Transmit the resource to be uploaded."""
