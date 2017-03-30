@@ -19,6 +19,9 @@ import os
 import nox
 
 
+LOCAL_DEPS = ('../core/',)
+
+
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
 def unit_tests(session, python_version):
@@ -28,7 +31,7 @@ def unit_tests(session, python_version):
     session.interpreter = 'python{}'.format(python_version)
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', '../core/')
+    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -53,8 +56,8 @@ def system_tests(session, python_version):
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
-    session.install('mock', 'pytest',
-                    '../core/', '../storage/', '../test_utils/')
+    session.install('mock', 'pytest', *LOCAL_DEPS)
+    session.install('../storage/', '../test_utils/')
     session.install('.')
 
     # Run py.test against the system tests.
@@ -69,7 +72,7 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8')
+    session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google/cloud/language')
 
