@@ -59,7 +59,7 @@ def system_tests(session, python_version):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run('py.test', '-vv', 'tests/system.py')
 
 
 @nox.session
