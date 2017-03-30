@@ -21,9 +21,9 @@ try:
     import google.cloud.logging._gax
     # pylint: enable=unused-import
 except ImportError:  # pragma: NO COVER
-    _HAVE_GAX = False
+    _HAVE_GRPC = False
 else:
-    _HAVE_GAX = True
+    _HAVE_GRPC = True
 
 from google.cloud._testing import _GAXBaseAPI
 
@@ -45,7 +45,7 @@ class _Base(object):
         return self._get_target_class()(*args, **kw)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_LoggingAPI(_Base, unittest.TestCase):
     LOG_NAME = 'log_name'
     LOG_PATH = 'projects/%s/logs/%s' % (_Base.PROJECT, LOG_NAME)
@@ -90,7 +90,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([entry_pb], page_token=TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         client = Client(project=self.PROJECT, credentials=_make_credentials(),
-                        use_gax=True)
+                        _use_grpc=True)
         api = self._make_one(gax_api, client)
 
         iterator = api.list_entries(
@@ -147,7 +147,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         client = Client(project=self.PROJECT, credentials=_make_credentials(),
-                        use_gax=True)
+                        _use_grpc=True)
         api = self._make_one(gax_api, client)
 
         iterator = api.list_entries(
@@ -288,7 +288,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         client = Client(project=self.PROJECT, credentials=_make_credentials(),
-                        use_gax=True)
+                        _use_grpc=True)
         api = self._make_one(gax_api, client)
 
         iterator = api.list_entries(
@@ -614,7 +614,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_SinksAPI(_Base, unittest.TestCase):
     SINK_NAME = 'sink_name'
     SINK_PATH = 'projects/%s/sinks/%s' % (_Base.PROJECT, SINK_NAME)
@@ -858,7 +858,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_MetricsAPI(_Base, unittest.TestCase):
     METRIC_NAME = 'metric_name'
     METRIC_PATH = 'projects/%s/metrics/%s' % (_Base.PROJECT, METRIC_NAME)
@@ -1100,7 +1100,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_make_gax_logging_api(unittest.TestCase):
 
     def _call_fut(self, client):
@@ -1153,7 +1153,7 @@ class Test_make_gax_logging_api(unittest.TestCase):
         self.assertIs(logging_api._client, client)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_make_gax_metrics_api(unittest.TestCase):
 
     def _call_fut(self, client):
@@ -1206,7 +1206,7 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         self.assertIs(metrics_api._client, client)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_make_gax_sinks_api(unittest.TestCase):
 
     def _call_fut(self, client):
