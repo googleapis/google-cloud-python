@@ -74,8 +74,7 @@ def unique_resource_id(delimiter='_'):
     Intended to help locate resources created in particular
     testing environments and at particular times.
     """
-    build_id = os.getenv(
-        'TRAVIS_BUILD_ID', os.getenv('CIRCLE_BUILD_NUM', ''))
+    build_id = os.getenv('CIRCLE_BUILD_NUM', '')
     if build_id == '':
         return '%s%d' % (delimiter, 1000 * time.time())
     else:
