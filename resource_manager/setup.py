@@ -51,7 +51,7 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.24.1, < 0.25dev',
+    'google-cloud-core >= 0.24.0, < 0.25dev',
 ]
 
 setup(
