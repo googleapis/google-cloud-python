@@ -28,24 +28,26 @@ class Client(client_module.Client):
 
     :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed (and if no ``http`` object is
+                        client. If not passed (and if no ``_http`` object is
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type http: :class:`~httplib2.Http`
-    :param http: (Optional) HTTP object to make requests. Can be any object
-                 that defines ``request()`` with the same interface as
-                 :meth:`~httplib2.Http.request`. If not passed, an
-                 ``http`` object is created that is bound to the
-                 ``credentials`` for the current object.
+    :type _http: :class:`~httplib2.Http`
+    :param _http: (Optional) HTTP object to make requests. Can be any object
+                  that defines ``request()`` with the same interface as
+                  :meth:`~httplib2.Http.request`. If not passed, an
+                  ``_http`` object is created that is bound to the
+                  ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
     """The scopes required for authenticating as an API consumer."""
 
-    def __init__(self, credentials=None, http=None):
+    def __init__(self, credentials=None, _http=None):
         super(Client, self).__init__(
-            credentials=credentials, http=http)
+            credentials=credentials, _http=_http)
         self._connection = Connection(self)
 
     def document_from_text(self, content, **kwargs):

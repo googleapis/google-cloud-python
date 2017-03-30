@@ -46,7 +46,7 @@ def clone_client(client):
     return datastore.Client(project=client.project,
                             namespace=client.namespace,
                             credentials=client._credentials,
-                            http=client._http)
+                            _http=client._http)
 
 
 def setUpModule():
@@ -61,7 +61,7 @@ def setUpModule():
         Config.CLIENT = datastore.Client(project=emulator_dataset,
                                          namespace=test_namespace,
                                          credentials=credentials,
-                                         http=http)
+                                         _http=http)
 
 
 def tearDownModule():

@@ -95,7 +95,7 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT,
                                 credentials=credentials,
-                                use_gax=False)
+                                _use_grpc=False)
         patch = mock.patch(
             'google.cloud.error_reporting.client._ErrorReportingLoggingAPI'
         )

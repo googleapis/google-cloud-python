@@ -19,9 +19,9 @@ import traceback
 
 try:
     from google.cloud.error_reporting._gax import make_report_error_api
-    _HAVE_GAX = True
+    _HAVE_GRPC = True
 except ImportError:  # pragma: NO COVER
-    _HAVE_GAX = False
+    _HAVE_GRPC = False
 
 from google.cloud.client import ClientWithProject
 from google.cloud.error_reporting._logging import _ErrorReportingLoggingAPI
@@ -29,8 +29,8 @@ from google.cloud.environment_vars import DISABLE_GRPC
 
 import six
 
-_DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
-_USE_GAX = _HAVE_GAX and not _DISABLE_GAX
+_DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
+_USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 
 
 class HTTPContext(object):
@@ -86,14 +86,16 @@ class Client(ClientWithProject):
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
+                        owned by this client. If not passed (and if no ``_http``
                         object is passed), falls back to the default inferred
                         from the environment.
 
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
-                 ``http`` object is created that is bound to the
-                 ``credentials`` for the current object.
+    :type _http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param _http: An optional HTTP object to make requests. If not passed, an
+                  ``_http`` object is created that is bound to the
+                  ``credentials`` for the current object.
+                  This parameter should be considered private, and could
+                  change in the future.
 
     :type service: str
     :param service: An identifier of the service, such as the name of the
@@ -109,11 +111,13 @@ class Client(ClientWithProject):
                     SHA-1 hash, for example. If the developer did not provide
                     a version, the value is set to default.
 
-    :type use_gax: bool
-    :param use_gax: (Optional) Explicitly specifies whether
-                    to use the gRPC transport (via GAX) or HTTP. If unset,
-                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
-                    variable.
+    :type _use_grpc: bool
+    :param _use_grpc: (Optional) Explicitly specifies whether
+                      to use the gRPC transport (via GAX) or HTTP. If unset,
+                      falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC``
+                      environment variable.
+                      This parameter should be considered private, and could
+                      change in the future.
 
     :raises: :class:`ValueError` if the project is neither passed in nor
              set in the environment.
@@ -121,20 +125,20 @@ class Client(ClientWithProject):
 
     def __init__(self, project=None,
                  credentials=None,
-                 http=None,
+                 _http=None,
                  service=None,
                  version=None,
-                 use_gax=None):
+                 _use_grpc=None):
         super(Client, self).__init__(project=project, credentials=credentials,
-                                     http=http)
+                                     _http=_http)
         self._report_errors_api = None
 
         self.service = service if service else self.DEFAULT_SERVICE
         self.version = version
-        if use_gax is None:
-            self._use_gax = _USE_GAX
+        if _use_grpc is None:
+            self._use_grpc = _USE_GRPC
         else:
-            self._use_gax = use_gax
+            self._use_grpc = _use_grpc
 
     DEFAULT_SERVICE = 'python'
 
@@ -153,7 +157,7 @@ class Client(ClientWithProject):
         :returns: A class that implements the report errors API.
         """
         if self._report_errors_api is None:
-            if self._use_gax:
+            if self._use_grpc:
                 self._report_errors_api = make_report_error_api(self)
             else:
                 self._report_errors_api = _ErrorReportingLoggingAPI(

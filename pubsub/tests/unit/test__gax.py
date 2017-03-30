@@ -21,9 +21,9 @@ try:
     import google.cloud.pubsub._gax
     # pylint: enable=unused-import
 except ImportError:  # pragma: NO COVER
-    _HAVE_GAX = False
+    _HAVE_GRPC = False
 else:
-    _HAVE_GAX = True
+    _HAVE_GRPC = True
 
 from google.cloud._testing import _GAXBaseAPI
 
@@ -50,7 +50,7 @@ class _Base(object):
         return self._get_target_class()(*args, **kw)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_PublisherAPI(_Base, unittest.TestCase):
 
     @staticmethod
@@ -418,7 +418,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     PUSH_ENDPOINT = 'https://api.example.com/push'
@@ -925,7 +925,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
@@ -1005,7 +1005,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         self.assertEqual(insecure_args, [host])
 
 
-@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):

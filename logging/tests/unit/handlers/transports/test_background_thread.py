@@ -171,11 +171,11 @@ class _Logger(object):
 
 class _Client(object):
 
-    def __init__(self, project, http=None, credentials=None):
+    def __init__(self, project, _http=None, credentials=None):
         import mock
 
         self.project = project
-        self._http = http
+        self._http = _http
         self._credentials = credentials
         self._connection = mock.Mock(
             credentials=credentials, spec=['credentials'])
