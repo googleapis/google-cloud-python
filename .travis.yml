@@ -1,6 +1,0 @@
----
-# Exclude Travis completely.
-# We can remove this file post-merge.
-branches:
-  exclude:
-    - /.*/
