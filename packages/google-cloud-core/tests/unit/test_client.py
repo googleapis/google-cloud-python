@@ -53,7 +53,7 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _make_credentials()
         HTTP = object()
 
-        client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
+        client_obj = self._make_one(credentials=CREDENTIALS, _http=HTTP)
         with self.assertRaises(pickle.PicklingError):
             pickle.dumps(client_obj)
 
