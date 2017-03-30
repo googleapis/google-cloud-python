@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import mock
 import pytest
 
 import gooresmed.download as download_mod
@@ -92,7 +93,20 @@ def test_finished_property():
     assert download.finished
 
 
-def test_consume():
+def test_consume_already_finished():
     download = download_mod.Download(EXAMPLE_URL)
-    with pytest.raises(NotImplementedError):
-        download.consume()
+    download._finished = True
+    with pytest.raises(ValueError):
+        download.consume(None)
+
+
+def test_consume():
+    download = download_mod.Download(EXAMPLE_URL, end=65536)
+    transport = mock.Mock(spec=['get'])
+
+    assert not download.finished
+    ret_val = download.consume(transport)
+    assert ret_val is transport.get.return_value
+    transport.get.assert_called_once_with(
+        EXAMPLE_URL, headers=download._headers)
+    assert download.finished

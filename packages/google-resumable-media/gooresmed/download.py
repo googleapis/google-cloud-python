@@ -106,6 +106,25 @@ class Download(object):
         """bool: Flag indicating if the download has completed."""
         return self._finished
 
-    def consume(self):
-        """Consume the resource to be downloaded."""
-        raise NotImplementedError
+    def consume(self, transport):
+        """Consume the resource to be downloaded.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests via a ``get()`` method which accepts a
+                media URL and a ``headers`` keyword argument.
+
+        Returns:
+            object: The return value of ``transport.get()``.
+
+        Raises:
+            ValueError: If the current :class:`Download` has already
+                finished.
+        """
+        if self.finished:
+            raise ValueError('A download can only be used once.')
+
+        result = transport.get(self.media_url, headers=self._headers)
+        # Tombstone the current Download so it cannot be used again.
+        self._finished = True
+        return result
