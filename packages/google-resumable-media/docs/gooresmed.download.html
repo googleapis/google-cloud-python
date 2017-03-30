@@ -161,7 +161,7 @@
 <p>Support for downloading media from Google APIs.</p>
 <dl class="class">
 <dt id="gooresmed.download.Download">
-<em class="property">class </em><code class="descclassname">gooresmed.download.</code><code class="descname">Download</code><a class="headerlink" href="#gooresmed.download.Download" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">gooresmed.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.download.Download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Helper to manage downloading some or all of a resource.</p>
 <p>Basic support will</p>
@@ -171,11 +171,36 @@
 <li>download and return content directly as a string or bytes</li>
 </ul>
 <p>In addition, &#8220;slices&#8221; of the resource can be retrieved by
-specifying a range.</p>
+specifying a range with <code class="docutils literal"><span class="pre">start</span></code> and / or <code class="docutils literal"><span class="pre">end</span></code>. However, in
+typical usage, neither <code class="docutils literal"><span class="pre">start</span></code> nor <code class="docutils literal"><span class="pre">end</span></code> is expected to be
+provided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>media_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL containing the media to be downloaded.</li>
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The first byte in a range to be downloaded. If not
+provided, but <code class="docutils literal"><span class="pre">end</span></code> is provided, will download from the
+beginning to <code class="docutils literal"><span class="pre">end</span></code> of the media.</li>
+<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The last byte in a range to be downloaded. If not
+provided, but <code class="docutils literal"><span class="pre">start</span></code> is provided, will download from the
+<code class="docutils literal"><span class="pre">start</span></code> to the end of the media.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="gooresmed.download.Download.consume">
 <code class="descname">consume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.download.Download.consume" title="Permalink to this definition">¶</a></dt>
 <dd><p>Consume the resource to be downloaded.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gooresmed.download.Download.end">
+<code class="descname">end</code><em class="property"> = None</em><a class="headerlink" href="#gooresmed.download.Download.end" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The last byte in a range to be downloaded.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -188,6 +213,18 @@ specifying a range.</p>
 <dt id="gooresmed.download.Download.in_progress">
 <code class="descname">in_progress</code><em class="property"> = None</em><a class="headerlink" href="#gooresmed.download.Download.in_progress" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> &#8211; Flag indicating if the download is in progress.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gooresmed.download.Download.media_url">
+<code class="descname">media_url</code><em class="property"> = None</em><a class="headerlink" href="#gooresmed.download.Download.media_url" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; The URL containing the media to be downloaded.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gooresmed.download.Download.start">
+<code class="descname">start</code><em class="property"> = None</em><a class="headerlink" href="#gooresmed.download.Download.start" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The first byte in a range to be downloaded.</p>
 </dd></dl>
 
 </dd></dl>

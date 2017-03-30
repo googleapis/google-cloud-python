@@ -15,19 +15,38 @@
 import pytest
 
 
+EXAMPLE_URL = (
+    'https://www.googleapis.com/download/storage/v1/b/'
+    '{BUCKET}/o/{OBJECT}?alt=media')
+
+
 def make_download(*args, **kwargs):
     from gooresmed import download
 
     return download.Download(*args, **kwargs)
 
 
-def test_constructor():
-    download = make_download()
+def test_constructor_defaults():
+    download = make_download(EXAMPLE_URL)
+    assert download.media_url == EXAMPLE_URL
+    assert download.start is None
+    assert download.end is None
+    assert not download.in_progress
+    assert not download.finished
+
+
+def test_constructor_explicit():
+    start = 11
+    end = 10001
+    download = make_download(EXAMPLE_URL, start=start, end=end)
+    assert download.media_url == EXAMPLE_URL
+    assert download.start == start
+    assert download.end == end
     assert not download.in_progress
     assert not download.finished
 
 
 def test_consume():
-    download = make_download()
+    download = make_download(EXAMPLE_URL)
     with pytest.raises(NotImplementedError):
         download.consume()
