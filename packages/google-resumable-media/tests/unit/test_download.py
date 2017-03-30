@@ -72,8 +72,7 @@ def test_constructor_defaults():
     assert download.media_url == EXAMPLE_URL
     assert download.start is None
     assert download.end is None
-    assert not download.in_progress
-    assert not download.finished
+    assert not download._finished
     assert download._headers == {}
 
 
@@ -84,10 +83,23 @@ def test_constructor_explicit():
     assert download.media_url == EXAMPLE_URL
     assert download.start == start
     assert download.end == end
-    assert not download.in_progress
-    assert not download.finished
+    assert not download._finished
     range_bytes = 'bytes={:d}-{:d}'.format(start, end)
     assert download._headers == {'Range': range_bytes}
+
+
+def test_finished_property():
+    download = make_download(EXAMPLE_URL)
+    # Default value of @property.
+    assert not download.finished
+
+    # Make sure we cannot set it on public @property.
+    with pytest.raises(AttributeError):
+        download.finished = False
+
+    # Set it privately and then check the @property.
+    download._finished = True
+    assert download.finished
 
 
 def test_consume():

@@ -96,13 +96,15 @@ class Download(object):
         """Optional[int]: The first byte in a range to be downloaded."""
         self.end = end
         """Optional[int]: The last byte in a range to be downloaded."""
-        self.in_progress = False
-        """bool: Flag indicating if the download is in progress."""
-        self.finished = False
-        """bool: Flag indicating if the download has completed."""
+        self._finished = False
 
         self._headers = {}
         _add_bytes_range(start, end, self._headers)
+
+    @property
+    def finished(self):
+        """bool: Flag indicating if the download has completed."""
+        return self._finished
 
     def consume(self):
         """Consume the resource to be downloaded."""
