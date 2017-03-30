@@ -63,7 +63,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=None)
+            project=PROJECT, credentials=credentials, _use_grpc=None)
         vision_api = client._vision_api
         vision_api._connection = _Connection()
         with mock.patch('google.cloud.vision.client._GAPICVisionAPI',
@@ -75,7 +75,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
 
     def test_face_annotation(self):
@@ -101,7 +101,7 @@ class TestClient(unittest.TestCase):
         }
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(returned)
         vision_api._connection = connection
@@ -133,7 +133,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         raw_image = client.image(content=IMAGE_CONTENT)
         self.assertIsInstance(raw_image, Image)
         self.assertEqual(raw_image.content, IMAGE_CONTENT)
@@ -145,7 +145,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         with patch('google.cloud.vision.image.open',
                    mock_open(read_data=IMAGE_CONTENT)) as m:
             file_image = client.image(filename='my_image.jpg')
@@ -166,7 +166,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+                                _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(returned)
         vision_api._connection = connection
@@ -218,7 +218,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         api = client._vision_api
         api._connection = _Connection(CROP_HINTS_RESPONSE)
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -241,7 +241,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(FACE_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -263,7 +263,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(FACE_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -284,7 +284,7 @@ class TestClient(unittest.TestCase):
         }
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(returned)
         vision_api._connection = connection
@@ -305,7 +305,7 @@ class TestClient(unittest.TestCase):
         returned = FULL_TEXT_RESPONSE
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         api = client._vision_api
         api._connection = _Connection(returned)
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -339,7 +339,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(LABEL_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -364,7 +364,7 @@ class TestClient(unittest.TestCase):
         }
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         vision_api._connection = _Connection(returned)
 
@@ -379,7 +379,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
-                                use_gax=False)
+                                _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(LANDMARK_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -405,7 +405,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(LANDMARK_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -425,7 +425,7 @@ class TestClient(unittest.TestCase):
         }
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         vision_api._connection = _Connection(returned)
 
@@ -440,7 +440,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(LOGO_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -461,7 +461,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(LOGO_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -481,7 +481,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(TEXT_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -507,7 +507,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(SAFE_SEARCH_DETECTION_RESPONSE)
         vision_api._connection = connection
@@ -530,7 +530,7 @@ class TestClient(unittest.TestCase):
         }
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         vision_api._connection = _Connection(returned)
 
@@ -545,7 +545,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         connection = _Connection(IMAGE_PROPERTIES_RESPONSE)
         vision_api._connection = connection
@@ -570,7 +570,7 @@ class TestClient(unittest.TestCase):
         }
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         vision_api = client._vision_api
         vision_api._connection = _Connection(returned)
 
@@ -587,7 +587,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, credentials=credentials, use_gax=False)
+            project=PROJECT, credentials=credentials, _use_grpc=False)
         api = client._vision_api
         api._connection = _Connection(WEB_DETECTION_RESPONSE)
         image = client.image(source_uri=IMAGE_SOURCE)

@@ -58,12 +58,12 @@ class Config(object):
     """
     CLIENT = None
     TEST_BUCKET = None
-    USE_GAX = True
+    USE_GRPC = True
 
 
 def setUpModule():
     Config.CLIENT = speech.Client()
-    Config.USE_GAX = Config.CLIENT._use_gax
+    Config.USE_GRPC = Config.CLIENT._use_grpc
     # Now create a bucket for GCS stored content.
     storage_client = storage.Client()
     bucket_name = 'new' + unique_resource_id()
@@ -195,7 +195,7 @@ class TestSpeechClient(unittest.TestCase):
         self._check_results(alternatives, 2)
 
     def test_stream_recognize(self):
-        if not Config.USE_GAX:
+        if not Config.USE_GRPC:
             self.skipTest('gRPC is required for Speech Streaming Recognize.')
 
         with open(AUDIO_FILE, 'rb') as file_obj:
@@ -203,7 +203,7 @@ class TestSpeechClient(unittest.TestCase):
                 self._check_results(results.alternatives)
 
     def test_stream_recognize_interim_results(self):
-        if not Config.USE_GAX:
+        if not Config.USE_GRPC:
             self.skipTest('gRPC is required for Speech Streaming Recognize.')
 
         # These extra words are interim_results that the API returns as it's
@@ -223,7 +223,7 @@ class TestSpeechClient(unittest.TestCase):
             self._check_results(responses[-1].alternatives)
 
     def test_stream_recognize_single_utterance(self):
-        if not Config.USE_GAX:
+        if not Config.USE_GRPC:
             self.skipTest('gRPC is required for Speech Streaming Recognize.')
 
         with open(AUDIO_FILE, 'rb') as file_obj:

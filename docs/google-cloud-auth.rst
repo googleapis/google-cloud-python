@@ -298,19 +298,28 @@ you add the correct scopes for the APIs you want to access:
 Advanced Customization
 ======================
 
-Though the ``google-cloud-python`` library defaults to using `google-auth`_
-to sign requests and ``httplib2`` for sending requests,
-it is not a strict requirement.
+.. warning::
+
+    The developers of this library want to improve our HTTP handling to
+    support more situations more easily, and use current tooling.
+
+    In order to allow this, this particular mechanism may have to be altered
+    in a backwards-compatible way. Therefore, the following section should
+    be considered "private API" that is subject to change.
+
+The ``google-cloud-python`` library uses `google-auth`_ to sign
+requests and ``httplib2`` for sending requests.
 
 .. _google-auth: http://google-auth.readthedocs.io/en/stable/
 
-The :class:`Client <google.cloud.client.Client>` constructor accepts an optional
-``http`` argument in place of a ``credentials`` object.
+This is not a strict requirement:
+The :class:`Client <google.cloud.client.Client>` constructor accepts an
+optional ``_http`` argument in place of a ``credentials`` object.
 If passed, all HTTP requests made by the client will use your
 custom HTTP object.
 
 In order for this to be possible,
-the ``http`` object must do two things:
+the ``_http`` object must do two things:
 
 * Handle authentication on its own
 * Define a method ``request()`` that can subsitute for

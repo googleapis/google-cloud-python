@@ -46,7 +46,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
-            use_gax=False)
+            _use_grpc=False)
 
         conn = client._connection = _Connection()
         api = client.publisher_api
@@ -61,12 +61,12 @@ class TestClient(unittest.TestCase):
         from google.cloud.pubsub._http import _PublisherAPI
 
         creds = _make_credentials()
-        with mock.patch('google.cloud.pubsub.client._USE_GAX',
+        with mock.patch('google.cloud.pubsub.client._USE_GRPC',
                         new=True):
             client = self._make_one(project=self.PROJECT, credentials=creds,
-                                    use_gax=False)
+                                    _use_grpc=False)
 
-        self.assertFalse(client._use_gax)
+        self.assertFalse(client._use_grpc)
         api = client.publisher_api
         self.assertIsInstance(api, _PublisherAPI)
 
@@ -89,7 +89,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
-            use_gax=True)
+            _use_grpc=True)
         client._connection.in_emulator = emulator
 
         patch = mock.patch.multiple(
@@ -123,7 +123,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
-            use_gax=False)
+            _use_grpc=False)
 
         conn = client._connection = _Connection()
         api = client.subscriber_api
@@ -153,7 +153,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
-            use_gax=True)
+            _use_grpc=True)
         client._connection.in_emulator = emulator
 
         patch = mock.patch.multiple(
@@ -261,7 +261,7 @@ class TestClient(unittest.TestCase):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                                use_gax=False)
+                                _use_grpc=False)
         returned = {'subscriptions': [SUB_INFO]}
         client._connection = _Connection(returned)
 
@@ -299,7 +299,7 @@ class TestClient(unittest.TestCase):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                                use_gax=False)
+                                _use_grpc=False)
 
         # Set up the mock response.
         ACK_DEADLINE = 42

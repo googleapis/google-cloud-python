@@ -132,7 +132,7 @@ class Test_LoggingAPI(unittest.TestCase):
             'nextPageToken': TOKEN,
         }
         client = Client(project=self.PROJECT, credentials=_make_credentials(),
-                        use_gax=False)
+                        _use_grpc=False)
         client._connection = _Connection(RETURNED)
         api = self._make_one(client)
 
@@ -210,7 +210,7 @@ class Test_LoggingAPI(unittest.TestCase):
             }],
         }
         client = Client(project=self.PROJECT, credentials=_make_credentials(),
-                        use_gax=False)
+                        _use_grpc=False)
         client._connection = _Connection(RETURNED)
         api = self._make_one(client)
 

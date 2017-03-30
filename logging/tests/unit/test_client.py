@@ -53,7 +53,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(self.PROJECT,
                                 credentials=_make_credentials(),
-                                use_gax=False)
+                                _use_grpc=False)
 
         conn = client._connection = _Connection()
         api = client.logging_api
@@ -74,7 +74,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                                use_gax=True)
+                                _use_grpc=True)
 
         patch = mock.patch(
             'google.cloud.logging.client.make_gax_logging_api',
@@ -93,11 +93,11 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         patch = mock.patch(
-            'google.cloud.logging.client._USE_GAX',
+            'google.cloud.logging.client._USE_GRPC',
             new=True)
         with patch:
             client = self._make_one(project=self.PROJECT, credentials=creds,
-                                    use_gax=False)
+                                    _use_grpc=False)
 
         api = client.logging_api
         self.assertIsInstance(api, _LoggingAPI)
@@ -107,7 +107,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(
             self.PROJECT, credentials=_make_credentials(),
-            use_gax=False)
+            _use_grpc=False)
 
         conn = client._connection = _Connection()
         api = client.sinks_api
@@ -128,7 +128,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                                use_gax=True)
+                                _use_grpc=True)
 
         patch = mock.patch(
             'google.cloud.logging.client.make_gax_sinks_api',
@@ -147,7 +147,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(
             self.PROJECT, credentials=_make_credentials(),
-            use_gax=False)
+            _use_grpc=False)
 
         conn = client._connection = _Connection()
         api = client.metrics_api
@@ -168,7 +168,7 @@ class TestClient(unittest.TestCase):
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                                use_gax=True)
+                                _use_grpc=True)
 
         patch = mock.patch(
             'google.cloud.logging.client.make_gax_metrics_api',
@@ -211,7 +211,7 @@ class TestClient(unittest.TestCase):
         }]
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                                use_gax=False)
+                                _use_grpc=False)
         returned = {
             'entries': ENTRIES,
             'nextPageToken': TOKEN,
@@ -275,7 +275,7 @@ class TestClient(unittest.TestCase):
                 self.PROJECT, self.LOGGER_NAME),
         }]
         client = self._make_one(self.PROJECT, credentials=_make_credentials(),
-                                use_gax=False)
+                                _use_grpc=False)
         returned = {'entries': ENTRIES}
         client._connection = _Connection(returned)
 
@@ -364,7 +364,7 @@ class TestClient(unittest.TestCase):
         }]
         client = self._make_one(project=PROJECT,
                                 credentials=_make_credentials(),
-                                use_gax=False)
+                                _use_grpc=False)
         returned = {
             'sinks': SINKS,
             'nextPageToken': TOKEN,
@@ -410,7 +410,7 @@ class TestClient(unittest.TestCase):
             'destination': self.DESTINATION_URI,
         }]
         client = self._make_one(
-            project=PROJECT, credentials=_make_credentials(), use_gax=False)
+            project=PROJECT, credentials=_make_credentials(), _use_grpc=False)
         returned = {
             'sinks': SINKS,
         }
@@ -482,7 +482,7 @@ class TestClient(unittest.TestCase):
         }]
         client = self._make_one(
             project=self.PROJECT, credentials=_make_credentials(),
-            use_gax=False)
+            _use_grpc=False)
         returned = {
             'metrics': metrics,
         }
@@ -524,7 +524,7 @@ class TestClient(unittest.TestCase):
         }]
         client = self._make_one(
             project=self.PROJECT, credentials=_make_credentials(),
-            use_gax=False)
+            _use_grpc=False)
         returned = {
             'metrics': metrics,
             'nextPageToken': next_token,
@@ -569,7 +569,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(project=self.PROJECT,
                                 credentials=_make_credentials(),
-                                use_gax=False)
+                                _use_grpc=False)
 
         with _tempdir() as tempdir:
             temp_log_path = os.path.join(tempdir, '{pid}')
@@ -588,7 +588,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(project=self.PROJECT,
                                 credentials=_make_credentials(),
-                                use_gax=False)
+                                _use_grpc=False)
 
         with _Monkey(os, environ={_CONTAINER_ENGINE_ENV: 'True'}):
             handler = client.get_default_handler()
@@ -606,7 +606,7 @@ class TestClient(unittest.TestCase):
         with mock.patch('copy.deepcopy', new=deepcopy):
             client = self._make_one(project=self.PROJECT,
                                     credentials=credentials,
-                                    use_gax=False)
+                                    _use_grpc=False)
             handler = client.get_default_handler()
             deepcopy.assert_called_once_with(client._http)
 
@@ -626,7 +626,7 @@ class TestClient(unittest.TestCase):
                             new=setup_logging):
                 client = self._make_one(project=self.PROJECT,
                                         credentials=credentials,
-                                        use_gax=False)
+                                        _use_grpc=False)
                 client.setup_logging()
                 deepcopy.assert_called_once_with(client._http)
 
