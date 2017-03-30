@@ -58,7 +58,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-error-reporting',
-    version='0.23.2',
+    version='0.24.0',
     description='Python Client for Stackdriver Error Reporting',
     long_description=README,
     namespace_packages=[
