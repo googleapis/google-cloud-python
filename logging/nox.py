@@ -35,7 +35,8 @@ def unit_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet',
+    session.run(
+        'py.test', '--quiet',
         '--cov=google.cloud.logging', '--cov=tests.unit', '--cov-append',
         '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
         'tests/unit',
@@ -56,7 +57,7 @@ def system_tests(session, python_version):
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS
+    session.install('mock', 'pytest', *LOCAL_DEPS)
     session.install('../test_utils/', '../bigquery/', '../pubsub/',
                     '../storage/')
     session.install('.')
