@@ -63,19 +63,52 @@ def test_download_full(bucket):
     credentials = credentials.with_scopes(GCS_SCOPE)
     transport = tr_requests.AuthorizedSession(credentials)
 
-    img_file = IMG_FILES[0]
-    with open(img_file, 'rb') as file_obj:
-        actual_contents = file_obj.read()
+    for img_file in IMG_FILES:
+        with open(img_file, 'rb') as file_obj:
+            actual_contents = file_obj.read()
 
-    blob_name = os.path.basename(img_file)
+        blob_name = os.path.basename(img_file)
 
-    # Create the actual download object.
-    media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
-    download = download_mod.Download(media_url)
-    # Consume the resource.
-    response = download.consume(transport)
-    assert response.status_code == http_client.OK
-    assert response.content == actual_contents
-    # Make sure the download is tombstoned.
-    with pytest.raises(ValueError):
-        download.consume(transport)
+        # Create the actual download object.
+        media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
+        download = download_mod.Download(media_url)
+        # Consume the resource.
+        response = download.consume(transport)
+        assert response.status_code == http_client.OK
+        assert response.content == actual_contents
+        # Make sure the download is tombstoned.
+        with pytest.raises(ValueError):
+            download.consume(transport)
+
+
+def test_download_partial(bucket):
+    credentials, _ = google.auth.default()
+    credentials = credentials.with_scopes(GCS_SCOPE)
+    transport = tr_requests.AuthorizedSession(credentials)
+
+    slices = (
+        slice(1024, 16386, None),  # obj[1024:16386]
+        slice(None, 8192, None),  # obj[:8192]
+        slice(-256, None, None),  # obj[-256:]
+        slice(262144, None, None),  # obj[262144:]
+    )
+    for img_file in IMG_FILES:
+        with open(img_file, 'rb') as file_obj:
+            actual_contents = file_obj.read()
+
+        blob_name = os.path.basename(img_file)
+
+        # Create the multiple download "slices".
+        media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
+        downloads = (
+            download_mod.Download(media_url, start=1024, end=16385),
+            download_mod.Download(media_url, end=8191),
+            download_mod.Download(media_url, start=-256),
+            download_mod.Download(media_url, start=262144),
+        )
+        for download, slice_ in zip(downloads, slices):
+            response = download.consume(transport)
+            assert response.status_code == http_client.PARTIAL_CONTENT
+            assert response.content == actual_contents[slice_]
+            with pytest.raises(ValueError):
+                download.consume(transport)
