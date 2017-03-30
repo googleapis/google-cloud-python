@@ -18,7 +18,7 @@
 
 set -e
 
-rm -rf docs/build/* docs/*rst
+rm -rf docs/build/* docs/built/* docs/*rst
 OPTIONS="members,inherited-members,undoc-members,show-inheritance"
 SPHINX_APIDOC_OPTIONS="${OPTIONS}" sphinx-apidoc \
   --separate --force \
@@ -39,5 +39,5 @@ sphinx-build -W \
   -b html \
   -d docs/build/doctrees \
   docs \
-  docs/build/html
-echo "Build finished. The HTML pages are in docs/build/html."
+  docs/built
+echo "Build finished. The HTML pages are in docs/built."
