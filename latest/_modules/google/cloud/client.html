@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.client &mdash; google-cloud 0541dc0 documentation</title>
+  <title>google.cloud.client &mdash; google-cloud e2921c7 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 0541dc0 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud e2921c7 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -353,6 +353,8 @@
 
 <span class="sd">&quot;&quot;&quot;Base classes for client used to interact with Google Cloud APIs.&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">pickle</span> <span class="k">import</span> <span class="n">PicklingError</span>
+
 <span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
 <span class="kn">import</span> <span class="nn">google_auth_httplib2</span>
@@ -465,6 +467,13 @@
             <span class="n">credentials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SCOPE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span> <span class="o">=</span> <span class="n">http</span>
 
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Explicitly state that clients are not pickleable.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="n">PicklingError</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="s1">&#39;Pickling client objects is explicitly not supported.&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Clients have non-trivial state that is local and unpickleable.&#39;</span><span class="p">,</span>
+        <span class="p">]))</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_http</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter for object used for HTTP transport.</span>
@@ -572,7 +581,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0541dc0',
+            VERSION:'e2921c7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
