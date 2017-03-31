@@ -29,5 +29,7 @@ PKG_DIR="$(python ${SCRIPT})"
 
 # Move into the package, build the distribution and upload.
 cd ${PKG_DIR}
-python setup.py sdist bdist_wheel
+python3 setup.py sdist bdist_wheel
+
+pip3 install twine
 twine upload dist/*
