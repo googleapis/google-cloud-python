@@ -15,6 +15,7 @@
 """Print a list of packages which require testing."""
 
 import os
+import re
 import subprocess
 import warnings
 
@@ -22,6 +23,15 @@ import warnings
 CURRENT_DIR = os.path.realpath(os.path.dirname(__file__))
 BASE_DIR = os.path.realpath(os.path.join(CURRENT_DIR, '..', '..'))
 GITHUB_REPO = os.environ.get('GITHUB_REPO', 'google-cloud-python')
+CIRCLE_TAG = os.environ.get('CIRCLE_TAG')
+# NOTE: This reg-ex is copied from ``get_tagged_packages``.
+TAG_RE = re.compile(r"""
+    ^
+    (?P<pkg>
+        (([a-z]+)-)*)            # pkg-name-with-hyphens- (empty allowed)
+    ([0-9]+)\.([0-9]+)\.([0-9]+)  # Version x.y.z (x, y, z all ints)
+    $
+""", re.VERBOSE)
 
 # This is the current set of dependencies by package.
 # As of this writing, the only "real" dependency is that of error_reporting
@@ -143,7 +153,42 @@ def get_changed_packages(file_list):
     return answer
 
 
+def get_tagged_package():
+    """Return the package corresponding to the current tag.
+
+    If there is not tag, will return :data:`None`.
+    """
+    if CIRCLE_TAG is None:
+        return
+
+    match = TAG_RE.match(CIRCLE_TAG)
+    if match is None:
+        return
+
+    pkg_name = match.group('pkg')
+    if pkg_name == '':
+        # NOTE: This corresponds to the "umbrella" tag.
+        return
+
+    return pkg_name.rstrip('-').replace('-', '_')
+
+
+def get_target_packages():
+    """Return a list of target packages to be run in the current build.
+
+    If in a tag build, will run only the package(s) that are tagged, otherwise
+    will run the packages that have file changes in them (or packages that
+    depend on those).
+    """
+    tagged_package = get_tagged_package()
+    if tagged_package is None:
+        file_list = get_changed_files()
+        for package in sorted(get_changed_packages(file_list)):
+            yield package
+    else:
+        yield tagged_package
+
+
 if __name__ == '__main__':
-    file_list = get_changed_files()
-    for package in sorted(get_changed_packages(file_list)):
+    for package in get_target_packages():
        print(package)
