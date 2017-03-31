@@ -32,7 +32,9 @@ function build_docs {
 if [[ "${CIRCLE_BRANCH}" == "master" ]] && [[ -z "${CIRCLE_PR_NUMBER}" ]]; then
     echo "Building new docs on a merged commit."
 elif [[ -n "${CIRCLE_TAG}" ]]; then
-    echo "Building new docs on a tag."
+    echo "Building new docs on a tag (but will not deploy)."
+    build_docs
+    exit $?
 else
     echo "Not on master nor a release tag."
     echo "Building new docs for testing purposes, but not deploying."
