@@ -13,6 +13,9 @@
 # limitations under the License.
 
 """User friendly container for Google Cloud Bigtable Table."""
+from __future__ import absolute_import, division
+
+import six
 
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
@@ -27,7 +30,89 @@ from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
+from google.gax import RetryOptions, BackoffSettings
 
+class IteratorToCallable(object):
+
+    def __init__(self, iterator):
+        self.iterator = iterator
+
+    def next(self):
+        return self.__call__()
+
+    def __next__(self):
+        return self.__call__()
+
+    def __iter__(self):
+        return self
+
+    def __call__(self, *args, **kwargs):
+        return six.next(self.iterator)
+
+
+class CallableToIterator(object):
+
+    def __init__(self, c):
+        self.c = c
+
+    def next(self, *args, **kwargs):
+        return self.__call__(*args, **kwargs)
+
+    def __next__(self, *args, **kwargs):
+        return self.__call__(*args, **kwargs)
+
+    def __iter__(self):
+        return self
+
+    def __call__(self, *args, **kwargs):
+        return self.c(*args, **kwargs)
+
+class ResponseIterator(object):
+    def __init__(self, request_pb, client):
+        self.client = client
+        self.request_pb = request_pb
+        self.stream = client._data_stub.ReadRows(request_pb)
+
+    def next(self, *args, **kwargs):
+        self.__call__(*args, **kwargs)
+
+    def __next__(self, *args, **kwargs):
+        return self.next(*args, **kwargs)
+
+    def __iter__(self):
+        return self
+
+    def __call__(self, *args, **kwargs):
+        print ">>>>>>>>>>>>>>>>"
+        try:
+            out = six.next(self.stream)
+            print out
+            return out
+        except Exception as e:
+            print e
+            self.stream = self.client._data_stub.ReadRows(self.request_pb)
+            raise e
+
+
+DEADLINE_EXCEEDED = 4
+ABORTED = 10
+INTERNAL = 13
+UNAVAILABLE = 14
+
+BACKOFF_SETTINGS = BackoffSettings(
+    initial_retry_delay_millis = 10,
+    retry_delay_multiplier = 2,
+    max_retry_delay_millis = 500,
+    initial_rpc_timeout_millis = 10,
+    rpc_timeout_multiplier = 2,
+    max_rpc_timeout_millis = 1000,
+    total_timeout_millis = 500
+)
+
+RETRY_OPTIONS = RetryOptions(
+    retry_codes = range(100),
+    backoff_settings = BACKOFF_SETTINGS
+)
 
 class Table(object):
     """Representation of a Google Cloud Bigtable Table.
@@ -268,13 +353,18 @@ class Table(object):
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
         """
+        print "???????????????????????????????"
+
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb)
+        response_iterator = ResponseIterator(request_pb, client)
+        retryable_iterator = CallableToIterator(
+            retryable(
+                response_iterator, RETRY_OPTIONS)) 
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
-        return PartialRowsData(response_iterator)
+        return PartialRowsData(retryable_iterator)
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -373,3 +463,110 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         message.rows.row_ranges.add(**range_kwargs)
 
     return message
+
+"""Provides function wrappers that implement retrying."""
+import random
+import time
+
+from google.gax import config, errors
+
+_MILLIS_PER_SECOND = 1000
+
+
+def _has_timeout_settings(backoff_settings):
+    return (backoff_settings.rpc_timeout_multiplier is not None and
+            backoff_settings.max_rpc_timeout_millis is not None and
+            backoff_settings.total_timeout_millis is not None and
+            backoff_settings.initial_rpc_timeout_millis is not None)
+
+
+def add_timeout_arg(a_func, timeout, **kwargs):
+    """Updates a_func so that it gets called with the timeout as its final arg.
+    This converts a callable, a_func, into another callable with an additional
+    positional arg.
+    Args:
+      a_func (callable): a callable to be updated
+      timeout (int): to be added to the original callable as it final positional
+        arg.
+    Returns:
+      callable: the original callable updated to the timeout arg
+    """
+
+    def inner(*args):
+        """Updates args with the timeout."""
+        updated_args = args + (timeout,)
+        return a_func(*updated_args, **kwargs)
+
+    return inner
+
+
+def retryable(a_func, retry_options, **kwargs):
+    """Creates a function equivalent to a_func, but that retries on certain
+    exceptions.
+    Args:
+      a_func (callable): A callable.
+      retry_options (RetryOptions): Configures the exceptions upon which the
+        callable should retry, and the parameters to the exponential backoff
+        retry algorithm.
+    Returns:
+      A function that will retry on exception.
+    """
+    delay_mult = retry_options.backoff_settings.retry_delay_multiplier
+    max_delay_millis = retry_options.backoff_settings.max_retry_delay_millis
+    has_timeout_settings = _has_timeout_settings(retry_options.backoff_settings)
+
+    if has_timeout_settings:
+        timeout_mult = retry_options.backoff_settings.rpc_timeout_multiplier
+        max_timeout = (retry_options.backoff_settings.max_rpc_timeout_millis /
+                       _MILLIS_PER_SECOND)
+        total_timeout = (retry_options.backoff_settings.total_timeout_millis /
+                         _MILLIS_PER_SECOND)
+
+    def inner(*args):
+        """Equivalent to ``a_func``, but retries upon transient failure.
+        Retrying is done through an exponential backoff algorithm configured
+        by the options in ``retry``.
+        """
+        delay = retry_options.backoff_settings.initial_retry_delay_millis
+        exc = errors.RetryError('Retry total timeout exceeded before any'
+                                'response was received')
+        if has_timeout_settings:
+            timeout = (
+                retry_options.backoff_settings.initial_rpc_timeout_millis /
+                _MILLIS_PER_SECOND)
+
+            now = time.time()
+            deadline = now + total_timeout
+        else:
+            timeout = None
+            deadline = None
+        while deadline is None or now < deadline:
+            try:
+                to_call = add_timeout_arg(a_func, timeout, **kwargs)
+                return to_call(*args)
+            except Exception as exception:  # pylint: disable=broad-except
+                code = config.exc_to_code(exception)
+                if "UNAVAILABLE" not in str(exception):
+                    raise errors.RetryError(
+                        'Exception occurred in retry method that was not'
+                        ' classified as transient', exception)
+
+                # pylint: disable=redefined-variable-type
+                exc = errors.RetryError(
+                    'Retry total timeout exceeded with exception', exception)
+
+                # Sleep a random number which will, on average, equal the
+                # expected delay.
+                to_sleep = random.uniform(0, delay * 2)
+                time.sleep(to_sleep / _MILLIS_PER_SECOND)
+                delay = min(delay * delay_mult, max_delay_millis)
+
+                if has_timeout_settings:
+                    now = time.time()
+                    timeout = min(
+                        timeout * timeout_mult, max_timeout, deadline - now)
+
+        raise exc
+
+    return inner
+

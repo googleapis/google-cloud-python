@@ -1,35 +1,60 @@
 import unittest
-import subprocess, os
+import subprocess, os, sys
 
 from google.cloud.bigtable.client import Client
+from google.cloud.bigtable.instance import Instance
+from google.cloud.bigtable.table import Table
 
-class TestTable(unittest.TestCase):
+class TestRetry(unittest.TestCase):
 
-    def test_dummy(self):
-    	self.connect_to_server()
-    	self.assertEqual(1, 2)
+    TEST_SCRIPT = "unit_tests/retry_test.txt"
+
+    def test_retry(self):
+    	table, server = self.connect_to_server()
+        f = open(self.TEST_SCRIPT, 'r')
+        for line in f.readlines():
+            if line.startswith("CLIENT:"):
+                self.process_line(table, line)
+        print "!!!!!!!!!!!"
+        print server.poll()
+        sys.stdout.flush()
+    	server.kill()
+        assertEquals(1, 2)
+
+    def process_line(self, table, line):
+        chunks = line.split(" ")
+        op = chunks[1]
+        if (op == "READ"):
+            self.process_read(table, chunks[2])
+        elif (op == "WRITE"):
+            self.process_write(table, chunks[2])
+        elif (op == "SCAN"):
+            self.process_scan(table, chunks[2], chunks[3])
+
+    def process_read(self, table, payload):
+        pass
+
+    def process_write(self, table, payload):
+        #print "write: " + payload
+        pass
+
+    def process_scan(self, table, range, ids):
+        range_chunks = range.split(",")
+        range_open = range_chunks[0].lstrip("[")
+        range_close = range_chunks[1].rstrip(")")
+        rows = table.read_rows(range_open, range_close)
+        rows.consume_next()
 
     def connect_to_server(self):
-	server = subprocess.Popen(
-		['./unit_tests/retry', '--script=unit_tests/retry_test.txt'],
-		stdout=subprocess.PIPE
-	)
+    	server = subprocess.Popen(
+    		['./unit_tests/retry', '--script=' + self.TEST_SCRIPT],
+    		stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+    	)
 
-	(endpoint, port) = server.stdout.readline().split(":")
-	self.set_config(endpoint, port)
-	client = Client(admin=True)
-	instance = client.instance("test-instance-id", "us-central1-c", "test-instance")
-	try:
-		instance.create()
-	except Exception:
-		instance.delete()
-		instance.create()
-	print instance.list_tables()
-
-    def set_config(self, endpoint, port):
-	os.environ["BIGTABLE_RPC_TIMEOUT_MS_KEY"] = "1000"
-	os.environ["BIGTABLE_NULL_CREDENTIAL_ENABLE_KEY"] = "true"
-	os.environ["BIGTABLE_USE_PLAINTEXT_NEGOTIATION"] = "true"
-	os.environ["BIGTABLE_TABLE_ADMIN_HOST_KEY"] = endpoint
-	os.environ["BIGTABLE_HOST_KEY"] = endpoint
-	os.environ["BIGTABLE_PORT_KEY"] = port
+    	(endpoint, port) = server.stdout.readline().rstrip("\n").split(":")
+    	os.environ["BIGTABLE_EMULATOR_HOST"] = endpoint + ":" + port
+    	client = Client(project="client", admin=True)
+    	instance = Instance("instance", client)	
+    	table = instance.table("table")
+    	return (table, server)
+	
