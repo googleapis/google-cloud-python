@@ -33,8 +33,9 @@ TAG_RE = re.compile(r"""
 TAG_ENV = 'CIRCLE_TAG'
 ERROR_MSG = '%s env. var. not set' % (TAG_ENV,)
 BAD_TAG_MSG = 'Invalid tag name: %s. Expected pkg-name-x.y.z'
-_SCRIPTS_DIR = os.path.dirname(__file__)
-ROOT_DIR = os.path.abspath(os.path.join(_SCRIPTS_DIR, '..'))
+CIRCLE_CI_SCRIPTS_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.realpath(
+    os.path.join(CIRCLE_CI_SCRIPTS_DIR, '..', '..', '..'))
 
 
 def main():
