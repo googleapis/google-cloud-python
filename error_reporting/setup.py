@@ -52,7 +52,7 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.24.0, < 0.25dev',
-    'google-cloud-logging >= 1.0.0, < 2.0dev',
+    'google-cloud-logging >= 0.24.0, < 0.25dev',
     'gapic-google-cloud-error-reporting-v1beta1 >= 0.15.0, < 0.16dev'
 ]
 
