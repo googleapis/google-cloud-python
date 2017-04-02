@@ -38,7 +38,7 @@ class Connection(_http.JSONConnection):
     API_BASE_URL = 'https://speech.googleapis.com'
     """The base of the API call URL."""
 
-    API_VERSION = 'v1beta1'
+    API_VERSION = 'v1'
     """The version of the API, used in building the API call's URL."""
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}/{path}'
@@ -59,13 +59,13 @@ class HTTPSpeechAPI(object):
         self._client = client
         self._connection = Connection(client)
 
-    def async_recognize(self, sample, language_code=None,
+    def async_recognize(self, sample, language_code,
                         max_alternatives=None, profanity_filter=None,
                         speech_context=None):
         """Asychronous Recognize request to Google Speech API.
 
         .. _async_recognize: https://cloud.google.com/speech/reference/\
-                             rest/v1beta1/speech/asyncrecognize
+                             rest/v1/speech/asyncrecognize
 
         See `async_recognize`_.
 
@@ -73,9 +73,8 @@ class HTTPSpeechAPI(object):
         :param sample: Instance of ``Sample`` containing audio information.
 
         :type language_code: str
-        :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+        :param language_code: The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -108,15 +107,15 @@ class HTTPSpeechAPI(object):
             method='POST', path='speech:asyncrecognize', data=data)
 
         operation = Operation.from_dict(api_response, self._client)
-        operation.caller_metadata['request_type'] = 'AsyncRecognize'
+        operation.caller_metadata['request_type'] = 'LongRunningRecognize'
         return operation
 
-    def sync_recognize(self, sample, language_code=None, max_alternatives=None,
+    def sync_recognize(self, sample, language_code, max_alternatives=None,
                        profanity_filter=None, speech_context=None):
         """Synchronous Speech Recognition.
 
         .. _sync_recognize: https://cloud.google.com/speech/reference/\
-                            rest/v1beta1/speech/syncrecognize
+                            rest/v1/speech/syncrecognize
 
         See `sync_recognize`_.
 
@@ -125,8 +124,7 @@ class HTTPSpeechAPI(object):
 
         :type language_code: str
         :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -173,7 +171,7 @@ class HTTPSpeechAPI(object):
             raise ValueError('No results were returned from the API')
 
 
-def _build_request_data(sample, language_code=None, max_alternatives=None,
+def _build_request_data(sample, language_code, max_alternatives=None,
                         profanity_filter=None, speech_context=None):
     """Builds the request data before making API request.
 
@@ -181,9 +179,8 @@ def _build_request_data(sample, language_code=None, max_alternatives=None,
     :param sample: Instance of ``Sample`` containing audio information.
 
     :type language_code: str
-    :param language_code: (Optional) The language of the supplied audio as
-                          BCP-47 language tag. Example: ``'en-GB'``.
-                          If omitted, defaults to ``'en-US'``.
+    :param language_code: The language of the supplied audio as
+                          BCP-47 language tag. Example: ``'en-US'``.
 
     :type max_alternatives: int
     :param max_alternatives: (Optional) Maximum number of recognition
@@ -216,11 +213,12 @@ def _build_request_data(sample, language_code=None, max_alternatives=None,
     else:
         audio = {'uri': sample.source_uri}
 
-    config = {'encoding': sample.encoding,
-              'sampleRate': sample.sample_rate}
+    config = {
+        'encoding': sample.encoding,
+        'languageCode': language_code,
+        'sampleRate': sample.sample_rate,
+    }
 
-    if language_code is not None:
-        config['languageCode'] = language_code
     if max_alternatives is not None:
         config['maxAlternatives'] = max_alternatives
     if profanity_filter is not None:

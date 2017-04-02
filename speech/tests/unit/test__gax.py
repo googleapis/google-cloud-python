@@ -38,7 +38,7 @@ class TestGAPICSpeechAPI(unittest.TestCase):
         'google.cloud._helpers.make_secure_channel',
         return_value=mock.sentinel.channel)
     @mock.patch(
-        'google.cloud.gapic.speech.v1beta1.speech_client.SpeechClient',
+        'google.cloud.gapic.speech.v1.speech_client.SpeechClient',
         SERVICE_ADDRESS='hey.you.guys')
     @mock.patch(
         'google.cloud._helpers.make_secure_stub',
@@ -89,7 +89,7 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
     def test_ctor(self):
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
-        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+        from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
             RecognitionConfig, SpeechContext, StreamingRecognitionConfig,
             StreamingRecognizeRequest)
 
@@ -148,7 +148,7 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         from io import BytesIO
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
-        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+        from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
             StreamingRecognitionConfig, StreamingRecognizeRequest)
 
         sample = Sample(

@@ -15,15 +15,15 @@
 """GAX/GAPIC module for managing Speech API requests."""
 
 
-from google.cloud.gapic.speech.v1beta1.speech_client import SpeechClient
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+from google.cloud.gapic.speech.v1.speech_client import SpeechClient
+from google.cloud.proto.speech.v1.cloud_speech_pb2 import RecognitionAudio
+from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
     RecognitionConfig)
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
     SpeechContext)
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
     StreamingRecognitionConfig)
-from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
     StreamingRecognizeRequest)
 from google.longrunning import operations_grpc
 
@@ -62,13 +62,13 @@ class GAPICSpeechAPI(object):
             OPERATIONS_API_HOST,
         )
 
-    def async_recognize(self, sample, language_code=None,
+    def async_recognize(self, sample, language_code,
                         max_alternatives=None, profanity_filter=None,
                         speech_context=None):
         """Asychronous Recognize request to Google Speech API.
 
         .. _async_recognize: https://cloud.google.com/speech/reference/\
-                             rest/v1beta1/speech/asyncrecognize
+                             rest/v1/speech/asyncrecognize
 
         See `async_recognize`_.
 
@@ -76,9 +76,8 @@ class GAPICSpeechAPI(object):
         :param sample: Instance of ``Sample`` containing audio information.
 
         :type language_code: str
-        :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+        :param language_code: The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -118,7 +117,7 @@ class GAPICSpeechAPI(object):
 
         return Operation.from_pb(operation_future.last_operation_data(), self)
 
-    def streaming_recognize(self, sample, language_code=None,
+    def streaming_recognize(self, sample, language_code,
                             max_alternatives=None, profanity_filter=None,
                             speech_context=None, single_utterance=False,
                             interim_results=False):
@@ -136,9 +135,8 @@ class GAPICSpeechAPI(object):
         :param sample: Instance of ``Sample`` containing audio information.
 
         :type language_code: str
-        :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+        :param language_code: The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -190,7 +188,7 @@ class GAPICSpeechAPI(object):
         :raises: :class:`ValueError` if sample.content is not a file-like
                  object. :class:`ValueError` if stream has closed.
 
-        :rtype: :class:`~google.cloud.grpc.speech.v1beta1\
+        :rtype: :class:`~google.cloud.grpc.speech.v1\
                        .cloud_speech_pb2.StreamingRecognizeResponse`
         :returns: ``StreamingRecognizeResponse`` instances.
         """
@@ -207,12 +205,12 @@ class GAPICSpeechAPI(object):
         responses = api.streaming_recognize(requests)
         return responses
 
-    def sync_recognize(self, sample, language_code=None, max_alternatives=None,
+    def sync_recognize(self, sample, language_code, max_alternatives=None,
                        profanity_filter=None, speech_context=None):
         """Synchronous Speech Recognition.
 
         .. _sync_recognize: https://cloud.google.com/speech/reference/\
-                            rest/v1beta1/speech/syncrecognize
+                            rest/v1/speech/syncrecognize
 
         See `sync_recognize`_.
 
@@ -220,9 +218,8 @@ class GAPICSpeechAPI(object):
         :param sample: Instance of ``Sample`` containing audio information.
 
         :type language_code: str
-        :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+        :param language_code: The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -269,7 +266,7 @@ class GAPICSpeechAPI(object):
         return [Result.from_pb(result) for result in api_response.results]
 
 
-def _stream_requests(sample, language_code=None, max_alternatives=None,
+def _stream_requests(sample, language_code, max_alternatives=None,
                      profanity_filter=None, speech_context=None,
                      single_utterance=None, interim_results=None):
     """Generate stream of requests from sample.
@@ -278,9 +275,8 @@ def _stream_requests(sample, language_code=None, max_alternatives=None,
     :param sample: Instance of ``Sample`` containing audio information.
 
     :type language_code: str
-    :param language_code: (Optional) The language of the supplied audio as
-                          BCP-47 language tag. Example: ``'en-GB'``.
-                          If omitted, defaults to ``'en-US'``.
+    :param language_code: The language of the supplied audio as
+                          BCP-47 language tag. Example: ``'en-US'``.
 
     :type max_alternatives: int
     :param max_alternatives: (Optional) Maximum number of recognition
@@ -409,7 +405,7 @@ def _make_streaming_request(sample, language_code,
                             returned.
 
     :rtype:
-        :class:`~grpc.speech.v1beta1.cloud_speech_pb2.StreamingRecognizeRequest`
+        :class:`~grpc.speech.v1.cloud_speech_pb2.StreamingRecognizeRequest`
     :returns: Instance of ``StreamingRecognizeRequest``.
     """
     config = RecognitionConfig(

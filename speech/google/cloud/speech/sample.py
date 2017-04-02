@@ -137,7 +137,7 @@ class Sample(object):
         """Asychronous Recognize request to Google Speech API.
 
         .. _async_recognize: https://cloud.google.com/speech/reference/\
-                             rest/v1beta1/speech/asyncrecognize
+                             rest/v1/speech/asyncrecognize
 
         See `async_recognize`_.
 
@@ -265,7 +265,7 @@ class Sample(object):
         """Synchronous Speech Recognition.
 
         .. _sync_recognize: https://cloud.google.com/speech/reference/\
-                            rest/v1beta1/speech/syncrecognize
+                            rest/v1/speech/syncrecognize
 
         See `sync_recognize`_.
 

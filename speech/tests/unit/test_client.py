@@ -24,7 +24,7 @@ def _make_credentials():
 
 
 def _make_result(alternatives=()):
-    from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+    from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
     return cloud_speech_pb2.SpeechRecognitionResult(
         alternatives=[
@@ -37,7 +37,7 @@ def _make_result(alternatives=()):
 
 
 def _make_streaming_result(alternatives=(), is_final=True, stability=1.0):
-    from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+    from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
     return cloud_speech_pb2.StreamingRecognitionResult(
         alternatives=[
@@ -52,7 +52,7 @@ def _make_streaming_result(alternatives=(), is_final=True, stability=1.0):
 
 
 def _make_streaming_response(*results):
-    from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+    from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
     response = cloud_speech_pb2.StreamingRecognizeResponse(
         results=results,
@@ -61,9 +61,9 @@ def _make_streaming_response(*results):
 
 
 def _make_sync_response(*results):
-    from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+    from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
-    response = cloud_speech_pb2.SyncRecognizeResponse(
+    response = cloud_speech_pb2.RecognizeResponse(
         results=results,
     )
     return response
@@ -381,7 +381,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(operation, Operation)
         self.assertIs(operation.client, client)
         self.assertEqual(
-            operation.caller_metadata, {'request_type': 'AsyncRecognize'})
+            operation.caller_metadata, {'request_type': 'LongRunningRecognize'})
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.metadata)
 
@@ -735,14 +735,14 @@ class _MockGAPICSpeechAPI(object):
         from google.gapic.longrunning.operations_client import OperationsClient
         from google.gax import _OperationFuture
         from google.longrunning.operations_pb2 import Operation
-        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
-            AsyncRecognizeResponse)
+        from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
+            LongRunningRecognizeResponse)
 
         self.config = config
         self.audio = audio
         operations_client = mock.Mock(spec=OperationsClient)
         operation_future = _OperationFuture(
-            Operation(), operations_client, AsyncRecognizeResponse, {})
+            Operation(), operations_client, LongRunningRecognizeResponse, {})
         return operation_future
 
     def sync_recognize(self, config, audio):
