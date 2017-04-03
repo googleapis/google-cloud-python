@@ -420,7 +420,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
         :returns: JSON mapping
         """
         value = self.value
-        converter = _SCALAR_VALUE_TO_JSON.get(.type_)
+        converter = _SCALAR_VALUE_TO_JSON.get(self.type_)
         if converter is not None:
             value = converter(value)
         resource = {
