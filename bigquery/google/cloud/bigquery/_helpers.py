@@ -342,7 +342,7 @@ class AbstractQueryParameter(object):
     """
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct paramter from JSON resource.
+        """Factory: construct parameter from JSON resource.
 
         :type resource: dict
         :param resource: JSON mapping of parameter
@@ -364,7 +364,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
 
     :type name: str or None
     :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 paramter can only be addressed via position (``?``).
+                 parameter can only be addressed via position (``?``).
 
     :type type_: str
     :param type_: name of parameter type.  One of 'STRING', 'INT64',
@@ -381,11 +381,11 @@ class ScalarQueryParameter(AbstractQueryParameter):
 
     @classmethod
     def positional(cls, type_, value):
-        """Factory for positional paramters.
+        """Factory for positional paramater.
 
         :type type_: str
         :param type_:
-            name of paramter type.  One of 'STRING', 'INT64',
+            name of parameter type.  One of 'STRING', 'INT64',
             'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
 
         :type value: str, int, float, bool, :class:`datetime.datetime`, or
@@ -399,7 +399,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct paramter from JSON resource.
+        """Factory: construct parameter from JSON resource.
 
         :type resource: dict
         :param resource: JSON mapping of parameter
@@ -441,7 +441,7 @@ class ArrayQueryParameter(AbstractQueryParameter):
 
     :type name: str or None
     :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 paramter can only be addressed via position (``?``).
+                 parameter can only be addressed via position (``?``).
 
     :type array_type: str
     :param array_type:
@@ -458,7 +458,7 @@ class ArrayQueryParameter(AbstractQueryParameter):
 
     @classmethod
     def positional(cls, array_type, values):
-        """Factory for positional paramters.
+        """Factory for positional parameters.
 
         :type array_type: str
         :param array_type:
@@ -475,7 +475,7 @@ class ArrayQueryParameter(AbstractQueryParameter):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct paramter from JSON resource.
+        """Factory: construct parameter from JSON resource.
 
         :type resource: dict
         :param resource: JSON mapping of parameter
@@ -529,7 +529,7 @@ class StructQueryParameter(AbstractQueryParameter):
 
     :type name: str or None
     :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 paramter can only be addressed via position (``?``).
+                 parameter can only be addressed via position (``?``).
 
     :type sub_params: tuple of :class:`ScalarQueryParameter`
     :param sub_params: the sub-parameters for the struct
@@ -551,7 +551,7 @@ class StructQueryParameter(AbstractQueryParameter):
 
     @classmethod
     def positional(cls, *sub_params):
-        """Factory for positional paramters.
+        """Factory for positional parameters.
 
         :type sub_params: tuple of :class:`ScalarQueryParameter`
         :param sub_params: the sub-parameters for the struct
@@ -563,7 +563,7 @@ class StructQueryParameter(AbstractQueryParameter):
 
     @classmethod
     def from_api_repr(cls, resource):
-        """Factory: construct paramter from JSON resource.
+        """Factory: construct parameter from JSON resource.
 
         :type resource: dict
         :param resource: JSON mapping of parameter
@@ -635,7 +635,7 @@ class QueryParametersProperty(object):
         :rtype: list of instances of classes derived from
                 :class:`AbstractQueryParameter`.
         :returns: the descriptor, if accessed via the class, or the instance's
-                  query paramters.
+                  query parameters.
         """
         if instance is None:
             return self
