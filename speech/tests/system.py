@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import time
 import unittest
 
 from google.cloud import exceptions
@@ -46,6 +47,9 @@ def _wait_until_complete(operation, max_attempts=10):
     :rtype: bool
     :returns: Boolean indicating if the operation is complete.
     """
+    # This bizarre delay is necessary because the v1 API seems to return
+    # the v1beta1 type URL sometimes if you poll too soon.
+    time.sleep(3)
     retry = RetryResult(_operation_complete, max_tries=max_attempts)
     return retry(operation.poll)()
 
@@ -180,7 +184,6 @@ class TestSpeechClient(unittest.TestCase):
 
         operation = self._make_async_request(content=content,
                                              max_alternatives=2)
-
         _wait_until_complete(operation)
         self.assertEqual(len(operation.results), 1)
         alternatives = operation.results[0].alternatives
