@@ -14,7 +14,6 @@
 
 """Sample class to handle content for Google Cloud Speech API."""
 
-
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.result import StreamingSpeechResult
 
@@ -41,13 +40,13 @@ class Sample(object):
                      :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,
                      :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`
 
-    :type sample_rate: int
-    :param sample_rate: Sample rate in Hertz of the audio data sent in all
-                        requests. Valid values are: 8000-48000. For best
-                        results, set the sampling rate of the audio source
-                        to 16000 Hz. If that's not possible, use the
-                        native sample rate of the audio source (instead of
-                        re-sampling).
+    :type sample_rate_hertz: int
+    :param sample_rate_hertz: Sample rate in Hertz of the audio data sent in
+                              all requests. Valid values are: 8000-48000. For
+                              best results, set the sampling rate of the audio
+                              source to 16000 Hz. If that's not possible, use
+                              the native sample rate of the audio source
+                              (instead of re-sampling).
 
     :type client: :class:`~google.cloud.speech.client.Client`
     :param client: (Optional) The client that owns this instance of sample.
@@ -55,7 +54,7 @@ class Sample(object):
     default_encoding = Encoding.FLAC
 
     def __init__(self, content=None, source_uri=None, stream=None,
-                 encoding=None, sample_rate=None, client=None):
+                 encoding=None, sample_rate_hertz=None, client=None):
         self._client = client
 
         sources = [content is not None, source_uri is not None,
@@ -68,10 +67,11 @@ class Sample(object):
         self._source_uri = source_uri
         self._stream = stream
 
-        if sample_rate is not None and not 8000 <= sample_rate <= 48000:
-            raise ValueError('The value of sample_rate must be between 8000'
-                             ' and 48000.')
-        self._sample_rate = sample_rate
+        if (sample_rate_hertz is not None and
+                    not 8000 <= sample_rate_hertz <= 48000):
+            raise ValueError('The value of sample_rate must be between 8000 '
+                             'and 48000.')
+        self._sample_rate_hertz = sample_rate_hertz
 
         if encoding is not None and getattr(Encoding, encoding, False):
             self._encoding = getattr(Encoding, encoding)
@@ -85,7 +85,7 @@ class Sample(object):
         :rtype: int
         :returns: Optimized chunk size.
         """
-        return int(self.sample_rate / 10.0)
+        return int(self.sample_rate_hertz / 10.0)
 
     @property
     def source_uri(self):
@@ -106,13 +106,13 @@ class Sample(object):
         return self._content
 
     @property
-    def sample_rate(self):
+    def sample_rate_hertz(self):
         """Sample rate integer.
 
         :rtype: int
         :returns: Integer between 8000 and 48,000.
         """
-        return self._sample_rate
+        return self._sample_rate_hertz
 
     @property
     def stream(self):
@@ -132,19 +132,18 @@ class Sample(object):
         """
         return self._encoding
 
-    def async_recognize(self, language_code=None, max_alternatives=None,
-                        profanity_filter=None, speech_context=None):
+    def long_running_recognize(self, language_code, max_alternatives=None,
+                               profanity_filter=None, speech_contexts=()):
         """Asychronous Recognize request to Google Speech API.
 
-        .. _async_recognize: https://cloud.google.com/speech/reference/\
-                             rest/v1/speech/asyncrecognize
+        .. _long_running_recognize: https://cloud.google.com/speech/reference/\
+                                    rest/v1/speech/longrunningrecognize
 
-        See `async_recognize`_.
+        See `long_running_recognize`_.
 
         :type language_code: str
         :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -160,13 +159,13 @@ class Sample(object):
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
 
-        :type speech_context: list
-        :param speech_context: A list of strings (max 50) containing words and
-                               phrases "hints" so that the speech recognition
-                               is more likely to recognize them. This can be
-                               used to improve the accuracy for specific words
-                               and phrases. This can also be used to add new
-                               words to the vocabulary of the recognizer.
+        :type speech_contexts: list
+        :param speech_contexts: A list of strings (max 50) containing words and
+                                phrases "hints" so that the speech recognition
+                                is more likely to recognize them. This can be
+                                used to improve the accuracy for specific words
+                                and phrases. This can also be used to add new
+                                words to the vocabulary of the recognizer.
 
         :rtype: :class:`~google.cloud.speech.operation.Operation`
         :returns: Operation for asynchronous request to Google Speech API.
@@ -175,12 +174,13 @@ class Sample(object):
             raise ValueError('Only LINEAR16 encoding is supported by '
                              'asynchronous speech requests.')
         api = self._client.speech_api
-        return api.async_recognize(self, language_code, max_alternatives,
-                                   profanity_filter, speech_context)
+        return api.long_running_recognize(
+            self, language_code, max_alternatives, profanity_filter,
+            speech_contexts)
 
-    def streaming_recognize(self, language_code=None,
+    def streaming_recognize(self, language_code,
                             max_alternatives=None, profanity_filter=None,
-                            speech_context=None, single_utterance=False,
+                            speech_contexts=(), single_utterance=False,
                             interim_results=False):
         """Streaming speech recognition.
 
@@ -194,9 +194,8 @@ class Sample(object):
                 containing results and metadata from the streaming request.
 
         :type language_code: str
-        :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+        :param language_code: The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -212,13 +211,13 @@ class Sample(object):
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
 
-        :type speech_context: list
-        :param speech_context: A list of strings (max 50) containing words and
-                               phrases "hints" so that the speech recognition
-                               is more likely to recognize them. This can be
-                               used to improve the accuracy for specific words
-                               and phrases. This can also be used to add new
-                               words to the vocabulary of the recognizer.
+        :type speech_contexts: list
+        :param speech_contexts: A list of strings (max 50) containing words and
+                                phrases "hints" so that the speech recognition
+                                is more likely to recognize them. This can be
+                                used to improve the accuracy for specific words
+                                and phrases. This can also be used to add new
+                                words to the vocabulary of the recognizer.
 
         :type single_utterance: bool
         :param single_utterance: (Optional) If false or omitted, the recognizer
@@ -253,26 +252,25 @@ class Sample(object):
         api = self._client.speech_api
         responses = api.streaming_recognize(self, language_code,
                                             max_alternatives, profanity_filter,
-                                            speech_context, single_utterance,
+                                            speech_contexts, single_utterance,
                                             interim_results)
         for response in responses:
             for result in response.results:
                 if result.is_final or interim_results:
                     yield StreamingSpeechResult.from_pb(result)
 
-    def sync_recognize(self, language_code=None, max_alternatives=None,
-                       profanity_filter=None, speech_context=None):
+    def recognize(self, language_code, max_alternatives=None,
+                  profanity_filter=None, speech_contexts=()):
         """Synchronous Speech Recognition.
 
-        .. _sync_recognize: https://cloud.google.com/speech/reference/\
-                            rest/v1/speech/syncrecognize
+        .. _recognize: https://cloud.google.com/speech/reference/\
+                       rest/v1/speech/recognize
 
-        See `sync_recognize`_.
+        See `recognize`_.
 
         :type language_code: str
-        :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+        :param language_code: The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -288,13 +286,13 @@ class Sample(object):
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
 
-        :type speech_context: list
-        :param speech_context: A list of strings (max 50) containing words and
-                               phrases "hints" so that the speech recognition
-                               is more likely to recognize them. This can be
-                               used to improve the accuracy for specific words
-                               and phrases. This can also be used to add new
-                               words to the vocabulary of the recognizer.
+        :type speech_contexts: list
+        :param speech_contexts: A list of strings (max 50) containing words and
+                                phrases "hints" so that the speech recognition
+                                is more likely to recognize them. This can be
+                                used to improve the accuracy for specific words
+                                and phrases. This can also be used to add new
+                                words to the vocabulary of the recognizer.
 
         :rtype: list
         :returns: A list of dictionaries. One dict for each alternative. Each
@@ -306,5 +304,5 @@ class Sample(object):
                     between 0 and 1.
         """
         api = self._client.speech_api
-        return api.sync_recognize(self, language_code, max_alternatives,
-                                  profanity_filter, speech_context)
+        return api.recognize(self, language_code, max_alternatives,
+                             profanity_filter, speech_contexts)

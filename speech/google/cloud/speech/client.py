@@ -68,7 +68,7 @@ class Client(BaseClient):
             self._use_grpc = _use_grpc
 
     def sample(self, content=None, source_uri=None, stream=None, encoding=None,
-               sample_rate=None):
+               sample_rate_hertz=None):
         """Factory: construct Sample to use when making recognize requests.
 
         :type content: bytes
@@ -90,19 +90,21 @@ class Client(BaseClient):
                          :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,
                          :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`
 
-        :type sample_rate: int
-        :param sample_rate: Sample rate in Hertz of the audio data sent in all
-                            requests. Valid values are: 8000-48000. For best
-                            results, set the sampling rate of the audio source
-                            to 16000 Hz. If that's not possible, use the
-                            native sample rate of the audio source (instead of
-                            re-sampling).
+        :type sample_rate_hertz: int
+        :param sample_rate_hertz: Sample rate in Hertz of the audio data sent
+                                  in all requests. Valid values are:
+                                  8000-48000. For best results, set the
+                                  sampling rate of the audio source
+                                  to 16000 Hz. If that's not possible, use the
+                                  native sample rate of the audio source
+                                  (instead of re-sampling).
 
         :rtype: :class:`~google.cloud.speech.sample.Sample`
         :returns: Instance of ``Sample``.
         """
         return Sample(content=content, source_uri=source_uri, stream=stream,
-                      encoding=encoding, sample_rate=sample_rate, client=self)
+                      encoding=encoding, sample_rate_hertz=sample_rate_hertz,
+                      client=self)
 
     @property
     def speech_api(self):

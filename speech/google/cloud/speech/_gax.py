@@ -14,7 +14,6 @@
 
 """GAX/GAPIC module for managing Speech API requests."""
 
-
 from google.cloud.gapic.speech.v1.speech_client import SpeechClient
 from google.cloud.proto.speech.v1.cloud_speech_pb2 import RecognitionAudio
 from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
@@ -62,15 +61,15 @@ class GAPICSpeechAPI(object):
             OPERATIONS_API_HOST,
         )
 
-    def async_recognize(self, sample, language_code,
-                        max_alternatives=None, profanity_filter=None,
-                        speech_context=None):
-        """Asychronous Recognize request to Google Speech API.
+    def long_running_recognize(self, sample, language_code,
+                               max_alternatives=None, profanity_filter=None,
+                               speech_contexts=()):
+        """Long-running Recognize request to Google Speech API.
 
-        .. _async_recognize: https://cloud.google.com/speech/reference/\
-                             rest/v1/speech/asyncrecognize
+        .. _long_running_recognize: https://cloud.google.com/speech/reference/\
+                                    rest/v1/speech/longrunningrecognize
 
-        See `async_recognize`_.
+        See `long_running_recognize`_.
 
         :type sample: :class:`~google.cloud.speech.sample.Sample`
         :param sample: Instance of ``Sample`` containing audio information.
@@ -93,8 +92,8 @@ class GAPICSpeechAPI(object):
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
 
-        :type speech_context: list
-        :param speech_context: A list of strings (max 50) containing words and
+        :type speech_contexts: list
+        :param speech_contexts: A list of strings (max 50) containing words and
                                phrases "hints" so that the speech recognition
                                is more likely to recognize them. This can be
                                used to improve the accuracy for specific words
@@ -105,21 +104,27 @@ class GAPICSpeechAPI(object):
         :returns: Instance of ``Operation`` to poll for results.
         """
         config = RecognitionConfig(
-            encoding=sample.encoding, sample_rate=sample.sample_rate,
-            language_code=language_code, max_alternatives=max_alternatives,
+            encoding=sample.encoding,
+            language_code=language_code,
+            max_alternatives=max_alternatives,
             profanity_filter=profanity_filter,
-            speech_context=SpeechContext(phrases=speech_context))
+            sample_rate_hertz=sample.sample_rate_hertz,
+            speech_contexts=[SpeechContext(phrases=speech_contexts)],
+        )
 
         audio = RecognitionAudio(content=sample.content,
                                  uri=sample.source_uri)
         api = self._gapic_api
-        operation_future = api.async_recognize(config=config, audio=audio)
+        operation_future = api.long_running_recognize(
+            audio=audio,
+            config=config,
+        )
 
         return Operation.from_pb(operation_future.last_operation_data(), self)
 
     def streaming_recognize(self, sample, language_code,
                             max_alternatives=None, profanity_filter=None,
-                            speech_context=None, single_utterance=False,
+                            speech_contexts=(), single_utterance=False,
                             interim_results=False):
         """Streaming speech recognition.
 
@@ -152,8 +157,8 @@ class GAPICSpeechAPI(object):
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
 
-        :type speech_context: list
-        :param speech_context: A list of strings (max 50) containing words and
+        :type speech_contexts: list
+        :param speech_contexts: A list of strings (max 50) containing words and
                                phrases "hints" so that the speech recognition
                                is more likely to recognize them. This can be
                                used to improve the accuracy for specific words
@@ -198,21 +203,21 @@ class GAPICSpeechAPI(object):
         requests = _stream_requests(sample, language_code=language_code,
                                     max_alternatives=max_alternatives,
                                     profanity_filter=profanity_filter,
-                                    speech_context=speech_context,
+                                    speech_contexts=speech_contexts,
                                     single_utterance=single_utterance,
                                     interim_results=interim_results)
         api = self._gapic_api
         responses = api.streaming_recognize(requests)
         return responses
 
-    def sync_recognize(self, sample, language_code, max_alternatives=None,
-                       profanity_filter=None, speech_context=None):
+    def recognize(self, sample, language_code, max_alternatives=None,
+                  profanity_filter=None, speech_contexts=()):
         """Synchronous Speech Recognition.
 
-        .. _sync_recognize: https://cloud.google.com/speech/reference/\
-                            rest/v1/speech/syncrecognize
+        .. _recognize: https://cloud.google.com/speech/reference/\
+                       rest/v1/speech/recognize
 
-        See `sync_recognize`_.
+        See `recognize`_.
 
         :type sample: :class:`~google.cloud.speech.sample.Sample`
         :param sample: Instance of ``Sample`` containing audio information.
@@ -235,8 +240,8 @@ class GAPICSpeechAPI(object):
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
 
-        :type speech_context: list
-        :param speech_context: A list of strings (max 50) containing words and
+        :type speech_contexts: list
+        :param speech_contexts: A list of strings (max 50) containing words and
                                phrases "hints" so that the speech recognition
                                is more likely to recognize them. This can be
                                used to improve the accuracy for specific words
@@ -249,14 +254,17 @@ class GAPICSpeechAPI(object):
         :raises: ValueError if there are no results.
         """
         config = RecognitionConfig(
-            encoding=sample.encoding, sample_rate=sample.sample_rate,
-            language_code=language_code, max_alternatives=max_alternatives,
+            encoding=sample.encoding,
+            language_code=language_code,
+            max_alternatives=max_alternatives,
             profanity_filter=profanity_filter,
-            speech_context=SpeechContext(phrases=speech_context))
+            sample_rate_hertz=sample.sample_rate_hertz,
+            speech_contexts=[SpeechContext(phrases=speech_contexts)],
+        )
         audio = RecognitionAudio(content=sample.content,
                                  uri=sample.source_uri)
         api = self._gapic_api
-        api_response = api.sync_recognize(config=config, audio=audio)
+        api_response = api.recognize(config=config, audio=audio)
 
         # Sanity check: If we got no results back, raise an error.
         if len(api_response.results) == 0:
@@ -267,7 +275,7 @@ class GAPICSpeechAPI(object):
 
 
 def _stream_requests(sample, language_code, max_alternatives=None,
-                     profanity_filter=None, speech_context=None,
+                     profanity_filter=None, speech_contexts=(),
                      single_utterance=None, interim_results=None):
     """Generate stream of requests from sample.
 
@@ -292,13 +300,14 @@ def _stream_requests(sample, language_code, max_alternatives=None,
                              asterisks, e.g. ``'f***'``. If False or
                              omitted, profanities won't be filtered out.
 
-    :type speech_context: list
-    :param speech_context: (Optional) A list of strings (max 50) containing
-                           words and phrases "hints" so that the speech
-                           recognition is more likely to recognize them.
-                           This can be used to improve the accuracy for
-                           specific words and phrases. This can also be used to
-                           add new words to the vocabulary of the recognizer.
+    :type speech_contexts: list
+    :param speech_contexts: (Optional) A list of strings (max 50) containing
+                            words and phrases "hints" so that the speech
+                            recognition is more likely to recognize them.
+                            This can be used to improve the accuracy for
+                            specific words and phrases. This can also be used
+                            to add new words to the vocabulary of the
+                            recognizer.
 
     :type single_utterance: bool
     :param single_utterance: (Optional) If false or omitted, the recognizer
@@ -329,7 +338,7 @@ def _stream_requests(sample, language_code, max_alternatives=None,
     config_request = _make_streaming_request(
         sample, language_code=language_code, max_alternatives=max_alternatives,
         profanity_filter=profanity_filter,
-        speech_context=SpeechContext(phrases=speech_context),
+        speech_contexts=[SpeechContext(phrases=speech_contexts)],
         single_utterance=single_utterance, interim_results=interim_results)
 
     # The config request MUST go first and not contain any audio data.
@@ -344,7 +353,7 @@ def _stream_requests(sample, language_code, max_alternatives=None,
 
 def _make_streaming_request(sample, language_code,
                             max_alternatives, profanity_filter,
-                            speech_context, single_utterance,
+                            speech_contexts, single_utterance,
                             interim_results):
     """Build streaming request.
 
@@ -370,8 +379,8 @@ def _make_streaming_request(sample, language_code,
                              asterisks, e.g. ``'f***'``. If False or
                              omitted, profanities won't be filtered out.
 
-    :type speech_context: list
-    :param speech_context: A list of strings (max 50) containing words and
+    :type speech_contexts: list
+    :param speech_contexts: A list of strings (max 50) containing words and
                            phrases "hints" so that the speech recognition
                            is more likely to recognize them. This can be
                            used to improve the accuracy for specific words
@@ -409,9 +418,13 @@ def _make_streaming_request(sample, language_code,
     :returns: Instance of ``StreamingRecognizeRequest``.
     """
     config = RecognitionConfig(
-        encoding=sample.encoding, sample_rate=sample.sample_rate,
-        language_code=language_code, max_alternatives=max_alternatives,
-        profanity_filter=profanity_filter, speech_context=speech_context)
+        encoding=sample.encoding,
+        language_code=language_code,
+        max_alternatives=max_alternatives,
+        profanity_filter=profanity_filter,
+        sample_rate_hertz=sample.sample_rate_hertz,
+        speech_contexts=speech_contexts,
+    )
 
     streaming_config = StreamingRecognitionConfig(
         config=config, single_utterance=single_utterance,

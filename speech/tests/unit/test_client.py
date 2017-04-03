@@ -106,17 +106,17 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             source_uri=self.AUDIO_SOURCE_URI, encoding=speech.Encoding.FLAC,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
         self.assertIsInstance(sample, Sample)
         self.assertEqual(sample.source_uri, self.AUDIO_SOURCE_URI)
-        self.assertEqual(sample.sample_rate, self.SAMPLE_RATE)
+        self.assertEqual(sample.sample_rate_hertz, self.SAMPLE_RATE)
         self.assertEqual(sample.encoding, speech.Encoding.FLAC)
 
         content_sample = client.sample(
             content=self.AUDIO_CONTENT, encoding=speech.Encoding.FLAC,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
         self.assertEqual(content_sample.content, self.AUDIO_CONTENT)
-        self.assertEqual(content_sample.sample_rate, self.SAMPLE_RATE)
+        self.assertEqual(content_sample.sample_rate_hertz, self.SAMPLE_RATE)
         self.assertEqual(content_sample.encoding, speech.Encoding.FLAC)
 
     def test_sync_recognize_content_with_optional_params_no_gax(self):
@@ -134,7 +134,7 @@ class TestClient(unittest.TestCase):
             'config': {
                 'encoding': 'FLAC',
                 'maxAlternatives': 2,
-                'sampleRate': 16000,
+                'sampleRateHertz': 16000,
                 'speechContext': {
                     'phrases': [
                         'hi',
@@ -157,18 +157,18 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             content=self.AUDIO_CONTENT, encoding=encoding,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
-        response = sample.sync_recognize(
+        response = sample.recognize(
             language_code='EN', max_alternatives=2, profanity_filter=True,
-            speech_context=self.HINTS)
+            speech_contexts=self.HINTS)
 
         self.assertEqual(len(connection._requested), 1)
         req = connection._requested[0]
         self.assertEqual(len(req), 3)
         self.assertEqual(req['data'], request)
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], 'speech:syncrecognize')
+        self.assertEqual(req['path'], 'speech:recognize')
 
         alternative = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives'][0]
         expected = Alternative.from_api_repr(alternative)
@@ -189,7 +189,8 @@ class TestClient(unittest.TestCase):
         request = {
             'config': {
                 'encoding': 'FLAC',
-                'sampleRate': 16000,
+                'languageCode': 'en-US',
+                'sampleRateHertz': 16000,
             },
             'audio': {
                 'uri': self.AUDIO_SOURCE_URI,
@@ -205,16 +206,16 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             source_uri=self.AUDIO_SOURCE_URI, encoding=encoding,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
-        response = [i for i in sample.sync_recognize()]
+        response = [i for i in sample.recognize(language_code='en-US')]
 
         self.assertEqual(len(connection._requested), 1)
         req = connection._requested[0]
         self.assertEqual(len(req), 3)
         self.assertEqual(req['data'], request)
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], 'speech:syncrecognize')
+        self.assertEqual(req['path'], 'speech:recognize')
 
         expected = Alternative.from_api_repr(
             SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives'][0])
@@ -239,10 +240,10 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             source_uri=self.AUDIO_SOURCE_URI, encoding=speech.Encoding.FLAC,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            next(sample.sync_recognize())
+            next(sample.recognize(language_code='en-US'))
 
     def test_sync_recognize_with_empty_results_gax(self):
         from google.cloud._testing import _Monkey
@@ -281,10 +282,10 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             source_uri=self.AUDIO_SOURCE_URI, encoding=speech.Encoding.FLAC,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            next(sample.sync_recognize())
+            next(sample.recognize(language_code='en-US'))
 
     def test_sync_recognize_with_gax(self):
         from google.cloud._testing import _Monkey
@@ -322,7 +323,7 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             source_uri=self.AUDIO_SOURCE_URI, encoding=speech.Encoding.FLAC,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
         with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
@@ -334,7 +335,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(
             channel_args, [(creds, _gax.DEFAULT_USER_AGENT, host)])
 
-        results = [i for i in sample.sync_recognize()]
+        results = [i for i in sample.recognize(language_code='en-US')]
 
         self.assertEqual(len(results), 1)
         result = results[0]
@@ -358,9 +359,9 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             source_uri=self.AUDIO_SOURCE_URI, encoding=speech.Encoding.FLAC,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
         with self.assertRaises(ValueError):
-            sample.async_recognize()
+            sample.recognize(language_code='en-US')
 
     def test_async_recognize_no_gax(self):
         from google.cloud import speech
@@ -375,13 +376,16 @@ class TestClient(unittest.TestCase):
         speech_api._connection = _Connection(RETURNED)
 
         sample = client.sample(
-            encoding=speech.Encoding.LINEAR16, sample_rate=self.SAMPLE_RATE,
-            source_uri=self.AUDIO_SOURCE_URI)
-        operation = sample.async_recognize()
+            encoding=speech.Encoding.LINEAR16,
+            sample_rate_hertz=self.SAMPLE_RATE,
+            source_uri=self.AUDIO_SOURCE_URI,
+        )
+        operation = sample.long_running_recognize(language_code='en-US')
         self.assertIsInstance(operation, Operation)
         self.assertIs(operation.client, client)
-        self.assertEqual(
-            operation.caller_metadata, {'request_type': 'LongRunningRecognize'})
+        self.assertEqual(operation.caller_metadata, {
+            'request_type': 'LongRunningRecognize',
+        })
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.metadata)
 
@@ -404,8 +408,10 @@ class TestClient(unittest.TestCase):
             return channel_obj
 
         sample = client.sample(
-            encoding=speech.Encoding.LINEAR16, sample_rate=self.SAMPLE_RATE,
-            source_uri=self.AUDIO_SOURCE_URI)
+            encoding=speech.Encoding.LINEAR16,
+            sample_rate_hertz=self.SAMPLE_RATE,
+            source_uri=self.AUDIO_SOURCE_URI,
+        )
 
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(channel=channel, **kwargs)
@@ -424,7 +430,7 @@ class TestClient(unittest.TestCase):
                     low_level.SERVICE_ADDRESS)
         self.assertEqual(channel_args, [expected])
 
-        operation = sample.async_recognize()
+        operation = sample.long_running_recognize(language_code='en-US')
         self.assertIsInstance(operation, Operation)
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.response)
@@ -436,10 +442,10 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=credentials, _use_grpc=False)
         sample = client.sample(
             content=self.AUDIO_CONTENT, encoding=speech.Encoding.LINEAR16,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
         with self.assertRaises(EnvironmentError):
-            list(sample.streaming_recognize())
+            list(sample.streaming_recognize(language_code='en-US'))
 
     def test_streaming_closed_stream(self):
         from io import BytesIO
@@ -472,14 +478,14 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             stream=stream, encoding=Encoding.LINEAR16,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
         with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
         with self.assertRaises(ValueError):
-            list(sample.streaming_recognize())
+            list(sample.streaming_recognize(language_code='en-US'))
 
     def test_stream_recognize_interim_results(self):
         from io import BytesIO
@@ -532,9 +538,12 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             stream=stream, encoding=Encoding.LINEAR16,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
-        results = list(sample.streaming_recognize(interim_results=True))
+        results = list(sample.streaming_recognize(
+            interim_results=True,
+            language_code='en-US',
+        ))
 
         self.assertEqual(len(results), 3)
         for result in results:
@@ -617,9 +626,9 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             stream=stream, encoding=Encoding.LINEAR16,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
-        results = list(sample.streaming_recognize())
+        results = list(sample.streaming_recognize(language_code='en-US'))
         self.assertEqual(len(results), 1)
         result = results[0]
         self.assertEqual(
@@ -662,9 +671,9 @@ class TestClient(unittest.TestCase):
 
         sample = client.sample(
             stream=stream, encoding=Encoding.LINEAR16,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
 
-        results = list(sample.streaming_recognize())
+        results = list(sample.streaming_recognize(language_code='en-US'))
         self.assertEqual(results, [])
 
     def test_speech_api_with_gax(self):
@@ -731,7 +740,7 @@ class _MockGAPICSpeechAPI(object):
         self._channel = channel
         self._kwargs = kwargs
 
-    def async_recognize(self, config, audio):
+    def long_running_recognize(self, config, audio):
         from google.gapic.longrunning.operations_client import OperationsClient
         from google.gax import _OperationFuture
         from google.longrunning.operations_pb2 import Operation
@@ -745,7 +754,7 @@ class _MockGAPICSpeechAPI(object):
             Operation(), operations_client, LongRunningRecognizeResponse, {})
         return operation_future
 
-    def sync_recognize(self, config, audio):
+    def recognize(self, config, audio):
         self.config = config
         self.audio = audio
 
