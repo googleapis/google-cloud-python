@@ -16,7 +16,7 @@
 
 import json
 
-from google.protobuf.json_format import MessageToJson
+from google.protobuf.json_format import MessageToDict
 from google.cloud._helpers import _datetime_to_rfc3339
 
 
@@ -106,24 +106,24 @@ class Logger(object):
         :type info: dict
         :param info: (Optional) struct payload
 
-        :type message: Protobuf message or :class:`NoneType`
-        :param message: protobuf payload
+        :type message: :class:`~google.protobuf.message.Message`
+        :param message: (Optional) The protobuf payload to log.
 
         :type labels: dict
         :param labels: (Optional) labels passed in to calling method.
 
         :type insert_id: str
-        :param insert_id: (optional) unique ID for log entry.
+        :param insert_id: (Optional) unique ID for log entry.
 
         :type severity: str
-        :param severity: (optional) severity of event being logged.
+        :param severity: (Optional) severity of event being logged.
 
         :type http_request: dict
-        :param http_request: (optional) info about HTTP request associated with
+        :param http_request: (Optional) info about HTTP request associated with
                              the entry
 
         :type timestamp: :class:`datetime.datetime`
-        :param timestamp: (optional) timestamp of event being logged.
+        :param timestamp: (Optional) timestamp of event being logged.
 
         :rtype: dict
         :returns: The JSON resource created.
@@ -140,9 +140,13 @@ class Logger(object):
             resource['jsonPayload'] = info
 
         if message is not None:
-            as_json_str = MessageToJson(message)
-            as_json = json.loads(as_json_str)
-            resource['protoPayload'] = as_json
+            # NOTE: If ``message`` contains an ``Any`` field with an
+            #       unknown type, this will fail with a ``TypeError``.
+            #       However, since ``message`` will be provided by a user,
+            #       the assumption is that any types needed for the
+            #       protobuf->JSON conversion will be known from already
+            #       imported ``pb2`` modules.
+            resource['protoPayload'] = MessageToDict(message)
 
         if labels is None:
             labels = self.labels
@@ -245,8 +249,8 @@ class Logger(object):
         See:
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
 
-        :type message: Protobuf message
-        :param message: the message to be logged
+        :type message: :class:`~google.protobuf.message.Message`
+        :param message: The protobuf message to be logged.
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -462,9 +466,13 @@ class Batch(object):
             elif entry_type == 'struct':
                 info = {'jsonPayload': entry}
             elif entry_type == 'proto':
-                as_json_str = MessageToJson(entry)
-                as_json = json.loads(as_json_str)
-                info = {'protoPayload': as_json}
+                # NOTE: If ``entry`` contains an ``Any`` field with an
+                #       unknown type, this will fail with a ``TypeError``.
+                #       However, since ``entry`` was provided by a user in
+                #       ``Batch.log_proto``, the assumption is that any types
+                #       needed for the protobuf->JSON conversion will be known
+                #       from already imported ``pb2`` modules.
+                info = {'protoPayload': MessageToDict(entry)}
             else:
                 raise ValueError('Unknown entry type: %s' % (entry_type,))
             if labels is not None:

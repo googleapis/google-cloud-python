@@ -293,7 +293,7 @@ class _SinksAPI(object):
             'filter': filter_,
             'destination': destination,
         }
-        self.api_request(method='PUT', path=target, data=data)
+        return self.api_request(method='PUT', path=target, data=data)
 
     def sink_delete(self, project, sink_name):
         """API call:  delete a sink resource.
@@ -428,7 +428,7 @@ class _MetricsAPI(object):
             'filter': filter_,
             'description': description,
         }
-        self.api_request(method='PUT', path=target, data=data)
+        return self.api_request(method='PUT', path=target, data=data)
 
     def metric_delete(self, project, metric_name):
         """API call:  delete a metric resource.

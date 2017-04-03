@@ -17,6 +17,7 @@
 import json
 import re
 
+from google.protobuf import any_pb2
 from google.protobuf.json_format import Parse
 
 from google.cloud._helpers import _name_from_project_path
@@ -51,7 +52,9 @@ class _BaseEntry(object):
 
     :type payload: text or dict
     :param payload: The payload passed as ``textPayload``, ``jsonPayload``,
-                    or ``protoPayload``.
+                    or ``protoPayload``. This also may be passed as a raw
+                    :class:`.any_pb2.Any` if the ``protoPayload`` could
+                    not be deserialized.
 
     :type logger: :class:`google.cloud.logging.logger.Logger`
     :param logger: the logger used to write the entry.
@@ -74,7 +77,13 @@ class _BaseEntry(object):
     """
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
                  labels=None, severity=None, http_request=None):
-        self.payload = payload
+        if isinstance(payload, any_pb2.Any):
+            self.payload = None
+            self.payload_pb = payload
+        else:
+            self.payload = payload
+            self.payload_pb = None
+
         self.logger = logger
         self.insert_id = insert_id
         self.timestamp = timestamp
@@ -99,7 +108,7 @@ class _BaseEntry(object):
             (Optional) A mapping of logger fullnames -> loggers.  If not
             passed, the entry will have a newly-created logger.
 
-        :rtype: :class:`google.cloud.logging.entries.TextEntry`
+        :rtype: :class:`google.cloud.logging.entries._BaseEntry`
         :returns: Text entry parsed from ``resource``.
         """
         if loggers is None:
@@ -155,4 +164,7 @@ class ProtobufEntry(_BaseEntry):
         :type message: Protobuf message
         :param message: the message to be logged
         """
+        # NOTE: This assumes that ``payload`` is already a deserialized
+        #       ``Any`` field and ``message`` has come from an imported
+        #       ``pb2`` module with the relevant protobuf message type.
         Parse(json.dumps(self.payload), message)
