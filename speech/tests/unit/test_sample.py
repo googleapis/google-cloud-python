@@ -114,8 +114,19 @@ class TestSample(unittest.TestCase):
                 source_uri=self.AUDIO_SOURCE_URI,
             )
         sample = self._make_one(
+            encoding=Encoding.FLAC,
             sample_rate_hertz=self.SAMPLE_RATE,
             source_uri=self.AUDIO_SOURCE_URI,
-            encoding=Encoding.FLAC,
         )
         self.assertEqual(sample.encoding, Encoding.FLAC)
+
+    def test_async_linear16_only(self):
+        from google.cloud.speech.encoding import Encoding
+
+        sample = self._make_one(
+            encoding=Encoding.FLAC,
+            sample_rate_hertz=self.SAMPLE_RATE,
+            source_uri=self.AUDIO_SOURCE_URI,
+        )
+        with self.assertRaises(ValueError):
+            sample.long_running_recognize(language_code='en-US')

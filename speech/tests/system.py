@@ -128,10 +128,13 @@ class TestSpeechClient(unittest.TestCase):
         client = Config.CLIENT
         sample = client.sample(stream=file_obj,
                                encoding=speech.Encoding.LINEAR16,
-                               sample_rate=16000)
-        return sample.streaming_recognize(single_utterance=single_utterance,
-                                          interim_results=interim_results,
-                                          speech_contexts=['hello', 'google'])
+                               sample_rate_hertz=16000)
+        return sample.streaming_recognize(
+            interim_results=interim_results,
+            language_code='en-US',
+            single_utterance=single_utterance,
+            speech_contexts=['hello', 'google'],
+        )
 
     def _check_results(self, alternatives, num_results=1):
         self.assertEqual(len(alternatives), num_results)
