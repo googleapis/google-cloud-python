@@ -253,6 +253,7 @@ _MERGE_BY_TYPE = {
     type_pb2.STRING: _merge_string,
     type_pb2.ARRAY: _merge_array,
     type_pb2.STRUCT: _merge_struct,
+    type_pb2.BYTES: _merge_string,
 }
 
 
