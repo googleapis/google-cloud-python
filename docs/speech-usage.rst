@@ -34,10 +34,10 @@ create an instance of :class:`~google.cloud.speech.client.Client`.
 Asynchronous Recognition
 ------------------------
 
-The :meth:`~google.cloud.speech.Client.async_recognize` sends audio data to the
-Speech API and initiates a Long Running Operation. Using this operation, you
-can periodically poll for recognition results. Use asynchronous requests for
-audio data of any duration up to 80 minutes.
+The :meth:`~google.cloud.speech.Client.long_running_recognize` sends audio
+data to the Speech API and initiates a Long Running Operation. Using this
+operation, you can periodically poll for recognition results. Use asynchronous
+requests for audio data of any duration up to 80 minutes.
 
 .. note::
 
@@ -54,8 +54,11 @@ See: `Speech Asynchronous Recognize`_
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.LINEAR16,
-    ...                        sample_rate=44100)
-    >>> operation = sample.async_recognize(max_alternatives=2)
+    ...                        sample_rate_hertz=44100)
+    >>> operation = sample.long_running_recognize(
+    ...     language_code='en-US',
+    ...     max_alternatives=2,
+    ... )
     >>> retry_count = 100
     >>> while retry_count > 0 and not operation.complete:
     ...     retry_count -= 1
@@ -76,7 +79,7 @@ See: `Speech Asynchronous Recognize`_
 Synchronous Recognition
 -----------------------
 
-The :meth:`~google.cloud.speech.Client.sync_recognize` method converts speech
+The :meth:`~google.cloud.speech.Client.recognize` method converts speech
 data to text and returns alternative text transcriptions.
 
 This example uses ``language_code='en-GB'`` to better recognize a dialect from
@@ -88,8 +91,8 @@ Great Britain.
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.FLAC,
-    ...                        sample_rate=44100)
-    >>> results = sample.sync_recognize(
+    ...                        sample_rate_hertz=44100)
+    >>> results = sample.recognize(
     ...     language_code='en-GB', max_alternatives=2)
     >>> for result in results:
     ...     for alternative in result.alternatives:
@@ -111,9 +114,12 @@ Example of using the profanity filter.
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.FLAC,
-    ...                        sample_rate=44100)
-    >>> results = sample.sync_recognize(max_alternatives=1,
-    ...                                 profanity_filter=True)
+    ...                        sample_rate_hertz=44100)
+    >>> results = sample.recognize(
+    ...     language_code='en-US',
+    ...     max_alternatives=1,
+    ...     profanity_filter=True,
+    ... )
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
@@ -133,10 +139,13 @@ words to the vocabulary of the recognizer.
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.FLAC,
-    ...                        sample_rate=44100)
+    ...                        sample_rate_hertz=44100)
     >>> hints = ['hi', 'good afternoon']
-    >>> results = sample.sync_recognize(max_alternatives=2,
-    ...                                 speech_context=hints)
+    >>> results = sample.recognize(
+    ...     language_code='en-US',
+    ...     max_alternatives=2,
+    ...     speech_context=hints,
+    ... )
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
@@ -165,8 +174,8 @@ speech data to possible text alternatives on the fly.
     >>> with open('./hello.wav', 'rb') as stream:
     ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
-    ...                            sample_rate=16000)
-    ...     results = sample.streaming_recognize()
+    ...                            sample_rate_hertz=16000)
+    ...     results = sample.streaming_recognize(language_code='en-US')
     ...     for result in results:
     ...         for alternative in result.alternatives:
     ...             print('=' * 20)
@@ -192,8 +201,11 @@ See: `Single Utterance`_
     >>> with open('./hello_pause_goodbye.wav', 'rb') as stream:
     ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
-    ...                            sample_rate=16000)
-    ...     results = sample.streaming_recognize(single_utterance=True)
+    ...                            sample_rate_hertz=16000)
+    ...     results = sample.streaming_recognize(
+    ...         language_code='en-US',
+    ...         single_utterance=True,
+    ...     )
     ...     for result in results:
     ...         for alternative in result.alternatives:
     ...             print('=' * 20)
@@ -214,7 +226,10 @@ If ``interim_results`` is set to :data:`True`, interim results
     ...     sample = client.sample(stream=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     results = sample.streaming_recognize(interim_results=True):
+    ...     results = sample.streaming_recognize(
+    ...         interim_results=True,
+    ...         language_code='en-US',
+    ...     )
     ...     for result in results:
     ...         for alternative in result.alternatives:
     ...             print('=' * 20)
