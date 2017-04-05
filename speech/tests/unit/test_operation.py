@@ -44,7 +44,7 @@ class TestOperation(unittest.TestCase):
 
     @staticmethod
     def _make_result(transcript, confidence):
-        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+        from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
         return cloud_speech_pb2.SpeechRecognitionResult(
             alternatives=[
@@ -56,13 +56,13 @@ class TestOperation(unittest.TestCase):
         )
 
     def _make_operation_pb(self, *results):
-        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+        from google.cloud.proto.speech.v1 import cloud_speech_pb2
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
 
         any_pb = None
         if results:
-            result_pb = cloud_speech_pb2.AsyncRecognizeResponse(
+            result_pb = cloud_speech_pb2.LongRunningRecognizeResponse(
                 results=results,
             )
             type_url = 'type.googleapis.com/%s' % (
@@ -108,13 +108,13 @@ class TestOperation(unittest.TestCase):
             self.assertIsInstance(result.alternatives[0], Alternative)
 
     def test__update_state_with_empty_response(self):
-        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+        from google.cloud.proto.speech.v1 import cloud_speech_pb2
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
 
         # Simulate an empty response (rather than no response yet, which
         # is distinct).
-        response = cloud_speech_pb2.AsyncRecognizeResponse(results=[])
+        response = cloud_speech_pb2.LongRunningRecognizeResponse(results=[])
         type_url = 'type.googleapis.com/%s' % response.DESCRIPTOR.full_name
         any_pb = Any(
             type_url=type_url,

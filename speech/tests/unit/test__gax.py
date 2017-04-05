@@ -38,7 +38,7 @@ class TestGAPICSpeechAPI(unittest.TestCase):
         'google.cloud._helpers.make_secure_channel',
         return_value=mock.sentinel.channel)
     @mock.patch(
-        'google.cloud.gapic.speech.v1beta1.speech_client.SpeechClient',
+        'google.cloud.gapic.speech.v1.speech_client.SpeechClient',
         SERVICE_ADDRESS='hey.you.guys')
     @mock.patch(
         'google.cloud._helpers.make_secure_stub',
@@ -76,36 +76,36 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
     AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
     def _call_fut(self, sample, language_code, max_alternatives,
-                  profanity_filter, speech_context, single_utterance,
+                  profanity_filter, speech_contexts, single_utterance,
                   interim_results):
         from google.cloud.speech._gax import _make_streaming_request
 
         return _make_streaming_request(
             sample=sample, language_code=language_code,
             max_alternatives=max_alternatives,
-            profanity_filter=profanity_filter, speech_context=speech_context,
+            profanity_filter=profanity_filter, speech_contexts=speech_contexts,
             single_utterance=single_utterance, interim_results=interim_results)
 
     def test_ctor(self):
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
-        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+        from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
             RecognitionConfig, SpeechContext, StreamingRecognitionConfig,
             StreamingRecognizeRequest)
 
         sample = Sample(
             content=self.AUDIO_CONTENT, encoding=speech.Encoding.FLAC,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
         language_code = 'US-en'
         max_alternatives = 2
         profanity_filter = True
-        speech_context = SpeechContext(phrases=self.HINTS)
+        speech_contexts = [SpeechContext(phrases=self.HINTS)]
         single_utterance = True
         interim_results = False
 
         streaming_request = self._call_fut(
             sample, language_code, max_alternatives, profanity_filter,
-            speech_context, single_utterance, interim_results)
+            speech_contexts, single_utterance, interim_results)
         self.assertIsInstance(streaming_request, StreamingRecognizeRequest)
 
         # This isn't set by _make_streaming_request().
@@ -121,11 +121,11 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
         config = streaming_config.config
         self.assertIsInstance(config, RecognitionConfig)
         self.assertEqual(config.encoding, 2)  # speech.Encoding.FLAC maps to 2.
-        self.assertEqual(config.sample_rate, self.SAMPLE_RATE)
+        self.assertEqual(config.sample_rate_hertz, self.SAMPLE_RATE)
         self.assertEqual(config.language_code, language_code)
         self.assertEqual(config.max_alternatives, max_alternatives)
         self.assertTrue(config.profanity_filter)
-        self.assertEqual(config.speech_context.phrases, self.HINTS)
+        self.assertEqual(config.speech_contexts[0].phrases, self.HINTS)
 
 
 class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
@@ -134,35 +134,35 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
     AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
     def _call_fut(self, sample, language_code, max_alternatives,
-                  profanity_filter, speech_context, single_utterance,
+                  profanity_filter, speech_contexts, single_utterance,
                   interim_results):
         from google.cloud.speech._gax import _stream_requests
 
         return _stream_requests(
             sample=sample, language_code=language_code,
             max_alternatives=max_alternatives,
-            profanity_filter=profanity_filter, speech_context=speech_context,
+            profanity_filter=profanity_filter, speech_contexts=speech_contexts,
             single_utterance=single_utterance, interim_results=interim_results)
 
     def test_stream_requests(self):
         from io import BytesIO
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
-        from google.cloud.proto.speech.v1beta1.cloud_speech_pb2 import (
+        from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
             StreamingRecognitionConfig, StreamingRecognizeRequest)
 
         sample = Sample(
             stream=BytesIO(self.AUDIO_CONTENT), encoding=speech.Encoding.FLAC,
-            sample_rate=self.SAMPLE_RATE)
+            sample_rate_hertz=self.SAMPLE_RATE)
         language_code = 'US-en'
         max_alternatives = 2
         profanity_filter = True
-        speech_context = self.HINTS
+        speech_contexts = self.HINTS
         single_utterance = True
         interim_results = False
         streaming_requests = self._call_fut(
             sample, language_code, max_alternatives, profanity_filter,
-            speech_context, single_utterance, interim_results)
+            speech_contexts, single_utterance, interim_results)
         all_requests = []
         for streaming_request in streaming_requests:
             self.assertIsInstance(streaming_request, StreamingRecognizeRequest)
