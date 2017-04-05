@@ -54,7 +54,7 @@ class TestAlternative(unittest.TestCase):
         self.assertIsNone(alternative.confidence)
 
     def test_from_pb_with_no_confidence(self):
-        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+        from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
         text = 'the double trouble'
         pb_value = cloud_speech_pb2.SpeechRecognitionAlternative(
