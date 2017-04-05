@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import time
 import unittest
 
 from google.cloud import exceptions
@@ -46,6 +47,9 @@ def _wait_until_complete(operation, max_attempts=10):
     :rtype: bool
     :returns: Boolean indicating if the operation is complete.
     """
+    # This bizarre delay is necessary because the v1 API seems to return
+    # the v1beta1 type URL sometimes if you poll too soon.
+    time.sleep(3)
     retry = RetryResult(_operation_complete, max_tries=max_attempts)
     return retry(operation.poll)()
 
@@ -94,36 +98,47 @@ class TestSpeechClient(unittest.TestCase):
     def _make_sync_request(self, content=None, source_uri=None,
                            max_alternatives=None):
         client = Config.CLIENT
-        sample = client.sample(content=content,
-                               source_uri=source_uri,
-                               encoding=speech.Encoding.LINEAR16,
-                               sample_rate=16000)
-        return sample.sync_recognize(language_code='en-US',
-                                     max_alternatives=max_alternatives,
-                                     profanity_filter=True,
-                                     speech_context=['Google', 'cloud'])
+        sample = client.sample(
+            content=content,
+            encoding=speech.Encoding.LINEAR16,
+            sample_rate_hertz=16000,
+            source_uri=source_uri,
+        )
+        return sample.recognize(
+            language_code='en-US',
+            max_alternatives=max_alternatives,
+            profanity_filter=True,
+            speech_contexts=['Google', 'cloud'],
+        )
 
     def _make_async_request(self, content=None, source_uri=None,
                             max_alternatives=None):
         client = Config.CLIENT
-        sample = client.sample(content=content,
-                               source_uri=source_uri,
-                               encoding=speech.Encoding.LINEAR16,
-                               sample_rate=16000)
-        return sample.async_recognize(language_code='en-US',
-                                      max_alternatives=max_alternatives,
-                                      profanity_filter=True,
-                                      speech_context=['Google', 'cloud'])
+        sample = client.sample(
+            content=content,
+            encoding=speech.Encoding.LINEAR16,
+            sample_rate_hertz=16000,
+            source_uri=source_uri,
+        )
+        return sample.long_running_recognize(
+            language_code='en-US',
+            max_alternatives=max_alternatives,
+            profanity_filter=True,
+            speech_contexts=['Google', 'cloud'],
+        )
 
     def _make_streaming_request(self, file_obj, single_utterance=True,
                                 interim_results=False):
         client = Config.CLIENT
         sample = client.sample(stream=file_obj,
                                encoding=speech.Encoding.LINEAR16,
-                               sample_rate=16000)
-        return sample.streaming_recognize(single_utterance=single_utterance,
-                                          interim_results=interim_results,
-                                          speech_context=['hello', 'google'])
+                               sample_rate_hertz=16000)
+        return sample.streaming_recognize(
+            interim_results=interim_results,
+            language_code='en-US',
+            single_utterance=single_utterance,
+            speech_contexts=['hello', 'google'],
+        )
 
     def _check_results(self, alternatives, num_results=1):
         self.assertEqual(len(alternatives), num_results)
@@ -169,7 +184,6 @@ class TestSpeechClient(unittest.TestCase):
 
         operation = self._make_async_request(content=content,
                                              max_alternatives=2)
-
         _wait_until_complete(operation)
         self.assertEqual(len(operation.results), 1)
         alternatives = operation.results[0].alternatives

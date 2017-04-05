@@ -14,14 +14,14 @@
 
 """Long running operation representation for Google Speech API"""
 
-from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
 from google.cloud import operation
 from google.cloud.speech.result import Result
 
 
-operation.register_type(cloud_speech_pb2.AsyncRecognizeMetadata)
-operation.register_type(cloud_speech_pb2.AsyncRecognizeResponse)
+operation.register_type(cloud_speech_pb2.LongRunningRecognizeMetadata)
+operation.register_type(cloud_speech_pb2.LongRunningRecognizeResponse)
 
 
 class Operation(operation.Operation):

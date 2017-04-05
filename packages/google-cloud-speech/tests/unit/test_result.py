@@ -30,7 +30,7 @@ class TestResult(unittest.TestCase):
         self.assertIsInstance(result, self._get_target_class())
 
     def test_from_pb(self):
-        from google.cloud.proto.speech.v1beta1 import cloud_speech_pb2
+        from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
         confidence = 0.625
         transcript = 'this is a test transcript'
