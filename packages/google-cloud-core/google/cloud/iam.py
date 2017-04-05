@@ -62,7 +62,7 @@ class Policy(object):
         for role in self._OWNER_ROLES:
             for member in self.bindings.get(role, ()):
                 result.add(member)
-        return result
+        return frozenset(result)
 
     @owners.setter
     def owners(self, value):
@@ -76,7 +76,7 @@ class Policy(object):
         for role in self._EDITOR_ROLES:
             for member in self.bindings.get(role, ()):
                 result.add(member)
-        return result
+        return frozenset(result)
 
     @editors.setter
     def editors(self, value):
@@ -90,7 +90,7 @@ class Policy(object):
         for role in self._VIEWER_ROLES:
             for member in self.bindings.get(role, ()):
                 result.add(member)
-        return result
+        return frozenset(result)
 
     @viewers.setter
     def viewers(self, value):
