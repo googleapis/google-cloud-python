@@ -30,8 +30,11 @@ class TestPolicy(unittest.TestCase):
         policy = self._make_one()
         self.assertIsNone(policy.etag)
         self.assertIsNone(policy.version)
+        self.assertIsInstance(policy.owners, frozenset)
         self.assertEqual(list(policy.owners), [])
+        self.assertIsInstance(policy.editors, frozenset)
         self.assertEqual(list(policy.editors), [])
+        self.assertIsInstance(policy.viewers, frozenset)
         self.assertEqual(list(policy.viewers), [])
         self.assertEqual(dict(policy.bindings), {})
 
