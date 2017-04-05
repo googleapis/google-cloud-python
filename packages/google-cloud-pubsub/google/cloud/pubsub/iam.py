@@ -109,7 +109,7 @@ class Policy(_BasePolicy):
     @property
     def publishers(self):
         """Legacy access to owner role."""
-        return self.bindings.get(PUBSUB_PUBLISHER_ROLE, ())
+        return frozenset(self.bindings.get(PUBSUB_PUBLISHER_ROLE, ()))
 
     @publishers.setter
     def publishers(self, value):
@@ -119,7 +119,7 @@ class Policy(_BasePolicy):
     @property
     def subscribers(self):
         """Legacy access to owner role."""
-        return self.bindings.get(PUBSUB_SUBSCRIBER_ROLE, ())
+        return frozenset(self.bindings.get(PUBSUB_SUBSCRIBER_ROLE, ()))
 
     @subscribers.setter
     def subscribers(self, value):
