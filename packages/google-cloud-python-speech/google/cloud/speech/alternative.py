@@ -45,7 +45,7 @@ class Alternative(object):
         """Factory: construct ``Alternative`` from protobuf response.
 
         :type alternative:
-            :class:`google.cloud.speech.v1beta1.SpeechRecognitionAlternative`
+            :class:`google.cloud.speech.v1.SpeechRecognitionAlternative`
         :param alternative: Instance of ``SpeechRecognitionAlternative``
                            from protobuf.
 

@@ -34,7 +34,7 @@ class Result(object):
     def from_pb(cls, result):
         """Factory: construct instance of ``Result``.
 
-        :type result: :class:`~google.cloud.proto.speech.v1beta1\
+        :type result: :class:`~google.cloud.proto.speech.v1\
                                .cloud_speech_pb2.SpeechRecognitionResult`
         :param result: Instance of ``SpeechRecognitionResult`` protobuf.
 
@@ -51,7 +51,7 @@ class Result(object):
 
         :type result: dict
         :param result: Dictionary of a :class:`~google.cloud.proto.speech.\
-            v1beta1.cloud_speech_pb2.SpeechRecognitionResult`
+            v1.cloud_speech_pb2.SpeechRecognitionResult`
 
         :rtype: :class:`~google.cloud.speech.result.Result`
         :returns: Instance of ``Result``.
@@ -101,7 +101,7 @@ class StreamingSpeechResult(object):
     def from_pb(cls, response):
         """Factory: construct instance of ``StreamingSpeechResult``.
 
-        :type response: :class:`~google.cloud.proto.speech.v1beta1\
+        :type response: :class:`~google.cloud.proto.speech.v1\
                                .cloud_speech_pb2.StreamingRecognizeResult`
         :param response: Instance of ``StreamingRecognizeResult`` protobuf.
 

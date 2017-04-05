@@ -37,7 +37,7 @@ OPERATION_COMPLETE_RESPONSE = {
     'name': '123456789',
     'metadata': {
         '@type': ('type.googleapis.com/'
-                  'google.cloud.speech.v1beta1.AsyncRecognizeMetadata'),
+                  'google.cloud.speech.v1.LongRunningRecognizeMetadata'),
         'progressPercent': 100,
         'startTime': '2016-09-22T17:52:25.536964Z',
         'lastUpdateTime': '2016-09-22T17:52:27.802902Z',
@@ -45,7 +45,7 @@ OPERATION_COMPLETE_RESPONSE = {
     'done': True,
     'response': {
         '@type': ('type.googleapis.com/'
-                  'google.cloud.speech.v1beta1.AsyncRecognizeResponse'),
+                  'google.cloud.speech.v1.LongRunningRecognizeResponse'),
         'results': [
             {
                 'alternatives': [
@@ -63,7 +63,7 @@ OPERATION_INCOMPLETE_RESPONSE = {
     'name': '123456789',
     'metadata': {
         '@type': ('type.googleapis.com/'
-                  'google.cloud.speech.v1beta1.AsyncRecognizeMetadata'),
+                  'google.cloud.speech.v1.LongRunningRecognizeMetadata'),
         'progressPercent': 27,
         'startTime': '2016-09-22T17:52:25.536964Z',
         'lastUpdateTime': '2016-09-22T17:52:27.802902Z',

@@ -38,7 +38,7 @@ class Connection(_http.JSONConnection):
     API_BASE_URL = 'https://speech.googleapis.com'
     """The base of the API call URL."""
 
-    API_VERSION = 'v1beta1'
+    API_VERSION = 'v1'
     """The version of the API, used in building the API call's URL."""
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}/{path}'
@@ -59,23 +59,22 @@ class HTTPSpeechAPI(object):
         self._client = client
         self._connection = Connection(client)
 
-    def async_recognize(self, sample, language_code=None,
-                        max_alternatives=None, profanity_filter=None,
-                        speech_context=None):
-        """Asychronous Recognize request to Google Speech API.
+    def long_running_recognize(self, sample, language_code,
+                               max_alternatives=None, profanity_filter=None,
+                               speech_contexts=()):
+        """Long-running Recognize request to Google Speech API.
 
-        .. _async_recognize: https://cloud.google.com/speech/reference/\
-                             rest/v1beta1/speech/asyncrecognize
+        .. _long_running_recognize: https://cloud.google.com/speech/reference/\
+                                    rest/v1/speech/longrunningrecognize
 
-        See `async_recognize`_.
+        See `long_running_recognize`_.
 
         :type sample: :class:`~google.cloud.speech.sample.Sample`
         :param sample: Instance of ``Sample`` containing audio information.
 
         :type language_code: str
-        :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+        :param language_code: The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -91,8 +90,8 @@ class HTTPSpeechAPI(object):
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
 
-        :type speech_context: list
-        :param speech_context: A list of strings (max 50) containing words and
+        :type speech_contexts: list
+        :param speech_contexts: A list of strings (max 50) containing words and
                                phrases "hints" so that the speech recognition
                                is more likely to recognize them. This can be
                                used to improve the accuracy for specific words
@@ -103,30 +102,29 @@ class HTTPSpeechAPI(object):
         :returns: Operation for asynchronous request to Google Speech API.
         """
         data = _build_request_data(sample, language_code, max_alternatives,
-                                   profanity_filter, speech_context)
+                                   profanity_filter, speech_contexts)
         api_response = self._connection.api_request(
-            method='POST', path='speech:asyncrecognize', data=data)
+            method='POST', path='speech:longrunningrecognize', data=data)
 
         operation = Operation.from_dict(api_response, self._client)
-        operation.caller_metadata['request_type'] = 'AsyncRecognize'
+        operation.caller_metadata['request_type'] = 'LongRunningRecognize'
         return operation
 
-    def sync_recognize(self, sample, language_code=None, max_alternatives=None,
-                       profanity_filter=None, speech_context=None):
+    def recognize(self, sample, language_code, max_alternatives=None,
+                  profanity_filter=None, speech_contexts=()):
         """Synchronous Speech Recognition.
 
-        .. _sync_recognize: https://cloud.google.com/speech/reference/\
-                            rest/v1beta1/speech/syncrecognize
+        .. _recognize: https://cloud.google.com/speech/reference/\
+                       rest/v1/speech/recognize
 
-        See `sync_recognize`_.
+        See `recognize`_.
 
         :type sample: :class:`~google.cloud.speech.sample.Sample`
         :param sample: Instance of ``Sample`` containing audio information.
 
         :type language_code: str
         :param language_code: (Optional) The language of the supplied audio as
-                              BCP-47 language tag. Example: ``'en-GB'``.
-                              If omitted, defaults to ``'en-US'``.
+                              BCP-47 language tag. Example: ``'en-US'``.
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
@@ -142,8 +140,8 @@ class HTTPSpeechAPI(object):
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
 
-        :type speech_context: list
-        :param speech_context: A list of strings (max 50) containing words and
+        :type speech_contexts: list
+        :param speech_contexts: A list of strings (max 50) containing words and
                                phrases "hints" so that the speech recognition
                                is more likely to recognize them. This can be
                                used to improve the accuracy for specific words
@@ -162,9 +160,9 @@ class HTTPSpeechAPI(object):
         :raises: ValueError if more than one result is returned or no results.
         """
         data = _build_request_data(sample, language_code, max_alternatives,
-                                   profanity_filter, speech_context)
+                                   profanity_filter, speech_contexts)
         api_response = self._connection.api_request(
-            method='POST', path='speech:syncrecognize', data=data)
+            method='POST', path='speech:recognize', data=data)
 
         if len(api_response['results']) > 0:
             results = api_response['results']
@@ -173,17 +171,16 @@ class HTTPSpeechAPI(object):
             raise ValueError('No results were returned from the API')
 
 
-def _build_request_data(sample, language_code=None, max_alternatives=None,
-                        profanity_filter=None, speech_context=None):
+def _build_request_data(sample, language_code, max_alternatives=None,
+                        profanity_filter=None, speech_contexts=()):
     """Builds the request data before making API request.
 
     :type sample: :class:`~google.cloud.speech.sample.Sample`
     :param sample: Instance of ``Sample`` containing audio information.
 
     :type language_code: str
-    :param language_code: (Optional) The language of the supplied audio as
-                          BCP-47 language tag. Example: ``'en-GB'``.
-                          If omitted, defaults to ``'en-US'``.
+    :param language_code: The language of the supplied audio as
+                          BCP-47 language tag. Example: ``'en-US'``.
 
     :type max_alternatives: int
     :param max_alternatives: (Optional) Maximum number of recognition
@@ -199,8 +196,8 @@ def _build_request_data(sample, language_code=None, max_alternatives=None,
                              asterisks, e.g. ``'f***'``. If False or
                              omitted, profanities won't be filtered out.
 
-    :type speech_context: list
-    :param speech_context: A list of strings (max 50) containing words and
+    :type speech_contexts: list
+    :param speech_contexts: A list of strings (max 50) containing words and
                            phrases "hints" so that the speech recognition
                            is more likely to recognize them. This can be
                            used to improve the accuracy for specific words
@@ -216,17 +213,18 @@ def _build_request_data(sample, language_code=None, max_alternatives=None,
     else:
         audio = {'uri': sample.source_uri}
 
-    config = {'encoding': sample.encoding,
-              'sampleRate': sample.sample_rate}
+    config = {
+        'encoding': sample.encoding,
+        'languageCode': language_code,
+        'sampleRateHertz': sample.sample_rate_hertz,
+    }
 
-    if language_code is not None:
-        config['languageCode'] = language_code
     if max_alternatives is not None:
         config['maxAlternatives'] = max_alternatives
     if profanity_filter is not None:
         config['profanityFilter'] = profanity_filter
-    if speech_context is not None:
-        config['speechContext'] = {'phrases': speech_context}
+    if speech_contexts:
+        config['speechContext'] = {'phrases': speech_contexts}
 
     data = {
         'audio': audio,
