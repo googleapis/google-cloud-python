@@ -63,7 +63,7 @@ class TestPolicy(unittest.TestCase):
 
         self.assertEqual(sorted(policy.publishers), [PUBLISHER])
         self.assertEqual(
-            policy.bindings, {PUBSUB_PUBLISHER_ROLE: [PUBLISHER]})
+            dict(policy), {PUBSUB_PUBLISHER_ROLE: [PUBLISHER]})
 
     def test_subscribers_setter(self):
         from google.cloud.pubsub.iam import (
@@ -75,4 +75,4 @@ class TestPolicy(unittest.TestCase):
 
         self.assertEqual(sorted(policy.subscribers), [SUBSCRIBER])
         self.assertEqual(
-            policy.bindings, {PUBSUB_SUBSCRIBER_ROLE: [SUBSCRIBER]})
+            dict(policy), {PUBSUB_SUBSCRIBER_ROLE: [SUBSCRIBER]})
