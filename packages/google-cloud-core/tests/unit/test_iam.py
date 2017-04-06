@@ -36,7 +36,8 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.editors), [])
         self.assertIsInstance(policy.viewers, frozenset)
         self.assertEqual(list(policy.viewers), [])
-        self.assertEqual(dict(policy.bindings), {})
+        self.assertEqual(len(policy), 0)
+        self.assertEqual(dict(policy), {})
 
     def test_ctor_explicit(self):
         VERSION = 17
@@ -47,7 +48,33 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.owners), [])
         self.assertEqual(list(policy.editors), [])
         self.assertEqual(list(policy.viewers), [])
-        self.assertEqual(dict(policy.bindings), {})
+        self.assertEqual(len(policy), 0)
+        self.assertEqual(dict(policy), {})
+
+    def test___getitem___miss(self):
+        policy = self._make_one()
+        with self.assertRaises(KeyError):
+            policy['nonesuch']
+
+    def test___setitem__(self):
+        USER = 'user:phred@example.com'
+        policy = self._make_one()
+        policy['rolename'] = [USER]
+        self.assertEqual(policy['rolename'], [USER])
+        self.assertEqual(len(policy), 1)
+        self.assertEqual(dict(policy), {'rolename': [USER]})
+
+    def test___delitem___hit(self):
+        policy = self._make_one()
+        policy._bindings['rolename'] = ['phred@example.com']
+        del policy['rolename']
+        self.assertEqual(len(policy), 0)
+        self.assertEqual(dict(policy), {})
+
+    def test___delitem___miss(self):
+        policy = self._make_one()
+        with self.assertRaises(KeyError):
+            del policy['nonesuch']
 
     def test_user(self):
         EMAIL = 'phred@example.com'
@@ -92,7 +119,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.owners), [])
         self.assertEqual(list(policy.editors), [])
         self.assertEqual(list(policy.viewers), [])
-        self.assertEqual(dict(policy.bindings), {})
+        self.assertEqual(dict(policy), {})
 
     def test_from_api_repr_complete(self):
         from google.cloud.iam import (
@@ -124,7 +151,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
         self.assertEqual(
-            dict(policy.bindings), {
+            dict(policy), {
                 OWNER_ROLE: [OWNER1, OWNER2],
                 EDITOR_ROLE: [EDITOR1, EDITOR2],
                 VIEWER_ROLE: [VIEWER1, VIEWER2],
@@ -144,7 +171,7 @@ class TestPolicy(unittest.TestCase):
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'DEADBEEF')
         self.assertEqual(policy.version, 17)
-        self.assertEqual(policy.bindings, {'unknown': [GROUP, USER]})
+        self.assertEqual(dict(policy), {'unknown': [GROUP, USER]})
 
     def test_to_api_repr_defaults(self):
         policy = self._make_one()
@@ -156,7 +183,7 @@ class TestPolicy(unittest.TestCase):
 
     def test_to_api_repr_binding_wo_members(self):
         policy = self._make_one()
-        policy.bindings['empty'] = []
+        policy['empty'] = []
         self.assertEqual(policy.to_api_repr(), {})
 
     def test_to_api_repr_binding_w_duplicates(self):
