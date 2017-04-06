@@ -15,11 +15,7 @@ class TestRetry(unittest.TestCase):
         for line in f.readlines():
             if line.startswith("CLIENT:"):
                 self.process_line(table, line)
-        print "!!!!!!!!!!!"
-        print server.poll()
-        sys.stdout.flush()
     	server.kill()
-        assertEquals(1, 2)
 
     def process_line(self, table, line):
         chunks = line.split(" ")
@@ -35,7 +31,6 @@ class TestRetry(unittest.TestCase):
         pass
 
     def process_write(self, table, payload):
-        #print "write: " + payload
         pass
 
     def process_scan(self, table, range, ids):
@@ -43,7 +38,7 @@ class TestRetry(unittest.TestCase):
         range_open = range_chunks[0].lstrip("[")
         range_close = range_chunks[1].rstrip(")")
         rows = table.read_rows(range_open, range_close)
-        rows.consume_next()
+        rows.consume_all()
 
     def connect_to_server(self):
     	server = subprocess.Popen(
@@ -54,7 +49,6 @@ class TestRetry(unittest.TestCase):
     	(endpoint, port) = server.stdout.readline().rstrip("\n").split(":")
     	os.environ["BIGTABLE_EMULATOR_HOST"] = endpoint + ":" + port
     	client = Client(project="client", admin=True)
-    	instance = Instance("instance", client)	
+    	instance = Instance("instance", client)
     	table = instance.table("table")
     	return (table, server)
-	
