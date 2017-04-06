@@ -146,16 +146,16 @@ class ProtobufEntry(_BaseEntry):
     See:
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
 
-    :type payload: text or dict
+    :type payload: str, dict or any_pb2.Any
     :param payload: The payload passed as ``textPayload``, ``jsonPayload``,
                     or ``protoPayload``. This also may be passed as a raw
                     :class:`.any_pb2.Any` if the ``protoPayload`` could
                     not be deserialized.
 
-    :type logger: :class:`google.cloud.logging.logger.Logger`
+    :type logger: :class:`~google.cloud.logging.logger.Logger`
     :param logger: the logger used to write the entry.
 
-    :type insert_id: text
+    :type insert_id: str
     :param insert_id: (optional) the ID used to identify an entry uniquely.
 
     :type timestamp: :class:`datetime.datetime`
