@@ -286,6 +286,9 @@ class _SinksAPI(object):
         :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
+
+        :rtype: dict
+        :returns: The returned (updated) resource.
         """
         target = '/projects/%s/sinks/%s' % (project, sink_name)
         data = {
@@ -293,7 +296,7 @@ class _SinksAPI(object):
             'filter': filter_,
             'destination': destination,
         }
-        self.api_request(method='PUT', path=target, data=data)
+        return self.api_request(method='PUT', path=target, data=data)
 
     def sink_delete(self, project, sink_name):
         """API call:  delete a sink resource.
@@ -421,6 +424,9 @@ class _MetricsAPI(object):
 
         :type description: str
         :param description: description of the metric.
+
+        :rtype: dict
+        :returns: The returned (updated) resource.
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
         data = {
@@ -428,7 +434,7 @@ class _MetricsAPI(object):
             'filter': filter_,
             'description': description,
         }
-        self.api_request(method='PUT', path=target, data=data)
+        return self.api_request(method='PUT', path=target, data=data)
 
     def metric_delete(self, project, metric_name):
         """API call:  delete a metric resource.

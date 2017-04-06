@@ -243,6 +243,8 @@ class _SinksAPI(object):
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
+        # NOTE: LogSink message type does not have an ``Any`` field
+        #       so `MessageToDict`` can safely be used.
         return MessageToDict(sink_pb)
 
     def sink_update(self, project, sink_name, filter_, destination):
@@ -270,11 +272,13 @@ class _SinksAPI(object):
         path = 'projects/%s/sinks/%s' % (project, sink_name)
         sink_pb = LogSink(name=path, filter=filter_, destination=destination)
         try:
-            self._gax_api.update_sink(path, sink_pb, options=options)
+            sink_pb = self._gax_api.update_sink(path, sink_pb, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
+        # NOTE: LogSink message type does not have an ``Any`` field
+        #       so `MessageToDict`` can safely be used.
         return MessageToDict(sink_pb)
 
     def sink_delete(self, project, sink_name):
@@ -391,6 +395,8 @@ class _MetricsAPI(object):
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
+        # NOTE: LogMetric message type does not have an ``Any`` field
+        #       so `MessageToDict`` can safely be used.
         return MessageToDict(metric_pb)
 
     def metric_update(self, project, metric_name, filter_, description):
@@ -418,11 +424,14 @@ class _MetricsAPI(object):
         metric_pb = LogMetric(name=path, filter=filter_,
                               description=description)
         try:
-            self._gax_api.update_log_metric(path, metric_pb, options=options)
+            metric_pb = self._gax_api.update_log_metric(
+                path, metric_pb, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
+        # NOTE: LogMetric message type does not have an ``Any`` field
+        #       so `MessageToDict`` can safely be used.
         return MessageToDict(metric_pb)
 
     def metric_delete(self, project, metric_name):
@@ -444,6 +453,35 @@ class _MetricsAPI(object):
             raise
 
 
+def _parse_log_entry(entry_pb):
+    """Special helper to parse ``LogEntry`` protobuf into a dictionary.
+
+    The ``proto_payload`` field in ``LogEntry`` is of type ``Any``. This
+    can be problematic if the type URL in the payload isn't in the
+    ``google.protobuf`` registry. To help with parsing unregistered types,
+    this function will remove ``proto_payload`` before parsing.
+
+    :type entry_pb: :class:`.log_entry_pb2.LogEntry`
+    :param entry_pb: Log entry protobuf.
+
+    :rtype: dict
+    :returns: The parsed log entry. The ``protoPayload`` key may contain
+              the raw ``Any`` protobuf from ``entry_pb.proto_payload`` if
+              it could not be parsed.
+    """
+    try:
+        return MessageToDict(entry_pb)
+    except TypeError:
+        if entry_pb.HasField('proto_payload'):
+            proto_payload = entry_pb.proto_payload
+            entry_pb.ClearField('proto_payload')
+            entry_mapping = MessageToDict(entry_pb)
+            entry_mapping['protoPayload'] = proto_payload
+            return entry_mapping
+        else:
+            raise
+
+
 def _log_entry_mapping_to_pb(mapping):
     """Helper for :meth:`write_entries`, et aliae
 
@@ -451,6 +489,13 @@ def _log_entry_mapping_to_pb(mapping):
     the keys expected in the JSON API.
     """
     entry_pb = LogEntry()
+    # NOTE: We assume ``mapping`` was created in ``Batch.commit``
+    #       or ``Logger._make_entry_resource``. In either case, if
+    #       the ``protoPayload`` key is present, we assume that the
+    #       type URL is registered with ``google.protobuf`` and will
+    #       not cause any issues in the JSON->protobuf conversion
+    #       of the corresponding ``proto_payload`` in the log entry
+    #       (it is an ``Any`` field).
     ParseDict(mapping, entry_pb)
     return entry_pb
 
@@ -482,7 +527,7 @@ def _item_to_entry(iterator, entry_pb, loggers):
     :rtype: :class:`~google.cloud.logging.entries._BaseEntry`
     :returns: The next log entry in the page.
     """
-    resource = MessageToDict(entry_pb)
+    resource = _parse_log_entry(entry_pb)
     return entry_from_resource(resource, iterator.client, loggers)
 
 
@@ -499,6 +544,8 @@ def _item_to_sink(iterator, log_sink_pb):
     :rtype: :class:`~google.cloud.logging.sink.Sink`
     :returns: The next sink in the page.
     """
+    # NOTE: LogSink message type does not have an ``Any`` field
+    #       so `MessageToDict`` can safely be used.
     resource = MessageToDict(log_sink_pb)
     return Sink.from_api_repr(resource, iterator.client)
 
@@ -516,6 +563,8 @@ def _item_to_metric(iterator, log_metric_pb):
     :rtype: :class:`~google.cloud.logging.metric.Metric`
     :returns: The next metric in the page.
     """
+    # NOTE: LogMetric message type does not have an ``Any`` field
+    #       so `MessageToDict`` can safely be used.
     resource = MessageToDict(log_metric_pb)
     return Metric.from_api_repr(resource, iterator.client)
 

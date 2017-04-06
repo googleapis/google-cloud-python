@@ -1101,6 +1101,172 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
 
 @unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
+class Test__parse_log_entry(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.logging._gax import _parse_log_entry
+
+        return _parse_log_entry(*args, **kwargs)
+
+    def test_simple(self):
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
+
+        entry_pb = LogEntry(log_name=u'lol-jk', text_payload=u'bah humbug')
+        result = self._call_fut(entry_pb)
+        expected = {
+            'logName': entry_pb.log_name,
+            'textPayload': entry_pb.text_payload,
+        }
+        self.assertEqual(result, expected)
+
+    @mock.patch('google.cloud.logging._gax.MessageToDict',
+                side_effect=TypeError)
+    def test_non_registry_failure(self, msg_to_dict_mock):
+        entry_pb = mock.Mock(spec=['HasField'])
+        entry_pb.HasField.return_value = False
+        with self.assertRaises(TypeError):
+            self._call_fut(entry_pb)
+
+        entry_pb.HasField.assert_called_once_with('proto_payload')
+        msg_to_dict_mock.assert_called_once_with(entry_pb)
+
+    def test_unregistered_type(self):
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
+        from google.protobuf import any_pb2
+        from google.protobuf import descriptor_pool
+        from google.protobuf.timestamp_pb2 import Timestamp
+
+        pool = descriptor_pool.Default()
+        type_name = 'google.bigtable.admin.v2.UpdateClusterMetadata'
+        # Make sure the descriptor is not known in the registry.
+        with self.assertRaises(KeyError):
+            pool.FindMessageTypeByName(type_name)
+
+        type_url = 'type.googleapis.com/' + type_name
+        metadata_bytes = (
+            b'\n\n\n\x03foo\x12\x03bar\x12\x06\x08\xbd\xb6\xfb\xc6\x05')
+        any_pb = any_pb2.Any(type_url=type_url, value=metadata_bytes)
+        timestamp = Timestamp(seconds=61, nanos=1234000)
+
+        entry_pb = LogEntry(proto_payload=any_pb, timestamp=timestamp)
+        result = self._call_fut(entry_pb)
+        expected = {
+            'protoPayload': any_pb,
+            'timestamp': '1970-01-01T00:01:01.001234Z',
+        }
+        self.assertEqual(result, expected)
+
+    def test_registered_type(self):
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
+        from google.protobuf import any_pb2
+        from google.protobuf import descriptor_pool
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        pool = descriptor_pool.Default()
+        type_name = 'google.protobuf.Struct'
+        # Make sure the descriptor is known in the registry.
+        descriptor = pool.FindMessageTypeByName(type_name)
+        self.assertEqual(descriptor.name, 'Struct')
+
+        type_url = 'type.googleapis.com/' + type_name
+        field_name = 'foo'
+        field_value = u'Bar'
+        struct_pb = Struct(
+            fields={field_name: Value(string_value=field_value)})
+        any_pb = any_pb2.Any(
+            type_url=type_url,
+            value=struct_pb.SerializeToString(),
+        )
+
+        entry_pb = LogEntry(proto_payload=any_pb, log_name=u'all-good')
+        result = self._call_fut(entry_pb)
+        expected_proto = {
+            'logName': entry_pb.log_name,
+            'protoPayload': {
+                '@type': type_url,
+                'value': {field_name: field_value},
+            },
+        }
+        self.assertEqual(result, expected_proto)
+
+
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
+class Test__log_entry_mapping_to_pb(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.logging._gax import _log_entry_mapping_to_pb
+
+        return _log_entry_mapping_to_pb(*args, **kwargs)
+
+    def test_simple(self):
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
+
+        result = self._call_fut({})
+        self.assertEqual(result, LogEntry())
+
+    def test_unregistered_type(self):
+        from google.protobuf import descriptor_pool
+        from google.protobuf.json_format import ParseError
+
+        pool = descriptor_pool.Default()
+        type_name = 'google.bigtable.admin.v2.UpdateClusterMetadata'
+        # Make sure the descriptor is not known in the registry.
+        with self.assertRaises(KeyError):
+            pool.FindMessageTypeByName(type_name)
+
+        type_url = 'type.googleapis.com/' + type_name
+        json_mapping = {
+            'protoPayload': {
+                '@type': type_url,
+                'originalRequest': {
+                    'name': 'foo',
+                    'location': 'bar',
+                },
+                'requestTime': {
+                    'seconds': 1491000125,
+                },
+            },
+        }
+        with self.assertRaises(ParseError):
+            self._call_fut(json_mapping)
+
+    def test_registered_type(self):
+        from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
+        from google.protobuf import any_pb2
+        from google.protobuf import descriptor_pool
+
+        pool = descriptor_pool.Default()
+        type_name = 'google.protobuf.Struct'
+        # Make sure the descriptor is known in the registry.
+        descriptor = pool.FindMessageTypeByName(type_name)
+        self.assertEqual(descriptor.name, 'Struct')
+
+        type_url = 'type.googleapis.com/' + type_name
+        field_name = 'foo'
+        field_value = u'Bar'
+        json_mapping = {
+            'logName': u'hi-everybody',
+            'protoPayload': {
+                '@type': type_url,
+                'value': {field_name: field_value},
+            },
+        }
+        # Convert to a valid LogEntry.
+        result = self._call_fut(json_mapping)
+        entry_pb = LogEntry(
+            log_name=json_mapping['logName'],
+            proto_payload=any_pb2.Any(
+                type_url=type_url,
+                value=b'\n\014\n\003foo\022\005\032\003Bar',
+            ),
+        )
+        self.assertEqual(result, entry_pb)
+
+
+@unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_make_gax_logging_api(unittest.TestCase):
 
     def _call_fut(self, client):

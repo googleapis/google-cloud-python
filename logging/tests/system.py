@@ -108,6 +108,7 @@ class TestLogging(unittest.TestCase):
             'precipitation': False,
         },
     }
+    TYPE_FILTER = 'protoPayload.@type = "{}"'
 
     def setUp(self):
         self.to_delete = []
@@ -122,6 +123,31 @@ class TestLogging(unittest.TestCase):
     @staticmethod
     def _logger_name():
         return 'system-tests-logger' + unique_resource_id('-')
+
+    def test_list_entry_with_unregistered(self):
+        from google.protobuf import any_pb2
+        from google.protobuf import descriptor_pool
+        from google.cloud.logging import entries
+
+        pool = descriptor_pool.Default()
+        type_name = 'google.cloud.audit.AuditLog'
+        # Make sure the descriptor is not known in the registry.
+        with self.assertRaises(KeyError):
+            pool.FindMessageTypeByName(type_name)
+
+        type_url = 'type.googleapis.com/' + type_name
+        filter_ = self.TYPE_FILTER.format(type_url)
+        entry_iter = iter(
+            Config.CLIENT.list_entries(page_size=1, filter_=filter_))
+        protobuf_entry = next(entry_iter)
+        self.assertIsInstance(protobuf_entry, entries.ProtobufEntry)
+        if Config.CLIENT._use_grpc:
+            self.assertIsNone(protobuf_entry.payload)
+            self.assertIsInstance(protobuf_entry.payload_pb, any_pb2.Any)
+            self.assertEqual(protobuf_entry.payload_pb.type_url, type_url)
+        else:
+            self.assertIsNone(protobuf_entry.payload_pb)
+            self.assertEqual(protobuf_entry.payload['@type'], type_url)
 
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
