@@ -1227,8 +1227,8 @@ class Test__log_entry_mapping_to_pb(unittest.TestCase):
                 },
                 'requestTime': {
                     'seconds': 1491000125,
-                }
-            }
+                },
+            },
         }
         with self.assertRaises(ParseError):
             self._call_fut(json_mapping)
