@@ -17,12 +17,15 @@ For allowed roles / permissions, see:
 https://cloud.google.com/pubsub/access_control#permissions
 """
 
+import warnings
+
 # pylint: disable=unused-import
 from google.cloud.iam import OWNER_ROLE   # noqa - backward compat
 from google.cloud.iam import EDITOR_ROLE  # noqa - backward compat
 from google.cloud.iam import VIEWER_ROLE  # noqa - backward compat
 # pylint: enable=unused-import
 from google.cloud.iam import Policy as _BasePolicy
+from google.cloud.iam import _ASSIGNMENT_DEPRECATED_MSG
 
 # Pubsub-specific IAM roles
 
@@ -114,6 +117,10 @@ class Policy(_BasePolicy):
     @publishers.setter
     def publishers(self, value):
         """Update publishers."""
+        warnings.warn(
+            _ASSIGNMENT_DEPRECATED_MSG.format(
+                'publishers', PUBSUB_PUBLISHER_ROLE),
+            DeprecationWarning)
         self._bindings[PUBSUB_PUBLISHER_ROLE] = list(value)
 
     @property
@@ -124,4 +131,8 @@ class Policy(_BasePolicy):
     @subscribers.setter
     def subscribers(self, value):
         """Update subscribers."""
+        warnings.warn(
+            _ASSIGNMENT_DEPRECATED_MSG.format(
+                'subscribers', PUBSUB_SUBSCRIBER_ROLE),
+            DeprecationWarning)
         self._bindings[PUBSUB_SUBSCRIBER_ROLE] = list(value)
