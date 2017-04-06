@@ -17,6 +17,8 @@ For allowed roles / permissions, see:
 https://cloud.google.com/iam/docs/understanding-roles
 """
 
+import collections
+
 # Generic IAM roles
 
 OWNER_ROLE = 'roles/owner'
@@ -29,7 +31,7 @@ VIEWER_ROLE = 'roles/viewer'
 """Generic role implying rights to access an object."""
 
 
-class Policy(object):
+class Policy(collections.MutableMapping):
     """IAM Policy
 
     See:
@@ -53,49 +55,64 @@ class Policy(object):
     def __init__(self, etag=None, version=None):
         self.etag = etag
         self.version = version
-        self.bindings = {}
+        self._bindings = {}
+
+    def __iter__(self):
+        return iter(self._bindings)
+
+    def __len__(self):
+        return len(self._bindings)
+
+    def __getitem__(self, key):
+        return self._bindings[key]
+
+    def __setitem__(self, key, value):
+        self._bindings[key] = value
+
+    def __delitem__(self, key):
+        del self._bindings[key]
 
     @property
     def owners(self):
         """Legacy access to owner role."""
         result = set()
         for role in self._OWNER_ROLES:
-            for member in self.bindings.get(role, ()):
+            for member in self._bindings.get(role, ()):
                 result.add(member)
         return frozenset(result)
 
     @owners.setter
     def owners(self, value):
         """Update owners."""
-        self.bindings[OWNER_ROLE] = list(value)
+        self._bindings[OWNER_ROLE] = list(value)
 
     @property
     def editors(self):
         """Legacy access to editor role."""
         result = set()
         for role in self._EDITOR_ROLES:
-            for member in self.bindings.get(role, ()):
+            for member in self._bindings.get(role, ()):
                 result.add(member)
         return frozenset(result)
 
     @editors.setter
     def editors(self, value):
         """Update editors."""
-        self.bindings[EDITOR_ROLE] = list(value)
+        self._bindings[EDITOR_ROLE] = list(value)
 
     @property
     def viewers(self):
         """Legacy access to viewer role."""
         result = set()
         for role in self._VIEWER_ROLES:
-            for member in self.bindings.get(role, ()):
+            for member in self._bindings.get(role, ()):
                 result.add(member)
         return frozenset(result)
 
     @viewers.setter
     def viewers(self, value):
         """Update viewers."""
-        self.bindings[VIEWER_ROLE] = list(value)
+        self._bindings[VIEWER_ROLE] = list(value)
 
     @staticmethod
     def user(email):
@@ -179,7 +196,7 @@ class Policy(object):
         for binding in resource.get('bindings', ()):
             role = binding['role']
             members = sorted(binding['members'])
-            policy.bindings[role] = members
+            policy._bindings[role] = members
         return policy
 
     def to_api_repr(self):
@@ -196,9 +213,9 @@ class Policy(object):
         if self.version is not None:
             resource['version'] = self.version
 
-        if len(self.bindings) > 0:
+        if len(self._bindings) > 0:
             bindings = resource['bindings'] = []
-            for role, members in sorted(self.bindings.items()):
+            for role, members in sorted(self._bindings.items()):
                 if len(members) > 0:
                     bindings.append(
                         {'role': role, 'members': sorted(set(members))})
@@ -207,3 +224,6 @@ class Policy(object):
                 del resource['bindings']
 
         return resource
+
+
+collections.MutableMapping.register(Policy)
