@@ -286,6 +286,9 @@ class _SinksAPI(object):
         :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
+
+        :rtype: dict
+        :returns: The returned (updated) resource.
         """
         target = '/projects/%s/sinks/%s' % (project, sink_name)
         data = {
@@ -421,6 +424,9 @@ class _MetricsAPI(object):
 
         :type description: str
         :param description: description of the metric.
+
+        :rtype: dict
+        :returns: The returned (updated) resource.
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
         data = {
