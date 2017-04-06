@@ -14,8 +14,6 @@
 
 """Define API Loggers."""
 
-import json
-
 from google.protobuf.json_format import MessageToDict
 from google.cloud._helpers import _datetime_to_rfc3339
 

@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class Test_logger_name_from_path(unittest.TestCase):
 
@@ -206,6 +208,32 @@ class TestProtobufEntry(unittest.TestCase):
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
+
+    def test_constructor_basic(self):
+        payload = {'foo': 'bar'}
+        pb_entry = self._make_one(payload, mock.sentinel.logger)
+        self.assertEqual(pb_entry.payload, payload)
+        self.assertIsNone(pb_entry.payload_pb)
+        self.assertIs(pb_entry.logger, mock.sentinel.logger)
+        self.assertIsNone(pb_entry.insert_id)
+        self.assertIsNone(pb_entry.timestamp)
+        self.assertIsNone(pb_entry.labels)
+        self.assertIsNone(pb_entry.severity)
+        self.assertIsNone(pb_entry.http_request)
+
+    def test_constructor_with_any(self):
+        from google.protobuf.any_pb2 import Any
+
+        payload = Any()
+        pb_entry = self._make_one(payload, mock.sentinel.logger)
+        self.assertIs(pb_entry.payload_pb, payload)
+        self.assertIsNone(pb_entry.payload)
+        self.assertIs(pb_entry.logger, mock.sentinel.logger)
+        self.assertIsNone(pb_entry.insert_id)
+        self.assertIsNone(pb_entry.timestamp)
+        self.assertIsNone(pb_entry.labels)
+        self.assertIsNone(pb_entry.severity)
+        self.assertIsNone(pb_entry.http_request)
 
     def test_parse_message(self):
         import json
