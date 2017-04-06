@@ -17,6 +17,7 @@
 import json
 import re
 
+from google.protobuf import any_pb2
 from google.protobuf.json_format import Parse
 
 from google.cloud._helpers import _name_from_project_path
@@ -47,7 +48,7 @@ def logger_name_from_path(path):
 
 
 class _BaseEntry(object):
-    """Base class for TextEntry, StructEntry.
+    """Base class for TextEntry, StructEntry, ProtobufEntry.
 
     :type payload: text or dict
     :param payload: The payload passed as ``textPayload``, ``jsonPayload``,
@@ -99,7 +100,7 @@ class _BaseEntry(object):
             (Optional) A mapping of logger fullnames -> loggers.  If not
             passed, the entry will have a newly-created logger.
 
-        :rtype: :class:`google.cloud.logging.entries.TextEntry`
+        :rtype: :class:`google.cloud.logging.entries._BaseEntry`
         :returns: Text entry parsed from ``resource``.
         """
         if loggers is None:
@@ -144,8 +145,44 @@ class ProtobufEntry(_BaseEntry):
 
     See:
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry
+
+    :type payload: str, dict or any_pb2.Any
+    :param payload: The payload passed as ``textPayload``, ``jsonPayload``,
+                    or ``protoPayload``. This also may be passed as a raw
+                    :class:`.any_pb2.Any` if the ``protoPayload`` could
+                    not be deserialized.
+
+    :type logger: :class:`~google.cloud.logging.logger.Logger`
+    :param logger: the logger used to write the entry.
+
+    :type insert_id: str
+    :param insert_id: (optional) the ID used to identify an entry uniquely.
+
+    :type timestamp: :class:`datetime.datetime`
+    :param timestamp: (optional) timestamp for the entry
+
+    :type labels: dict
+    :param labels: (optional) mapping of labels for the entry
+
+    :type severity: str
+    :param severity: (optional) severity of event being logged.
+
+    :type http_request: dict
+    :param http_request: (optional) info about HTTP request associated with
+                         the entry
     """
     _PAYLOAD_KEY = 'protoPayload'
+
+    def __init__(self, payload, logger, insert_id=None, timestamp=None,
+                 labels=None, severity=None, http_request=None):
+        super(ProtobufEntry, self).__init__(
+            payload, logger, insert_id=insert_id, timestamp=timestamp,
+            labels=labels, severity=severity, http_request=http_request)
+        if isinstance(self.payload, any_pb2.Any):
+            self.payload_pb = self.payload
+            self.payload = None
+        else:
+            self.payload_pb = None
 
     def parse_message(self, message):
         """Parse payload into a protobuf message.
@@ -155,4 +192,7 @@ class ProtobufEntry(_BaseEntry):
         :type message: Protobuf message
         :param message: the message to be logged
         """
+        # NOTE: This assumes that ``payload`` is already a deserialized
+        #       ``Any`` field and ``message`` has come from an imported
+        #       ``pb2`` module with the relevant protobuf message type.
         Parse(json.dumps(self.payload), message)
