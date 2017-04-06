@@ -76,6 +76,58 @@ class TestPolicy(unittest.TestCase):
         with self.assertRaises(KeyError):
             del policy['nonesuch']
 
+    def test_owners_getter(self):
+        from google.cloud.iam import OWNER_ROLE
+        MEMBER = 'user:phred@example.com'
+        policy = self._make_one()
+        policy[OWNER_ROLE] = [MEMBER]
+        self.assertIsInstance(policy.owners, frozenset)
+        self.assertEqual(list(policy.owners), [MEMBER])
+
+    def test_owners_setter(self):
+        import warnings
+        from google.cloud.iam import OWNER_ROLE
+        MEMBER = 'user:phred@example.com'
+        policy = self._make_one()
+        with warnings.catch_warnings():
+            policy.owners = [MEMBER]
+        self.assertEqual(list(policy[OWNER_ROLE]), [MEMBER])
+
+    def test_editors_getter(self):
+        from google.cloud.iam import EDITOR_ROLE
+        MEMBER = 'user:phred@example.com'
+        policy = self._make_one()
+        policy[EDITOR_ROLE] = [MEMBER]
+        self.assertIsInstance(policy.editors, frozenset)
+        self.assertEqual(list(policy.editors), [MEMBER])
+
+    def test_editors_setter(self):
+        import warnings
+        from google.cloud.iam import EDITOR_ROLE
+        MEMBER = 'user:phred@example.com'
+        policy = self._make_one()
+        with warnings.catch_warnings():
+            policy.editors = [MEMBER]
+        self.assertEqual(list(policy[EDITOR_ROLE]), [MEMBER])
+
+    def test_viewers_getter(self):
+        from google.cloud.iam import VIEWER_ROLE
+        MEMBER = 'user:phred@example.com'
+        policy = self._make_one()
+        policy[VIEWER_ROLE] = [MEMBER]
+        self.assertIsInstance(policy.viewers, frozenset)
+        self.assertEqual(list(policy.viewers), [MEMBER])
+
+    def test_viewers_setter(self):
+        import warnings
+        from google.cloud.iam import VIEWER_ROLE
+        MEMBER = 'user:phred@example.com'
+        policy = self._make_one()
+        with warnings.catch_warnings():
+            warnings.simplefilter('always')
+            policy.viewers = [MEMBER]
+        self.assertEqual(list(policy[VIEWER_ROLE]), [MEMBER])
+
     def test_user(self):
         EMAIL = 'phred@example.com'
         MEMBER = 'user:%s' % (EMAIL,)
