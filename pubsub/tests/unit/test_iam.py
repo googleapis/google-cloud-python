@@ -54,24 +54,28 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.subscribers), [])
 
     def test_publishers_setter(self):
+        import warnings
         from google.cloud.pubsub.iam import (
             PUBSUB_PUBLISHER_ROLE,
         )
         PUBLISHER = 'user:phred@example.com'
         policy = self._make_one()
-        policy.publishers = [PUBLISHER]
+        with warnings.catch_warnings():
+            policy.publishers = [PUBLISHER]
 
         self.assertEqual(sorted(policy.publishers), [PUBLISHER])
         self.assertEqual(
             dict(policy), {PUBSUB_PUBLISHER_ROLE: [PUBLISHER]})
 
     def test_subscribers_setter(self):
+        import warnings
         from google.cloud.pubsub.iam import (
             PUBSUB_SUBSCRIBER_ROLE,
         )
         SUBSCRIBER = 'serviceAccount:1234-abcdef@service.example.com'
         policy = self._make_one()
-        policy.subscribers = [SUBSCRIBER]
+        with warnings.catch_warnings():
+            policy.subscribers = [SUBSCRIBER]
 
         self.assertEqual(sorted(policy.subscribers), [SUBSCRIBER])
         self.assertEqual(

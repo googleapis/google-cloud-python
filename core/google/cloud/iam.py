@@ -18,6 +18,7 @@ https://cloud.google.com/iam/docs/understanding-roles
 """
 
 import collections
+import warnings
 
 # Generic IAM roles
 
@@ -29,6 +30,9 @@ EDITOR_ROLE = 'roles/editor'
 
 VIEWER_ROLE = 'roles/viewer'
 """Generic role implying rights to access an object."""
+
+_ASSIGNMENT_DEPRECATED_MSG = """\
+Assigning to '{}' is deprecated.  Replace with 'policy[{}] = members."""
 
 
 class Policy(collections.MutableMapping):
@@ -84,6 +88,9 @@ class Policy(collections.MutableMapping):
     @owners.setter
     def owners(self, value):
         """Update owners."""
+        warnings.warn(
+            _ASSIGNMENT_DEPRECATED_MSG.format('owners', OWNER_ROLE),
+            DeprecationWarning)
         self._bindings[OWNER_ROLE] = list(value)
 
     @property
@@ -98,6 +105,9 @@ class Policy(collections.MutableMapping):
     @editors.setter
     def editors(self, value):
         """Update editors."""
+        warnings.warn(
+            _ASSIGNMENT_DEPRECATED_MSG.format('editors', EDITOR_ROLE),
+            DeprecationWarning)
         self._bindings[EDITOR_ROLE] = list(value)
 
     @property
@@ -112,6 +122,9 @@ class Policy(collections.MutableMapping):
     @viewers.setter
     def viewers(self, value):
         """Update viewers."""
+        warnings.warn(
+            _ASSIGNMENT_DEPRECATED_MSG.format('viewers', VIEWER_ROLE),
+            DeprecationWarning)
         self._bindings[VIEWER_ROLE] = list(value)
 
     @staticmethod
