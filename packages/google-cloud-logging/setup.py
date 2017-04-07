@@ -58,7 +58,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-logging',
-    version='0.24.0',
+    version='1.0.0',
     description='Python Client for Stackdriver Logging',
     long_description=README,
     namespace_packages=[
