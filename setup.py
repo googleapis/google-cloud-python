@@ -57,7 +57,7 @@ REQUIREMENTS = [
     'google-cloud-dns >= 0.24.0, < 0.25dev',
     'google-cloud-error-reporting >= 0.24.0, < 0.25dev',
     'google-cloud-language >= 0.24.0, < 0.25dev',
-    'google-cloud-logging >= 0.24.0, < 0.25dev',
+    'google-cloud-logging >= 1.0.0, < 2.0dev',
     'google-cloud-monitoring >= 0.24.0, < 0.25dev',
     'google-cloud-pubsub >= 0.24.0, < 0.25dev',
     'google-cloud-resource-manager >= 0.24.0, < 0.25dev',
@@ -71,7 +71,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud',
-    version='0.24.0',
+    version='0.24.1',
     description='API Client library for Google Cloud',
     long_description=README,
     install_requires=REQUIREMENTS,

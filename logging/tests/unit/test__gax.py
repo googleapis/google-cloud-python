@@ -1151,11 +1151,12 @@ class Test__parse_log_entry(unittest.TestCase):
 
         entry_pb = LogEntry(proto_payload=any_pb, timestamp=timestamp)
         result = self._call_fut(entry_pb)
-        expected = {
-            'protoPayload': any_pb,
-            'timestamp': '1970-01-01T00:01:01.001234Z',
-        }
-        self.assertEqual(result, expected)
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result['timestamp'], '1970-01-01T00:01:01.001234Z')
+        # NOTE: This "hack" is needed on Windows, where the equality check
+        #       for an ``Any`` instance fails on unregistered types.
+        self.assertEqual(result['protoPayload'].type_url, type_url)
+        self.assertEqual(result['protoPayload'].value, metadata_bytes)
 
     def test_registered_type(self):
         from google.cloud.proto.logging.v2.log_entry_pb2 import LogEntry
