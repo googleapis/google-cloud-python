@@ -56,7 +56,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-language',
-    version='0.24.0',
+    version='0.24.1',
     description='Python Client for Google Cloud Natural Language',
     long_description=README,
     namespace_packages=[
