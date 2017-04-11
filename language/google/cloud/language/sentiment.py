@@ -52,6 +52,6 @@ class Sentiment(object):
         :rtype: :class:`Sentiment`
         :returns: The sentiment parsed from the API representation.
         """
-        score = payload['score']
+        score = payload.get('score', None)
         magnitude = payload['magnitude']
         return cls(score, magnitude)
