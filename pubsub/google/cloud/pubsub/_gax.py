@@ -37,6 +37,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
 from google.cloud.pubsub import __version__
 from google.cloud.pubsub._helpers import subscription_name_from_path
+from google.cloud.pubsub.snapshot import Snapshot
 from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
 
@@ -135,10 +136,10 @@ class _PublisherAPI(object):
         """API call:  delete a topic
 
         See:
-        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete
 
         :type topic_path: str
-        :param topic_path: fully-qualified path of the new topic, in format
+        :param topic_path: fully-qualified path of the topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
         try:
@@ -372,7 +373,7 @@ class _SubscriberAPI(object):
 
         :type subscription_path: str
         :param subscription_path:
-            the fully-qualified path of the new subscription, in format
+            the fully-qualified path of the subscription to affect, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type push_endpoint: str
@@ -397,8 +398,8 @@ class _SubscriberAPI(object):
 
         :type subscription_path: str
         :param subscription_path:
-            the fully-qualified path of the new subscription, in format
-            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+            the fully-qualified path of the subscription to pull from, in
+            format ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type return_immediately: bool
         :param return_immediately: if True, the back-end returns even if no
@@ -438,7 +439,7 @@ class _SubscriberAPI(object):
 
         :type subscription_path: str
         :param subscription_path:
-            the fully-qualified path of the new subscription, in format
+            the fully-qualified path of the subscription to affect, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type ack_ids: list of string
@@ -460,7 +461,7 @@ class _SubscriberAPI(object):
 
         :type subscription_path: str
         :param subscription_path:
-            the fully-qualified path of the new subscription, in format
+            the fully-qualified path of the subscription to affect, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type ack_ids: list of string
@@ -476,6 +477,120 @@ class _SubscriberAPI(object):
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
+            raise
+
+    def subscription_seek(self, subscription_path, time=None, snapshot=None):
+        """API call:  seek a subscription
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek
+
+        :type subscription_path: str
+        :param subscription_path::
+            the fully-qualified path of the subscription to affect, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+
+        :type time: :class:`.timestamp_pb2.Timestamp`
+        :param time: The time to seek to.
+
+        :type snapshot: str
+        :param snapshot: The snapshot to seek to.
+        """
+        try:
+            self._gax_api.seek(subscription_path, time=time, snapshot=snapshot)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(subscription_path)
+            raise
+
+    def list_snapshots(self, project, page_size=0, page_token=None):
+        """List snapshots for the project associated with this API.
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/list
+
+        :type project: str
+        :param project: project ID
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: str
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`
+                  accessible to the current API.
+        """
+        if page_token is None:
+            page_token = INITIAL_PAGE
+        options = CallOptions(page_token=page_token)
+        path = 'projects/%s' % (project,)
+        page_iter = self._gax_api.list_snapshots(
+            path, page_size=page_size, options=options)
+
+        # We attach a mutable topics dictionary so that as topic
+        # objects are created by Snapshot.from_api_repr, they
+        # can be re-used by other snapshots of the same topic.
+        topics = {}
+        item_to_value = functools.partial(
+            _item_to_snapshot_for_client, topics=topics)
+        return GAXIterator(self._client, page_iter, item_to_value)
+
+    def snapshot_create(self, snapshot_path, subscription_path):
+        """API call:  create a snapshot
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/create
+
+        :type snapshot_path: str
+        :param snapshot_path: fully-qualified path of the snapshot, in format
+                            ``projects/<PROJECT>/snapshots/<SNAPSHOT_NAME>``.
+
+        :type subscription_path: str
+        :param subscription_path: fully-qualified path of the subscrption that
+                            the new snapshot captures, in format
+                            ``projects/<PROJECT>/subscription/<SNAPSHOT_NAME>``.
+
+        :rtype: dict
+        :returns: ``Snapshot`` resource returned from the API.
+        :raises: :exc:`google.cloud.exceptions.Conflict` if the snapshot
+                    already exists
+        :raises: :exc:`google.cloud.exceptions.NotFound` if the subscription
+                    does not exist
+        """
+        try:
+            snapshot_pb = self._gax_api.create_snapshot(
+                snapshot_path, subscription_path)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+                raise Conflict(snapshot_path)
+            elif exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(subscription_path)
+            raise
+        return MessageToDict(snapshot_pb)
+
+    def snapshot_delete(self, snapshot_path):
+        """API call:  delete a topic
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/delete
+
+        :type snapshot_path: str
+        :param snapshot_path: fully-qualified path of the snapshot, in format
+                            ``projects/<PROJECT>/snapshots/<SNAPSHOT_NAME>``.
+
+        :raises: :exc:`google.cloud.exceptions.NotFound` if the snapshot does
+                    not exist
+        """
+        try:
+            self._gax_api.delete_snapshot(snapshot_path)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(snapshot_path)
             raise
 
 
@@ -630,4 +745,34 @@ def _item_to_sub_for_client(iterator, sub_pb, topics):
     """
     resource = MessageToDict(sub_pb)
     return Subscription.from_api_repr(
+        resource, iterator.client, topics=topics)
+
+
+def _item_to_snapshot_for_client(iterator, snapshot_pb, topics):
+    """Convert a subscription protobuf to the native object.
+
+    .. note::
+
+       This method does not have the correct signature to be used as
+       the ``item_to_value`` argument to
+       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       patched with a mutable topics argument that can be updated
+       on subsequent calls. For an example, see how the method is
+       used above in :meth:`_SubscriberAPI.list_snapshots`.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type sub_pb: :class:`.pubsub_pb2.Snapshot`
+    :param sub_pb: A subscription returned from the API.
+
+    :type topics: dict
+    :param topics: A dictionary of topics to be used (and modified)
+                   as new subscriptions are created bound to topics.
+
+    :rtype: :class:`~google.cloud.pubsub.subscription.Subscription`
+    :returns: The next subscription in the page.
+    """
+    resource = MessageToDict(snapshot_pb)
+    return Snapshot.from_api_repr(
         resource, iterator.client, topics=topics)

@@ -191,6 +191,32 @@ class Client(ClientWithProject):
         return api.list_subscriptions(
             self.project, page_size, page_token)
 
+    def list_snapshots(self, page_size=None, page_token=None):
+        """List snapshots for the project associated with this API.
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/list
+
+        :type project: str
+        :param project: project ID
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: str
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`
+                  accessible to the current API.
+        """
+        api = self.subscriber_api
+        return api.list_snapshots(
+            self.project, page_size, page_token)
+
     def topic(self, name, timestamp_messages=False):
         """Creates a topic bound to the current client.
 

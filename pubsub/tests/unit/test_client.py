@@ -379,7 +379,17 @@ class TestClient(unittest.TestCase):
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertFalse(new_topic.timestamp_messages)
 
+    def test_list_snapshots(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        client._connection = object()
+        api = _FauxSubscriberAPI()
+        response = api._list_snapshots_response = object()
+        client._subscriber_api = api
+        self.assertEqual(client.list_snapshots(), response)
+        self.assertEqual(api._listed_snapshots, (self.PROJECT, None, None))
 
+        
 class _Iterator(object):
 
     def __init__(self, items, token):
@@ -407,6 +417,9 @@ class _FauxSubscriberAPI(object):
         self._listed_subscriptions = (project, page_size, page_token)
         return self._list_subscriptions_response
 
+    def list_snapshots(self, project, page_size, page_token):
+        self._listed_snapshots = (project, page_size, page_token)
+        return self._list_snapshots_response        
 
 class _Connection(object):
 
