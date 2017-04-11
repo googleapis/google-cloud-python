@@ -20,6 +20,7 @@ import warnings
 from google.cloud import client as client_module
 
 from google.cloud.language._http import Connection
+from google.cloud.language._http import V1Beta2Connection
 from google.cloud.language.document import Document
 
 
@@ -45,10 +46,16 @@ class Client(client_module.Client):
     SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
     """The scopes required for authenticating as an API consumer."""
 
-    def __init__(self, credentials=None, _http=None):
+    _CONNECTION_CLASSES = {
+        'v1': Connection,
+        'v1beta2': V1Beta2Connection,
+    }
+
+    def __init__(self, credentials=None, api_version='v1', _http=None):
         super(Client, self).__init__(
             credentials=credentials, _http=_http)
-        self._connection = Connection(self)
+        ConnectionClass = self._CONNECTION_CLASSES[api_version]
+        self._connection = ConnectionClass(self)
 
     def document_from_text(self, content, **kwargs):
         """Create a plain text document bound to this client.

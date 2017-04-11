@@ -41,3 +41,14 @@ class Connection(_http.JSONConnection):
     _EXTRA_HEADERS = {
         _http.CLIENT_INFO_HEADER: _CLIENT_INFO,
     }
+
+
+class V1Beta2Connection(Connection):
+    """A connection to Google Cloud Natural Language JSON 1.1 REST API.
+
+    :type client: :class:`~google.cloud.language.client.Client`
+    :param client: The client that owns the current connection.
+    """
+
+    API_VERSION = 'v1beta2'
+    """The version of the API, used in building the API call's URL."""
