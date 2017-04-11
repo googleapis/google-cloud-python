@@ -188,6 +188,32 @@ class Document(object):
             method='POST', path='analyzeEntities', data=data)
         return api_responses.EntityResponse.from_api_repr(api_response)
 
+    def analyze_entity_sentiment(self):
+        """Analyze the entity sentiment.
+
+        Finds entities, similar to `AnalyzeEntities` in the text and
+        analyzes sentiment associated with each entity and its mentions.
+
+        :rtype: :class:`~language.entity.EntitySentimentResponse`
+        :returns: A representation of the entity sentiment response.
+        """
+        # Sanity check: Not available on v1.
+        if self.client._connection.API_VERSION == 'v1':
+            raise NotImplementedError(
+                'The `analyze_entity_sentiment` method is only available '
+                'on the Natural Language 1.1 beta. Use version="v1beta2" '
+                'as a keyword argument to the constructor.',
+            )
+
+        # Perform the API request.
+        data = {
+            'document': self._to_dict(),
+            'encodingType': self.encoding,
+        }
+        api_response = self.client._connection.api_request(
+            method='POST', path='analyzeEntitySentiment', data=data)
+        return api_responses.EntityResponse.from_api_repr(api_response)
+
     def analyze_sentiment(self):
         """Analyze the sentiment in the current document.
 
