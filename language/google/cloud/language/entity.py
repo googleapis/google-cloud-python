@@ -17,6 +17,8 @@
 An entity is used to describe a proper name extracted from text.
 """
 
+from google.cloud.language.sentiment import Sentiment
+
 
 class EntityType(object):
     """List of possible entity types."""
@@ -152,14 +154,20 @@ class Entity(object):
 
     :type mentions: list
     :param mentions: List of strings that mention the entity.
+
+    :type sentiment: :class:`~.language.sentiment.Sentiment`
+    :params sentiment: The sentiment; sent only on `analyze_entity_sentiment`
+                       calls.
     """
 
-    def __init__(self, name, entity_type, metadata, salience, mentions):
+    def __init__(self, name, entity_type, metadata, salience, mentions,
+                 sentiment):
         self.name = name
         self.entity_type = entity_type
         self.metadata = metadata
         self.salience = salience
         self.mentions = mentions
+        self.sentiment = sentiment
 
     @classmethod
     def from_api_repr(cls, payload):
@@ -176,4 +184,7 @@ class Entity(object):
         metadata = payload['metadata']
         salience = payload['salience']
         mentions = [Mention.from_api_repr(val) for val in payload['mentions']]
-        return cls(name, entity_type, metadata, salience, mentions)
+        sentiment = None
+        if payload.get('sentiment'):
+            sentiment = Sentiment.from_api_repr(payload['sentiment'])
+        return cls(name, entity_type, metadata, salience, mentions, sentiment)
