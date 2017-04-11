@@ -70,6 +70,18 @@ def _consume_topics(pubsub_client):
     return list(pubsub_client.list_topics())
 
 
+def _consume_snapshots(pubsub_client):
+    """Consume entire iterator.
+
+    :type pubsub_client: :class:`~google.cloud.pubsub.client.Client`
+    :param pubsub_client: Client to use to retrieve snapshots.
+
+    :rtype: list
+    :returns: List of all snapshots encountered.
+    """
+    return list(pubsub_client.list_snapshots())
+
+
 def _consume_subscriptions(topic):
     """Consume entire iterator.
 
@@ -283,3 +295,73 @@ class TestPubsub(unittest.TestCase):
             policy.viewers.add(policy.user('jjg@google.com'))
             new_policy = subscription.set_iam_policy(policy)
             self.assertEqual(new_policy.viewers, policy.viewers)
+
+    def test_create_snapshot(self):
+        TOPIC_NAME = 'create-snap-def' + unique_resource_id('-')
+        topic = Config.CLIENT.topic(TOPIC_NAME)
+        before_snapshots = _consume_snapshots(Config.CLIENT)
+
+        self.assertFalse(topic.exists())
+        topic.create()
+        self.to_delete.append(topic)
+        SUBSCRIPTION_NAME = 'subscribing-now' + unique_resource_id('-')
+        subscription = topic.subscription(SUBSCRIPTION_NAME, ack_deadline=600)
+        self.assertFalse(subscription.exists())
+        subscription.create()
+        self.to_delete.append(subscription)
+        SNAPSHOT_NAME = 'new-snapshot' + unique_resource_id('-')
+        snapshot = subscription.snapshot(SNAPSHOT_NAME)
+        snapshot.create()
+        self.to_delete.append(snapshot)
+
+        # There is no GET method for snapshot, so check existence using
+        # list
+        after_snapshots = _consume_snapshots(Config.CLIENT)
+        self.assertEqual(len(before_snapshots) + 1, len(after_snapshots))
+
+        def full_name(obj):
+            return obj.full_name
+
+        self.assertIn(snapshot.full_name, map(full_name, after_snapshots))
+        self.assertNotIn(snapshot.full_name, map(full_name, before_snapshots))
+
+
+    def test_seek(self): 
+        TOPIC_NAME = 'seek-e2e' + unique_resource_id('-')
+        topic = Config.CLIENT.topic(TOPIC_NAME,
+                                    timestamp_messages=True)
+        self.assertFalse(topic.exists())
+        topic.create()
+        self.to_delete.append(topic)
+
+        SUBSCRIPTION_NAME = 'subscribing-to-seek' + unique_resource_id('-')
+        subscription = topic.subscription(SUBSCRIPTION_NAME)
+        self.assertFalse(subscription.exists())
+        subscription.create()
+        self.to_delete.append(subscription)
+
+        SNAPSHOT_NAME = 'new-snapshot' + unique_resource_id('-')
+        snapshot = subscription.snapshot(SNAPSHOT_NAME)
+        snapshot.create()
+        self.to_delete.append(snapshot)
+        
+        MESSAGE_1 = b'MESSAGE ONE'
+        topic.publish(MESSAGE_1)
+        MESSAGE_2 = b'MESSAGE TWO'
+        topic.publish(MESSAGE_2)
+
+        ((ack_id_1a, recvd_1a), ) = subscription.pull()
+        ((ack_id_2a, recvd_2a), ) = subscription.pull()
+        before_data = [obj.data for obj in (recvd_1a, recvd_2a)]
+        self.assertIn(MESSAGE_1, before_data)
+        self.assertIn(MESSAGE_2, before_data)
+        subscription.acknowledge((ack_id_1a, ack_id_2a))
+
+        self.assertFalse(subscription.pull(return_immediately=True))
+
+        subscription.seek_snapshot(snapshot)
+
+        ((_, recvd_1b), ) = subscription.pull()
+        ((_, recvd_2b), ) = subscription.pull()
+        after_data = [obj.data for obj in (recvd_1b, recvd_2b)]
+        self.assertEqual(sorted(before_data), sorted(after_data))
