@@ -71,7 +71,7 @@ class Policy(collections.MutableMapping):
         return self._bindings[key]
 
     def __setitem__(self, key, value):
-        self._bindings[key] = value
+        self._bindings[key] = frozenset(value)
 
     def __delitem__(self, key):
         del self._bindings[key]
