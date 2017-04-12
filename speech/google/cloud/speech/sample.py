@@ -170,9 +170,6 @@ class Sample(object):
         :rtype: :class:`~google.cloud.speech.operation.Operation`
         :returns: Operation for asynchronous request to Google Speech API.
         """
-        if self.encoding is not Encoding.LINEAR16:
-            raise ValueError('Only LINEAR16 encoding is supported by '
-                             'long-running speech requests.')
         api = self._client.speech_api
         return api.long_running_recognize(
             self, language_code, max_alternatives, profanity_filter,
