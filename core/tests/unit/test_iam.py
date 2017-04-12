@@ -58,11 +58,12 @@ class TestPolicy(unittest.TestCase):
 
     def test___setitem__(self):
         USER = 'user:phred@example.com'
+        PRINCIPALS = frozenset([USER])
         policy = self._make_one()
         policy['rolename'] = [USER]
-        self.assertEqual(policy['rolename'], [USER])
+        self.assertEqual(policy['rolename'], PRINCIPALS)
         self.assertEqual(len(policy), 1)
-        self.assertEqual(dict(policy), {'rolename': [USER]})
+        self.assertEqual(dict(policy), {'rolename': PRINCIPALS})
 
     def test___delitem___hit(self):
         policy = self._make_one()
