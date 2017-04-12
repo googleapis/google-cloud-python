@@ -66,11 +66,6 @@ class Sample(object):
         self._content = content
         self._source_uri = source_uri
         self._stream = stream
-
-        if (sample_rate_hertz is not None and
-                not 8000 <= sample_rate_hertz <= 48000):
-            raise ValueError('The value of sample_rate_hertz must be between '
-                             '8000 and 48000.')
         self._sample_rate_hertz = sample_rate_hertz
 
         if encoding is not None and getattr(Encoding, encoding, False):
