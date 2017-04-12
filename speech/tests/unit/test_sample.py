@@ -84,13 +84,6 @@ class TestSample(unittest.TestCase):
     def test_sample_rates(self):
         from google.cloud.speech.encoding import Encoding
 
-        with self.assertRaises(ValueError):
-            self._make_one(
-                source_uri=self.AUDIO_SOURCE_URI, sample_rate_hertz=7999)
-        with self.assertRaises(ValueError):
-            self._make_one(
-                source_uri=self.AUDIO_SOURCE_URI, sample_rate_hertz=48001)
-
         sample = self._make_one(
             encoding=Encoding.FLAC,
             sample_rate_hertz=self.SAMPLE_RATE,
