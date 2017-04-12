@@ -30,3 +30,7 @@ tests/data/user-key.json
 
 # PyCharm configuration:
 .idea
+
+# Generated files
+pylintrc
+pylintrc.test
