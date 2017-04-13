@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import sys
 
 from setuptools import setup
 
@@ -68,6 +69,10 @@ REQUIREMENTS = [
     'google-cloud-vision >= 0.24.0, < 0.25dev',
     'google-cloud-runtimeconfig >= 0.24.0, < 0.25dev',
 ]
+
+if sys.version_info >= (3, 6):
+    REQUIREMENTS.insert(0, 'setuptools >= 34.0.0')
+
 
 setup(
     name='google-cloud',
