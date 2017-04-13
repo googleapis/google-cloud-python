@@ -1,5 +1,5 @@
-Httplib2 Transport for Google Auth
-==================================
+``httplib2`` Transport for Google Auth
+======================================
 
 |pypi|
 
