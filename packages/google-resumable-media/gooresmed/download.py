@@ -25,16 +25,16 @@ def _add_bytes_range(start, end, headers):
        >>> headers
        {}
        >>> _add_bytes_range(500, 999, headers)
-       >>> headers['Range']
+       >>> headers['range']
        'bytes=500-999'
        >>> _add_bytes_range(None, 499, headers)
-       >>> headers['Range']
+       >>> headers['range']
        'bytes=0-499'
        >>> _add_bytes_range(-500, None, headers)
-       >>> headers['Range']
+       >>> headers['range']
        'bytes=-500'
        >>> _add_bytes_range(9500, None, headers)
-       >>> headers['Range']
+       >>> headers['range']
        'bytes=9500-'
 
     Args:
@@ -60,9 +60,10 @@ def _add_bytes_range(start, end, headers):
             else:
                 bytes_range = '{:d}-'.format(start)
         else:
+            # NOTE: This is invalid if ``start < 0``.
             bytes_range = '{:d}-{:d}'.format(start, end)
 
-    headers['Range'] = 'bytes=' + bytes_range
+    headers['range'] = 'bytes=' + bytes_range
 
 
 class Download(object):
