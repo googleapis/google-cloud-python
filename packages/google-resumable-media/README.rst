@@ -7,7 +7,7 @@
 
 Work in progress. See the `docs`_ for examples and usage.
 
-.. _docs: https://google.github.io/google-resumable-media/
+.. _docs: https://google.github.io/google-resumable-media-python/
 
 License
 -------
