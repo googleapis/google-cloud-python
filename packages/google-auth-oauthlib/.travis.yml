@@ -4,8 +4,6 @@ matrix:
   include:
   - python: 3.5
     env: TOXENV=lint
-  - python: 3.6
-    env: TOXENV=docs
   - python: 2.7
     env: TOXENV=py27
   - python: 3.4
@@ -18,10 +16,6 @@ matrix:
     env: TOXENV=pypy
   - python: 3.6
     env: TOXENV=cover
-  - python: 3.6
-    env: TOXENV=py36-system SYSTEM_TEST=1 SKIP_APP_ENGINE_SYSTEM_TEST=1
-  - python: 2.7
-    env: TOXENV=py27-system SYSTEM_TEST=1 SKIP_APP_ENGINE_SYSTEM_TEST=1
 cache:
   directories:
   - ${HOME}/.cache
