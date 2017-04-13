@@ -66,7 +66,33 @@ def _add_bytes_range(start, end, headers):
     headers['range'] = 'bytes=' + bytes_range
 
 
-class Download(object):
+class _DownloadBase(object):
+    """Base class for download helpers.
+
+    Defines core shared behavior across different download types.
+
+    Args:
+       media_url (str): The URL containing the media to be downloaded.
+       start (int): The first byte in a range to be downloaded.
+       end (int): The last byte in a range to be downloaded.
+    """
+
+    def __init__(self, media_url, start=None, end=None):
+        self.media_url = media_url
+        """str: The URL containing the media to be downloaded."""
+        self.start = start
+        """Optional[int]: The first byte in a range to be downloaded."""
+        self.end = end
+        """Optional[int]: The last byte in a range to be downloaded."""
+        self._finished = False
+
+    @property
+    def finished(self):
+        """bool: Flag indicating if the download has completed."""
+        return self._finished
+
+
+class Download(_DownloadBase):
     """Helper to manage downloading some or all of a resource.
 
     Basic support will
@@ -90,23 +116,6 @@ class Download(object):
            ``start`` to the end of the media.
     """
 
-    def __init__(self, media_url, start=None, end=None):
-        self.media_url = media_url
-        """str: The URL containing the media to be downloaded."""
-        self.start = start
-        """Optional[int]: The first byte in a range to be downloaded."""
-        self.end = end
-        """Optional[int]: The last byte in a range to be downloaded."""
-        self._finished = False
-
-        self._headers = {}
-        _add_bytes_range(start, end, self._headers)
-
-    @property
-    def finished(self):
-        """bool: Flag indicating if the download has completed."""
-        return self._finished
-
     def consume(self, transport):
         """Consume the resource to be downloaded.
 
@@ -125,7 +134,9 @@ class Download(object):
         if self.finished:
             raise ValueError('A download can only be used once.')
 
-        result = transport.get(self.media_url, headers=self._headers)
+        headers = {}
+        _add_bytes_range(self.start, self.end, headers)
+        result = transport.get(self.media_url, headers=headers)
         # Tombstone the current Download so it cannot be used again.
         self._finished = True
         return result

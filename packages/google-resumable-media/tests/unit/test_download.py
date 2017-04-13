@@ -56,10 +56,10 @@ class Test__add_bytes_range(object):
         assert headers == {'range': 'bytes=-123454321'}
 
 
-class TestDownload(object):
+class Test_DownloadBase(object):
 
     def test_constructor_defaults(self):
-        download = download_mod.Download(EXAMPLE_URL)
+        download = download_mod._DownloadBase(EXAMPLE_URL)
         assert download.media_url == EXAMPLE_URL
         assert download.start is None
         assert download.end is None
@@ -68,14 +68,15 @@ class TestDownload(object):
     def test_constructor_explicit(self):
         start = 11
         end = 10001
-        download = download_mod.Download(EXAMPLE_URL, start=start, end=end)
+        download = download_mod._DownloadBase(
+            EXAMPLE_URL, start=start, end=end)
         assert download.media_url == EXAMPLE_URL
         assert download.start == start
         assert download.end == end
         assert not download._finished
 
     def test_finished_property(self):
-        download = download_mod.Download(EXAMPLE_URL)
+        download = download_mod._DownloadBase(EXAMPLE_URL)
         # Default value of @property.
         assert not download.finished
 
@@ -86,6 +87,9 @@ class TestDownload(object):
         # Set it privately and then check the @property.
         download._finished = True
         assert download.finished
+
+
+class TestDownload(object):
 
     def test_consume_already_finished(self):
         download = download_mod.Download(EXAMPLE_URL)
