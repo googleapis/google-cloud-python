@@ -15,6 +15,14 @@
 """Support for downloading media from Google APIs."""
 
 
+import re
+
+
+_CONTENT_RANGE_RE = re.compile(
+    r'bytes (?P<start_byte>\d+)-(?P<end_byte>\d+)/(?P<total_bytes>\d+)',
+    flags=re.IGNORECASE)
+
+
 def _add_bytes_range(start, end, headers):
     """Add a bytes range to a header dictionary.
 
@@ -140,3 +148,161 @@ class Download(_DownloadBase):
         # Tombstone the current Download so it cannot be used again.
         self._finished = True
         return result
+
+
+class ChunkedDownload(_DownloadBase):
+    """Download a resource in chunks.
+
+    Args:
+       media_url (str): The URL containing the media to be downloaded.
+       chunk_size (int): The number of bytes to be retrieved in each
+           request.
+       start (int): The first byte in a range to be downloaded. If not
+           provided, defaults to ``0``.
+       end (int): The last byte in a range to be downloaded. If not
+           provided, will download to the end of the media.
+
+    Raises:
+        ValueError: If ``start`` is negative.
+    """
+
+    def __init__(self, media_url, chunk_size, start=0, end=None):
+        if start < 0:
+            raise ValueError(
+                'On a chunked download the starting value cannot be negative.')
+        super(ChunkedDownload, self).__init__(
+            media_url, start=start, end=end)
+        self.chunk_size = chunk_size
+        self._bytes_downloaded = 0
+        self._total_bytes = None
+
+    @property
+    def bytes_downloaded(self):
+        """int: Number of bytes that have been downloaded."""
+        return self._bytes_downloaded
+
+    @property
+    def total_bytes(self):
+        """Optional[int]: The total number of bytes to be downloaded."""
+        return self._total_bytes
+
+    def _get_byte_range(self):
+        """Determines the byte range for the next request.
+
+        Returns:
+            Tuple[int, int]: The pair of begin and end byte for the next
+            chunked request.
+        """
+        curr_start = self.start + self.bytes_downloaded
+        curr_end = curr_start + self.chunk_size - 1
+        # Make sure ``curr_end`` does not exceed ``end``.
+        if self.end is not None:
+            curr_end = min(curr_end, self.end)
+        # Make sure ``curr_end`` does not exceed ``total_bytes - 1``.
+        if self.total_bytes is not None:
+            curr_end = min(curr_end, self.total_bytes - 1)
+        return curr_start, curr_end
+
+    def _update_status(self, headers):
+        """Updates the current state after consuming a chunk.
+
+        Increments ``bytes_downloaded`` by the number of bytes in the
+        ``Content-Length`` header.
+
+        If ``total_bytes`` is already set, this assumes (but does not check)
+        that we already have the correct value and doesn't bother to check
+        that it agrees with the headers.
+
+        We expect the **total** length to be in the ``Content-Range`` header,
+        but this header is only present on requests which sent the ``Range``
+        header. This response header should be of the form
+        ``bytes {start}-{end}/{total}`` and ``{end} - {start} + 1``
+        should be the same as the ``Content-Length``.
+
+        Args:
+            headers (Mapping): The response headers from an HTTP request.
+        """
+        # First update ``bytes_downloaded``.
+        content_length = _header_required(headers, 'content-length')
+        self._bytes_downloaded += int(content_length)
+        # Parse the content range.
+        content_range = _header_required(headers, 'content-range')
+        _, end_byte, total_bytes = _get_range_info(content_range)
+        # If the end byte is past ``end`` or ``total_bytes - 1`` we are done.
+        if self.end is not None and end_byte >= self.end:
+            self._finished = True
+        elif end_byte >= total_bytes - 1:
+            self._finished = True
+        # NOTE: We only use ``total_bytes`` if not already known.
+        if self.total_bytes is None:
+            self._total_bytes = total_bytes
+
+    def consume_next_chunk(self, transport):
+        """Consume the next chunk of the resource to be downloaded.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests via a ``get()`` method which accepts a
+                media URL and a ``headers`` keyword argument.
+
+        Returns:
+            object: The return value of ``transport.get()``.
+
+        Raises:
+            ValueError: If the current download has finished.
+        """
+        if self.finished:
+            raise ValueError('Download has finished.')
+
+        curr_start, curr_end = self._get_byte_range()
+        headers = {}
+        _add_bytes_range(curr_start, curr_end, headers)
+        result = transport.get(self.media_url, headers=headers)
+        self._update_status(result.headers)
+        return result
+
+
+def _header_required(headers, name):
+    """Checks that a specific header is in a headers dictionary.
+
+    Args:
+        headers (Mapping): The response headers from an HTTP request.
+        name (str): The name of a required header.
+
+    Returns:
+        str: The desired header.
+
+    Raises:
+        KeyError: If the header is missing.
+    """
+    if name not in headers:
+        msg = 'Response headers must contain {} header'.format(name)
+        raise KeyError(msg)
+
+    return headers[name]
+
+
+def _get_range_info(content_range):
+    """Get the start, end and total bytes from a content range header.
+
+    Args:
+        content_range (str): The
+
+    Returns:
+        Tuple[int, int, int]: The start byte, end byte and total bytes.
+
+    Raises:
+        ValueError: If the ``Content-Range`` header is not of the form
+            ``bytes {start}-{end}/{total}``.
+    """
+    match = _CONTENT_RANGE_RE.match(content_range)
+    if match is None:
+        raise ValueError(
+            'Unexpected content-range header', content_range,
+            'Expected to be of the form "bytes {start}-{end}/{total}"')
+
+    return (
+        int(match.group('start_byte')),
+        int(match.group('end_byte')),
+        int(match.group('total_bytes'))
+    )

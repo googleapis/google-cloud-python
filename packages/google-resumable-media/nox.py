@@ -101,3 +101,16 @@ def system_tests(session, python_version):
 
     # Run py.test against the system tests.
     session.run('py.test', 'tests/system')
+
+
+@nox.session
+def cover(session):
+    """Run the final coverage report.
+
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
+    session.interpreter = 'python3.6'
+    session.install('coverage', 'pytest-cov')
+    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
+    session.run('coverage', 'erase')
