@@ -55,6 +55,9 @@ class MockAdapter(requests.adapters.BaseAdapter):
         self.headers = headers or {}
 
     def send(self, request, **kwargs):
+        # pylint: disable=arguments-differ
+        # request is the only required argument here and the only argument
+        # we care about.
         self.requests.append(request)
         return self.responses.pop(0)
 

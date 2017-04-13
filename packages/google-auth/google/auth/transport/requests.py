@@ -158,6 +158,10 @@ class AuthorizedSession(requests.Session):
 
     def request(self, method, url, data=None, headers=None, **kwargs):
         """Implementation of Requests' request."""
+        # pylint: disable=arguments-differ
+        # Requests has a ton of arguments to request, but only two
+        # (method, url) are required. We pass through all of the other
+        # arguments to super, so no need to exhaustively list them here.
 
         # Use a kwarg for this instead of an attribute to maintain
         # thread-safety.
