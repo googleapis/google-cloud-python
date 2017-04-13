@@ -1,5 +1,5 @@
-gooresmed.upload module
-=======================
+gooresmed\.upload module
+========================
 
 .. automodule:: gooresmed.upload
     :members:

@@ -1,5 +1,5 @@
-gooresmed.download module
-=========================
+gooresmed\.download module
+==========================
 
 .. automodule:: gooresmed.download
     :members:
