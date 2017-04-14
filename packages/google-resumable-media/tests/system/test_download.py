@@ -130,8 +130,10 @@ def consume_chunks(download, authorized_transport, chunk_size,
                    total_bytes, actual_contents):
     num_responses = 0
     start_byte = 0
+    all_parts = []
     while not download.finished:
         response = download.consume_next_chunk(authorized_transport)
+        all_parts.append(response.content)
         num_responses += 1
 
         next_byte = min(start_byte + chunk_size, total_bytes)
@@ -141,7 +143,8 @@ def consume_chunks(download, authorized_transport, chunk_size,
         assert response.content == actual_contents[start_byte:next_byte]
         start_byte = next_byte
 
-    return num_responses, response
+    all_bytes = b''.join(all_parts)
+    return num_responses, response, all_bytes
 
 
 def test_chunked_download(bucket, authorized_transport):
@@ -156,9 +159,11 @@ def test_chunked_download(bucket, authorized_transport):
         media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
         download = download_mod.ChunkedDownload(media_url, chunk_size)
         # Consume the resource in chunks.
-        num_responses, last_response = consume_chunks(
+        num_responses, last_response, all_bytes = consume_chunks(
             download, authorized_transport, chunk_size,
             total_bytes, actual_contents)
+        # Make sure the combined chunks are the whole object.
+        assert all_bytes == actual_contents
         # Check that we have the right number of responses.
         assert num_responses == num_chunks
         # Make sure the last chunk isn't the same size.
