@@ -51,12 +51,25 @@ def authorized_transport():
     yield tr_requests.AuthorizedSession(credentials)
 
 
+@pytest.fixture
+def cleanup():
+    to_delete = []
+
+    def add_cleanup(item):
+        to_delete.append(item)
+
+    yield add_cleanup
+
+    for item in to_delete:
+        item.delete()
+
+
 def get_md5(data):
     hash_obj = hashlib.md5(data)
     return base64.b64encode(hash_obj.digest())
 
 
-def test_simple_upload(bucket, authorized_transport):
+def test_simple_upload(bucket, authorized_transport, cleanup):
     with open(ICO_FILE, 'rb') as file_obj:
         actual_contents = file_obj.read()
 
@@ -84,5 +97,4 @@ def test_simple_upload(bucket, authorized_transport):
             authorized_transport, actual_contents, ICO_CONTENT_TYPE)
 
     # Make sure to clean up the uploaded blob.
-    blob = bucket.blob(blob_name)
-    blob.delete()
+    cleanup(bucket.blob(blob_name))
