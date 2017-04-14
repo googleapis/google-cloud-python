@@ -274,11 +274,11 @@ In addition, a :class:`.ChunkedDownload` can also take optional
 
 from gooresmed.download import ChunkedDownload
 from gooresmed.download import Download
-from gooresmed.upload import Upload
+from gooresmed.upload import SimpleUpload
 
 
 __all__ = [
     'ChunkedDownload',
     'Download',
-    'Upload',
+    'SimpleUpload',
 ]

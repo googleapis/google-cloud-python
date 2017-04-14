@@ -19,31 +19,75 @@ uploads that contain both metadata and a small file as payload.
 """
 
 
-class Upload(object):
-    """Helper to manage uploading some a resource to a Google API.
+class SimpleUpload(object):
+    """Upload a resource to a Google API.
 
-    Basic support will
+    A **simple** media upload sends no metadata and completes the upload
+    in a single request.
 
-    * upload directly from a file on the host OS
-    * upload from a stream or file-like object
-    * upload content directly from a string or bytes
-
-    For large files / content, the upload process will need to be
-    split into smaller chunks as a resumable upload.
+    Args:
+       upload_url (str): The URL where the content will be uploaded.
     """
 
-    def __init__(self):
-        self.total_bytes = None
-        """Optional[int]: The total number of bytes to be uploaded."""
-        self.bytes_transmitted = 0
-        """int: The number of bytes that have been transmitted."""
-        self.chunk_size = None
-        """Optional[int]: The maximum size (in bytes) of a request."""
+    def __init__(self, upload_url):
+        self.upload_url = upload_url
+        """str: The URL where the content will be uploaded."""
+        self._finished = False
 
-    def transmit(self):
-        """Transmit the resource to be uploaded."""
-        raise NotImplementedError
+    @property
+    def finished(self):
+        """bool: Flag indicating if the upload has completed."""
+        return self._finished
 
-    def transmit_chunk(self):
-        """Transmit a single chunk of the resource to be uploaded."""
-        raise NotImplementedError
+    def _prepare_request(self, content_type):
+        """Prepare the contents of an HTTP request.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            content_type (str): The content type for the request.
+
+        Returns:
+            dict: The headers for the request.
+
+        Raises:
+            ValueError: If the current :class:`Upload` has already finished.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.finished:
+            raise ValueError('An upload can only be used once.')
+
+        headers = {'content-type': content_type}
+        return headers
+
+    def _process_response(self):
+        """Process the response from an HTTP request.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        # Tombstone the current Upload so it cannot be used again.
+        self._finished = True
+
+    def transmit(self, transport, data, content_type):
+        """Transmit the resource to be uploaded.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests via a ``post()`` method which accepts an
+                upload URL, a ``data`` keyword argument and a
+                ``headers`` keyword argument.
+
+        Returns:
+            object: The return value of ``transport.post()``.
+        """
+        headers = self._prepare_request(content_type)
+        result = transport.post(self.upload_url, data=data, headers=headers)
+        self._process_response()
+        return result
