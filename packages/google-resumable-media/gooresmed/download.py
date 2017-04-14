@@ -101,7 +101,7 @@ class _DownloadBase(object):
 
 
 class Download(_DownloadBase):
-    """Helper to manage downloading some or all of a resource.
+    """Helper to manage downloading a resource from a Google API.
 
     Basic support will
 
@@ -181,7 +181,7 @@ class Download(_DownloadBase):
 
 
 class ChunkedDownload(_DownloadBase):
-    """Download a resource in chunks.
+    """Download a resource in chunks from a Google API.
 
     Args:
        media_url (str): The URL containing the media to be downloaded.
