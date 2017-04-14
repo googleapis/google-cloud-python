@@ -20,7 +20,7 @@ from google.cloud import storage
 import pytest
 from six.moves import http_client
 
-import gooresmed.download as download_mod
+import gooresmed
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -29,7 +29,6 @@ IMG_FILES = (
     os.path.realpath(os.path.join(DATA_DIR, 'image1.jpg')),
     os.path.realpath(os.path.join(DATA_DIR, 'image2.jpg')),
 )
-MIME_TYPE = 'image/jpeg'
 BUCKET_NAME = os.environ['GOORESMED_BUCKET']
 MEDIA_URL_TEMPLATE = (
     'https://www.googleapis.com/download/storage/v1/b/' +
@@ -41,17 +40,17 @@ GCS_SCOPE = ('https://www.googleapis.com/auth/devstorage.read_only',)
 @pytest.fixture(scope='module')
 def bucket():
     client = storage.Client()
-    bucket = client.bucket(BUCKET_NAME)
-    bucket.reload()
+    loc_bucket = client.bucket(BUCKET_NAME)
+    loc_bucket.reload()
 
     blobs = []
     for img_file in IMG_FILES:
         blob_name = os.path.basename(img_file)
-        blob = bucket.blob(blob_name)
-        blob.upload_from_filename(img_file, content_type=MIME_TYPE)
+        blob = loc_bucket.blob(blob_name)
+        blob.upload_from_filename(img_file, content_type='image/jpeg')
         blobs.append(blob)
 
-    yield bucket
+    yield loc_bucket
 
     # Clean-up the blobs we created.
     for blob in blobs:
@@ -73,7 +72,7 @@ def test_download_full(bucket, authorized_transport):
 
         # Create the actual download object.
         media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
-        download = download_mod.Download(media_url)
+        download = gooresmed.Download(media_url)
         # Consume the resource.
         response = download.consume(authorized_transport)
         assert response.status_code == http_client.OK
@@ -99,10 +98,10 @@ def test_download_partial(bucket, authorized_transport):
         # Create the multiple download "slices".
         media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
         downloads = (
-            download_mod.Download(media_url, start=1024, end=16385),
-            download_mod.Download(media_url, end=8191),
-            download_mod.Download(media_url, start=-256),
-            download_mod.Download(media_url, start=262144),
+            gooresmed.Download(media_url, start=1024, end=16385),
+            gooresmed.Download(media_url, end=8191),
+            gooresmed.Download(media_url, start=-256),
+            gooresmed.Download(media_url, start=262144),
         )
         for download, slice_ in zip(downloads, slices):
             response = download.consume(authorized_transport)
@@ -161,7 +160,7 @@ def test_chunked_download(bucket, authorized_transport):
         num_chunks, chunk_size = get_chunk_size(7, total_bytes)
         # Create the actual download object.
         media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
-        download = download_mod.ChunkedDownload(media_url, chunk_size)
+        download = gooresmed.ChunkedDownload(media_url, chunk_size)
         # Consume the resource in chunks.
         num_responses, last_response, all_bytes = consume_chunks(
             download, authorized_transport,
@@ -207,7 +206,7 @@ def test_chunked_download_partial(bucket, authorized_transport):
             num_chunks, chunk_size = get_chunk_size(
                 7, end_byte - slice_.start + 1)
             # Create the actual download object.
-            download = download_mod.ChunkedDownload(
+            download = gooresmed.ChunkedDownload(
                 media_url, chunk_size, start=slice_.start, end=end)
             # Consume the resource in chunks.
             num_responses, last_response, all_bytes = consume_chunks(
