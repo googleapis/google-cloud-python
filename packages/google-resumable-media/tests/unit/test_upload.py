@@ -23,15 +23,15 @@ EXAMPLE_URL = (
     'uploadType=media&name={OBJECT}')
 
 
-class TestSimpleUpload(object):
+class Test_UploadBase(object):
 
     def test_constructor(self):
-        upload = upload_mod.SimpleUpload(EXAMPLE_URL)
+        upload = upload_mod._UploadBase(EXAMPLE_URL)
         assert upload.upload_url == EXAMPLE_URL
         assert not upload._finished
 
     def test_finished_property(self):
-        upload = upload_mod.SimpleUpload(EXAMPLE_URL)
+        upload = upload_mod._UploadBase(EXAMPLE_URL)
         # Default value of @property.
         assert not upload.finished
 
@@ -42,6 +42,9 @@ class TestSimpleUpload(object):
         # Set it privately and then check the @property.
         upload._finished = True
         assert upload.finished
+
+
+class TestSimpleUpload(object):
 
     def test__prepare_request_already_finished(self):
         upload = upload_mod.SimpleUpload(EXAMPLE_URL)

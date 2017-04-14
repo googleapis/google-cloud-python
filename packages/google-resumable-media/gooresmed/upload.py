@@ -19,11 +19,10 @@ uploads that contain both metadata and a small file as payload.
 """
 
 
-class SimpleUpload(object):
-    """Upload a resource to a Google API.
+class _UploadBase(object):
+    """Base class for upload helpers.
 
-    A **simple** media upload sends no metadata and completes the upload
-    in a single request.
+    Defines core shared behavior across different upload types.
 
     Args:
        upload_url (str): The URL where the content will be uploaded.
@@ -38,6 +37,17 @@ class SimpleUpload(object):
     def finished(self):
         """bool: Flag indicating if the upload has completed."""
         return self._finished
+
+
+class SimpleUpload(_UploadBase):
+    """Upload a resource to a Google API.
+
+    A **simple** media upload sends no metadata and completes the upload
+    in a single request.
+
+    Args:
+       upload_url (str): The URL where the content will be uploaded.
+    """
 
     def _prepare_request(self, content_type):
         """Prepare the contents of an HTTP request.
