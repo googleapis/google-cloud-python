@@ -110,3 +110,47 @@ def test_download_partial(bucket, authorized_transport):
             assert response.content == actual_contents[slice_]
             with pytest.raises(ValueError):
                 download.consume(authorized_transport)
+
+
+def test_chunked_download(bucket, authorized_transport):
+    num_chunks = 7
+    for img_file in IMG_FILES:
+        with open(img_file, 'rb') as file_obj:
+            actual_contents = file_obj.read()
+
+        total_bytes = len(actual_contents)
+        chunk_size = total_bytes // num_chunks
+        # Make sure we aren't under-shooting the total.
+        while num_chunks * chunk_size < total_bytes:
+            chunk_size += 1
+
+        blob_name = os.path.basename(img_file)
+
+        # Create the actual download object.
+        media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
+        download = download_mod.ChunkedDownload(media_url, chunk_size)
+        # Consume the resource in chunks.
+        num_responses = 0
+        start_byte = 0
+        while not download.finished:
+            response = download.consume_next_chunk(authorized_transport)
+            num_responses += 1
+
+            next_byte = min(start_byte + chunk_size, total_bytes)
+            assert download.bytes_downloaded == next_byte
+            assert download.total_bytes == total_bytes
+            assert response.status_code == http_client.PARTIAL_CONTENT
+            assert response.content == actual_contents[start_byte:next_byte]
+            start_byte = next_byte
+
+        # Make sure the last chunk isn't the same size.
+        assert total_bytes % chunk_size != 0
+        assert len(response.content) < chunk_size
+
+        # Make sure the download is tombstoned.
+        assert download.finished
+        with pytest.raises(ValueError):
+            download.consume_next_chunk(authorized_transport)
+
+        # Check that we have the right number of responses.
+        assert num_responses == num_chunks
