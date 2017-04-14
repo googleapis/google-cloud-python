@@ -158,6 +158,39 @@
   <div class="section" id="module-gooresmed">
 <span id="gooresmed"></span><h1><code class="docutils literal"><span class="pre">gooresmed</span></code><a class="headerlink" href="#module-gooresmed" title="Permalink to this headline">¶</a></h1>
 <p>Utilities for Google Media Downloads and Resumable Uploads.</p>
+<p>For example, to download an object from Google Cloud Storage (GCS),
+first create an authorized transport that has access to the
+resource you&#8217;d like to download:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth.transport.requests</span> <span class="k">as</span> <span class="nn">tr_requests</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ro_scope</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">credentials</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">scopes</span><span class="o">=</span><span class="p">(</span><span class="n">ro_scope</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transport</span> <span class="o">=</span> <span class="n">tr_requests</span><span class="o">.</span><span class="n">AuthorizedSession</span><span class="p">(</span><span class="n">credentials</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transport</span>
+<span class="go">&lt;google.auth.transport.requests.AuthorizedSession object at 0x...&gt;</span>
+</pre></div>
+</div>
+<p>then construct the media URL for the GCS object and download it:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gooresmed</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;https://www.googleapis.com/download/storage/v1/b/&#39;</span>
+<span class="gp">... </span>    <span class="s1">&#39;</span><span class="si">{bucket}</span><span class="s1">/o/</span><span class="si">{blob_name}</span><span class="s1">?alt=media&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">media_url</span> <span class="o">=</span> <span class="n">url_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span> <span class="o">=</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">Download</span><span class="p">(</span><span class="n">media_url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
+<span class="go">&lt;Response [200]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
+<span class="go">&#39;1364156&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="go">1364156</span>
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>

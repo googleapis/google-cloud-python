@@ -63,6 +63,30 @@ def docs(session):
 
 
 @nox.session
+def doctest(session):
+    """Run the doctests."""
+    session.interpreter = 'python3.6'
+
+    # Install Sphinx and other dependencies.
+    session.chdir(os.path.realpath(os.path.dirname(__file__)))
+    session.install(
+        'sphinx',
+        'sphinx_rtd_theme',
+        'sphinx-docstring-typing >= 0.0.3',
+        'mock',
+        'google-auth'
+    )
+    session.install('-e', '.')
+
+    # Run the doctests with Sphinx.
+    session.run(
+        'sphinx-build', '-W', '-b', 'doctest',
+        '-d', 'docs_build/build/doctrees',
+        'docs_build/', 'docs_build/doctest',
+    )
+
+
+@nox.session
 def lint(session):
     """Run flake8.
 

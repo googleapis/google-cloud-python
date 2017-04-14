@@ -42,3 +42,6 @@ pip-log.txt
 
 # JetBrains
 .idea
+
+# Docs build artifacts
+docs_build/doctest/
