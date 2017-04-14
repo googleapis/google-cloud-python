@@ -158,8 +158,14 @@
   <div class="section" id="module-gooresmed">
 <span id="gooresmed"></span><h1><code class="docutils literal"><span class="pre">gooresmed</span></code><a class="headerlink" href="#module-gooresmed" title="Permalink to this headline">¶</a></h1>
 <p>Utilities for Google Media Downloads and Resumable Uploads.</p>
-<p>For example, to download an object from Google Cloud Storage (GCS),
-first create an authorized transport that has access to the resource:</p>
+<div class="section" id="authorized-transport">
+<h2>Authorized Transport<a class="headerlink" href="#authorized-transport" title="Permalink to this headline">¶</a></h2>
+<p>In order to download or upload a resource, an authorized transport
+is required. For download requests, this must be an object that
+supports <code class="docutils literal"><span class="pre">GET</span></code> requests via <code class="docutils literal"><span class="pre">transport.get(url,</span> <span class="pre">headers=headers)</span></code>.</p>
+<p>For example, <code class="docutils literal"><span class="pre">google-auth</span></code> and <code class="docutils literal"><span class="pre">requests</span></code> can be used to
+create an authorized transport that has read-only access to
+Google Cloud Storage (GCS):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth.transport.requests</span> <span class="k">as</span> <span class="nn">tr_requests</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -170,7 +176,12 @@ first create an authorized transport that has access to the resource:</p>
 <span class="go">&lt;google.auth.transport.requests.AuthorizedSession object at 0x...&gt;</span>
 </pre></div>
 </div>
-<p>then construct the media URL for the GCS object and download it:</p>
+</div>
+<div class="section" id="simple-downloads">
+<h2>Simple Downloads<a class="headerlink" href="#simple-downloads" title="Permalink to this headline">¶</a></h2>
+<p>To download an object from Google Cloud Storage, construct the media URL
+for the GCS object and download it with an authorized transport that has
+access to the resource:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gooresmed</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
@@ -206,6 +217,70 @@ specify <code class="docutils literal"><span class="pre">start</span></code> and
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 <span class="go">4096</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="chunked-downloads">
+<h2>Chunked Downloads<a class="headerlink" href="#chunked-downloads" title="Permalink to this headline">¶</a></h2>
+<p>For very large objects or objects of unknown size, it may make more sense
+to download the object in chunks rather than all at once. This can be done
+to avoid dropped connections with a poor internet connection or can allow
+multiple chunks to be downloaded in parallel to speed up the total
+download.</p>
+<p>Using the same media URL and authorized transport for a basic
+<a class="reference internal" href="gooresmed.download.html#gooresmed.download.Download" title="gooresmed.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a>, a <a class="reference internal" href="gooresmed.download.html#gooresmed.download.ChunkedDownload" title="gooresmed.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> also requires a chunk size:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># 50MB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span> <span class="o">=</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">ChunkedDownload</span><span class="p">(</span><span class="n">media_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check the state of the download before starting.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">bytes_downloaded</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">total_bytes</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">download</span><span class="o">.</span><span class="n">consume_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check the state of the download after consuming one chunk.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">bytes_downloaded</span>  <span class="c1"># chunk_size</span>
+<span class="go">52428800</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">total_bytes</span>  <span class="c1"># 1GB</span>
+<span class="go">1073741824</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
+<span class="go">&lt;Response [206]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
+<span class="go">&#39;52428800&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Range&#39;</span><span class="p">]</span>
+<span class="go">&#39;bytes 0-52428799/1073741824&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="n">chunk_size</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The download will change it&#8217;s <code class="docutils literal"><span class="pre">finished</span></code> status to <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>
+once the final chunk is consumed. In some cases, the final chunk may
+not be the same size as the other chunks:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The state of the download in progress.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">bytes_downloaded</span>  <span class="c1"># 20 chunks at 50MB</span>
+<span class="go">1048576000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">total_bytes</span>  <span class="c1"># 1GB</span>
+<span class="go">1073741824</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">download</span><span class="o">.</span><span class="n">consume_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The state of the download after consuming the final chunk.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">bytes_downloaded</span> <span class="o">==</span> <span class="n">download</span><span class="o">.</span><span class="n">total_bytes</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
+<span class="go">&lt;Response [206]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
+<span class="go">&#39;25165824&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Range&#39;</span><span class="p">]</span>
+<span class="go">&#39;bytes 1048576000-1073741823/1073741824&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">download</span><span class="o">.</span><span class="n">chunk_size</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>In addition, a <a class="reference internal" href="gooresmed.download.html#gooresmed.download.ChunkedDownload" title="gooresmed.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> can also take optional
+<code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">end</span></code> byte positions.</p>
 </div>
 <div class="toctree-wrapper compound">
 </div>
