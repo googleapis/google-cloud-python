@@ -14,8 +14,17 @@
 
 """Utilities for Google Media Downloads and Resumable Uploads.
 
-For example, to download an object from Google Cloud Storage (GCS),
-first create an authorized transport that has access to the resource:
+====================
+Authorized Transport
+====================
+
+In order to download or upload a resource, an authorized transport
+is required. For download requests, this must be an object that
+supports ``GET`` requests via ``transport.get(url, headers=headers)``.
+
+For example, ``google-auth`` and ``requests`` can be used to
+create an authorized transport that has read-only access to
+Google Cloud Storage (GCS):
 
 .. testsetup:: get-credentials
 
@@ -47,7 +56,13 @@ first create an authorized transport that has access to the resource:
    # Put back the correct ``default`` function on the module.
    google.auth.default = original_default
 
-then construct the media URL for the GCS object and download it:
+================
+Simple Downloads
+================
+
+To download an object from Google Cloud Storage, construct the media URL
+for the GCS object and download it with an authorized transport that has
+access to the resource:
 
 .. testsetup:: basic-download
 
@@ -131,6 +146,130 @@ specify ``start`` and ``end`` byte positions (both optional):
    'bytes 4096-8191/1364156'
    >>> len(response.content)
    4096
+
+=================
+Chunked Downloads
+=================
+
+For very large objects or objects of unknown size, it may make more sense
+to download the object in chunks rather than all at once. This can be done
+to avoid dropped connections with a poor internet connection or can allow
+multiple chunks to be downloaded in parallel to speed up the total
+download.
+
+Using the same media URL and authorized transport for a basic
+:class:`.Download`, a :class:`.ChunkedDownload` also requires a chunk size:
+
+.. testsetup:: chunked-download
+
+   import mock
+   import requests
+   from six.moves import http_client
+
+   import gooresmed
+
+   media_url = 'test.invalid'
+
+   fifty_mb = 50 * 1024 * 1024
+   one_gb = 1024 * 1024 * 1024
+   fake_response = requests.Response()
+   fake_response.status_code = int(http_client.PARTIAL_CONTENT)
+   fake_response.headers['Content-Length'] = str(fifty_mb)
+   content_range = 'bytes 0-{:d}/{:d}'.format(fifty_mb - 1, one_gb)
+   fake_response.headers['Content-Range'] = content_range
+   fake_content = mock.MagicMock(spec=['__len__'])
+   fake_content.__len__.return_value = fifty_mb
+   fake_response._content = fake_content
+
+   get_method = mock.Mock(return_value=fake_response, spec=[])
+   transport = mock.Mock(get=get_method, spec=['get'])
+
+.. doctest:: chunked-download
+
+   >>> chunk_size = 50 * 1024 * 1024  # 50MB
+   >>> download = gooresmed.ChunkedDownload(media_url, chunk_size)
+   >>> # Check the state of the download before starting.
+   >>> download.bytes_downloaded
+   0
+   >>> download.total_bytes is None
+   True
+   >>> response = download.consume_next_chunk(transport)
+   >>> # Check the state of the download after consuming one chunk.
+   >>> download.finished
+   False
+   >>> download.bytes_downloaded  # chunk_size
+   52428800
+   >>> download.total_bytes  # 1GB
+   1073741824
+   >>> response
+   <Response [206]>
+   >>> response.headers['Content-Length']
+   '52428800'
+   >>> response.headers['Content-Range']
+   'bytes 0-52428799/1073741824'
+   >>> len(response.content) == chunk_size
+   True
+
+The download will change it's ``finished`` status to :data:`True`
+once the final chunk is consumed. In some cases, the final chunk may
+not be the same size as the other chunks:
+
+.. testsetup:: chunked-download-end
+
+   import mock
+   import requests
+   from six.moves import http_client
+
+   import gooresmed
+
+   media_url = 'test.invalid'
+
+   fifty_mb = 50 * 1024 * 1024
+   one_gb = 1024 * 1024 * 1024
+   download = gooresmed.ChunkedDownload(media_url, fifty_mb)
+   download._bytes_downloaded = 20 * fifty_mb
+   download._total_bytes = one_gb
+
+   fake_response = requests.Response()
+   fake_response.status_code = int(http_client.PARTIAL_CONTENT)
+   slice_size = one_gb - 20 * fifty_mb
+   fake_response.headers['Content-Length'] = str(slice_size)
+   content_range = 'bytes {:d}-{:d}/{:d}'.format(
+       20 * fifty_mb, one_gb - 1, one_gb)
+   fake_response.headers['Content-Range'] = content_range
+   fake_content = mock.MagicMock(spec=['__len__'])
+   fake_content.__len__.return_value = slice_size
+   fake_response._content = fake_content
+
+   get_method = mock.Mock(return_value=fake_response, spec=[])
+   transport = mock.Mock(get=get_method, spec=['get'])
+
+.. doctest:: chunked-download-end
+
+   >>> # The state of the download in progress.
+   >>> download.finished
+   False
+   >>> download.bytes_downloaded  # 20 chunks at 50MB
+   1048576000
+   >>> download.total_bytes  # 1GB
+   1073741824
+   >>> response = download.consume_next_chunk(transport)
+   >>> # The state of the download after consuming the final chunk.
+   >>> download.finished
+   True
+   >>> download.bytes_downloaded == download.total_bytes
+   True
+   >>> response
+   <Response [206]>
+   >>> response.headers['Content-Length']
+   '25165824'
+   >>> response.headers['Content-Range']
+   'bytes 1048576000-1073741823/1073741824'
+   >>> len(response.content) < download.chunk_size
+   True
+
+In addition, a :class:`.ChunkedDownload` can also take optional
+``start`` and ``end`` byte positions.
 """
 
 from gooresmed.download import ChunkedDownload
