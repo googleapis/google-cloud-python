@@ -15,8 +15,7 @@
 """Utilities for Google Media Downloads and Resumable Uploads.
 
 For example, to download an object from Google Cloud Storage (GCS),
-first create an authorized transport that has access to the
-resource you'd like to download:
+first create an authorized transport that has access to the resource:
 
 .. testsetup:: get-credentials
 
@@ -36,6 +35,7 @@ resource you'd like to download:
 
    >>> import google.auth
    >>> import google.auth.transport.requests as tr_requests
+   >>>
    >>> ro_scope = 'https://www.googleapis.com/auth/devstorage.read_only'
    >>> credentials, _ = google.auth.default(scopes=(ro_scope,))
    >>> transport = tr_requests.AuthorizedSession(credentials)
@@ -88,6 +88,49 @@ then construct the media URL for the GCS object and download it:
    '1364156'
    >>> len(response.content)
    1364156
+
+To download only a portion of the bytes in the object,
+specify ``start`` and ``end`` byte positions (both optional):
+
+.. testsetup:: basic-download-with-slice
+
+   import mock
+   import requests
+   from six.moves import http_client
+
+   import gooresmed
+
+   media_url = 'test.invalid'
+   start = 4096
+   end = 8191
+   slice_size = end - start + 1
+
+   fake_response = requests.Response()
+   fake_response.status_code = int(http_client.PARTIAL_CONTENT)
+   fake_response.headers['Content-Length'] = str(slice_size)
+   content_range = 'bytes {:d}-{:d}/1364156'.format(start, end)
+   fake_response.headers['Content-Range'] = content_range
+   fake_content = mock.MagicMock(spec=['__len__'])
+   fake_content.__len__.return_value = slice_size
+   fake_response._content = fake_content
+
+   get_method = mock.Mock(return_value=fake_response, spec=[])
+   transport = mock.Mock(get=get_method, spec=['get'])
+
+.. doctest:: basic-download-with-slice
+
+   >>> download = gooresmed.Download(media_url, start=4096, end=8191)
+   >>> response = download.consume(transport)
+   >>> download.finished
+   True
+   >>> response
+   <Response [206]>
+   >>> response.headers['Content-Length']
+   '4096'
+   >>> response.headers['Content-Range']
+   'bytes 4096-8191/1364156'
+   >>> len(response.content)
+   4096
 """
 
 from gooresmed.download import ChunkedDownload
