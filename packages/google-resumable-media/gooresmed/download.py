@@ -124,6 +124,41 @@ class Download(_DownloadBase):
            ``start`` to the end of the media.
     """
 
+    def _prepare_request(self):
+        """Prepare the contents of an HTTP request.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Returns:
+            dict: The headers for the request.
+
+        Raises:
+            ValueError: If the current :class:`Download` has already
+                finished.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.finished:
+            raise ValueError('A download can only be used once.')
+
+        headers = {}
+        _add_bytes_range(self.start, self.end, headers)
+        return headers
+
+    def _process_response(self):
+        """Process the response from an HTTP request.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        # Tombstone the current Download so it cannot be used again.
+        self._finished = True
+
     def consume(self, transport):
         """Consume the resource to be downloaded.
 
@@ -139,14 +174,9 @@ class Download(_DownloadBase):
             ValueError: If the current :class:`Download` has already
                 finished.
         """
-        if self.finished:
-            raise ValueError('A download can only be used once.')
-
-        headers = {}
-        _add_bytes_range(self.start, self.end, headers)
+        headers = self._prepare_request()
         result = transport.get(self.media_url, headers=headers)
-        # Tombstone the current Download so it cannot be used again.
-        self._finished = True
+        self._process_response()
         return result
 
 
@@ -203,10 +233,38 @@ class ChunkedDownload(_DownloadBase):
             curr_end = min(curr_end, self.total_bytes - 1)
         return curr_start, curr_end
 
-    def _update_status(self, headers):
-        """Updates the current state after consuming a chunk.
+    def _prepare_request(self):
+        """Prepare the contents of an HTTP request.
 
-        Increments ``bytes_downloaded`` by the number of bytes in the
+        This is everything that must be done before a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Returns:
+            dict: The headers for the request.
+
+        Raises:
+            ValueError: If the current download has finished.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.finished:
+            raise ValueError('Download has finished.')
+
+        curr_start, curr_end = self._get_byte_range()
+        headers = {}
+        _add_bytes_range(curr_start, curr_end, headers)
+        return headers
+
+    def _process_response(self, headers):
+        """Process the response from an HTTP request.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Updates the current state after consuming a chunk. First,
+        increments ``bytes_downloaded`` by the number of bytes in the
         ``Content-Length`` header.
 
         If ``total_bytes`` is already set, this assumes (but does not check)
@@ -221,6 +279,8 @@ class ChunkedDownload(_DownloadBase):
 
         Args:
             headers (Mapping): The response headers from an HTTP request.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         # First update ``bytes_downloaded``.
         content_length = _header_required(headers, 'content-length')
@@ -251,14 +311,9 @@ class ChunkedDownload(_DownloadBase):
         Raises:
             ValueError: If the current download has finished.
         """
-        if self.finished:
-            raise ValueError('Download has finished.')
-
-        curr_start, curr_end = self._get_byte_range()
-        headers = {}
-        _add_bytes_range(curr_start, curr_end, headers)
+        headers = self._prepare_request()
         result = transport.get(self.media_url, headers=headers)
-        self._update_status(result.headers)
+        self._process_response(result.headers)
         return result
 
 
