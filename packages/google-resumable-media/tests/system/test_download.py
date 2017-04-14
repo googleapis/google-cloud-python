@@ -112,45 +112,59 @@ def test_download_partial(bucket, authorized_transport):
                 download.consume(authorized_transport)
 
 
+def get_chunk_size(min_chunks, total_bytes):
+    # Make sure the number of chunks **DOES NOT** evenly divide.
+    num_chunks = min_chunks
+    while total_bytes % num_chunks == 0:
+        num_chunks += 1
+
+    chunk_size = total_bytes // num_chunks
+    # Since we know an integer division has remainder, increment by 1.
+    chunk_size += 1
+    assert total_bytes < num_chunks * chunk_size
+
+    return num_chunks, chunk_size
+
+
+def consume_chunks(download, authorized_transport, chunk_size,
+                   total_bytes, actual_contents):
+    num_responses = 0
+    start_byte = 0
+    while not download.finished:
+        response = download.consume_next_chunk(authorized_transport)
+        num_responses += 1
+
+        next_byte = min(start_byte + chunk_size, total_bytes)
+        assert download.bytes_downloaded == next_byte
+        assert download.total_bytes == total_bytes
+        assert response.status_code == http_client.PARTIAL_CONTENT
+        assert response.content == actual_contents[start_byte:next_byte]
+        start_byte = next_byte
+
+    return num_responses, response
+
+
 def test_chunked_download(bucket, authorized_transport):
-    num_chunks = 7
     for img_file in IMG_FILES:
+        blob_name = os.path.basename(img_file)
         with open(img_file, 'rb') as file_obj:
             actual_contents = file_obj.read()
 
         total_bytes = len(actual_contents)
-        chunk_size = total_bytes // num_chunks
-        # Make sure we aren't under-shooting the total.
-        while num_chunks * chunk_size < total_bytes:
-            chunk_size += 1
-
-        blob_name = os.path.basename(img_file)
-
+        num_chunks, chunk_size = get_chunk_size(7, total_bytes)
         # Create the actual download object.
         media_url = MEDIA_URL_TEMPLATE.format(blob_name=blob_name)
         download = download_mod.ChunkedDownload(media_url, chunk_size)
         # Consume the resource in chunks.
-        num_responses = 0
-        start_byte = 0
-        while not download.finished:
-            response = download.consume_next_chunk(authorized_transport)
-            num_responses += 1
-
-            next_byte = min(start_byte + chunk_size, total_bytes)
-            assert download.bytes_downloaded == next_byte
-            assert download.total_bytes == total_bytes
-            assert response.status_code == http_client.PARTIAL_CONTENT
-            assert response.content == actual_contents[start_byte:next_byte]
-            start_byte = next_byte
-
+        num_responses, last_response = consume_chunks(
+            download, authorized_transport, chunk_size,
+            total_bytes, actual_contents)
+        # Check that we have the right number of responses.
+        assert num_responses == num_chunks
         # Make sure the last chunk isn't the same size.
         assert total_bytes % chunk_size != 0
-        assert len(response.content) < chunk_size
-
+        assert len(last_response.content) < chunk_size
         # Make sure the download is tombstoned.
         assert download.finished
         with pytest.raises(ValueError):
             download.consume_next_chunk(authorized_transport)
-
-        # Check that we have the right number of responses.
-        assert num_responses == num_chunks
