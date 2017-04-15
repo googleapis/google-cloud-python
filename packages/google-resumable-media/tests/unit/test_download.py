@@ -19,8 +19,8 @@ import gooresmed.download as download_mod
 
 
 EXAMPLE_URL = (
-    'https://www.googleapis.com/download/storage/v1/b/'
-    '{BUCKET}/o/{OBJECT}?alt=media')
+    u'https://www.googleapis.com/download/storage/v1/b/'
+    u'{BUCKET}/o/{OBJECT}?alt=media')
 
 
 class Test__add_bytes_range(object):
@@ -35,25 +35,25 @@ class Test__add_bytes_range(object):
         headers = {}
         ret_val = download_mod._add_bytes_range(17, 1997, headers)
         assert ret_val is None
-        assert headers == {'range': 'bytes=17-1997'}
+        assert headers == {u'range': u'bytes=17-1997'}
 
     def test_end_only(self):
         headers = {}
         ret_val = download_mod._add_bytes_range(None, 909, headers)
         assert ret_val is None
-        assert headers == {'range': 'bytes=0-909'}
+        assert headers == {u'range': u'bytes=0-909'}
 
     def test_start_only(self):
         headers = {}
         ret_val = download_mod._add_bytes_range(3735928559, None, headers)
         assert ret_val is None
-        assert headers == {'range': 'bytes=3735928559-'}
+        assert headers == {u'range': u'bytes=3735928559-'}
 
     def test_start_as_offset(self):
         headers = {}
         ret_val = download_mod._add_bytes_range(-123454321, None, headers)
         assert ret_val is None
-        assert headers == {'range': 'bytes=-123454321'}
+        assert headers == {u'range': u'bytes=-123454321'}
 
 
 class Test_DownloadBase(object):
@@ -104,7 +104,7 @@ class TestDownload(object):
 
         download2 = download_mod.Download(EXAMPLE_URL, start=53)
         headers2 = download2._prepare_request()
-        assert headers2 == {'range': 'bytes=53-'}
+        assert headers2 == {u'range': u'bytes=53-'}
 
     def test__process_response(self):
         download = download_mod.Download(EXAMPLE_URL)
@@ -118,13 +118,13 @@ class TestDownload(object):
     def test_consume(self):
         end = 65536
         download = download_mod.Download(EXAMPLE_URL, end=end)
-        transport = mock.Mock(spec=['get'])
+        transport = mock.Mock(spec=[u'get'])
 
         assert not download.finished
         ret_val = download.consume(transport)
         assert ret_val is transport.get.return_value
-        range_bytes = 'bytes={:d}-{:d}'.format(0, end)
-        download_headers = {'range': range_bytes}
+        range_bytes = u'bytes={:d}-{:d}'.format(0, end)
+        download_headers = {u'range': range_bytes}
         transport.get.assert_called_once_with(
             EXAMPLE_URL, headers=download_headers)
         assert download.finished
@@ -207,15 +207,16 @@ class TestChunkedDownload(object):
 
     @staticmethod
     def _response_content_range(start_byte, end_byte, total_bytes):
-        return 'bytes {:d}-{:d}/{:d}'.format(start_byte, end_byte, total_bytes)
+        return u'bytes {:d}-{:d}/{:d}'.format(
+            start_byte, end_byte, total_bytes)
 
     def _response_headers(self, start_byte, end_byte, total_bytes):
         content_length = end_byte - start_byte + 1
         resp_range = self._response_content_range(
             start_byte, end_byte, total_bytes)
         return {
-            'content-length': str(content_length),
-            'content-range': resp_range,
+            u'content-length': str(content_length),
+            u'content-range': resp_range,
         }
 
     def test__prepare_request_already_finished(self):
@@ -228,13 +229,13 @@ class TestChunkedDownload(object):
         chunk_size = 2048
         download1 = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size)
         headers1 = download1._prepare_request()
-        assert headers1 == {'range': 'bytes=0-2047'}
+        assert headers1 == {u'range': u'bytes=0-2047'}
 
         download2 = download_mod.ChunkedDownload(
             EXAMPLE_URL, chunk_size, start=19991)
         download2._total_bytes = 20101
         headers2 = download2._prepare_request()
-        assert headers2 == {'range': 'bytes=19991-20100'}
+        assert headers2 == {u'range': u'bytes=19991-20100'}
 
     def test__process_response(self):
         chunk_size = 333
@@ -303,10 +304,10 @@ class TestChunkedDownload(object):
             download.consume_next_chunk(None)
 
     def _mock_transport(self, start, chunk_size, total_bytes):
-        transport = mock.Mock(spec=['get'])
+        transport = mock.Mock(spec=[u'get'])
         response_headers = self._response_headers(
             start, start + chunk_size - 1, total_bytes)
-        get_response = mock.Mock(headers=response_headers, spec=['headers'])
+        get_response = mock.Mock(headers=response_headers, spec=[u'headers'])
         transport.get.return_value = get_response
 
         return transport
@@ -326,8 +327,8 @@ class TestChunkedDownload(object):
         # Actually consume the chunk and check the output.
         ret_val = download.consume_next_chunk(transport)
         assert ret_val is transport.get.return_value
-        range_bytes = 'bytes={:d}-{:d}'.format(start, start + chunk_size - 1)
-        download_headers = {'range': range_bytes}
+        range_bytes = u'bytes={:d}-{:d}'.format(start, start + chunk_size - 1)
+        download_headers = {u'range': range_bytes}
         transport.get.assert_called_once_with(
             EXAMPLE_URL, headers=download_headers)
         # Go back and check the internal state after consuming the chunk.
@@ -339,22 +340,22 @@ class TestChunkedDownload(object):
 class Test__header_required(object):
 
     def test_success(self):
-        name = 'some-header'
-        value = 'The Right Hand Side'
-        headers = {name: value, 'other-name': 'other-value'}
+        name = u'some-header'
+        value = u'The Right Hand Side'
+        headers = {name: value, u'other-name': u'other-value'}
         result = download_mod._header_required(headers, name)
         assert result == value
 
     def test_failure(self):
         headers = {}
         with pytest.raises(KeyError):
-            download_mod._header_required(headers, 'any-name')
+            download_mod._header_required(headers, u'any-name')
 
 
 class Test__get_range_info(object):
 
     def test_success(self):
-        content_range = 'Bytes 7-11/42'
+        content_range = u'Bytes 7-11/42'
         start_byte, end_byte, total_bytes = download_mod._get_range_info(
             content_range)
         assert start_byte == 7
@@ -363,4 +364,4 @@ class Test__get_range_info(object):
 
     def test_failure(self):
         with pytest.raises(ValueError):
-            download_mod._get_range_info('nope x-6/y')
+            download_mod._get_range_info(u'nope x-6/y')

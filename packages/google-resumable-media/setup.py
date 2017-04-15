@@ -23,7 +23,9 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
     README = file_obj.read()
 
 
-REQUIREMENTS = []
+REQUIREMENTS = [
+    'six',
+]
 
 setuptools.setup(
     name='gooresmed',

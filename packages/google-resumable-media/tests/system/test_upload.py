@@ -26,18 +26,18 @@ import gooresmed
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-DATA_DIR = os.path.join(CURR_DIR, '..', 'data')
-ICO_FILE = os.path.realpath(os.path.join(DATA_DIR, 'favicon.ico'))
-ICO_CONTENT_TYPE = 'image/x-icon'
-BUCKET_NAME = os.environ['GOORESMED_BUCKET']
-UPLOAD_URL_TEMPLATE = (
-    'https://www.googleapis.com/upload/storage/v1/b/' +
+DATA_DIR = os.path.join(CURR_DIR, u'..', u'data')
+ICO_FILE = os.path.realpath(os.path.join(DATA_DIR, u'favicon.ico'))
+ICO_CONTENT_TYPE = u'image/x-icon'
+BUCKET_NAME = os.environ[u'GOORESMED_BUCKET']
+SIMPLE_UPLOAD_TEMPLATE = (
+    u'https://www.googleapis.com/upload/storage/v1/b/' +
     BUCKET_NAME +
-    '/o?uploadType=media&name={blob_name}')
-GCS_SCOPE = ('https://www.googleapis.com/auth/devstorage.read_write',)
+    u'/o?uploadType=media&name={blob_name}')
+GCS_SCOPE = (u'https://www.googleapis.com/auth/devstorage.read_write',)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope=u'module')
 def bucket():
     client = storage.Client()
     loc_bucket = client.bucket(BUCKET_NAME)
@@ -45,7 +45,7 @@ def bucket():
     yield loc_bucket
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope=u'module')
 def authorized_transport():
     credentials, _ = google.auth.default(scopes=GCS_SCOPE)
     yield tr_requests.AuthorizedSession(credentials)
@@ -70,26 +70,27 @@ def get_md5(data):
 
 
 def test_simple_upload(bucket, authorized_transport, cleanup):
-    with open(ICO_FILE, 'rb') as file_obj:
+    with open(ICO_FILE, u'rb') as file_obj:
         actual_contents = file_obj.read()
 
     blob_name = os.path.basename(ICO_FILE)
 
     # Create the actual upload object.
-    upload_url = UPLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+    upload_url = SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     upload = gooresmed.SimpleUpload(upload_url)
     # Transmit the resource.
     response = upload.transmit(
         authorized_transport, actual_contents, ICO_CONTENT_TYPE)
     assert response.status_code == http_client.OK
     json_response = response.json()
-    assert json_response['bucket'] == BUCKET_NAME
-    assert json_response['contentType'] == ICO_CONTENT_TYPE
-    assert json_response['md5Hash'].encode('ascii') == get_md5(actual_contents)
-    assert json_response['metageneration'] == '1'
-    assert json_response['name'] == blob_name
-    assert json_response['size'] == str(len(actual_contents))
-    assert json_response['storageClass'] == 'STANDARD'
+    assert json_response[u'bucket'] == BUCKET_NAME
+    assert json_response[u'contentType'] == ICO_CONTENT_TYPE
+    md5_hash = json_response[u'md5Hash'].encode(u'ascii')
+    assert md5_hash == get_md5(actual_contents)
+    assert json_response[u'metageneration'] == u'1'
+    assert json_response[u'name'] == blob_name
+    assert json_response[u'size'] == str(len(actual_contents))
+    assert json_response[u'storageClass'] == u'STANDARD'
 
     # Make sure the upload is tombstoned.
     with pytest.raises(ValueError):

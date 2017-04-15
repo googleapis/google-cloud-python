@@ -272,13 +272,16 @@ In addition, a :class:`.ChunkedDownload` can also take optional
 ``start`` and ``end`` byte positions.
 """
 
+
 from gooresmed.download import ChunkedDownload
 from gooresmed.download import Download
+from gooresmed.upload import MultipartUpload
 from gooresmed.upload import SimpleUpload
 
 
 __all__ = [
-    'ChunkedDownload',
-    'Download',
-    'SimpleUpload',
+    u'ChunkedDownload',
+    u'Download',
+    u'MultipartUpload',
+    u'SimpleUpload',
 ]

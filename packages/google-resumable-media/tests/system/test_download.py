@@ -24,20 +24,20 @@ import gooresmed
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-DATA_DIR = os.path.join(CURR_DIR, '..', 'data')
+DATA_DIR = os.path.join(CURR_DIR, u'..', u'data')
 IMG_FILES = (
-    os.path.realpath(os.path.join(DATA_DIR, 'image1.jpg')),
-    os.path.realpath(os.path.join(DATA_DIR, 'image2.jpg')),
+    os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg')),
+    os.path.realpath(os.path.join(DATA_DIR, u'image2.jpg')),
 )
-BUCKET_NAME = os.environ['GOORESMED_BUCKET']
+BUCKET_NAME = os.environ[u'GOORESMED_BUCKET']
 MEDIA_URL_TEMPLATE = (
-    'https://www.googleapis.com/download/storage/v1/b/' +
+    u'https://www.googleapis.com/download/storage/v1/b/' +
     BUCKET_NAME +
-    '/o/{blob_name}?alt=media')
-GCS_SCOPE = ('https://www.googleapis.com/auth/devstorage.read_only',)
+    u'/o/{blob_name}?alt=media')
+GCS_SCOPE = (u'https://www.googleapis.com/auth/devstorage.read_only',)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope=u'module')
 def bucket():
     client = storage.Client()
     loc_bucket = client.bucket(BUCKET_NAME)
@@ -47,7 +47,7 @@ def bucket():
     for img_file in IMG_FILES:
         blob_name = os.path.basename(img_file)
         blob = loc_bucket.blob(blob_name)
-        blob.upload_from_filename(img_file, content_type='image/jpeg')
+        blob.upload_from_filename(img_file, content_type=u'image/jpeg')
         blobs.append(blob)
 
     yield loc_bucket
@@ -57,7 +57,7 @@ def bucket():
         blob.delete()
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope=u'module')
 def authorized_transport():
     credentials, _ = google.auth.default(scopes=GCS_SCOPE)
     yield tr_requests.AuthorizedSession(credentials)
@@ -65,7 +65,7 @@ def authorized_transport():
 
 def test_download_full(bucket, authorized_transport):
     for img_file in IMG_FILES:
-        with open(img_file, 'rb') as file_obj:
+        with open(img_file, u'rb') as file_obj:
             actual_contents = file_obj.read()
 
         blob_name = os.path.basename(img_file)
@@ -90,7 +90,7 @@ def test_download_partial(bucket, authorized_transport):
         slice(262144, None, None),  # obj[262144:]
     )
     for img_file in IMG_FILES:
-        with open(img_file, 'rb') as file_obj:
+        with open(img_file, u'rb') as file_obj:
             actual_contents = file_obj.read()
 
         blob_name = os.path.basename(img_file)
@@ -153,7 +153,7 @@ def consume_chunks(download, authorized_transport,
 def test_chunked_download(bucket, authorized_transport):
     for img_file in IMG_FILES:
         blob_name = os.path.basename(img_file)
-        with open(img_file, 'rb') as file_obj:
+        with open(img_file, u'rb') as file_obj:
             actual_contents = file_obj.read()
 
         total_bytes = len(actual_contents)
@@ -185,7 +185,7 @@ def test_chunked_download_partial(bucket, authorized_transport):
         slice(262144, None, None),  # obj[262144:]
     )
     for img_file in IMG_FILES:
-        with open(img_file, 'rb') as file_obj:
+        with open(img_file, u'rb') as file_obj:
             actual_contents = file_obj.read()
 
         blob_name = os.path.basename(img_file)
