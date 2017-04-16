@@ -37,10 +37,13 @@ def unit_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
+    # NOTE: We don't require 100% line coverage for unit test runs since
+    #       some have branches that are Py2/Py3 specific.
+    line_coverage = '--cov-fail-under=99'
     session.run(
         'py.test',
         '--cov=gooresmed', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=',
+        '--cov-config=.coveragerc', '--cov-report=', line_coverage,
         'tests/unit',
     )
 
