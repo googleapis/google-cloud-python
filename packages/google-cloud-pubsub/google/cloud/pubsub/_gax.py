@@ -30,6 +30,7 @@ from grpc import StatusCode
 
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
+from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
@@ -276,7 +277,9 @@ class _SubscriberAPI(object):
         return GAXIterator(self._client, page_iter, item_to_value)
 
     def subscription_create(self, subscription_path, topic_path,
-                            ack_deadline=None, push_endpoint=None):
+                            ack_deadline=None, push_endpoint=None,
+                            retain_acked_messages=None,
+                            message_retention_duration=None):
         """API call:  create a subscription
 
         See:
@@ -302,6 +305,18 @@ class _SubscriberAPI(object):
             (Optional) URL to which messages will be pushed by the back-end.
             If not set, the application must pull messages.
 
+        :type retain_acked_messages: bool
+        :param retain_acked_messages:
+            (Optional) Whether to retain acked messages. If set, acked messages
+            are retained in the subscription's backlog for a duration indicated
+            by `message_retention_duration`.
+
+        :type message_retention_duration: :class:`datetime.timedelta`
+        :param message_retention_duration:
+            (Optional) Whether to retain acked messages. If set, acked messages
+            are retained in the subscription's backlog for a duration indicated
+            by `message_retention_duration`. If unset, defaults to 7 days.
+
         :rtype: dict
         :returns: ``Subscription`` resource returned from the API.
         """
@@ -310,13 +325,16 @@ class _SubscriberAPI(object):
         else:
             push_config = None
 
-        if ack_deadline is None:
-            ack_deadline = 0
+        if message_retention_duration is not None:
+            message_retention_duration = _timedelta_to_duration_pb(
+                message_retention_duration)
 
         try:
             sub_pb = self._gax_api.create_subscription(
                 subscription_path, topic_path,
-                push_config=push_config, ack_deadline_seconds=ack_deadline)
+                push_config=push_config, ack_deadline_seconds=ack_deadline,
+                retain_acked_messages=retain_acked_messages,
+                message_retention_duration=message_retention_duration)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 raise Conflict(topic_path)
