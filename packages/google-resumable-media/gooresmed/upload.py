@@ -35,6 +35,9 @@ _MULTIPART_BEGIN = (
     b'\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n')
 _RELATED_HEADER = b'multipart/related; boundary="'
 
+UPLOAD_CHUNK_SIZE = 262144 # 256 KB
+"""int: Chunks in a resumable upload must come in multiples of 256 KB."""
+
 
 class _UploadBase(object):
     """Base class for upload helpers.
@@ -188,6 +191,44 @@ class MultipartUpload(_UploadBase):
         result = transport.post(self.upload_url, data=payload, headers=headers)
         self._process_response()
         return result
+
+
+class ResumableUpload(_UploadBase):
+    """Initiate and fulfill a resumable upload to a Google API.
+
+    A **resumable** upload sends an initial request with the resource metadata
+    and then gets assigned an upload ID / upload URL to send bytes to.
+    Using the upload URL, the upload is then done in chunks (determined by
+    the user) until all bytes have been uploaded.
+
+    Args:
+       upload_url (str): The URL where the resumable upload will be initiated.
+       stream (IO[bytes]): The stream (i.e. file-like object) that will
+           be uploaded.
+       chunk_size (int): The size of each chunk used to upload the resource.
+
+    Raises:
+        ValueError: If ``chunk_size`` is not a multiple of
+            :data:`UPLOAD_CHUNK_SIZE`.
+    """
+
+    def __init__(self, upload_url, stream, chunk_size):
+        super(ResumableUpload, self).__init__(upload_url)
+        if chunk_size % UPLOAD_CHUNK_SIZE != 0:
+            raise ValueError(u'256 KB must divide chunk size')
+        self._chunk_size = chunk_size
+        self._total_bytes = None
+        self._upload_id = None
+
+    @property
+    def chunk_size(self):
+        """int: The size of each chunk used to upload the resource."""
+        return self._chunk_size
+
+    @property
+    def upload_id(self):
+        """Optional[str]: The upload ID of the in-progress resumable upload."""
+        return self._upload_id
 
 
 def _get_boundary():

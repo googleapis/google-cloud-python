@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import json
 import sys
 
@@ -27,6 +28,10 @@ SIMPLE_URL = (
 MULTIPART_URL = (
     u'https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o?'
     u'uploadType=multipart')
+RESUMABLE_URL = (
+    u'https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o?'
+    u'uploadType=resumable')
+ONE_MB = 1024 * 1024
 
 
 class Test_UploadBase(object):
@@ -209,3 +214,48 @@ class Test__construct_multipart_request(object):
             b'--==2==--')
         assert payload == expected_payload
         mock_get_boundary.assert_called_once_with()
+
+
+class TestResumableUpload(object):
+
+    def test_constructor(self):
+        stream = io.BytesIO(b'data')
+        chunk_size = ONE_MB
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, stream, chunk_size)
+        assert upload.upload_url == RESUMABLE_URL
+        assert not upload._finished
+        assert upload._chunk_size == chunk_size
+        assert upload._total_bytes is None
+        assert upload._upload_id is None
+
+    def test_constructor_bad_chunk_size(self):
+        with pytest.raises(ValueError):
+            upload_mod.ResumableUpload(RESUMABLE_URL, None, 1)
+
+    def test_chunk_size_property(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, None, ONE_MB)
+        # Default value of @property.
+        assert upload.chunk_size == ONE_MB
+
+        # Make sure we cannot set it on public @property.
+        with pytest.raises(AttributeError):
+            upload.chunk_size = 17
+
+        # Set it privately and then check the @property.
+        new_size = 102
+        upload._chunk_size = new_size
+        assert upload.chunk_size == new_size
+
+    def test_upload_id_property(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, None, ONE_MB)
+        # Default value of @property.
+        assert upload.upload_id is None
+
+        # Make sure we cannot set it on public @property.
+        new_id = u'not-none'
+        with pytest.raises(AttributeError):
+            upload.upload_id = new_id
+
+        # Set it privately and then check the @property.
+        upload._upload_id = new_id
+        assert upload.upload_id == new_id
