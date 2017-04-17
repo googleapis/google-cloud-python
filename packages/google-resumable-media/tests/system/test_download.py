@@ -16,7 +16,6 @@ import os
 
 import google.auth
 import google.auth.transport.requests as tr_requests
-from google.cloud import storage
 import pytest
 from six.moves import http_client
 
@@ -33,32 +32,36 @@ IMG_FILES = (
 
 
 @pytest.fixture(scope=u'module')
-def bucket():
-    client = storage.Client()
-    loc_bucket = client.bucket(utils.BUCKET_NAME)
-    loc_bucket.reload()
-
-    blobs = []
-    for img_file in IMG_FILES:
-        blob_name = os.path.basename(img_file)
-        blob = loc_bucket.blob(blob_name)
-        blob.upload_from_filename(img_file, content_type=u'image/jpeg')
-        blobs.append(blob)
-
-    yield loc_bucket
-
-    # Clean-up the blobs we created.
-    for blob in blobs:
-        blob.delete()
-
-
-@pytest.fixture(scope=u'module')
 def authorized_transport():
-    credentials, _ = google.auth.default(scopes=(utils.GCS_RO_SCOPE,))
+    credentials, _ = google.auth.default(scopes=(utils.GCS_RW_SCOPE,))
     yield tr_requests.AuthorizedSession(credentials)
 
 
-def test_download_full(bucket, authorized_transport):
+@pytest.fixture(scope=u'module')
+def add_files(authorized_transport):
+    blob_names = []
+    for img_file in IMG_FILES:
+        with open(img_file, u'rb') as file_obj:
+            actual_contents = file_obj.read()
+
+        blob_name = os.path.basename(img_file)
+        blob_names.append(blob_name)
+        upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
+        upload = gooresmed.SimpleUpload(upload_url)
+        response = upload.transmit(
+            authorized_transport, actual_contents, u'image/jpeg')
+        assert response.status_code == http_client.OK
+
+    yield
+
+    # Clean-up the blobs we created.
+    for blob_name in blob_names:
+        metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+        response = authorized_transport.delete(metadata_url)
+        assert response.status_code == http_client.NO_CONTENT
+
+
+def test_download_full(add_files, authorized_transport):
     for img_file in IMG_FILES:
         with open(img_file, u'rb') as file_obj:
             actual_contents = file_obj.read()
@@ -77,7 +80,7 @@ def test_download_full(bucket, authorized_transport):
             download.consume(authorized_transport)
 
 
-def test_download_partial(bucket, authorized_transport):
+def test_download_partial(add_files, authorized_transport):
     slices = (
         slice(1024, 16386, None),  # obj[1024:16386]
         slice(None, 8192, None),  # obj[:8192]
@@ -145,7 +148,7 @@ def consume_chunks(download, authorized_transport,
     return num_responses, response, all_bytes
 
 
-def test_chunked_download(bucket, authorized_transport):
+def test_chunked_download(add_files, authorized_transport):
     for img_file in IMG_FILES:
         blob_name = os.path.basename(img_file)
         with open(img_file, u'rb') as file_obj:
@@ -173,7 +176,7 @@ def test_chunked_download(bucket, authorized_transport):
             download.consume_next_chunk(authorized_transport)
 
 
-def test_chunked_download_partial(bucket, authorized_transport):
+def test_chunked_download_partial(add_files, authorized_transport):
     slices = (
         slice(1024, 16386, None),  # obj[1024:16386]
         slice(0, 8192, None),  # obj[0:8192]

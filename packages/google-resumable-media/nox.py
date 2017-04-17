@@ -120,10 +120,7 @@ def system_tests(session, python_version):
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
-    session.install(
-        'mock', 'pytest', 'requests',
-        'google-cloud-core == 0.23.1',
-        'google-cloud-storage == 0.23.1')
+    session.install('mock', 'pytest', 'requests', 'google-auth >= 0.10.0')
     session.install('-e', '.')
 
     # Run py.test against the system tests.

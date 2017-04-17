@@ -31,5 +31,4 @@ METADATA_URL_TEMPLATE = (
     BUCKET_NAME +
     u'/o/{blob_name}')
 
-GCS_RO_SCOPE = u'https://www.googleapis.com/auth/devstorage.read_only'
 GCS_RW_SCOPE = u'https://www.googleapis.com/auth/devstorage.read_write'
