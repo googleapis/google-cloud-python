@@ -22,31 +22,18 @@ import pytest
 from six.moves import http_client
 
 import gooresmed
+from tests.system import utils
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(CURR_DIR, u'..', u'data')
 ICO_FILE = os.path.realpath(os.path.join(DATA_DIR, u'favicon.ico'))
 ICO_CONTENT_TYPE = u'image/x-icon'
-BUCKET_NAME = os.environ[u'GOORESMED_BUCKET']
-SIMPLE_UPLOAD_TEMPLATE = (
-    u'https://www.googleapis.com/upload/storage/v1/b/' +
-    BUCKET_NAME +
-    u'/o?uploadType=media&name={blob_name}')
-MULTIPART_UPLOAD = (
-    u'https://www.googleapis.com/upload/storage/v1/b/' +
-    BUCKET_NAME +
-    u'/o?uploadType=multipart')
-METADATA_URL_TEMPLATE = (
-    u'https://www.googleapis.com/storage/v1/b/' +
-    BUCKET_NAME +
-    u'/o/{blob_name}')
-GCS_SCOPE = (u'https://www.googleapis.com/auth/devstorage.read_write',)
 
 
 @pytest.fixture(scope=u'module')
 def authorized_transport():
-    credentials, _ = google.auth.default(scopes=GCS_SCOPE)
+    credentials, _ = google.auth.default(scopes=(utils.GCS_RW_SCOPE,))
     yield tr_requests.AuthorizedSession(credentials)
 
 
@@ -74,8 +61,8 @@ def test_simple_upload(authorized_transport, cleanup):
         actual_contents = file_obj.read()
 
     blob_name = os.path.basename(ICO_FILE)
-    upload_url = SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
-    metadata_url = METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
+    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
     # Make sure to clean up the uploaded blob when we are done.
     cleanup(metadata_url, authorized_transport)
     # Make sure we are creating a **new** object.
@@ -89,7 +76,7 @@ def test_simple_upload(authorized_transport, cleanup):
         authorized_transport, actual_contents, ICO_CONTENT_TYPE)
     assert response.status_code == http_client.OK
     json_response = response.json()
-    assert json_response[u'bucket'] == BUCKET_NAME
+    assert json_response[u'bucket'] == utils.BUCKET_NAME
     assert json_response[u'contentType'] == ICO_CONTENT_TYPE
     md5_hash = json_response[u'md5Hash'].encode(u'ascii')
     assert md5_hash == get_md5(actual_contents)
@@ -109,8 +96,8 @@ def test_multipart_upload(authorized_transport, cleanup):
         actual_contents = file_obj.read()
 
     blob_name = os.path.basename(ICO_FILE)
-    upload_url = MULTIPART_UPLOAD
-    metadata_url = METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    upload_url = utils.MULTIPART_UPLOAD
+    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
     # Make sure to clean up the uploaded blob when we are done.
     cleanup(metadata_url, authorized_transport)
     # Make sure we are creating a **new** object.
@@ -128,7 +115,7 @@ def test_multipart_upload(authorized_transport, cleanup):
         authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE)
     assert response.status_code == http_client.OK
     json_response = response.json()
-    assert json_response[u'bucket'] == BUCKET_NAME
+    assert json_response[u'bucket'] == utils.BUCKET_NAME
     assert json_response[u'contentType'] == ICO_CONTENT_TYPE
     md5_hash = json_response[u'md5Hash'].encode(u'ascii')
     assert md5_hash == get_md5(actual_contents)
@@ -137,7 +124,6 @@ def test_multipart_upload(authorized_transport, cleanup):
     assert json_response[u'name'] == blob_name
     assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
     assert json_response[u'storageClass'] == u'STANDARD'
-    # Download the content to make sure it's "working as expected".
 
     # Make sure the upload is tombstoned.
     with pytest.raises(ValueError):
