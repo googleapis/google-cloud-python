@@ -37,7 +37,6 @@ _CRLF = b'\r\n'
 _MULTIPART_BEGIN = (
     b'\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n')
 _RELATED_HEADER = b'multipart/related; boundary="'
-_UPLOAD_ID = u'upload_id'
 
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024
 """int: Chunks in a resumable upload must come in multiples of 256 KB."""
@@ -222,7 +221,7 @@ class ResumableUpload(_UploadBase):
         self._stream = None
         self._content_type = None
         self._total_bytes = None
-        self._upload_id = None
+        self._upload_url_with_id = None
 
     @property
     def chunk_size(self):
@@ -230,9 +229,9 @@ class ResumableUpload(_UploadBase):
         return self._chunk_size
 
     @property
-    def upload_id(self):
-        """Optional[str]: The upload ID of the in-progress resumable upload."""
-        return self._upload_id
+    def upload_url_with_id(self):
+        """Optional[str]: The URL of the in-progress resumable upload."""
+        return self._upload_url_with_id
 
     def _prepare_initiate_request(self, stream, metadata, content_type):
         """Prepare the contents of HTTP request to initiate upload.
@@ -259,7 +258,7 @@ class ResumableUpload(_UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        if self.upload_id is not None:
+        if self.upload_url_with_id is not None:
             raise ValueError(u'This upload has already been initiated.')
         if stream.tell() != 0:
             raise ValueError(u'Stream must be at beginning.')
@@ -282,29 +281,18 @@ class ResumableUpload(_UploadBase):
         require network I/O (or other I/O). This is based on the `sans-I/O`_
         philosophy.
 
-        This method uses the URL in the ``Location`` header in the response.
-        Within that URL, the ``upload_id`` query parameter has the upload
-        ID that need be used.
+        This method take the URL from the ``Location`` header and stores it
+        for future use. Within that URL, we assume the ``upload_id`` query
+        parameter has been included, but we do not check.
 
         Args:
             headers (Mapping[str, str]): The response headers from the
                 HTTP request.
 
-        Raises:
-            KeyError: If ``upload_id`` isn't present as a query parameter.
-
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        location_url = _helpers.header_required(headers, u'location')
-        parse_result = six.moves.urllib_parse.urlparse(location_url)
-        parsed_query = six.moves.urllib_parse.parse_qs(parse_result.query)
-        if _UPLOAD_ID in parsed_query:
-            # NOTE: We are unpacking here, so asserting exactly one match.
-            self._upload_id, = parsed_query[_UPLOAD_ID]
-        else:
-            raise KeyError(
-                u'Missing parameter', _UPLOAD_ID,
-                u'from query', parse_result.query)
+        self._upload_url_with_id = _helpers.header_required(
+            headers, u'location')
 
     def initiate(self, transport, stream, metadata, content_type):
         """Initiate a resumable upload.

@@ -174,7 +174,7 @@ class TestResumableUpload(object):
         assert upload._stream is None
         assert upload._content_type is None
         assert upload._total_bytes is None
-        assert upload._upload_id is None
+        assert upload._upload_url_with_id is None
 
     def test_constructor_bad_chunk_size(self):
         with pytest.raises(ValueError):
@@ -194,19 +194,19 @@ class TestResumableUpload(object):
         upload._chunk_size = new_size
         assert upload.chunk_size == new_size
 
-    def test_upload_id_property(self):
+    def test_upload_url_with_id_property(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Default value of @property.
-        assert upload.upload_id is None
+        assert upload.upload_url_with_id is None
 
         # Make sure we cannot set it on public @property.
-        new_id = u'not-none'
+        new_url = u'http://test.invalid?upload_id=not-none'
         with pytest.raises(AttributeError):
-            upload.upload_id = new_id
+            upload.upload_url_with_id = new_url
 
         # Set it privately and then check the @property.
-        upload._upload_id = new_id
-        assert upload.upload_id == new_id
+        upload._upload_url_with_id = new_url
+        assert upload.upload_url_with_id == new_url
 
     def test__prepare_initiate_request(self):
         data = b'some really big big data.'
@@ -238,7 +238,8 @@ class TestResumableUpload(object):
     def test__prepare_initiate_request_already_initiated(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Fake that the upload has been started.
-        upload._upload_id = u'definitely-started'
+        upload._upload_url_with_id = (
+            u'http://test.invalid?upload_id=definitely-started')
 
         with pytest.raises(ValueError):
             upload._prepare_initiate_request(io.BytesIO(), {}, BASIC_CONTENT)
@@ -261,49 +262,36 @@ class TestResumableUpload(object):
         with pytest.raises(KeyError):
             upload._process_initiate_response({})
 
-        # Then try with a location header that doesn't have upload_id.
-        headers = {u'location': u'http://test.invalid?foo=bar&baz=quux'}
-        with pytest.raises(KeyError):
-            upload._process_initiate_response(headers)
-
-        # Then try with a location header that has too many upload_id.
-        headers = {u'location': u'http://test.invalid?upload_id=1&upload_id=2'}
-        with pytest.raises(ValueError):
-            upload._process_initiate_response(headers)
-
     def test__process_initiate_response(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
 
-        upload_id = u'kmfeij3234'
-        headers = {u'location': u'http://test.invalid?upload_id=' + upload_id}
-        # Check upload_id before.
-        assert upload._upload_id is None
+        headers = {u'location': u'http://test.invalid?upload_id=kmfeij3234'}
+        # Check upload_url_with_id before.
+        assert upload._upload_url_with_id is None
         # Process the actual headers.
         ret_val = upload._process_initiate_response(headers)
         assert ret_val is None
-        # Check upload_id after.
-        assert upload._upload_id == upload_id
+        # Check upload_url_with_id after.
+        assert upload._upload_url_with_id == headers[u'location']
 
     def test_initiate(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         data = b'Knock knock who is there'
         stream = io.BytesIO(data)
-        upload_id = u'AACODBBBxuw9u3AA'
         metadata = {u'name': u'got-jokes.txt'}
 
         transport = mock.Mock(spec=[u'post'])
-        response_headers = {
-            u'location': u'http://test.invalid?upload_id=' + upload_id,
-        }
+        location = u'http://test.invalid?upload_id=AACODBBBxuw9u3AA',
+        response_headers = {u'location': location}
         post_response = mock.Mock(headers=response_headers, spec=[u'headers'])
         transport.post.return_value = post_response
-        # Check upload_id before.
-        assert upload._upload_id is None
+        # Check upload_url_with_id before.
+        assert upload._upload_url_with_id is None
         # Make request and check the return value (against the mock).
         response = upload.initiate(transport, stream, metadata, BASIC_CONTENT)
         assert response is transport.post.return_value
-        # Check upload_id after.
-        assert upload._upload_id == upload_id
+        # Check upload_url_with_id after.
+        assert upload._upload_url_with_id == location
         # Make sure the mock was called as expected.
         json_bytes = b'{"name": "got-jokes.txt"}'
         expected_headers = {
