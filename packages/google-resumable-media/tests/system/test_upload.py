@@ -18,7 +18,6 @@ import os
 
 import google.auth
 import google.auth.transport.requests as tr_requests
-from google.cloud import storage
 import pytest
 from six.moves import http_client
 
@@ -34,15 +33,15 @@ SIMPLE_UPLOAD_TEMPLATE = (
     u'https://www.googleapis.com/upload/storage/v1/b/' +
     BUCKET_NAME +
     u'/o?uploadType=media&name={blob_name}')
+MULTIPART_UPLOAD = (
+    u'https://www.googleapis.com/upload/storage/v1/b/' +
+    BUCKET_NAME +
+    u'/o?uploadType=multipart')
+METADATA_URL_TEMPLATE = (
+    u'https://www.googleapis.com/storage/v1/b/' +
+    BUCKET_NAME +
+    u'/o/{blob_name}')
 GCS_SCOPE = (u'https://www.googleapis.com/auth/devstorage.read_write',)
-
-
-@pytest.fixture(scope=u'module')
-def bucket():
-    client = storage.Client()
-    loc_bucket = client.bucket(BUCKET_NAME)
-    loc_bucket.reload()
-    yield loc_bucket
 
 
 @pytest.fixture(scope=u'module')
@@ -55,13 +54,14 @@ def authorized_transport():
 def cleanup():
     to_delete = []
 
-    def add_cleanup(item):
-        to_delete.append(item)
+    def add_cleanup(item_url, transport):
+        to_delete.append((item_url, transport))
 
     yield add_cleanup
 
-    for item in to_delete:
-        item.delete()
+    for item_url, transport in to_delete:
+        response = transport.delete(item_url)
+        assert response.status_code == http_client.NO_CONTENT
 
 
 def get_md5(data):
@@ -69,14 +69,20 @@ def get_md5(data):
     return base64.b64encode(hash_obj.digest())
 
 
-def test_simple_upload(bucket, authorized_transport, cleanup):
+def test_simple_upload(authorized_transport, cleanup):
     with open(ICO_FILE, u'rb') as file_obj:
         actual_contents = file_obj.read()
 
     blob_name = os.path.basename(ICO_FILE)
+    upload_url = SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
+    metadata_url = METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    # Make sure to clean up the uploaded blob when we are done.
+    cleanup(metadata_url, authorized_transport)
+    # Make sure we are creating a **new** object.
+    response = authorized_transport.get(metadata_url)
+    assert response.status_code == http_client.NOT_FOUND
 
     # Create the actual upload object.
-    upload_url = SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     upload = gooresmed.SimpleUpload(upload_url)
     # Transmit the resource.
     response = upload.transmit(
@@ -89,7 +95,7 @@ def test_simple_upload(bucket, authorized_transport, cleanup):
     assert md5_hash == get_md5(actual_contents)
     assert json_response[u'metageneration'] == u'1'
     assert json_response[u'name'] == blob_name
-    assert json_response[u'size'] == str(len(actual_contents))
+    assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
     assert json_response[u'storageClass'] == u'STANDARD'
 
     # Make sure the upload is tombstoned.
@@ -97,5 +103,43 @@ def test_simple_upload(bucket, authorized_transport, cleanup):
         upload.transmit(
             authorized_transport, actual_contents, ICO_CONTENT_TYPE)
 
-    # Make sure to clean up the uploaded blob.
-    cleanup(bucket.blob(blob_name))
+
+def test_multipart_upload(authorized_transport, cleanup):
+    with open(ICO_FILE, u'rb') as file_obj:
+        actual_contents = file_obj.read()
+
+    blob_name = os.path.basename(ICO_FILE)
+    upload_url = MULTIPART_UPLOAD
+    metadata_url = METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    # Make sure to clean up the uploaded blob when we are done.
+    cleanup(metadata_url, authorized_transport)
+    # Make sure we are creating a **new** object.
+    response = authorized_transport.get(metadata_url)
+    assert response.status_code == http_client.NOT_FOUND
+
+    # Create the actual upload object.
+    upload = gooresmed.MultipartUpload(upload_url)
+    # Transmit the resource.
+    metadata = {
+        u'name': blob_name,
+        u'metadata': {u'color': u'yellow'},
+    }
+    response = upload.transmit(
+        authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE)
+    assert response.status_code == http_client.OK
+    json_response = response.json()
+    assert json_response[u'bucket'] == BUCKET_NAME
+    assert json_response[u'contentType'] == ICO_CONTENT_TYPE
+    md5_hash = json_response[u'md5Hash'].encode(u'ascii')
+    assert md5_hash == get_md5(actual_contents)
+    assert json_response[u'metadata'] == metadata[u'metadata']
+    assert json_response[u'metageneration'] == u'1'
+    assert json_response[u'name'] == blob_name
+    assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
+    assert json_response[u'storageClass'] == u'STANDARD'
+    # Download the content to make sure it's "working as expected".
+
+    # Make sure the upload is tombstoned.
+    with pytest.raises(ValueError):
+        upload.transmit(
+            authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE)
