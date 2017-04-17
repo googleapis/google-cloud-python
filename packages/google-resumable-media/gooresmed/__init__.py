@@ -122,7 +122,7 @@ specify ``start`` and ``end`` byte positions (both optional):
 
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.PARTIAL_CONTENT)
-   fake_response.headers['Content-Length'] = u'{:d}.format(slice_size)
+   fake_response.headers['Content-Length'] = u'{:d}'.format(slice_size)
    content_range = 'bytes {:d}-{:d}/1364156'.format(start, end)
    fake_response.headers['Content-Range'] = content_range
    fake_content = mock.MagicMock(spec=['__len__'])
