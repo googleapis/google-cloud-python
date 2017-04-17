@@ -160,6 +160,65 @@ class TestMultipartUpload(object):
         mock_get_boundary.assert_called_once_with()
 
 
+class TestResumableUpload(object):
+
+    def test_constructor(self):
+        data = b'data'
+        stream = io.BytesIO(data)
+        chunk_size = ONE_MB
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, stream, chunk_size)
+        assert upload.upload_url == RESUMABLE_URL
+        assert not upload._finished
+        assert upload._chunk_size == chunk_size
+        assert upload._stream is stream
+        assert upload._total_bytes == len(data)
+        assert upload._upload_id is None
+
+    def test_constructor_bad_chunk_size(self):
+        with pytest.raises(ValueError):
+            upload_mod.ResumableUpload(RESUMABLE_URL, io.BytesIO(), 1)
+
+    def test_constructor_bad_stream_position(self):
+        stream = io.BytesIO(b'data')
+        stream.seek(1)
+        with pytest.raises(ValueError):
+            upload_mod.ResumableUpload(RESUMABLE_URL, stream, ONE_MB)
+
+        # Also test a bad object (i.e. non-stream)
+        with pytest.raises(AttributeError):
+            upload_mod.ResumableUpload(RESUMABLE_URL, None, ONE_MB)
+
+    def test_chunk_size_property(self):
+        upload = upload_mod.ResumableUpload(
+            RESUMABLE_URL, io.BytesIO(), ONE_MB)
+        # Default value of @property.
+        assert upload.chunk_size == ONE_MB
+
+        # Make sure we cannot set it on public @property.
+        with pytest.raises(AttributeError):
+            upload.chunk_size = 17
+
+        # Set it privately and then check the @property.
+        new_size = 102
+        upload._chunk_size = new_size
+        assert upload.chunk_size == new_size
+
+    def test_upload_id_property(self):
+        upload = upload_mod.ResumableUpload(
+            RESUMABLE_URL, io.BytesIO(), ONE_MB)
+        # Default value of @property.
+        assert upload.upload_id is None
+
+        # Make sure we cannot set it on public @property.
+        new_id = u'not-none'
+        with pytest.raises(AttributeError):
+            upload.upload_id = new_id
+
+        # Set it privately and then check the @property.
+        upload._upload_id = new_id
+        assert upload.upload_id == new_id
+
+
 @mock.patch(u'random.randrange', return_value=1234567890123456789)
 def test__get_boundary(mock_rand):
     result = upload_mod._get_boundary()
@@ -216,46 +275,18 @@ class Test__construct_multipart_request(object):
         mock_get_boundary.assert_called_once_with()
 
 
-class TestResumableUpload(object):
+def test__get_total_bytes():
+    data = b'some data'
+    stream = io.BytesIO(data)
+    # Check position before function call.
+    assert stream.tell() == 0
+    assert upload_mod._get_total_bytes(stream) == len(data)
+    # Check position after function call.
+    assert stream.tell() == 0
 
-    def test_constructor(self):
-        stream = io.BytesIO(b'data')
-        chunk_size = ONE_MB
-        upload = upload_mod.ResumableUpload(RESUMABLE_URL, stream, chunk_size)
-        assert upload.upload_url == RESUMABLE_URL
-        assert not upload._finished
-        assert upload._chunk_size == chunk_size
-        assert upload._total_bytes is None
-        assert upload._upload_id is None
-
-    def test_constructor_bad_chunk_size(self):
-        with pytest.raises(ValueError):
-            upload_mod.ResumableUpload(RESUMABLE_URL, None, 1)
-
-    def test_chunk_size_property(self):
-        upload = upload_mod.ResumableUpload(RESUMABLE_URL, None, ONE_MB)
-        # Default value of @property.
-        assert upload.chunk_size == ONE_MB
-
-        # Make sure we cannot set it on public @property.
-        with pytest.raises(AttributeError):
-            upload.chunk_size = 17
-
-        # Set it privately and then check the @property.
-        new_size = 102
-        upload._chunk_size = new_size
-        assert upload.chunk_size == new_size
-
-    def test_upload_id_property(self):
-        upload = upload_mod.ResumableUpload(RESUMABLE_URL, None, ONE_MB)
-        # Default value of @property.
-        assert upload.upload_id is None
-
-        # Make sure we cannot set it on public @property.
-        new_id = u'not-none'
-        with pytest.raises(AttributeError):
-            upload.upload_id = new_id
-
-        # Set it privately and then check the @property.
-        upload._upload_id = new_id
-        assert upload.upload_id == new_id
+    # Make sure this works just as well when not at beginning.
+    curr_pos = 3
+    stream.seek(curr_pos)
+    assert upload_mod._get_total_bytes(stream) == len(data)
+    # Check position after function call.
+    assert stream.tell() == curr_pos

@@ -20,6 +20,7 @@ uploads that contain both metadata and a small file as payload.
 
 
 import json
+import os
 import random
 import sys
 
@@ -204,12 +205,14 @@ class ResumableUpload(_UploadBase):
     Args:
        upload_url (str): The URL where the resumable upload will be initiated.
        stream (IO[bytes]): The stream (i.e. file-like object) that will
-           be uploaded.
+           be uploaded. The stream **must** be at the beginning (i.e.
+           ``stream.tell() == 0``).
        chunk_size (int): The size of each chunk used to upload the resource.
 
     Raises:
         ValueError: If ``chunk_size`` is not a multiple of
             :data:`UPLOAD_CHUNK_SIZE`.
+        ValueError: If ``stream`` is not at the beginning.
     """
 
     def __init__(self, upload_url, stream, chunk_size):
@@ -217,7 +220,10 @@ class ResumableUpload(_UploadBase):
         if chunk_size % UPLOAD_CHUNK_SIZE != 0:
             raise ValueError(u'256 KB must divide chunk size')
         self._chunk_size = chunk_size
-        self._total_bytes = None
+        if stream.tell() != 0:
+            raise ValueError(u'Stream must be at beginning.')
+        self._stream = stream
+        self._total_bytes = _get_total_bytes(stream)
         self._upload_id = None
 
     @property
@@ -276,3 +282,23 @@ def _construct_multipart_request(data, metadata, content_type):
         boundary_sep + _MULTIPART_SEP)
 
     return content, multipart_boundary
+
+
+def _get_total_bytes(stream):
+    """Determine the total number of bytes in a stream.
+
+    Args:
+       stream (IO[bytes]): The stream (i.e. file-like object).
+
+    Returns:
+        int: The number of bytes.
+    """
+    current_position = stream.tell()
+    # NOTE: ``.seek()`` **should** return the same value that ``.tell()``
+    #       returns, but in Python 2, ``file`` objects do not.
+    stream.seek(0, os.SEEK_END)
+    end_position = stream.tell()
+    # Go back to the initial position.
+    stream.seek(current_position)
+
+    return end_position
