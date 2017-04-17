@@ -32,6 +32,9 @@ RESUMABLE_URL = (
     u'https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o?'
     u'uploadType=resumable')
 ONE_MB = 1024 * 1024
+BASIC_CONTENT = u'text/plain'
+JSON_TYPE = u'application/json; charset=UTF-8'
+JSON_TYPE_LINE = b'content-type: application/json; charset=UTF-8\r\n'
 
 
 class Test_UploadBase(object):
@@ -80,7 +83,7 @@ class TestSimpleUpload(object):
 
     def test_transmit(self):
         data = b'I have got a lovely bunch of coconuts.'
-        content_type = u'text/plain'
+        content_type = BASIC_CONTENT
         upload = upload_mod.SimpleUpload(SIMPLE_URL)
 
         transport = mock.Mock(spec=[u'post'])
@@ -99,26 +102,26 @@ class TestMultipartUpload(object):
         upload = upload_mod.MultipartUpload(MULTIPART_URL)
         upload._finished = True
         with pytest.raises(ValueError):
-            upload._prepare_request(b'Hi', {}, u'text/plain')
+            upload._prepare_request(b'Hi', {}, BASIC_CONTENT)
 
     def test__prepare_request_non_bytes_data(self):
         data = u'Nope not bytes.'
         upload = upload_mod.MultipartUpload(MULTIPART_URL)
         with pytest.raises(TypeError):
-            upload._prepare_request(data, {}, u'text/plain')
+            upload._prepare_request(data, {}, BASIC_CONTENT)
 
     @mock.patch(u'gooresmed.upload._get_boundary', return_value=b'==3==')
     def test__prepare_request(self, mock_get_boundary):
         upload = upload_mod.MultipartUpload(MULTIPART_URL)
         data = b'Hi'
         metadata = {u'Some': u'Stuff'}
-        content_type = u'text/plain'
+        content_type = BASIC_CONTENT
         payload, headers = upload._prepare_request(
             data, metadata, content_type)
 
         expected_payload = (
-            b'--==3==\r\n'
-            b'content-type: application/json; charset=UTF-8\r\n'
+            b'--==3==\r\n' +
+            JSON_TYPE_LINE +
             b'\r\n'
             b'{"Some": "Stuff"}\r\n'
             b'--==3==\r\n'
@@ -135,7 +138,7 @@ class TestMultipartUpload(object):
     def test_transmit(self, mock_get_boundary):
         data = b'Mock data here and there.'
         metadata = {u'Hey': u'You', u'Guys': u'90909'}
-        content_type = u'text/plain'
+        content_type = BASIC_CONTENT
         upload = upload_mod.MultipartUpload(MULTIPART_URL)
 
         transport = mock.Mock(spec=[u'post'])
@@ -144,7 +147,7 @@ class TestMultipartUpload(object):
         assert ret_val is transport.post.return_value
         expected_payload = (
             b'--==4==\r\n' +
-            b'content-type: application/json; charset=UTF-8\r\n' +
+            JSON_TYPE_LINE +
             b'\r\n' +
             json.dumps(metadata).encode(u'utf-8') + b'\r\n' +
             b'--==4==\r\n'
@@ -204,6 +207,103 @@ class TestResumableUpload(object):
         upload._upload_id = new_id
         assert upload.upload_id == new_id
 
+    def test__prepare_initiate_request(self):
+        data = b'some really big big data.'
+        stream = io.BytesIO(data)
+        metadata = {u'name': u'big-data-file.txt'}
+
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        payload, headers = upload._prepare_initiate_request(
+            stream, metadata, BASIC_CONTENT)
+        assert payload == b'{"name": "big-data-file.txt"}'
+        expected_headers = {
+            u'content-type': JSON_TYPE,
+            u'x-upload-content-length': u'{:d}'.format(len(data)),
+            u'x-upload-content-type': BASIC_CONTENT,
+        }
+        assert headers == expected_headers
+        # Make sure the stream is still at the beginning.
+        assert stream.tell() == 0
+
+    def test__prepare_initiate_request_already_initiated(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Fake that the upload has been started.
+        upload._upload_id = u'definitely-started'
+
+        with pytest.raises(ValueError):
+            upload._prepare_initiate_request(io.BytesIO(), {}, BASIC_CONTENT)
+
+    def test__prepare_initiate_request_bad_stream_position(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+
+        stream = io.BytesIO(b'data')
+        stream.seek(1)
+        with pytest.raises(ValueError):
+            upload._prepare_initiate_request(stream, {}, BASIC_CONTENT)
+
+        # Also test a bad object (i.e. non-stream)
+        with pytest.raises(AttributeError):
+            upload._prepare_initiate_request(None, {}, BASIC_CONTENT)
+
+    def test__process_initiate_response_bad_response(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # First try with no location header missing.
+        with pytest.raises(KeyError):
+            upload._process_initiate_response({})
+
+        # Then try with a location header that doesn't have upload_id.
+        headers = {u'location': u'http://test.invalid?foo=bar&baz=quux'}
+        with pytest.raises(KeyError):
+            upload._process_initiate_response(headers)
+
+        # Then try with a location header that has too many upload_id.
+        headers = {u'location': u'http://test.invalid?upload_id=1&upload_id=2'}
+        with pytest.raises(ValueError):
+            upload._process_initiate_response(headers)
+
+    def test__process_initiate_response(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+
+        upload_id = u'kmfeij3234'
+        headers = {u'location': u'http://test.invalid?upload_id=' + upload_id}
+        # Check upload_id before.
+        assert upload._upload_id is None
+        # Process the actual headers.
+        ret_val = upload._process_initiate_response(headers)
+        assert ret_val is None
+        # Check upload_id after.
+        assert upload._upload_id == upload_id
+
+    def test_initiate(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        data = b'Knock knock who is there'
+        stream = io.BytesIO(data)
+        upload_id = u'AACODBBBxuw9u3AA'
+        metadata = {u'name': u'got-jokes.txt'}
+
+        transport = mock.Mock(spec=[u'post'])
+        response_headers = {
+            u'location': u'http://test.invalid?upload_id=' + upload_id,
+        }
+        post_response = mock.Mock(headers=response_headers, spec=[u'headers'])
+        transport.post.return_value = post_response
+        # Check upload_id before.
+        assert upload._upload_id is None
+        # Make request and check the return value (against the mock).
+        response = upload.initiate(transport, stream, metadata, BASIC_CONTENT)
+        assert response is transport.post.return_value
+        # Check upload_id after.
+        assert upload._upload_id == upload_id
+        # Make sure the mock was called as expected.
+        json_bytes = b'{"name": "got-jokes.txt"}'
+        expected_headers = {
+            u'content-type': JSON_TYPE,
+            u'x-upload-content-type': BASIC_CONTENT,
+            u'x-upload-content-length': u'{:d}'.format(len(data)),
+        }
+        transport.post.assert_called_once_with(
+            RESUMABLE_URL, data=json_bytes, headers=expected_headers)
+
 
 @mock.patch(u'random.randrange', return_value=1234567890123456789)
 def test__get_boundary(mock_rand):
@@ -224,8 +324,8 @@ class Test__construct_multipart_request(object):
 
         assert multipart_boundary == mock_get_boundary.return_value
         expected_payload = (
-            b'--==1==\r\n'
-            b'content-type: application/json; charset=UTF-8\r\n'
+            b'--==1==\r\n' +
+            JSON_TYPE_LINE +
             b'\r\n'
             b'{"name": "hi-file.bin"}\r\n'
             b'--==1==\r\n'
@@ -242,14 +342,14 @@ class Test__construct_multipart_request(object):
         # _construct_multipart_request ASSUMES callers pass bytes.
         data = data_unicode.encode(u'utf-8')
         metadata = {u'name': u'snowman.txt'}
-        content_type = u'text/plain'
+        content_type = BASIC_CONTENT
         payload, multipart_boundary = upload_mod._construct_multipart_request(
             data, metadata, content_type)
 
         assert multipart_boundary == mock_get_boundary.return_value
         expected_payload = (
-            b'--==2==\r\n'
-            b'content-type: application/json; charset=UTF-8\r\n'
+            b'--==2==\r\n' +
+            JSON_TYPE_LINE +
             b'\r\n'
             b'{"name": "snowman.txt"}\r\n'
             b'--==2==\r\n'

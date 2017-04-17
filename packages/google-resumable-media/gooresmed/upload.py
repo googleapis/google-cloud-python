@@ -26,6 +26,8 @@ import sys
 
 import six
 
+from gooresmed import _helpers
+
 
 _CONTENT_TYPE_HEADER = u'content-type'
 _BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
@@ -35,6 +37,7 @@ _CRLF = b'\r\n'
 _MULTIPART_BEGIN = (
     b'\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n')
 _RELATED_HEADER = b'multipart/related; boundary="'
+_UPLOAD_ID = u'upload_id'
 
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024
 """int: Chunks in a resumable upload must come in multiples of 256 KB."""
@@ -229,6 +232,100 @@ class ResumableUpload(_UploadBase):
     def upload_id(self):
         """Optional[str]: The upload ID of the in-progress resumable upload."""
         return self._upload_id
+
+    def _prepare_initiate_request(self, stream, metadata, content_type):
+        """Prepare the contents of HTTP request to initiate upload.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            stream (IO[bytes]): The stream (i.e. file-like object) that will
+                be uploaded. The stream **must** be at the beginning (i.e.
+                ``stream.tell() == 0``).
+            metadata (Mapping[str, str]): The resource metadata, such as an
+                ACL list.
+            content_type (str): The content type of the resource, e.g. a JPEG
+                image has content type ``image/jpeg``.
+
+        Returns:
+            Tuple[bytes, dict]: The payload and headers for the request.
+
+        Raises:
+            ValueError: If the current upload has already been initiated.
+            ValueError: If ``stream`` is not at the beginning.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.upload_id is not None:
+            raise ValueError(u'This upload has already been initiated.')
+        if stream.tell() != 0:
+            raise ValueError(u'Stream must be at beginning.')
+
+        self._stream = stream
+        self._total_bytes = _get_total_bytes(stream)
+        headers = {
+            _CONTENT_TYPE_HEADER: u'application/json; charset=UTF-8',
+            u'x-upload-content-type': content_type,
+            u'x-upload-content-length': u'{:d}'.format(self._total_bytes),
+        }
+        payload = json.dumps(metadata).encode(u'utf-8')
+        return payload, headers
+
+    def _process_initiate_response(self, headers):
+        """Process the response from an HTTP request that initiated upload.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        This method uses the URL in the ``Location`` header in the response.
+        Within that URL, the ``upload_id`` query parameter has the upload
+        ID that need be used.
+
+        Args:
+            headers (Mapping[str, str]): The response headers from the
+                HTTP request.
+
+        Raises:
+            KeyError: If ``upload_id`` isn't present as a query parameter.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        location_url = _helpers.header_required(headers, u'location')
+        parse_result = six.moves.urllib_parse.urlparse(location_url)
+        parsed_query = six.moves.urllib_parse.parse_qs(parse_result.query)
+        if _UPLOAD_ID in parsed_query:
+            # NOTE: We are unpacking here, so asserting exactly one match.
+            self._upload_id, = parsed_query[_UPLOAD_ID]
+        else:
+            raise KeyError(
+                u'Missing parameter', _UPLOAD_ID,
+                u'from query', parse_result.query)
+
+    def initiate(self, transport, stream, metadata, content_type):
+        """Initiate a resumable upload.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests via a ``post()`` method which accepts an
+                upload URL, a ``data`` keyword argument and a
+                ``headers`` keyword argument.
+            stream (IO[bytes]): The stream (i.e. file-like object) that will
+                be uploaded. The stream **must** be at the beginning (i.e.
+                ``stream.tell() == 0``).
+            metadata (Mapping[str, str]): The resource metadata, such as an
+                ACL list.
+            content_type (str): The content type of the resource, e.g. a JPEG
+                image has content type ``image/jpeg``.
+        """
+        payload, headers = self._prepare_initiate_request(
+            stream, metadata, content_type)
+        result = transport.post(
+            self.upload_url, data=payload, headers=headers)
+        self._process_initiate_response(result.headers)
+        return result
 
 
 def _get_boundary():
