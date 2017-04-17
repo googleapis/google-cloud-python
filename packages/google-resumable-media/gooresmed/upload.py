@@ -19,7 +19,6 @@ uploads that contain both metadata and a small file as payload.
 """
 
 
-import email.mime.nonmultipart as mime_nonmultipart
 import json
 import random
 import sys
@@ -32,6 +31,8 @@ _BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
 _BOUNDARY_FORMAT = u'==============={{:0{:d}d}}=='.format(_BOUNDARY_WIDTH)
 _MULTIPART_SEP = b'--'
 _CRLF = b'\r\n'
+_MULTIPART_BEGIN = (
+    b'\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n')
 _RELATED_HEADER = b'multipart/related; boundary="'
 
 
@@ -233,27 +234,19 @@ def _construct_multipart_request(data, metadata, content_type):
         between each part.
     """
     multipart_boundary = _get_boundary()
-
-    # Create the ``metadata`` as the first part.
-    metadata_part = mime_nonmultipart.MIMENonMultipart(
-        u'application', u'json; charset=UTF-8')
-    del metadata_part[u'MIME-Version']  # Remove unwanted header.
-    metadata_part.set_payload(json.dumps(metadata))
-
-    # Create the ``data`` as the second part.
-    type_, subtype = content_type.split(u'/')
-    resource_part = mime_nonmultipart.MIMENonMultipart(type_, subtype)
-    del resource_part[u'MIME-Version']  # Remove unwanted header.
-    resource_part.set_payload(data)
-
+    json_bytes = json.dumps(metadata).encode(u'utf-8')
+    content_type = content_type.encode(u'utf-8')
     # Combine the two parts into a multipart payload.
     # NOTE: We'd prefer a bytes template but are restricted by Python 3.4.
     boundary_sep = _MULTIPART_SEP + multipart_boundary
     content = (
+        boundary_sep +
+        _MULTIPART_BEGIN +
+        json_bytes + _CRLF +
         boundary_sep + _CRLF +
-        _mime_to_bytes(metadata_part) + _CRLF +
-        boundary_sep + _CRLF +
-        _mime_to_bytes(resource_part) + _CRLF +
+        b'content-type: ' + content_type + _CRLF +
+        _CRLF +  # Empty line between headers and body.
+        data + _CRLF +
         boundary_sep + _MULTIPART_SEP)
 
     return content, multipart_boundary
