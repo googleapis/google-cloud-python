@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.0.0
+------
+
+Milestone release for v1.0.0.
+No significant changes since v0.10.0
+
 v0.10.0
 -------
 

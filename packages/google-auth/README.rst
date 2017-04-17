@@ -32,7 +32,7 @@ Maintainers
 
 - `@jonparrott <https://github.com/jonparrott>`_ (Jon Wayne Parrott)
 - `@dhermes <https://github.com/dhermes>`_ (Danny Hermes)
-- `@bjwatson <https://github.com/bjwatson>`_ (Brian Watson)
+- `@lukesneeringer <https://github.com/lukesneeringer>`_ (Luke Sneeringer)
 
 Contributing
 ------------
