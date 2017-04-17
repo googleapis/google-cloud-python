@@ -122,7 +122,7 @@ specify ``start`` and ``end`` byte positions (both optional):
 
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.PARTIAL_CONTENT)
-   fake_response.headers['Content-Length'] = str(slice_size)
+   fake_response.headers['Content-Length'] = u'{:d}.format(slice_size)
    content_range = 'bytes {:d}-{:d}/1364156'.format(start, end)
    fake_response.headers['Content-Range'] = content_range
    fake_content = mock.MagicMock(spec=['__len__'])
@@ -174,7 +174,7 @@ Using the same media URL and authorized transport for a basic
    one_gb = 1024 * 1024 * 1024
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.PARTIAL_CONTENT)
-   fake_response.headers['Content-Length'] = str(fifty_mb)
+   fake_response.headers['Content-Length'] = u'{:d}'.format(fifty_mb)
    content_range = 'bytes 0-{:d}/{:d}'.format(fifty_mb - 1, one_gb)
    fake_response.headers['Content-Range'] = content_range
    fake_content = mock.MagicMock(spec=['__len__'])
@@ -233,7 +233,7 @@ not be the same size as the other chunks:
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.PARTIAL_CONTENT)
    slice_size = one_gb - 20 * fifty_mb
-   fake_response.headers['Content-Length'] = str(slice_size)
+   fake_response.headers['Content-Length'] = u'{:d}'.format(slice_size)
    content_range = 'bytes {:d}-{:d}/{:d}'.format(
        20 * fifty_mb, one_gb - 1, one_gb)
    fake_response.headers['Content-Range'] = content_range

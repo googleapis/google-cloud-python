@@ -215,7 +215,7 @@ class TestChunkedDownload(object):
         resp_range = self._response_content_range(
             start_byte, end_byte, total_bytes)
         return {
-            u'content-length': str(content_length),
+            u'content-length': u'{:d}'.format(content_length),
             u'content-range': resp_range,
         }
 

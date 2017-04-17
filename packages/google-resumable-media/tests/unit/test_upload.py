@@ -113,10 +113,13 @@ class TestMultipartUpload(object):
 
         expected_payload = (
             b'--==3==\r\n'
-            b'Content-Type: application/json; charset=UTF-8\n\n'
+            b'Content-Type: application/json; charset=UTF-8\n'
+            b'\n'
             b'{"Some": "Stuff"}\r\n'
             b'--==3==\r\n'
-            b'Content-Type: text/plain\n\nHi\r\n'
+            b'Content-Type: text/plain\n'
+            b'\n'
+            b'Hi\r\n'
             b'--==3==--')
         assert payload == expected_payload
         multipart_type = b'multipart/related; boundary="==3=="'
@@ -135,10 +138,15 @@ class TestMultipartUpload(object):
         ret_val = upload.transmit(transport, data, metadata, content_type)
         assert ret_val is transport.post.return_value
         expected_payload = (
-            b'--==4==\r\nContent-Type: application/json; charset=UTF-8\n\n' +
-            json.dumps(metadata).encode(u'utf-8') +
-            b'\r\n--==4==\r\nContent-Type: text/plain\n\n'
-            b'Mock data here and there.\r\n--==4==--')
+            b'--==4==\r\n' +
+            b'Content-Type: application/json; charset=UTF-8\n' +
+            b'\n' +
+            json.dumps(metadata).encode(u'utf-8') + b'\r\n' +
+            b'--==4==\r\n'
+            b'Content-Type: text/plain\n'
+            b'\n'
+            b'Mock data here and there.\r\n'
+            b'--==4==--')
         multipart_type = b'multipart/related; boundary="==4=="'
         upload_headers = {u'content-type': multipart_type}
         transport.post.assert_called_once_with(
@@ -166,10 +174,15 @@ class Test__construct_multipart_request(object):
 
         assert multipart_boundary == mock_get_boundary.return_value
         expected_payload = (
-            b'--==1==\r\nContent-Type: application/json; charset=UTF-8\n\n'
-            b'{"name": "hi-file.bin"}\r\n--==1==\r\n'
-            b'Content-Type: application/octet-stream\n\n'
-            b'By nary day tuh\r\n--==1==--')
+            b'--==1==\r\n'
+            b'Content-Type: application/json; charset=UTF-8\n'
+            b'\n'
+            b'{"name": "hi-file.bin"}\r\n'
+            b'--==1==\r\n'
+            b'Content-Type: application/octet-stream\n'
+            b'\n'
+            b'By nary day tuh\r\n'
+            b'--==1==--')
         assert payload == expected_payload
         mock_get_boundary.assert_called_once_with()
 
@@ -185,8 +198,14 @@ class Test__construct_multipart_request(object):
 
         assert multipart_boundary == mock_get_boundary.return_value
         expected_payload = (
-            b'--==2==\r\nContent-Type: application/json; charset=UTF-8\n\n'
-            b'{"name": "snowman.txt"}\r\n--==2==\r\n'
-            b'Content-Type: text/plain\n\n\xe2\x98\x83\r\n--==2==--')
+            b'--==2==\r\n'
+            b'Content-Type: application/json; charset=UTF-8\n'
+            b'\n'
+            b'{"name": "snowman.txt"}\r\n'
+            b'--==2==\r\n'
+            b'Content-Type: text/plain\n'
+            b'\n'
+            b'\xe2\x98\x83\r\n'
+            b'--==2==--')
         assert payload == expected_payload
         mock_get_boundary.assert_called_once_with()
