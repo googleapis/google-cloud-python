@@ -56,6 +56,14 @@ def get_md5(data):
     return base64.b64encode(hash_obj.digest())
 
 
+def check_content(blob_name, expected_content, transport):
+    media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+    download = gooresmed.Download(media_url)
+    response = download.consume(transport)
+    assert response.status_code == http_client.OK
+    assert response.content == expected_content
+
+
 def test_simple_upload(authorized_transport, cleanup):
     with open(ICO_FILE, u'rb') as file_obj:
         actual_contents = file_obj.read()
@@ -84,6 +92,8 @@ def test_simple_upload(authorized_transport, cleanup):
     assert json_response[u'name'] == blob_name
     assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
     assert json_response[u'storageClass'] == u'STANDARD'
+    # Download the content to make sure it's "working as expected".
+    check_content(blob_name, actual_contents, authorized_transport)
 
     # Make sure the upload is tombstoned.
     with pytest.raises(ValueError):
@@ -124,6 +134,8 @@ def test_multipart_upload(authorized_transport, cleanup):
     assert json_response[u'name'] == blob_name
     assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
     assert json_response[u'storageClass'] == u'STANDARD'
+    # Download the content to make sure it's "working as expected".
+    check_content(blob_name, actual_contents, authorized_transport)
 
     # Make sure the upload is tombstoned.
     with pytest.raises(ValueError):
