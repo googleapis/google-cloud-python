@@ -203,21 +203,6 @@ def _get_boundary():
     return boundary.encode(u'utf-8')
 
 
-def _mime_to_bytes(mime_obj):
-    """Convert a MIME object into raw bytes.
-
-    Args:
-        mime_obj (email.mime.nonmultipart.MIMENonMultipart): A
-
-    Returns:
-        bytes: The MIME non-multipart message payload bytes.
-    """
-    if six.PY3:
-        return mime_obj.as_bytes()
-    else:
-        return mime_obj.as_string()
-
-
 def _construct_multipart_request(data, metadata, content_type):
     """Construct a multipart request body.
 
