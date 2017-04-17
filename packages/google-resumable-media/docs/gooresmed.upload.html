@@ -215,6 +215,53 @@ image has content type <code class="docutils literal"><span class="pre">image/jp
 </dd></dl>
 
 <dl class="class">
+<dt id="gooresmed.upload.ResumableUpload">
+<em class="property">class </em><code class="descclassname">gooresmed.upload.</code><code class="descname">ResumableUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>stream</em>, <em>chunk_size</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.upload.ResumableUpload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gooresmed.upload._UploadBase</span></code></p>
+<p>Initiate and fulfill a resumable upload to a Google API.</p>
+<p>A <strong>resumable</strong> upload sends an initial request with the resource metadata
+and then gets assigned an upload ID / upload URL to send bytes to.
+Using the upload URL, the upload is then done in chunks (determined by
+the user) until all bytes have been uploaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the resumable upload will be initiated.</li>
+<li><strong>stream</strong> (<em>IO</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em>]</em><em></em>) &#8211; The stream (i.e. file-like object) that will
+be uploaded.</li>
+<li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The size of each chunk used to upload the resource.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If <code class="docutils literal"><span class="pre">chunk_size</span></code> is not a multiple of
+<a class="reference internal" href="#gooresmed.upload.UPLOAD_CHUNK_SIZE" title="gooresmed.upload.UPLOAD_CHUNK_SIZE"><code class="xref py py-data docutils literal"><span class="pre">UPLOAD_CHUNK_SIZE</span></code></a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gooresmed.upload.ResumableUpload.chunk_size">
+<code class="descname">chunk_size</code><a class="headerlink" href="#gooresmed.upload.ResumableUpload.chunk_size" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; The size of each chunk used to upload the resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gooresmed.upload.ResumableUpload.finished">
+<code class="descname">finished</code><a class="headerlink" href="#gooresmed.upload.ResumableUpload.finished" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> &#8211; Flag indicating if the upload has completed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gooresmed.upload.ResumableUpload.upload_id">
+<code class="descname">upload_id</code><a class="headerlink" href="#gooresmed.upload.ResumableUpload.upload_id" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  &#8211; The upload ID of the in-progress resumable upload.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="gooresmed.upload.SimpleUpload">
 <em class="property">class </em><code class="descclassname">gooresmed.upload.</code><code class="descname">SimpleUpload</code><span class="sig-paren">(</span><em>upload_url</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.upload.SimpleUpload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gooresmed.upload._UploadBase</span></code></p>
@@ -264,6 +311,12 @@ image has content type <code class="docutils literal"><span class="pre">image/jp
 </table>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="data">
+<dt id="gooresmed.upload.UPLOAD_CHUNK_SIZE">
+<code class="descclassname">gooresmed.upload.</code><code class="descname">UPLOAD_CHUNK_SIZE</code><em class="property"> = 262144</em><a class="headerlink" href="#gooresmed.upload.UPLOAD_CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; Chunks in a resumable upload must come in multiples of 256 KB.</p>
 </dd></dl>
 
 </div>
