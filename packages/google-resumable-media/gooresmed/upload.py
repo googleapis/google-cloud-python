@@ -220,6 +220,7 @@ class ResumableUpload(_UploadBase):
             raise ValueError(u'256 KB must divide chunk size')
         self._chunk_size = chunk_size
         self._stream = None
+        self._content_type = None
         self._total_bytes = None
         self._upload_id = None
 
@@ -264,6 +265,7 @@ class ResumableUpload(_UploadBase):
             raise ValueError(u'Stream must be at beginning.')
 
         self._stream = stream
+        self._content_type = content_type
         self._total_bytes = _get_total_bytes(stream)
         headers = {
             _CONTENT_TYPE_HEADER: u'application/json; charset=UTF-8',

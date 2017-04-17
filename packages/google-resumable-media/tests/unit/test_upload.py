@@ -172,6 +172,7 @@ class TestResumableUpload(object):
         assert not upload._finished
         assert upload._chunk_size == chunk_size
         assert upload._stream is None
+        assert upload._content_type is None
         assert upload._total_bytes is None
         assert upload._upload_id is None
 
@@ -213,6 +214,11 @@ class TestResumableUpload(object):
         metadata = {u'name': u'big-data-file.txt'}
 
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Check ``upload``-s state before.
+        assert upload._stream is None
+        assert upload._content_type is None
+        assert upload._total_bytes is None
+        # Call the method and check the output.
         payload, headers = upload._prepare_initiate_request(
             stream, metadata, BASIC_CONTENT)
         assert payload == b'{"name": "big-data-file.txt"}'
@@ -222,6 +228,10 @@ class TestResumableUpload(object):
             u'x-upload-content-type': BASIC_CONTENT,
         }
         assert headers == expected_headers
+        # Make sure the ``upload``-s state was updated.
+        assert upload._stream == stream
+        assert upload._content_type == BASIC_CONTENT
+        assert upload._total_bytes == len(data)
         # Make sure the stream is still at the beginning.
         assert stream.tell() == 0
 
