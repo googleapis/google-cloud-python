@@ -17,6 +17,8 @@
 
 import re
 
+from gooresmed import _helpers
+
 
 _CONTENT_RANGE_RE = re.compile(
     r'bytes (?P<start_byte>\d+)-(?P<end_byte>\d+)/(?P<total_bytes>\d+)',
@@ -279,15 +281,16 @@ class ChunkedDownload(_DownloadBase):
         should be the same as the ``Content-Length``.
 
         Args:
-            headers (Mapping): The response headers from an HTTP request.
+            headers (Mapping[str, str]): The response headers from an
+                HTTP request.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         # First update ``bytes_downloaded``.
-        content_length = _header_required(headers, u'content-length')
+        content_length = _helpers.header_required(headers, u'content-length')
         self._bytes_downloaded += int(content_length)
         # Parse the content range.
-        content_range = _header_required(headers, u'content-range')
+        content_range = _helpers.header_required(headers, u'content-range')
         _, end_byte, total_bytes = _get_range_info(content_range)
         # If the end byte is past ``end`` or ``total_bytes - 1`` we are done.
         if self.end is not None and end_byte >= self.end:
@@ -316,26 +319,6 @@ class ChunkedDownload(_DownloadBase):
         result = transport.get(self.media_url, headers=headers)
         self._process_response(result.headers)
         return result
-
-
-def _header_required(headers, name):
-    """Checks that a specific header is in a headers dictionary.
-
-    Args:
-        headers (Mapping): The response headers from an HTTP request.
-        name (str): The name of a required header.
-
-    Returns:
-        str: The desired header.
-
-    Raises:
-        KeyError: If the header is missing.
-    """
-    if name not in headers:
-        msg = u'Response headers must contain {} header'.format(name)
-        raise KeyError(msg)
-
-    return headers[name]
 
 
 def _get_range_info(content_range):

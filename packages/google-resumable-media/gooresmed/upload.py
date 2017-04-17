@@ -152,7 +152,7 @@ class MultipartUpload(_UploadBase):
                 image has content type ``image/jpeg``.
 
         Returns:
-            Tuple[str, dict]: The payload and headers for the request.
+            Tuple[bytes, dict]: The payload and headers for the request.
 
         Raises:
             ValueError: If the current upload has already finished.

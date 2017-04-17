@@ -337,21 +337,6 @@ class TestChunkedDownload(object):
         assert download.total_bytes == total_bytes
 
 
-class Test__header_required(object):
-
-    def test_success(self):
-        name = u'some-header'
-        value = u'The Right Hand Side'
-        headers = {name: value, u'other-name': u'other-value'}
-        result = download_mod._header_required(headers, name)
-        assert result == value
-
-    def test_failure(self):
-        headers = {}
-        with pytest.raises(KeyError):
-            download_mod._header_required(headers, u'any-name')
-
-
 class Test__get_range_info(object):
 
     def test_success(self):

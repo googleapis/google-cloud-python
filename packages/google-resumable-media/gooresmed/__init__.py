@@ -276,6 +276,7 @@ In addition, a :class:`.ChunkedDownload` can also take optional
 from gooresmed.download import ChunkedDownload
 from gooresmed.download import Download
 from gooresmed.upload import MultipartUpload
+from gooresmed.upload import ResumableUpload
 from gooresmed.upload import SimpleUpload
 
 
@@ -283,5 +284,6 @@ __all__ = [
     u'ChunkedDownload',
     u'Download',
     u'MultipartUpload',
+    u'ResumableUpload',
     u'SimpleUpload',
 ]
