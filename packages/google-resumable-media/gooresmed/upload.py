@@ -58,6 +58,29 @@ class _UploadBase(object):
         """bool: Flag indicating if the upload has completed."""
         return self._finished
 
+    def _process_response(self):
+        """Process the response from an HTTP request.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        # Tombstone the current Upload so it cannot be used again.
+        self._finished = True
+
+
+class SimpleUpload(_UploadBase):
+    """Upload a resource to a Google API.
+
+    A **simple** media upload sends no metadata and completes the upload
+    in a single request.
+
+    Args:
+       upload_url (str): The URL where the content will be uploaded.
+    """
+
     def _prepare_request(self, content_type):
         """Prepare the contents of an HTTP request.
 
@@ -81,29 +104,6 @@ class _UploadBase(object):
 
         headers = {_CONTENT_TYPE_HEADER: content_type}
         return headers
-
-    def _process_response(self):
-        """Process the response from an HTTP request.
-
-        This is everything that must be done after a request that doesn't
-        require network I/O (or other I/O). This is based on the `sans-I/O`_
-        philosophy.
-
-        .. _sans-I/O: https://sans-io.readthedocs.io/
-        """
-        # Tombstone the current Upload so it cannot be used again.
-        self._finished = True
-
-
-class SimpleUpload(_UploadBase):
-    """Upload a resource to a Google API.
-
-    A **simple** media upload sends no metadata and completes the upload
-    in a single request.
-
-    Args:
-       upload_url (str): The URL where the content will be uploaded.
-    """
 
     def transmit(self, transport, data, content_type):
         """Transmit the resource to be uploaded.

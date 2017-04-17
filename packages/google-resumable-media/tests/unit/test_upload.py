@@ -54,18 +54,6 @@ class Test_UploadBase(object):
         upload._finished = True
         assert upload.finished
 
-    def test__prepare_request_already_finished(self):
-        upload = upload_mod._UploadBase(SIMPLE_URL)
-        upload._finished = True
-        with pytest.raises(ValueError):
-            upload._prepare_request(None)
-
-    def test__prepare_request(self):
-        upload = upload_mod._UploadBase(SIMPLE_URL)
-        content_type = u'image/jpeg'
-        headers = upload._prepare_request(content_type)
-        assert headers == {u'content-type': content_type}
-
     def test__process_response(self):
         upload = upload_mod._UploadBase(SIMPLE_URL)
         # Make sure **not finished** before.
@@ -77,6 +65,18 @@ class Test_UploadBase(object):
 
 
 class TestSimpleUpload(object):
+
+    def test__prepare_request_already_finished(self):
+        upload = upload_mod.SimpleUpload(SIMPLE_URL)
+        upload._finished = True
+        with pytest.raises(ValueError):
+            upload._prepare_request(None)
+
+    def test__prepare_request(self):
+        upload = upload_mod.SimpleUpload(SIMPLE_URL)
+        content_type = u'image/jpeg'
+        headers = upload._prepare_request(content_type)
+        assert headers == {u'content-type': content_type}
 
     def test_transmit(self):
         data = b'I have got a lovely bunch of coconuts.'
