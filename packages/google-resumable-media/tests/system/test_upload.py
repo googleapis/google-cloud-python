@@ -56,6 +56,23 @@ def get_md5(data):
     return base64.b64encode(hash_obj.digest())
 
 
+def check_response(response, blob_name, actual_contents, metadata=None):
+    assert response.status_code == http_client.OK
+    json_response = response.json()
+    assert json_response[u'bucket'] == utils.BUCKET_NAME
+    assert json_response[u'contentType'] == ICO_CONTENT_TYPE
+    md5_hash = json_response[u'md5Hash'].encode(u'ascii')
+    assert md5_hash == get_md5(actual_contents)
+    assert json_response[u'metageneration'] == u'1'
+    assert json_response[u'name'] == blob_name
+    assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
+    assert json_response[u'storageClass'] == u'STANDARD'
+    if metadata is None:
+        assert u'metadata' not in json_response
+    else:
+        assert json_response[u'metadata'] == metadata
+
+
 def check_content(blob_name, expected_content, transport):
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
     download = gooresmed.Download(media_url)
@@ -82,19 +99,9 @@ def test_simple_upload(authorized_transport, cleanup):
     # Transmit the resource.
     response = upload.transmit(
         authorized_transport, actual_contents, ICO_CONTENT_TYPE)
-    assert response.status_code == http_client.OK
-    json_response = response.json()
-    assert json_response[u'bucket'] == utils.BUCKET_NAME
-    assert json_response[u'contentType'] == ICO_CONTENT_TYPE
-    md5_hash = json_response[u'md5Hash'].encode(u'ascii')
-    assert md5_hash == get_md5(actual_contents)
-    assert json_response[u'metageneration'] == u'1'
-    assert json_response[u'name'] == blob_name
-    assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
-    assert json_response[u'storageClass'] == u'STANDARD'
+    check_response(response, blob_name, actual_contents)
     # Download the content to make sure it's "working as expected".
     check_content(blob_name, actual_contents, authorized_transport)
-
     # Make sure the upload is tombstoned.
     with pytest.raises(ValueError):
         upload.transmit(
@@ -123,20 +130,10 @@ def test_multipart_upload(authorized_transport, cleanup):
     }
     response = upload.transmit(
         authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE)
-    assert response.status_code == http_client.OK
-    json_response = response.json()
-    assert json_response[u'bucket'] == utils.BUCKET_NAME
-    assert json_response[u'contentType'] == ICO_CONTENT_TYPE
-    md5_hash = json_response[u'md5Hash'].encode(u'ascii')
-    assert md5_hash == get_md5(actual_contents)
-    assert json_response[u'metadata'] == metadata[u'metadata']
-    assert json_response[u'metageneration'] == u'1'
-    assert json_response[u'name'] == blob_name
-    assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
-    assert json_response[u'storageClass'] == u'STANDARD'
+    check_response(response, blob_name, actual_contents,
+                   metadata=metadata[u'metadata'])
     # Download the content to make sure it's "working as expected".
     check_content(blob_name, actual_contents, authorized_transport)
-
     # Make sure the upload is tombstoned.
     with pytest.raises(ValueError):
         upload.transmit(
