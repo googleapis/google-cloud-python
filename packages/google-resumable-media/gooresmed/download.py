@@ -25,57 +25,6 @@ _CONTENT_RANGE_RE = re.compile(
     flags=re.IGNORECASE)
 
 
-def _add_bytes_range(start, end, headers):
-    """Add a bytes range to a header dictionary.
-
-    Some possible inputs and the corresponding bytes ranges::
-
-       >>> headers = {}
-       >>> _add_bytes_range(None, None, headers)
-       >>> headers
-       {}
-       >>> _add_bytes_range(500, 999, headers)
-       >>> headers['range']
-       'bytes=500-999'
-       >>> _add_bytes_range(None, 499, headers)
-       >>> headers['range']
-       'bytes=0-499'
-       >>> _add_bytes_range(-500, None, headers)
-       >>> headers['range']
-       'bytes=-500'
-       >>> _add_bytes_range(9500, None, headers)
-       >>> headers['range']
-       'bytes=9500-'
-
-    Args:
-        start (Optional[int]): The first byte in a range. Can be zero,
-            positive, negative or :data:`None`.
-        end (Optional[int]): The last byte in a range. Assumed to be
-            positive.
-        headers (dict): A headers dictionary which can have the
-            bytes range added if at least one of ``start`` or ``end``
-            is not :data:`None`.
-    """
-    if start is None:
-        if end is None:
-            # No range to add.
-            return
-        else:
-            # NOTE: This assumes ``end`` is non-negative.
-            bytes_range = u'0-{:d}'.format(end)
-    else:
-        if end is None:
-            if start < 0:
-                bytes_range = u'{:d}'.format(start)
-            else:
-                bytes_range = u'{:d}-'.format(start)
-        else:
-            # NOTE: This is invalid if ``start < 0``.
-            bytes_range = u'{:d}-{:d}'.format(start, end)
-
-    headers[u'range'] = u'bytes=' + bytes_range
-
-
 class _DownloadBase(object):
     """Base class for download helpers.
 
@@ -319,6 +268,57 @@ class ChunkedDownload(_DownloadBase):
         result = transport.get(self.media_url, headers=headers)
         self._process_response(result.headers)
         return result
+
+
+def _add_bytes_range(start, end, headers):
+    """Add a bytes range to a header dictionary.
+
+    Some possible inputs and the corresponding bytes ranges::
+
+       >>> headers = {}
+       >>> _add_bytes_range(None, None, headers)
+       >>> headers
+       {}
+       >>> _add_bytes_range(500, 999, headers)
+       >>> headers['range']
+       'bytes=500-999'
+       >>> _add_bytes_range(None, 499, headers)
+       >>> headers['range']
+       'bytes=0-499'
+       >>> _add_bytes_range(-500, None, headers)
+       >>> headers['range']
+       'bytes=-500'
+       >>> _add_bytes_range(9500, None, headers)
+       >>> headers['range']
+       'bytes=9500-'
+
+    Args:
+        start (Optional[int]): The first byte in a range. Can be zero,
+            positive, negative or :data:`None`.
+        end (Optional[int]): The last byte in a range. Assumed to be
+            positive.
+        headers (dict): A headers dictionary which can have the
+            bytes range added if at least one of ``start`` or ``end``
+            is not :data:`None`.
+    """
+    if start is None:
+        if end is None:
+            # No range to add.
+            return
+        else:
+            # NOTE: This assumes ``end`` is non-negative.
+            bytes_range = u'0-{:d}'.format(end)
+    else:
+        if end is None:
+            if start < 0:
+                bytes_range = u'{:d}'.format(start)
+            else:
+                bytes_range = u'{:d}-'.format(start)
+        else:
+            # NOTE: This is invalid if ``start < 0``.
+            bytes_range = u'{:d}-{:d}'.format(start, end)
+
+    headers[u'range'] = u'bytes=' + bytes_range
 
 
 def _get_range_info(content_range):
