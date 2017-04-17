@@ -230,13 +230,17 @@ the user) until all bytes have been uploaded.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the resumable upload will be initiated.</li>
 <li><strong>stream</strong> (<em>IO</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em>]</em><em></em>) &#8211; The stream (i.e. file-like object) that will
-be uploaded.</li>
+be uploaded. The stream <strong>must</strong> be at the beginning (i.e.
+<code class="docutils literal"><span class="pre">stream.tell()</span> <span class="pre">==</span> <span class="pre">0</span></code>).</li>
 <li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The size of each chunk used to upload the resource.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If <code class="docutils literal"><span class="pre">chunk_size</span></code> is not a multiple of
-<a class="reference internal" href="#gooresmed.upload.UPLOAD_CHUNK_SIZE" title="gooresmed.upload.UPLOAD_CHUNK_SIZE"><code class="xref py py-data docutils literal"><span class="pre">UPLOAD_CHUNK_SIZE</span></code></a>.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If <code class="docutils literal"><span class="pre">chunk_size</span></code> is not a multiple of
+<a class="reference internal" href="#gooresmed.upload.UPLOAD_CHUNK_SIZE" title="gooresmed.upload.UPLOAD_CHUNK_SIZE"><code class="xref py py-data docutils literal"><span class="pre">UPLOAD_CHUNK_SIZE</span></code></a>.</li>
+<li><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If <code class="docutils literal"><span class="pre">stream</span></code> is not at the beginning.</li>
+</ul>
 </td>
 </tr>
 </tbody>
