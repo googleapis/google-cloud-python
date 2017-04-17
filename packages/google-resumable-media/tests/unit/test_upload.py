@@ -163,34 +163,21 @@ class TestMultipartUpload(object):
 class TestResumableUpload(object):
 
     def test_constructor(self):
-        data = b'data'
-        stream = io.BytesIO(data)
         chunk_size = ONE_MB
-        upload = upload_mod.ResumableUpload(RESUMABLE_URL, stream, chunk_size)
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, chunk_size)
         assert upload.upload_url == RESUMABLE_URL
         assert not upload._finished
         assert upload._chunk_size == chunk_size
-        assert upload._stream is stream
-        assert upload._total_bytes == len(data)
+        assert upload._stream is None
+        assert upload._total_bytes is None
         assert upload._upload_id is None
 
     def test_constructor_bad_chunk_size(self):
         with pytest.raises(ValueError):
-            upload_mod.ResumableUpload(RESUMABLE_URL, io.BytesIO(), 1)
-
-    def test_constructor_bad_stream_position(self):
-        stream = io.BytesIO(b'data')
-        stream.seek(1)
-        with pytest.raises(ValueError):
-            upload_mod.ResumableUpload(RESUMABLE_URL, stream, ONE_MB)
-
-        # Also test a bad object (i.e. non-stream)
-        with pytest.raises(AttributeError):
-            upload_mod.ResumableUpload(RESUMABLE_URL, None, ONE_MB)
+            upload_mod.ResumableUpload(RESUMABLE_URL, 1)
 
     def test_chunk_size_property(self):
-        upload = upload_mod.ResumableUpload(
-            RESUMABLE_URL, io.BytesIO(), ONE_MB)
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Default value of @property.
         assert upload.chunk_size == ONE_MB
 
@@ -204,8 +191,7 @@ class TestResumableUpload(object):
         assert upload.chunk_size == new_size
 
     def test_upload_id_property(self):
-        upload = upload_mod.ResumableUpload(
-            RESUMABLE_URL, io.BytesIO(), ONE_MB)
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Default value of @property.
         assert upload.upload_id is None
 

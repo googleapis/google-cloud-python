@@ -204,26 +204,20 @@ class ResumableUpload(_UploadBase):
 
     Args:
        upload_url (str): The URL where the resumable upload will be initiated.
-       stream (IO[bytes]): The stream (i.e. file-like object) that will
-           be uploaded. The stream **must** be at the beginning (i.e.
-           ``stream.tell() == 0``).
        chunk_size (int): The size of each chunk used to upload the resource.
 
     Raises:
         ValueError: If ``chunk_size`` is not a multiple of
             :data:`UPLOAD_CHUNK_SIZE`.
-        ValueError: If ``stream`` is not at the beginning.
     """
 
-    def __init__(self, upload_url, stream, chunk_size):
+    def __init__(self, upload_url, chunk_size):
         super(ResumableUpload, self).__init__(upload_url)
         if chunk_size % UPLOAD_CHUNK_SIZE != 0:
             raise ValueError(u'256 KB must divide chunk size')
         self._chunk_size = chunk_size
-        if stream.tell() != 0:
-            raise ValueError(u'Stream must be at beginning.')
-        self._stream = stream
-        self._total_bytes = _get_total_bytes(stream)
+        self._stream = None
+        self._total_bytes = None
         self._upload_id = None
 
     @property
