@@ -26,6 +26,7 @@ _UPLOAD_BASE = (
     u'/o?uploadType=')
 SIMPLE_UPLOAD_TEMPLATE = _UPLOAD_BASE + u'media&name={blob_name}'
 MULTIPART_UPLOAD = _UPLOAD_BASE + u'multipart'
+RESUMABLE_UPLOAD = _UPLOAD_BASE + u'resumable'
 METADATA_URL_TEMPLATE = (
     u'https://www.googleapis.com/storage/v1/b/' +
     BUCKET_NAME +

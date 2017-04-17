@@ -138,3 +138,37 @@ def test_multipart_upload(authorized_transport, cleanup):
     with pytest.raises(ValueError):
         upload.transmit(
             authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE)
+
+
+@pytest.fixture
+def stream():
+    """Open-file as a fixture.
+
+    This is so that an entire test can execute in the context of
+    the context manager without worrying about closing the file.
+    """
+    with open(ICO_FILE, u'rb') as file_obj:
+        yield file_obj
+
+
+def test_resumable_upload(authorized_transport, stream):
+    blob_name = os.path.basename(stream.name)
+    metadata = {
+        u'name': blob_name,
+        u'metadata': {u'direction': u'north'},
+    }
+    chunk_size = 1024 * 1024  # 1 MB
+    # Create the actual upload object.
+    upload = gooresmed.ResumableUpload(utils.RESUMABLE_UPLOAD, chunk_size)
+    # Initiate the upload.
+    response = upload.initiate(
+        authorized_transport, stream, metadata, ICO_CONTENT_TYPE)
+    # Make sure ``initiate`` succeeded and did not mangle the stream.
+    assert response.status_code == http_client.OK
+    assert response.content == b''
+    assert response.headers[u'x-guploader-uploadid'] == upload._upload_id
+    assert stream.tell() == 0
+    # Make sure the upload cannot be re-initiated.
+    with pytest.raises(ValueError):
+        upload.initiate(
+            authorized_transport, stream, metadata, ICO_CONTENT_TYPE)
