@@ -224,11 +224,10 @@ class Client(ClientWithProject):
         if http_context:
             http_context_dict = http_context.__dict__
             # strip out None values
-            payload['context']['httpContext'] = {
+            payload['context']['httpRequest'] = {
                 key: value for key, value in six.iteritems(http_context_dict)
                 if value is not None
             }
-
         if user:
             payload['context']['user'] = user
         return payload
