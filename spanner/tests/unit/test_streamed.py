@@ -185,6 +185,21 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(merged.string_value, u'phredwylma')
         self.assertIsNone(streamed._pending_chunk)
 
+    def test__merge_chunk_string_w_bytes(self):
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        FIELDS = [
+            self._makeScalarField('image', 'BYTES'),
+        ]
+        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._pending_chunk = self._makeValue(u'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\n')
+        chunk = self._makeValue(u'B3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n')
+
+        merged = streamed._merge_chunk(chunk)
+
+        self.assertEqual(merged.string_value, u'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\nB3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n')
+        self.assertIsNone(streamed._pending_chunk)     
+
     def test__merge_chunk_array_of_bool(self):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
