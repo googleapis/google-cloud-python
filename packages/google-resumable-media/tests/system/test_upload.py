@@ -23,13 +23,16 @@ from six.moves import http_client
 from six.moves import urllib_parse
 
 import gooresmed
+import gooresmed.upload as upload_mod
 from tests.system import utils
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(CURR_DIR, u'..', u'data')
 ICO_FILE = os.path.realpath(os.path.join(DATA_DIR, u'favicon.ico'))
+IMAGE_FILE = os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg'))
 ICO_CONTENT_TYPE = u'image/x-icon'
+JPEG_CONTENT_TYPE = u'image/jpeg'
 
 
 @pytest.fixture(scope=u'module')
@@ -57,16 +60,20 @@ def get_md5(data):
     return base64.b64encode(hash_obj.digest())
 
 
-def check_response(response, blob_name, actual_contents, metadata=None):
+def check_response(response, blob_name, actual_contents=None,
+                   total_bytes=None, metadata=None,
+                   content_type=ICO_CONTENT_TYPE):
     assert response.status_code == http_client.OK
     json_response = response.json()
     assert json_response[u'bucket'] == utils.BUCKET_NAME
-    assert json_response[u'contentType'] == ICO_CONTENT_TYPE
-    md5_hash = json_response[u'md5Hash'].encode(u'ascii')
-    assert md5_hash == get_md5(actual_contents)
+    assert json_response[u'contentType'] == content_type
+    if actual_contents is not None:
+        md5_hash = json_response[u'md5Hash'].encode(u'ascii')
+        assert md5_hash == get_md5(actual_contents)
+        total_bytes = len(actual_contents)
     assert json_response[u'metageneration'] == u'1'
     assert json_response[u'name'] == blob_name
-    assert json_response[u'size'] == u'{:d}'.format(len(actual_contents))
+    assert json_response[u'size'] == u'{:d}'.format(total_bytes)
     assert json_response[u'storageClass'] == u'STANDARD'
     if metadata is None:
         assert u'metadata' not in json_response
@@ -100,7 +107,7 @@ def test_simple_upload(authorized_transport, cleanup):
     # Transmit the resource.
     response = upload.transmit(
         authorized_transport, actual_contents, ICO_CONTENT_TYPE)
-    check_response(response, blob_name, actual_contents)
+    check_response(response, blob_name, actual_contents=actual_contents)
     # Download the content to make sure it's "working as expected".
     check_content(blob_name, actual_contents, authorized_transport)
     # Make sure the upload is tombstoned.
@@ -131,8 +138,9 @@ def test_multipart_upload(authorized_transport, cleanup):
     }
     response = upload.transmit(
         authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE)
-    check_response(response, blob_name, actual_contents,
-                   metadata=metadata[u'metadata'])
+    check_response(
+        response, blob_name, actual_contents=actual_contents,
+        metadata=metadata[u'metadata'])
     # Download the content to make sure it's "working as expected".
     check_content(blob_name, actual_contents, authorized_transport)
     # Make sure the upload is tombstoned.
@@ -148,7 +156,7 @@ def stream():
     This is so that an entire test can execute in the context of
     the context manager without worrying about closing the file.
     """
-    with open(ICO_FILE, u'rb') as file_obj:
+    with open(IMAGE_FILE, u'rb') as file_obj:
         yield file_obj
 
 
@@ -160,18 +168,21 @@ def get_upload_id(upload_url):
     return upload_id
 
 
-def test_resumable_upload(authorized_transport, stream):
+def test_resumable_upload(authorized_transport, stream, cleanup):
     blob_name = os.path.basename(stream.name)
+    # Make sure to clean up the uploaded blob when we are done.
+    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    cleanup(metadata_url, authorized_transport)
+    # Create the actual upload object.
+    chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
+    upload = gooresmed.ResumableUpload(utils.RESUMABLE_UPLOAD, chunk_size)
+    # Initiate the upload.
     metadata = {
         u'name': blob_name,
         u'metadata': {u'direction': u'north'},
     }
-    chunk_size = 1024 * 1024  # 1 MB
-    # Create the actual upload object.
-    upload = gooresmed.ResumableUpload(utils.RESUMABLE_UPLOAD, chunk_size)
-    # Initiate the upload.
     response = upload.initiate(
-        authorized_transport, stream, metadata, ICO_CONTENT_TYPE)
+        authorized_transport, stream, metadata, JPEG_CONTENT_TYPE)
     # Make sure ``initiate`` succeeded and did not mangle the stream.
     assert response.status_code == http_client.OK
     assert response.content == b''
@@ -182,3 +193,22 @@ def test_resumable_upload(authorized_transport, stream):
     with pytest.raises(ValueError):
         upload.initiate(
             authorized_transport, stream, metadata, ICO_CONTENT_TYPE)
+    # Actually upload the file in chunks.
+    num_chunks = 0
+    while not upload.finished:
+        num_chunks += 1
+        response = upload.transmit_next_chunk(authorized_transport)
+        if upload.finished:
+            assert upload.bytes_uploaded == upload.total_bytes
+            check_response(
+                response, blob_name, total_bytes=upload.total_bytes,
+                metadata=metadata[u'metadata'],
+                content_type=JPEG_CONTENT_TYPE)
+        else:
+            assert upload.bytes_uploaded == num_chunks * chunk_size
+            assert response.status_code == upload_mod.PERMANENT_REDIRECT
+
+    expected_chunks, remainder = divmod(upload.total_bytes, chunk_size)
+    if remainder > 0:
+        expected_chunks += 1
+    assert expected_chunks == num_chunks

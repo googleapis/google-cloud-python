@@ -41,7 +41,7 @@ _MULTIPART_BEGIN = (
     b'\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n')
 _RELATED_HEADER = b'multipart/related; boundary="'
 _BYTES_RANGE_RE = re.compile(
-    r'bytes 0-(?P<end_byte>\d+)', flags=re.IGNORECASE)
+    r'bytes=0-(?P<end_byte>\d+)', flags=re.IGNORECASE)
 _STREAM_ERROR_TEMPLATE = (
     u'Bytes stream is in unexpected state. '
     u'The local stream has had {:d} bytes read from it while '
@@ -413,6 +413,7 @@ class ResumableUpload(_UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if status_code == http_client.OK:
+            self._bytes_uploaded = self._total_bytes
             # Tombstone the current upload so it cannot be used again.
             self._finished = True
         elif status_code == PERMANENT_REDIRECT:
@@ -421,7 +422,7 @@ class ResumableUpload(_UploadBase):
             if match is None:
                 raise ValueError(
                     u'Unexpected "range" header', bytes_range,
-                    u'Expected to be of the form "bytes 0-{end}"')
+                    u'Expected to be of the form "bytes=0-{end}"')
             self._bytes_uploaded = int(match.group(u'end_byte')) + 1
         else:
             raise ValueError(

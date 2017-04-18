@@ -380,13 +380,16 @@ class TestResumableUpload(object):
         with pytest.raises(ValueError):
             upload._process_response(http_client.NOT_FOUND, {})
 
-    def test__process_success(self):
+    def test__process_response_success(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._total_bytes = mock.sentinel.total_bytes
         # Check status before.
+        assert upload._bytes_uploaded == 0
         assert not upload._finished
         ret_val = upload._process_response(http_client.OK, {})
         assert ret_val is None
         # Check status after.
+        assert upload._bytes_uploaded is mock.sentinel.total_bytes
         assert upload._finished
 
     def test__process_response_partial_bad_range(self):
@@ -404,7 +407,7 @@ class TestResumableUpload(object):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Check status before.
         assert upload._bytes_uploaded == 0
-        headers = {u'range': u'bytes 0-171'}
+        headers = {u'range': u'bytes=0-171'}
         ret_val = upload._process_response(
             upload_mod.PERMANENT_REDIRECT, headers)
         assert ret_val is None
@@ -429,7 +432,7 @@ class TestResumableUpload(object):
         assert chunk_size < len(data)
         upload._chunk_size = chunk_size
         # Make a fake 308 response.
-        response_headers = {u'range': u'bytes 0-{:d}'.format(chunk_size - 1)}
+        response_headers = {u'range': u'bytes=0-{:d}'.format(chunk_size - 1)}
         transport = self._chunk_mock(
             upload_mod.PERMANENT_REDIRECT, response_headers)
         # Check the state before the request.
