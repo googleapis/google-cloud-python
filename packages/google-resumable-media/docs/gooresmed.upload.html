@@ -214,6 +214,17 @@ image has content type <code class="docutils literal"><span class="pre">image/jp
 
 </dd></dl>
 
+<dl class="data">
+<dt id="gooresmed.upload.PERMANENT_REDIRECT">
+<code class="descclassname">gooresmed.upload.</code><code class="descname">PERMANENT_REDIRECT</code><em class="property"> = 308</em><a class="headerlink" href="#gooresmed.upload.PERMANENT_REDIRECT" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; Permanent redirect status code.</p>
+<p>It is used by Google services to indicate some (but not all) of
+a resumable upload has been completed.</p>
+<p><code class="docutils literal"><span class="pre">http.client.PERMANENT_REDIRECT</span></code> was added in Python 3.5, so
+can&#8217;t be used in a &#8220;general&#8221; code base.</p>
+<p>For more information, see <a class="reference external" href="https://tools.ietf.org/html/rfc7238">RFC 7238</a>.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="gooresmed.upload.ResumableUpload">
 <em class="property">class </em><code class="descclassname">gooresmed.upload.</code><code class="descname">ResumableUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>chunk_size</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.upload.ResumableUpload" title="Permalink to this definition">¶</a></dt>
@@ -239,6 +250,12 @@ the user) until all bytes have been uploaded.</p>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="gooresmed.upload.ResumableUpload.bytes_uploaded">
+<code class="descname">bytes_uploaded</code><a class="headerlink" href="#gooresmed.upload.ResumableUpload.bytes_uploaded" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; Number of bytes that have been uploaded.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="gooresmed.upload.ResumableUpload.chunk_size">
 <code class="descname">chunk_size</code><a class="headerlink" href="#gooresmed.upload.ResumableUpload.chunk_size" title="Permalink to this definition">¶</a></dt>
@@ -273,6 +290,33 @@ ACL list.</li>
 image has content type <code class="docutils literal"><span class="pre">image/jpeg</span></code>.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gooresmed.upload.ResumableUpload.total_bytes">
+<code class="descname">total_bytes</code><a class="headerlink" href="#gooresmed.upload.ResumableUpload.total_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The total number of bytes to be uploaded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gooresmed.upload.ResumableUpload.transmit_next_chunk">
+<code class="descname">transmit_next_chunk</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.upload.ResumableUpload.transmit_next_chunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transmit the next chunk of the resource to be uploaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) &#8211; An object which can make authenticated
+requests via a <code class="docutils literal"><span class="pre">put()</span></code> method which accepts an
+upload URL, a <code class="docutils literal"><span class="pre">data</span></code> keyword argument and a
+<code class="docutils literal"><span class="pre">headers</span></code> keyword argument.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The return value of <code class="docutils literal"><span class="pre">transport.put()</span></code>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)">object</a></td>
 </tr>
 </tbody>
 </table>
