@@ -168,6 +168,30 @@ def get_upload_id(upload_url):
     return upload_id
 
 
+def get_num_chunks(total_bytes, chunk_size):
+    expected_chunks, remainder = divmod(total_bytes, chunk_size)
+    if remainder > 0:
+        expected_chunks += 1
+    return expected_chunks
+
+
+def transmit_chunks(upload, transport, blob_name, metadata):
+    num_chunks = 0
+    while not upload.finished:
+        num_chunks += 1
+        response = upload.transmit_next_chunk(transport)
+        if upload.finished:
+            assert upload.bytes_uploaded == upload.total_bytes
+            check_response(
+                response, blob_name, total_bytes=upload.total_bytes,
+                metadata=metadata, content_type=JPEG_CONTENT_TYPE)
+        else:
+            assert upload.bytes_uploaded == num_chunks * upload.chunk_size
+            assert response.status_code == upload_mod.PERMANENT_REDIRECT
+
+    return num_chunks
+
+
 def test_resumable_upload(authorized_transport, stream, cleanup):
     blob_name = os.path.basename(stream.name)
     # Make sure to clean up the uploaded blob when we are done.
@@ -194,21 +218,13 @@ def test_resumable_upload(authorized_transport, stream, cleanup):
         upload.initiate(
             authorized_transport, stream, metadata, ICO_CONTENT_TYPE)
     # Actually upload the file in chunks.
-    num_chunks = 0
-    while not upload.finished:
-        num_chunks += 1
-        response = upload.transmit_next_chunk(authorized_transport)
-        if upload.finished:
-            assert upload.bytes_uploaded == upload.total_bytes
-            check_response(
-                response, blob_name, total_bytes=upload.total_bytes,
-                metadata=metadata[u'metadata'],
-                content_type=JPEG_CONTENT_TYPE)
-        else:
-            assert upload.bytes_uploaded == num_chunks * chunk_size
-            assert response.status_code == upload_mod.PERMANENT_REDIRECT
-
-    expected_chunks, remainder = divmod(upload.total_bytes, chunk_size)
-    if remainder > 0:
-        expected_chunks += 1
-    assert expected_chunks == num_chunks
+    num_chunks = transmit_chunks(
+        upload, authorized_transport, blob_name, metadata[u'metadata'])
+    assert num_chunks == get_num_chunks(upload.total_bytes, chunk_size)
+    # Download the content to make sure it's "working as expected".
+    stream.seek(0)
+    actual_contents = stream.read()
+    check_content(blob_name, actual_contents, authorized_transport)
+    # Make sure the upload is tombstoned.
+    with pytest.raises(ValueError):
+        upload.transmit_next_chunk(authorized_transport)
