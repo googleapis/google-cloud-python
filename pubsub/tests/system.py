@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import os
 import unittest
 
@@ -155,6 +156,26 @@ class TestPubsub(unittest.TestCase):
         self.assertEqual(subscription.ack_deadline, 120)
         self.assertIs(subscription.topic, topic)
 
+    def test_create_subscription_w_message_retention(self):
+        TOPIC_NAME = 'create-sub-ack' + unique_resource_id('-')
+        topic = Config.CLIENT.topic(TOPIC_NAME)
+        self.assertFalse(topic.exists())
+        topic.create()
+        self.to_delete.append(topic)
+        SUBSCRIPTION_NAME = 'subscribing-now' + unique_resource_id()
+        duration = datetime.timedelta(hours=12)
+        subscription = topic.subscription(
+            SUBSCRIPTION_NAME, retain_acked_messages=True,
+            message_retention_duration=duration)
+        self.assertFalse(subscription.exists())
+        subscription.create()
+        self.to_delete.append(subscription)
+        self.assertTrue(subscription.exists())
+        self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
+        self.assertTrue(subscription.retain_acked_messages)
+        self.assertEqual(subscription.message_retention_duration, duration)
+        self.assertIs(subscription.topic, topic)
+
     def test_list_subscriptions(self):
         TOPIC_NAME = 'list-sub' + unique_resource_id('-')
         topic = Config.CLIENT.topic(TOPIC_NAME)
@@ -287,3 +308,6 @@ class TestPubsub(unittest.TestCase):
             policy.viewers = viewers
             new_policy = subscription.set_iam_policy(policy)
             self.assertEqual(new_policy.viewers, policy.viewers)
+
+    # TODO(geigerj): set retain_acked_messages=True in snapshot system test once
+    # PR #3303 is merged

@@ -52,7 +52,9 @@ class Topic(object):
         self._client = client
         self.timestamp_messages = timestamp_messages
 
-    def subscription(self, name, ack_deadline=None, push_endpoint=None):
+    def subscription(self, name, ack_deadline=None, push_endpoint=None,
+                     retain_acked_messages=None,
+                     message_retention_duration=None):
         """Creates a subscription bound to the current topic.
 
         Example:  pull-mode subcription, default paramter values
@@ -85,11 +87,25 @@ class Topic(object):
                               back-end. If not set, the application must pull
                               messages.
 
+        :type retain_acked_messages: bool
+        :param retain_acked_messages:
+            (Optional) Whether to retain acked messages. If set, acked messages
+            are retained in the subscription's backlog for a duration indicated
+            by `message_retention_duration`.
+
+        :type message_retention_duration: :class:`datetime.timedelta`
+        :param message_retention_duration:
+            (Optional) Whether to retain acked messages. If set, acked messages
+            are retained in the subscription's backlog for a duration indicated
+            by `message_retention_duration`. If unset, defaults to 7 days.
+
         :rtype: :class:`Subscription`
         :returns: The subscription created with the passed in arguments.
         """
-        return Subscription(name, self, ack_deadline=ack_deadline,
-                            push_endpoint=push_endpoint)
+        return Subscription(
+            name, self, ack_deadline=ack_deadline, push_endpoint=push_endpoint,
+            retain_acked_messages=retain_acked_messages,
+            message_retention_duration=message_retention_duration)
 
     @classmethod
     def from_api_repr(cls, resource, client):

@@ -20,6 +20,7 @@ import functools
 import os
 
 from google.cloud import _http
+from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from google.cloud.iterator import HTTPIterator
 
@@ -295,7 +296,9 @@ class _SubscriberAPI(object):
             extra_params=extra_params)
 
     def subscription_create(self, subscription_path, topic_path,
-                            ack_deadline=None, push_endpoint=None):
+                            ack_deadline=None, push_endpoint=None,
+                            retain_acked_messages=None,
+                            message_retention_duration=None):
         """API call:  create a subscription
 
         See:
@@ -321,6 +324,18 @@ class _SubscriberAPI(object):
             (Optional) URL to which messages will be pushed by the back-end.
             If not set, the application must pull messages.
 
+        :type retain_acked_messages: bool
+        :param retain_acked_messages:
+            (Optional) Whether to retain acked messages. If set, acked messages
+            are retained in the subscription's backlog for a duration indicated
+            by `message_retention_duration`.
+
+        :type message_retention_duration: :class:`datetime.timedelta`
+        :param message_retention_duration:
+            (Optional) Whether to retain acked messages. If set, acked messages
+            are retained in the subscription's backlog for a duration indicated
+            by `message_retention_duration`. If unset, defaults to 7 days.
+
         :rtype: dict
         :returns: ``Subscription`` resource returned from the API.
         """
@@ -332,6 +347,16 @@ class _SubscriberAPI(object):
 
         if push_endpoint is not None:
             resource['pushConfig'] = {'pushEndpoint': push_endpoint}
+
+        if retain_acked_messages is not None:
+            resource['retainAckedMessages'] = retain_acked_messages
+
+        if message_retention_duration is not None:
+            pb = _timedelta_to_duration_pb(message_retention_duration)
+            resource['messageRetentionDuration'] = {
+                'seconds': pb.seconds,
+                'nanos': pb.nanos
+            }
 
         return self.api_request(method='PUT', path=path, data=resource)
 
