@@ -18,6 +18,7 @@ import sys
 
 import mock
 import pytest
+from six.moves import http_client
 
 import gooresmed.upload as upload_mod
 
@@ -173,6 +174,7 @@ class TestResumableUpload(object):
         assert upload._chunk_size == chunk_size
         assert upload._stream is None
         assert upload._content_type is None
+        assert upload._bytes_uploaded == 0
         assert upload._total_bytes is None
         assert upload._upload_url_with_id is None
 
@@ -207,6 +209,32 @@ class TestResumableUpload(object):
         # Set it privately and then check the @property.
         upload._upload_url_with_id = new_url
         assert upload.upload_url_with_id == new_url
+
+    def test_bytes_uploaded_property(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Default value of @property.
+        assert upload.bytes_uploaded == 0
+
+        # Make sure we cannot set it on public @property.
+        with pytest.raises(AttributeError):
+            upload.bytes_uploaded = 1024
+
+        # Set it privately and then check the @property.
+        upload._bytes_uploaded = 128
+        assert upload.bytes_uploaded == 128
+
+    def test_total_bytes_property(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Default value of @property.
+        assert upload.total_bytes is None
+
+        # Make sure we cannot set it on public @property.
+        with pytest.raises(AttributeError):
+            upload.total_bytes = 65536
+
+        # Set it privately and then check the @property.
+        upload._total_bytes = 8192
+        assert upload.total_bytes == 8192
 
     def test__prepare_initiate_request(self):
         data = b'some really big big data.'
@@ -302,6 +330,126 @@ class TestResumableUpload(object):
         transport.post.assert_called_once_with(
             RESUMABLE_URL, data=json_bytes, headers=expected_headers)
 
+    def test__prepare_request_already_finished(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._finished = True
+        with pytest.raises(ValueError):
+            upload._prepare_request()
+
+    def test__prepare_request_not_initiated(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        assert not upload._finished
+        assert upload._upload_url_with_id is None
+        with pytest.raises(ValueError):
+            upload._prepare_request()
+
+    def test__prepare_request_invalid_stream_state(self):
+        stream = io.BytesIO(b'some data here')
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._stream = stream
+        upload._upload_url_with_id = u'http://test.invalid?upload_id=not-none'
+        # Make stream.tell() disagree with bytes_uploaded.
+        upload._bytes_uploaded = 5
+        assert upload.bytes_uploaded != stream.tell()
+        with pytest.raises(ValueError):
+            upload._prepare_request()
+
+    @staticmethod
+    def _upload_in_flight(data):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._stream = io.BytesIO(data)
+        upload._content_type = BASIC_CONTENT
+        upload._total_bytes = len(data)
+        upload._upload_url_with_id = u'http://test.invalid?upload_id=not-none'
+        return upload
+
+    def test__prepare_request_success(self):
+        data = b'All of the data goes in a stream.'
+        upload = self._upload_in_flight(data)
+        payload, headers = upload._prepare_request()
+        # Check the response values.
+        assert payload == data
+        expected_headers = {
+            u'content-range': u'bytes 0-32/33',
+            u'content-type': BASIC_CONTENT,
+        }
+        assert headers == expected_headers
+
+    def test__process_response_bad_status(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        with pytest.raises(ValueError):
+            upload._process_response(http_client.NOT_FOUND, {})
+
+    def test__process_success(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Check status before.
+        assert not upload._finished
+        ret_val = upload._process_response(http_client.OK, {})
+        assert ret_val is None
+        # Check status after.
+        assert upload._finished
+
+    def test__process_response_partial_bad_range(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # First try with "range" totally missing from the headers.
+        with pytest.raises(KeyError):
+            upload._process_response(upload_mod.PERMANENT_REDIRECT, {})
+
+        # Then try with a "range" header that is unexpected.
+        headers = {u'range': u'nights 1-81'}
+        with pytest.raises(ValueError):
+            upload._process_response(upload_mod.PERMANENT_REDIRECT, headers)
+
+    def test__process_response_partial(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Check status before.
+        assert upload._bytes_uploaded == 0
+        headers = {u'range': u'bytes 0-171'}
+        ret_val = upload._process_response(
+            upload_mod.PERMANENT_REDIRECT, headers)
+        assert ret_val is None
+        # Check status after.
+        assert upload._bytes_uploaded == 172
+
+    @staticmethod
+    def _chunk_mock(status_code, response_headers):
+        transport = mock.Mock(spec=[u'put'])
+        put_response = mock.Mock(
+            headers=response_headers, status_code=status_code,
+            spec=[u'headers', u'status_code'])
+        transport.put.return_value = put_response
+
+        return transport
+
+    def test_transmit_next_chunk(self):
+        data = b'This time the data is official.'
+        upload = self._upload_in_flight(data)
+        # Make a fake chunk size smaller than 256 KB.
+        chunk_size = 10
+        assert chunk_size < len(data)
+        upload._chunk_size = chunk_size
+        # Make a fake 308 response.
+        response_headers = {u'range': u'bytes 0-{:d}'.format(chunk_size - 1)}
+        transport = self._chunk_mock(
+            upload_mod.PERMANENT_REDIRECT, response_headers)
+        # Check the state before the request.
+        assert upload._bytes_uploaded == 0
+
+        # Make request and check the return value (against the mock).
+        response = upload.transmit_next_chunk(transport)
+        assert response is transport.put.return_value
+        # Check that the state has been updated.
+        assert upload._bytes_uploaded == chunk_size
+        # Make sure the mock was called as expected.
+        payload = data[:chunk_size]
+        content_range = u'bytes 0-{:d}/{:d}'.format(chunk_size - 1, len(data))
+        expected_headers = {
+            u'content-range': content_range,
+            u'content-type': BASIC_CONTENT,
+        }
+        transport.put.assert_called_once_with(
+            upload.upload_url_with_id, data=payload, headers=expected_headers)
+
 
 @mock.patch(u'random.randrange', return_value=1234567890123456789)
 def test__get_boundary(mock_rand):
@@ -374,3 +522,27 @@ def test__get_total_bytes():
     assert upload_mod._get_total_bytes(stream) == len(data)
     # Check position after function call.
     assert stream.tell() == curr_pos
+
+
+class Test__get_next_chunk(object):
+
+    def test_exhausted(self):
+        data = b'the end'
+        stream = io.BytesIO(data)
+        stream.seek(len(data))
+        with pytest.raises(ValueError):
+            upload_mod._get_next_chunk(stream, 1)
+
+    def test_success(self):
+        stream = io.BytesIO(b'0123456789')
+        chunk_size = 3
+        # Splits into 4 chunks: 012, 345, 678, 9
+        result0 = upload_mod._get_next_chunk(stream, chunk_size)
+        result1 = upload_mod._get_next_chunk(stream, chunk_size)
+        result2 = upload_mod._get_next_chunk(stream, chunk_size)
+        result3 = upload_mod._get_next_chunk(stream, chunk_size)
+        assert result0 == (0, 2, b'012')
+        assert result1 == (3, 5, b'345')
+        assert result2 == (6, 8, b'678')
+        assert result3 == (9, 9, b'9')
+        assert stream.tell() == 10

@@ -22,14 +22,17 @@ uploads that contain both metadata and a small file as payload.
 import json
 import os
 import random
+import re
 import sys
 
 import six
+from six.moves import http_client
 
 from gooresmed import _helpers
 
 
 _CONTENT_TYPE_HEADER = u'content-type'
+_CONTENT_RANGE_TEMPLATE = u'bytes {:d}-{:d}/{:d}'
 _BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
 _BOUNDARY_FORMAT = u'==============={{:0{:d}d}}=='.format(_BOUNDARY_WIDTH)
 _MULTIPART_SEP = b'--'
@@ -37,9 +40,28 @@ _CRLF = b'\r\n'
 _MULTIPART_BEGIN = (
     b'\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n')
 _RELATED_HEADER = b'multipart/related; boundary="'
+_BYTES_RANGE_RE = re.compile(
+    r'bytes 0-(?P<end_byte>\d+)', flags=re.IGNORECASE)
+_STREAM_ERROR_TEMPLATE = (
+    u'Bytes stream is in unexpected state. '
+    u'The local stream has had {:d} bytes read from it while '
+    u'{:d} bytes have already been updated (they should match).')
 
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024
 """int: Chunks in a resumable upload must come in multiples of 256 KB."""
+PERMANENT_REDIRECT = 308
+"""int: Permanent redirect status code.
+
+It is used by Google services to indicate some (but not all) of
+a resumable upload has been completed.
+
+``http.client.PERMANENT_REDIRECT`` was added in Python 3.5, so
+can't be used in a "general" code base.
+
+For more information, see `RFC 7238`_.
+
+.. _RFC 7238: https://tools.ietf.org/html/rfc7238
+"""
 
 
 class _UploadBase(object):
@@ -70,7 +92,7 @@ class _UploadBase(object):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        # Tombstone the current Upload so it cannot be used again.
+        # Tombstone the current upload so it cannot be used again.
         self._finished = True
 
 
@@ -220,6 +242,7 @@ class ResumableUpload(_UploadBase):
         self._chunk_size = chunk_size
         self._stream = None
         self._content_type = None
+        self._bytes_uploaded = 0
         self._total_bytes = None
         self._upload_url_with_id = None
 
@@ -232,6 +255,16 @@ class ResumableUpload(_UploadBase):
     def upload_url_with_id(self):
         """Optional[str]: The URL of the in-progress resumable upload."""
         return self._upload_url_with_id
+
+    @property
+    def bytes_uploaded(self):
+        """int: Number of bytes that have been uploaded."""
+        return self._bytes_uploaded
+
+    @property
+    def total_bytes(self):
+        """Optional[int]: The total number of bytes to be uploaded."""
+        return self._total_bytes
 
     def _prepare_initiate_request(self, stream, metadata, content_type):
         """Prepare the contents of HTTP request to initiate upload.
@@ -317,6 +350,102 @@ class ResumableUpload(_UploadBase):
         self._process_initiate_response(result.headers)
         return result
 
+    def _prepare_request(self):
+        """Prepare the contents of HTTP request to upload a chunk.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O. This is based on the `sans-I/O`_ philosophy.
+
+        For the time being, this **does require** some form of I/O to read
+        a chunk from ``stream`` (via :func:`_get_next_chunk`). However, this
+        will (almost) certainly not be network I/O.
+
+        Returns:
+            Tuple[bytes, dict]: The payload and headers for the request.
+
+        Raises:
+            ValueError: If the current upload has finished.
+            ValueError: If the current upload has not been initiated.
+            ValueError: If the location in the stream (i.e. ``stream.tell()``)
+                does not agree with ``bytes_uploaded``.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.finished:
+            raise ValueError(u'Upload has finished.')
+        if self.upload_url_with_id is None:
+            raise ValueError(
+                u'This upload has not been initiated. Please call '
+                u'initiate() before beginning to transmit chunks.')
+
+        start_byte, end_byte, payload = _get_next_chunk(
+            self._stream, self._chunk_size)
+        if start_byte != self.bytes_uploaded:
+            msg = _STREAM_ERROR_TEMPLATE.format(
+                start_byte, self.bytes_uploaded)
+            raise ValueError(msg)
+
+        content_range = _CONTENT_RANGE_TEMPLATE.format(
+            start_byte, end_byte, self._total_bytes)
+        headers = {
+            _CONTENT_TYPE_HEADER: self._content_type,
+            u'content-range': content_range,
+        }
+        return payload, headers
+
+    def _process_response(self, status_code, headers):
+        """Process the response from an HTTP request.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            status_code (int): The HTTP status code from the response.
+            headers (Mapping[str, str]): The response headers from an
+                HTTP request.
+
+        Raises:
+            ValueError: If ``status_code == 308`` and the ``range`` header
+                is not of the form ``bytes 0-{end}``.
+            ValueError: If the ``status_code`` is not 200 or 308.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if status_code == http_client.OK:
+            # Tombstone the current upload so it cannot be used again.
+            self._finished = True
+        elif status_code == PERMANENT_REDIRECT:
+            bytes_range = _helpers.header_required(headers, u'range')
+            match = _BYTES_RANGE_RE.match(bytes_range)
+            if match is None:
+                raise ValueError(
+                    u'Unexpected "range" header', bytes_range,
+                    u'Expected to be of the form "bytes 0-{end}"')
+            self._bytes_uploaded = int(match.group(u'end_byte')) + 1
+        else:
+            raise ValueError(
+                u'Response has unexpected status code', status_code,
+                u'Expected either "200 OK" or "308 Permanent Redirect"')
+
+    def transmit_next_chunk(self, transport):
+        """Transmit the next chunk of the resource to be uploaded.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests via a ``put()`` method which accepts an
+                upload URL, a ``data`` keyword argument and a
+                ``headers`` keyword argument.
+
+        Returns:
+            object: The return value of ``transport.put()``.
+        """
+        payload, headers = self._prepare_request()
+        result = transport.put(
+            self.upload_url_with_id, data=payload, headers=headers)
+        self._process_response(result.status_code, result.headers)
+        return result
+
 
 def _get_boundary():
     """Get a random boundary for a multipart request.
@@ -383,3 +512,31 @@ def _get_total_bytes(stream):
     stream.seek(current_position)
 
     return end_position
+
+
+def _get_next_chunk(stream, chunk_size):
+    """Get a chunk from an I/O stream.
+
+    The ``stream`` may have fewer bytes remaining than ``chunk_size``
+    so it may not always be the case that
+    ``end_byte == start_byte + chunk_size - 1``.
+
+    Args:
+       stream (IO[bytes]): The stream (i.e. file-like object).
+
+    Returns:
+        Tuple[int, int, bytes]: Triple of the start byte index, the end byte
+        index and the content in between those bytes.
+
+    Raises:
+        ValueError: If there is no data left to consume. This corresponds
+            exactly to the case ``end_byte < start_byte``, which can only
+            occur if ``end_byte == start_byte - 1``.
+    """
+    start_byte = stream.tell()
+    payload = stream.read(chunk_size)
+    end_byte = stream.tell() - 1
+    if end_byte < start_byte:
+        raise ValueError(
+            u'Stream is already exhausted. There is no content remaining.')
+    return start_byte, end_byte, payload
