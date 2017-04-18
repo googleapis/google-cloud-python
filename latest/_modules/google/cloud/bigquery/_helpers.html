@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery._helpers &mdash; google-cloud 8c354a1 documentation</title>
+  <title>google.cloud.bigquery._helpers &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 8c354a1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -681,7 +681,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct paramter from JSON resource.</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
 
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: JSON mapping of parameter</span>
@@ -703,7 +703,7 @@
 
 <span class="sd">    :type name: str or None</span>
 <span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
-<span class="sd">                 paramter can only be addressed via position (``?``).</span>
+<span class="sd">                 parameter can only be addressed via position (``?``).</span>
 
 <span class="sd">    :type type_: str</span>
 <span class="sd">    :param type_: name of parameter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
@@ -720,11 +720,11 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory for positional paramters.</span>
+        <span class="sd">&quot;&quot;&quot;Factory for positional paramater.</span>
 
 <span class="sd">        :type type_: str</span>
 <span class="sd">        :param type_:</span>
-<span class="sd">            name of paramter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
+<span class="sd">            name of parameter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
 <span class="sd">            &#39;FLOAT64&#39;, &#39;BOOL&#39;, &#39;TIMESTAMP&#39;, &#39;DATETIME&#39;, or &#39;DATE&#39;.</span>
 
 <span class="sd">        :type value: str, int, float, bool, :class:`datetime.datetime`, or</span>
@@ -738,7 +738,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct paramter from JSON resource.</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
 
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: JSON mapping of parameter</span>
@@ -780,7 +780,7 @@
 
 <span class="sd">    :type name: str or None</span>
 <span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
-<span class="sd">                 paramter can only be addressed via position (``?``).</span>
+<span class="sd">                 parameter can only be addressed via position (``?``).</span>
 
 <span class="sd">    :type array_type: str</span>
 <span class="sd">    :param array_type:</span>
@@ -797,7 +797,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory for positional paramters.</span>
+        <span class="sd">&quot;&quot;&quot;Factory for positional parameters.</span>
 
 <span class="sd">        :type array_type: str</span>
 <span class="sd">        :param array_type:</span>
@@ -814,7 +814,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct paramter from JSON resource.</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
 
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: JSON mapping of parameter</span>
@@ -868,7 +868,7 @@
 
 <span class="sd">    :type name: str or None</span>
 <span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
-<span class="sd">                 paramter can only be addressed via position (``?``).</span>
+<span class="sd">                 parameter can only be addressed via position (``?``).</span>
 
 <span class="sd">    :type sub_params: tuple of :class:`ScalarQueryParameter`</span>
 <span class="sd">    :param sub_params: the sub-parameters for the struct</span>
@@ -890,7 +890,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory for positional paramters.</span>
+        <span class="sd">&quot;&quot;&quot;Factory for positional parameters.</span>
 
 <span class="sd">        :type sub_params: tuple of :class:`ScalarQueryParameter`</span>
 <span class="sd">        :param sub_params: the sub-parameters for the struct</span>
@@ -902,7 +902,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct paramter from JSON resource.</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
 
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: JSON mapping of parameter</span>
@@ -974,7 +974,7 @@
 <span class="sd">        :rtype: list of instances of classes derived from</span>
 <span class="sd">                :class:`AbstractQueryParameter`.</span>
 <span class="sd">        :returns: the descriptor, if accessed via the class, or the instance&#39;s</span>
-<span class="sd">                  query paramters.</span>
+<span class="sd">                  query parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
@@ -1031,7 +1031,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'8c354a1',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

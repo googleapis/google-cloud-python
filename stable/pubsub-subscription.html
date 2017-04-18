@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Subscriptions &mdash; google-cloud 0.24.0 documentation</title>
+  <title>Subscriptions &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0.24.0 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
         <link rel="next" title="Message" href="pubsub-message.html"/>
         <link rel="prev" title="Topics" href="pubsub-topic.html"/> 
 
@@ -695,9 +695,9 @@ is an instance of
 <a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
-    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ALL_USERS</span><span class="p">)</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span> <span class="o">=</span> <span class="p">[</span><span class="n">ALL_USERS</span><span class="p">]</span>
     <span class="n">LOGS_GROUP</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
-    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LOGS_GROUP</span><span class="p">)</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span> <span class="o">=</span> <span class="p">[</span><span class="n">LOGS_GROUP</span><span class="p">]</span>
     <span class="n">new_policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>   <span class="c1"># API request</span>
 </pre></div>
 </div>
@@ -836,7 +836,7 @@ successfully processed, e.g.:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.24.0',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

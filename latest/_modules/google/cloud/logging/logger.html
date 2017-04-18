@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.logger &mdash; google-cloud 8c354a1 documentation</title>
+  <title>google.cloud.logging.logger &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 8c354a1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -353,9 +353,7 @@
 
 <span class="sd">&quot;&quot;&quot;Define API Loggers.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
-
-<span class="kn">from</span> <span class="nn">google.protobuf.json_format</span> <span class="k">import</span> <span class="n">MessageToJson</span>
+<span class="kn">from</span> <span class="nn">google.protobuf.json_format</span> <span class="k">import</span> <span class="n">MessageToDict</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
 
 
@@ -445,24 +443,24 @@
 <span class="sd">        :type info: dict</span>
 <span class="sd">        :param info: (Optional) struct payload</span>
 
-<span class="sd">        :type message: Protobuf message or :class:`NoneType`</span>
-<span class="sd">        :param message: protobuf payload</span>
+<span class="sd">        :type message: :class:`~google.protobuf.message.Message`</span>
+<span class="sd">        :param message: (Optional) The protobuf payload to log.</span>
 
 <span class="sd">        :type labels: dict</span>
 <span class="sd">        :param labels: (Optional) labels passed in to calling method.</span>
 
 <span class="sd">        :type insert_id: str</span>
-<span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
+<span class="sd">        :param insert_id: (Optional) unique ID for log entry.</span>
 
 <span class="sd">        :type severity: str</span>
-<span class="sd">        :param severity: (optional) severity of event being logged.</span>
+<span class="sd">        :param severity: (Optional) severity of event being logged.</span>
 
 <span class="sd">        :type http_request: dict</span>
-<span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
+<span class="sd">        :param http_request: (Optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry</span>
 
 <span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
-<span class="sd">        :param timestamp: (optional) timestamp of event being logged.</span>
+<span class="sd">        :param timestamp: (Optional) timestamp of event being logged.</span>
 
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: The JSON resource created.</span>
@@ -479,9 +477,13 @@
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jsonPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span>
 
         <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">as_json_str</span> <span class="o">=</span> <span class="n">MessageToJson</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-            <span class="n">as_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">as_json_str</span><span class="p">)</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">as_json</span>
+            <span class="c1"># NOTE: If ``message`` contains an ``Any`` field with an</span>
+            <span class="c1">#       unknown type, this will fail with a ``TypeError``.</span>
+            <span class="c1">#       However, since ``message`` will be provided by a user,</span>
+            <span class="c1">#       the assumption is that any types needed for the</span>
+            <span class="c1">#       protobuf-&gt;JSON conversion will be known from already</span>
+            <span class="c1">#       imported ``pb2`` modules.</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MessageToDict</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>
@@ -584,8 +586,8 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list</span>
 
-<span class="sd">        :type message: Protobuf message</span>
-<span class="sd">        :param message: the message to be logged</span>
+<span class="sd">        :type message: :class:`~google.protobuf.message.Message`</span>
+<span class="sd">        :param message: The protobuf message to be logged.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.logging.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -801,9 +803,13 @@
             <span class="k">elif</span> <span class="n">entry_type</span> <span class="o">==</span> <span class="s1">&#39;struct&#39;</span><span class="p">:</span>
                 <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jsonPayload&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="p">}</span>
             <span class="k">elif</span> <span class="n">entry_type</span> <span class="o">==</span> <span class="s1">&#39;proto&#39;</span><span class="p">:</span>
-                <span class="n">as_json_str</span> <span class="o">=</span> <span class="n">MessageToJson</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
-                <span class="n">as_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">as_json_str</span><span class="p">)</span>
-                <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">:</span> <span class="n">as_json</span><span class="p">}</span>
+                <span class="c1"># NOTE: If ``entry`` contains an ``Any`` field with an</span>
+                <span class="c1">#       unknown type, this will fail with a ``TypeError``.</span>
+                <span class="c1">#       However, since ``entry`` was provided by a user in</span>
+                <span class="c1">#       ``Batch.log_proto``, the assumption is that any types</span>
+                <span class="c1">#       needed for the protobuf-&gt;JSON conversion will be known</span>
+                <span class="c1">#       from already imported ``pb2`` modules.</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">:</span> <span class="n">MessageToDict</span><span class="p">(</span><span class="n">entry</span><span class="p">)}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown entry type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">entry_type</span><span class="p">,))</span>
             <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -856,7 +862,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'8c354a1',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

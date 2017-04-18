@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Natural Language Response Classes &mdash; google-cloud 0.24.0 documentation</title>
+  <title>Natural Language Response Classes &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0.24.0 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="pubsub-usage.html"/>
         <link rel="prev" title="Document" href="language-document.html"/> 
 
@@ -523,7 +523,7 @@ sentiment for the sentence.</li>
 <p>An entity is used to describe a proper name extracted from text.</p>
 <dl class="class">
 <dt id="google.cloud.language.entity.Entity">
-<em class="property">class </em><code class="descclassname">google.cloud.language.entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>name</em>, <em>entity_type</em>, <em>metadata</em>, <em>salience</em>, <em>mentions</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.entity.Entity" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.language.entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>name</em>, <em>entity_type</em>, <em>metadata</em>, <em>salience</em>, <em>mentions</em>, <em>sentiment</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.entity.Entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A Google Cloud Natural Language API entity.</p>
 <p>Represents a phrase in text that is a known entity, such as a person,
@@ -534,7 +534,7 @@ salience and mentions, with entities.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name / phrase identified as the entity.</li>
 <li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of the entity. See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/Entity#Type">EntityType enum</a>.</li>
 <li><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The metadata associated with the entity.
@@ -545,6 +545,11 @@ provided, if available. The associated keys are
 containing it.</li>
 <li><strong>mentions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of strings that mention the entity.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Params sentiment:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">The sentiment; sent only on <cite>analyze_entity_sentiment</cite>
+calls.</p>
 </td>
 </tr>
 </tbody>
@@ -967,7 +972,7 @@ its own index.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.24.0',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

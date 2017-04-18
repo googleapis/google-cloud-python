@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.error_reporting.client &mdash; google-cloud 8c354a1 documentation</title>
+  <title>google.cloud.error_reporting.client &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 8c354a1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -563,11 +563,10 @@
         <span class="k">if</span> <span class="n">http_context</span><span class="p">:</span>
             <span class="n">http_context_dict</span> <span class="o">=</span> <span class="n">http_context</span><span class="o">.</span><span class="vm">__dict__</span>
             <span class="c1"># strip out None values</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="s1">&#39;httpContext&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">http_context_dict</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">}</span>
-
         <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
             <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">][</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
         <span class="k">return</span> <span class="n">payload</span>
@@ -720,7 +719,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'8c354a1',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

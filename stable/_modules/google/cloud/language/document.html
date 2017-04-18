@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.language.document &mdash; google-cloud 0.24.0 documentation</title>
+  <title>google.cloud.language.document &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -527,6 +527,32 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;analyzeEntities&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">api_responses</span><span class="o">.</span><span class="n">EntityResponse</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Document.analyze_entity_sentiment"><a class="viewcode-back" href="../../../../language-document.html#google.cloud.language.document.Document.analyze_entity_sentiment">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_entity_sentiment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Analyze the entity sentiment.</span>
+
+<span class="sd">        Finds entities, similar to `AnalyzeEntities` in the text and</span>
+<span class="sd">        analyzes sentiment associated with each entity and its mentions.</span>
+
+<span class="sd">        :rtype: :class:`~language.entity.EntitySentimentResponse`</span>
+<span class="sd">        :returns: A representation of the entity sentiment response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sanity check: Not available on v1.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">API_VERSION</span> <span class="o">==</span> <span class="s1">&#39;v1&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s1">&#39;The `analyze_entity_sentiment` method is only available &#39;</span>
+                <span class="s1">&#39;on the Natural Language 1.1 beta. Use version=&quot;v1beta2&quot; &#39;</span>
+                <span class="s1">&#39;as a keyword argument to the constructor.&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Perform the API request.</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;document&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">(),</span>
+            <span class="s1">&#39;encodingType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;analyzeEntitySentiment&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">api_responses</span><span class="o">.</span><span class="n">EntityResponse</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Document.analyze_sentiment"><a class="viewcode-back" href="../../../../language-document.html#google.cloud.language.document.Document.analyze_sentiment">[docs]</a>    <span class="k">def</span> <span class="nf">analyze_sentiment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Analyze the sentiment in the current document.</span>
 
@@ -671,7 +697,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.24.0',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

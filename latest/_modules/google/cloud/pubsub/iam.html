@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.iam &mdash; google-cloud 8c354a1 documentation</title>
+  <title>google.cloud.pubsub.iam &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 8c354a1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -356,16 +356,15 @@
 <span class="sd">https://cloud.google.com/pubsub/access_control#permissions</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># Generic IAM roles</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="n">OWNER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/owner&#39;</span>
-<span class="sd">&quot;&quot;&quot;Generic role implying all rights to an object.&quot;&quot;&quot;</span>
-
-<span class="n">EDITOR_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/editor&#39;</span>
-<span class="sd">&quot;&quot;&quot;Generic role implying rights to modify an object.&quot;&quot;&quot;</span>
-
-<span class="n">VIEWER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/viewer&#39;</span>
-<span class="sd">&quot;&quot;&quot;Generic role implying rights to access an object.&quot;&quot;&quot;</span>
+<span class="c1"># pylint: disable=unused-import</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span>   <span class="c1"># noqa - backward compat</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">EDITOR_ROLE</span>  <span class="c1"># noqa - backward compat</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">VIEWER_ROLE</span>  <span class="c1"># noqa - backward compat</span>
+<span class="c1"># pylint: enable=unused-import</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">Policy</span> <span class="k">as</span> <span class="n">_BasePolicy</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">_ASSIGNMENT_DEPRECATED_MSG</span>
 
 <span class="c1"># Pubsub-specific IAM roles</span>
 
@@ -433,169 +432,49 @@
 <span class="sd">&quot;&quot;&quot;Permission: update subscriptions.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Combined IAM Policy / Bindings.</span>
+<div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="n">_BasePolicy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;IAM Policy / Bindings.</span>
 
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy</span>
 <span class="sd">    https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Binding</span>
-
-<span class="sd">    :type etag: str</span>
-<span class="sd">    :param etag: ETag used to identify a unique of the policy</span>
-
-<span class="sd">    :type version: int</span>
-<span class="sd">    :param version: unique version of the policy</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">etag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">etag</span> <span class="o">=</span> <span class="n">etag</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">owners</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">editors</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">viewers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">publishers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">subscribers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">_OWNER_ROLES</span> <span class="o">=</span> <span class="p">(</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_ADMIN_ROLE</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Roles mapped onto our ``owners`` attribute.&quot;&quot;&quot;</span>
 
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Policy.user"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.user">[docs]</a>    <span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for a user member.</span>
+    <span class="n">_EDITOR_ROLES</span> <span class="o">=</span> <span class="p">(</span><span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_EDITOR_ROLE</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Roles mapped onto our ``editors`` attribute.&quot;&quot;&quot;</span>
 
-<span class="sd">        :type email: str</span>
-<span class="sd">        :param email: E-mail for this particular user.</span>
+    <span class="n">_VIEWER_ROLES</span> <span class="o">=</span> <span class="p">(</span><span class="n">VIEWER_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_VIEWER_ROLE</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Roles mapped onto our ``viewers`` attribute.&quot;&quot;&quot;</span>
 
-<span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: A member string corresponding to the given user.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;user:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">email</span><span class="p">,)</span></div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">publishers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Legacy access to owner role.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">PUBSUB_PUBLISHER_ROLE</span><span class="p">,</span> <span class="p">()))</span>
 
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Policy.service_account"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.service_account">[docs]</a>    <span class="k">def</span> <span class="nf">service_account</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for a service account member.</span>
+    <span class="nd">@publishers</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">publishers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update publishers.&quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">_ASSIGNMENT_DEPRECATED_MSG</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s1">&#39;publishers&#39;</span><span class="p">,</span> <span class="n">PUBSUB_PUBLISHER_ROLE</span><span class="p">),</span>
+            <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">PUBSUB_PUBLISHER_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-<span class="sd">        :type email: str</span>
-<span class="sd">        :param email: E-mail for this particular service account.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subscribers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Legacy access to owner role.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">PUBSUB_SUBSCRIBER_ROLE</span><span class="p">,</span> <span class="p">()))</span>
 
-<span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: A member string corresponding to the given service account.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;serviceAccount:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">email</span><span class="p">,)</span></div>
-
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Policy.group"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.group">[docs]</a>    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for a group member.</span>
-
-<span class="sd">        :type email: str</span>
-<span class="sd">        :param email: An id or e-mail for this particular group.</span>
-
-<span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: A member string corresponding to the given group.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;group:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">email</span><span class="p">,)</span></div>
-
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Policy.domain"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.domain">[docs]</a>    <span class="k">def</span> <span class="nf">domain</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for a domain member.</span>
-
-<span class="sd">        :type domain: str</span>
-<span class="sd">        :param domain: The domain for this member.</span>
-
-<span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: A member string corresponding to the given domain.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;domain:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">domain</span><span class="p">,)</span></div>
-
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Policy.all_users"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.all_users">[docs]</a>    <span class="k">def</span> <span class="nf">all_users</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for a member representing all users.</span>
-
-<span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: A member string representing all users.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;allUsers&#39;</span></div>
-
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Policy.authenticated_users"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.authenticated_users">[docs]</a>    <span class="k">def</span> <span class="nf">authenticated_users</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for a member representing all authenticated users.</span>
-
-<span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: A member string representing all authenticated users.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;allAuthenticatedUsers&#39;</span></div>
-
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Policy.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a policy from the resource returned from the API.</span>
-
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource: resource returned from the ``getIamPolicy`` API.</span>
-
-<span class="sd">        :rtype: :class:`Policy`</span>
-<span class="sd">        :returns: the parsed policy</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">version</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">)</span>
-        <span class="n">etag</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
-        <span class="n">policy</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">etag</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bindings&#39;</span><span class="p">,</span> <span class="p">()):</span>
-            <span class="n">role</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span>
-            <span class="n">members</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">binding</span><span class="p">[</span><span class="s1">&#39;members&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="p">(</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_ADMIN_ROLE</span><span class="p">):</span>
-                <span class="n">policy</span><span class="o">.</span><span class="n">owners</span> <span class="o">|=</span> <span class="n">members</span>
-            <span class="k">elif</span> <span class="n">role</span> <span class="ow">in</span> <span class="p">(</span><span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_EDITOR_ROLE</span><span class="p">):</span>
-                <span class="n">policy</span><span class="o">.</span><span class="n">editors</span> <span class="o">|=</span> <span class="n">members</span>
-            <span class="k">elif</span> <span class="n">role</span> <span class="ow">in</span> <span class="p">(</span><span class="n">VIEWER_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_VIEWER_ROLE</span><span class="p">):</span>
-                <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span> <span class="o">|=</span> <span class="n">members</span>
-            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">PUBSUB_PUBLISHER_ROLE</span><span class="p">:</span>
-                <span class="n">policy</span><span class="o">.</span><span class="n">publishers</span> <span class="o">|=</span> <span class="n">members</span>
-            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">PUBSUB_SUBSCRIBER_ROLE</span><span class="p">:</span>
-                <span class="n">policy</span><span class="o">.</span><span class="n">subscribers</span> <span class="o">|=</span> <span class="n">members</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown role: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">role</span><span class="p">,))</span>
-        <span class="k">return</span> <span class="n">policy</span></div>
-
-<div class="viewcode-block" id="Policy.to_api_repr"><a class="viewcode-back" href="../../../../pubsub-iam.html#google.cloud.pubsub.iam.Policy.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a Policy resource.</span>
-
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: a resource to be passed to the ``setIamPolicy`` API.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">resource</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">etag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;etag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">etag</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
-
-        <span class="n">bindings</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">owners</span><span class="p">:</span>
-            <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_ADMIN_ROLE</span><span class="p">,</span>
-                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">owners</span><span class="p">)})</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editors</span><span class="p">:</span>
-            <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_EDITOR_ROLE</span><span class="p">,</span>
-                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editors</span><span class="p">)})</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewers</span><span class="p">:</span>
-            <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_VIEWER_ROLE</span><span class="p">,</span>
-                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewers</span><span class="p">)})</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">publishers</span><span class="p">:</span>
-            <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_PUBLISHER_ROLE</span><span class="p">,</span>
-                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">publishers</span><span class="p">)})</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribers</span><span class="p">:</span>
-            <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_SUBSCRIBER_ROLE</span><span class="p">,</span>
-                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subscribers</span><span class="p">)})</span>
-
-        <span class="k">if</span> <span class="n">bindings</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;bindings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bindings</span>
-
-        <span class="k">return</span> <span class="n">resource</span></div></div>
+    <span class="nd">@subscribers</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">subscribers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update subscribers.&quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">_ASSIGNMENT_DEPRECATED_MSG</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s1">&#39;subscribers&#39;</span><span class="p">,</span> <span class="n">PUBSUB_SUBSCRIBER_ROLE</span><span class="p">),</span>
+            <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">PUBSUB_SUBSCRIBER_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -632,7 +511,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'8c354a1',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

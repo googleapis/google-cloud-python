@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Shared Core Modules &mdash; google-cloud 8c354a1 documentation</title>
+  <title>Shared Core Modules &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 8c354a1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="google-cloud-config.html"/>
         <link rel="prev" title="Getting started" href="index.html"/> 
 
@@ -95,6 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.credentials">Credentials Helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.exceptions">Exceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.environment_vars">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.iam">IAM Support</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="google-cloud-config.html">Configuration</a></li>
@@ -376,7 +377,7 @@ to API requests and handle token refresh on 401 errors.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.10.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
@@ -448,7 +449,7 @@ and the credentials created by the factory.</p>
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of. If not
 passed falls back to the default inferred from the
 environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.10.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
@@ -515,7 +516,7 @@ and the credentials created by the factory.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Assumes <code class="docutils literal"><span class="pre">credentials</span></code> implements the
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v0.10.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a> interface. Also assumes
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v1.0.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a> interface. Also assumes
 <code class="docutils literal"><span class="pre">credentials</span></code> has a <code class="docutils literal"><span class="pre">service_account_email</span></code> property which
 identifies the credentials.</p>
 </div>
@@ -532,7 +533,7 @@ from a JSON file rather than a GCE service account.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v0.10.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a>) &#8211; Credentials object with an associated private key to
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v1.0.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a>) &#8211; Credentials object with an associated private key to
 sign text.</li>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A pointer to a specific resource
 (typically, <code class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></code>).</li>
@@ -570,12 +571,12 @@ until expiration.</p>
 <dt id="google.cloud.credentials.get_credentials">
 <code class="descclassname">google.cloud.credentials.</code><code class="descname">get_credentials</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/credentials.html#get_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.credentials.get_credentials" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets credentials implicitly from the current environment.</p>
-<p>Uses <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v0.10.0)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
+<p>Uses <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.0.0)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.10.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Credentials</span></code></a>,</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Credentials</span></code></a>,</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new credentials instance corresponding to the implicit
 environment.</td>
@@ -850,6 +851,207 @@ exist.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-google.cloud.iam">
+<span id="iam-support"></span><h2>IAM Support<a class="headerlink" href="#module-google.cloud.iam" title="Permalink to this headline">#</a></h2>
+<p>Non-API-specific IAM policy definitions</p>
+<p>For allowed roles / permissions, see:
+<a class="reference external" href="https://cloud.google.com/iam/docs/understanding-roles">https://cloud.google.com/iam/docs/understanding-roles</a></p>
+<dl class="data">
+<dt id="google.cloud.iam.EDITOR_ROLE">
+<code class="descclassname">google.cloud.iam.</code><code class="descname">EDITOR_ROLE</code><em class="property"> = 'roles/editor'</em><a class="headerlink" href="#google.cloud.iam.EDITOR_ROLE" title="Permalink to this definition">#</a></dt>
+<dd><p>Generic role implying rights to modify an object.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.iam.OWNER_ROLE">
+<code class="descclassname">google.cloud.iam.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'roles/owner'</em><a class="headerlink" href="#google.cloud.iam.OWNER_ROLE" title="Permalink to this definition">#</a></dt>
+<dd><p>Generic role implying all rights to an object.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iam.Policy">
+<em class="property">class </em><code class="descclassname">google.cloud.iam.</code><code class="descname">Policy</code><span class="sig-paren">(</span><em>etag=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">collections.abc.MutableMapping</span></code></p>
+<p>IAM Policy</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/iam/reference/rest/v1/Policy">https://cloud.google.com/iam/reference/rest/v1/Policy</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>etag</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; ETag used to identify a unique of the policy</li>
+<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; unique version of the policy</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.all_users">
+<em class="property">static </em><code class="descname">all_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy.all_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.all_users" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a member representing all users.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all users.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.authenticated_users">
+<em class="property">static </em><code class="descname">authenticated_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy.authenticated_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.authenticated_users" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a member representing all authenticated users.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all authenticated users.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.domain">
+<em class="property">static </em><code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a domain member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The domain for this member.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given domain.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iam.Policy.editors">
+<code class="descname">editors</code><a class="headerlink" href="#google.cloud.iam.Policy.editors" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to editor role.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.iam.Policy.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a policy from the resource returned from the API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; resource returned from the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the parsed policy</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.group">
+<em class="property">static </em><code class="descname">group</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.group" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a group member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An id or e-mail for this particular group.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iam.Policy.owners">
+<code class="descname">owners</code><a class="headerlink" href="#google.cloud.iam.Policy.owners" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to owner role.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.service_account">
+<em class="property">static </em><code class="descname">service_account</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy.service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.service_account" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a service account member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; E-mail for this particular service account.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given service account.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.iam.Policy.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a Policy resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a resource to be passed to the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> API.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.user">
+<em class="property">static </em><code class="descname">user</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iam.html#Policy.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.user" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a user member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; E-mail for this particular user.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given user.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iam.Policy.viewers">
+<code class="descname">viewers</code><a class="headerlink" href="#google.cloud.iam.Policy.viewers" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to viewer role.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.iam.VIEWER_ROLE">
+<code class="descclassname">google.cloud.iam.</code><code class="descname">VIEWER_ROLE</code><em class="property"> = 'roles/viewer'</em><a class="headerlink" href="#google.cloud.iam.VIEWER_ROLE" title="Permalink to this definition">#</a></dt>
+<dd><p>Generic role implying rights to access an object.</p>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -896,7 +1098,7 @@ exist.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'8c354a1',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

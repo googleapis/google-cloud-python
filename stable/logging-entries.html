@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Entries &mdash; google-cloud 0.24.0 documentation</title>
+  <title>Entries &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0.24.0 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
         <link rel="next" title="Metrics" href="logging-metric.html"/>
         <link rel="prev" title="Logger" href="logging-logger.html"/> 
 
@@ -347,6 +347,27 @@
 <p>Entry created with <code class="docutils literal"><span class="pre">protoPayload</span></code>.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry">https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em> or </em><em>any_pb2.Any</em>) &#8211; The payload passed as <code class="docutils literal"><span class="pre">textPayload</span></code>, <code class="docutils literal"><span class="pre">jsonPayload</span></code>,
+or <code class="docutils literal"><span class="pre">protoPayload</span></code>. This also may be passed as a raw
+<code class="xref py py-class docutils literal"><span class="pre">any_pb2.Any</span></code> if the <code class="docutils literal"><span class="pre">protoPayload</span></code> could
+not be deserialized.</li>
+<li><strong>logger</strong> (<a class="reference internal" href="logging-logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">Logger</span></code></a>) &#8211; the logger used to write the entry.</li>
+<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) the ID used to identify an entry uniquely.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp for the entry</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of labels for the entry</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
+<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
+the entry</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="google.cloud.logging.entries.ProtobufEntry.parse_message">
 <code class="descname">parse_message</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/entries.html#ProtobufEntry.parse_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.ProtobufEntry.parse_message" title="Permalink to this definition">#</a></dt>
@@ -450,7 +471,7 @@ the project from the <code class="docutils literal"><span class="pre">path</span
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.24.0',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

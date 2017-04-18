@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 0.24.0 documentation</title>
+  <title>Using the API &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0.24.0 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
         <link rel="next" title="Speech Client" href="speech-client.html"/>
         <link rel="prev" title="StreamedResultSet API" href="spanner-streamed-api.html"/> 
 
@@ -348,11 +348,6 @@
 <p>The <a class="reference external" href="https://cloud.google.com/speech/docs/getting-started">Google Speech</a> API enables developers to convert audio to text.
 The API recognizes over 80 languages and variants, to support your global user
 base.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This is a Beta release of Google Speech API. This
-API is not intended for real-time usage in critical applications.</p>
-</div>
 <div class="section" id="client">
 <h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">#</a></h2>
 <p><a class="reference internal" href="speech-client.html#google.cloud.speech.client.Client" title="google.cloud.speech.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects provide a
@@ -369,23 +364,21 @@ create an instance of <a class="reference internal" href="speech-client.html#goo
 </div>
 <div class="section" id="asynchronous-recognition">
 <h2>Asynchronous Recognition<a class="headerlink" href="#asynchronous-recognition" title="Permalink to this headline">#</a></h2>
-<p>The <code class="xref py py-meth docutils literal"><span class="pre">async_recognize()</span></code> sends audio data to the
-Speech API and initiates a Long Running Operation. Using this operation, you
-can periodically poll for recognition results. Use asynchronous requests for
-audio data of any duration up to 80 minutes.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Only the <code class="xref py py-attr docutils literal"><span class="pre">Encoding.LINEAR16</span></code> encoding type is supported by
-asynchronous recognition.</p>
-</div>
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">long_running_recognize()</span></code> sends audio
+data to the Speech API and initiates a Long Running Operation. Using this
+operation, you can periodically poll for recognition results. Use asynchronous
+requests for audio data of any duration up to 80 minutes.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize">Speech Asynchronous Recognize</a></p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
-<span class="gp">... </span>                       <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">async_recognize</span><span class="p">(</span><span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span>                       <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">long_running_recognize</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">retry_count</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">operation</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">retry_count</span> <span class="o">-=</span> <span class="mi">1</span>
@@ -406,7 +399,7 @@ asynchronous recognition.</p>
 </div>
 <div class="section" id="synchronous-recognition">
 <h2>Synchronous Recognition<a class="headerlink" href="#synchronous-recognition" title="Permalink to this headline">#</a></h2>
-<p>The <code class="xref py py-meth docutils literal"><span class="pre">sync_recognize()</span></code> method converts speech
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">recognize()</span></code> method converts speech
 data to text and returns alternative text transcriptions.</p>
 <p>This example uses <code class="docutils literal"><span class="pre">language_code='en-GB'</span></code> to better recognize a dialect from
 Great Britain.</p>
@@ -414,8 +407,8 @@ Great Britain.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
-<span class="gp">... </span>                       <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span>
+<span class="gp">... </span>                       <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-GB&#39;</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
@@ -435,9 +428,12 @@ Great Britain.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
-<span class="gp">... </span>                       <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span><span class="n">max_alternatives</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="gp">... </span>                                <span class="n">profanity_filter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">... </span>                       <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">profanity_filter</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
@@ -455,10 +451,13 @@ words to the vocabulary of the recognizer.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
-<span class="gp">... </span>                       <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
+<span class="gp">... </span>                       <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hints</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hi&#39;</span><span class="p">,</span> <span class="s1">&#39;good afternoon&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span><span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-<span class="gp">... </span>                                <span class="n">speech_context</span><span class="o">=</span><span class="n">hints</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">speech_context</span><span class="o">=</span><span class="n">hints</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
@@ -484,8 +483,8 @@ speech data to possible text alternatives on the fly.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./hello.wav&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
 <span class="gp">... </span>                           <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
-<span class="gp">... </span>                           <span class="n">sample_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">()</span>
+<span class="gp">... </span>                           <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="mi">16000</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-US&#39;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
@@ -508,8 +507,11 @@ been reached.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./hello_pause_goodbye.wav&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
 <span class="gp">... </span>                           <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
-<span class="gp">... </span>                           <span class="n">sample_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="n">single_utterance</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">... </span>                           <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="mi">16000</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">single_utterance</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
@@ -528,7 +530,10 @@ been reached.</p>
 <span class="gp">... </span>    <span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
 <span class="gp">... </span>                           <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
 <span class="gp">... </span>                           <span class="n">sample_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="n">interim_results</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">interim_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
@@ -596,7 +601,7 @@ been reached.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.24.0',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

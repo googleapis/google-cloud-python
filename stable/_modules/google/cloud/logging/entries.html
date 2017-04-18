@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.entries &mdash; google-cloud 0.24.0 documentation</title>
+  <title>google.cloud.logging.entries &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -356,6 +356,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">any_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf.json_format</span> <span class="k">import</span> <span class="n">Parse</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_name_from_project_path</span>
@@ -386,7 +387,7 @@
 
 
 <span class="k">class</span> <span class="nc">_BaseEntry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for TextEntry, StructEntry.</span>
+    <span class="sd">&quot;&quot;&quot;Base class for TextEntry, StructEntry, ProtobufEntry.</span>
 
 <span class="sd">    :type payload: text or dict</span>
 <span class="sd">    :param payload: The payload passed as ``textPayload``, ``jsonPayload``,</span>
@@ -438,7 +439,7 @@
 <span class="sd">            (Optional) A mapping of logger fullnames -&gt; loggers.  If not</span>
 <span class="sd">            passed, the entry will have a newly-created logger.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.logging.entries.TextEntry`</span>
+<span class="sd">        :rtype: :class:`google.cloud.logging.entries._BaseEntry`</span>
 <span class="sd">        :returns: Text entry parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">loggers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -483,8 +484,44 @@
 
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry</span>
+
+<span class="sd">    :type payload: str, dict or any_pb2.Any</span>
+<span class="sd">    :param payload: The payload passed as ``textPayload``, ``jsonPayload``,</span>
+<span class="sd">                    or ``protoPayload``. This also may be passed as a raw</span>
+<span class="sd">                    :class:`.any_pb2.Any` if the ``protoPayload`` could</span>
+<span class="sd">                    not be deserialized.</span>
+
+<span class="sd">    :type logger: :class:`~google.cloud.logging.logger.Logger`</span>
+<span class="sd">    :param logger: the logger used to write the entry.</span>
+
+<span class="sd">    :type insert_id: str</span>
+<span class="sd">    :param insert_id: (optional) the ID used to identify an entry uniquely.</span>
+
+<span class="sd">    :type timestamp: :class:`datetime.datetime`</span>
+<span class="sd">    :param timestamp: (optional) timestamp for the entry</span>
+
+<span class="sd">    :type labels: dict</span>
+<span class="sd">    :param labels: (optional) mapping of labels for the entry</span>
+
+<span class="sd">    :type severity: str</span>
+<span class="sd">    :param severity: (optional) severity of event being logged.</span>
+
+<span class="sd">    :type http_request: dict</span>
+<span class="sd">    :param http_request: (optional) info about HTTP request associated with</span>
+<span class="sd">                         the entry</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_PAYLOAD_KEY</span> <span class="o">=</span> <span class="s1">&#39;protoPayload&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ProtobufEntry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">,</span> <span class="n">any_pb2</span><span class="o">.</span><span class="n">Any</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">payload_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">payload_pb</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="ProtobufEntry.parse_message"><a class="viewcode-back" href="../../../../logging-entries.html#google.cloud.logging.entries.ProtobufEntry.parse_message">[docs]</a>    <span class="k">def</span> <span class="nf">parse_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse payload into a protobuf message.</span>
@@ -494,6 +531,9 @@
 <span class="sd">        :type message: Protobuf message</span>
 <span class="sd">        :param message: the message to be logged</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># NOTE: This assumes that ``payload`` is already a deserialized</span>
+        <span class="c1">#       ``Any`` field and ``message`` has come from an imported</span>
+        <span class="c1">#       ``pb2`` module with the relevant protobuf message type.</span>
         <span class="n">Parse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">),</span> <span class="n">message</span><span class="p">)</span></div></div>
 </pre></div>
 
@@ -531,7 +571,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.24.0',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

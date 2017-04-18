@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.language.entity &mdash; google-cloud 0.24.0 documentation</title>
+  <title>google.cloud.language.entity &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -356,6 +356,8 @@
 <span class="sd">An entity is used to describe a proper name extracted from text.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud.language.sentiment</span> <span class="k">import</span> <span class="n">Sentiment</span>
+
 
 <div class="viewcode-block" id="EntityType"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.entity.EntityType">[docs]</a><span class="k">class</span> <span class="nc">EntityType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;List of possible entity types.&quot;&quot;&quot;</span>
@@ -491,14 +493,20 @@
 
 <span class="sd">    :type mentions: list</span>
 <span class="sd">    :param mentions: List of strings that mention the entity.</span>
+
+<span class="sd">    :type sentiment: :class:`~.language.sentiment.Sentiment`</span>
+<span class="sd">    :params sentiment: The sentiment; sent only on `analyze_entity_sentiment`</span>
+<span class="sd">                       calls.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">salience</span><span class="p">,</span> <span class="n">mentions</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">salience</span><span class="p">,</span> <span class="n">mentions</span><span class="p">,</span>
+                 <span class="n">sentiment</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entity_type</span> <span class="o">=</span> <span class="n">entity_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">salience</span> <span class="o">=</span> <span class="n">salience</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mentions</span> <span class="o">=</span> <span class="n">mentions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentiment</span> <span class="o">=</span> <span class="n">sentiment</span>
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Entity.from_api_repr"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.entity.Entity.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
@@ -515,7 +523,10 @@
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span>
         <span class="n">salience</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;salience&#39;</span><span class="p">]</span>
         <span class="n">mentions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Mention</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;mentions&#39;</span><span class="p">]]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">salience</span><span class="p">,</span> <span class="n">mentions</span><span class="p">)</span></div></div>
+        <span class="n">sentiment</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sentiment&#39;</span><span class="p">):</span>
+            <span class="n">sentiment</span> <span class="o">=</span> <span class="n">Sentiment</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">salience</span><span class="p">,</span> <span class="n">mentions</span><span class="p">,</span> <span class="n">sentiment</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -552,7 +563,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.24.0',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

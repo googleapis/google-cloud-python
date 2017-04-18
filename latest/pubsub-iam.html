@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>IAM Policy &mdash; google-cloud 8c354a1 documentation</title>
+  <title>IAM Policy &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 8c354a1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
         <link rel="next" title="Resource Manager Overview" href="resource-manager-api.html"/>
         <link rel="prev" title="Message" href="pubsub-message.html"/> 
 
@@ -343,24 +343,6 @@
 <p>For allowed roles / permissions, see:
 <a class="reference external" href="https://cloud.google.com/pubsub/access_control#permissions">https://cloud.google.com/pubsub/access_control#permissions</a></p>
 <dl class="data">
-<dt id="google.cloud.pubsub.iam.OWNER_ROLE">
-<code class="descclassname">google.cloud.pubsub.iam.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'roles/owner'</em><a class="headerlink" href="#google.cloud.pubsub.iam.OWNER_ROLE" title="Permalink to this definition">#</a></dt>
-<dd><p>Generic role implying all rights to an object.</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="google.cloud.pubsub.iam.EDITOR_ROLE">
-<code class="descclassname">google.cloud.pubsub.iam.</code><code class="descname">EDITOR_ROLE</code><em class="property"> = 'roles/editor'</em><a class="headerlink" href="#google.cloud.pubsub.iam.EDITOR_ROLE" title="Permalink to this definition">#</a></dt>
-<dd><p>Generic role implying rights to modify an object.</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="google.cloud.pubsub.iam.VIEWER_ROLE">
-<code class="descclassname">google.cloud.pubsub.iam.</code><code class="descname">VIEWER_ROLE</code><em class="property"> = 'roles/viewer'</em><a class="headerlink" href="#google.cloud.pubsub.iam.VIEWER_ROLE" title="Permalink to this definition">#</a></dt>
-<dd><p>Generic role implying rights to access an object.</p>
-</dd></dl>
-
-<dl class="data">
 <dt id="google.cloud.pubsub.iam.PUBSUB_ADMIN_ROLE">
 <code class="descclassname">google.cloud.pubsub.iam.</code><code class="descname">PUBSUB_ADMIN_ROLE</code><em class="property"> = 'roles/pubsub.admin'</em><a class="headerlink" href="#google.cloud.pubsub.iam.PUBSUB_ADMIN_ROLE" title="Permalink to this definition">#</a></dt>
 <dd><p>Role implying all rights to an object.</p>
@@ -483,159 +465,21 @@
 <dl class="class">
 <dt id="google.cloud.pubsub.iam.Policy">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub.iam.</code><code class="descname">Policy</code><span class="sig-paren">(</span><em>etag=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Combined IAM Policy / Bindings.</p>
+<dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></p>
+<p>IAM Policy / Bindings.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy">https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy</a>
 <a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Binding">https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Binding</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>etag</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; ETag used to identify a unique of the policy</li>
-<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; unique version of the policy</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="staticmethod">
-<dt id="google.cloud.pubsub.iam.Policy.user">
-<em class="property">static </em><code class="descname">user</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.user" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a user member.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; E-mail for this particular user.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given user.</td>
-</tr>
-</tbody>
-</table>
+<dl class="attribute">
+<dt id="google.cloud.pubsub.iam.Policy.publishers">
+<code class="descname">publishers</code><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.publishers" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to owner role.</p>
 </dd></dl>
 
-<dl class="staticmethod">
-<dt id="google.cloud.pubsub.iam.Policy.service_account">
-<em class="property">static </em><code class="descname">service_account</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy.service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.service_account" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a service account member.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; E-mail for this particular service account.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given service account.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="google.cloud.pubsub.iam.Policy.group">
-<em class="property">static </em><code class="descname">group</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.group" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a group member.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An id or e-mail for this particular group.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given group.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="google.cloud.pubsub.iam.Policy.domain">
-<em class="property">static </em><code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.domain" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a domain member.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The domain for this member.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given domain.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="google.cloud.pubsub.iam.Policy.all_users">
-<em class="property">static </em><code class="descname">all_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy.all_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.all_users" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a member representing all users.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all users.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="google.cloud.pubsub.iam.Policy.authenticated_users">
-<em class="property">static </em><code class="descname">authenticated_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy.authenticated_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.authenticated_users" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for a member representing all authenticated users.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all authenticated users.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="google.cloud.pubsub.iam.Policy.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a policy from the resource returned from the API.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; resource returned from the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> API.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.pubsub.iam.Policy" title="google.cloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the parsed policy</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.pubsub.iam.Policy.to_api_repr">
-<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/iam.html#Policy.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.to_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a Policy resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a resource to be passed to the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> API.</td>
-</tr>
-</tbody>
-</table>
+<dl class="attribute">
+<dt id="google.cloud.pubsub.iam.Policy.subscribers">
+<code class="descname">subscribers</code><a class="headerlink" href="#google.cloud.pubsub.iam.Policy.subscribers" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to owner role.</p>
 </dd></dl>
 
 </dd></dl>
@@ -686,7 +530,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'8c354a1',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.language.client &mdash; google-cloud 0.24.0 documentation</title>
+  <title>google.cloud.language.client &mdash; google-cloud 0.24.1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -359,6 +359,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">client</span> <span class="k">as</span> <span class="n">client_module</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.language._http</span> <span class="k">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">google.cloud.language._http</span> <span class="k">import</span> <span class="n">V1Beta2Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.language.document</span> <span class="k">import</span> <span class="n">Document</span>
 
 
@@ -384,10 +385,16 @@
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as an API consumer.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">_CONNECTION_CLASSES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;v1&#39;</span><span class="p">:</span> <span class="n">Connection</span><span class="p">,</span>
+        <span class="s1">&#39;v1beta2&#39;</span><span class="p">:</span> <span class="n">V1Beta2Connection</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="s1">&#39;v1&#39;</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">ConnectionClass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CONNECTION_CLASSES</span><span class="p">[</span><span class="n">api_version</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">ConnectionClass</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Client.document_from_text"><a class="viewcode-back" href="../../../../language-client.html#google.cloud.language.client.Client.document_from_text">[docs]</a>    <span class="k">def</span> <span class="nf">document_from_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a plain text document bound to this client.</span>
@@ -500,7 +507,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.24.0',
+            VERSION:'0.24.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

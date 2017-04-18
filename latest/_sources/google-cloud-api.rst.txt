@@ -29,3 +29,10 @@ Environment Variables
 .. automodule:: google.cloud.environment_vars
   :members:
   :show-inheritance:
+
+IAM Support
+~~~~~~~~~~~
+
+.. automodule:: google.cloud.iam
+  :members:
+  :show-inheritance:
