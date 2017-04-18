@@ -20,6 +20,7 @@ import mock
 import pytest
 from six.moves import http_client
 
+from gooresmed import exceptions
 import gooresmed.upload as upload_mod
 
 
@@ -375,10 +376,22 @@ class TestResumableUpload(object):
         }
         assert headers == expected_headers
 
+    @staticmethod
+    def _mock_response(status_code, headers):
+        return mock.Mock(
+            headers=headers, status_code=status_code,
+            spec=[u'headers', u'status_code'])
+
     def test__process_response_bad_status(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
-        with pytest.raises(ValueError):
-            upload._process_response(http_client.NOT_FOUND, {})
+        response = self._mock_response(http_client.NOT_FOUND, {})
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            upload._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 3
+        assert error.args[1] == response.status_code
 
     def test__process_response_success(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -386,7 +399,8 @@ class TestResumableUpload(object):
         # Check status before.
         assert upload._bytes_uploaded == 0
         assert not upload._finished
-        ret_val = upload._process_response(http_client.OK, {})
+        response = self._mock_response(http_client.OK, {})
+        ret_val = upload._process_response(response)
         assert ret_val is None
         # Check status after.
         assert upload._bytes_uploaded is mock.sentinel.total_bytes
@@ -395,21 +409,23 @@ class TestResumableUpload(object):
     def test__process_response_partial_bad_range(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # First try with "range" totally missing from the headers.
+        response = self._mock_response(upload_mod.PERMANENT_REDIRECT, {})
         with pytest.raises(KeyError):
-            upload._process_response(upload_mod.PERMANENT_REDIRECT, {})
+            upload._process_response(response)
 
         # Then try with a "range" header that is unexpected.
         headers = {u'range': u'nights 1-81'}
+        response = self._mock_response(upload_mod.PERMANENT_REDIRECT, headers)
         with pytest.raises(ValueError):
-            upload._process_response(upload_mod.PERMANENT_REDIRECT, headers)
+            upload._process_response(response)
 
     def test__process_response_partial(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Check status before.
         assert upload._bytes_uploaded == 0
         headers = {u'range': u'bytes=0-171'}
-        ret_val = upload._process_response(
-            upload_mod.PERMANENT_REDIRECT, headers)
+        response = self._mock_response(upload_mod.PERMANENT_REDIRECT, headers)
+        ret_val = upload._process_response(response)
         assert ret_val is None
         # Check status after.
         assert upload._bytes_uploaded == 172

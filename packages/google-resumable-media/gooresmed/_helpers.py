@@ -33,3 +33,15 @@ def header_required(headers, name):
         raise KeyError(msg)
 
     return headers[name]
+
+
+def get_status_code(response):
+    """Access the status code from an HTTP response.
+
+    Args:
+        response (object): The HTTP response object.
+
+    Returns:
+        int: The status code.
+    """
+    return response.status_code

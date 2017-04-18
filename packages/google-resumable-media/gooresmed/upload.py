@@ -29,6 +29,7 @@ import six
 from six.moves import http_client
 
 from gooresmed import _helpers
+from gooresmed import exceptions
 
 
 _CONTENT_TYPE_HEADER = u'content-type'
@@ -393,7 +394,7 @@ class ResumableUpload(_UploadBase):
         }
         return payload, headers
 
-    def _process_response(self, status_code, headers):
+    def _process_response(self, response):
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
@@ -401,23 +402,23 @@ class ResumableUpload(_UploadBase):
         philosophy.
 
         Args:
-            status_code (int): The HTTP status code from the response.
-            headers (Mapping[str, str]): The response headers from an
-                HTTP request.
+            response (object): The HTTP response object.
 
         Raises:
-            ValueError: If ``status_code == 308`` and the ``range`` header
+            ValueError: If the status code is 308 and the ``range`` header
                 is not of the form ``bytes 0-{end}``.
-            ValueError: If the ``status_code`` is not 200 or 308.
+            ~gooresmed.exceptions.InvalidResponse: If the status code is
+                not 200 or 308.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
+        status_code = _helpers.get_status_code(response)
         if status_code == http_client.OK:
             self._bytes_uploaded = self._total_bytes
             # Tombstone the current upload so it cannot be used again.
             self._finished = True
         elif status_code == PERMANENT_REDIRECT:
-            bytes_range = _helpers.header_required(headers, u'range')
+            bytes_range = _helpers.header_required(response.headers, u'range')
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 raise ValueError(
@@ -425,8 +426,8 @@ class ResumableUpload(_UploadBase):
                     u'Expected to be of the form "bytes=0-{end}"')
             self._bytes_uploaded = int(match.group(u'end_byte')) + 1
         else:
-            raise ValueError(
-                u'Response has unexpected status code', status_code,
+            raise exceptions.InvalidResponse(
+                response, u'Response has unexpected status code', status_code,
                 u'Expected either "200 OK" or "308 Permanent Redirect"')
 
     def transmit_next_chunk(self, transport):
@@ -444,7 +445,7 @@ class ResumableUpload(_UploadBase):
         payload, headers = self._prepare_request()
         result = transport.put(
             self.upload_url_with_id, data=payload, headers=headers)
-        self._process_response(result.status_code, result.headers)
+        self._process_response(result)
         return result
 
 

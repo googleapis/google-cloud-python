@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import mock
 import pytest
 
 from gooresmed import _helpers
@@ -30,3 +31,9 @@ class Test_header_required(object):
         headers = {}
         with pytest.raises(KeyError):
             _helpers.header_required(headers, u'any-name')
+
+
+def test_get_status_code():
+    status_code = 200
+    response = mock.Mock(status_code=status_code, spec=[u'status_code'])
+    assert status_code == _helpers.get_status_code(response)

@@ -33,6 +33,11 @@ ICO_FILE = os.path.realpath(os.path.join(DATA_DIR, u'favicon.ico'))
 IMAGE_FILE = os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg'))
 ICO_CONTENT_TYPE = u'image/x-icon'
 JPEG_CONTENT_TYPE = u'image/jpeg'
+BAD_CHUNK_SIZE_MSG = (
+    b'Invalid request.  The number of bytes uploaded is required to be equal '
+    b'or greater than 262144, except for the final request (it\'s recommended '
+    b'to be the exact multiple of 262144).  The received request contained '
+    b'1024 bytes, which does not meet this requirement.')
 
 
 @pytest.fixture(scope=u'module')
@@ -192,6 +197,18 @@ def transmit_chunks(upload, transport, blob_name, metadata):
     return num_chunks
 
 
+def check_initiate(response, upload, stream, transport, metadata):
+    assert response.status_code == http_client.OK
+    assert response.content == b''
+    upload_id = get_upload_id(upload.upload_url_with_id)
+    assert response.headers[u'x-guploader-uploadid'] == upload_id
+    assert stream.tell() == 0
+    # Make sure the upload cannot be re-initiated.
+    with pytest.raises(ValueError):
+        upload.initiate(
+            transport, stream, metadata, JPEG_CONTENT_TYPE)
+
+
 def test_resumable_upload(authorized_transport, stream, cleanup):
     blob_name = os.path.basename(stream.name)
     # Make sure to clean up the uploaded blob when we are done.
@@ -208,15 +225,7 @@ def test_resumable_upload(authorized_transport, stream, cleanup):
     response = upload.initiate(
         authorized_transport, stream, metadata, JPEG_CONTENT_TYPE)
     # Make sure ``initiate`` succeeded and did not mangle the stream.
-    assert response.status_code == http_client.OK
-    assert response.content == b''
-    upload_id = get_upload_id(upload.upload_url_with_id)
-    assert response.headers[u'x-guploader-uploadid'] == upload_id
-    assert stream.tell() == 0
-    # Make sure the upload cannot be re-initiated.
-    with pytest.raises(ValueError):
-        upload.initiate(
-            authorized_transport, stream, metadata, ICO_CONTENT_TYPE)
+    check_initiate(response, upload, stream, authorized_transport, metadata)
     # Actually upload the file in chunks.
     num_chunks = transmit_chunks(
         upload, authorized_transport, blob_name, metadata[u'metadata'])
@@ -228,3 +237,36 @@ def test_resumable_upload(authorized_transport, stream, cleanup):
     # Make sure the upload is tombstoned.
     with pytest.raises(ValueError):
         upload.transmit_next_chunk(authorized_transport)
+
+
+def check_bad_chunk(upload, transport):
+    with pytest.raises(gooresmed.InvalidResponse) as exc_info:
+        upload.transmit_next_chunk(transport)
+    error = exc_info.value
+    response = error.response
+    assert response.status_code == http_client.BAD_REQUEST
+    assert response.content == BAD_CHUNK_SIZE_MSG
+
+
+def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
+    blob_name = os.path.basename(stream.name)
+    # Create the actual upload object.
+    upload = gooresmed.ResumableUpload(
+        utils.RESUMABLE_UPLOAD, upload_mod.UPLOAD_CHUNK_SIZE)
+    # Modify the ``upload`` **after** construction so we can
+    # use a bad chunk size.
+    upload._chunk_size = 1024
+    assert upload._chunk_size < upload_mod.UPLOAD_CHUNK_SIZE
+    # Initiate the upload.
+    metadata = {u'name': blob_name}
+    response = upload.initiate(
+        authorized_transport, stream, metadata, JPEG_CONTENT_TYPE)
+    # Make sure ``initiate`` succeeded and did not mangle the stream.
+    check_initiate(response, upload, stream, authorized_transport, metadata)
+    # Make the first request and verify that it fails.
+    check_bad_chunk(upload, authorized_transport)
+    # Reset the chunk size (and the stream) and verify the "resumable"
+    # URL is unusable.
+    upload._chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
+    stream.seek(0)
+    check_bad_chunk(upload, authorized_transport)
