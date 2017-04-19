@@ -18,6 +18,7 @@
 import re
 
 from gooresmed import _helpers
+from gooresmed import exceptions
 
 
 _CONTENT_RANGE_RE = re.compile(
@@ -238,8 +239,7 @@ class ChunkedDownload(_DownloadBase):
         content_length = _helpers.header_required(response, u'content-length')
         self._bytes_downloaded += int(content_length)
         # Parse the content range.
-        content_range = _helpers.header_required(response, u'content-range')
-        _, end_byte, total_bytes = _get_range_info(content_range)
+        _, end_byte, total_bytes = _get_range_info(response)
         # If the end byte is past ``end`` or ``total_bytes - 1`` we are done.
         if self.end is not None and end_byte >= self.end:
             self._finished = True
@@ -320,23 +320,24 @@ def _add_bytes_range(start, end, headers):
     headers[u'range'] = u'bytes=' + bytes_range
 
 
-def _get_range_info(content_range):
+def _get_range_info(response):
     """Get the start, end and total bytes from a content range header.
 
     Args:
-        content_range (str): The
+        response (object): An HTTP response object.
 
     Returns:
         Tuple[int, int, int]: The start byte, end byte and total bytes.
 
     Raises:
-        ValueError: If the ``Content-Range`` header is not of the form
-            ``bytes {start}-{end}/{total}``.
+        ~gooresmed.exceptions.InvalidResponse: If the ``Content-Range``
+            header is not of the form ``bytes {start}-{end}/{total}``.
     """
+    content_range = _helpers.header_required(response, u'content-range')
     match = _CONTENT_RANGE_RE.match(content_range)
     if match is None:
-        raise ValueError(
-            u'Unexpected content-range header', content_range,
+        raise exceptions.InvalidResponse(
+            response, u'Unexpected content-range header', content_range,
             u'Expected to be of the form "bytes {start}-{end}/{total}"')
 
     return (

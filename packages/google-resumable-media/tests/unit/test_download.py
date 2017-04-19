@@ -16,6 +16,7 @@ import mock
 import pytest
 
 import gooresmed.download as download_mod
+from gooresmed import exceptions
 
 
 EXAMPLE_URL = (
@@ -342,14 +343,27 @@ class TestChunkedDownload(object):
 
 class Test__get_range_info(object):
 
+    @staticmethod
+    def _make_response(content_range):
+        headers = {u'content-range': content_range}
+        return mock.Mock(headers=headers, spec=[u'headers'])
+
     def test_success(self):
         content_range = u'Bytes 7-11/42'
+        response = self._make_response(content_range)
         start_byte, end_byte, total_bytes = download_mod._get_range_info(
-            content_range)
+            response)
         assert start_byte == 7
         assert end_byte == 11
         assert total_bytes == 42
 
     def test_failure(self):
-        with pytest.raises(ValueError):
-            download_mod._get_range_info(u'nope x-6/y')
+        content_range = u'nope x-6/y'
+        response = self._make_response(content_range)
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download_mod._get_range_info(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 3
+        assert error.args[1] == content_range
