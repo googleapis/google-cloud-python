@@ -439,16 +439,9 @@ def _timedelta_to_duration_pb(timedelta_val):
     :rtype: :class:`google.protobuf.duration_pb2.Duration`
     :returns: A duration object equivalent to the time delta.
     """
-    seconds_decimal = timedelta_val.total_seconds()
-    # Truncate the parts other than the integer.
-    seconds = int(seconds_decimal)
-    if seconds_decimal < 0:
-        signed_micros = timedelta_val.microseconds - 10**6
-    else:
-        signed_micros = timedelta_val.microseconds
-    # Convert nanoseconds to microseconds.
-    nanos = 1000 * signed_micros
-    return duration_pb2.Duration(seconds=seconds, nanos=nanos)
+    duration_pb = duration_pb2.Duration()
+    duration_pb.FromTimedelta(timedelta_val)
+    return duration_pb
 
 
 def _duration_pb_to_timedelta(duration_pb):

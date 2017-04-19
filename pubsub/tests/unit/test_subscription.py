@@ -191,8 +191,9 @@ class TestSubscription(unittest.TestCase):
 
         subscription.create()
 
-        self.assertEqual(api._subscription_created,
-                         (self.SUB_PATH, self.TOPIC_PATH, None, None))
+        self.assertEqual(
+            api._subscription_created,
+            (self.SUB_PATH, self.TOPIC_PATH, None, None, None, None))
 
     def test_create_push_w_ack_deadline_w_alternate_client(self):
         RESPONSE = {
@@ -213,7 +214,8 @@ class TestSubscription(unittest.TestCase):
 
         self.assertEqual(
             api._subscription_created,
-            (self.SUB_PATH, self.TOPIC_PATH, self.DEADLINE, self.ENDPOINT))
+            (self.SUB_PATH, self.TOPIC_PATH, self.DEADLINE, self.ENDPOINT,
+             None, None))
 
     def test_exists_miss_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -731,9 +733,12 @@ class TestSubscription(unittest.TestCase):
 class _FauxSubscribererAPI(object):
 
     def subscription_create(self, subscription_path, topic_path,
-                            ack_deadline=None, push_endpoint=None):
+                            ack_deadline=None, push_endpoint=None,
+                            retain_acked_messages=None,
+                            message_retention_duration=None):
         self._subscription_created = (
-            subscription_path, topic_path, ack_deadline, push_endpoint)
+            subscription_path, topic_path, ack_deadline, push_endpoint,
+            retain_acked_messages, message_retention_duration)
         return self._subscription_create_response
 
     def subscription_get(self, subscription_path):

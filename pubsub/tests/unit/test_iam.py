@@ -27,31 +27,28 @@ class TestPolicy(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
+        empty = frozenset()
         policy = self._make_one()
         self.assertIsNone(policy.etag)
         self.assertIsNone(policy.version)
-        self.assertIsInstance(policy.owners, frozenset)
-        self.assertEqual(list(policy.owners), [])
-        self.assertIsInstance(policy.editors, frozenset)
-        self.assertEqual(list(policy.editors), [])
-        self.assertIsInstance(policy.viewers, frozenset)
-        self.assertEqual(list(policy.viewers), [])
-        self.assertIsInstance(policy.publishers, frozenset)
-        self.assertEqual(list(policy.publishers), [])
-        self.assertIsInstance(policy.subscribers, frozenset)
-        self.assertEqual(list(policy.subscribers), [])
+        self.assertEqual(policy.owners, empty)
+        self.assertEqual(policy.editors, empty)
+        self.assertEqual(policy.viewers, empty)
+        self.assertEqual(policy.publishers, empty)
+        self.assertEqual(policy.subscribers, empty)
 
     def test_ctor_explicit(self):
         VERSION = 17
         ETAG = 'ETAG'
+        empty = frozenset()
         policy = self._make_one(ETAG, VERSION)
         self.assertEqual(policy.etag, ETAG)
         self.assertEqual(policy.version, VERSION)
-        self.assertEqual(list(policy.owners), [])
-        self.assertEqual(list(policy.editors), [])
-        self.assertEqual(list(policy.viewers), [])
-        self.assertEqual(list(policy.publishers), [])
-        self.assertEqual(list(policy.subscribers), [])
+        self.assertEqual(policy.owners, empty)
+        self.assertEqual(policy.editors, empty)
+        self.assertEqual(policy.viewers, empty)
+        self.assertEqual(policy.publishers, empty)
+        self.assertEqual(policy.subscribers, empty)
 
     def test_publishers_setter(self):
         import warnings
@@ -59,13 +56,14 @@ class TestPolicy(unittest.TestCase):
             PUBSUB_PUBLISHER_ROLE,
         )
         PUBLISHER = 'user:phred@example.com'
+        expected = set([PUBLISHER])
         policy = self._make_one()
         with warnings.catch_warnings():
             policy.publishers = [PUBLISHER]
 
-        self.assertEqual(sorted(policy.publishers), [PUBLISHER])
+        self.assertEqual(policy.publishers, frozenset(expected))
         self.assertEqual(
-            dict(policy), {PUBSUB_PUBLISHER_ROLE: [PUBLISHER]})
+            dict(policy), {PUBSUB_PUBLISHER_ROLE: expected})
 
     def test_subscribers_setter(self):
         import warnings
@@ -73,10 +71,11 @@ class TestPolicy(unittest.TestCase):
             PUBSUB_SUBSCRIBER_ROLE,
         )
         SUBSCRIBER = 'serviceAccount:1234-abcdef@service.example.com'
+        expected = set([SUBSCRIBER])
         policy = self._make_one()
         with warnings.catch_warnings():
             policy.subscribers = [SUBSCRIBER]
 
-        self.assertEqual(sorted(policy.subscribers), [SUBSCRIBER])
+        self.assertEqual(policy.subscribers, frozenset(expected))
         self.assertEqual(
-            dict(policy), {PUBSUB_SUBSCRIBER_ROLE: [SUBSCRIBER]})
+            dict(policy), {PUBSUB_SUBSCRIBER_ROLE: expected})

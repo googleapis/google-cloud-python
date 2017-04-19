@@ -27,27 +27,26 @@ class TestPolicy(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
+        empty = frozenset()
         policy = self._make_one()
         self.assertIsNone(policy.etag)
         self.assertIsNone(policy.version)
-        self.assertIsInstance(policy.owners, frozenset)
-        self.assertEqual(list(policy.owners), [])
-        self.assertIsInstance(policy.editors, frozenset)
-        self.assertEqual(list(policy.editors), [])
-        self.assertIsInstance(policy.viewers, frozenset)
-        self.assertEqual(list(policy.viewers), [])
+        self.assertEqual(policy.owners, empty)
+        self.assertEqual(policy.editors, empty)
+        self.assertEqual(policy.viewers, empty)
         self.assertEqual(len(policy), 0)
         self.assertEqual(dict(policy), {})
 
     def test_ctor_explicit(self):
         VERSION = 17
         ETAG = 'ETAG'
+        empty = frozenset()
         policy = self._make_one(ETAG, VERSION)
         self.assertEqual(policy.etag, ETAG)
         self.assertEqual(policy.version, VERSION)
-        self.assertEqual(list(policy.owners), [])
-        self.assertEqual(list(policy.editors), [])
-        self.assertEqual(list(policy.viewers), [])
+        self.assertEqual(policy.owners, empty)
+        self.assertEqual(policy.editors, empty)
+        self.assertEqual(policy.viewers, empty)
         self.assertEqual(len(policy), 0)
         self.assertEqual(dict(policy), {})
 
@@ -58,7 +57,7 @@ class TestPolicy(unittest.TestCase):
 
     def test___setitem__(self):
         USER = 'user:phred@example.com'
-        PRINCIPALS = frozenset([USER])
+        PRINCIPALS = set([USER])
         policy = self._make_one()
         policy['rolename'] = [USER]
         self.assertEqual(policy['rolename'], PRINCIPALS)
@@ -80,54 +79,59 @@ class TestPolicy(unittest.TestCase):
     def test_owners_getter(self):
         from google.cloud.iam import OWNER_ROLE
         MEMBER = 'user:phred@example.com'
+        expected = frozenset([MEMBER])
         policy = self._make_one()
         policy[OWNER_ROLE] = [MEMBER]
-        self.assertIsInstance(policy.owners, frozenset)
-        self.assertEqual(list(policy.owners), [MEMBER])
+        self.assertEqual(policy.owners, expected)
 
     def test_owners_setter(self):
         import warnings
         from google.cloud.iam import OWNER_ROLE
         MEMBER = 'user:phred@example.com'
+        expected = set([MEMBER])
         policy = self._make_one()
         with warnings.catch_warnings():
+            warnings.simplefilter('always')
             policy.owners = [MEMBER]
-        self.assertEqual(list(policy[OWNER_ROLE]), [MEMBER])
+        self.assertEqual(policy[OWNER_ROLE], expected)
 
     def test_editors_getter(self):
         from google.cloud.iam import EDITOR_ROLE
         MEMBER = 'user:phred@example.com'
+        expected = frozenset([MEMBER])
         policy = self._make_one()
         policy[EDITOR_ROLE] = [MEMBER]
-        self.assertIsInstance(policy.editors, frozenset)
-        self.assertEqual(list(policy.editors), [MEMBER])
+        self.assertEqual(policy.editors, expected)
 
     def test_editors_setter(self):
         import warnings
         from google.cloud.iam import EDITOR_ROLE
         MEMBER = 'user:phred@example.com'
+        expected = set([MEMBER])
         policy = self._make_one()
         with warnings.catch_warnings():
+            warnings.simplefilter('always')
             policy.editors = [MEMBER]
-        self.assertEqual(list(policy[EDITOR_ROLE]), [MEMBER])
+        self.assertEqual(policy[EDITOR_ROLE], expected)
 
     def test_viewers_getter(self):
         from google.cloud.iam import VIEWER_ROLE
         MEMBER = 'user:phred@example.com'
+        expected = frozenset([MEMBER])
         policy = self._make_one()
         policy[VIEWER_ROLE] = [MEMBER]
-        self.assertIsInstance(policy.viewers, frozenset)
-        self.assertEqual(list(policy.viewers), [MEMBER])
+        self.assertEqual(policy.viewers, expected)
 
     def test_viewers_setter(self):
         import warnings
         from google.cloud.iam import VIEWER_ROLE
         MEMBER = 'user:phred@example.com'
+        expected = set([MEMBER])
         policy = self._make_one()
         with warnings.catch_warnings():
             warnings.simplefilter('always')
             policy.viewers = [MEMBER]
-        self.assertEqual(list(policy[VIEWER_ROLE]), [MEMBER])
+        self.assertEqual(policy[VIEWER_ROLE], expected)
 
     def test_user(self):
         EMAIL = 'phred@example.com'
@@ -162,6 +166,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(policy.authenticated_users(), 'allAuthenticatedUsers')
 
     def test_from_api_repr_only_etag(self):
+        empty = frozenset()
         RESOURCE = {
             'etag': 'ACAB',
         }
@@ -169,9 +174,9 @@ class TestPolicy(unittest.TestCase):
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'ACAB')
         self.assertIsNone(policy.version)
-        self.assertEqual(list(policy.owners), [])
-        self.assertEqual(list(policy.editors), [])
-        self.assertEqual(list(policy.viewers), [])
+        self.assertEqual(policy.owners, empty)
+        self.assertEqual(policy.editors, empty)
+        self.assertEqual(policy.viewers, empty)
         self.assertEqual(dict(policy), {})
 
     def test_from_api_repr_complete(self):
@@ -196,18 +201,19 @@ class TestPolicy(unittest.TestCase):
                 {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
+        empty = frozenset()
         klass = self._get_target_class()
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'DEADBEEF')
         self.assertEqual(policy.version, 17)
-        self.assertEqual(sorted(policy.owners), [OWNER1, OWNER2])
-        self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
-        self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
+        self.assertEqual(policy.owners, frozenset([OWNER1, OWNER2]))
+        self.assertEqual(policy.editors, frozenset([EDITOR1, EDITOR2]))
+        self.assertEqual(policy.viewers, frozenset([VIEWER1, VIEWER2]))
         self.assertEqual(
             dict(policy), {
-                OWNER_ROLE: [OWNER1, OWNER2],
-                EDITOR_ROLE: [EDITOR1, EDITOR2],
-                VIEWER_ROLE: [VIEWER1, VIEWER2],
+                OWNER_ROLE: set([OWNER1, OWNER2]),
+                EDITOR_ROLE: set([EDITOR1, EDITOR2]),
+                VIEWER_ROLE: set([VIEWER1, VIEWER2]),
             })
 
     def test_from_api_repr_unknown_role(self):
@@ -224,7 +230,7 @@ class TestPolicy(unittest.TestCase):
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'DEADBEEF')
         self.assertEqual(policy.version, 17)
-        self.assertEqual(dict(policy), {'unknown': [GROUP, USER]})
+        self.assertEqual(dict(policy), {'unknown': set([GROUP, USER])})
 
     def test_to_api_repr_defaults(self):
         policy = self._make_one()
