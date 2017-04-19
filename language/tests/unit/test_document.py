@@ -96,12 +96,12 @@ def _get_entities(include_entities):
     return entities
 
 
-def make_mock_client(response):
+def make_mock_client(response, api_version='v1'):
     import mock
-    from google.cloud.language._http import Connection
     from google.cloud.language.client import Client
 
-    connection = mock.Mock(spec=Connection)
+    connection = mock.Mock(spec=Client._CONNECTION_CLASSES[api_version])
+    connection.API_VERSION = api_version
     connection.api_request.return_value = response
     return mock.Mock(_connection=connection, spec=Client)
 
@@ -205,7 +205,8 @@ class TestDocument(unittest.TestCase):
             'type': klass.PLAIN_TEXT,
         })
 
-    def _verify_entity(self, entity, name, entity_type, wiki_url, salience):
+    def _verify_entity(self, entity, name, entity_type, wiki_url, salience,
+                       sentiment=None):
         from google.cloud.language.entity import Entity
 
         self.assertIsInstance(entity, Entity)
@@ -218,6 +219,10 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(entity.salience, salience)
         self.assertEqual(len(entity.mentions), 1)
         self.assertEqual(entity.mentions[0].text.content, name)
+        if sentiment:
+            self.assertEqual(entity.sentiment.score, sentiment.score)
+            self.assertAlmostEqual(entity.sentiment.magnitude,
+                                   sentiment.magnitude)
 
     @staticmethod
     def _expected_data(content, encoding_type=None,
@@ -307,6 +312,85 @@ class TestDocument(unittest.TestCase):
             content, encoding_type=Encoding.get_default())
         client._connection.api_request.assert_called_once_with(
             path='analyzeEntities', method='POST', data=expected)
+
+    def test_analyze_entity_sentiment_v1_error(self):
+        client = make_mock_client({})
+        document = self._make_one(client, 'foo bar baz')
+        with self.assertRaises(NotImplementedError):
+            entity_response = document.analyze_entity_sentiment()
+
+    def test_analyze_entity_sentiment(self):
+        from google.cloud.language.document import Encoding
+        from google.cloud.language.entity import EntityType
+        from google.cloud.language.sentiment import Sentiment
+
+        name1 = 'R-O-C-K'
+        name2 = 'USA'
+        content = name1 + ' in the ' + name2
+        wiki2 = 'http://en.wikipedia.org/wiki/United_States'
+        salience1 = 0.91391456
+        salience2 = 0.086085409
+        sentiment = Sentiment(score=0.15, magnitude=42)
+        response = {
+            'entities': [
+                {
+                    'name': name1,
+                    'type': EntityType.OTHER,
+                    'metadata': {},
+                    'salience': salience1,
+                    'mentions': [
+                        {
+                            'text': {
+                                'content': name1,
+                                'beginOffset': -1
+                            },
+                            'type': 'TYPE_UNKNOWN',
+                        }
+                    ],
+                    'sentiment': {
+                        'score': 0.15,
+                        'magnitude': 42,
+                    }
+                },
+                {
+                    'name': name2,
+                    'type': EntityType.LOCATION,
+                    'metadata': {'wikipedia_url': wiki2},
+                    'salience': salience2,
+                    'mentions': [
+                        {
+                            'text': {
+                                'content': name2,
+                                'beginOffset': -1,
+                            },
+                            'type': 'PROPER',
+                        },
+                    ],
+                    'sentiment': {
+                        'score': 0.15,
+                        'magnitude': 42,
+                    }
+                },
+            ],
+            'language': 'en-US',
+        }
+        client = make_mock_client(response, api_version='v1beta2')
+        document = self._make_one(client, content)
+
+        entity_response = document.analyze_entity_sentiment()
+        self.assertEqual(len(entity_response.entities), 2)
+        entity1 = entity_response.entities[0]
+        self._verify_entity(entity1, name1, EntityType.OTHER,
+                            None, salience1, sentiment)
+        entity2 = entity_response.entities[1]
+        self._verify_entity(entity2, name2, EntityType.LOCATION,
+                            wiki2, salience2, sentiment)
+
+        # Verify the request.
+        expected = self._expected_data(
+            content, encoding_type=Encoding.get_default())
+        client._connection.api_request.assert_called_once_with(
+            path='analyzeEntitySentiment', method='POST', data=expected)
 
     def _verify_sentiment(self, sentiment, score, magnitude):
         from google.cloud.language.sentiment import Sentiment

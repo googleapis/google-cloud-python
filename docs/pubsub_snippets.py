@@ -124,9 +124,9 @@ def topic_iam_policy(client, to_delete):
 
     # [START topic_set_iam_policy]
     ALL_USERS = policy.all_users()
-    policy.viewers.add(ALL_USERS)
+    policy.viewers = [ALL_USERS]
     LOGS_GROUP = policy.group('cloud-logs@google.com')
-    policy.editors.add(LOGS_GROUP)
+    policy.editors = [LOGS_GROUP]
     new_policy = topic.set_iam_policy(policy)   # API request
     # [END topic_set_iam_policy]
 
@@ -395,9 +395,9 @@ def subscription_iam_policy(client, to_delete):
 
     # [START subscription_set_iam_policy]
     ALL_USERS = policy.all_users()
-    policy.viewers.add(ALL_USERS)
+    policy.viewers = [ALL_USERS]
     LOGS_GROUP = policy.group('cloud-logs@google.com')
-    policy.editors.add(LOGS_GROUP)
+    policy.editors = [LOGS_GROUP]
     new_policy = subscription.set_iam_policy(policy)   # API request
     # [END subscription_set_iam_policy]
 

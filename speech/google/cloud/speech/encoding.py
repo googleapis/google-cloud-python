@@ -36,3 +36,9 @@ class Encoding(object):
 
     AMR_WB = 'AMR_WB'
     """AMR_WB encoding type."""
+
+    OGG_OPUS = 'OGG_OPUS'
+    """OGG_OPUS encoding type."""
+
+    SPEEX_WITH_HEADER_BYTE = 'SPEEX_WITH_HEADER_BYTE'
+    """SPEEX_WITH_HEADER_BYTE encoding type."""

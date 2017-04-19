@@ -606,11 +606,12 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(api._got_iam_policy, self.SUB_PATH)
 
     def test_set_iam_policy_w_bound_client(self):
+        import operator
         from google.cloud.pubsub.iam import Policy
         from google.cloud.pubsub.iam import (
-            PUBSUB_ADMIN_ROLE,
-            PUBSUB_EDITOR_ROLE,
-            PUBSUB_VIEWER_ROLE,
+            OWNER_ROLE,
+            EDITOR_ROLE,
+            VIEWER_ROLE,
             PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
@@ -627,9 +628,9 @@ class TestSubscription(unittest.TestCase):
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': PUBSUB_ADMIN_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': PUBSUB_EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
-                {'role': PUBSUB_VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
                 {'role': PUBSUB_PUBLISHER_ROLE, 'members': [PUBLISHER]},
                 {'role': PUBSUB_SUBSCRIBER_ROLE, 'members': [SUBSCRIBER]},
             ],
@@ -643,14 +644,11 @@ class TestSubscription(unittest.TestCase):
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._make_one(self.SUB_NAME, topic)
         policy = Policy('DEADBEEF', 17)
-        policy.owners.add(OWNER1)
-        policy.owners.add(OWNER2)
-        policy.editors.add(EDITOR1)
-        policy.editors.add(EDITOR2)
-        policy.viewers.add(VIEWER1)
-        policy.viewers.add(VIEWER2)
-        policy.publishers.add(PUBLISHER)
-        policy.subscribers.add(SUBSCRIBER)
+        policy.owners = [OWNER1, OWNER2]
+        policy.editors = [EDITOR1, EDITOR2]
+        policy.viewers = [VIEWER1, VIEWER2]
+        policy.publishers = [PUBLISHER]
+        policy.subscribers = [SUBSCRIBER]
 
         new_policy = subscription.set_iam_policy(policy)
 
@@ -661,7 +659,15 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(sorted(new_policy.viewers), [VIEWER1, VIEWER2])
         self.assertEqual(sorted(new_policy.publishers), [PUBLISHER])
         self.assertEqual(sorted(new_policy.subscribers), [SUBSCRIBER])
-        self.assertEqual(api._set_iam_policy, (self.SUB_PATH, POLICY))
+        self.assertEqual(len(api._set_iam_policy), 2)
+        self.assertEqual(api._set_iam_policy[0], self.SUB_PATH)
+        resource = api._set_iam_policy[1]
+        self.assertEqual(resource['etag'], POLICY['etag'])
+        self.assertEqual(resource['version'], POLICY['version'])
+        key = operator.itemgetter('role')
+        self.assertEqual(
+            sorted(resource['bindings'], key=key),
+            sorted(POLICY['bindings'], key=key))
 
     def test_set_iam_policy_w_alternate_client(self):
         from google.cloud.pubsub.iam import Policy
