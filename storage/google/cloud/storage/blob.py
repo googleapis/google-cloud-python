@@ -36,6 +36,7 @@ from google.cloud._helpers import _bytes_to_unicode
 from google.cloud.credentials import generate_signed_url
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import make_exception
+from google.cloud.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage.acl import ObjectACL
@@ -793,6 +794,83 @@ class Blob(_PropertyMixin):
         resumable_upload_session_url = start_response.info['location']
 
         return resumable_upload_session_url
+
+    def get_iam_policy(self, client=None):
+        """Retrieve the IAM policy for the object.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current object's bucket.
+
+        :rtype: :class:`google.cloud.iam.Policy`
+        :returns: the policy instance, based on the resource returned from
+                  the ``getIamPolicy`` API request.
+        """
+        client = self._require_client(client)
+        info = client._connection.api_request(
+            method='GET',
+            path='%s/iam' % (self.path,),
+            _target_object=None)
+        return Policy.from_api_repr(info)
+
+    def set_iam_policy(self, policy, client=None):
+        """Update the IAM policy for the bucket.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
+
+        :type policy: :class:`google.cloud.iam.Policy`
+        :param policy: policy instance used to update bucket's IAM policy.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: :class:`google.cloud.iam.Policy`
+        :returns: the policy instance, based on the resource returned from
+                  the ``setIamPolicy`` API request.
+        """
+        client = self._require_client(client)
+        resource = policy.to_api_repr()
+        resource['resourceId'] = self.path
+        info = client._connection.api_request(
+            method='PUT',
+            path='%s/iam' % (self.path,),
+            data=resource,
+            _target_object=None)
+        return Policy.from_api_repr(info)
+
+    def test_iam_permissions(self, permissions, client=None):
+        """API call:  test permissions
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
+
+        :type permissions: list of string
+        :param permissions: the permissions to check
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: list of string
+        :returns: the permissions returned by the ``testIamPermissions`` API
+                  request.
+        """
+        client = self._require_client(client)
+        query = {'permissions': permissions}
+        path = '%s/iam/testPermissions' % (self.path,)
+        resp = client._connection.api_request(
+            method='GET',
+            path=path,
+            query_params=query)
+        return resp.get('permissions', [])
 
     def make_public(self, client=None):
         """Make this blob public giving all users read access.
