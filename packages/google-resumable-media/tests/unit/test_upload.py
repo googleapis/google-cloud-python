@@ -202,6 +202,19 @@ class TestResumableUpload(object):
         with pytest.raises(ValueError):
             upload_mod.ResumableUpload(RESUMABLE_URL, 1)
 
+    def test_invalid_property(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Default value of @property.
+        assert not upload.invalid
+
+        # Make sure we cannot set it on public @property.
+        with pytest.raises(AttributeError):
+            upload.invalid = False
+
+        # Set it privately and then check the @property.
+        upload._invalid = True
+        assert upload.invalid
+
     def test_chunk_size_property(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Default value of @property.
@@ -359,8 +372,20 @@ class TestResumableUpload(object):
     def test__prepare_request_already_finished(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         upload._finished = True
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as exc_info:
             upload._prepare_request()
+
+        assert exc_info.value.args == (u'Upload has finished.',)
+
+    def test__prepare_request_invalid(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        assert not upload.finished
+        upload._invalid = True
+        with pytest.raises(ValueError) as exc_info:
+            upload._prepare_request()
+
+        assert exc_info.match(u'invalid state')
+        assert exc_info.match(u'recover()')
 
     def test__prepare_request_not_initiated(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -409,6 +434,8 @@ class TestResumableUpload(object):
 
     def test__process_response_bad_status(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Make sure the upload is valid before the failure.
+        assert not upload.invalid
         response = self._mock_response(http_client.NOT_FOUND, {})
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
             upload._process_response(response)
@@ -417,6 +444,8 @@ class TestResumableUpload(object):
         assert error.response is response
         assert len(error.args) == 3
         assert error.args[1] == response.status_code
+        # Make sure the upload is invalid after the failure.
+        assert upload.invalid
 
     def test__process_response_success(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -434,8 +463,12 @@ class TestResumableUpload(object):
     def test__process_response_partial_no_range(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         response = self._mock_response(upload_mod.PERMANENT_REDIRECT, {})
+        # Make sure the upload is valid before the failure.
+        assert not upload.invalid
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
             upload._process_response(response)
+        # Make sure the upload is invalid after the failure.
+        assert upload.invalid
 
         # Check the error response.
         error = exc_info.value
@@ -445,6 +478,8 @@ class TestResumableUpload(object):
 
     def test__process_response_partial_bad_range(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        # Make sure the upload is valid before the failure.
+        assert not upload.invalid
         headers = {u'range': u'nights 1-81'}
         response = self._mock_response(upload_mod.PERMANENT_REDIRECT, headers)
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
@@ -455,6 +490,8 @@ class TestResumableUpload(object):
         assert error.response is response
         assert len(error.args) == 3
         assert error.args[1] == headers[u'range']
+        # Make sure the upload is invalid after the failure.
+        assert upload.invalid
 
     def test__process_response_partial(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -505,6 +542,11 @@ class TestResumableUpload(object):
         }
         transport.put.assert_called_once_with(
             upload.upload_url_with_id, data=payload, headers=expected_headers)
+
+    def test_recover(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        with pytest.raises(NotImplementedError):
+            upload.recover(None)
 
 
 @mock.patch(u'random.randrange', return_value=1234567890123456789)

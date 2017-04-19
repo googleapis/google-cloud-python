@@ -259,6 +259,16 @@ class ResumableUpload(_UploadBase):
         self._bytes_uploaded = 0
         self._total_bytes = None
         self._upload_url_with_id = None
+        self._invalid = False
+
+    @property
+    def invalid(self):
+        """bool: Indicates if the upload is in an invalid state.
+
+        This will occur if a call to :meth:`transmit_next_chunk` fails.
+        To recover from such a failure, call :meth:`recover`.
+        """
+        return self._invalid
 
     @property
     def chunk_size(self):
@@ -378,6 +388,7 @@ class ResumableUpload(_UploadBase):
 
         Raises:
             ValueError: If the current upload has finished.
+            ValueError: If the current upload is in an invalid state.
             ValueError: If the current upload has not been initiated.
             ValueError: If the location in the stream (i.e. ``stream.tell()``)
                 does not agree with ``bytes_uploaded``.
@@ -386,6 +397,9 @@ class ResumableUpload(_UploadBase):
         """
         if self.finished:
             raise ValueError(u'Upload has finished.')
+        if self.invalid:
+            raise ValueError(
+                u'Upload is in an invalid state. To recover call `recover()`.')
         if self.upload_url_with_id is None:
             raise ValueError(
                 u'This upload has not been initiated. Please call '
@@ -430,14 +444,21 @@ class ResumableUpload(_UploadBase):
             # Tombstone the current upload so it cannot be used again.
             self._finished = True
         elif status_code == PERMANENT_REDIRECT:
-            bytes_range = _helpers.header_required(response, u'range')
+            try:
+                bytes_range = _helpers.header_required(response, u'range')
+            except exceptions.InvalidResponse:
+                self._invalid = True
+                raise
+
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
+                self._invalid = True
                 raise exceptions.InvalidResponse(
                     response, u'Unexpected "range" header', bytes_range,
                     u'Expected to be of the form "bytes=0-{end}"')
             self._bytes_uploaded = int(match.group(u'end_byte')) + 1
         else:
+            self._invalid = True
             raise exceptions.InvalidResponse(
                 response, u'Response has unexpected status code', status_code,
                 u'Expected either "200 OK" or "308 Permanent Redirect"')
@@ -505,6 +526,30 @@ class ResumableUpload(_UploadBase):
             self.upload_url_with_id, data=payload, headers=headers)
         self._process_response(result)
         return result
+
+    def recover(self, transport):
+        """Recover from a failure.
+
+        This method should be used when a :class:`ResumableUpload` is in an
+        :attr:`~ResumableUpload.invalid` state due to a request failure.
+
+        This will verify the progress with the server and make sure the
+        current upload is in a valid state before :meth:`transmit_next_chunk`
+        can be used again.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests via a ``put()`` method which accepts an
+                upload URL, a ``data`` keyword argument and a
+                ``headers`` keyword argument.
+
+        Returns:
+            object: The return value of ``transport.put()``.
+
+        Raises:
+            NotImplementedError: Always.
+        """
+        raise NotImplementedError
 
 
 def _get_boundary():

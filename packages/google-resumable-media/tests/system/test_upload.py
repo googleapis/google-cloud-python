@@ -269,4 +269,5 @@ def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
     # URL is unusable.
     upload._chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
     stream.seek(0)
+    upload._invalid = False
     check_bad_chunk(upload, authorized_transport)
