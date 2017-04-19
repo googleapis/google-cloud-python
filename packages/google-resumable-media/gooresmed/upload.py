@@ -84,17 +84,30 @@ class _UploadBase(object):
         """bool: Flag indicating if the upload has completed."""
         return self._finished
 
-    def _process_response(self):
+    def _process_response(self, response):
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
         require network I/O (or other I/O). This is based on the `sans-I/O`_
         philosophy.
 
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            ~gooresmed.exceptions.InvalidResponse: If the status code is
+                not 200.
+
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        # Tombstone the current upload so it cannot be used again.
+        # Tombstone the current upload so it cannot be used again (in either
+        # failure or success).
         self._finished = True
+        status_code = _helpers.get_status_code(response)
+        if status_code != http_client.OK:
+            raise exceptions.InvalidResponse(
+                response, u'Request failed with status code',
+                status_code, u'Expected "200 OK"')
 
 
 class SimpleUpload(_UploadBase):
@@ -148,7 +161,7 @@ class SimpleUpload(_UploadBase):
         """
         headers = self._prepare_request(content_type)
         result = transport.post(self.upload_url, data=data, headers=headers)
-        self._process_response()
+        self._process_response(result)
         return result
 
 
@@ -215,7 +228,7 @@ class MultipartUpload(_UploadBase):
         """
         payload, headers = self._prepare_request(data, metadata, content_type)
         result = transport.post(self.upload_url, data=payload, headers=headers)
-        self._process_response()
+        self._process_response(result)
         return result
 
 

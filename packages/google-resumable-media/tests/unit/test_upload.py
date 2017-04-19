@@ -59,11 +59,28 @@ class Test_UploadBase(object):
         upload._finished = True
         assert upload.finished
 
+    def test__process_response_bad_status(self):
+        upload = upload_mod._UploadBase(SIMPLE_URL)
+        # Make sure **not finished** before.
+        assert not upload.finished
+        status_code = http_client.SERVICE_UNAVAILABLE
+        response = _make_response(status_code)
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            upload._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 3
+        assert error.args[1] == status_code
+        # Make sure **finished** after (even in failure).
+        assert upload.finished
+
     def test__process_response(self):
         upload = upload_mod._UploadBase(SIMPLE_URL)
         # Make sure **not finished** before.
         assert not upload.finished
-        ret_val = upload._process_response()
+        response = _make_response()
+        ret_val = upload._process_response(response)
         assert ret_val is None
         # Make sure **finished** after.
         assert upload.finished
@@ -89,6 +106,7 @@ class TestSimpleUpload(object):
         upload = upload_mod.SimpleUpload(SIMPLE_URL)
 
         transport = mock.Mock(spec=[u'post'])
+        transport.post.return_value = _make_response()
         assert not upload.finished
         ret_val = upload.transmit(transport, data, content_type)
         assert ret_val is transport.post.return_value
@@ -144,6 +162,7 @@ class TestMultipartUpload(object):
         upload = upload_mod.MultipartUpload(MULTIPART_URL)
 
         transport = mock.Mock(spec=[u'post'])
+        transport.post.return_value = _make_response()
         assert not upload.finished
         ret_val = upload.transmit(transport, data, metadata, content_type)
         assert ret_val is transport.post.return_value
@@ -583,3 +602,7 @@ class Test__get_next_chunk(object):
         assert result2 == (6, 8, b'678')
         assert result3 == (9, 9, b'9')
         assert stream.tell() == 10
+
+
+def _make_response(status_code=http_client.OK):
+    return mock.Mock(status_code=status_code, spec=[u'status_code'])
