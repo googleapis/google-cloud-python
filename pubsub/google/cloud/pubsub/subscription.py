@@ -17,6 +17,8 @@
 import datetime
 
 from google.cloud.exceptions import NotFound
+from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud.pubsub.snapshot import Snapshot
 from google.cloud.pubsub._helpers import topic_name_from_path
 from google.cloud.pubsub.iam import Policy
 from google.cloud.pubsub.message import Message
@@ -409,6 +411,44 @@ class Subscription(object):
         api = client.subscriber_api
         api.subscription_modify_ack_deadline(
             self.full_name, ack_ids, ack_deadline)
+
+    def snapshot(self, name, client=None):
+        """Creates a snapshot of this subscription.
+
+        :type name: str
+        :param name: the name of the subscription
+
+        :rtype: :class:`Snapshot`
+        :returns: The snapshot created with the passed in arguments.
+        """
+        return Snapshot(name, subscription=self)
+
+    def seek_snapshot(self, snapshot, client=None):
+        """API call:  seek a subscription to a given snapshot
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek
+
+        :type snapshot: :class:`Snapshot`
+        :param snapshot: The snapshot to seek to.
+        """
+        client = self._require_client(client)
+        api = client.subscriber_api
+        api.subscription_seek(self.full_name, snapshot=snapshot.full_name)
+
+    def seek_timestamp(self, timestamp, client=None):
+        """API call:  seek a subscription to a given point in time
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek
+
+        :type time: :class:`datetime.datetime`
+        :param time: The time to seek to.
+        """
+        client = self._require_client(client)
+        timestamp = _datetime_to_rfc3339(timestamp)
+        api = client.subscriber_api
+        api.subscription_seek(self.full_name, time=timestamp)
 
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the subscription.
