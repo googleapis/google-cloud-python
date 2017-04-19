@@ -35,7 +35,7 @@ setuptools.setup(
     author_email='jjg+google-cloud-python@google.com',
     long_description=README,
     scripts=[],
-    url='https://github.com/google/google-resumable-media-python',
+    url='https://github.com/GoogleCloudPlatform/google-resumable-media-python',
     packages=setuptools.find_packages(),
     license='Apache 2.0',
     platforms='Posix; MacOS X; Windows',
