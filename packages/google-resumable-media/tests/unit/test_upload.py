@@ -416,8 +416,14 @@ class TestResumableUpload(object):
         # Then try with a "range" header that is unexpected.
         headers = {u'range': u'nights 1-81'}
         response = self._mock_response(upload_mod.PERMANENT_REDIRECT, headers)
-        with pytest.raises(ValueError):
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
             upload._process_response(response)
+
+        # Check the error response.
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 3
+        assert error.args[1] == headers[u'range']
 
     def test__process_response_partial(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)

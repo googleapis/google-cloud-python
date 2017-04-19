@@ -405,8 +405,8 @@ class ResumableUpload(_UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ValueError: If the status code is 308 and the ``range`` header
-                is not of the form ``bytes 0-{end}``.
+            ~gooresmed.exceptions.InvalidResponse: If the status code is 308
+                and the ``range`` header is not of the form ``bytes 0-{end}``.
             ~gooresmed.exceptions.InvalidResponse: If the status code is
                 not 200 or 308.
 
@@ -421,8 +421,8 @@ class ResumableUpload(_UploadBase):
             bytes_range = _helpers.header_required(response.headers, u'range')
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
-                raise ValueError(
-                    u'Unexpected "range" header', bytes_range,
+                raise exceptions.InvalidResponse(
+                    response, u'Unexpected "range" header', bytes_range,
                     u'Expected to be of the form "bytes=0-{end}"')
             self._bytes_uploaded = int(match.group(u'end_byte')) + 1
         else:
