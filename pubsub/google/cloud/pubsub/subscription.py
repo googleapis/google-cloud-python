@@ -14,6 +14,8 @@
 
 """Define API Subscriptions."""
 
+import datetime
+
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud.pubsub.snapshot import Snapshot
@@ -45,6 +47,19 @@ class Subscription(object):
         (Optional) URL to which messages will be pushed by the back-end.  If
         not set, the application must pull messages.
 
+    :type retain_acked_messages: bool
+    :param retain_acked_messages:
+        (Optional) Whether to retain acked messages. If set, acked messages
+        are retained in the subscription's backlog for a duration indicated
+        by `message_retention_duration`.
+
+    :type message_retention_duration: :class:`datetime.timedelta`
+    :param message_retention_duration:
+        (Optional) Whether to retain acked messages. If set, acked messages
+        are retained in the subscription's backlog for a duration indicated
+        by `message_retention_duration`. If unset, defaults to 7 days.
+
+
     :type client: :class:`~google.cloud.pubsub.client.Client`
     :param client:
         (Optional) The client to use.  If not passed, falls back to the
@@ -59,6 +74,7 @@ class Subscription(object):
     """
 
     def __init__(self, name, topic=None, ack_deadline=None, push_endpoint=None,
+                 retain_acked_messages=None, message_retention_duration=None,
                  client=None):
 
         if client is None and topic is None:
@@ -73,6 +89,8 @@ class Subscription(object):
         self._project = self._client.project
         self.ack_deadline = ack_deadline
         self.push_endpoint = push_endpoint
+        self.retain_acked_messages = retain_acked_messages
+        self.message_retention_duration = message_retention_duration
 
     @classmethod
     def from_api_repr(cls, resource, client, topics=None):
@@ -109,10 +127,21 @@ class Subscription(object):
         ack_deadline = resource.get('ackDeadlineSeconds')
         push_config = resource.get('pushConfig', {})
         push_endpoint = push_config.get('pushEndpoint')
+        retain_acked_messages = resource.get('retainAckedMessages')
+        resource_duration = resource.get('duration', {})
+        message_retention_duration = datetime.timedelta(
+            seconds=resource_duration.get('seconds', 0),
+            microseconds=resource_duration.get('nanos', 0) / 1000)
         if topic is None:
             return cls(name, ack_deadline=ack_deadline,
-                       push_endpoint=push_endpoint, client=client)
-        return cls(name, topic, ack_deadline, push_endpoint)
+                       push_endpoint=push_endpoint,
+                       retain_acked_messages=retain_acked_messages,
+                       message_retention_duration=message_retention_duration,
+                       client=client)
+        return cls(name, topic=topic, ack_deadline=ack_deadline,
+                   push_endpoint=push_endpoint,
+                   retain_acked_messages=retain_acked_messages,
+                   message_retention_duration=message_retention_duration)
 
     @property
     def project(self):
@@ -184,8 +213,10 @@ class Subscription(object):
         client = self._require_client(client)
         api = client.subscriber_api
         api.subscription_create(
-            self.full_name, self.topic.full_name, self.ack_deadline,
-            self.push_endpoint)
+            self.full_name, self.topic.full_name,
+            ack_deadline=self.ack_deadline, push_endpoint=self.push_endpoint,
+            retain_acked_messages=self.retain_acked_messages,
+            message_retention_duration=self.message_retention_duration)
 
     def exists(self, client=None):
         """API call:  test existence of the subscription via a GET request

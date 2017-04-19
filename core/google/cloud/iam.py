@@ -71,7 +71,7 @@ class Policy(collections.MutableMapping):
         return self._bindings[key]
 
     def __setitem__(self, key, value):
-        self._bindings[key] = frozenset(value)
+        self._bindings[key] = set(value)
 
     def __delitem__(self, key):
         del self._bindings[key]
@@ -91,7 +91,7 @@ class Policy(collections.MutableMapping):
         warnings.warn(
             _ASSIGNMENT_DEPRECATED_MSG.format('owners', OWNER_ROLE),
             DeprecationWarning)
-        self._bindings[OWNER_ROLE] = list(value)
+        self[OWNER_ROLE] = value
 
     @property
     def editors(self):
@@ -108,7 +108,7 @@ class Policy(collections.MutableMapping):
         warnings.warn(
             _ASSIGNMENT_DEPRECATED_MSG.format('editors', EDITOR_ROLE),
             DeprecationWarning)
-        self._bindings[EDITOR_ROLE] = list(value)
+        self[EDITOR_ROLE] = value
 
     @property
     def viewers(self):
@@ -125,7 +125,7 @@ class Policy(collections.MutableMapping):
         warnings.warn(
             _ASSIGNMENT_DEPRECATED_MSG.format('viewers', VIEWER_ROLE),
             DeprecationWarning)
-        self._bindings[VIEWER_ROLE] = list(value)
+        self[VIEWER_ROLE] = value
 
     @staticmethod
     def user(email):
@@ -209,7 +209,7 @@ class Policy(collections.MutableMapping):
         for binding in resource.get('bindings', ()):
             role = binding['role']
             members = sorted(binding['members'])
-            policy._bindings[role] = members
+            policy[role] = members
         return policy
 
     def to_api_repr(self):
