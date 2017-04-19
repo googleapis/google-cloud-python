@@ -16,6 +16,7 @@ import mock
 import pytest
 
 from gooresmed import _helpers
+from gooresmed import exceptions
 
 
 class Test_header_required(object):
@@ -24,13 +25,20 @@ class Test_header_required(object):
         name = u'some-header'
         value = u'The Right Hand Side'
         headers = {name: value, u'other-name': u'other-value'}
-        result = _helpers.header_required(headers, name)
+        response = mock.Mock(headers=headers, spec=[u'headers'])
+        result = _helpers.header_required(response, name)
         assert result == value
 
     def test_failure(self):
-        headers = {}
-        with pytest.raises(KeyError):
-            _helpers.header_required(headers, u'any-name')
+        response = mock.Mock(headers={}, spec=[u'headers'])
+        name = u'any-name'
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            _helpers.header_required(response, name)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 2
+        assert error.args[1] == name
 
 
 def test_get_status_code():

@@ -15,22 +15,27 @@
 """Shared utilities used by both downloads and uploads."""
 
 
-def header_required(headers, name):
+from gooresmed import exceptions
+
+
+def header_required(response, name):
     """Checks that a specific header is in a headers dictionary.
 
     Args:
-        headers (Mapping[str, str]): The response headers from an HTTP request.
+        response (object): An HTTP response object, expected to have a
+            ``headers`` attribute that is a ``Mapping[str, str]``.
         name (str): The name of a required header.
 
     Returns:
         str: The desired header.
 
     Raises:
-        KeyError: If the header is missing.
+        ~gooresmed.exceptions.InvalidResponse: If the header is missing.
     """
+    headers = response.headers
     if name not in headers:
-        msg = u'Response headers must contain {} header'.format(name)
-        raise KeyError(msg)
+        raise exceptions.InvalidResponse(
+            response, u'Response headers must contain header', name)
 
     return headers[name]
 

@@ -208,7 +208,7 @@ class ChunkedDownload(_DownloadBase):
         _add_bytes_range(curr_start, curr_end, headers)
         return headers
 
-    def _process_response(self, headers):
+    def _process_response(self, response):
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
@@ -230,16 +230,15 @@ class ChunkedDownload(_DownloadBase):
         should be the same as the ``Content-Length``.
 
         Args:
-            headers (Mapping[str, str]): The response headers from an
-                HTTP request.
+            response (object): The HTTP response object (need headers).
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         # First update ``bytes_downloaded``.
-        content_length = _helpers.header_required(headers, u'content-length')
+        content_length = _helpers.header_required(response, u'content-length')
         self._bytes_downloaded += int(content_length)
         # Parse the content range.
-        content_range = _helpers.header_required(headers, u'content-range')
+        content_range = _helpers.header_required(response, u'content-range')
         _, end_byte, total_bytes = _get_range_info(content_range)
         # If the end byte is past ``end`` or ``total_bytes - 1`` we are done.
         if self.end is not None and end_byte >= self.end:
@@ -266,7 +265,7 @@ class ChunkedDownload(_DownloadBase):
         """
         headers = self._prepare_request()
         result = transport.get(self.media_url, headers=headers)
-        self._process_response(result.headers)
+        self._process_response(result)
         return result
 
 

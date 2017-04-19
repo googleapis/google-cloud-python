@@ -287,18 +287,24 @@ class TestResumableUpload(object):
 
     def test__process_initiate_response_bad_response(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
-        # First try with no location header missing.
-        with pytest.raises(KeyError):
-            upload._process_initiate_response({})
+        response = mock.Mock(headers={}, spec=[u'headers'])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            upload._process_initiate_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 2
+        assert error.args[1] == u'location'
 
     def test__process_initiate_response(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
 
         headers = {u'location': u'http://test.invalid?upload_id=kmfeij3234'}
+        response = mock.Mock(headers=headers, spec=[u'headers'])
         # Check upload_url_with_id before.
         assert upload._upload_url_with_id is None
         # Process the actual headers.
-        ret_val = upload._process_initiate_response(headers)
+        ret_val = upload._process_initiate_response(response)
         assert ret_val is None
         # Check upload_url_with_id after.
         assert upload._upload_url_with_id == headers[u'location']
@@ -406,14 +412,20 @@ class TestResumableUpload(object):
         assert upload._bytes_uploaded is mock.sentinel.total_bytes
         assert upload._finished
 
-    def test__process_response_partial_bad_range(self):
+    def test__process_response_partial_no_range(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
-        # First try with "range" totally missing from the headers.
         response = self._mock_response(upload_mod.PERMANENT_REDIRECT, {})
-        with pytest.raises(KeyError):
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
             upload._process_response(response)
 
-        # Then try with a "range" header that is unexpected.
+        # Check the error response.
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 2
+        assert error.args[1] == u'range'
+
+    def test__process_response_partial_bad_range(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         headers = {u'range': u'nights 1-81'}
         response = self._mock_response(upload_mod.PERMANENT_REDIRECT, headers)
         with pytest.raises(exceptions.InvalidResponse) as exc_info:

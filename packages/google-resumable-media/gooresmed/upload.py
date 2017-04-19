@@ -308,25 +308,24 @@ class ResumableUpload(_UploadBase):
         payload = json.dumps(metadata).encode(u'utf-8')
         return payload, headers
 
-    def _process_initiate_response(self, headers):
+    def _process_initiate_response(self, response):
         """Process the response from an HTTP request that initiated upload.
 
         This is everything that must be done after a request that doesn't
         require network I/O (or other I/O). This is based on the `sans-I/O`_
         philosophy.
 
-        This method take the URL from the ``Location`` header and stores it
+        This method takes the URL from the ``Location`` header and stores it
         for future use. Within that URL, we assume the ``upload_id`` query
         parameter has been included, but we do not check.
 
         Args:
-            headers (Mapping[str, str]): The response headers from the
-                HTTP request.
+            response (object): The HTTP response object (need headers).
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         self._upload_url_with_id = _helpers.header_required(
-            headers, u'location')
+            response, u'location')
 
     def initiate(self, transport, stream, metadata, content_type):
         """Initiate a resumable upload.
@@ -348,7 +347,7 @@ class ResumableUpload(_UploadBase):
             stream, metadata, content_type)
         result = transport.post(
             self.upload_url, data=payload, headers=headers)
-        self._process_initiate_response(result.headers)
+        self._process_initiate_response(result)
         return result
 
     def _prepare_request(self):
@@ -418,7 +417,7 @@ class ResumableUpload(_UploadBase):
             # Tombstone the current upload so it cannot be used again.
             self._finished = True
         elif status_code == PERMANENT_REDIRECT:
-            bytes_range = _helpers.header_required(response.headers, u'range')
+            bytes_range = _helpers.header_required(response, u'range')
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 raise exceptions.InvalidResponse(

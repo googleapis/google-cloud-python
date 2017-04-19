@@ -251,7 +251,8 @@ class TestChunkedDownload(object):
         assert download.bytes_downloaded == already
         assert download.total_bytes is None
         # Actually call the method to update.
-        download._process_response(headers)
+        response = mock.Mock(headers=headers, spec=[u'headers'])
+        download._process_response(response)
         # Check internal state after.
         assert not download.finished
         assert download.bytes_downloaded == already + chunk_size
@@ -268,7 +269,8 @@ class TestChunkedDownload(object):
         assert download.bytes_downloaded == 0
         assert download.total_bytes is None
         # Actually call the method to update.
-        download._process_response(headers)
+        response = mock.Mock(headers=headers, spec=[u'headers'])
+        download._process_response(response)
         # Check internal state after.
         assert download.finished
         assert download.bytes_downloaded == total_bytes
@@ -290,7 +292,8 @@ class TestChunkedDownload(object):
         assert download.bytes_downloaded == 7 * chunk_size
         assert download.total_bytes == 8 * chunk_size
         # Actually call the method to update.
-        download._process_response(headers)
+        response = mock.Mock(headers=headers, spec=[u'headers'])
+        download._process_response(response)
         # Check internal state after.
         assert download.finished
         assert download.bytes_downloaded == end + 1
