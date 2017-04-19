@@ -149,9 +149,9 @@ class TestClient(unittest.TestCase):
             payload['message'])
         self.assertIn('test_client.py', payload['message'])
         self.assertEqual(
-            payload['context']['httpContext']['responseStatusCode'], 500)
+            payload['context']['httpRequest']['responseStatusCode'], 500)
         self.assertEqual(
-            payload['context']['httpContext']['method'], 'GET')
+            payload['context']['httpRequest']['method'], 'GET')
         self.assertEqual(payload['context']['user'], user)
 
     @mock.patch('google.cloud.error_reporting.client.make_report_error_api')

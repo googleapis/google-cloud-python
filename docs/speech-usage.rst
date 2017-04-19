@@ -5,11 +5,6 @@ The `Google Speech`_ API enables developers to convert audio to text.
 The API recognizes over 80 languages and variants, to support your global user
 base.
 
-.. warning::
-
-    This is a Beta release of Google Speech API. This
-    API is not intended for real-time usage in critical applications.
-
 .. _Google Speech: https://cloud.google.com/speech/docs/getting-started
 
 Client
@@ -38,11 +33,6 @@ The :meth:`~google.cloud.speech.Client.long_running_recognize` sends audio
 data to the Speech API and initiates a Long Running Operation. Using this
 operation, you can periodically poll for recognition results. Use asynchronous
 requests for audio data of any duration up to 80 minutes.
-
-.. note::
-
-    Only the :attr:`Encoding.LINEAR16` encoding type is supported by
-    asynchronous recognition.
 
 See: `Speech Asynchronous Recognize`_
 

@@ -43,8 +43,9 @@ class TestEntity(unittest.TestCase):
             mention_type=MentionType.PROPER,
             text=TextSpan(content='Italian', begin_offset=0),
         )]
+        sentiment = None
         entity = self._make_one(name, entity_type, metadata,
-                                salience, mentions)
+                                salience, mentions, sentiment)
         self.assertEqual(entity.name, name)
         self.assertEqual(entity.entity_type, entity_type)
         self.assertEqual(entity.metadata, metadata)
@@ -55,6 +56,7 @@ class TestEntity(unittest.TestCase):
         from google.cloud.language.entity import EntityType
         from google.cloud.language.entity import Mention
         from google.cloud.language.entity import MentionType
+        from google.cloud.language.sentiment import Sentiment
 
         klass = self._get_target_class()
         name = 'Italy'
@@ -100,6 +102,20 @@ class TestEntity(unittest.TestCase):
         # Assert that the mention types are preserved.
         for mention in entity.mentions:
             self.assertEqual(mention.mention_type, MentionType.PROPER)
+
+        # Assert that there is no sentiment.
+        self.assertIs(entity.sentiment, None)
+
+        # Assert that there *is* sentiment if it is provided.
+        payload_with_sentiment = dict(payload, sentiment={
+            'magnitude': 42,
+            'score': 0.15,
+        })
+        entity_with_sentiment = klass.from_api_repr(payload_with_sentiment)
+        self.assertIsInstance(entity_with_sentiment.sentiment, Sentiment)
+        sentiment = entity_with_sentiment.sentiment
+        self.assertEqual(sentiment.magnitude, 42)
+        self.assertAlmostEqual(sentiment.score, 0.15)
 
 
 class TestMention(unittest.TestCase):
