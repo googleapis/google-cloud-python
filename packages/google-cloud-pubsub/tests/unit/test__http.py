@@ -26,10 +26,13 @@ def _make_credentials():
 class _Base(unittest.TestCase):
     PROJECT = 'PROJECT'
     LIST_TOPICS_PATH = 'projects/%s/topics' % (PROJECT,)
+    LIST_SNAPSHOTS_PATH = 'projects/%s/snapshots' % (PROJECT,)
     LIST_SUBSCRIPTIONS_PATH = 'projects/%s/subscriptions' % (PROJECT,)
     TOPIC_NAME = 'topic_name'
     TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
     LIST_TOPIC_SUBSCRIPTIONS_PATH = '%s/subscriptions' % (TOPIC_PATH,)
+    SNAPSHOT_NAME = 'snapshot_name'
+    SNAPSHOT_PATH = 'projects/%s/snapshots/%s' % (PROJECT, SNAPSHOT_NAME)
     SUB_NAME = 'subscription_name'
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
@@ -805,6 +808,174 @@ class Test_SubscriberAPI(_Base):
         path = '/%s:modifyAckDeadline' % (self.SUB_PATH,)
         self.assertEqual(connection._called_with['path'], path)
         self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_list_snapshots_no_paging(self):
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.snapshot import Snapshot
+
+        local_snapshot_path = 'projects/%s/snapshots/%s' % (
+            self.PROJECT, self.SNAPSHOT_NAME)
+        local_topic_path = 'projects/%s/topics/%s' % (
+            self.PROJECT, self.TOPIC_NAME)
+        RETURNED = {'snapshots': [{
+            'name': local_snapshot_path,
+            'topic': local_topic_path,
+            }],
+        }
+
+        connection = _Connection(RETURNED)
+        creds = _make_credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        client._connection = connection
+        api = self._make_one(client)
+
+        iterator = api.list_snapshots(self.PROJECT)
+        snapshots = list(iterator)
+        next_token = iterator.next_page_token
+
+        self.assertIsNone(next_token)
+        self.assertEqual(len(snapshots), 1)
+        snapshot = snapshots[0]
+        self.assertIsInstance(snapshot, Snapshot)
+        self.assertEqual(snapshot.topic.name, self.TOPIC_NAME)
+        self.assertIs(snapshot._client, client)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_SNAPSHOTS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'], {})
+
+    def test_list_snapshots_with_paging(self):
+        import six
+
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.snapshot import Snapshot
+
+        TOKEN1 = 'TOKEN1'
+        TOKEN2 = 'TOKEN2'
+        SIZE = 1
+        local_snapshot_path = 'projects/%s/snapshots/%s' % (
+            self.PROJECT, self.SNAPSHOT_NAME)
+        local_topic_path = 'projects/%s/topics/%s' % (
+            self.PROJECT, self.TOPIC_NAME)
+        RETURNED = {
+            'snapshots': [{
+                'name': local_snapshot_path,
+                'topic': local_topic_path,
+            }],
+            'nextPageToken': TOKEN2,
+        }
+
+        connection = _Connection(RETURNED)
+        creds = _make_credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        client._connection = connection
+        api = self._make_one(client)
+
+        iterator = api.list_snapshots(
+            self.PROJECT, page_token=TOKEN1, page_size=SIZE)
+        page = six.next(iterator.pages)
+        snapshots = list(page)
+        next_token = iterator.next_page_token
+
+        self.assertEqual(next_token, TOKEN2)
+        self.assertEqual(len(snapshots), 1)
+        snapshot = snapshots[0]
+        self.assertIsInstance(snapshot, Snapshot)
+        self.assertEqual(snapshot.topic.name, self.TOPIC_NAME)
+        self.assertIs(snapshot._client, client)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_SNAPSHOTS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'],
+                         {'pageToken': TOKEN1, 'pageSize': SIZE})
+
+    def test_subscription_seek_snapshot(self):
+        local_snapshot_path = 'projects/%s/snapshots/%s' % (
+            self.PROJECT, self.SNAPSHOT_NAME)
+        RETURNED = {}
+        BODY = {
+            'snapshot': local_snapshot_path
+        }
+        connection = _Connection(RETURNED)
+        client = _Client(connection, self.PROJECT)
+        api = self._make_one(client)
+
+        api.subscription_seek(
+            self.SUB_PATH, snapshot=local_snapshot_path)
+
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:seek' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_subscription_seek_time(self):
+        time = '12345'
+        RETURNED = {}
+        BODY = {
+            'time': time
+        }
+        connection = _Connection(RETURNED)
+        client = _Client(connection, self.PROJECT)
+        api = self._make_one(client)
+
+        api.subscription_seek(self.SUB_PATH, time=time)
+
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:seek' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_snapshot_create(self):
+        RETURNED = {
+            'name': self.SNAPSHOT_PATH,
+            'subscription': self.SUB_PATH
+        }
+        BODY = {
+            'subscription': self.SUB_PATH
+        }
+        connection = _Connection(RETURNED)
+        client = _Client(connection, self.PROJECT)
+        api = self._make_one(client)
+
+        resource = api.snapshot_create(self.SNAPSHOT_PATH, self.SUB_PATH)
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(connection._called_with['method'], 'PUT')
+        path = '/%s' % (self.SNAPSHOT_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_snapshot_create_already_exists(self):
+        from google.cloud.exceptions import NotFound
+
+        BODY = {
+            'subscription': self.SUB_PATH
+        }
+        connection = _Connection()
+        client = _Client(connection, self.PROJECT)
+        api = self._make_one(client)
+
+        with self.assertRaises(NotFound):
+            resource = api.snapshot_create(self.SNAPSHOT_PATH, self.SUB_PATH)
+
+        self.assertEqual(connection._called_with['method'], 'PUT')
+        path = '/%s' % (self.SNAPSHOT_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_snapshot_delete(self):
+        RETURNED = {}
+        connection = _Connection(RETURNED)
+        client = _Client(connection, self.PROJECT)
+        api = self._make_one(client)
+
+        api.snapshot_delete(self.SNAPSHOT_PATH)
+
+        self.assertEqual(connection._called_with['method'], 'DELETE')
+        path = '/%s' % (self.SNAPSHOT_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
 
 
 class Test_IAMPolicyAPI(_Base):
