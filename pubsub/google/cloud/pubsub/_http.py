@@ -489,7 +489,7 @@ class _SubscriberAPI(object):
         data = {}
         if time is not None:
             data['time'] = time
-        elif snapshot is not None:
+        if snapshot is not None:
             data['snapshot'] = snapshot
         self.api_request(method='POST', path=path, data=data)
 
