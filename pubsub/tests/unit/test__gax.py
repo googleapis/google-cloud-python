@@ -45,6 +45,10 @@ class _Base(object):
     LIST_TOPIC_SUBSCRIPTIONS_PATH = '%s/subscriptions' % (TOPIC_PATH,)
     SUB_NAME = 'sub_name'
     SUB_PATH = '%s/subscriptions/%s' % (TOPIC_PATH, SUB_NAME)
+    SNAPSHOT_NAME = 'snapshot_name'
+    SNAPSHOT_PATH = '%s/snapshots/%s' % (PROJECT_PATH, SNAPSHOT_NAME)
+    TIME = 12345
+
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -972,6 +976,238 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(deadline, NEW_DEADLINE)
         self.assertIsNone(options)
 
+    def test_list_snapshots_no_paging(self):
+        from google.gax import INITIAL_PAGE
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import (
+            Snapshot as SnapshotPB)
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.snapshot import Snapshot
+        from google.cloud.pubsub.topic import Topic
+
+        local_snapshot_path = '%s/snapshots/%s' % (
+            self.PROJECT_PATH, self.SNAPSHOT_NAME)
+        snapshot_pb = SnapshotPB(
+            name=local_snapshot_path, topic=self.TOPIC_PATH)
+        response = _GAXPageIterator([snapshot_pb])
+        gax_api = _GAXSubscriberAPI(_list_snapshots_response=response)
+        creds = _make_credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        api = self._make_one(gax_api, client)
+
+        iterator = api.list_snapshots(self.PROJECT)
+        snapshots = list(iterator)
+        next_token = iterator.next_page_token
+
+        # Check the token returned.
+        self.assertIsNone(next_token)
+        # Check the snapshot object returned.
+        self.assertEqual(len(snapshots), 1)
+        snapshot = snapshots[0]
+        self.assertIsInstance(snapshot, Snapshot)
+        self.assertEqual(snapshot.name, self.SNAPSHOT_NAME)
+        self.assertIsInstance(snapshot.topic, Topic)
+        self.assertEqual(snapshot.topic.name, self.TOPIC_NAME)
+        self.assertIs(snapshot._client, client)
+        self.assertEqual(snapshot._project, self.PROJECT)
+
+    def test_list_snapshots_with_paging(self):
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import (
+            Snapshot as SnapshotPB)
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.snapshot import Snapshot
+        from google.cloud.pubsub.topic import Topic
+
+        SIZE = 23
+        TOKEN = 'TOKEN'
+        NEW_TOKEN = 'NEW_TOKEN'
+        local_snapshot_path = '%s/snapshots/%s' % (
+            self.PROJECT_PATH, self.SNAPSHOT_NAME)
+        snapshot_pb = SnapshotPB(name=local_snapshot_path, topic=self.TOPIC_PATH)
+        response = _GAXPageIterator([snapshot_pb], page_token=NEW_TOKEN)
+        gax_api = _GAXSubscriberAPI(_list_snapshots_response=response)
+        client = _Client(self.PROJECT)
+        creds = _make_credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        api = self._make_one(gax_api, client)
+
+        iterator = api.list_snapshots(
+            self.PROJECT, page_size=SIZE, page_token=TOKEN)
+        snapshots = list(iterator)
+        next_token = iterator.next_page_token
+
+        # Check the token returned.
+        self.assertEqual(next_token, NEW_TOKEN)
+        # Check the snapshot object returned.
+        self.assertEqual(len(snapshots), 1)
+        snapshot = snapshots[0]
+        self.assertIsInstance(snapshot, Snapshot)
+        self.assertEqual(snapshot.name, self.SNAPSHOT_NAME)
+        self.assertIsInstance(snapshot.topic, Topic)
+        self.assertEqual(snapshot.topic.name, self.TOPIC_NAME)
+        self.assertIs(snapshot._client, client)
+        self.assertEqual(snapshot._project, self.PROJECT)
+
+    def test_subscription_seek_hit(self):
+        gax_api = _GAXSubscriberAPI(_seek_ok=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        api.subscription_seek(
+            self.SUB_PATH, time=self.TIME, snapshot=self.SNAPSHOT_PATH)
+
+        subscription_path, time, snapshot_path, options = (
+            gax_api._seek_called_with)
+        self.assertEqual(subscription_path, self.SUB_PATH)
+        self.assertEqual(time, self.TIME)
+        self.assertEqual(snapshot_path, self.SNAPSHOT_PATH)
+        self.assertIsNone(options)
+
+    def test_subscription_seek_miss(self):
+        from google.cloud.exceptions import NotFound
+
+        gax_api = _GAXSubscriberAPI(_seek_ok=False)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(NotFound):
+            api.subscription_seek(
+                self.SUB_PATH, time=self.TIME, snapshot=self.SNAPSHOT_PATH)
+
+        subscription_path, time, snapshot_path, options = (
+            gax_api._seek_called_with)
+        self.assertEqual(subscription_path, self.SUB_PATH)
+        self.assertEqual(time, self.TIME)
+        self.assertEqual(snapshot_path, self.SNAPSHOT_PATH)
+        self.assertIsNone(options)
+
+    def test_subscription_seek_error(self):
+        from google.gax.errors import GaxError
+
+        gax_api = _GAXSubscriberAPI(_random_gax_error=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(GaxError):
+            api.subscription_seek(
+                self.SUB_PATH, time=self.TIME, snapshot=self.SNAPSHOT_PATH)
+
+        subscription_path, time, snapshot_path, options = (
+            gax_api._seek_called_with)
+        self.assertEqual(subscription_path, self.SUB_PATH)
+        self.assertEqual(time, self.TIME)
+        self.assertEqual(snapshot_path, self.SNAPSHOT_PATH)
+        self.assertIsNone(options)
+
+    def test_snapshot_create(self):
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import Snapshot
+
+        snapshot_pb = Snapshot(name=self.SNAPSHOT_PATH, topic=self.TOPIC_PATH)
+        gax_api = _GAXSubscriberAPI(_create_snapshot_response=snapshot_pb)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        resource = api.snapshot_create(self.SNAPSHOT_PATH, self.SUB_PATH)
+
+        expected = {
+            'name': self.SNAPSHOT_PATH,
+            'topic': self.TOPIC_PATH,
+        }
+        self.assertEqual(resource, expected)
+        name, subscription, options = (
+            gax_api._create_snapshot_called_with)
+        self.assertEqual(name, self.SNAPSHOT_PATH)
+        self.assertEqual(subscription, self.SUB_PATH)
+        self.assertIsNone(options)
+
+    def test_snapshot_create_already_exists(self):
+        from google.cloud.exceptions import Conflict
+
+        gax_api = _GAXSubscriberAPI(_create_snapshot_conflict=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(Conflict):
+            api.snapshot_create(self.SNAPSHOT_PATH, self.SUB_PATH)
+
+        name, subscription, options = (
+            gax_api._create_snapshot_called_with)
+        self.assertEqual(name, self.SNAPSHOT_PATH)
+        self.assertEqual(subscription, self.SUB_PATH)
+        self.assertIsNone(options)
+
+    def test_snapshot_create_subscrption_miss(self):
+        from google.cloud.exceptions import NotFound
+
+        gax_api = _GAXSubscriberAPI(_snapshot_create_subscription_miss=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(NotFound):
+            api.snapshot_create(self.SNAPSHOT_PATH, self.SUB_PATH)
+
+        name, subscription, options = (
+            gax_api._create_snapshot_called_with)
+        self.assertEqual(name, self.SNAPSHOT_PATH)
+        self.assertEqual(subscription, self.SUB_PATH)
+        self.assertIsNone(options)
+
+    def test_snapshot_create_error(self):
+        from google.gax.errors import GaxError
+
+        gax_api = _GAXSubscriberAPI(_random_gax_error=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(GaxError):
+            api.snapshot_create(self.SNAPSHOT_PATH, self.SUB_PATH)
+
+        name, subscription, options = (
+            gax_api._create_snapshot_called_with)
+        self.assertEqual(name, self.SNAPSHOT_PATH)
+        self.assertEqual(subscription, self.SUB_PATH)
+        self.assertIsNone(options)
+
+    def test_snapshot_delete_hit(self):
+        gax_api = _GAXSubscriberAPI(_delete_snapshot_ok=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        api.snapshot_delete(self.SNAPSHOT_PATH)
+
+        snapshot_path, options = gax_api._delete_snapshot_called_with
+        self.assertEqual(snapshot_path, self.SNAPSHOT_PATH)
+        self.assertIsNone(options)
+
+    def test_snapshot_delete_miss(self):
+        from google.cloud.exceptions import NotFound
+
+        gax_api = _GAXSubscriberAPI(_delete_snapshot_ok=False)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(NotFound):
+            api.snapshot_delete(self.SNAPSHOT_PATH)
+
+        snapshot_path, options = gax_api._delete_snapshot_called_with
+        self.assertEqual(snapshot_path, self.SNAPSHOT_PATH)
+        self.assertIsNone(options)
+
+    def test_snapshot_delete_error(self):
+        from google.gax.errors import GaxError
+
+        gax_api = _GAXSubscriberAPI(_random_gax_error=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(GaxError):
+            api.snapshot_delete(self.SNAPSHOT_PATH)
+
+        snapshot_path, options = gax_api._delete_snapshot_called_with
+        self.assertEqual(snapshot_path, self.SNAPSHOT_PATH)
+        self.assertIsNone(options)
+
 
 @unittest.skipUnless(_HAVE_GRPC, 'No gax-python')
 class Test_make_gax_publisher_api(_Base, unittest.TestCase):
@@ -1196,11 +1432,13 @@ class _GAXPublisherAPI(_GAXBaseAPI):
 
 class _GAXSubscriberAPI(_GAXBaseAPI):
 
+    _create_snapshot_conflict = False
     _create_subscription_conflict = False
     _modify_push_config_ok = False
     _acknowledge_ok = False
     _modify_ack_deadline_ok = False
     _deadline_exceeded_gax_error = False
+    _snapshot_create_subscription_miss=False
 
     def list_subscriptions(self, project, page_size, options=None):
         self._list_subscriptions_called_with = (project, page_size, options)
@@ -1285,6 +1523,40 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
         if not self._modify_ack_deadline_ok:
             raise GaxError('miss', self._make_grpc_not_found())
 
+    def list_snapshots(self, project, page_size, options=None):
+        self._list_snapshots_called_with = (project, page_size, options)
+        return self._list_snapshots_response
+
+    def create_snapshot(self, name, subscription, options=None):
+        from google.gax.errors import GaxError
+
+        self._create_snapshot_called_with = (name, subscription, options)
+        if self._random_gax_error:
+            raise GaxError('error')
+        if self._create_snapshot_conflict:
+            raise GaxError('conflict', self._make_grpc_failed_precondition())
+        if self._snapshot_create_subscription_miss:
+            raise GaxError('miss', self._make_grpc_not_found())
+
+        return self._create_snapshot_response
+
+    def delete_snapshot(self, snapshot, options=None):
+        from google.gax.errors import GaxError
+
+        self._delete_snapshot_called_with = (snapshot, options)
+        if self._random_gax_error:
+            raise GaxError('error')
+        if not self._delete_snapshot_ok:
+            raise GaxError('miss', self._make_grpc_not_found())
+        
+    def seek(self, subscription, time=None, snapshot=None, options=None):
+        from google.gax.errors import GaxError
+
+        self._seek_called_with = (subscription, time, snapshot, options)
+        if self._random_gax_error:
+            raise GaxError('error')
+        if not self._seek_ok:
+            raise GaxError('miss', self._make_grpc_not_found())
 
 class _TopicPB(object):
 

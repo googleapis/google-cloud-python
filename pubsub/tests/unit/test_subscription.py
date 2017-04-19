@@ -21,6 +21,8 @@ class TestSubscription(unittest.TestCase):
     PROJECT = 'PROJECT'
     TOPIC_NAME = 'topic_name'
     TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+    SNAPSHOT_NAME = 'snapshot_name'
+    SNAPSHOT_PATH = 'projects/%s/snapshots/%s' % (PROJECT, SNAPSHOT_NAME)
     SUB_NAME = 'sub_name'
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
     DEADLINE = 42
@@ -458,6 +460,87 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(api._subscription_modified_ack_deadline,
                          (self.SUB_PATH, [ACK_ID1, ACK_ID2], self.DEADLINE))
 
+    def test_snapshot(self):
+        from google.cloud.pubsub.snapshot import Snapshot
+
+        client = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._make_one(self.SUB_NAME, topic)
+
+        snapshot = subscription.snapshot(self.SNAPSHOT_NAME)
+        self.assertIsInstance(snapshot, Snapshot)
+        self.assertEqual(snapshot.name, self.SNAPSHOT_NAME)
+        self.assertIs(snapshot.topic, topic)
+
+    def test_seek_snapshot_w_bound_client(self):
+        from google.cloud.pubsub.snapshot import Snapshot
+
+        client = _Client(project=self.PROJECT)
+        snapshot = Snapshot
+        snapshot = Snapshot(self.SNAPSHOT_NAME, client=client)
+        api = client.subscriber_api = _FauxSubscribererAPI()
+        api._subscription_seek_response = {}
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._make_one(self.SUB_NAME, topic)
+
+        subscription.seek_snapshot(snapshot)
+
+        self.assertEqual(api._subscription_seeked,
+                         (self.SUB_PATH, None, self.SNAPSHOT_PATH))
+
+    def test_seek_snapshot_w_alternate_client(self):
+        from google.cloud.pubsub.snapshot import Snapshot
+
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        snapshot = Snapshot(self.SNAPSHOT_NAME, client=client1)
+        api = client2.subscriber_api = _FauxSubscribererAPI()
+        api._subscription_seek_response = {}
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._make_one(self.SUB_NAME, topic)
+
+        subscription.seek_snapshot(snapshot, client=client2)
+
+        self.assertEqual(api._subscription_seeked,
+                         (self.SUB_PATH, None, self.SNAPSHOT_PATH))
+
+    def test_seek_time_w_bound_client(self):
+        import datetime
+        
+        from google.cloud import _helpers
+
+        time = datetime.time()
+        client = _Client(project=self.PROJECT)
+        api = client.subscriber_api = _FauxSubscribererAPI()
+        api._subscription_seek_response = {}
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._make_one(self.SUB_NAME, topic)
+
+        subscription.seek_timestamp(time)
+
+        self.assertEqual(
+            api._subscription_seeked,
+            (self.SUB_PATH, _helpers._datetime_to_rfc3339(time), None))
+
+    def test_seek_time_w_alternate_client(self):
+        import datetime
+
+        from google.cloud import _helpers
+
+        time = datetime.time()
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.subscriber_api = _FauxSubscribererAPI()
+        api._subscription_seek_response = {}
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._make_one(self.SUB_NAME, topic)
+
+        subscription.seek_timestamp(time, client=client2)
+
+        self.assertEqual(
+            api._subscription_seeked,
+            (self.SUB_PATH, _helpers._datetime_to_rfc3339(time), None))
+
     def test_get_iam_policy_w_bound_client(self):
         from google.cloud.pubsub.iam import (
             PUBSUB_ADMIN_ROLE,
@@ -692,6 +775,11 @@ class _FauxSubscribererAPI(object):
         self._subscription_modified_ack_deadline = (
             subscription_path, ack_ids, ack_deadline)
         return self._subscription_modify_ack_deadline_response
+
+    def subscription_seek(self, subscription_path, time=None, snapshot=None):
+        self._subscription_seeked = (
+            subscription_path, time, snapshot)
+        return self._subscription_seek_response
 
 
 class TestAutoAck(unittest.TestCase):

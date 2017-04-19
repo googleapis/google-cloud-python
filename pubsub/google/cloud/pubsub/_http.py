@@ -26,6 +26,7 @@ from google.cloud.iterator import HTTPIterator
 
 from google.cloud.pubsub import __version__
 from google.cloud.pubsub._helpers import subscription_name_from_path
+from google.cloud.pubsub.snapshot import Snapshot
 from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
 
@@ -492,6 +493,104 @@ class _SubscriberAPI(object):
         }
         self.api_request(method='POST', path=path, data=data)
 
+    def subscription_seek(self, subscription_path, time=None, snapshot=None):
+        """API call:  seek a subscription
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek
+
+        :type subscription_path: str
+        :param subscription_path::
+            the fully-qualified path of the subscription to affect, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+
+        :type time: str
+        :param time: The time to seek to, in RFC 3339 format.
+
+        :type snapshot: str
+        :param snapshot: The snapshot to seek to.
+        """
+        path = '/%s:seek' % (subscription_path,)
+        data = {}
+        if time is not None:
+            data['time'] = time
+        if snapshot is not None:
+            data['snapshot'] = snapshot
+        self.api_request(method='POST', path=path, data=data)
+
+    def list_snapshots(self, project, page_size=None, page_token=None):
+        """List snapshots for the project associated with this API.
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/list
+
+        :type project: str
+        :param project: project ID
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: str
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`
+                  accessible to the current API.
+        """
+        extra_params = {}
+        if page_size is not None:
+            extra_params['pageSize'] = page_size
+        path = '/projects/%s/snapshots' % (project,)
+
+        # We attach a mutable topics dictionary so that as topic
+        # objects are created by Snapshot.from_api_repr, they
+        # can be re-used by other snapshots of the same topic.
+        topics = {}
+        item_to_value = functools.partial(
+            _item_to_snapshot_for_client, topics=topics)
+        return HTTPIterator(
+            client=self._client, path=path, item_to_value=item_to_value,
+            items_key='snapshots', page_token=page_token,
+            extra_params=extra_params)
+
+    def snapshot_create(self, snapshot_path, subscription_path):
+        """API call:  create a snapshot
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/create
+
+        :type snapshot_path: str
+        :param snapshot_path: fully-qualified path of the snapshot, in format
+                            ``projects/<PROJECT>/snapshots/<SNAPSHOT_NAME>``.
+
+        :type subscription_path: str
+        :param subscription_path: fully-qualified path of the subscrption that
+                            the new snapshot captures, in format
+                            ``projects/<PROJECT>/subscription/<SNAPSHOT_NAME>``.
+
+        :rtype: dict
+        :returns: ``Snapshot`` resource returned from the API.
+        """
+        path = '/%s' % (snapshot_path,)
+        data = {'subscription': subscription_path}
+        return self.api_request(method='PUT', path=path, data=data)
+
+    def snapshot_delete(self, snapshot_path):
+        """API call:  delete a topic
+
+        See:
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/delete
+
+        :type snapshot_path: str
+        :param snapshot_path: fully-qualified path of the snapshot, in format
+                            ``projects/<PROJECT>/snapshots/<SNAPSHOT_NAME>``.
+        """
+        path = '/%s' % (snapshot_path,)
+        self.api_request(method='DELETE', path=path)
+
 
 class _IAMPolicyAPI(object):
     """Helper mapping IAM policy-related APIs.
@@ -651,4 +750,33 @@ def _item_to_sub_for_client(iterator, resource, topics):
     :returns: The next subscription in the page.
     """
     return Subscription.from_api_repr(
+        resource, iterator.client, topics=topics)
+
+
+def _item_to_snapshot_for_client(iterator, resource, topics):
+    """Convert a subscription to the native object.
+
+    .. note::
+
+       This method does not have the correct signature to be used as
+       the ``item_to_value`` argument to
+       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       patched with a mutable topics argument that can be updated
+       on subsequent calls. For an example, see how the method is
+       used above in :meth:`_SubscriberAPI.list_snapshots`.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: A subscription returned from the API.
+
+    :type topics: dict
+    :param topics: A dictionary of topics to be used (and modified)
+                   as new subscriptions are created bound to topics.
+
+    :rtype: :class:`~google.cloud.pubsub.subscription.Subscription`
+    :returns: The next subscription in the page.
+    """
+    return Snapshot.from_api_repr(
         resource, iterator.client, topics=topics)
