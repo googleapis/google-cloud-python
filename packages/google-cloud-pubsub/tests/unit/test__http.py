@@ -819,7 +819,7 @@ class Test_SubscriberAPI(_Base):
 
     def test_list_snapshots_with_paging(self):
         import six
-        
+
         from google.cloud.pubsub.client import Client
         from google.cloud.pubsub.snapshot import Snapshot
 
