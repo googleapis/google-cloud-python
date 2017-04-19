@@ -360,7 +360,8 @@ class TestPubsub(unittest.TestCase):
         self.to_delete.append(topic)
 
         SUBSCRIPTION_NAME = 'subscribing-to-seek' + unique_resource_id('-')
-        subscription = topic.subscription(SUBSCRIPTION_NAME)
+        subscription = topic.subscription(
+            SUBSCRIPTION_NAME, retain_acked_messages=True)
         self.assertFalse(subscription.exists())
         subscription.create()
         self.to_delete.append(subscription)
