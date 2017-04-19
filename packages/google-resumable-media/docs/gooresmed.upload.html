@@ -36,7 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="gooresmed 0.0.1 documentation" href="index.html"/>
-        <link rel="prev" title="gooresmed.download module" href="gooresmed.download.html"/> 
+        <link rel="prev" title="gooresmed.exceptions module" href="gooresmed.exceptions.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -91,6 +91,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gooresmed.download.html">gooresmed.download module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gooresmed.exceptions.html">gooresmed.exceptions module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">gooresmed.upload module</a></li>
 </ul>
 
@@ -305,6 +306,20 @@ image has content type <code class="docutils literal"><span class="pre">image/jp
 <dt id="gooresmed.upload.ResumableUpload.transmit_next_chunk">
 <code class="descname">transmit_next_chunk</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.upload.ResumableUpload.transmit_next_chunk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transmit the next chunk of the resource to be uploaded.</p>
+<p>In the case of failure, an exception is thrown that preserves the
+failed response:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">caught_exc</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">error</span> <span class="o">=</span> <span class="n">caught_exc</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error</span>
+<span class="go">InvalidResponse(&#39;Response has unexpected status code&#39;, 400, ...)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error</span><span class="o">.</span><span class="n">response</span>
+<span class="go">&lt;Response [400]&gt;</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -317,6 +332,9 @@ upload URL, a <code class="docutils literal"><span class="pre">data</span></code
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The return value of <code class="docutils literal"><span class="pre">transport.put()</span></code>.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)">object</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gooresmed.exceptions.html#gooresmed.exceptions.InvalidResponse" title="gooresmed.exceptions.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a> &#8211; If the status code is
+not 200 or 308.</td>
 </tr>
 </tbody>
 </table>
@@ -401,7 +419,7 @@ image has content type <code class="docutils literal"><span class="pre">image/jp
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="gooresmed.download.html" class="btn btn-neutral" title="gooresmed.download module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="gooresmed.exceptions.html" class="btn btn-neutral" title="gooresmed.exceptions module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; gooresmed 0.0.1 documentation</title>
+  <title>gooresmed.exceptions module &mdash; gooresmed 0.0.1 documentation</title>
   
 
   
@@ -34,8 +34,10 @@
   
         <link rel="index" title="Index"
               href="genindex.html"/>
-        <link rel="search" title="Search" href="#"/>
-    <link rel="top" title="gooresmed 0.0.1 documentation" href="index.html"/> 
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="gooresmed 0.0.1 documentation" href="index.html"/>
+        <link rel="next" title="gooresmed.upload module" href="gooresmed.upload.html"/>
+        <link rel="prev" title="gooresmed.download module" href="gooresmed.download.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -71,7 +73,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -88,9 +90,9 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gooresmed.download.html">gooresmed.download module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gooresmed.exceptions.html">gooresmed.exceptions module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">gooresmed.exceptions module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gooresmed.upload.html">gooresmed.upload module</a></li>
 </ul>
 
@@ -136,10 +138,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Search</li>
+      <li>gooresmed.exceptions module</li>
     
     
       <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/gooresmed.exceptions.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -151,19 +157,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="module-gooresmed.exceptions">
+<span id="gooresmed-exceptions-module"></span><h1>gooresmed.exceptions module<a class="headerlink" href="#module-gooresmed.exceptions" title="Permalink to this headline">¶</a></h1>
+<p>Custom exception types upload and downloads.</p>
+<dl class="exception">
+<dt id="gooresmed.exceptions.InvalidResponse">
+<em class="property">exception </em><code class="descclassname">gooresmed.exceptions.</code><code class="descname">InvalidResponse</code><span class="sig-paren">(</span><em>response</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.exceptions.InvalidResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<p>Error class for responses which are not in the correct state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>response</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) &#8211; The HTTP response which caused the failure.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) &#8211; The positional arguments typically passed to an
+exception class.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gooresmed.exceptions.InvalidResponse.args">
+<code class="descname">args</code><a class="headerlink" href="#gooresmed.exceptions.InvalidResponse.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-  
-  <div id="search-results">
-  
-  </div>
+<dl class="method">
+<dt id="gooresmed.exceptions.InvalidResponse.with_traceback">
+<code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.exceptions.InvalidResponse.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) &#8211;
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
 
            </div>
            <div class="articleComments">
@@ -171,6 +201,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gooresmed.upload.html" class="btn btn-neutral float-right" title="gooresmed.upload module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gooresmed.download.html" class="btn btn-neutral" title="gooresmed.download module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -209,7 +248,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
   
 
@@ -225,14 +263,7 @@
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

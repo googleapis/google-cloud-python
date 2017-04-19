@@ -433,6 +433,48 @@ class ResumableUpload(_UploadBase):
     def transmit_next_chunk(self, transport):
         """Transmit the next chunk of the resource to be uploaded.
 
+        In the case of failure, an exception is thrown that preserves the
+        failed response:
+
+        .. testsetup:: bad-response
+
+           import io
+
+           import mock
+           import requests
+           from six.moves import http_client
+
+           import gooresmed
+           import gooresmed.upload as upload_mod
+
+           transport = mock.Mock(spec=[u'put'])
+           fake_response = requests.Response()
+           fake_response.status_code = int(http_client.BAD_REQUEST)
+           transport.put.return_value = fake_response
+
+           upload_url = u'http://test.invalid'
+           upload = upload_mod.ResumableUpload(
+               upload_url, upload_mod.UPLOAD_CHUNK_SIZE)
+           # Fake that the upload has been initiate()-d
+           data = b'data is here'
+           upload._stream = io.BytesIO(data)
+           upload._total_bytes = len(data)
+           upload._upload_url_with_id = u'http://test.invalid?upload_id=nope'
+
+        .. doctest:: bad-response
+           :options: +NORMALIZE_WHITESPACE
+
+           >>> error = None
+           >>> try:
+           ...     upload.transmit_next_chunk(transport)
+           ... except gooresmed.InvalidResponse as caught_exc:
+           ...     error = caught_exc
+           ...
+           >>> error
+           InvalidResponse('Response has unexpected status code', 400, ...)
+           >>> error.response
+           <Response [400]>
+
         Args:
             transport (object): An object which can make authenticated
                 requests via a ``put()`` method which accepts an
@@ -441,6 +483,10 @@ class ResumableUpload(_UploadBase):
 
         Returns:
             object: The return value of ``transport.put()``.
+
+        Raises:
+            ~gooresmed.exceptions.InvalidResponse: If the status code is
+                not 200 or 308.
         """
         payload, headers = self._prepare_request()
         result = transport.put(
