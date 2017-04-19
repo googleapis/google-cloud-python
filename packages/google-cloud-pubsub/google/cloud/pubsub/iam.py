@@ -17,16 +17,15 @@ For allowed roles / permissions, see:
 https://cloud.google.com/pubsub/access_control#permissions
 """
 
-# Generic IAM roles
+import warnings
 
-OWNER_ROLE = 'roles/owner'
-"""Generic role implying all rights to an object."""
-
-EDITOR_ROLE = 'roles/editor'
-"""Generic role implying rights to modify an object."""
-
-VIEWER_ROLE = 'roles/viewer'
-"""Generic role implying rights to access an object."""
+# pylint: disable=unused-import
+from google.cloud.iam import OWNER_ROLE   # noqa - backward compat
+from google.cloud.iam import EDITOR_ROLE  # noqa - backward compat
+from google.cloud.iam import VIEWER_ROLE  # noqa - backward compat
+# pylint: enable=unused-import
+from google.cloud.iam import Policy as _BasePolicy
+from google.cloud.iam import _ASSIGNMENT_DEPRECATED_MSG
 
 # Pubsub-specific IAM roles
 
@@ -94,166 +93,46 @@ PUBSUB_SUBSCRIPTIONS_UPDATE = 'pubsub.subscriptions.update'
 """Permission: update subscriptions."""
 
 
-class Policy(object):
-    """Combined IAM Policy / Bindings.
+class Policy(_BasePolicy):
+    """IAM Policy / Bindings.
 
     See:
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Binding
-
-    :type etag: str
-    :param etag: ETag used to identify a unique of the policy
-
-    :type version: int
-    :param version: unique version of the policy
     """
-    def __init__(self, etag=None, version=None):
-        self.etag = etag
-        self.version = version
-        self.owners = set()
-        self.editors = set()
-        self.viewers = set()
-        self.publishers = set()
-        self.subscribers = set()
+    _OWNER_ROLES = (OWNER_ROLE, PUBSUB_ADMIN_ROLE)
+    """Roles mapped onto our ``owners`` attribute."""
 
-    @staticmethod
-    def user(email):
-        """Factory method for a user member.
+    _EDITOR_ROLES = (EDITOR_ROLE, PUBSUB_EDITOR_ROLE)
+    """Roles mapped onto our ``editors`` attribute."""
 
-        :type email: str
-        :param email: E-mail for this particular user.
+    _VIEWER_ROLES = (VIEWER_ROLE, PUBSUB_VIEWER_ROLE)
+    """Roles mapped onto our ``viewers`` attribute."""
 
-        :rtype: str
-        :returns: A member string corresponding to the given user.
-        """
-        return 'user:%s' % (email,)
+    @property
+    def publishers(self):
+        """Legacy access to owner role."""
+        return frozenset(self._bindings.get(PUBSUB_PUBLISHER_ROLE, ()))
 
-    @staticmethod
-    def service_account(email):
-        """Factory method for a service account member.
+    @publishers.setter
+    def publishers(self, value):
+        """Update publishers."""
+        warnings.warn(
+            _ASSIGNMENT_DEPRECATED_MSG.format(
+                'publishers', PUBSUB_PUBLISHER_ROLE),
+            DeprecationWarning)
+        self._bindings[PUBSUB_PUBLISHER_ROLE] = list(value)
 
-        :type email: str
-        :param email: E-mail for this particular service account.
+    @property
+    def subscribers(self):
+        """Legacy access to owner role."""
+        return frozenset(self._bindings.get(PUBSUB_SUBSCRIBER_ROLE, ()))
 
-        :rtype: str
-        :returns: A member string corresponding to the given service account.
-        """
-        return 'serviceAccount:%s' % (email,)
-
-    @staticmethod
-    def group(email):
-        """Factory method for a group member.
-
-        :type email: str
-        :param email: An id or e-mail for this particular group.
-
-        :rtype: str
-        :returns: A member string corresponding to the given group.
-        """
-        return 'group:%s' % (email,)
-
-    @staticmethod
-    def domain(domain):
-        """Factory method for a domain member.
-
-        :type domain: str
-        :param domain: The domain for this member.
-
-        :rtype: str
-        :returns: A member string corresponding to the given domain.
-        """
-        return 'domain:%s' % (domain,)
-
-    @staticmethod
-    def all_users():
-        """Factory method for a member representing all users.
-
-        :rtype: str
-        :returns: A member string representing all users.
-        """
-        return 'allUsers'
-
-    @staticmethod
-    def authenticated_users():
-        """Factory method for a member representing all authenticated users.
-
-        :rtype: str
-        :returns: A member string representing all authenticated users.
-        """
-        return 'allAuthenticatedUsers'
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Create a policy from the resource returned from the API.
-
-        :type resource: dict
-        :param resource: resource returned from the ``getIamPolicy`` API.
-
-        :rtype: :class:`Policy`
-        :returns: the parsed policy
-        """
-        version = resource.get('version')
-        etag = resource.get('etag')
-        policy = cls(etag, version)
-        for binding in resource.get('bindings', ()):
-            role = binding['role']
-            members = set(binding['members'])
-            if role in (OWNER_ROLE, PUBSUB_ADMIN_ROLE):
-                policy.owners |= members
-            elif role in (EDITOR_ROLE, PUBSUB_EDITOR_ROLE):
-                policy.editors |= members
-            elif role in (VIEWER_ROLE, PUBSUB_VIEWER_ROLE):
-                policy.viewers |= members
-            elif role == PUBSUB_PUBLISHER_ROLE:
-                policy.publishers |= members
-            elif role == PUBSUB_SUBSCRIBER_ROLE:
-                policy.subscribers |= members
-            else:
-                raise ValueError('Unknown role: %s' % (role,))
-        return policy
-
-    def to_api_repr(self):
-        """Construct a Policy resource.
-
-        :rtype: dict
-        :returns: a resource to be passed to the ``setIamPolicy`` API.
-        """
-        resource = {}
-
-        if self.etag is not None:
-            resource['etag'] = self.etag
-
-        if self.version is not None:
-            resource['version'] = self.version
-
-        bindings = []
-
-        if self.owners:
-            bindings.append(
-                {'role': PUBSUB_ADMIN_ROLE,
-                 'members': sorted(self.owners)})
-
-        if self.editors:
-            bindings.append(
-                {'role': PUBSUB_EDITOR_ROLE,
-                 'members': sorted(self.editors)})
-
-        if self.viewers:
-            bindings.append(
-                {'role': PUBSUB_VIEWER_ROLE,
-                 'members': sorted(self.viewers)})
-
-        if self.publishers:
-            bindings.append(
-                {'role': PUBSUB_PUBLISHER_ROLE,
-                 'members': sorted(self.publishers)})
-
-        if self.subscribers:
-            bindings.append(
-                {'role': PUBSUB_SUBSCRIBER_ROLE,
-                 'members': sorted(self.subscribers)})
-
-        if bindings:
-            resource['bindings'] = bindings
-
-        return resource
+    @subscribers.setter
+    def subscribers(self, value):
+        """Update subscribers."""
+        warnings.warn(
+            _ASSIGNMENT_DEPRECATED_MSG.format(
+                'subscribers', PUBSUB_SUBSCRIBER_ROLE),
+            DeprecationWarning)
+        self._bindings[PUBSUB_SUBSCRIBER_ROLE] = list(value)

@@ -30,10 +30,15 @@ class TestPolicy(unittest.TestCase):
         policy = self._make_one()
         self.assertIsNone(policy.etag)
         self.assertIsNone(policy.version)
+        self.assertIsInstance(policy.owners, frozenset)
         self.assertEqual(list(policy.owners), [])
+        self.assertIsInstance(policy.editors, frozenset)
         self.assertEqual(list(policy.editors), [])
+        self.assertIsInstance(policy.viewers, frozenset)
         self.assertEqual(list(policy.viewers), [])
+        self.assertIsInstance(policy.publishers, frozenset)
         self.assertEqual(list(policy.publishers), [])
+        self.assertIsInstance(policy.subscribers, frozenset)
         self.assertEqual(list(policy.subscribers), [])
 
     def test_ctor_explicit(self):
@@ -48,145 +53,30 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.publishers), [])
         self.assertEqual(list(policy.subscribers), [])
 
-    def test_user(self):
-        EMAIL = 'phred@example.com'
-        MEMBER = 'user:%s' % (EMAIL,)
-        policy = self._make_one()
-        self.assertEqual(policy.user(EMAIL), MEMBER)
-
-    def test_service_account(self):
-        EMAIL = 'phred@example.com'
-        MEMBER = 'serviceAccount:%s' % (EMAIL,)
-        policy = self._make_one()
-        self.assertEqual(policy.service_account(EMAIL), MEMBER)
-
-    def test_group(self):
-        EMAIL = 'phred@example.com'
-        MEMBER = 'group:%s' % (EMAIL,)
-        policy = self._make_one()
-        self.assertEqual(policy.group(EMAIL), MEMBER)
-
-    def test_domain(self):
-        DOMAIN = 'example.com'
-        MEMBER = 'domain:%s' % (DOMAIN,)
-        policy = self._make_one()
-        self.assertEqual(policy.domain(DOMAIN), MEMBER)
-
-    def test_all_users(self):
-        policy = self._make_one()
-        self.assertEqual(policy.all_users(), 'allUsers')
-
-    def test_authenticated_users(self):
-        policy = self._make_one()
-        self.assertEqual(policy.authenticated_users(), 'allAuthenticatedUsers')
-
-    def test_from_api_repr_only_etag(self):
-        RESOURCE = {
-            'etag': 'ACAB',
-        }
-        klass = self._get_target_class()
-        policy = klass.from_api_repr(RESOURCE)
-        self.assertEqual(policy.etag, 'ACAB')
-        self.assertIsNone(policy.version)
-        self.assertEqual(list(policy.owners), [])
-        self.assertEqual(list(policy.editors), [])
-        self.assertEqual(list(policy.viewers), [])
-
-    def test_from_api_repr_complete(self):
+    def test_publishers_setter(self):
+        import warnings
         from google.cloud.pubsub.iam import (
-            OWNER_ROLE,
-            EDITOR_ROLE,
-            VIEWER_ROLE,
             PUBSUB_PUBLISHER_ROLE,
-            PUBSUB_SUBSCRIBER_ROLE,
         )
-
-        OWNER1 = 'user:phred@example.com'
-        OWNER2 = 'group:cloud-logs@google.com'
-        EDITOR1 = 'domain:google.com'
-        EDITOR2 = 'user:phred@example.com'
-        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
-        VIEWER2 = 'user:phred@example.com'
         PUBLISHER = 'user:phred@example.com'
-        SUBSCRIBER = 'serviceAccount:1234-abcdef@service.example.com'
-        RESOURCE = {
-            'etag': 'DEADBEEF',
-            'version': 17,
-            'bindings': [
-                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
-                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
-                {'role': PUBSUB_PUBLISHER_ROLE, 'members': [PUBLISHER]},
-                {'role': PUBSUB_SUBSCRIBER_ROLE, 'members': [SUBSCRIBER]},
-            ],
-        }
-        klass = self._get_target_class()
-        policy = klass.from_api_repr(RESOURCE)
-        self.assertEqual(policy.etag, 'DEADBEEF')
-        self.assertEqual(policy.version, 17)
-        self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
-        self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
-        self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
+        policy = self._make_one()
+        with warnings.catch_warnings():
+            policy.publishers = [PUBLISHER]
+
         self.assertEqual(sorted(policy.publishers), [PUBLISHER])
-        self.assertEqual(sorted(policy.subscribers), [SUBSCRIBER])
+        self.assertEqual(
+            dict(policy), {PUBSUB_PUBLISHER_ROLE: [PUBLISHER]})
 
-    def test_from_api_repr_bad_role(self):
-        BOGUS1 = 'user:phred@example.com'
-        BOGUS2 = 'group:cloud-logs@google.com'
-        RESOURCE = {
-            'etag': 'DEADBEEF',
-            'version': 17,
-            'bindings': [
-                {'role': 'nonesuch', 'members': [BOGUS1, BOGUS2]},
-            ],
-        }
-        klass = self._get_target_class()
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(RESOURCE)
-
-    def test_to_api_repr_defaults(self):
-        policy = self._make_one()
-        self.assertEqual(policy.to_api_repr(), {})
-
-    def test_to_api_repr_only_etag(self):
-        policy = self._make_one('DEADBEEF')
-        self.assertEqual(policy.to_api_repr(), {'etag': 'DEADBEEF'})
-
-    def test_to_api_repr_full(self):
+    def test_subscribers_setter(self):
+        import warnings
         from google.cloud.pubsub.iam import (
-            PUBSUB_ADMIN_ROLE,
-            PUBSUB_EDITOR_ROLE,
-            PUBSUB_VIEWER_ROLE,
-            PUBSUB_PUBLISHER_ROLE,
             PUBSUB_SUBSCRIBER_ROLE,
         )
-
-        OWNER1 = 'group:cloud-logs@google.com'
-        OWNER2 = 'user:phred@example.com'
-        EDITOR1 = 'domain:google.com'
-        EDITOR2 = 'user:phred@example.com'
-        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
-        VIEWER2 = 'user:phred@example.com'
-        PUBLISHER = 'user:phred@example.com'
         SUBSCRIBER = 'serviceAccount:1234-abcdef@service.example.com'
-        EXPECTED = {
-            'etag': 'DEADBEEF',
-            'version': 17,
-            'bindings': [
-                {'role': PUBSUB_ADMIN_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': PUBSUB_EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
-                {'role': PUBSUB_VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
-                {'role': PUBSUB_PUBLISHER_ROLE, 'members': [PUBLISHER]},
-                {'role': PUBSUB_SUBSCRIBER_ROLE, 'members': [SUBSCRIBER]},
-            ],
-        }
-        policy = self._make_one('DEADBEEF', 17)
-        policy.owners.add(OWNER1)
-        policy.owners.add(OWNER2)
-        policy.editors.add(EDITOR1)
-        policy.editors.add(EDITOR2)
-        policy.viewers.add(VIEWER1)
-        policy.viewers.add(VIEWER2)
-        policy.publishers.add(PUBLISHER)
-        policy.subscribers.add(SUBSCRIBER)
-        self.assertEqual(policy.to_api_repr(), EXPECTED)
+        policy = self._make_one()
+        with warnings.catch_warnings():
+            policy.subscribers = [SUBSCRIBER]
+
+        self.assertEqual(sorted(policy.subscribers), [SUBSCRIBER])
+        self.assertEqual(
+            dict(policy), {PUBSUB_SUBSCRIBER_ROLE: [SUBSCRIBER]})
