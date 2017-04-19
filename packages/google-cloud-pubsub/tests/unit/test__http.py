@@ -610,6 +610,34 @@ class Test_SubscriberAPI(_Base):
         self.assertEqual(connection._called_with['path'], path)
         self.assertEqual(connection._called_with['data'], RESOURCE)
 
+    def test_subscription_create_retain_messages(self):
+        import datetime
+        
+        RESOURCE = {'topic': self.TOPIC_PATH,
+                    'retainAckedMessages': True,
+                    'messageRetentionDuration': {
+                        'seconds': 1729,
+                        'nanos': 2718 * 1000
+                    }
+                   }
+        RETURNED = RESOURCE.copy()
+        RETURNED['name'] = self.SUB_PATH
+        connection = _Connection(RETURNED)
+        client = _Client(connection, self.PROJECT)
+        api = self._make_one(client)
+
+        resource = api.subscription_create(
+            self.SUB_PATH, self.TOPIC_PATH,
+            retain_acked_messages=True,
+            message_retention_duration=datetime.timedelta(
+                seconds=1729, microseconds=2718))
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(connection._called_with['method'], 'PUT')
+        path = '/%s' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], RESOURCE)
+        
     def test_subscription_create_explicit(self):
         ACK_DEADLINE = 90
         PUSH_ENDPOINT = 'https://api.example.com/push'

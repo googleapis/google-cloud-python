@@ -547,12 +547,54 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
             'topic': self.TOPIC_PATH,
         }
         self.assertEqual(resource, expected)
-        name, topic, push_config, ack_deadline, options = (
+        (name, topic, push_config, ack_deadline, retain_acked_messages,
+         message_retention_duration, options) = (
             gax_api._create_subscription_called_with)
         self.assertEqual(name, self.SUB_PATH)
         self.assertEqual(topic, self.TOPIC_PATH)
         self.assertIsNone(push_config)
-        self.assertEqual(ack_deadline, 0)
+        self.assertEqual(ack_deadline, None)
+        self.assertIsNone(retain_acked_messages)
+        self.assertIsNone(message_retention_duration)
+        self.assertIsNone(options)
+
+    def test_subscription_create_optional_params(self):
+        import datetime
+        
+        from google.cloud.proto.pubsub.v1.pubsub_pb2 import Subscription
+
+        sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH)
+        gax_api = _GAXSubscriberAPI(_create_subscription_response=sub_pb)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+        expected_ack_deadline = 1729
+        expected_push_endpoint = 'push-endpoint'
+        expected_retain_acked_messages = True
+        expected_message_retention_duration = datetime.timedelta(
+            days=1, hours=7, minutes=2, seconds=9)
+
+        resource = api.subscription_create(
+            self.SUB_PATH, self.TOPIC_PATH, ack_deadline=expected_ack_deadline,
+            push_endpoint=expected_push_endpoint,
+            retain_acked_messages=expected_retain_acked_messages,
+            message_retention_duration=expected_message_retention_duration)
+
+        expected = {
+            'name': self.SUB_PATH,
+            'topic': self.TOPIC_PATH,
+        }
+        self.assertEqual(resource, expected)
+        (name, topic, push_config, ack_deadline, retain_acked_messages,
+         message_retention_duration, options) = (
+            gax_api._create_subscription_called_with)
+        print(gax_api._create_subscription_called_with)
+        self.assertEqual(name, self.SUB_PATH)
+        self.assertEqual(topic, self.TOPIC_PATH)
+        self.assertEqual(push_config.push_endpoint, expected_push_endpoint)
+        self.assertEqual(ack_deadline, expected_ack_deadline)
+        self.assertEqual(retain_acked_messages, expected_retain_acked_messages)
+        self.assertEqual(message_retention_duration.seconds,
+                         expected_message_retention_duration.total_seconds())
         self.assertIsNone(options)
 
     def test_subscription_create_already_exists(self):
@@ -567,12 +609,15 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
             api.subscription_create(
                 self.SUB_PATH, self.TOPIC_PATH, DEADLINE, self.PUSH_ENDPOINT)
 
-        name, topic, push_config, ack_deadline, options = (
+        (name, topic, push_config, ack_deadline, retain_acked_messages,
+         message_retention_duration, options) = (
             gax_api._create_subscription_called_with)
         self.assertEqual(name, self.SUB_PATH)
         self.assertEqual(topic, self.TOPIC_PATH)
         self.assertEqual(push_config.push_endpoint, self.PUSH_ENDPOINT)
         self.assertEqual(ack_deadline, DEADLINE)
+        self.assertIsNone(retain_acked_messages)
+        self.assertIsNone(message_retention_duration)
         self.assertIsNone(options)
 
     def test_subscription_create_error(self):
@@ -585,12 +630,15 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         with self.assertRaises(GaxError):
             api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
 
-        name, topic, push_config, ack_deadline, options = (
+        (name, topic, push_config, ack_deadline, retain_acked_messages,
+         message_retention_duration, options) = (
             gax_api._create_subscription_called_with)
         self.assertEqual(name, self.SUB_PATH)
         self.assertEqual(topic, self.TOPIC_PATH)
         self.assertIsNone(push_config)
-        self.assertEqual(ack_deadline, 0)
+        self.assertEqual(ack_deadline, None)
+        self.assertIsNone(retain_acked_messages)
+        self.assertIsNone(message_retention_duration)
         self.assertIsNone(options)
 
     def test_subscription_get_hit(self):
@@ -1396,13 +1444,16 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
         self._list_subscriptions_called_with = (project, page_size, options)
         return self._list_subscriptions_response
 
-    def create_subscription(self, name, topic,
-                            push_config, ack_deadline_seconds,
+    def create_subscription(self, name, topic, push_config=None,
+                            ack_deadline_seconds=None,
+                            retain_acked_messages=None,
+                            message_retention_duration=None,
                             options=None):
         from google.gax.errors import GaxError
 
         self._create_subscription_called_with = (
-            name, topic, push_config, ack_deadline_seconds, options)
+            name, topic, push_config, ack_deadline_seconds,
+            retain_acked_messages, message_retention_duration, options)
         if self._random_gax_error:
             raise GaxError('error')
         if self._create_subscription_conflict:

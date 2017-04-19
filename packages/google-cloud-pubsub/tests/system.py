@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import os
 import unittest
 
@@ -165,6 +166,26 @@ class TestPubsub(unittest.TestCase):
         self.assertTrue(subscription.exists())
         self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
         self.assertEqual(subscription.ack_deadline, 120)
+        self.assertIs(subscription.topic, topic)
+
+    def test_create_subscription_w_message_retention(self):
+        TOPIC_NAME = 'create-sub-ack' + unique_resource_id('-')
+        topic = Config.CLIENT.topic(TOPIC_NAME)
+        self.assertFalse(topic.exists())
+        topic.create()
+        self.to_delete.append(topic)
+        SUBSCRIPTION_NAME = 'subscribing-now' + unique_resource_id()
+        duration = datetime.timedelta(hours=12)
+        subscription = topic.subscription(
+            SUBSCRIPTION_NAME, retain_acked_messages=True,
+            message_retention_duration=duration)
+        self.assertFalse(subscription.exists())
+        subscription.create()
+        self.to_delete.append(subscription)
+        self.assertTrue(subscription.exists())
+        self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
+        self.assertTrue(subscription.retain_acked_messages)
+        self.assertEqual(subscription.message_retention_duration, duration)
         self.assertIs(subscription.topic, topic)
 
     def test_list_subscriptions(self):
@@ -330,7 +351,7 @@ class TestPubsub(unittest.TestCase):
         self.assertNotIn(snapshot.full_name, map(full_name, before_snapshots))
 
 
-    def test_seek(self): 
+    def test_seek(self):
         TOPIC_NAME = 'seek-e2e' + unique_resource_id('-')
         topic = Config.CLIENT.topic(TOPIC_NAME,
                                     timestamp_messages=True)
@@ -348,7 +369,7 @@ class TestPubsub(unittest.TestCase):
         snapshot = subscription.snapshot(SNAPSHOT_NAME)
         snapshot.create()
         self.to_delete.append(snapshot)
-        
+
         MESSAGE_1 = b'MESSAGE ONE'
         topic.publish(MESSAGE_1)
         MESSAGE_2 = b'MESSAGE TWO'
