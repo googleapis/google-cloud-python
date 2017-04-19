@@ -1173,6 +1173,144 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(
             headers['Origin'], ORIGIN)
 
+    def test_get_iam_policy(self):
+        from six.moves.http_client import OK
+        from google.cloud.storage.iam import STORAGE_OWNER_ROLE
+        from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
+        from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
+        from google.cloud.iam import Policy
+
+        BLOB_NAME = 'blob-name'
+        PATH = '/b/name/o/%s' % (BLOB_NAME,)
+        ETAG = 'DEADBEEF'
+        VERSION = 17
+        OWNER1 = 'user:phred@example.com'
+        OWNER2 = 'group:cloud-logs@google.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
+        RETURNED = {
+            'resourceId': PATH,
+            'etag': ETAG,
+            'version': VERSION,
+            'bindings': [
+                {'role': STORAGE_OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': STORAGE_EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': STORAGE_VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+            ],
+        }
+        after = ({'status': OK}, RETURNED)
+        EXPECTED = {
+            binding['role']: set(binding['members'])
+            for binding in RETURNED['bindings']}
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        policy = blob.get_iam_policy()
+
+        self.assertIsInstance(policy, Policy)
+        self.assertEqual(policy.etag, RETURNED['etag'])
+        self.assertEqual(policy.version, RETURNED['version'])
+        self.assertEqual(dict(policy), EXPECTED)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+
+    def test_set_iam_policy(self):
+        import operator
+        from six.moves.http_client import OK
+        from google.cloud.storage.iam import STORAGE_OWNER_ROLE
+        from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
+        from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
+        from google.cloud.iam import Policy
+
+        BLOB_NAME = 'blob-name'
+        PATH = '/b/name/o/%s' % (BLOB_NAME,)
+        ETAG = 'DEADBEEF'
+        VERSION = 17
+        OWNER1 = 'user:phred@example.com'
+        OWNER2 = 'group:cloud-logs@google.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
+        BINDINGS = [
+            {'role': STORAGE_OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+            {'role': STORAGE_EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+            {'role': STORAGE_VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+        ]
+        RETURNED = {
+            'etag': ETAG,
+            'version': VERSION,
+            'bindings': BINDINGS,
+        }
+        after = ({'status': OK}, RETURNED)
+        policy = Policy()
+        for binding in BINDINGS:
+            policy[binding['role']] = binding['members']
+
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        returned = blob.set_iam_policy(policy)
+
+        self.assertEqual(returned.etag, ETAG)
+        self.assertEqual(returned.version, VERSION)
+        self.assertEqual(dict(returned), dict(policy))
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PUT')
+        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        sent = kw[0]['data']
+        self.assertEqual(sent['resourceId'], PATH)
+        self.assertEqual(len(sent['bindings']), len(BINDINGS))
+        key = operator.itemgetter('role')
+        for found, expected in zip(
+            sorted(sent['bindings'], key=key),
+            sorted(BINDINGS, key=key)):
+            self.assertEqual(found['role'], expected['role'])
+            self.assertEqual(
+                sorted(found['members']), sorted(expected['members']))
+
+    def test_test_iam_permissions(self):
+        from six.moves.http_client import OK
+        from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
+        from google.cloud.storage.iam import STORAGE_BUCKETS_GET
+        from google.cloud.storage.iam import STORAGE_BUCKETS_UPDATE
+
+        BLOB_NAME = 'blob-name'
+        PATH = '/b/name/o/%s' % (BLOB_NAME,)
+        PERMISSIONS = [
+            STORAGE_OBJECTS_LIST,
+            STORAGE_BUCKETS_GET,
+            STORAGE_BUCKETS_UPDATE,
+        ]
+        ALLOWED = PERMISSIONS[1:]
+        RETURNED = {'permissions': ALLOWED}
+        after = ({'status': OK}, RETURNED)
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        allowed = blob.test_iam_permissions(PERMISSIONS)
+
+        self.assertEqual(allowed, ALLOWED)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '%s/iam/testPermissions' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {'permissions': PERMISSIONS})
+
     def test_make_public(self):
         from six.moves.http_client import OK
         from google.cloud.storage.acl import _ACLEntity
