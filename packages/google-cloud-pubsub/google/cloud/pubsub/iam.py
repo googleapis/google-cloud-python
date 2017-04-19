@@ -121,7 +121,7 @@ class Policy(_BasePolicy):
             _ASSIGNMENT_DEPRECATED_MSG.format(
                 'publishers', PUBSUB_PUBLISHER_ROLE),
             DeprecationWarning)
-        self._bindings[PUBSUB_PUBLISHER_ROLE] = list(value)
+        self[PUBSUB_PUBLISHER_ROLE] = value
 
     @property
     def subscribers(self):
@@ -135,4 +135,4 @@ class Policy(_BasePolicy):
             _ASSIGNMENT_DEPRECATED_MSG.format(
                 'subscribers', PUBSUB_SUBSCRIBER_ROLE),
             DeprecationWarning)
-        self._bindings[PUBSUB_SUBSCRIBER_ROLE] = list(value)
+        self[PUBSUB_SUBSCRIBER_ROLE] = value
