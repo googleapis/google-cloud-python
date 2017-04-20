@@ -42,7 +42,6 @@ insights via dashboards, charts, and alerts.
 This package currently supports all Monitoring API operations other than
 writing custom metrics.
 
-.. _Stackdriver Monitoring: https://cloud.google.com/monitoring/
 .. _Monitoring API docs: https://cloud.google.com/monitoring/api/ref_v3/rest/
 
 List available metric types:
