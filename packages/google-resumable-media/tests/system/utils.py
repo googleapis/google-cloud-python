@@ -15,7 +15,7 @@
 import os
 
 
-BUCKET_NAME = os.environ[u'GOORESMED_BUCKET']
+BUCKET_NAME = os.environ[u'GOOGLE_RESUMABLE_MEDIA_BUCKET']
 DOWNLOAD_URL_TEMPLATE = (
     u'https://www.googleapis.com/download/storage/v1/b/' +
     BUCKET_NAME +
