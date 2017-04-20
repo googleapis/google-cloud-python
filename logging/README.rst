@@ -35,7 +35,6 @@ Using the API
 `Stackdriver Logging`_ API (`Logging API docs`_) allows you to store, search,
 analyze, monitor, and alert on log data and events from Google Cloud Platform.
 
-.. _Stackdriver Logging: https://cloud.google.com/logging/
 .. _Logging API docs: https://cloud.google.com/logging/docs/
 
 .. code:: python
