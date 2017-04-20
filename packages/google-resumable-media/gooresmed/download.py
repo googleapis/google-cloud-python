@@ -132,6 +132,9 @@ class ChunkedDownload(_DownloadBase):
        media_url (str): The URL containing the media to be downloaded.
        chunk_size (int): The number of bytes to be retrieved in each
            request.
+       stream (IO[bytes]): A write-able stream (i.e. file-like object) that
+           will be used to concatenate chunks of the resource as they are
+           downloaded.
        start (int): The first byte in a range to be downloaded. If not
            provided, defaults to ``0``.
        end (int): The last byte in a range to be downloaded. If not
@@ -141,7 +144,7 @@ class ChunkedDownload(_DownloadBase):
         ValueError: If ``start`` is negative.
     """
 
-    def __init__(self, media_url, chunk_size, start=0, end=None):
+    def __init__(self, media_url, chunk_size, stream, start=0, end=None):
         if start < 0:
             raise ValueError(
                 u'On a chunked download the starting '
@@ -150,6 +153,7 @@ class ChunkedDownload(_DownloadBase):
             media_url, start=start, end=end)
         self.chunk_size = chunk_size
         """int: The number of bytes to be retrieved in each request."""
+        self._stream = stream
         self._bytes_downloaded = 0
         self._total_bytes = None
 
@@ -227,13 +231,24 @@ class ChunkedDownload(_DownloadBase):
         Args:
             response (object): The HTTP response object (need headers).
 
+        Raises:
+            ~gooresmed.exceptions.InvalidResponse: If the number of bytes
+                in the body doesn't match the content length header.
+
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        # First update ``bytes_downloaded``.
+        # Verify the response before updating the current instance.
         content_length = _helpers.header_required(response, u'content-length')
-        self._bytes_downloaded += int(content_length)
-        # Parse the content range.
+        num_bytes = int(content_length)
         _, end_byte, total_bytes = _get_range_info(response)
+        response_body = _helpers.get_body(response)
+        if len(response_body) != num_bytes:
+            raise exceptions.InvalidResponse(
+                response, u'Response is different size than content-length',
+                u'Expected', num_bytes, u'Received', len(response_body))
+
+        # First update ``bytes_downloaded``.
+        self._bytes_downloaded += num_bytes
         # If the end byte is past ``end`` or ``total_bytes - 1`` we are done.
         if self.end is not None and end_byte >= self.end:
             self._finished = True
@@ -242,6 +257,8 @@ class ChunkedDownload(_DownloadBase):
         # NOTE: We only use ``total_bytes`` if not already known.
         if self.total_bytes is None:
             self._total_bytes = total_bytes
+        # Write the response body to the stream.
+        self._stream.write(response_body)
 
     def consume_next_chunk(self, transport):
         """Consume the next chunk of the resource to be downloaded.

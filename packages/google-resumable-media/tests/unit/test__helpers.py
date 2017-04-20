@@ -53,6 +53,12 @@ def test_get_status_code():
     assert status_code == _helpers.get_status_code(response)
 
 
+def test_get_body():
+    body = b'This is the payload.'
+    response = mock.Mock(content=body, spec=[u'content'])
+    assert body == _helpers.get_body(response)
+
+
 class Test_require_status_code(object):
 
     def test_success(self):

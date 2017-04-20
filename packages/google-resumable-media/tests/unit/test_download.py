@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
+
 import mock
 import pytest
 
@@ -135,21 +137,23 @@ class TestChunkedDownload(object):
 
     def test_constructor_defaults(self):
         chunk_size = 256
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size)
+        stream = mock.sentinel.stream
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
         assert download.media_url == EXAMPLE_URL
         assert download.chunk_size == chunk_size
         assert download.start == 0
         assert download.end is None
         assert not download._finished
+        assert download._stream is stream
         assert download._bytes_downloaded == 0
         assert download._total_bytes is None
 
     def test_constructor_bad_start(self):
         with pytest.raises(ValueError):
-            download_mod.ChunkedDownload(EXAMPLE_URL, 256, start=-11)
+            download_mod.ChunkedDownload(EXAMPLE_URL, 256, None, start=-11)
 
     def test_bytes_downloaded_property(self):
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, 256)
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, 256, None)
         # Default value of @property.
         assert download.bytes_downloaded == 0
 
@@ -162,7 +166,7 @@ class TestChunkedDownload(object):
         assert download.bytes_downloaded == 128
 
     def test_total_bytes_property(self):
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, 256)
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, 256, None)
         # Default value of @property.
         assert download.total_bytes is None
 
@@ -176,7 +180,7 @@ class TestChunkedDownload(object):
 
     def test__get_byte_range(self):
         chunk_size = 512
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size)
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, None)
         curr_start, curr_end = download._get_byte_range()
         assert curr_start == 0
         assert curr_end == chunk_size - 1
@@ -186,7 +190,7 @@ class TestChunkedDownload(object):
         start = 1024
         end = 1151
         download = download_mod.ChunkedDownload(
-            EXAMPLE_URL, chunk_size, start=start, end=end)
+            EXAMPLE_URL, chunk_size, None, start=start, end=end)
         curr_start, curr_end = download._get_byte_range()
         assert curr_start == start
         assert curr_end == end
@@ -196,7 +200,7 @@ class TestChunkedDownload(object):
 
     def test__get_byte_range_with_total_bytes(self):
         chunk_size = 512
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size)
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, None)
         total_bytes = 207
         download._total_bytes = total_bytes
         curr_start, curr_end = download._get_byte_range()
@@ -220,109 +224,154 @@ class TestChunkedDownload(object):
             u'content-range': resp_range,
         }
 
+    def _mock_response(self, start_byte, end_byte, total_bytes, content=None):
+        response_headers = self._response_headers(
+            start_byte, end_byte, total_bytes)
+        return mock.Mock(
+            content=content, headers=response_headers,
+            spec=[u'content', u'headers'])
+
     def test__prepare_request_already_finished(self):
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, 64)
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, 64, None)
         download._finished = True
         with pytest.raises(ValueError):
             download._prepare_request()
 
     def test__prepare_request(self):
         chunk_size = 2048
-        download1 = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size)
+        download1 = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, None)
         headers1 = download1._prepare_request()
         assert headers1 == {u'range': u'bytes=0-2047'}
 
         download2 = download_mod.ChunkedDownload(
-            EXAMPLE_URL, chunk_size, start=19991)
+            EXAMPLE_URL, chunk_size, None, start=19991)
         download2._total_bytes = 20101
         headers2 = download2._prepare_request()
         assert headers2 == {u'range': u'bytes=19991-20100'}
 
     def test__process_response(self):
         chunk_size = 333
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size)
+        stream = io.BytesIO()
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
         already = 22
         download._bytes_downloaded = already
         total_bytes = 4444
-        headers = self._response_headers(
-            already, already + chunk_size - 1, total_bytes)
 
         # Check internal state before.
         assert not download.finished
         assert download.bytes_downloaded == already
         assert download.total_bytes is None
         # Actually call the method to update.
-        response = mock.Mock(headers=headers, spec=[u'headers'])
+        data = b'1234xyztL' * 37  # 9 * 37 == 33
+        response = self._mock_response(
+            already, already + chunk_size - 1, total_bytes, content=data)
         download._process_response(response)
         # Check internal state after.
         assert not download.finished
         assert download.bytes_downloaded == already + chunk_size
         assert download.total_bytes == total_bytes
+        assert stream.getvalue() == data
 
-    def test__process_response_when_finished(self):
-        chunk_size = 256
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size)
-        total_bytes = 200
-        headers = self._response_headers(0, total_bytes - 1, total_bytes)
+    def test__process_response_body_wrong_length(self):
+        chunk_size = 10
+        stream = mock.Mock(spec=[u'write'])
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
+        total_bytes = 100
 
         # Check internal state before.
         assert not download.finished
         assert download.bytes_downloaded == 0
         assert download.total_bytes is None
         # Actually call the method to update.
-        response = mock.Mock(headers=headers, spec=[u'headers'])
+        data = b'not 10'
+        response = self._mock_response(
+            0, chunk_size - 1, total_bytes, content=data)
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 5
+        assert error.args[2] == chunk_size
+        assert error.args[4] == len(data)
+        # Check internal state after.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        stream.write.assert_not_called()
+
+    def test__process_response_when_finished(self):
+        chunk_size = 256
+        stream = io.BytesIO()
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
+        total_bytes = 200
+
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        # Actually call the method to update.
+        data = b'abcd' * 50  # 4 * 50 == 200
+        response = self._mock_response(
+            0, total_bytes - 1, total_bytes, content=data)
         download._process_response(response)
         # Check internal state after.
         assert download.finished
         assert download.bytes_downloaded == total_bytes
         assert total_bytes < chunk_size
         assert download.total_bytes == total_bytes
+        assert stream.getvalue() == data
 
     def test__process_response_when_reaching_end(self):
         chunk_size = 8192
         end = 65000
+        stream = io.BytesIO()
         download = download_mod.ChunkedDownload(
-            EXAMPLE_URL, chunk_size, end=end)
+            EXAMPLE_URL, chunk_size, stream, end=end)
         download._bytes_downloaded = 7 * chunk_size
         download._total_bytes = 8 * chunk_size
-        headers = self._response_headers(
-            7 * chunk_size, end, 8 * chunk_size)
 
         # Check internal state before.
         assert not download.finished
         assert download.bytes_downloaded == 7 * chunk_size
         assert download.total_bytes == 8 * chunk_size
         # Actually call the method to update.
-        response = mock.Mock(headers=headers, spec=[u'headers'])
+        expected_size = end - 7 * chunk_size + 1
+        data = b'B' * expected_size
+        response = self._mock_response(
+            7 * chunk_size, end, 8 * chunk_size, content=data)
         download._process_response(response)
         # Check internal state after.
         assert download.finished
         assert download.bytes_downloaded == end + 1
         assert download.bytes_downloaded < download.total_bytes
         assert download.total_bytes == 8 * chunk_size
+        assert stream.getvalue() == data
 
     def test_consume_next_chunk_already_finished(self):
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, 512)
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, 512, None)
         download._finished = True
         with pytest.raises(ValueError):
             download.consume_next_chunk(None)
 
-    def _mock_transport(self, start, chunk_size, total_bytes):
+    def _mock_transport(self, start, chunk_size, total_bytes, content=b''):
         transport = mock.Mock(spec=[u'get'])
-        response_headers = self._response_headers(
-            start, start + chunk_size - 1, total_bytes)
-        get_response = mock.Mock(headers=response_headers, spec=[u'headers'])
-        transport.get.return_value = get_response
+        assert len(content) == chunk_size
+        transport.get.return_value = self._mock_response(
+            start, start + chunk_size - 1, total_bytes, content=content)
 
         return transport
 
     def test_consume_next_chunk(self):
         start = 1536
-        chunk_size = 512
+        stream = io.BytesIO()
+        data = b'Just one chunk.'
+        chunk_size = len(data)
         download = download_mod.ChunkedDownload(
-            EXAMPLE_URL, chunk_size, start=start)
+            EXAMPLE_URL, chunk_size, stream, start=start)
         total_bytes = 16384
-        transport = self._mock_transport(start, chunk_size, total_bytes)
+        transport = self._mock_transport(
+            start, chunk_size, total_bytes, content=data)
 
         # Verify the internal state before consuming a chunk.
         assert not download.finished
@@ -335,6 +384,7 @@ class TestChunkedDownload(object):
         download_headers = {u'range': range_bytes}
         transport.get.assert_called_once_with(
             EXAMPLE_URL, headers=download_headers)
+        assert stream.getvalue() == data
         # Go back and check the internal state after consuming the chunk.
         assert not download.finished
         assert download.bytes_downloaded == chunk_size

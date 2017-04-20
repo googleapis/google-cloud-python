@@ -59,6 +59,18 @@ def get_status_code(response):
     return response.status_code
 
 
+def get_body(response):
+    """Access the response body from an HTTP response.
+
+    Args:
+        response (object): The HTTP response object.
+
+    Returns:
+        bytes: The body of the ``response``.
+    """
+    return response.content
+
+
 def require_status_code(response, status_codes, callback=_do_nothing):
     """Require a response has a status code among a list.
 
