@@ -156,6 +156,7 @@ class ChunkedDownload(_DownloadBase):
         super(ChunkedDownload, self).__init__(
             media_url, start=start, end=end)
         self.chunk_size = chunk_size
+        """int: The number of bytes to be retrieved in each request."""
         self._bytes_downloaded = 0
         self._total_bytes = None
 

@@ -286,12 +286,13 @@ not be the same size as the other chunks:</p>
 <div class="section" id="simple-uploads">
 <h2>Simple Uploads<a class="headerlink" href="#simple-uploads" title="Permalink to this headline">¶</a></h2>
 <p>Among the three supported upload classes, the simplest is
-<code class="xref py py-class docutils literal"><span class="pre">SimpleUpload</span></code>. A simple upload should be used when the resource
+<a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.SimpleUpload" title="gooresmed.upload.SimpleUpload"><code class="xref py py-class docutils literal"><span class="pre">SimpleUpload</span></code></a>. A simple upload should be used when the resource
 being uploaded is small and when there is no metadata (other than the name)
 associated with the resource.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/&#39;</span>
-<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;</span><span class="si">{bucket}</span><span class="s1">/o?uploadType=media&amp;name=</span><span class="si">{blob_name}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o?&#39;</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;uploadType=media&amp;&#39;</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;name=</span><span class="si">{blob_name}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">upload_url</span> <span class="o">=</span> <span class="n">url_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -337,6 +338,45 @@ will be raised:</p>
 </div>
 <p>Even in the case of failure, we see that the upload is
 <a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.SimpleUpload.finished" title="gooresmed.upload.SimpleUpload.finished"><code class="xref py py-attr docutils literal"><span class="pre">finished</span></code></a>, i.e. it cannot be re-used.</p>
+</div>
+<div class="section" id="multipart-uploads">
+<h2>Multipart Uploads<a class="headerlink" href="#multipart-uploads" title="Permalink to this headline">¶</a></h2>
+<p>After the simple upload, the <a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.MultipartUpload" title="gooresmed.upload.MultipartUpload"><code class="xref py py-class docutils literal"><span class="pre">MultipartUpload</span></code></a> can be used to
+achieve essentially the same task. However, a multipart upload allows some
+metadata about the resource to be sent along as well. (This is the &#8220;multi&#8221;:
+we send a first part with the metadata and a second part with the actual
+bytes in the resource.)</p>
+<p>Usage is similar to the simple upload, but <a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.MultipartUpload.transmit" title="gooresmed.upload.MultipartUpload.transmit"><code class="xref py py-meth docutils literal"><span class="pre">transmit()</span></code></a>
+accepts an extra required argument: <code class="docutils literal"><span class="pre">metadata</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o?&#39;</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;uploadType=multipart&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_url</span> <span class="o">=</span> <span class="n">url_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span> <span class="o">=</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">MultipartUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">blob_name</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="sa">u</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;grurple&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
+<span class="go">&lt;Response [200]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;bucket&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">bucket</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">blob_name</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">metadata</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;metadata&#39;</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>As with the simple upload, in the case of failure an <a class="reference internal" href="gooresmed.exceptions.html#gooresmed.exceptions.InvalidResponse" title="gooresmed.exceptions.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a>
+is raised, enclosing the <a class="reference internal" href="gooresmed.exceptions.html#gooresmed.exceptions.InvalidResponse.response" title="gooresmed.exceptions.InvalidResponse.response"><code class="xref py py-attr docutils literal"><span class="pre">response</span></code></a> that caused
+the failure and the <code class="docutils literal"><span class="pre">upload</span></code> object cannot be re-used after a failure.</p>
 </div>
 <div class="toctree-wrapper compound">
 </div>

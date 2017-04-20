@@ -276,7 +276,7 @@ Simple Uploads
 ==============
 
 Among the three supported upload classes, the simplest is
-:class:`SimpleUpload`. A simple upload should be used when the resource
+:class:`.SimpleUpload`. A simple upload should be used when the resource
 being uploaded is small and when there is no metadata (other than the name)
 associated with the resource.
 
@@ -311,8 +311,9 @@ associated with the resource.
    :options: +NORMALIZE_WHITESPACE
 
    >>> url_template = (
-   ...     u'https://www.googleapis.com/upload/storage/v1/b/'
-   ...     u'{bucket}/o?uploadType=media&name={blob_name}')
+   ...     u'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
+   ...     u'uploadType=media&'
+   ...     u'name={blob_name}')
    >>> upload_url = url_template.format(
    ...     bucket=bucket, blob_name=blob_name)
    >>>
@@ -378,6 +379,77 @@ will be raised:
 
 Even in the case of failure, we see that the upload is
 :attr:`~.SimpleUpload.finished`, i.e. it cannot be re-used.
+
+=================
+Multipart Uploads
+=================
+
+After the simple upload, the :class:`.MultipartUpload` can be used to
+achieve essentially the same task. However, a multipart upload allows some
+metadata about the resource to be sent along as well. (This is the "multi":
+we send a first part with the metadata and a second part with the actual
+bytes in the resource.)
+
+Usage is similar to the simple upload, but :meth:`~.MultipartUpload.transmit`
+accepts an extra required argument: ``metadata``.
+
+.. testsetup:: multipart-upload
+
+   import json
+
+   import mock
+   import requests
+   from six.moves import http_client
+
+   import gooresmed
+
+   bucket = u'some-bucket'
+   blob_name = u'file.txt'
+   data = b'Some not too large content.'
+   content_type = u'text/plain'
+
+   fake_response = requests.Response()
+   fake_response.status_code = int(http_client.OK)
+   payload = {
+       u'bucket': bucket,
+       u'name': blob_name,
+       u'metadata': {u'color': u'grurple'},
+   }
+   fake_response._content = json.dumps(payload).encode(u'utf-8')
+
+   post_method = mock.Mock(return_value=fake_response, spec=[])
+   transport = mock.Mock(post=post_method, spec=[u'post'])
+
+.. doctest:: multipart-upload
+
+   >>> url_template = (
+   ...     u'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
+   ...     u'uploadType=multipart')
+   >>> upload_url = url_template.format(bucket=bucket)
+   >>>
+   >>> upload = gooresmed.MultipartUpload(upload_url)
+   >>> metadata = {
+   ...     u'name': blob_name,
+   ...     u'metadata': {
+   ...         u'color': u'grurple',
+   ...     },
+   ... }
+   >>> response = upload.transmit(transport, data, metadata, content_type)
+   >>> upload.finished
+   True
+   >>> response
+   <Response [200]>
+   >>> json_response = response.json()
+   >>> json_response[u'bucket'] == bucket
+   True
+   >>> json_response[u'name'] == blob_name
+   True
+   >>> json_response[u'metadata'] == metadata[u'metadata']
+   True
+
+As with the simple upload, in the case of failure an :exc:`.InvalidResponse`
+is raised, enclosing the :attr:`~.InvalidResponse.response` that caused
+the failure and the ``upload`` object cannot be re-used after a failure.
 """
 
 

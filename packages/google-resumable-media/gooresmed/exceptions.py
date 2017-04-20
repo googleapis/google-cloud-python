@@ -27,3 +27,4 @@ class InvalidResponse(Exception):
     def __init__(self, response, *args):
         super(InvalidResponse, self).__init__(*args)
         self.response = response
+        """object: The HTTP response object that caused the failure."""
