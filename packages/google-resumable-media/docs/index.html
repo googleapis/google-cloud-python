@@ -425,6 +425,38 @@ object or any other stream implementing the same interface.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
+<p>Once a <a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.ResumableUpload" title="gooresmed.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> has been initiated, the resource is
+transmitted in chunks until completion:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response0</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response0</span>
+<span class="go">&lt;Response [308]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">bytes_uploaded</span> <span class="o">==</span> <span class="n">upload</span><span class="o">.</span><span class="n">chunk_size</span>
+<span class="go">True</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response1</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response1</span>
+<span class="go">&lt;Response [308]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">bytes_uploaded</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">upload</span><span class="o">.</span><span class="n">chunk_size</span>
+<span class="go">True</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response2</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response2</span>
+<span class="go">&lt;Response [200]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">bytes_uploaded</span> <span class="o">==</span> <span class="n">upload</span><span class="o">.</span><span class="n">total_bytes</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span> <span class="o">=</span> <span class="n">response2</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;bucket&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">bucket</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">blob_name</span>
+<span class="go">True</span>
+</pre></div>
+</div>
 </div>
 <div class="toctree-wrapper compound">
 </div>

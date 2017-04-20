@@ -535,6 +535,90 @@ object or any other stream implementing the same interface.
    'ABCdef189XY_super_serious'
    >>> upload.resumable_url == upload_url + u'&upload_id=' + upload_id
    True
+
+Once a :class:`.ResumableUpload` has been initiated, the resource is
+transmitted in chunks until completion:
+
+.. testsetup:: resumable-transmit
+
+   import io
+   import json
+
+   import mock
+   import requests
+   from six.moves import http_client
+
+   import gooresmed
+   import gooresmed.upload as upload_mod
+
+   data = b'01234567891'
+   stream = io.BytesIO(data)
+   # Create an "already initiated" upload.
+   upload_url = u'http://test.invalid'
+   chunk_size = 256 * 1024  # 256KB
+   upload = gooresmed.ResumableUpload(upload_url, chunk_size)
+   upload._resumable_url = u'http://test.invalid?upload_id=mocked'
+   upload._stream = stream
+   upload._content_type = u'text/plain'
+   upload._total_bytes = len(data)
+
+   # After-the-fact update the chunk size so that len(data)
+   # is split into three.
+   upload._chunk_size = 4
+   # Make three fake responses.
+   fake_response0 = requests.Response()
+   fake_response0.status_code = upload_mod.PERMANENT_REDIRECT
+   fake_response0.headers[u'range'] = u'bytes=0-3'
+
+   fake_response1 = requests.Response()
+   fake_response1.status_code = upload_mod.PERMANENT_REDIRECT
+   fake_response1.headers[u'range'] = u'bytes=0-7'
+
+   fake_response2 = requests.Response()
+   fake_response2.status_code = int(http_client.OK)
+   bucket = u'some-bucket'
+   blob_name = u'file.txt'
+   payload = {
+       u'bucket': bucket,
+       u'name': blob_name,
+   }
+   fake_response2._content = json.dumps(payload).encode(u'utf-8')
+
+   # Use the fake responses to mock a transport.
+   responses = [fake_response0, fake_response1, fake_response2]
+   put_method = mock.Mock(side_effect=responses, spec=[])
+   transport = mock.Mock(put=put_method, spec=[u'put'])
+
+.. doctest:: resumable-transmit
+
+   >>> response0 = upload.transmit_next_chunk(transport)
+   >>> response0
+   <Response [308]>
+   >>> upload.finished
+   False
+   >>> upload.bytes_uploaded == upload.chunk_size
+   True
+   >>>
+   >>> response1 = upload.transmit_next_chunk(transport)
+   >>> response1
+   <Response [308]>
+   >>> upload.finished
+   False
+   >>> upload.bytes_uploaded == 2 * upload.chunk_size
+   True
+   >>>
+   >>> response2 = upload.transmit_next_chunk(transport)
+   >>> response2
+   <Response [200]>
+   >>> upload.finished
+   True
+   >>> upload.bytes_uploaded == upload.total_bytes
+   True
+   >>> json_response = response2.json()
+   >>> json_response[u'bucket'] == bucket
+   True
+   >>> json_response[u'name'] == blob_name
+   True
 """
 
 
