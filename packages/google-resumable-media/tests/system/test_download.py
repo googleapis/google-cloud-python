@@ -81,6 +81,72 @@ def test_download_full(add_files, authorized_transport):
             download.consume(authorized_transport)
 
 
+def test_non_existent_file(authorized_transport):
+    blob_name = u'does-not-exist.txt'
+    media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+    download = gooresmed.Download(media_url)
+
+    # Try to consume the resource and fail.
+    with pytest.raises(gooresmed.InvalidResponse) as exc_info:
+        download.consume(authorized_transport)
+
+    error = exc_info.value
+    response = error.response
+    assert response.status_code == http_client.NOT_FOUND
+    assert response.content == b'Not Found'
+    assert len(error.args) == 5
+    assert error.args[1] == http_client.NOT_FOUND
+    assert error.args[3] == http_client.OK
+    assert error.args[4] == http_client.PARTIAL_CONTENT
+    # Make sure the download is tombstoned (even though it failed).
+    with pytest.raises(ValueError):
+        download.consume(authorized_transport)
+
+
+@pytest.fixture(scope=u'module')
+def simple_file(authorized_transport):
+    blob_name = u'basic-file.txt'
+    upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
+    upload = gooresmed.SimpleUpload(upload_url)
+    data = b'Simple contents'
+    response = upload.transmit(authorized_transport, data, u'text/plain')
+    assert response.status_code == http_client.OK
+
+    yield blob_name, data
+
+    # Clean-up the blob we created.
+    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    response = authorized_transport.delete(metadata_url)
+    assert response.status_code == http_client.NO_CONTENT
+
+
+def test_bad_range(simple_file, authorized_transport):
+    blob_name, data = simple_file
+    # Make sure we have an invalid range.
+    start = 32
+    end = 63
+    assert len(data) < start < end
+    # Create the actual download object.
+    media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+    download = gooresmed.Download(media_url, start=start, end=end)
+
+    # Try to consume the resource and fail.
+    with pytest.raises(gooresmed.InvalidResponse) as exc_info:
+        download.consume(authorized_transport)
+
+    error = exc_info.value
+    response = error.response
+    assert response.status_code == http_client.REQUESTED_RANGE_NOT_SATISFIABLE
+    assert response.content == b'Request range not satisfiable'
+    assert len(error.args) == 5
+    assert error.args[1] == http_client.REQUESTED_RANGE_NOT_SATISFIABLE
+    assert error.args[3] == http_client.OK
+    assert error.args[4] == http_client.PARTIAL_CONTENT
+    # Make sure the download is tombstoned (even though it failed).
+    with pytest.raises(ValueError):
+        download.consume(authorized_transport)
+
+
 def test_download_partial(add_files, authorized_transport):
     slices = (
         slice(1024, 16386, None),  # obj[1024:16386]
