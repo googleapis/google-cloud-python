@@ -55,16 +55,9 @@ class _DownloadBase(object):
 class Download(_DownloadBase):
     """Helper to manage downloading a resource from a Google API.
 
-    Basic support will
-
-    * download directly to a file on the host OS
-    * download into a stream or file-like object
-    * download and return content directly as a string or bytes
-
-    In addition, "slices" of the resource can be retrieved by
-    specifying a range with ``start`` and / or ``end``. However, in
-    typical usage, neither ``start`` nor ``end`` is expected to be
-    provided.
+    "Slices" of the resource can be retrieved by specifying a range
+    with ``start`` and / or ``end``. However, in typical usage, neither
+    ``start`` nor ``end`` is expected to be provided.
 
     Args:
        media_url (str): The URL containing the media to be downloaded.

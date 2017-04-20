@@ -238,16 +238,9 @@ media URL and a <code class="docutils literal"><span class="pre">headers</span><
 <em class="property">class </em><code class="descclassname">gooresmed.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.download.Download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gooresmed.download._DownloadBase</span></code></p>
 <p>Helper to manage downloading a resource from a Google API.</p>
-<p>Basic support will</p>
-<ul class="simple">
-<li>download directly to a file on the host OS</li>
-<li>download into a stream or file-like object</li>
-<li>download and return content directly as a string or bytes</li>
-</ul>
-<p>In addition, &#8220;slices&#8221; of the resource can be retrieved by
-specifying a range with <code class="docutils literal"><span class="pre">start</span></code> and / or <code class="docutils literal"><span class="pre">end</span></code>. However, in
-typical usage, neither <code class="docutils literal"><span class="pre">start</span></code> nor <code class="docutils literal"><span class="pre">end</span></code> is expected to be
-provided.</p>
+<p>&#8220;Slices&#8221; of the resource can be retrieved by specifying a range
+with <code class="docutils literal"><span class="pre">start</span></code> and / or <code class="docutils literal"><span class="pre">end</span></code>. However, in typical usage, neither
+<code class="docutils literal"><span class="pre">start</span></code> nor <code class="docutils literal"><span class="pre">end</span></code> is expected to be provided.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
