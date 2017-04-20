@@ -17,6 +17,8 @@
 
 import re
 
+from six.moves import http_client
+
 from gooresmed import _helpers
 from gooresmed import exceptions
 
@@ -24,6 +26,7 @@ from gooresmed import exceptions
 _CONTENT_RANGE_RE = re.compile(
     r'bytes (?P<start_byte>\d+)-(?P<end_byte>\d+)/(?P<total_bytes>\d+)',
     flags=re.IGNORECASE)
+_ACCEPTABLE_STATUS_CODES = (http_client.OK, http_client.PARTIAL_CONTENT)
 
 
 class _DownloadBase(object):
@@ -92,17 +95,21 @@ class Download(_DownloadBase):
         _add_bytes_range(self.start, self.end, headers)
         return headers
 
-    def _process_response(self):
+    def _process_response(self, response):
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
         require network I/O (or other I/O). This is based on the `sans-I/O`_
         philosophy.
 
+        Args:
+            response (object): The HTTP response object.
+
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         # Tombstone the current Download so it cannot be used again.
         self._finished = True
+        _helpers.require_status_code(response, _ACCEPTABLE_STATUS_CODES)
 
     def consume(self, transport):
         """Consume the resource to be downloaded.
@@ -121,7 +128,7 @@ class Download(_DownloadBase):
         """
         headers = self._prepare_request()
         result = transport.get(self.media_url, headers=headers)
-        self._process_response()
+        self._process_response(result)
         return result
 
 
@@ -238,6 +245,7 @@ class ChunkedDownload(_DownloadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         # Verify the response before updating the current instance.
+        _helpers.require_status_code(response, _ACCEPTABLE_STATUS_CODES)
         content_length = _helpers.header_required(response, u'content-length')
         num_bytes = int(content_length)
         _, end_byte, total_bytes = _get_range_info(response)
