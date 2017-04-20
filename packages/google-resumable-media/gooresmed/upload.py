@@ -103,11 +103,7 @@ class _UploadBase(object):
         # Tombstone the current upload so it cannot be used again (in either
         # failure or success).
         self._finished = True
-        status_code = _helpers.get_status_code(response)
-        if status_code != http_client.OK:
-            raise exceptions.InvalidResponse(
-                response, u'Request failed with status code',
-                status_code, u'Expected "200 OK"')
+        _helpers.require_status_code(response, (http_client.OK,))
 
 
 class SimpleUpload(_UploadBase):
@@ -420,6 +416,15 @@ class ResumableUpload(_UploadBase):
         }
         return payload, headers
 
+    def _make_invalid(self):
+        """Simple setter for ``invalid``.
+
+        This is intended to be passed along as a callback to helpers that
+        raise an exception so they can mark this instance as invalid before
+        raising.
+        """
+        self._invalid = True
+
     def _process_response(self, response):
         """Process the response from an HTTP request.
 
@@ -438,30 +443,23 @@ class ResumableUpload(_UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        status_code = _helpers.get_status_code(response)
+        status_code = _helpers.require_status_code(
+            response, (http_client.OK, PERMANENT_REDIRECT),
+            callback=self._make_invalid)
         if status_code == http_client.OK:
             self._bytes_uploaded = self._total_bytes
             # Tombstone the current upload so it cannot be used again.
             self._finished = True
-        elif status_code == PERMANENT_REDIRECT:
-            try:
-                bytes_range = _helpers.header_required(response, u'range')
-            except exceptions.InvalidResponse:
-                self._invalid = True
-                raise
-
+        else:
+            bytes_range = _helpers.header_required(
+                response, u'range', callback=self._make_invalid)
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
-                self._invalid = True
+                self._make_invalid()
                 raise exceptions.InvalidResponse(
                     response, u'Unexpected "range" header', bytes_range,
                     u'Expected to be of the form "bytes=0-{end}"')
             self._bytes_uploaded = int(match.group(u'end_byte')) + 1
-        else:
-            self._invalid = True
-            raise exceptions.InvalidResponse(
-                response, u'Response has unexpected status code', status_code,
-                u'Expected either "200 OK" or "308 Permanent Redirect"')
 
     def transmit_next_chunk(self, transport):
         """Transmit the next chunk of the resource to be uploaded.
@@ -504,7 +502,8 @@ class ResumableUpload(_UploadBase):
            ...     error = caught_exc
            ...
            >>> error
-           InvalidResponse('Response has unexpected status code', 400, ...)
+           InvalidResponse('Request failed with status code', 400,
+                           'Expected one of', <HTTPStatus.OK: 200>, 308)
            >>> error.response
            <Response [400]>
 

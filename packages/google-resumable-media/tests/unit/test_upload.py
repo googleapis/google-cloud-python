@@ -70,8 +70,9 @@ class Test_UploadBase(object):
 
         error = exc_info.value
         assert error.response is response
-        assert len(error.args) == 3
+        assert len(error.args) == 4
         assert error.args[1] == status_code
+        assert error.args[3] == http_client.OK
         # Make sure **finished** after (even in failure).
         assert upload.finished
 
@@ -442,8 +443,10 @@ class TestResumableUpload(object):
 
         error = exc_info.value
         assert error.response is response
-        assert len(error.args) == 3
+        assert len(error.args) == 5
         assert error.args[1] == response.status_code
+        assert error.args[3] == http_client.OK
+        assert error.args[4] == upload_mod.PERMANENT_REDIRECT
         # Make sure the upload is invalid after the failure.
         assert upload.invalid
 

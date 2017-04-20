@@ -14,9 +14,15 @@
 
 import mock
 import pytest
+from six.moves import http_client
 
 from gooresmed import _helpers
 from gooresmed import exceptions
+
+
+def test__do_nothing():
+    ret_val = _helpers._do_nothing()
+    assert ret_val is None
 
 
 class Test_header_required(object):
@@ -45,3 +51,31 @@ def test_get_status_code():
     status_code = 200
     response = mock.Mock(status_code=status_code, spec=[u'status_code'])
     assert status_code == _helpers.get_status_code(response)
+
+
+class Test_require_status_code(object):
+
+    def test_success(self):
+        status_codes = (http_client.OK, http_client.CREATED)
+        acceptable = (
+            http_client.OK,
+            int(http_client.OK),
+            http_client.CREATED,
+            int(http_client.CREATED),
+        )
+        for value in acceptable:
+            response = mock.Mock(status_code=value, spec=[u'status_code'])
+            status_code = _helpers.require_status_code(response, status_codes)
+            assert value == status_code
+
+    def test_failure(self):
+        status_codes = (http_client.CREATED, http_client.NO_CONTENT)
+        response = mock.Mock(status_code=http_client.OK, spec=[u'status_code'])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            _helpers.require_status_code(response, status_codes)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 5
+        assert error.args[1] == response.status_code
+        assert error.args[3:] == status_codes
