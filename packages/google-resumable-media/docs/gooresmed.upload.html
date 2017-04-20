@@ -351,7 +351,8 @@ failed response:</p>
 <span class="gp">... </span>    <span class="n">error</span> <span class="o">=</span> <span class="n">caught_exc</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">error</span>
-<span class="go">InvalidResponse(&#39;Response has unexpected status code&#39;, 400, ...)</span>
+<span class="go">InvalidResponse(&#39;Request failed with status code&#39;, 400,</span>
+<span class="go">                &#39;Expected one of&#39;, &lt;HTTPStatus.OK: 200&gt;, 308)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">error</span><span class="o">.</span><span class="n">response</span>
 <span class="go">&lt;Response [400]&gt;</span>
 </pre></div>
