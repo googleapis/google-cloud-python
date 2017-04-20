@@ -34,7 +34,7 @@ Google Cloud Storage (GCS):
 
    def mock_default(scopes=None):
        credentials = mock.Mock(spec=creds_mod.Credentials)
-       return credentials, 'mock-project'
+       return credentials, u'mock-project'
 
    # Patch the ``default`` function on the module.
    original_default = google.auth.default
@@ -45,7 +45,7 @@ Google Cloud Storage (GCS):
    >>> import google.auth
    >>> import google.auth.transport.requests as tr_requests
    >>>
-   >>> ro_scope = 'https://www.googleapis.com/auth/devstorage.read_only'
+   >>> ro_scope = u'https://www.googleapis.com/auth/devstorage.read_only'
    >>> credentials, _ = google.auth.default(scopes=(ro_scope,))
    >>> transport = tr_requests.AuthorizedSession(credentials)
    >>> transport
@@ -70,26 +70,26 @@ access to the resource:
    import requests
    from six.moves import http_client
 
-   bucket = 'bucket-foo'
-   blob_name = 'file.txt'
+   bucket = u'bucket-foo'
+   blob_name = u'file.txt'
 
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.OK)
-   fake_response.headers['Content-Length'] = '1364156'
-   fake_content = mock.MagicMock(spec=['__len__'])
+   fake_response.headers[u'Content-Length'] = u'1364156'
+   fake_content = mock.MagicMock(spec=[u'__len__'])
    fake_content.__len__.return_value = 1364156
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(get=get_method, spec=['get'])
+   transport = mock.Mock(get=get_method, spec=[u'get'])
 
 .. doctest:: basic-download
 
    >>> import gooresmed
    >>>
    >>> url_template = (
-   ...     'https://www.googleapis.com/download/storage/v1/b/'
-   ...     '{bucket}/o/{blob_name}?alt=media')
+   ...     u'https://www.googleapis.com/download/storage/v1/b/'
+   ...     u'{bucket}/o/{blob_name}?alt=media')
    >>> media_url = url_template.format(
    ...     bucket=bucket, blob_name=blob_name)
    >>>
@@ -99,7 +99,7 @@ access to the resource:
    True
    >>> response
    <Response [200]>
-   >>> response.headers['Content-Length']
+   >>> response.headers[u'Content-Length']
    '1364156'
    >>> len(response.content)
    1364156
@@ -115,22 +115,22 @@ specify ``start`` and ``end`` byte positions (both optional):
 
    import gooresmed
 
-   media_url = 'test.invalid'
+   media_url = u'test.invalid'
    start = 4096
    end = 8191
    slice_size = end - start + 1
 
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.PARTIAL_CONTENT)
-   fake_response.headers['Content-Length'] = u'{:d}'.format(slice_size)
-   content_range = 'bytes {:d}-{:d}/1364156'.format(start, end)
-   fake_response.headers['Content-Range'] = content_range
-   fake_content = mock.MagicMock(spec=['__len__'])
+   fake_response.headers[u'Content-Length'] = u'{:d}'.format(slice_size)
+   content_range = u'bytes {:d}-{:d}/1364156'.format(start, end)
+   fake_response.headers[u'Content-Range'] = content_range
+   fake_content = mock.MagicMock(spec=[u'__len__'])
    fake_content.__len__.return_value = slice_size
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(get=get_method, spec=['get'])
+   transport = mock.Mock(get=get_method, spec=[u'get'])
 
 .. doctest:: basic-download-with-slice
 
@@ -140,9 +140,9 @@ specify ``start`` and ``end`` byte positions (both optional):
    True
    >>> response
    <Response [206]>
-   >>> response.headers['Content-Length']
+   >>> response.headers[u'Content-Length']
    '4096'
-   >>> response.headers['Content-Range']
+   >>> response.headers[u'Content-Range']
    'bytes 4096-8191/1364156'
    >>> len(response.content)
    4096
@@ -168,21 +168,21 @@ Using the same media URL and authorized transport for a basic
 
    import gooresmed
 
-   media_url = 'test.invalid'
+   media_url = u'test.invalid'
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.PARTIAL_CONTENT)
-   fake_response.headers['Content-Length'] = u'{:d}'.format(fifty_mb)
-   content_range = 'bytes 0-{:d}/{:d}'.format(fifty_mb - 1, one_gb)
-   fake_response.headers['Content-Range'] = content_range
-   fake_content = mock.MagicMock(spec=['__len__'])
+   fake_response.headers[u'Content-Length'] = u'{:d}'.format(fifty_mb)
+   content_range = u'bytes 0-{:d}/{:d}'.format(fifty_mb - 1, one_gb)
+   fake_response.headers[u'Content-Range'] = content_range
+   fake_content = mock.MagicMock(spec=[u'__len__'])
    fake_content.__len__.return_value = fifty_mb
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(get=get_method, spec=['get'])
+   transport = mock.Mock(get=get_method, spec=[u'get'])
 
 .. doctest:: chunked-download
 
@@ -203,9 +203,9 @@ Using the same media URL and authorized transport for a basic
    1073741824
    >>> response
    <Response [206]>
-   >>> response.headers['Content-Length']
+   >>> response.headers[u'Content-Length']
    '52428800'
-   >>> response.headers['Content-Range']
+   >>> response.headers[u'Content-Range']
    'bytes 0-52428799/1073741824'
    >>> len(response.content) == chunk_size
    True
@@ -222,7 +222,7 @@ not be the same size as the other chunks:
 
    import gooresmed
 
-   media_url = 'test.invalid'
+   media_url = u'test.invalid'
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
@@ -233,16 +233,16 @@ not be the same size as the other chunks:
    fake_response = requests.Response()
    fake_response.status_code = int(http_client.PARTIAL_CONTENT)
    slice_size = one_gb - 20 * fifty_mb
-   fake_response.headers['Content-Length'] = u'{:d}'.format(slice_size)
-   content_range = 'bytes {:d}-{:d}/{:d}'.format(
+   fake_response.headers[u'Content-Length'] = u'{:d}'.format(slice_size)
+   content_range = u'bytes {:d}-{:d}/{:d}'.format(
        20 * fifty_mb, one_gb - 1, one_gb)
-   fake_response.headers['Content-Range'] = content_range
-   fake_content = mock.MagicMock(spec=['__len__'])
+   fake_response.headers[u'Content-Range'] = content_range
+   fake_content = mock.MagicMock(spec=[u'__len__'])
    fake_content.__len__.return_value = slice_size
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(get=get_method, spec=['get'])
+   transport = mock.Mock(get=get_method, spec=[u'get'])
 
 .. doctest:: chunked-download-end
 
@@ -261,15 +261,78 @@ not be the same size as the other chunks:
    True
    >>> response
    <Response [206]>
-   >>> response.headers['Content-Length']
+   >>> response.headers[u'Content-Length']
    '25165824'
-   >>> response.headers['Content-Range']
+   >>> response.headers[u'Content-Range']
    'bytes 1048576000-1073741823/1073741824'
    >>> len(response.content) < download.chunk_size
    True
 
 In addition, a :class:`.ChunkedDownload` can also take optional
 ``start`` and ``end`` byte positions.
+
+==============
+Simple Uploads
+==============
+
+Among the three supported upload classes, the simplest is
+:class:`SimpleUpload`.
+
+.. testsetup:: simple-upload
+
+   import json
+
+   import mock
+   import requests
+   from six.moves import http_client
+
+   import gooresmed
+
+   bucket = u'some-bucket'
+   blob_name = u'file.txt'
+
+   fake_response = requests.Response()
+   fake_response.status_code = int(http_client.OK)
+   payload = {
+       u'bucket': bucket,
+       u'contentType': u'text/plain',
+       u'md5Hash': u'M0XLEsX9/sMdiI+4pB4CAQ==',
+       u'name': blob_name,
+       u'size': u'27',
+   }
+   fake_response._content = json.dumps(payload).encode(u'utf-8')
+
+   post_method = mock.Mock(return_value=fake_response, spec=[])
+   transport = mock.Mock(post=post_method, spec=[u'post'])
+
+.. doctest:: simple-upload
+   :options: +NORMALIZE_WHITESPACE
+
+   >>> url_template = (
+   ...     u'https://www.googleapis.com/upload/storage/v1/b/'
+   ...     u'{bucket}/o?uploadType=media&name={blob_name}')
+   >>> upload_url = url_template.format(
+   ...     bucket=bucket, blob_name=blob_name)
+   >>>
+   >>> upload = gooresmed.SimpleUpload(upload_url)
+   >>> data = b'Some not too large content.'
+   >>> content_type = u'text/plain'
+   >>> response = upload.transmit(transport, data, content_type)
+   >>> upload.finished
+   True
+   >>> response
+   <Response [200]>
+   >>> json_response = response.json()
+   >>> json_response[u'bucket'] == bucket
+   True
+   >>> json_response[u'name'] == blob_name
+   True
+   >>> json_response[u'contentType'] == content_type
+   True
+   >>> json_response[u'md5Hash']
+   'M0XLEsX9/sMdiI+4pB4CAQ=='
+   >>> int(json_response[u'size']) == len(data)
+   True
 """
 
 

@@ -170,7 +170,7 @@ Google Cloud Storage (GCS):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth.transport.requests</span> <span class="k">as</span> <span class="nn">tr_requests</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ro_scope</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ro_scope</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">credentials</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">scopes</span><span class="o">=</span><span class="p">(</span><span class="n">ro_scope</span><span class="p">,))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transport</span> <span class="o">=</span> <span class="n">tr_requests</span><span class="o">.</span><span class="n">AuthorizedSession</span><span class="p">(</span><span class="n">credentials</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transport</span>
@@ -186,8 +186,8 @@ access to the resource:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gooresmed</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="s1">&#39;https://www.googleapis.com/download/storage/v1/b/&#39;</span>
-<span class="gp">... </span>    <span class="s1">&#39;</span><span class="si">{bucket}</span><span class="s1">/o/</span><span class="si">{blob_name}</span><span class="s1">?alt=media&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/download/storage/v1/b/&#39;</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;</span><span class="si">{bucket}</span><span class="s1">/o/</span><span class="si">{blob_name}</span><span class="s1">?alt=media&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">media_url</span> <span class="o">=</span> <span class="n">url_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -197,7 +197,7 @@ access to the resource:</p>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
 <span class="go">&lt;Response [200]&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
 <span class="go">&#39;1364156&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 <span class="go">1364156</span>
@@ -211,9 +211,9 @@ specify <code class="docutils literal"><span class="pre">start</span></code> and
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
 <span class="go">&lt;Response [206]&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
 <span class="go">&#39;4096&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Range&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Content-Range&#39;</span><span class="p">]</span>
 <span class="go">&#39;bytes 4096-8191/1364156&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 <span class="go">4096</span>
@@ -246,9 +246,9 @@ download.</p>
 <span class="go">1073741824</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
 <span class="go">&lt;Response [206]&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
 <span class="go">&#39;52428800&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Range&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Content-Range&#39;</span><span class="p">]</span>
 <span class="go">&#39;bytes 0-52428799/1073741824&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="n">chunk_size</span>
 <span class="go">True</span>
@@ -272,9 +272,9 @@ not be the same size as the other chunks:</p>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
 <span class="go">&lt;Response [206]&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
 <span class="go">&#39;25165824&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Range&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Content-Range&#39;</span><span class="p">]</span>
 <span class="go">&#39;bytes 1048576000-1073741823/1073741824&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">download</span><span class="o">.</span><span class="n">chunk_size</span>
 <span class="go">True</span>
@@ -282,6 +282,38 @@ not be the same size as the other chunks:</p>
 </div>
 <p>In addition, a <a class="reference internal" href="gooresmed.download.html#gooresmed.download.ChunkedDownload" title="gooresmed.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> can also take optional
 <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">end</span></code> byte positions.</p>
+</div>
+<div class="section" id="simple-uploads">
+<h2>Simple Uploads<a class="headerlink" href="#simple-uploads" title="Permalink to this headline">¶</a></h2>
+<p>Among the three supported upload classes, the simplest is
+<code class="xref py py-class docutils literal"><span class="pre">SimpleUpload</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/&#39;</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;</span><span class="si">{bucket}</span><span class="s1">/o?uploadType=media&amp;name=</span><span class="si">{blob_name}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_url</span> <span class="o">=</span> <span class="n">url_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span> <span class="o">=</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">SimpleUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;Some not too large content.&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content_type</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;text/plain&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
+<span class="go">&lt;Response [200]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;bucket&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">bucket</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">blob_name</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;contentType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">content_type</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;md5Hash&#39;</span><span class="p">]</span>
+<span class="go">&#39;M0XLEsX9/sMdiI+4pB4CAQ==&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">json_response</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;size&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
 </div>
 <div class="toctree-wrapper compound">
 </div>
