@@ -227,10 +227,15 @@ to download the object in chunks rather than all at once. This can be done
 to avoid dropped connections with a poor internet connection or can allow
 multiple chunks to be downloaded in parallel to speed up the total
 download.</p>
-<p>Using the same media URL and authorized transport for a basic
-<a class="reference internal" href="gooresmed.download.html#gooresmed.download.Download" title="gooresmed.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a>, a <a class="reference internal" href="gooresmed.download.html#gooresmed.download.ChunkedDownload" title="gooresmed.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> also requires a chunk size:</p>
+<p>A <a class="reference internal" href="gooresmed.download.html#gooresmed.download.ChunkedDownload" title="gooresmed.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> uses the same media URL and authorized
+transport that a basic <a class="reference internal" href="gooresmed.download.html#gooresmed.download.Download" title="gooresmed.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> would use, but also
+requires a chunk size and a write-able byte <code class="docutils literal"><span class="pre">stream</span></code>. The chunk size is used
+to determine how much of the resouce to consume with each request and the
+stream is to allow the resource to be written out (e.g. to disk) without
+having to fit in memory all at once.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># 50MB</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span> <span class="o">=</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">ChunkedDownload</span><span class="p">(</span><span class="n">media_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">download</span> <span class="o">=</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">ChunkedDownload</span><span class="p">(</span><span class="n">media_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check the state of the download before starting.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">download</span><span class="o">.</span><span class="n">bytes_downloaded</span>
 <span class="go">0</span>
@@ -252,6 +257,10 @@ download.</p>
 <span class="go">&#39;bytes 0-52428799/1073741824&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="n">chunk_size</span>
 <span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">29</span><span class="p">)</span>
+<span class="go">b&#39;The beginning of the chunk...&#39;</span>
 </pre></div>
 </div>
 <p>The download will change it&#8217;s <code class="docutils literal"><span class="pre">finished</span></code> status to <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>

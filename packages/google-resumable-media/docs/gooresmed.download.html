@@ -162,7 +162,7 @@
 <p>Support for downloading media from Google APIs.</p>
 <dl class="class">
 <dt id="gooresmed.download.ChunkedDownload">
-<em class="property">class </em><code class="descclassname">gooresmed.download.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>start=0</em>, <em>end=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.download.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">gooresmed.download.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>stream</em>, <em>start=0</em>, <em>end=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gooresmed.download.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gooresmed.download._DownloadBase</span></code></p>
 <p>Download a resource in chunks from a Google API.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -173,6 +173,9 @@
 <li><strong>media_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL containing the media to be downloaded.</li>
 <li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The number of bytes to be retrieved in each
 request.</li>
+<li><strong>stream</strong> (<em>IO</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em>]</em><em></em>) &#8211; A write-able stream (i.e. file-like object) that
+will be used to concatenate chunks of the resource as they are
+downloaded.</li>
 <li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The first byte in a range to be downloaded. If not
 provided, defaults to <code class="docutils literal"><span class="pre">0</span></code>.</li>
 <li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The last byte in a range to be downloaded. If not

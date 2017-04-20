@@ -157,10 +157,16 @@ to avoid dropped connections with a poor internet connection or can allow
 multiple chunks to be downloaded in parallel to speed up the total
 download.
 
-Using the same media URL and authorized transport for a basic
-:class:`.Download`, a :class:`.ChunkedDownload` also requires a chunk size:
+A :class:`.ChunkedDownload` uses the same media URL and authorized
+transport that a basic :class:`.Download` would use, but also
+requires a chunk size and a write-able byte ``stream``. The chunk size is used
+to determine how much of the resouce to consume with each request and the
+stream is to allow the resource to be written out (e.g. to disk) without
+having to fit in memory all at once.
 
 .. testsetup:: chunked-download
+
+   import io
 
    import mock
    import requests
@@ -177,8 +183,8 @@ Using the same media URL and authorized transport for a basic
    fake_response.headers[u'Content-Length'] = u'{:d}'.format(fifty_mb)
    content_range = u'bytes 0-{:d}/{:d}'.format(fifty_mb - 1, one_gb)
    fake_response.headers[u'Content-Range'] = content_range
-   fake_content = mock.MagicMock(spec=[u'__len__'])
-   fake_content.__len__.return_value = fifty_mb
+   fake_content_begin = b'The beginning of the chunk...'
+   fake_content = fake_content_begin + b'1' * (fifty_mb - 29)
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
@@ -187,7 +193,8 @@ Using the same media URL and authorized transport for a basic
 .. doctest:: chunked-download
 
    >>> chunk_size = 50 * 1024 * 1024  # 50MB
-   >>> download = gooresmed.ChunkedDownload(media_url, chunk_size)
+   >>> stream = io.BytesIO()
+   >>> download = gooresmed.ChunkedDownload(media_url, chunk_size, stream)
    >>> # Check the state of the download before starting.
    >>> download.bytes_downloaded
    0
@@ -209,6 +216,10 @@ Using the same media URL and authorized transport for a basic
    'bytes 0-52428799/1073741824'
    >>> len(response.content) == chunk_size
    True
+   >>> stream.seek(0)
+   0
+   >>> stream.read(29)
+   b'The beginning of the chunk...'
 
 The download will change it's ``finished`` status to :data:`True`
 once the final chunk is consumed. In some cases, the final chunk may
@@ -226,7 +237,8 @@ not be the same size as the other chunks:
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
-   download = gooresmed.ChunkedDownload(media_url, fifty_mb)
+   stream = mock.Mock(spec=[u'write'])
+   download = gooresmed.ChunkedDownload(media_url, fifty_mb, stream)
    download._bytes_downloaded = 20 * fifty_mb
    download._total_bytes = one_gb
 
