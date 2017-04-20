@@ -200,7 +200,7 @@ def transmit_chunks(upload, transport, blob_name, metadata):
 def check_initiate(response, upload, stream, transport, metadata):
     assert response.status_code == http_client.OK
     assert response.content == b''
-    upload_id = get_upload_id(upload.upload_url_with_id)
+    upload_id = get_upload_id(upload.resumable_url)
     assert response.headers[u'x-guploader-uploadid'] == upload_id
     assert stream.tell() == 0
     # Make sure the upload cannot be re-initiated.

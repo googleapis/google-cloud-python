@@ -254,7 +254,7 @@ class ResumableUpload(_UploadBase):
         self._content_type = None
         self._bytes_uploaded = 0
         self._total_bytes = None
-        self._upload_url_with_id = None
+        self._resumable_url = None
         self._invalid = False
 
     @property
@@ -272,9 +272,9 @@ class ResumableUpload(_UploadBase):
         return self._chunk_size
 
     @property
-    def upload_url_with_id(self):
+    def resumable_url(self):
         """Optional[str]: The URL of the in-progress resumable upload."""
-        return self._upload_url_with_id
+        return self._resumable_url
 
     @property
     def bytes_uploaded(self):
@@ -311,7 +311,7 @@ class ResumableUpload(_UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        if self.upload_url_with_id is not None:
+        if self.resumable_url is not None:
             raise ValueError(u'This upload has already been initiated.')
         if stream.tell() != 0:
             raise ValueError(u'Stream must be at beginning.')
@@ -343,7 +343,7 @@ class ResumableUpload(_UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        self._upload_url_with_id = _helpers.header_required(
+        self._resumable_url = _helpers.header_required(
             response, u'location')
 
     def initiate(self, transport, stream, metadata, content_type):
@@ -396,7 +396,7 @@ class ResumableUpload(_UploadBase):
         if self.invalid:
             raise ValueError(
                 u'Upload is in an invalid state. To recover call `recover()`.')
-        if self.upload_url_with_id is None:
+        if self.resumable_url is None:
             raise ValueError(
                 u'This upload has not been initiated. Please call '
                 u'initiate() before beginning to transmit chunks.')
@@ -490,7 +490,7 @@ class ResumableUpload(_UploadBase):
            data = b'data is here'
            upload._stream = io.BytesIO(data)
            upload._total_bytes = len(data)
-           upload._upload_url_with_id = u'http://test.invalid?upload_id=nope'
+           upload._resumable_url = u'http://test.invalid?upload_id=nope'
 
         .. doctest:: bad-response
            :options: +NORMALIZE_WHITESPACE
@@ -522,7 +522,7 @@ class ResumableUpload(_UploadBase):
         """
         payload, headers = self._prepare_request()
         result = transport.put(
-            self.upload_url_with_id, data=payload, headers=headers)
+            self.resumable_url, data=payload, headers=headers)
         self._process_response(result)
         return result
 

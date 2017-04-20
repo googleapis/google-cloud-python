@@ -197,7 +197,7 @@ class TestResumableUpload(object):
         assert upload._content_type is None
         assert upload._bytes_uploaded == 0
         assert upload._total_bytes is None
-        assert upload._upload_url_with_id is None
+        assert upload._resumable_url is None
 
     def test_constructor_bad_chunk_size(self):
         with pytest.raises(ValueError):
@@ -230,19 +230,19 @@ class TestResumableUpload(object):
         upload._chunk_size = new_size
         assert upload.chunk_size == new_size
 
-    def test_upload_url_with_id_property(self):
+    def test_resumable_url_property(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Default value of @property.
-        assert upload.upload_url_with_id is None
+        assert upload.resumable_url is None
 
         # Make sure we cannot set it on public @property.
         new_url = u'http://test.invalid?upload_id=not-none'
         with pytest.raises(AttributeError):
-            upload.upload_url_with_id = new_url
+            upload.resumable_url = new_url
 
         # Set it privately and then check the @property.
-        upload._upload_url_with_id = new_url
-        assert upload.upload_url_with_id == new_url
+        upload._resumable_url = new_url
+        assert upload.resumable_url == new_url
 
     def test_bytes_uploaded_property(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -300,7 +300,7 @@ class TestResumableUpload(object):
     def test__prepare_initiate_request_already_initiated(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Fake that the upload has been started.
-        upload._upload_url_with_id = (
+        upload._resumable_url = (
             u'http://test.invalid?upload_id=definitely-started')
 
         with pytest.raises(ValueError):
@@ -334,13 +334,13 @@ class TestResumableUpload(object):
 
         headers = {u'location': u'http://test.invalid?upload_id=kmfeij3234'}
         response = mock.Mock(headers=headers, spec=[u'headers'])
-        # Check upload_url_with_id before.
-        assert upload._upload_url_with_id is None
+        # Check resumable_url before.
+        assert upload._resumable_url is None
         # Process the actual headers.
         ret_val = upload._process_initiate_response(response)
         assert ret_val is None
-        # Check upload_url_with_id after.
-        assert upload._upload_url_with_id == headers[u'location']
+        # Check resumable_url after.
+        assert upload._resumable_url == headers[u'location']
 
     def test_initiate(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -353,13 +353,13 @@ class TestResumableUpload(object):
         response_headers = {u'location': location}
         post_response = mock.Mock(headers=response_headers, spec=[u'headers'])
         transport.post.return_value = post_response
-        # Check upload_url_with_id before.
-        assert upload._upload_url_with_id is None
+        # Check resumable_url before.
+        assert upload._resumable_url is None
         # Make request and check the return value (against the mock).
         response = upload.initiate(transport, stream, metadata, BASIC_CONTENT)
         assert response is transport.post.return_value
-        # Check upload_url_with_id after.
-        assert upload._upload_url_with_id == location
+        # Check resumable_url after.
+        assert upload._resumable_url == location
         # Make sure the mock was called as expected.
         json_bytes = b'{"name": "got-jokes.txt"}'
         expected_headers = {
@@ -391,7 +391,7 @@ class TestResumableUpload(object):
     def test__prepare_request_not_initiated(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         assert not upload._finished
-        assert upload._upload_url_with_id is None
+        assert upload._resumable_url is None
         with pytest.raises(ValueError):
             upload._prepare_request()
 
@@ -399,7 +399,7 @@ class TestResumableUpload(object):
         stream = io.BytesIO(b'some data here')
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         upload._stream = stream
-        upload._upload_url_with_id = u'http://test.invalid?upload_id=not-none'
+        upload._resumable_url = u'http://test.invalid?upload_id=not-none'
         # Make stream.tell() disagree with bytes_uploaded.
         upload._bytes_uploaded = 5
         assert upload.bytes_uploaded != stream.tell()
@@ -412,7 +412,7 @@ class TestResumableUpload(object):
         upload._stream = io.BytesIO(data)
         upload._content_type = BASIC_CONTENT
         upload._total_bytes = len(data)
-        upload._upload_url_with_id = u'http://test.invalid?upload_id=not-none'
+        upload._resumable_url = u'http://test.invalid?upload_id=not-none'
         return upload
 
     def test__prepare_request_success(self):
@@ -544,7 +544,7 @@ class TestResumableUpload(object):
             u'content-type': BASIC_CONTENT,
         }
         transport.put.assert_called_once_with(
-            upload.upload_url_with_id, data=payload, headers=expected_headers)
+            upload.resumable_url, data=payload, headers=expected_headers)
 
     def test_recover(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)

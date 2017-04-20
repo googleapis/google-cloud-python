@@ -378,6 +378,54 @@ accepts an extra required argument: <code class="docutils literal"><span class="
 is raised, enclosing the <a class="reference internal" href="gooresmed.exceptions.html#gooresmed.exceptions.InvalidResponse.response" title="gooresmed.exceptions.InvalidResponse.response"><code class="xref py py-attr docutils literal"><span class="pre">response</span></code></a> that caused
 the failure and the <code class="docutils literal"><span class="pre">upload</span></code> object cannot be re-used after a failure.</p>
 </div>
+<div class="section" id="resumable-uploads">
+<h2>Resumable Uploads<a class="headerlink" href="#resumable-uploads" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.ResumableUpload" title="gooresmed.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> deviates from the other two upload classes:
+it transmits a resource over the course of multiple requests. This
+is intended to be used in cases where:</p>
+<ul class="simple">
+<li>the size of the resource is not known (i.e. it is generated on the fly)</li>
+<li>requests must be short-lived</li>
+<li>the client has request <strong>size</strong> limitations</li>
+<li>the resource is too large to fit into memory</li>
+</ul>
+<p>In general, a resource should be sent in a <strong>single</strong> request to avoid
+latency and reduce QPS. See <a class="reference external" href="https://cloud.google.com/storage/docs/best-practices#uploading">GCS best practices</a> for more things to
+consider when using a resumable upload.</p>
+<p>After creating a <a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.ResumableUpload" title="gooresmed.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> instance, a
+<strong>resumable upload session</strong> must be initiated to let the server know that
+a series of chunked upload requests will be coming and to obtain an
+<code class="docutils literal"><span class="pre">upload_id</span></code> for the session. In contrast to the other two upload classes,
+<a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.ResumableUpload.initiate" title="gooresmed.upload.ResumableUpload.initiate"><code class="xref py py-meth docutils literal"><span class="pre">initiate()</span></code></a> takes a byte <code class="docutils literal"><span class="pre">stream</span></code> is input rather
+than raw bytes as <code class="docutils literal"><span class="pre">data</span></code>. This can be a file object, a <a class="reference external" href="https://docs.python.org/3.6/library/io.html#io.BytesIO" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">BytesIO</span></code></a>
+object or any other stream implementing the same interface.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o?&#39;</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;uploadType=resumable&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_url</span> <span class="o">=</span> <span class="n">url_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># 1MB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span> <span class="o">=</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">ResumableUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The upload doesn&#39;t know how &quot;big&quot; it is until seeing a stream.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">total_bytes</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">blob_name</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
+<span class="go">&lt;Response [200]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">resumable_url</span> <span class="o">==</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;Location&#39;</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">total_bytes</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;X-GUploader-UploadID&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_id</span>
+<span class="go">&#39;ABCdef189XY_super_serious&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">resumable_url</span> <span class="o">==</span> <span class="n">upload_url</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;&amp;upload_id=&#39;</span> <span class="o">+</span> <span class="n">upload_id</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>

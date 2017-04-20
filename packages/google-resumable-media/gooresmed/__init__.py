@@ -450,6 +450,91 @@ accepts an extra required argument: ``metadata``.
 As with the simple upload, in the case of failure an :exc:`.InvalidResponse`
 is raised, enclosing the :attr:`~.InvalidResponse.response` that caused
 the failure and the ``upload`` object cannot be re-used after a failure.
+
+=================
+Resumable Uploads
+=================
+
+A :class:`.ResumableUpload` deviates from the other two upload classes:
+it transmits a resource over the course of multiple requests. This
+is intended to be used in cases where:
+
+* the size of the resource is not known (i.e. it is generated on the fly)
+* requests must be short-lived
+* the client has request **size** limitations
+* the resource is too large to fit into memory
+
+In general, a resource should be sent in a **single** request to avoid
+latency and reduce QPS. See `GCS best practices`_ for more things to
+consider when using a resumable upload.
+
+.. _GCS best practices: https://cloud.google.com/storage/docs/\
+                        best-practices#uploading
+
+After creating a :class:`.ResumableUpload` instance, a
+**resumable upload session** must be initiated to let the server know that
+a series of chunked upload requests will be coming and to obtain an
+``upload_id`` for the session. In contrast to the other two upload classes,
+:meth:`~.ResumableUpload.initiate` takes a byte ``stream`` is input rather
+than raw bytes as ``data``. This can be a file object, a :class:`~io.BytesIO`
+object or any other stream implementing the same interface.
+
+.. testsetup:: resumable-initiate
+
+   import io
+
+   import mock
+   import requests
+   from six.moves import http_client
+
+   import gooresmed
+
+   bucket = u'some-bucket'
+   blob_name = u'file.txt'
+   data = b'Some resumable bytes.'
+   content_type = u'text/plain'
+
+   fake_response = requests.Response()
+   fake_response.status_code = int(http_client.OK)
+   fake_response._content = b''
+   upload_id = u'ABCdef189XY_super_serious'
+   resumable_url_template = (
+       u'https://www.googleapis.com/upload/storage/v1/b/{bucket}'
+       u'/o?uploadType=resumable&upload_id={upload_id}')
+   resumable_url = resumable_url_template.format(
+       bucket=bucket, upload_id=upload_id)
+   fake_response.headers[u'location'] = resumable_url
+   fake_response.headers[u'x-guploader-uploadid'] = upload_id
+
+   post_method = mock.Mock(return_value=fake_response, spec=[])
+   transport = mock.Mock(post=post_method, spec=[u'post'])
+
+.. doctest:: resumable-initiate
+
+   >>> url_template = (
+   ...     u'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
+   ...     u'uploadType=resumable')
+   >>> upload_url = url_template.format(bucket=bucket)
+   >>>
+   >>> chunk_size = 1024 * 1024  # 1MB
+   >>> upload = gooresmed.ResumableUpload(upload_url, chunk_size)
+   >>> stream = io.BytesIO(data)
+   >>> # The upload doesn't know how "big" it is until seeing a stream.
+   >>> upload.total_bytes is None
+   True
+   >>> metadata = {u'name': blob_name}
+   >>> response = upload.initiate(transport, stream, metadata, content_type)
+   >>> response
+   <Response [200]>
+   >>> upload.resumable_url == response.headers[u'Location']
+   True
+   >>> upload.total_bytes == len(data)
+   True
+   >>> upload_id = response.headers[u'X-GUploader-UploadID']
+   >>> upload_id
+   'ABCdef189XY_super_serious'
+   >>> upload.resumable_url == upload_url + u'&upload_id=' + upload_id
+   True
 """
 
 
