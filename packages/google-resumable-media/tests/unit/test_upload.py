@@ -427,6 +427,12 @@ class TestResumableUpload(object):
         }
         assert headers == expected_headers
 
+    def test__make_invalid(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        assert not upload.invalid
+        upload._make_invalid()
+        assert upload.invalid
+
     @staticmethod
     def _mock_response(status_code, headers):
         return mock.Mock(
