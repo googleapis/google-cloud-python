@@ -138,7 +138,8 @@ class TestChunkedDownload(object):
     def test_constructor_defaults(self):
         chunk_size = 256
         stream = mock.sentinel.stream
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
+        download = download_mod.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
         assert download.media_url == EXAMPLE_URL
         assert download.chunk_size == chunk_size
         assert download.start == 0
@@ -252,7 +253,8 @@ class TestChunkedDownload(object):
     def test__process_response(self):
         chunk_size = 333
         stream = io.BytesIO()
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
+        download = download_mod.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
         already = 22
         download._bytes_downloaded = already
         total_bytes = 4444
@@ -275,7 +277,8 @@ class TestChunkedDownload(object):
     def test__process_response_body_wrong_length(self):
         chunk_size = 10
         stream = mock.Mock(spec=[u'write'])
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
+        download = download_mod.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
         total_bytes = 100
 
         # Check internal state before.
@@ -303,7 +306,8 @@ class TestChunkedDownload(object):
     def test__process_response_when_finished(self):
         chunk_size = 256
         stream = io.BytesIO()
-        download = download_mod.ChunkedDownload(EXAMPLE_URL, chunk_size, stream)
+        download = download_mod.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
         total_bytes = 200
 
         # Check internal state before.
