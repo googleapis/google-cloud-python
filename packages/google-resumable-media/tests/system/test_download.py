@@ -132,10 +132,8 @@ def consume_chunks(download, authorized_transport,
         end_byte = total_bytes - 1
 
     num_responses = 0
-    all_parts = []
     while not download.finished:
         response = download.consume_next_chunk(authorized_transport)
-        all_parts.append(response.content)
         num_responses += 1
 
         next_byte = min(start_byte + download.chunk_size, end_byte + 1)
@@ -145,8 +143,7 @@ def consume_chunks(download, authorized_transport,
         assert response.content == actual_contents[start_byte:next_byte]
         start_byte = next_byte
 
-    all_bytes = b''.join(all_parts)
-    return num_responses, response, all_bytes
+    return num_responses, response
 
 
 def test_chunked_download(add_files, authorized_transport):
@@ -162,11 +159,10 @@ def test_chunked_download(add_files, authorized_transport):
         stream = io.BytesIO()
         download = gooresmed.ChunkedDownload(media_url, chunk_size, stream)
         # Consume the resource in chunks.
-        num_responses, last_response, all_bytes = consume_chunks(
+        num_responses, last_response = consume_chunks(
             download, authorized_transport,
             total_bytes, actual_contents)
         # Make sure the combined chunks are the whole object.
-        assert all_bytes == actual_contents
         assert stream.getvalue() == actual_contents
         # Check that we have the right number of responses.
         assert num_responses == num_chunks
@@ -211,11 +207,10 @@ def test_chunked_download_partial(add_files, authorized_transport):
             download = gooresmed.ChunkedDownload(
                 media_url, chunk_size, stream, start=slice_.start, end=end)
             # Consume the resource in chunks.
-            num_responses, last_response, all_bytes = consume_chunks(
+            num_responses, last_response = consume_chunks(
                 download, authorized_transport, total_bytes, actual_contents)
 
             # Make sure the combined chunks are the whole slice.
-            assert all_bytes == actual_contents[slice_]
             assert stream.getvalue() == actual_contents[slice_]
             # Check that we have the right number of responses.
             assert num_responses == num_chunks
