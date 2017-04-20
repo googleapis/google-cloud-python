@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# gooresmed documentation build configuration file, created by
+# google-resumable-media documentation build configuration file, created by
 # sphinx-quickstart on Wed Mar 29 16:43:11 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -60,7 +60,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'gooresmed'
+project = u'google-resumable-media'
 distrib = pkg_resources.get_distribution(project)
 copyright = u'2017, Google'
 metadata = distrib.get_metadata(distrib.PKG_INFO)
@@ -119,7 +119,7 @@ html_static_path = []
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'gooresmed-doc'
+htmlhelp_basename = 'google-resumable-media-doc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -146,7 +146,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'gooresmed.tex', u'gooresmed Documentation',
+    (master_doc, 'google-resumable-media.tex',
+     u'google-resumable-media Documentation',
      author, 'manual'),
 ]
 
@@ -156,7 +157,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'gooresmed', u'gooresmed Documentation',
+    (master_doc, 'google-resumable-media',
+     u'google-resumable-media Documentation',
      [author], 1)
 ]
 
@@ -167,8 +169,10 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'gooresmed', u'gooresmed Documentation',
-     author, 'gooresmed', 'One line description of project.',
+    (master_doc, 'google-resumable-media',
+     u'google-resumable-media Documentation',
+     author, 'google-resumable-media',
+     'One line description of project.',
      'Miscellaneous'),
 ]
 

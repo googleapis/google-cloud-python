@@ -19,8 +19,8 @@ import re
 
 from six.moves import http_client
 
-from gooresmed import _helpers
-from gooresmed import exceptions
+from google.resumable_media import _helpers
+from google.resumable_media import exceptions
 
 
 _CONTENT_RANGE_RE = re.compile(
@@ -239,8 +239,8 @@ class ChunkedDownload(_DownloadBase):
             response (object): The HTTP response object (need headers).
 
         Raises:
-            ~gooresmed.exceptions.InvalidResponse: If the number of bytes
-                in the body doesn't match the content length header.
+            ~google.resumable_media.exceptions.InvalidResponse: If the number
+                of bytes in the body doesn't match the content length header.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
@@ -349,8 +349,9 @@ def _get_range_info(response):
         Tuple[int, int, int]: The start byte, end byte and total bytes.
 
     Raises:
-        ~gooresmed.exceptions.InvalidResponse: If the ``Content-Range``
-            header is not of the form ``bytes {start}-{end}/{total}``.
+        ~google.resumable_media.exceptions.InvalidResponse: If the
+            ``Content-Range`` header is not of the form
+            ``bytes {start}-{end}/{total}``.
     """
     content_range = _helpers.header_required(response, u'content-range')
     match = _CONTENT_RANGE_RE.match(content_range)

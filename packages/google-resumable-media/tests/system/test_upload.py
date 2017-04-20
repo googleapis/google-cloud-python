@@ -22,8 +22,8 @@ import pytest
 from six.moves import http_client
 from six.moves import urllib_parse
 
-import gooresmed
-import gooresmed.upload as upload_mod
+from google import resumable_media
+import google.resumable_media.upload as upload_mod
 from tests.system import utils
 
 
@@ -88,7 +88,7 @@ def check_response(response, blob_name, actual_contents=None,
 
 def check_content(blob_name, expected_content, transport):
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-    download = gooresmed.Download(media_url)
+    download = resumable_media.Download(media_url)
     response = download.consume(transport)
     assert response.status_code == http_client.OK
     assert response.content == expected_content
@@ -108,7 +108,7 @@ def test_simple_upload(authorized_transport, cleanup):
     assert response.status_code == http_client.NOT_FOUND
 
     # Create the actual upload object.
-    upload = gooresmed.SimpleUpload(upload_url)
+    upload = resumable_media.SimpleUpload(upload_url)
     # Transmit the resource.
     response = upload.transmit(
         authorized_transport, actual_contents, ICO_CONTENT_TYPE)
@@ -135,7 +135,7 @@ def test_multipart_upload(authorized_transport, cleanup):
     assert response.status_code == http_client.NOT_FOUND
 
     # Create the actual upload object.
-    upload = gooresmed.MultipartUpload(upload_url)
+    upload = resumable_media.MultipartUpload(upload_url)
     # Transmit the resource.
     metadata = {
         u'name': blob_name,
@@ -216,7 +216,8 @@ def test_resumable_upload(authorized_transport, stream, cleanup):
     cleanup(metadata_url, authorized_transport)
     # Create the actual upload object.
     chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
-    upload = gooresmed.ResumableUpload(utils.RESUMABLE_UPLOAD, chunk_size)
+    upload = resumable_media.ResumableUpload(
+        utils.RESUMABLE_UPLOAD, chunk_size)
     # Initiate the upload.
     metadata = {
         u'name': blob_name,
@@ -240,7 +241,7 @@ def test_resumable_upload(authorized_transport, stream, cleanup):
 
 
 def check_bad_chunk(upload, transport):
-    with pytest.raises(gooresmed.InvalidResponse) as exc_info:
+    with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         upload.transmit_next_chunk(transport)
     error = exc_info.value
     response = error.response
@@ -251,7 +252,7 @@ def check_bad_chunk(upload, transport):
 def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
     blob_name = os.path.basename(stream.name)
     # Create the actual upload object.
-    upload = gooresmed.ResumableUpload(
+    upload = resumable_media.ResumableUpload(
         utils.RESUMABLE_UPLOAD, upload_mod.UPLOAD_CHUNK_SIZE)
     # Modify the ``upload`` **after** construction so we can
     # use a bad chunk size.

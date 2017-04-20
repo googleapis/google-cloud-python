@@ -15,7 +15,7 @@
 """Shared utilities used by both downloads and uploads."""
 
 
-from gooresmed import exceptions
+from google.resumable_media import exceptions
 
 
 def _do_nothing():
@@ -36,7 +36,8 @@ def header_required(response, name, callback=_do_nothing):
         str: The desired header.
 
     Raises:
-        ~gooresmed.exceptions.InvalidResponse: If the header is missing.
+        ~google.resumable_media.exceptions.InvalidResponse: If the header
+            is missing.
     """
     headers = response.headers
     if name not in headers:
@@ -84,8 +85,8 @@ def require_status_code(response, status_codes, callback=_do_nothing):
         int: The status code.
 
     Raises:
-        ~gooresmed.exceptions.InvalidResponse: If the status code is not
-            one of the values in ``status_codes``.
+        ~google.resumable_media.exceptions.InvalidResponse: If the status code
+            is not one of the values in ``status_codes``.
     """
     status_code = get_status_code(response)
     if status_code not in status_codes:

@@ -12,17 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import mock
-
-from google.resumable_media import exceptions
-
-
-class TestInvalidResponse(object):
-
-    def test_constructor(self):
-        response = mock.sentinel.response
-        error = exceptions.InvalidResponse(
-            response, 1, u'a', [b'm'], True)
-
-        assert error.response is response
-        assert error.args == (1, u'a', [b'm'], True)
+try:
+    import pkg_resources
+    pkg_resources.declare_namespace(__name__)
+except ImportError:
+    import pkgutil
+    __path__ = pkgutil.extend_path(__path__, __name__)

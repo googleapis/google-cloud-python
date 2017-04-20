@@ -18,22 +18,22 @@ so that entries in ``__all__`` for the package
 don't get documented twice.
 
 This file is expected to be the file generated for the base
-module ``gooresmed/__init__.py``.
+module ``google/resumable_media/__init__.py``.
 """
 
 import os
 import types
 
 try:
-    import gooresmed
+    from google import resumable_media
 except ImportError:
-    gooresmed = None
+    resumable_media = None
 
 
-_BASE_PACKAGE = 'gooresmed'
+_BASE_PACKAGE = 'google'
 _EXPECTED_AUTOMODULE_LINES = (
     '',
-    '.. automodule:: gooresmed',
+    '.. automodule:: google.resumable_media',
     '    :members:',
     '    :inherited-members:',
     '    :undoc-members:',
@@ -46,21 +46,21 @@ INDEX_FILE = os.path.join(DOCS_DIR, 'index.rst')
 
 
 def public_members():
-    """Get public members in :mod:`gooresmed` package.
+    """Get public members in :mod:`google.resumable_media` package.
 
     Returns:
         list: List of all public members **defined** in the
         main package.
     """
-    if gooresmed is None:
+    if resumable_media is None:
         return []
 
     members = []
-    for name in dir(gooresmed):
+    for name in dir(resumable_media):
         # Filter out non-public.
         if name.startswith('_'):
             continue
-        value = getattr(gooresmed, name)
+        value = getattr(resumable_media, name)
         # Filter out imported modules.
         if isinstance(value, types.ModuleType):
             continue
@@ -94,10 +94,10 @@ def main():
                     if set(line) == set('=')]
     if title_index != 1:
         raise ValueError('Unexpected title line', title_index)
-    if lines[0] != 'gooresmed package':
+    if lines[0] != 'google\.resumable\_media package':
         raise ValueError('Unexpected title content', lines[0])
 
-    title = '``gooresmed``'
+    title = '``google.resumable_media``'
     rewritten_content.append(title)
     rewritten_content.append('=' * len(title))
 
@@ -116,7 +116,7 @@ def main():
 
     automodule_lines = [
         '',
-        '.. automodule:: gooresmed',
+        '.. automodule:: google.resumable_media',
     ]
 
     members = public_members()

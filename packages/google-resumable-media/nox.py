@@ -42,7 +42,7 @@ def unit_tests(session, python_version):
     line_coverage = '--cov-fail-under=99'
     session.run(
         'py.test',
-        '--cov=gooresmed', '--cov=tests.unit', '--cov-append',
+        '--cov=google.resumable_media', '--cov=tests.unit', '--cov-append',
         '--cov-config=.coveragerc', '--cov-report=', line_coverage,
         'tests/unit',
     )
@@ -99,7 +99,10 @@ def lint(session):
     session.interpreter = 'python3.6'
     session.install('flake8')
     session.install('-e', '.')
-    session.run('flake8', 'gooresmed/', 'tests/')
+    session.run(
+        'flake8',
+        os.path.join('google', 'resumable_media'),
+        'tests')
 
 
 @nox.session

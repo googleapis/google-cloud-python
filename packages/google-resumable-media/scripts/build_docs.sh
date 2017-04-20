@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Build the gooresmed docs.
+# Build the google-resumable-media docs.
 
 set -e
 
@@ -23,10 +23,11 @@ OPTIONS="members,inherited-members,undoc-members,show-inheritance"
 SPHINX_APIDOC_OPTIONS="${OPTIONS}" sphinx-apidoc \
   --separate --force \
   --output-dir docs_build/ \
-  gooresmed
+  google
 # We only have one package, so modules.rst is overkill.
 rm -f docs_build/modules.rst
-mv docs_build/gooresmed.rst docs_build/index.rst
+rm -f docs_build/google.rst
+mv docs_build/google.resumable_media.rst docs_build/index.rst
 python scripts/rewrite_index_rst.py
 
 # If anything has changed

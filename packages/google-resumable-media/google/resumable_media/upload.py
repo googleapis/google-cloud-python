@@ -28,8 +28,8 @@ import sys
 import six
 from six.moves import http_client
 
-from gooresmed import _helpers
-from gooresmed import exceptions
+from google.resumable_media import _helpers
+from google.resumable_media import exceptions
 
 
 _CONTENT_TYPE_HEADER = u'content-type'
@@ -95,8 +95,8 @@ class _UploadBase(object):
             response (object): The HTTP response object.
 
         Raises:
-            ~gooresmed.exceptions.InvalidResponse: If the status code is
-                not 200.
+            ~google.resumable_media.exceptions.InvalidResponse: If the status
+                code is not 200.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
@@ -436,10 +436,11 @@ class ResumableUpload(_UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~gooresmed.exceptions.InvalidResponse: If the status code is 308
-                and the ``range`` header is not of the form ``bytes 0-{end}``.
-            ~gooresmed.exceptions.InvalidResponse: If the status code is
-                not 200 or 308.
+            ~google.resumable_media.exceptions.InvalidResponse: If the status
+                code is 308 and the ``range`` header is not of the form
+                ``bytes 0-{end}``.
+            ~google.resumable_media.exceptions.InvalidResponse: If the status
+                code is not 200 or 308.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
@@ -475,8 +476,8 @@ class ResumableUpload(_UploadBase):
            import requests
            from six.moves import http_client
 
-           import gooresmed
-           import gooresmed.upload as upload_mod
+           from google import resumable_media
+           import google.resumable_media.upload as upload_mod
 
            transport = mock.Mock(spec=[u'put'])
            fake_response = requests.Response()
@@ -498,7 +499,7 @@ class ResumableUpload(_UploadBase):
            >>> error = None
            >>> try:
            ...     upload.transmit_next_chunk(transport)
-           ... except gooresmed.InvalidResponse as caught_exc:
+           ... except resumable_media.InvalidResponse as caught_exc:
            ...     error = caught_exc
            ...
            >>> error
@@ -517,8 +518,8 @@ class ResumableUpload(_UploadBase):
             object: The return value of ``transport.put()``.
 
         Raises:
-            ~gooresmed.exceptions.InvalidResponse: If the status code is
-                not 200 or 308.
+            ~google.resumable_media.exceptions.InvalidResponse: If the status
+                code is not 200 or 308.
         """
         payload, headers = self._prepare_request()
         result = transport.put(

@@ -85,7 +85,7 @@ access to the resource:
 
 .. doctest:: basic-download
 
-   >>> import gooresmed
+   >>> from google import resumable_media
    >>>
    >>> url_template = (
    ...     u'https://www.googleapis.com/download/storage/v1/b/'
@@ -93,7 +93,7 @@ access to the resource:
    >>> media_url = url_template.format(
    ...     bucket=bucket, blob_name=blob_name)
    >>>
-   >>> download = gooresmed.Download(media_url)
+   >>> download = resumable_media.Download(media_url)
    >>> response = download.consume(transport)
    >>> download.finished
    True
@@ -113,7 +113,7 @@ specify ``start`` and ``end`` byte positions (both optional):
    import requests
    from six.moves import http_client
 
-   import gooresmed
+   from google import resumable_media
 
    media_url = u'http://test.invalid'
    start = 4096
@@ -134,7 +134,7 @@ specify ``start`` and ``end`` byte positions (both optional):
 
 .. doctest:: basic-download-with-slice
 
-   >>> download = gooresmed.Download(media_url, start=4096, end=8191)
+   >>> download = resumable_media.Download(media_url, start=4096, end=8191)
    >>> response = download.consume(transport)
    >>> download.finished
    True
@@ -172,7 +172,7 @@ having to fit in memory all at once.
    import requests
    from six.moves import http_client
 
-   import gooresmed
+   from google import resumable_media
 
    media_url = u'http://test.invalid'
 
@@ -194,7 +194,8 @@ having to fit in memory all at once.
 
    >>> chunk_size = 50 * 1024 * 1024  # 50MB
    >>> stream = io.BytesIO()
-   >>> download = gooresmed.ChunkedDownload(media_url, chunk_size, stream)
+   >>> download = resumable_media.ChunkedDownload(
+   ...     media_url, chunk_size, stream)
    >>> # Check the state of the download before starting.
    >>> download.bytes_downloaded
    0
@@ -231,14 +232,14 @@ not be the same size as the other chunks:
    import requests
    from six.moves import http_client
 
-   import gooresmed
+   from google import resumable_media
 
    media_url = u'http://test.invalid'
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
    stream = mock.Mock(spec=[u'write'])
-   download = gooresmed.ChunkedDownload(media_url, fifty_mb, stream)
+   download = resumable_media.ChunkedDownload(media_url, fifty_mb, stream)
    download._bytes_downloaded = 20 * fifty_mb
    download._total_bytes = one_gb
 
@@ -300,7 +301,7 @@ associated with the resource.
    import requests
    from six.moves import http_client
 
-   import gooresmed
+   from google import resumable_media
 
    bucket = u'some-bucket'
    blob_name = u'file.txt'
@@ -329,7 +330,7 @@ associated with the resource.
    >>> upload_url = url_template.format(
    ...     bucket=bucket, blob_name=blob_name)
    >>>
-   >>> upload = gooresmed.SimpleUpload(upload_url)
+   >>> upload = resumable_media.SimpleUpload(upload_url)
    >>> data = b'Some not too large content.'
    >>> content_type = u'text/plain'
    >>> response = upload.transmit(transport, data, content_type)
@@ -358,7 +359,7 @@ will be raised:
    import requests
    from six.moves import http_client
 
-   import gooresmed
+   from google import resumable_media
 
    upload_url = u'http://test.invalid'
    data = b'Some not too large content.'
@@ -373,11 +374,11 @@ will be raised:
 .. doctest:: simple-upload-fail
    :options: +NORMALIZE_WHITESPACE
 
-   >>> upload = gooresmed.SimpleUpload(upload_url)
+   >>> upload = resumable_media.SimpleUpload(upload_url)
    >>> error = None
    >>> try:
    ...     upload.transmit(transport, data, content_type)
-   ... except gooresmed.InvalidResponse as caught_exc:
+   ... except resumable_media.InvalidResponse as caught_exc:
    ...     error = caught_exc
    ...
    >>> error
@@ -413,7 +414,7 @@ accepts an extra required argument: ``metadata``.
    import requests
    from six.moves import http_client
 
-   import gooresmed
+   from google import resumable_media
 
    bucket = u'some-bucket'
    blob_name = u'file.txt'
@@ -439,7 +440,7 @@ accepts an extra required argument: ``metadata``.
    ...     u'uploadType=multipart')
    >>> upload_url = url_template.format(bucket=bucket)
    >>>
-   >>> upload = gooresmed.MultipartUpload(upload_url)
+   >>> upload = resumable_media.MultipartUpload(upload_url)
    >>> metadata = {
    ...     u'name': blob_name,
    ...     u'metadata': {
@@ -499,7 +500,7 @@ object or any other stream implementing the same interface.
    import requests
    from six.moves import http_client
 
-   import gooresmed
+   from google import resumable_media
 
    bucket = u'some-bucket'
    blob_name = u'file.txt'
@@ -529,7 +530,7 @@ object or any other stream implementing the same interface.
    >>> upload_url = url_template.format(bucket=bucket)
    >>>
    >>> chunk_size = 1024 * 1024  # 1MB
-   >>> upload = gooresmed.ResumableUpload(upload_url, chunk_size)
+   >>> upload = resumable_media.ResumableUpload(upload_url, chunk_size)
    >>> stream = io.BytesIO(data)
    >>> # The upload doesn't know how "big" it is until seeing a stream.
    >>> upload.total_bytes is None
@@ -560,15 +561,15 @@ transmitted in chunks until completion:
    import requests
    from six.moves import http_client
 
-   import gooresmed
-   import gooresmed.upload as upload_mod
+   from google import resumable_media
+   import google.resumable_media.upload as upload_mod
 
    data = b'01234567891'
    stream = io.BytesIO(data)
    # Create an "already initiated" upload.
    upload_url = u'http://test.invalid'
    chunk_size = 256 * 1024  # 256KB
-   upload = gooresmed.ResumableUpload(upload_url, chunk_size)
+   upload = resumable_media.ResumableUpload(upload_url, chunk_size)
    upload._resumable_url = u'http://test.invalid?upload_id=mocked'
    upload._stream = stream
    upload._content_type = u'text/plain'
@@ -634,12 +635,12 @@ transmitted in chunks until completion:
 """
 
 
-from gooresmed.download import ChunkedDownload
-from gooresmed.download import Download
-from gooresmed.exceptions import InvalidResponse
-from gooresmed.upload import MultipartUpload
-from gooresmed.upload import ResumableUpload
-from gooresmed.upload import SimpleUpload
+from google.resumable_media.download import ChunkedDownload
+from google.resumable_media.download import Download
+from google.resumable_media.exceptions import InvalidResponse
+from google.resumable_media.upload import MultipartUpload
+from google.resumable_media.upload import ResumableUpload
+from google.resumable_media.upload import SimpleUpload
 
 
 __all__ = [

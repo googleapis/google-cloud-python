@@ -28,12 +28,13 @@ REQUIREMENTS = [
 ]
 
 setuptools.setup(
-    name='gooresmed',
+    name='google-resumable-media',
     version='0.0.1',
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='jjg+google-cloud-python@google.com',
     long_description=README,
+    namespace_packages=['google'],
     scripts=[],
     url='https://github.com/GoogleCloudPlatform/google-resumable-media-python',
     packages=setuptools.find_packages(),

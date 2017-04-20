@@ -16,8 +16,8 @@ import mock
 import pytest
 from six.moves import http_client
 
-from gooresmed import _helpers
-from gooresmed import exceptions
+from google.resumable_media import _helpers
+from google.resumable_media import exceptions
 
 
 def test__do_nothing():

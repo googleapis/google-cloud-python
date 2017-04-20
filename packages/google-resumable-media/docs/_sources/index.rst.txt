@@ -1,11 +1,11 @@
-``gooresmed``
-=============
+``google.resumable_media``
+==========================
 
-.. automodule:: gooresmed
+.. automodule:: google.resumable_media
 
 .. toctree::
    :hidden:
 
-   gooresmed.download
-   gooresmed.exceptions
-   gooresmed.upload
+   google.resumable_media.download
+   google.resumable_media.exceptions
+   google.resumable_media.upload

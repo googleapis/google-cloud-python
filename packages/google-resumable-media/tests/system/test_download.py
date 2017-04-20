@@ -20,7 +20,7 @@ import google.auth.transport.requests as tr_requests
 import pytest
 from six.moves import http_client
 
-import gooresmed
+from google import resumable_media
 from tests.system import utils
 
 
@@ -48,7 +48,7 @@ def add_files(authorized_transport):
         blob_name = os.path.basename(img_file)
         blob_names.append(blob_name)
         upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
-        upload = gooresmed.SimpleUpload(upload_url)
+        upload = resumable_media.SimpleUpload(upload_url)
         response = upload.transmit(
             authorized_transport, actual_contents, u'image/jpeg')
         assert response.status_code == http_client.OK
@@ -71,7 +71,7 @@ def test_download_full(add_files, authorized_transport):
 
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-        download = gooresmed.Download(media_url)
+        download = resumable_media.Download(media_url)
         # Consume the resource.
         response = download.consume(authorized_transport)
         assert response.status_code == http_client.OK
@@ -84,10 +84,10 @@ def test_download_full(add_files, authorized_transport):
 def test_non_existent_file(authorized_transport):
     blob_name = u'does-not-exist.txt'
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-    download = gooresmed.Download(media_url)
+    download = resumable_media.Download(media_url)
 
     # Try to consume the resource and fail.
-    with pytest.raises(gooresmed.InvalidResponse) as exc_info:
+    with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download.consume(authorized_transport)
 
     error = exc_info.value
@@ -107,7 +107,7 @@ def test_non_existent_file(authorized_transport):
 def simple_file(authorized_transport):
     blob_name = u'basic-file.txt'
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
-    upload = gooresmed.SimpleUpload(upload_url)
+    upload = resumable_media.SimpleUpload(upload_url)
     data = b'Simple contents'
     response = upload.transmit(authorized_transport, data, u'text/plain')
     assert response.status_code == http_client.OK
@@ -128,10 +128,10 @@ def test_bad_range(simple_file, authorized_transport):
     assert len(data) < start < end
     # Create the actual download object.
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-    download = gooresmed.Download(media_url, start=start, end=end)
+    download = resumable_media.Download(media_url, start=start, end=end)
 
     # Try to consume the resource and fail.
-    with pytest.raises(gooresmed.InvalidResponse) as exc_info:
+    with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download.consume(authorized_transport)
 
     error = exc_info.value
@@ -163,10 +163,10 @@ def test_download_partial(add_files, authorized_transport):
         # Create the multiple download "slices".
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
         downloads = (
-            gooresmed.Download(media_url, start=1024, end=16385),
-            gooresmed.Download(media_url, end=8191),
-            gooresmed.Download(media_url, start=-256),
-            gooresmed.Download(media_url, start=262144),
+            resumable_media.Download(media_url, start=1024, end=16385),
+            resumable_media.Download(media_url, end=8191),
+            resumable_media.Download(media_url, start=-256),
+            resumable_media.Download(media_url, start=262144),
         )
         for download, slice_ in zip(downloads, slices):
             response = download.consume(authorized_transport)
@@ -223,7 +223,8 @@ def test_chunked_download(add_files, authorized_transport):
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
         stream = io.BytesIO()
-        download = gooresmed.ChunkedDownload(media_url, chunk_size, stream)
+        download = resumable_media.ChunkedDownload(
+            media_url, chunk_size, stream)
         # Consume the resource in chunks.
         num_responses, last_response = consume_chunks(
             download, authorized_transport,
@@ -270,7 +271,7 @@ def test_chunked_download_partial(add_files, authorized_transport):
                 7, end_byte - slice_.start + 1)
             # Create the actual download object.
             stream = io.BytesIO()
-            download = gooresmed.ChunkedDownload(
+            download = resumable_media.ChunkedDownload(
                 media_url, chunk_size, stream, start=slice_.start, end=end)
             # Consume the resource in chunks.
             num_responses, last_response = consume_chunks(
