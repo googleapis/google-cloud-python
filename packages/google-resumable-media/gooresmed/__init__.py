@@ -115,7 +115,7 @@ specify ``start`` and ``end`` byte positions (both optional):
 
    import gooresmed
 
-   media_url = u'test.invalid'
+   media_url = u'http://test.invalid'
    start = 4096
    end = 8191
    slice_size = end - start + 1
@@ -168,7 +168,7 @@ Using the same media URL and authorized transport for a basic
 
    import gooresmed
 
-   media_url = u'test.invalid'
+   media_url = u'http://test.invalid'
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
@@ -222,7 +222,7 @@ not be the same size as the other chunks:
 
    import gooresmed
 
-   media_url = u'test.invalid'
+   media_url = u'http://test.invalid'
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
@@ -276,7 +276,9 @@ Simple Uploads
 ==============
 
 Among the three supported upload classes, the simplest is
-:class:`SimpleUpload`.
+:class:`SimpleUpload`. A simple upload should be used when the resource
+being uploaded is small and when there is no metadata (other than the name)
+associated with the resource.
 
 .. testsetup:: simple-upload
 
@@ -333,6 +335,49 @@ Among the three supported upload classes, the simplest is
    'M0XLEsX9/sMdiI+4pB4CAQ=='
    >>> int(json_response[u'size']) == len(data)
    True
+
+In the rare case that an upload fails, an :exc:`.InvalidResponse`
+will be raised:
+
+.. testsetup:: simple-upload-fail
+
+   import mock
+   import requests
+   from six.moves import http_client
+
+   import gooresmed
+
+   upload_url = u'http://test.invalid'
+   data = b'Some not too large content.'
+   content_type = u'text/plain'
+
+   fake_response = requests.Response()
+   fake_response.status_code = int(http_client.SERVICE_UNAVAILABLE)
+
+   post_method = mock.Mock(return_value=fake_response, spec=[])
+   transport = mock.Mock(post=post_method, spec=[u'post'])
+
+.. doctest:: simple-upload-fail
+   :options: +NORMALIZE_WHITESPACE
+
+   >>> upload = gooresmed.SimpleUpload(upload_url)
+   >>> error = None
+   >>> try:
+   ...     upload.transmit(transport, data, content_type)
+   ... except gooresmed.InvalidResponse as caught_exc:
+   ...     error = caught_exc
+   ...
+   >>> error
+   InvalidResponse('Request failed with status code', 503,
+                   'Expected one of', <HTTPStatus.OK: 200>)
+   >>> error.response
+   <Response [503]>
+   >>>
+   >>> upload.finished
+   True
+
+Even in the case of failure, we see that the upload is
+:attr:`~.SimpleUpload.finished`, i.e. it cannot be re-used.
 """
 
 

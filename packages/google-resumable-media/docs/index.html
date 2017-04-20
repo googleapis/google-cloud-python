@@ -286,7 +286,9 @@ not be the same size as the other chunks:</p>
 <div class="section" id="simple-uploads">
 <h2>Simple Uploads<a class="headerlink" href="#simple-uploads" title="Permalink to this headline">¶</a></h2>
 <p>Among the three supported upload classes, the simplest is
-<code class="xref py py-class docutils literal"><span class="pre">SimpleUpload</span></code>.</p>
+<code class="xref py py-class docutils literal"><span class="pre">SimpleUpload</span></code>. A simple upload should be used when the resource
+being uploaded is small and when there is no metadata (other than the name)
+associated with the resource.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
 <span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/&#39;</span>
 <span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;</span><span class="si">{bucket}</span><span class="s1">/o?uploadType=media&amp;name=</span><span class="si">{blob_name}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -314,6 +316,27 @@ not be the same size as the other chunks:</p>
 <span class="go">True</span>
 </pre></div>
 </div>
+<p>In the rare case that an upload fails, an <a class="reference internal" href="gooresmed.exceptions.html#gooresmed.exceptions.InvalidResponse" title="gooresmed.exceptions.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a>
+will be raised:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span> <span class="o">=</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">SimpleUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">gooresmed</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">caught_exc</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">error</span> <span class="o">=</span> <span class="n">caught_exc</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error</span>
+<span class="go">InvalidResponse(&#39;Request failed with status code&#39;, 503,</span>
+<span class="go">                &#39;Expected one of&#39;, &lt;HTTPStatus.OK: 200&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">error</span><span class="o">.</span><span class="n">response</span>
+<span class="go">&lt;Response [503]&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">finished</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Even in the case of failure, we see that the upload is
+<a class="reference internal" href="gooresmed.upload.html#gooresmed.upload.SimpleUpload.finished" title="gooresmed.upload.SimpleUpload.finished"><code class="xref py py-attr docutils literal"><span class="pre">finished</span></code></a>, i.e. it cannot be re-used.</p>
 </div>
 <div class="toctree-wrapper compound">
 </div>
