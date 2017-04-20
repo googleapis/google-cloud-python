@@ -37,3 +37,12 @@ def docs(session):
 
     # Build the docs!
     session.run('bash', './test_utils/scripts/update_docs.sh')
+
+
+@nox.session
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.interpreter = 'python3.6'
+    session.install('docutils', 'Pygments')
+    session.run(
+        'python', 'setup.py', 'check', '--restructuredtext', '--strict')
