@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 
 import google.auth
@@ -158,13 +159,15 @@ def test_chunked_download(add_files, authorized_transport):
         num_chunks, chunk_size = get_chunk_size(7, total_bytes)
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-        download = gooresmed.ChunkedDownload(media_url, chunk_size)
+        stream = io.BytesIO()
+        download = gooresmed.ChunkedDownload(media_url, chunk_size, stream)
         # Consume the resource in chunks.
         num_responses, last_response, all_bytes = consume_chunks(
             download, authorized_transport,
             total_bytes, actual_contents)
         # Make sure the combined chunks are the whole object.
         assert all_bytes == actual_contents
+        assert stream.getvalue() == actual_contents
         # Check that we have the right number of responses.
         assert num_responses == num_chunks
         # Make sure the last chunk isn't the same size.
@@ -204,14 +207,16 @@ def test_chunked_download_partial(add_files, authorized_transport):
             num_chunks, chunk_size = get_chunk_size(
                 7, end_byte - slice_.start + 1)
             # Create the actual download object.
+            stream = io.BytesIO()
             download = gooresmed.ChunkedDownload(
-                media_url, chunk_size, start=slice_.start, end=end)
+                media_url, chunk_size, stream, start=slice_.start, end=end)
             # Consume the resource in chunks.
             num_responses, last_response, all_bytes = consume_chunks(
                 download, authorized_transport, total_bytes, actual_contents)
 
             # Make sure the combined chunks are the whole slice.
             assert all_bytes == actual_contents[slice_]
+            assert stream.getvalue() == actual_contents[slice_]
             # Check that we have the right number of responses.
             assert num_responses == num_chunks
             # Make sure the last chunk isn't the same size.
