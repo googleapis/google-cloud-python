@@ -21,4 +21,18 @@ jobs:
           name: Run tests
           command: |
             nox
+      - deploy:
+          name: Push to PyPI (if this is a release tag).
+          command: scripts/twine_upload.sh
     working_directory: /var/code/gcp/
+
+deployment:
+  tag_build_for_cci2:
+    # 1.0 style config for tag builds workaround
+    # For context, see:
+    # - https://discuss.circleci.com/t/build-on-tag/9864/30
+    # - https://discuss.circleci.com/t/git-tag-deploys-in-2-0/9493/8
+    # - https://circleci.com/gh/keybits/circulate/58#config/containers/0
+    tag: /([0-9]+)\.([0-9]+)\.([0-9]+)/
+    commands:
+      - true
