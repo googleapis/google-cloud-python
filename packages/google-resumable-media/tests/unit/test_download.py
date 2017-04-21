@@ -159,9 +159,10 @@ class TestDownload(object):
         assert not download.finished
         ret_val = download.consume(transport)
         assert ret_val is transport.request.return_value
-        range_bytes = u'bytes={:d}-{:d}'.format(0, end)
         transport.request.assert_called_once_with(
             u'GET', EXAMPLE_URL, data=None, headers=download._headers)
+        range_bytes = u'bytes={:d}-{:d}'.format(0, end)
+        assert download._headers[u'range'] == range_bytes
         assert download.finished
 
     def test_consume(self):
