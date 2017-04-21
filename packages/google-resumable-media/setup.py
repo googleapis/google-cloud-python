@@ -37,7 +37,7 @@ setuptools.setup(
     namespace_packages=['google'],
     scripts=[],
     url='https://github.com/GoogleCloudPlatform/google-resumable-media-python',
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=('tests*',)),
     license='Apache 2.0',
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,

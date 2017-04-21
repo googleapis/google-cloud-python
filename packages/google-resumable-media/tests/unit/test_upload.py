@@ -64,7 +64,7 @@ class Test_UploadBase(object):
         # Make sure **not finished** before.
         assert not upload.finished
         status_code = http_client.SERVICE_UNAVAILABLE
-        response = _make_response(status_code)
+        response = _make_response(status_code=status_code)
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
             upload._process_response(response)
 
@@ -435,17 +435,11 @@ class TestResumableUpload(object):
         upload._make_invalid()
         assert upload.invalid
 
-    @staticmethod
-    def _mock_response(status_code, headers):
-        return mock.Mock(
-            headers=headers, status_code=status_code,
-            spec=[u'headers', u'status_code'])
-
     def test__process_response_bad_status(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
-        response = self._mock_response(http_client.NOT_FOUND, {})
+        response = _make_response(status_code=http_client.NOT_FOUND)
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
             upload._process_response(response)
 
@@ -464,7 +458,7 @@ class TestResumableUpload(object):
         # Check status before.
         assert upload._bytes_uploaded == 0
         assert not upload._finished
-        response = self._mock_response(http_client.OK, {})
+        response = _make_response()
         ret_val = upload._process_response(response)
         assert ret_val is None
         # Check status after.
@@ -473,7 +467,7 @@ class TestResumableUpload(object):
 
     def test__process_response_partial_no_range(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
-        response = self._mock_response(upload_mod.PERMANENT_REDIRECT, {})
+        response = _make_response(status_code=upload_mod.PERMANENT_REDIRECT)
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
@@ -492,7 +486,8 @@ class TestResumableUpload(object):
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
         headers = {u'range': u'nights 1-81'}
-        response = self._mock_response(upload_mod.PERMANENT_REDIRECT, headers)
+        response = _make_response(
+            status_code=upload_mod.PERMANENT_REDIRECT, headers=headers)
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
             upload._process_response(response)
 
@@ -509,7 +504,8 @@ class TestResumableUpload(object):
         # Check status before.
         assert upload._bytes_uploaded == 0
         headers = {u'range': u'bytes=0-171'}
-        response = self._mock_response(upload_mod.PERMANENT_REDIRECT, headers)
+        response = _make_response(
+            status_code=upload_mod.PERMANENT_REDIRECT, headers=headers)
         ret_val = upload._process_response(response)
         assert ret_val is None
         # Check status after.
@@ -518,9 +514,8 @@ class TestResumableUpload(object):
     @staticmethod
     def _chunk_mock(status_code, response_headers):
         transport = mock.Mock(spec=[u'put'])
-        put_response = mock.Mock(
-            headers=response_headers, status_code=status_code,
-            spec=[u'headers', u'status_code'])
+        put_response = _make_response(
+            status_code=status_code, headers=response_headers)
         transport.put.return_value = put_response
 
         return transport
@@ -554,10 +549,107 @@ class TestResumableUpload(object):
         transport.put.assert_called_once_with(
             upload.resumable_url, data=payload, headers=expected_headers)
 
+    def test__prepare_recover_request_not_invalid(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        assert not upload.invalid
+
+        with pytest.raises(ValueError):
+            upload._prepare_recover_request()
+
+    def test__prepare_recover_request(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._invalid = True
+
+        headers = upload._prepare_recover_request()
+        assert headers == {u'content-range': u'bytes */*'}
+
+    def test__process_recover_response_bad_status(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._invalid = True
+
+        response = _make_response(status_code=http_client.BAD_REQUEST)
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            upload._process_recover_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 4
+        assert error.args[1] == response.status_code
+        assert error.args[3] == upload_mod.PERMANENT_REDIRECT
+        # Make sure still invalid.
+        assert upload.invalid
+
+    def test__process_recover_response_no_range(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._invalid = True
+        upload._stream = mock.Mock(spec=[u'seek'])
+        upload._bytes_uploaded = mock.sentinel.not_zero
+        assert upload.bytes_uploaded != 0
+
+        response = _make_response(
+            status_code=upload_mod.PERMANENT_REDIRECT, headers={})
+        ret_val = upload._process_recover_response(response)
+        assert ret_val is None
+        # Check the state of ``upload`` after.
+        assert upload.bytes_uploaded == 0
+        assert not upload.invalid
+        upload._stream.seek.assert_called_once_with(0)
+
+    def test__process_recover_response_bad_range(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._invalid = True
+        upload._stream = mock.Mock(spec=[u'seek'])
+        upload._bytes_uploaded = mock.sentinel.not_zero
+
+        headers = {u'range': u'bites=9-11'}
+        response = _make_response(
+            status_code=upload_mod.PERMANENT_REDIRECT, headers=headers)
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            upload._process_recover_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 3
+        assert error.args[1] == headers[u'range']
+        # Check the state of ``upload`` after (untouched).
+        assert upload.bytes_uploaded is mock.sentinel.not_zero
+        assert upload.invalid
+        upload._stream.seek.assert_not_called()
+
+    def test__process_recover_response_with_range(self):
+        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload._invalid = True
+        upload._stream = mock.Mock(spec=[u'seek'])
+        upload._bytes_uploaded = mock.sentinel.not_zero
+        assert upload.bytes_uploaded != 0
+
+        end = 11
+        headers = {u'range': u'bytes=0-{:d}'.format(end)}
+        response = _make_response(
+            status_code=upload_mod.PERMANENT_REDIRECT, headers=headers)
+        ret_val = upload._process_recover_response(response)
+        assert ret_val is None
+        # Check the state of ``upload`` after.
+        assert upload.bytes_uploaded == end + 1
+        assert not upload.invalid
+        upload._stream.seek.assert_called_once_with(end + 1)
+
     def test_recover(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
-        with pytest.raises(NotImplementedError):
-            upload.recover(None)
+        upload._invalid = True  # Make sure invalid.
+        upload._stream = mock.Mock(spec=[u'seek'])
+
+        end = 55555
+        headers = {u'range': u'bytes=0-{:d}'.format(end)}
+        transport = self._chunk_mock(
+            upload_mod.PERMANENT_REDIRECT, headers)
+
+        ret_val = upload.recover(transport)
+        assert ret_val is transport.put.return_value
+        # Check the state of ``upload`` after.
+        assert upload.bytes_uploaded == end + 1
+        assert not upload.invalid
+        upload._stream.seek.assert_called_once_with(end + 1)
 
 
 @mock.patch(u'random.randrange', return_value=1234567890123456789)
@@ -659,5 +751,8 @@ class Test__get_next_chunk(object):
         assert stream.tell() == 10
 
 
-def _make_response(status_code=http_client.OK):
-    return mock.Mock(status_code=status_code, spec=[u'status_code'])
+def _make_response(status_code=http_client.OK, headers=None):
+    headers = headers or {}
+    return mock.Mock(
+        headers=headers, status_code=status_code,
+        spec=[u'headers', u'status_code'])

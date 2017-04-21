@@ -527,6 +527,66 @@ class ResumableUpload(_UploadBase):
         self._process_response(result)
         return result
 
+    def _prepare_recover_request(self):
+        """Prepare the contents of HTTP request to recover from failure.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O. This is based on the `sans-I/O`_ philosophy.
+
+        We assume that the :attr:`resumable_url` is set (i.e. the only way
+        the upload can end up :attr:`invalid` is if it has been initiated.
+
+        Returns:
+            dict: The headers for the request.
+
+        Raises:
+            ValueError: If the current upload is not in an invalid state.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if not self.invalid:
+            raise ValueError(
+                u'Upload is not in invalid state, no need to recover.')
+
+        headers = {u'content-range': u'bytes */*'}
+        return headers
+
+    def _process_recover_response(self, response):
+        """Process the response from an HTTP request to recover from failure.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            ~google.resumable_media.exceptions.InvalidResponse: If the status
+                code is not 308.
+            ~google.resumable_media.exceptions.InvalidResponse: If the status
+                code is 308 and the ``range`` header is not of the form
+                ``bytes 0-{end}``.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        _helpers.require_status_code(response, (PERMANENT_REDIRECT,))
+        headers = response.headers
+        if u'range' in headers:
+            bytes_range = headers[u'range']
+            match = _BYTES_RANGE_RE.match(bytes_range)
+            if match is None:
+                raise exceptions.InvalidResponse(
+                    response, u'Unexpected "range" header', bytes_range,
+                    u'Expected to be of the form "bytes=0-{end}"')
+            self._bytes_uploaded = int(match.group(u'end_byte')) + 1
+        else:
+            # In this case, the upload has not "begun".
+            self._bytes_uploaded = 0
+
+        self._stream.seek(self._bytes_uploaded)
+        self._invalid = False
+
     def recover(self, transport):
         """Recover from a failure.
 
@@ -545,11 +605,11 @@ class ResumableUpload(_UploadBase):
 
         Returns:
             object: The return value of ``transport.put()``.
-
-        Raises:
-            NotImplementedError: Always.
         """
-        raise NotImplementedError
+        headers = self._prepare_recover_request()
+        result = transport.put(self.resumable_url, headers=headers)
+        self._process_recover_response(result)
+        return result
 
 
 def _get_boundary():
