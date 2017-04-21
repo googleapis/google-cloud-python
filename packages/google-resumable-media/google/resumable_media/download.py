@@ -87,7 +87,7 @@ class Download(_DownloadBase):
         philosophy.
 
         Returns:
-            dict: The headers for the request.
+            Mapping[str, str]: The headers for the request.
 
         Raises:
             ValueError: If the current :class:`Download` has already
@@ -142,28 +142,32 @@ class ChunkedDownload(_DownloadBase):
     """Download a resource in chunks from a Google API.
 
     Args:
-       media_url (str): The URL containing the media to be downloaded.
-       chunk_size (int): The number of bytes to be retrieved in each
-           request.
-       stream (IO[bytes]): A write-able stream (i.e. file-like object) that
-           will be used to concatenate chunks of the resource as they are
-           downloaded.
-       start (int): The first byte in a range to be downloaded. If not
-           provided, defaults to ``0``.
-       end (int): The last byte in a range to be downloaded. If not
-           provided, will download to the end of the media.
+        media_url (str): The URL containing the media to be downloaded.
+        chunk_size (int): The number of bytes to be retrieved in each
+            request.
+        stream (IO[bytes]): A write-able stream (i.e. file-like object) that
+            will be used to concatenate chunks of the resource as they are
+            downloaded.
+        start (int): The first byte in a range to be downloaded. If not
+            provided, defaults to ``0``.
+        end (int): The last byte in a range to be downloaded. If not
+            provided, will download to the end of the media.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with each request, e.g. headers for data encryption
+            key headers.
 
     Raises:
         ValueError: If ``start`` is negative.
     """
 
-    def __init__(self, media_url, chunk_size, stream, start=0, end=None):
+    def __init__(self, media_url, chunk_size, stream,
+                 start=0, end=None, headers=None):
         if start < 0:
             raise ValueError(
                 u'On a chunked download the starting '
                 u'value cannot be negative.')
         super(ChunkedDownload, self).__init__(
-            media_url, start=start, end=end)
+            media_url, start=start, end=end, headers=headers)
         self.chunk_size = chunk_size
         """int: The number of bytes to be retrieved in each request."""
         self._stream = stream
@@ -204,8 +208,14 @@ class ChunkedDownload(_DownloadBase):
         require network I/O (or other I/O). This is based on the `sans-I/O`_
         philosophy.
 
+        .. note:
+
+            This method will be used multiple times, so ``headers`` will
+            be mutated in between requests. However, we don't make a copy
+            since the same keys are being updated.
+
         Returns:
-            dict: The headers for the request.
+            Mapping[str, str]: The headers for the request.
 
         Raises:
             ValueError: If the current download has finished.
@@ -216,9 +226,8 @@ class ChunkedDownload(_DownloadBase):
             raise ValueError(u'Download has finished.')
 
         curr_start, curr_end = self._get_byte_range()
-        headers = {}
-        _add_bytes_range(curr_start, curr_end, headers)
-        return headers
+        _add_bytes_range(curr_start, curr_end, self._headers)
+        return self._headers
 
     def _process_response(self, response):
         """Process the response from an HTTP request.

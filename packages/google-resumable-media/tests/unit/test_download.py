@@ -187,6 +187,7 @@ class TestChunkedDownload(object):
         assert download.chunk_size == chunk_size
         assert download.start == 0
         assert download.end is None
+        assert download._headers == {}
         assert not download._finished
         assert download._stream is stream
         assert download._bytes_downloaded == 0
@@ -293,6 +294,16 @@ class TestChunkedDownload(object):
         download2._total_bytes = 20101
         headers2 = download2._prepare_request()
         assert headers2 == {u'range': u'bytes=19991-20100'}
+
+    def test__prepare_request_with_headers(self):
+        chunk_size = 2048
+        headers = {u'patrizio': u'Starf-ish'}
+        download = download_mod.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, None, headers=headers)
+        new_headers = download._prepare_request()
+        assert new_headers is headers
+        expected = {u'patrizio': u'Starf-ish', u'range': u'bytes=0-2047'}
+        assert headers == expected
 
     def test__process_response(self):
         chunk_size = 333
