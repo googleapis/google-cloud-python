@@ -154,10 +154,11 @@ class SimpleUpload(_UploadBase):
                 image has content type ``image/jpeg``.
 
         Returns:
-            object: The return value of ``transport.post()``.
+            object: The HTTP response returned by ``transport``.
         """
         headers = self._prepare_request(content_type)
-        result = transport.post(self.upload_url, data=data, headers=headers)
+        result = _helpers.http_request(
+            transport, u'POST', self.upload_url, data=data, headers=headers)
         self._process_response(result)
         return result
 
@@ -221,10 +222,11 @@ class MultipartUpload(_UploadBase):
                 image has content type ``image/jpeg``.
 
         Returns:
-            object: The return value of ``transport.post()``.
+            object: The HTTP response returned by ``transport``.
         """
         payload, headers = self._prepare_request(data, metadata, content_type)
-        result = transport.post(self.upload_url, data=payload, headers=headers)
+        result = _helpers.http_request(
+            transport, u'POST', self.upload_url, data=payload, headers=headers)
         self._process_response(result)
         return result
 
@@ -362,11 +364,14 @@ class ResumableUpload(_UploadBase):
                 ACL list.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
+
+        Returns:
+            object: The HTTP response returned by ``transport``.
         """
         payload, headers = self._prepare_initiate_request(
             stream, metadata, content_type)
-        result = transport.post(
-            self.upload_url, data=payload, headers=headers)
+        result = _helpers.http_request(
+            transport, u'POST', self.upload_url, data=payload, headers=headers)
         self._process_initiate_response(result)
         return result
 
@@ -480,10 +485,10 @@ class ResumableUpload(_UploadBase):
            from google import resumable_media
            import google.resumable_media.upload as upload_mod
 
-           transport = mock.Mock(spec=[u'put'])
+           transport = mock.Mock(spec=[u'request'])
            fake_response = requests.Response()
            fake_response.status_code = int(http_client.BAD_REQUEST)
-           transport.put.return_value = fake_response
+           transport.request.return_value = fake_response
 
            upload_url = u'http://test.invalid'
            upload = upload_mod.ResumableUpload(
@@ -511,20 +516,19 @@ class ResumableUpload(_UploadBase):
 
         Args:
             transport (object): An object which can make authenticated
-                requests via a ``put()`` method which accepts an
-                upload URL, a ``data`` keyword argument and a
-                ``headers`` keyword argument.
+                requests.
 
         Returns:
-            object: The return value of ``transport.put()``.
+            object: The HTTP response returned by ``transport``.
 
         Raises:
             ~google.resumable_media.exceptions.InvalidResponse: If the status
                 code is not 200 or 308.
         """
         payload, headers = self._prepare_request()
-        result = transport.put(
-            self.resumable_url, data=payload, headers=headers)
+        result = _helpers.http_request(
+            transport, u'PUT', self.resumable_url,
+            data=payload, headers=headers)
         self._process_response(result)
         return result
 
@@ -600,15 +604,14 @@ class ResumableUpload(_UploadBase):
 
         Args:
             transport (object): An object which can make authenticated
-                requests via a ``put()`` method which accepts an
-                upload URL, a ``data`` keyword argument and a
-                ``headers`` keyword argument.
+                requests.
 
         Returns:
-            object: The return value of ``transport.put()``.
+            object: The HTTP response returned by ``transport``.
         """
         headers = self._prepare_recover_request()
-        result = transport.put(self.resumable_url, headers=headers)
+        result = _helpers.http_request(
+            transport, u'PUT', self.resumable_url, headers=headers)
         self._process_recover_response(result)
         return result
 

@@ -91,3 +91,17 @@ class Test_require_status_code(object):
         assert len(error.args) == 5
         assert error.args[1] == response.status_code
         assert error.args[3:] == status_codes
+
+
+def test_http_request():
+    transport = mock.Mock(spec=[u'request'])
+    method = u'POST'
+    url = u'http://test.invalid'
+    data = mock.sentinel.data
+    headers = {u'one': u'fish', u'blue': u'fish'}
+    ret_val = _helpers.http_request(
+        transport, method, url, data=data, headers=headers)
+
+    assert ret_val is transport.request.return_value
+    transport.request.assert_called_once_with(
+        method, url, data=data, headers=headers)

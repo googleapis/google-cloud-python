@@ -142,17 +142,17 @@ class TestDownload(object):
     def test_consume(self):
         end = 65536
         download = download_mod.Download(EXAMPLE_URL, end=end)
-        transport = mock.Mock(spec=[u'get'])
-        transport.get.return_value = mock.Mock(
+        transport = mock.Mock(spec=[u'request'])
+        transport.request.return_value = mock.Mock(
             status_code=int(http_client.OK), spec=[u'status_code'])
 
         assert not download.finished
         ret_val = download.consume(transport)
-        assert ret_val is transport.get.return_value
+        assert ret_val is transport.request.return_value
         range_bytes = u'bytes={:d}-{:d}'.format(0, end)
         download_headers = {u'range': range_bytes}
-        transport.get.assert_called_once_with(
-            EXAMPLE_URL, headers=download_headers)
+        transport.request.assert_called_once_with(
+            u'GET', EXAMPLE_URL, data=None, headers=download_headers)
         assert download.finished
 
 
@@ -417,9 +417,9 @@ class TestChunkedDownload(object):
             download.consume_next_chunk(None)
 
     def _mock_transport(self, start, chunk_size, total_bytes, content=b''):
-        transport = mock.Mock(spec=[u'get'])
+        transport = mock.Mock(spec=[u'request'])
         assert len(content) == chunk_size
-        transport.get.return_value = self._mock_response(
+        transport.request.return_value = self._mock_response(
             start, start + chunk_size - 1, total_bytes,
             content=content, status_code=int(http_client.OK))
 
@@ -442,11 +442,11 @@ class TestChunkedDownload(object):
         assert download.total_bytes is None
         # Actually consume the chunk and check the output.
         ret_val = download.consume_next_chunk(transport)
-        assert ret_val is transport.get.return_value
+        assert ret_val is transport.request.return_value
         range_bytes = u'bytes={:d}-{:d}'.format(start, start + chunk_size - 1)
         download_headers = {u'range': range_bytes}
-        transport.get.assert_called_once_with(
-            EXAMPLE_URL, headers=download_headers)
+        transport.request.assert_called_once_with(
+            u'GET', EXAMPLE_URL, data=None, headers=download_headers)
         assert stream.getvalue() == data
         # Go back and check the internal state after consuming the chunk.
         assert not download.finished

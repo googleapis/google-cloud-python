@@ -116,18 +116,18 @@ class Download(_DownloadBase):
 
         Args:
             transport (object): An object which can make authenticated
-                requests via a ``get()`` method which accepts a
-                media URL and a ``headers`` keyword argument.
+                requests.
 
         Returns:
-            object: The return value of ``transport.get()``.
+            object: The HTTP response returned by ``transport``.
 
         Raises:
             ValueError: If the current :class:`Download` has already
                 finished.
         """
         headers = self._prepare_request()
-        result = transport.get(self.media_url, headers=headers)
+        result = _helpers.http_request(
+            transport, u'GET', self.media_url, headers=headers)
         self._process_response(result)
         return result
 
@@ -273,17 +273,17 @@ class ChunkedDownload(_DownloadBase):
 
         Args:
             transport (object): An object which can make authenticated
-                requests via a ``get()`` method which accepts a
-                media URL and a ``headers`` keyword argument.
+                requests.
 
         Returns:
-            object: The return value of ``transport.get()``.
+            object: The HTTP response returned by ``transport``.
 
         Raises:
             ValueError: If the current download has finished.
         """
         headers = self._prepare_request()
-        result = transport.get(self.media_url, headers=headers)
+        result = _helpers.http_request(
+            transport, u'GET', self.media_url, headers=headers)
         self._process_response(result)
         return result
 

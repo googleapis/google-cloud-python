@@ -19,8 +19,9 @@ Authorized Transport
 ====================
 
 In order to download or upload a resource, an authorized transport
-is required. For download requests, this must be an object that
-supports ``GET`` requests via ``transport.get(url, headers=headers)``.
+is required. This must be an object that has an interface modeled
+after ``requests.request()``: it takes a mandatory HTTP method (verb)
+and a URL and optional ``data`` and ``headers`` keyword arguments.
 
 For example, ``google-auth`` and ``requests`` can be used to
 create an authorized transport that has read-only access to
@@ -81,7 +82,7 @@ access to the resource:
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(get=get_method, spec=[u'get'])
+   transport = mock.Mock(request=get_method, spec=[u'request'])
 
 .. doctest:: basic-download
 
@@ -130,7 +131,7 @@ specify ``start`` and ``end`` byte positions (both optional):
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(get=get_method, spec=[u'get'])
+   transport = mock.Mock(request=get_method, spec=[u'request'])
 
 .. doctest:: basic-download-with-slice
 
@@ -188,7 +189,7 @@ having to fit in memory all at once.
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(get=get_method, spec=[u'get'])
+   transport = mock.Mock(request=get_method, spec=[u'request'])
 
 .. doctest:: chunked-download
 
@@ -255,7 +256,7 @@ not be the same size as the other chunks:
    fake_response._content = fake_content
 
    get_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(get=get_method, spec=[u'get'])
+   transport = mock.Mock(request=get_method, spec=[u'request'])
 
 .. doctest:: chunked-download-end
 
@@ -318,7 +319,7 @@ associated with the resource.
    fake_response._content = json.dumps(payload).encode(u'utf-8')
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(post=post_method, spec=[u'post'])
+   transport = mock.Mock(request=post_method, spec=[u'request'])
 
 .. doctest:: simple-upload
    :options: +NORMALIZE_WHITESPACE
@@ -369,7 +370,7 @@ will be raised:
    fake_response.status_code = int(http_client.SERVICE_UNAVAILABLE)
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(post=post_method, spec=[u'post'])
+   transport = mock.Mock(request=post_method, spec=[u'request'])
 
 .. doctest:: simple-upload-fail
    :options: +NORMALIZE_WHITESPACE
@@ -431,7 +432,7 @@ accepts an extra required argument: ``metadata``.
    fake_response._content = json.dumps(payload).encode(u'utf-8')
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(post=post_method, spec=[u'post'])
+   transport = mock.Mock(request=post_method, spec=[u'request'])
 
 .. doctest:: multipart-upload
 
@@ -520,7 +521,7 @@ object or any other stream implementing the same interface.
    fake_response.headers[u'x-guploader-uploadid'] = upload_id
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
-   transport = mock.Mock(post=post_method, spec=[u'post'])
+   transport = mock.Mock(request=post_method, spec=[u'request'])
 
 .. doctest:: resumable-initiate
 
@@ -600,7 +601,7 @@ transmitted in chunks until completion:
    # Use the fake responses to mock a transport.
    responses = [fake_response0, fake_response1, fake_response2]
    put_method = mock.Mock(side_effect=responses, spec=[])
-   transport = mock.Mock(put=put_method, spec=[u'put'])
+   transport = mock.Mock(request=put_method, spec=[u'request'])
 
 .. doctest:: resumable-transmit
 

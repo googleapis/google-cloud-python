@@ -108,3 +108,23 @@ def require_status_code(response, status_codes, callback=_do_nothing):
             response, u'Request failed with status code',
             status_code, u'Expected one of', *status_codes)
     return status_code
+
+
+def http_request(transport, method, url, data=None, headers=None):
+    """Make an HTTP request.
+
+    Args:
+        transport (object): An object which can make authenticated requests
+            via a ``request()`` method. This method mustaccept an HTTP method,
+            an upload URL, a ``data`` keyword argument and a
+            ``headers`` keyword argument.
+        method (str): The HTTP method for the request.
+        url (str): The URL for the request.
+        data (Optional[bytes]): The body of the request.
+        headers (Mapping[str, str]): The headers for the request (``transport``
+            may also add additional headers).
+
+    Returns:
+        object: The return value of ``transport.request()``.
+    """
+    return transport.request(method, url, data=data, headers=headers)
