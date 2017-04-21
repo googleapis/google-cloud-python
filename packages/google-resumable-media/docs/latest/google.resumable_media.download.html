@@ -162,7 +162,7 @@
 <p>Support for downloading media from Google APIs.</p>
 <dl class="class">
 <dt id="google.resumable_media.download.ChunkedDownload">
-<em class="property">class </em><code class="descclassname">google.resumable_media.download.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>stream</em>, <em>start=0</em>, <em>end=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">google.resumable_media.download.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>stream</em>, <em>start=0</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.download._DownloadBase</span></code></p>
 <p>Download a resource in chunks from a Google API.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -180,6 +180,9 @@ downloaded.</li>
 provided, defaults to <code class="docutils literal"><span class="pre">0</span></code>.</li>
 <li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The last byte in a range to be downloaded. If not
 provided, will download to the end of the media.</li>
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
+be sent with each request, e.g. headers for data encryption
+key headers.</li>
 </ul>
 </td>
 </tr>
@@ -237,7 +240,7 @@ requests.</td>
 
 <dl class="class">
 <dt id="google.resumable_media.download.Download">
-<em class="property">class </em><code class="descclassname">google.resumable_media.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.download.Download" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">google.resumable_media.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.download.Download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.download._DownloadBase</span></code></p>
 <p>Helper to manage downloading a resource from a Google API.</p>
 <p>&#8220;Slices&#8221; of the resource can be retrieved by specifying a range
@@ -255,6 +258,8 @@ beginning to <code class="docutils literal"><span class="pre">end</span></code> 
 <li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The last byte in a range to be downloaded. If not
 provided, but <code class="docutils literal"><span class="pre">start</span></code> is provided, will download from the
 <code class="docutils literal"><span class="pre">start</span></code> to the end of the media.</li>
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
+be sent with the request, e.g. headers for encrypted data.</li>
 </ul>
 </td>
 </tr>
