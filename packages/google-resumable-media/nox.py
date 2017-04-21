@@ -106,6 +106,15 @@ def lint(session):
 
 
 @nox.session
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.interpreter = 'python3.6'
+    session.install('docutils', 'Pygments')
+    session.run(
+        'python', 'setup.py', 'check', '--restructuredtext', '--strict')
+
+
+@nox.session
 @nox.parametrize('python_version', ['2.7', '3.6'])
 def system_tests(session, python_version):
     """Run the system test suite."""
