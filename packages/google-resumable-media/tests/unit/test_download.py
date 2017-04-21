@@ -67,16 +67,19 @@ class Test_DownloadBase(object):
         assert download.media_url == EXAMPLE_URL
         assert download.start is None
         assert download.end is None
+        assert download._headers == {}
         assert not download._finished
 
     def test_constructor_explicit(self):
         start = 11
         end = 10001
+        headers = {u'foof': u'barf'}
         download = download_mod._DownloadBase(
-            EXAMPLE_URL, start=start, end=end)
+            EXAMPLE_URL, start=start, end=end, headers=headers)
         assert download.media_url == EXAMPLE_URL
         assert download.start == start
         assert download.end == end
+        assert download._headers is headers
         assert not download._finished
 
     def test_finished_property(self):
@@ -110,6 +113,14 @@ class TestDownload(object):
         headers2 = download2._prepare_request()
         assert headers2 == {u'range': u'bytes=53-'}
 
+    def test__prepare_request_with_headers(self):
+        headers = {u'spoonge': u'borb'}
+        download = download_mod.Download(
+            EXAMPLE_URL, start=11, end=111, headers=headers)
+        new_headers = download._prepare_request()
+        assert new_headers is headers
+        assert headers == {u'range': u'bytes=11-111', u'spoonge': u'borb'}
+
     def test__process_response(self):
         download = download_mod.Download(EXAMPLE_URL)
         # Make sure **not finished** before.
@@ -139,9 +150,8 @@ class TestDownload(object):
         # Make sure **finished** even after a failure.
         assert download.finished
 
-    def test_consume(self):
-        end = 65536
-        download = download_mod.Download(EXAMPLE_URL, end=end)
+    def _consume_helper(self, end=65536, headers=None):
+        download = download_mod.Download(EXAMPLE_URL, end=end, headers=headers)
         transport = mock.Mock(spec=[u'request'])
         transport.request.return_value = mock.Mock(
             status_code=int(http_client.OK), spec=[u'status_code'])
@@ -150,10 +160,20 @@ class TestDownload(object):
         ret_val = download.consume(transport)
         assert ret_val is transport.request.return_value
         range_bytes = u'bytes={:d}-{:d}'.format(0, end)
-        download_headers = {u'range': range_bytes}
         transport.request.assert_called_once_with(
-            u'GET', EXAMPLE_URL, data=None, headers=download_headers)
+            u'GET', EXAMPLE_URL, data=None, headers=download._headers)
         assert download.finished
+
+    def test_consume(self):
+        self._consume_helper()
+
+    def test_consume_with_headers(self):
+        headers = {}  # Empty headers
+        end = 16383
+        self._consume_helper(end=end, headers=headers)
+        range_bytes = u'bytes={:d}-{:d}'.format(0, end)
+        # Make sure the headers have been modified.
+        assert headers == {u'range': range_bytes}
 
 
 class TestChunkedDownload(object):

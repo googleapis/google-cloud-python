@@ -35,18 +35,23 @@ class _DownloadBase(object):
     Defines core shared behavior across different download types.
 
     Args:
-       media_url (str): The URL containing the media to be downloaded.
-       start (int): The first byte in a range to be downloaded.
-       end (int): The last byte in a range to be downloaded.
+        media_url (str): The URL containing the media to be downloaded.
+        start (int): The first byte in a range to be downloaded.
+        end (int): The last byte in a range to be downloaded.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with the request, e.g. headers for encrypted data.
     """
 
-    def __init__(self, media_url, start=None, end=None):
+    def __init__(self, media_url, start=None, end=None, headers=None):
         self.media_url = media_url
         """str: The URL containing the media to be downloaded."""
         self.start = start
         """Optional[int]: The first byte in a range to be downloaded."""
         self.end = end
         """Optional[int]: The last byte in a range to be downloaded."""
+        if headers is None:
+            headers = {}
+        self._headers = headers
         self._finished = False
 
     @property
@@ -63,13 +68,15 @@ class Download(_DownloadBase):
     ``start`` nor ``end`` is expected to be provided.
 
     Args:
-       media_url (str): The URL containing the media to be downloaded.
-       start (int): The first byte in a range to be downloaded. If not
-           provided, but ``end`` is provided, will download from the
-           beginning to ``end`` of the media.
-       end (int): The last byte in a range to be downloaded. If not
-           provided, but ``start`` is provided, will download from the
-           ``start`` to the end of the media.
+        media_url (str): The URL containing the media to be downloaded.
+        start (int): The first byte in a range to be downloaded. If not
+            provided, but ``end`` is provided, will download from the
+            beginning to ``end`` of the media.
+        end (int): The last byte in a range to be downloaded. If not
+            provided, but ``start`` is provided, will download from the
+            ``start`` to the end of the media.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with the request, e.g. headers for encrypted data.
     """
 
     def _prepare_request(self):
@@ -91,9 +98,8 @@ class Download(_DownloadBase):
         if self.finished:
             raise ValueError(u'A download can only be used once.')
 
-        headers = {}
-        _add_bytes_range(self.start, self.end, headers)
-        return headers
+        _add_bytes_range(self.start, self.end, self._headers)
+        return self._headers
 
     def _process_response(self, response):
         """Process the response from an HTTP request.
@@ -315,7 +321,7 @@ def _add_bytes_range(start, end, headers):
             positive, negative or :data:`None`.
         end (Optional[int]): The last byte in a range. Assumed to be
             positive.
-        headers (dict): A headers dictionary which can have the
+        headers (Mapping[str, str]): A headers mapping which can have the
             bytes range added if at least one of ``start`` or ``end``
             is not :data:`None`.
     """
