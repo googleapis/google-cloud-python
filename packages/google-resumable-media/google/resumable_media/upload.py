@@ -71,12 +71,17 @@ class _UploadBase(object):
     Defines core shared behavior across different upload types.
 
     Args:
-       upload_url (str): The URL where the content will be uploaded.
+        upload_url (str): The URL where the content will be uploaded.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with the request, e.g. headers for encrypted data.
     """
 
-    def __init__(self, upload_url):
+    def __init__(self, upload_url, headers=None):
         self.upload_url = upload_url
         """str: The URL where the content will be uploaded."""
+        if headers is None:
+            headers = {}
+        self._headers = headers
         self._finished = False
 
     @property
@@ -113,7 +118,9 @@ class SimpleUpload(_UploadBase):
     in a single request.
 
     Args:
-       upload_url (str): The URL where the content will be uploaded.
+        upload_url (str): The URL where the content will be uploaded.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with the request, e.g. headers for encrypted data.
     """
 
     def _prepare_request(self, content_type):
@@ -137,8 +144,8 @@ class SimpleUpload(_UploadBase):
         if self.finished:
             raise ValueError(u'An upload can only be used once.')
 
-        headers = {_CONTENT_TYPE_HEADER: content_type}
-        return headers
+        self._headers[_CONTENT_TYPE_HEADER] = content_type
+        return self._headers
 
     def transmit(self, transport, data, content_type):
         """Transmit the resource to be uploaded.
@@ -169,7 +176,9 @@ class MultipartUpload(_UploadBase):
     (multipart) request.
 
     Args:
-       upload_url (str): The URL where the content will be uploaded.
+        upload_url (str): The URL where the content will be uploaded.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with the request, e.g. headers for encrypted data.
     """
 
     def _prepare_request(self, data, metadata, content_type):
@@ -203,8 +212,8 @@ class MultipartUpload(_UploadBase):
         content, multipart_boundary = _construct_multipart_request(
             data, metadata, content_type)
         multipart_content_type = _RELATED_HEADER + multipart_boundary + b'"'
-        headers = {_CONTENT_TYPE_HEADER: multipart_content_type}
-        return content, headers
+        self._headers[_CONTENT_TYPE_HEADER] = multipart_content_type
+        return content, self._headers
 
     def transmit(self, transport, data, metadata, content_type):
         """Transmit the resource to be uploaded.
@@ -239,8 +248,8 @@ class ResumableUpload(_UploadBase):
     the user) until all bytes have been uploaded.
 
     Args:
-       upload_url (str): The URL where the resumable upload will be initiated.
-       chunk_size (int): The size of each chunk used to upload the resource.
+        upload_url (str): The URL where the resumable upload will be initiated.
+        chunk_size (int): The size of each chunk used to upload the resource.
 
     Raises:
         ValueError: If ``chunk_size`` is not a multiple of

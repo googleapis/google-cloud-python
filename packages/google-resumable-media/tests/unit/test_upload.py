@@ -41,9 +41,17 @@ JSON_TYPE_LINE = b'content-type: application/json; charset=UTF-8\r\n'
 
 class Test_UploadBase(object):
 
-    def test_constructor(self):
+    def test_constructor_defaults(self):
         upload = upload_mod._UploadBase(SIMPLE_URL)
         assert upload.upload_url == SIMPLE_URL
+        assert upload._headers == {}
+        assert not upload._finished
+
+    def test_constructor_explicit(self):
+        headers = {u'spin': u'doctors'}
+        upload = upload_mod._UploadBase(SIMPLE_URL, headers=headers)
+        assert upload.upload_url == SIMPLE_URL
+        assert upload._headers is headers
         assert not upload._finished
 
     def test_finished_property(self):
@@ -101,6 +109,15 @@ class TestSimpleUpload(object):
         headers = upload._prepare_request(content_type)
         assert headers == {u'content-type': content_type}
 
+    def test__prepare_request_with_headers(self):
+        headers = {u'x-goog-cheetos': u'spicy'}
+        upload = upload_mod.SimpleUpload(SIMPLE_URL, headers=headers)
+        content_type = u'image/jpeg'
+        new_headers = upload._prepare_request(content_type)
+        assert new_headers is headers
+        expected = {u'content-type': content_type, u'x-goog-cheetos': u'spicy'}
+        assert headers == expected
+
     def test_transmit(self):
         data = b'I have got a lovely bunch of coconuts.'
         content_type = BASIC_CONTENT
@@ -133,12 +150,12 @@ class TestMultipartUpload(object):
 
     @mock.patch(u'google.resumable_media.upload._get_boundary',
                 return_value=b'==3==')
-    def test__prepare_request(self, mock_get_boundary):
-        upload = upload_mod.MultipartUpload(MULTIPART_URL)
+    def _prepare_request_helper(self, mock_get_boundary, headers=None):
+        upload = upload_mod.MultipartUpload(MULTIPART_URL, headers=headers)
         data = b'Hi'
         metadata = {u'Some': u'Stuff'}
         content_type = BASIC_CONTENT
-        payload, headers = upload._prepare_request(
+        payload, new_headers = upload._prepare_request(
             data, metadata, content_type)
 
         expected_payload = (
@@ -153,8 +170,25 @@ class TestMultipartUpload(object):
             b'--==3==--')
         assert payload == expected_payload
         multipart_type = b'multipart/related; boundary="==3=="'
-        assert headers == {u'content-type': multipart_type}
         mock_get_boundary.assert_called_once_with()
+
+        return new_headers, multipart_type
+
+    def test__prepare_request(self):
+        headers, multipart_type = self._prepare_request_helper()
+        assert headers == {u'content-type': multipart_type}
+
+    def test__prepare_request_with_headers(self):
+        headers = {u'best': u'shirt', u'worst': u'hat'}
+        new_headers, multipart_type = self._prepare_request_helper(
+            headers=headers)
+        assert new_headers is headers
+        expected_headers = {
+            u'best': u'shirt',
+            u'content-type': multipart_type,
+            u'worst': u'hat',
+        }
+        assert expected_headers == headers
 
     @mock.patch(u'google.resumable_media.upload._get_boundary',
                 return_value=b'==4==')
