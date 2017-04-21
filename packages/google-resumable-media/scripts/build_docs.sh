@@ -50,6 +50,7 @@ if [[ -n "${CIRCLECI}" ]]; then
     # If anything has changed
     if [[ -n "$(git diff -- docs/)" ]]; then
         echo "Some docs changes are not checked in to version control."
+        git status
         exit 1
     fi
 fi

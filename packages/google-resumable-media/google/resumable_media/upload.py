@@ -34,6 +34,7 @@ from google.resumable_media import exceptions
 
 _CONTENT_TYPE_HEADER = u'content-type'
 _CONTENT_RANGE_HEADER = u'content-range'
+_RANGE_HEADER = u'range'
 _CONTENT_RANGE_TEMPLATE = u'bytes {:d}-{:d}/{:d}'
 _BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
 _BOUNDARY_FORMAT = u'==============={{:0{:d}d}}=='.format(_BOUNDARY_WIDTH)
@@ -459,7 +460,7 @@ class ResumableUpload(_UploadBase):
             self._finished = True
         else:
             bytes_range = _helpers.header_required(
-                response, u'range', callback=self._make_invalid)
+                response, _RANGE_HEADER, callback=self._make_invalid)
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 self._make_invalid()
@@ -577,8 +578,8 @@ class ResumableUpload(_UploadBase):
         """
         _helpers.require_status_code(response, (PERMANENT_REDIRECT,))
         headers = _helpers.get_headers(response)
-        if u'range' in headers:
-            bytes_range = headers[u'range']
+        if _RANGE_HEADER in headers:
+            bytes_range = headers[_RANGE_HEADER]
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 raise exceptions.InvalidResponse(
