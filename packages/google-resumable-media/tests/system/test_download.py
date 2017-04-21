@@ -30,12 +30,21 @@ IMG_FILES = (
     os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg')),
     os.path.realpath(os.path.join(DATA_DIR, u'image2.jpg')),
 )
+PLAIN_TEXT = u'text/plain'
+ENCRYPTED_ERR = (
+    b'The target object is encrypted by a customer-supplied encryption key.')
 
 
 @pytest.fixture(scope=u'module')
 def authorized_transport():
     credentials, _ = google.auth.default(scopes=(utils.GCS_RW_SCOPE,))
     yield tr_requests.AuthorizedSession(credentials)
+
+
+def delete_blob(transport, blob_name):
+    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    response = transport.delete(metadata_url)
+    assert response.status_code == http_client.NO_CONTENT
 
 
 @pytest.fixture(scope=u'module')
@@ -57,9 +66,7 @@ def add_files(authorized_transport):
 
     # Clean-up the blobs we created.
     for blob_name in blob_names:
-        metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
-        response = authorized_transport.delete(metadata_url)
-        assert response.status_code == http_client.NO_CONTENT
+        delete_blob(authorized_transport, blob_name)
 
 
 def test_download_full(add_files, authorized_transport):
@@ -79,6 +86,49 @@ def test_download_full(add_files, authorized_transport):
         # Make sure the download is tombstoned.
         with pytest.raises(ValueError):
             download.consume(authorized_transport)
+
+
+@pytest.fixture
+def secret_file(authorized_transport):
+    blob_name = u'super-seekrit.txt'
+    data = b'Please do not tell anyone my encrypted seekrit.'
+
+    upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
+    headers = utils.get_encryption_headers()
+    upload = resumable_media.SimpleUpload(upload_url, headers=headers)
+    response = upload.transmit(authorized_transport, data, PLAIN_TEXT)
+    assert response.status_code == http_client.OK
+
+    yield blob_name, data, headers
+
+    delete_blob(authorized_transport, blob_name)
+
+
+def test_extra_headers(authorized_transport, secret_file):
+    blob_name, data, headers = secret_file
+    # Create the actual download object.
+    media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+    download = resumable_media.Download(media_url, headers=headers)
+    # Consume the resource.
+    response = download.consume(authorized_transport)
+    assert response.status_code == http_client.OK
+    assert response.content == data
+    # Make sure the download is tombstoned.
+    with pytest.raises(ValueError):
+        download.consume(authorized_transport)
+    # Attempt to consume the resource **without** the headers.
+    download_wo = resumable_media.Download(media_url)
+    with pytest.raises(resumable_media.InvalidResponse) as exc_info:
+        download_wo.consume(authorized_transport)
+
+    error = exc_info.value
+    response = error.response
+    assert response.status_code == http_client.BAD_REQUEST
+    assert response.content == ENCRYPTED_ERR
+    assert len(error.args) == 5
+    assert error.args[1] == http_client.BAD_REQUEST
+    assert error.args[3] == http_client.OK
+    assert error.args[4] == http_client.PARTIAL_CONTENT
 
 
 def test_non_existent_file(authorized_transport):
@@ -109,15 +159,12 @@ def simple_file(authorized_transport):
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     upload = resumable_media.SimpleUpload(upload_url)
     data = b'Simple contents'
-    response = upload.transmit(authorized_transport, data, u'text/plain')
+    response = upload.transmit(authorized_transport, data, PLAIN_TEXT)
     assert response.status_code == http_client.OK
 
     yield blob_name, data
 
-    # Clean-up the blob we created.
-    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
-    response = authorized_transport.delete(metadata_url)
-    assert response.status_code == http_client.NO_CONTENT
+    delete_blob(authorized_transport, blob_name)
 
 
 def test_bad_range(simple_file, authorized_transport):
