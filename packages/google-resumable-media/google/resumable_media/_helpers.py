@@ -18,6 +18,10 @@
 from google.resumable_media import exceptions
 
 
+RANGE_HEADER = u'range'
+CONTENT_RANGE_HEADER = u'content-range'
+
+
 def _do_nothing():
     """Simple default callback."""
 

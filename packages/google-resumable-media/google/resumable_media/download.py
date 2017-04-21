@@ -351,7 +351,7 @@ def _add_bytes_range(start, end, headers):
             # NOTE: This is invalid if ``start < 0``.
             bytes_range = u'{:d}-{:d}'.format(start, end)
 
-    headers[u'range'] = u'bytes=' + bytes_range
+    headers[_helpers.RANGE_HEADER] = u'bytes=' + bytes_range
 
 
 def _get_range_info(response):
@@ -368,7 +368,8 @@ def _get_range_info(response):
             ``Content-Range`` header is not of the form
             ``bytes {start}-{end}/{total}``.
     """
-    content_range = _helpers.header_required(response, u'content-range')
+    content_range = _helpers.header_required(
+        response, _helpers.CONTENT_RANGE_HEADER)
     match = _CONTENT_RANGE_RE.match(content_range)
     if match is None:
         raise exceptions.InvalidResponse(
