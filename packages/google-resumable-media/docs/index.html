@@ -162,8 +162,9 @@
 <div class="section" id="authorized-transport">
 <h2>Authorized Transport<a class="headerlink" href="#authorized-transport" title="Permalink to this headline">¶</a></h2>
 <p>In order to download or upload a resource, an authorized transport
-is required. For download requests, this must be an object that
-supports <code class="docutils literal"><span class="pre">GET</span></code> requests via <code class="docutils literal"><span class="pre">transport.get(url,</span> <span class="pre">headers=headers)</span></code>.</p>
+is required. This must be an object that has an interface modeled
+after <code class="docutils literal"><span class="pre">requests.request()</span></code>: it takes a mandatory HTTP method (verb)
+and a URL and optional <code class="docutils literal"><span class="pre">data</span></code> and <code class="docutils literal"><span class="pre">headers</span></code> keyword arguments.</p>
 <p>For example, <code class="docutils literal"><span class="pre">google-auth</span></code> and <code class="docutils literal"><span class="pre">requests</span></code> can be used to
 create an authorized transport that has read-only access to
 Google Cloud Storage (GCS):</p>
