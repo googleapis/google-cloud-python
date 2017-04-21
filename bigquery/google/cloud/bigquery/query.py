@@ -383,7 +383,7 @@ class QueryResults(object):
 
         :type timeout_ms: int
         :param timeout_ms:
-            (Optional) timeout, in milliseconds, to wait for query to complete
+            (Optional) timeout, in milliseconds, to wait for request to complete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
