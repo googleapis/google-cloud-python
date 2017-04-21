@@ -63,7 +63,7 @@ setup(
         'google',
         'google.cloud',
     ],
-    packages=find_packages(exclude=('unit_tests*',)),
+    packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
     **SETUP_BASE
 )
