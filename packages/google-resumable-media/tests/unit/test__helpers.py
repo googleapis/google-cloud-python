@@ -25,6 +25,12 @@ def test__do_nothing():
     assert ret_val is None
 
 
+def test_get_headers():
+    headers = {u'fruit': u'apple'}
+    response = mock.Mock(headers=headers, spec=[u'headers'])
+    assert headers == _helpers.get_headers(response)
+
+
 class Test_header_required(object):
 
     def test_success(self):

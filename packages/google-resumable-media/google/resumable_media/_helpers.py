@@ -22,6 +22,19 @@ def _do_nothing():
     """Simple default callback."""
 
 
+def get_headers(response):
+    """Access the headers from an HTTP response.
+
+    Args:
+        response (object): The HTTP response object.
+
+    Returns:
+        Mapping[str, str]: The header mapping (expect keys to either be
+        all lowercase, or case-insensitive).
+    """
+    return response.headers
+
+
 def header_required(response, name, callback=_do_nothing):
     """Checks that a specific header is in a headers dictionary.
 
@@ -39,7 +52,7 @@ def header_required(response, name, callback=_do_nothing):
         ~google.resumable_media.exceptions.InvalidResponse: If the header
             is missing.
     """
-    headers = response.headers
+    headers = get_headers(response)
     if name not in headers:
         callback()
         raise exceptions.InvalidResponse(

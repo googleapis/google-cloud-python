@@ -571,7 +571,7 @@ class ResumableUpload(_UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         _helpers.require_status_code(response, (PERMANENT_REDIRECT,))
-        headers = response.headers
+        headers = _helpers.get_headers(response)
         if u'range' in headers:
             bytes_range = headers[u'range']
             match = _BYTES_RANGE_RE.match(bytes_range)
