@@ -30,7 +30,7 @@ rm -f docs_build/google.rst
 mv docs_build/google.resumable_media.rst docs_build/index.rst
 python scripts/rewrite_index_rst.py
 
-# If anything has changed
+# If anything has changed, raise an error (to make sure it gets checked in).
 if [[ -n "$(git diff -- docs_build/)" ]]; then
     echo "sphinx-apidoc generated changes that are not checked in to version control."
     exit 1
@@ -47,7 +47,9 @@ echo "Build finished. The HTML pages are in docs/latest."
 # checked in as is.
 if [[ -n "${CIRCLECI}" ]]; then
     echo "On a CircleCI build, making sure docs already checked in."
-    # If anything has changed
+    # Pre-emptively ignore changes to the buildinfo file.
+    git checkout docs/latest/.buildinfo
+    # If anything has changed, raise an error (to fail the build).
     if [[ -n "$(git diff -- docs/)" ]]; then
         echo "Some docs changes are not checked in to version control."
         git status
