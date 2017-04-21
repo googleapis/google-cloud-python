@@ -230,7 +230,14 @@ Running Google BigQuery Integration Tests
 You will need to create a Google BigQuery private key in JSON format in
 order to run Google BigQuery integration tests on your local machine and
 on Travis-CI. The first step is to create a `service account
-<https://console.developers.google.com/iam-admin/serviceaccounts/>`__.
+<https://console.cloud.google.com/iam-admin/serviceaccounts/>`__.
+
+To run the integration tests locally, set the following environment variables
+before running ``pytest``:
+
+#. ``GBQ_PROJECT_ID`` with the value being the ID of your BigQuery project.
+#. ``GBQ_GOOGLE_APPLICATION_CREDENTIALS`` with the value being the *path* to
+   the JSON key that you downloaded for your service account.
 
 Integration tests are skipped in pull requests because the credentials that
 are required for running Google BigQuery integration tests are
@@ -248,8 +255,8 @@ gbq integration tests on a forked repository:
 
    - ``GBQ_PROJECT_ID`` with the value being the ID of your BigQuery project.
 
-   - ``SERVICE_ACCOUNT_KEY`` with the value being the contents of the JSON key
-     that you downloaded for your service account. Use single quotes around
+   - ``SERVICE_ACCOUNT_KEY`` with the value being the *contents* of the JSON
+     key that you downloaded for your service account. Use single quotes around
      your JSON key to ensure that it is treated as a string.
 
    For both environment variables, keep the "Display value in build log" option

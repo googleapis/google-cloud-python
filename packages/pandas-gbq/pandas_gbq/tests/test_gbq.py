@@ -19,9 +19,6 @@ from pandas_gbq import gbq
 import pandas.util.testing as tm
 from pandas.compat.numpy import np_datetime64_compat
 
-PROJECT_ID = None
-PRIVATE_KEY_JSON_PATH = None
-PRIVATE_KEY_JSON_CONTENTS = None
 
 TABLE_ID = 'new_test'
 
@@ -66,10 +63,7 @@ def _get_dataset_prefix_random():
 
 
 def _get_project_id():
-    if _in_travis_environment():
-        return os.environ.get('GBQ_PROJECT_ID')
-    else:
-        return PROJECT_ID
+    return os.environ.get('GBQ_PROJECT_ID')
 
 
 def _get_private_key_path():
@@ -77,16 +71,16 @@ def _get_private_key_path():
         return os.path.join(*[os.environ.get('TRAVIS_BUILD_DIR'), 'ci',
                               'travis_gbq.json'])
     else:
-        return PRIVATE_KEY_JSON_PATH
+        return os.environ.get('GBQ_GOOGLE_APPLICATION_CREDENTIALS')
 
 
 def _get_private_key_contents():
-    if _in_travis_environment():
-        with open(os.path.join(*[os.environ.get('TRAVIS_BUILD_DIR'), 'ci',
-                                 'travis_gbq.json'])) as f:
-            return f.read()
-    else:
-        return PRIVATE_KEY_JSON_CONTENTS
+    key_path = _get_private_key_path()
+    if key_path is None:
+        return None
+
+    with open(key_path) as f:
+        return f.read()
 
 
 def _test_imports():
