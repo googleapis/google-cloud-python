@@ -163,7 +163,7 @@
 uploads that contain both metadata and a small file as payload.</p>
 <dl class="class">
 <dt id="google.resumable_media.upload.MultipartUpload">
-<em class="property">class </em><code class="descclassname">google.resumable_media.upload.</code><code class="descname">MultipartUpload</code><span class="sig-paren">(</span><em>upload_url</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.upload.MultipartUpload" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">google.resumable_media.upload.</code><code class="descname">MultipartUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.upload.MultipartUpload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.upload._UploadBase</span></code></p>
 <p>Upload a resource with metadata to a Google API.</p>
 <p>A <strong>multipart</strong> upload sends both metadata and the resource in a single
@@ -172,7 +172,12 @@ uploads that contain both metadata and a small file as payload.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the content will be uploaded.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the content will be uploaded.</li>
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
+be sent with the request, e.g. headers for encrypted data.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -387,7 +392,7 @@ code is not 200 or 308.</td>
 
 <dl class="class">
 <dt id="google.resumable_media.upload.SimpleUpload">
-<em class="property">class </em><code class="descclassname">google.resumable_media.upload.</code><code class="descname">SimpleUpload</code><span class="sig-paren">(</span><em>upload_url</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.upload.SimpleUpload" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">google.resumable_media.upload.</code><code class="descname">SimpleUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.upload.SimpleUpload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.upload._UploadBase</span></code></p>
 <p>Upload a resource to a Google API.</p>
 <p>A <strong>simple</strong> media upload sends no metadata and completes the upload
@@ -396,7 +401,12 @@ in a single request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the content will be uploaded.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the content will be uploaded.</li>
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
+be sent with the request, e.g. headers for encrypted data.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
