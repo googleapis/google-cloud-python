@@ -44,7 +44,7 @@ def unit_tests(session, python_version):
         'py.test',
         '--cov=google.resumable_media', '--cov=tests.unit', '--cov-append',
         '--cov-config=.coveragerc', '--cov-report=', line_coverage,
-        'tests/unit',
+        os.path.join('tests', 'unit'),
     )
 
 
@@ -62,7 +62,7 @@ def docs(session):
     session.install('-e', '.')
 
     # Build the docs!
-    session.run('bash', './scripts/build_docs.sh')
+    session.run('bash', os.path.join('scripts', 'build_docs.sh'))
 
 
 @nox.session
@@ -84,8 +84,8 @@ def doctest(session):
     # Run the doctests with Sphinx.
     session.run(
         'sphinx-build', '-W', '-b', 'doctest',
-        '-d', 'docs_build/build/doctrees',
-        'docs_build/', 'docs_build/doctest',
+        '-d', os.path.join('docs_build', 'build', 'doctrees'),
+        'docs_build', os.path.join('docs_build', 'doctest'),
     )
 
 
@@ -127,7 +127,7 @@ def system_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the system tests.
-    session.run('py.test', 'tests/system')
+    session.run('py.test', os.path.join('tests', 'system'))
 
 
 @nox.session
