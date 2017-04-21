@@ -14,6 +14,7 @@
 
 import base64
 import hashlib
+import io
 import os
 
 import google.auth
@@ -180,8 +181,8 @@ def get_num_chunks(total_bytes, chunk_size):
     return expected_chunks
 
 
-def transmit_chunks(upload, transport, blob_name, metadata):
-    num_chunks = 0
+def transmit_chunks(upload, transport, blob_name, metadata,
+                    num_chunks=0, content_type=JPEG_CONTENT_TYPE):
     while not upload.finished:
         num_chunks += 1
         response = upload.transmit_next_chunk(transport)
@@ -189,7 +190,7 @@ def transmit_chunks(upload, transport, blob_name, metadata):
             assert upload.bytes_uploaded == upload.total_bytes
             check_response(
                 response, blob_name, total_bytes=upload.total_bytes,
-                metadata=metadata, content_type=JPEG_CONTENT_TYPE)
+                metadata=metadata, content_type=content_type)
         else:
             assert upload.bytes_uploaded == num_chunks * upload.chunk_size
             assert response.status_code == upload_mod.PERMANENT_REDIRECT
@@ -272,3 +273,54 @@ def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
     stream.seek(0)
     upload._invalid = False
     check_bad_chunk(upload, authorized_transport)
+
+
+def sabotage_and_recover(upload, stream, transport, chunk_size):
+    assert upload.bytes_uploaded == chunk_size
+    assert stream.tell() == chunk_size
+    # "Fake" that the instance is in an invalid state.
+    upload._invalid = True
+    stream.seek(0)  # Seek to the wrong place.
+    upload._bytes_uploaded = 0  # Make ``bytes_uploaded`` wrong as well.
+    # Recover the (artifically) invalid upload.
+    response = upload.recover(transport)
+    assert response.status_code == upload_mod.PERMANENT_REDIRECT
+    assert not upload.invalid
+    assert upload.bytes_uploaded == chunk_size
+    assert stream.tell() == chunk_size
+
+
+def test_resumable_upload_recover(authorized_transport, cleanup):
+    blob_name = u'some-bytes.bin'
+    chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
+    content_type = u'application/octet-stream'
+    data = b'123' * chunk_size  # 3 chunks worth.
+    # Make sure to clean up the uploaded blob when we are done.
+    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    cleanup(metadata_url, authorized_transport)
+    # Create the actual upload object.
+    upload = resumable_media.ResumableUpload(
+        utils.RESUMABLE_UPLOAD, chunk_size)
+    # Initiate the upload.
+    metadata = {u'name': blob_name}
+    stream = io.BytesIO(data)
+    response = upload.initiate(
+        authorized_transport, stream, metadata, content_type)
+    # Make sure ``initiate`` succeeded and did not mangle the stream.
+    check_initiate(response, upload, stream, authorized_transport, metadata)
+    # Make the first request.
+    response = upload.transmit_next_chunk(authorized_transport)
+    assert response.status_code == upload_mod.PERMANENT_REDIRECT
+    # Call upload.recover().
+    sabotage_and_recover(upload, stream, authorized_transport, chunk_size)
+    # Now stream what remains.
+    num_chunks = transmit_chunks(
+        upload, authorized_transport, blob_name, None,
+        num_chunks=1, content_type=content_type)
+    assert num_chunks == 3
+    # Download the content to make sure it's "working as expected".
+    actual_contents = stream.getvalue()
+    check_content(blob_name, actual_contents, authorized_transport)
+    # Make sure the upload is tombstoned.
+    with pytest.raises(ValueError):
+        upload.transmit_next_chunk(authorized_transport)
