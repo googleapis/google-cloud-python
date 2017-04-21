@@ -152,9 +152,7 @@ class SimpleUpload(_UploadBase):
 
         Args:
             transport (object): An object which can make authenticated
-                requests via a ``post()`` method which accepts an
-                upload URL, a ``data`` keyword argument and a
-                ``headers`` keyword argument.
+                requests.
             data (bytes): The resource content to be uploaded.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
@@ -220,9 +218,7 @@ class MultipartUpload(_UploadBase):
 
         Args:
             transport (object): An object which can make authenticated
-                requests via a ``post()`` method which accepts an
-                upload URL, a ``data`` keyword argument and a
-                ``headers`` keyword argument.
+                requests.
             data (bytes): The resource content to be uploaded.
             metadata (Mapping[str, str]): The resource metadata, such as an
                 ACL list.
@@ -250,14 +246,18 @@ class ResumableUpload(_UploadBase):
     Args:
         upload_url (str): The URL where the resumable upload will be initiated.
         chunk_size (int): The size of each chunk used to upload the resource.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with each :meth:`transmit_next_chunk` request, e.g.
+            headers for encrypted data. These **will not** be sent with
+            an :meth:`initiate` request or a :meth:`recover` request.
 
     Raises:
         ValueError: If ``chunk_size`` is not a multiple of
             :data:`UPLOAD_CHUNK_SIZE`.
     """
 
-    def __init__(self, upload_url, chunk_size):
-        super(ResumableUpload, self).__init__(upload_url)
+    def __init__(self, upload_url, chunk_size, headers=None):
+        super(ResumableUpload, self).__init__(upload_url, headers=headers)
         if chunk_size % UPLOAD_CHUNK_SIZE != 0:
             raise ValueError(u'256 KB must divide chunk size')
         self._chunk_size = chunk_size
@@ -362,9 +362,7 @@ class ResumableUpload(_UploadBase):
 
         Args:
             transport (object): An object which can make authenticated
-                requests via a ``post()`` method which accepts an
-                upload URL, a ``data`` keyword argument and a
-                ``headers`` keyword argument.
+                requests.
             stream (IO[bytes]): The stream (i.e. file-like object) that will
                 be uploaded. The stream **must** be at the beginning (i.e.
                 ``stream.tell() == 0``).
@@ -392,6 +390,12 @@ class ResumableUpload(_UploadBase):
         For the time being, this **does require** some form of I/O to read
         a chunk from ``stream`` (via :func:`_get_next_chunk`). However, this
         will (almost) certainly not be network I/O.
+
+        .. note:
+
+            This method will be used multiple times, so ``headers`` will
+            be mutated in between requests. However, we don't make a copy
+            since the same keys are being updated.
 
         Returns:
             Tuple[bytes, dict]: The payload and headers for the request.
@@ -422,13 +426,11 @@ class ResumableUpload(_UploadBase):
                 start_byte, self.bytes_uploaded)
             raise ValueError(msg)
 
+        self._headers[_CONTENT_TYPE_HEADER] = self._content_type
         content_range = _CONTENT_RANGE_TEMPLATE.format(
             start_byte, end_byte, self._total_bytes)
-        headers = {
-            _CONTENT_TYPE_HEADER: self._content_type,
-            _helpers.CONTENT_RANGE_HEADER: content_range,
-        }
-        return payload, headers
+        self._headers[_helpers.CONTENT_RANGE_HEADER] = content_range
+        return payload, self._headers
 
     def _make_invalid(self):
         """Simple setter for ``invalid``.

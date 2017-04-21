@@ -228,6 +228,7 @@ class TestResumableUpload(object):
         chunk_size = ONE_MB
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, chunk_size)
         assert upload.upload_url == RESUMABLE_URL
+        assert upload._headers == {}
         assert not upload._finished
         assert upload._chunk_size == chunk_size
         assert upload._stream is None
@@ -331,6 +332,8 @@ class TestResumableUpload(object):
         assert upload._stream == stream
         assert upload._content_type == BASIC_CONTENT
         assert upload._total_bytes == len(data)
+        # Make sure headers are untouched.
+        assert upload._headers == {}
         # Make sure the stream is still at the beginning.
         assert stream.tell() == 0
 
@@ -429,8 +432,11 @@ class TestResumableUpload(object):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         assert not upload._finished
         assert upload._resumable_url is None
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as exc_info:
             upload._prepare_request()
+
+        assert exc_info.match(u'upload has not been initiated')
+        assert exc_info.match(u'initiate()')
 
     def test__prepare_request_invalid_stream_state(self):
         stream = io.BytesIO(b'some data here')
@@ -440,29 +446,50 @@ class TestResumableUpload(object):
         # Make stream.tell() disagree with bytes_uploaded.
         upload._bytes_uploaded = 5
         assert upload.bytes_uploaded != stream.tell()
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as exc_info:
             upload._prepare_request()
 
+        assert exc_info.match(u'Bytes stream is in unexpected state.')
+
     @staticmethod
-    def _upload_in_flight(data):
-        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+    def _upload_in_flight(data, headers=None):
+        upload = upload_mod.ResumableUpload(
+            RESUMABLE_URL, ONE_MB, headers=headers)
         upload._stream = io.BytesIO(data)
         upload._content_type = BASIC_CONTENT
         upload._total_bytes = len(data)
         upload._resumable_url = u'http://test.invalid?upload_id=not-none'
         return upload
 
-    def test__prepare_request_success(self):
+    def _prepare_request_helper(self, headers=None):
         data = b'All of the data goes in a stream.'
-        upload = self._upload_in_flight(data)
-        payload, headers = upload._prepare_request()
+        upload = self._upload_in_flight(data, headers=headers)
+        payload, new_headers = upload._prepare_request()
         # Check the response values.
         assert payload == data
+        # Make sure headers are updated
+        assert upload._headers == new_headers
+
+        return new_headers
+
+    def test__prepare_request_success(self):
+        headers = self._prepare_request_helper()
         expected_headers = {
             u'content-range': u'bytes 0-32/33',
             u'content-type': BASIC_CONTENT,
         }
         assert headers == expected_headers
+
+    def test__prepare_request_success_with_headers(self):
+        headers = {u'cannot': u'touch this'}
+        new_headers = self._prepare_request_helper(headers)
+        assert new_headers is headers
+        expected_headers = {
+            u'cannot': u'touch this',
+            u'content-range': u'bytes 0-32/33',
+            u'content-type': BASIC_CONTENT,
+        }
+        assert new_headers == expected_headers
 
     def test__make_invalid(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -598,6 +625,8 @@ class TestResumableUpload(object):
 
         headers = upload._prepare_recover_request()
         assert headers == {u'content-range': u'bytes */*'}
+        # Make sure headers are untouched.
+        assert upload._headers == {}
 
     def test__process_recover_response_bad_status(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
