@@ -33,6 +33,7 @@ from google.resumable_media import exceptions
 
 
 _CONTENT_TYPE_HEADER = u'content-type'
+_CONTENT_RANGE_HEADER = u'content-range'
 _CONTENT_RANGE_TEMPLATE = u'bytes {:d}-{:d}/{:d}'
 _BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
 _BOUNDARY_FORMAT = u'==============={{:0{:d}d}}=='.format(_BOUNDARY_WIDTH)
@@ -412,7 +413,7 @@ class ResumableUpload(_UploadBase):
             start_byte, end_byte, self._total_bytes)
         headers = {
             _CONTENT_TYPE_HEADER: self._content_type,
-            u'content-range': content_range,
+            _CONTENT_RANGE_HEADER: content_range,
         }
         return payload, headers
 
@@ -548,7 +549,7 @@ class ResumableUpload(_UploadBase):
             raise ValueError(
                 u'Upload is not in invalid state, no need to recover.')
 
-        headers = {u'content-range': u'bytes */*'}
+        headers = {_CONTENT_RANGE_HEADER: u'bytes */*'}
         return headers
 
     def _process_recover_response(self, response):
