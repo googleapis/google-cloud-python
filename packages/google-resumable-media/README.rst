@@ -5,7 +5,7 @@
 
 |circleci|
 
-Work in progress. See the `docs`_ for examples and usage.
+See the `docs`_ for examples and usage.
 
 .. _docs: https://googlecloudplatform.github.io/google-resumable-media-python/
 
