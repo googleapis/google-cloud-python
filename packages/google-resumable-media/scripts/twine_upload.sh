@@ -17,9 +17,9 @@
 set -ev
 
 # If this is not a CircleCI tag, no-op.
-if [[ -z "$CIRCLE_TAG" ]]; then
-  echo "This is not a release tag. Doing nothing."
-  exit 0
+if [[ -z "${CIRCLE_TAG}" ]]; then
+    echo "This is not a release tag. Doing nothing."
+    exit 0
 fi
 
 # Move into the package, build the distribution and upload.

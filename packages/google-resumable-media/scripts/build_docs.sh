@@ -42,3 +42,14 @@ sphinx-build -W \
   docs_build/ \
   docs/latest/
 echo "Build finished. The HTML pages are in docs/latest."
+
+# If this is a CircleCI build, we want to make sure the docs are already
+# checked in as is.
+if [[ -n "${CIRCLECI}" ]]; then
+    echo "On a CircleCI build, making sure docs already checked in."
+    # If anything has changed
+    if [[ -n "$(git diff -- docs/)" ]]; then
+        echo "Some docs changes are not checked in to version control."
+        exit 1
+    fi
+fi
