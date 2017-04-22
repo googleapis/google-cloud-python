@@ -69,6 +69,18 @@ def add_files(authorized_transport):
         delete_blob(authorized_transport, blob_name)
 
 
+def check_tombstoned(download, transport):
+    assert download.finished
+    if isinstance(download, resumable_media.Download):
+        with pytest.raises(ValueError) as exc_info:
+            download.consume(transport)
+        assert exc_info.match(u'A download can only be used once.')
+    else:
+        with pytest.raises(ValueError) as exc_info:
+            download.consume_next_chunk(transport)
+        assert exc_info.match(u'Download has finished.')
+
+
 def test_download_full(add_files, authorized_transport):
     for img_file in IMG_FILES:
         with open(img_file, u'rb') as file_obj:
@@ -83,12 +95,10 @@ def test_download_full(add_files, authorized_transport):
         response = download.consume(authorized_transport)
         assert response.status_code == http_client.OK
         assert response.content == actual_contents
-        # Make sure the download is tombstoned.
-        with pytest.raises(ValueError):
-            download.consume(authorized_transport)
+        check_tombstoned(download, authorized_transport)
 
 
-@pytest.fixture
+@pytest.fixture(scope=u'module')
 def secret_file(authorized_transport):
     blob_name = u'super-seekrit.txt'
     data = b'Please do not tell anyone my encrypted seekrit.'
@@ -113,13 +123,12 @@ def test_extra_headers(authorized_transport, secret_file):
     response = download.consume(authorized_transport)
     assert response.status_code == http_client.OK
     assert response.content == data
-    # Make sure the download is tombstoned.
-    with pytest.raises(ValueError):
-        download.consume(authorized_transport)
+    check_tombstoned(download, authorized_transport)
     # Attempt to consume the resource **without** the headers.
     download_wo = resumable_media.Download(media_url)
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download_wo.consume(authorized_transport)
+    check_tombstoned(download_wo, authorized_transport)
 
     error = exc_info.value
     response = error.response
@@ -148,9 +157,7 @@ def test_non_existent_file(authorized_transport):
     assert error.args[1] == http_client.NOT_FOUND
     assert error.args[3] == http_client.OK
     assert error.args[4] == http_client.PARTIAL_CONTENT
-    # Make sure the download is tombstoned (even though it failed).
-    with pytest.raises(ValueError):
-        download.consume(authorized_transport)
+    check_tombstoned(download, authorized_transport)
 
 
 @pytest.fixture(scope=u'module')
@@ -189,9 +196,7 @@ def test_bad_range(simple_file, authorized_transport):
     assert error.args[1] == http_client.REQUESTED_RANGE_NOT_SATISFIABLE
     assert error.args[3] == http_client.OK
     assert error.args[4] == http_client.PARTIAL_CONTENT
-    # Make sure the download is tombstoned (even though it failed).
-    with pytest.raises(ValueError):
-        download.consume(authorized_transport)
+    check_tombstoned(download, authorized_transport)
 
 
 def test_download_partial(add_files, authorized_transport):
@@ -283,10 +288,7 @@ def test_chunked_download(add_files, authorized_transport):
         # Make sure the last chunk isn't the same size.
         assert total_bytes % chunk_size != 0
         assert len(last_response.content) < chunk_size
-        # Make sure the download is tombstoned.
-        assert download.finished
-        with pytest.raises(ValueError):
-            download.consume_next_chunk(authorized_transport)
+        check_tombstoned(download, authorized_transport)
 
 
 def test_chunked_download_partial(add_files, authorized_transport):
@@ -330,7 +332,26 @@ def test_chunked_download_partial(add_files, authorized_transport):
             assert num_responses == num_chunks
             # Make sure the last chunk isn't the same size.
             assert len(last_response.content) < chunk_size
-            # Make sure the download is tombstoned.
-            assert download.finished
-            with pytest.raises(ValueError):
-                download.consume_next_chunk(authorized_transport)
+            check_tombstoned(download, authorized_transport)
+
+
+def test_chunked_with_extra_headers(authorized_transport, secret_file):
+    blob_name, data, headers = secret_file
+    num_chunks = 4
+    chunk_size = 12
+    assert (num_chunks - 1) * chunk_size < len(data) < num_chunks * chunk_size
+    # Create the actual download object.
+    media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+    stream = io.BytesIO()
+    download = resumable_media.ChunkedDownload(
+        media_url, chunk_size, stream, headers=headers)
+    # Consume the resource in chunks.
+    num_responses, last_response = consume_chunks(
+        download, authorized_transport, len(data), data)
+    # Make sure the combined chunks are the whole object.
+    assert stream.getvalue() == data
+    # Check that we have the right number of responses.
+    assert num_responses == num_chunks
+    # Make sure the last chunk isn't the same size.
+    assert len(last_response.content) < chunk_size
+    check_tombstoned(download, authorized_transport)
