@@ -114,6 +114,17 @@ def secret_file(authorized_transport):
     delete_blob(authorized_transport, blob_name)
 
 
+def check_error_response(exc_info, status_code, message):
+    error = exc_info.value
+    response = error.response
+    assert response.status_code == status_code
+    assert response.content == message
+    assert len(error.args) == 5
+    assert error.args[1] == status_code
+    assert error.args[3] == http_client.OK
+    assert error.args[4] == http_client.PARTIAL_CONTENT
+
+
 def test_extra_headers(authorized_transport, secret_file):
     blob_name, data, headers = secret_file
     # Create the actual download object.
@@ -128,16 +139,9 @@ def test_extra_headers(authorized_transport, secret_file):
     download_wo = resumable_media.Download(media_url)
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download_wo.consume(authorized_transport)
-    check_tombstoned(download_wo, authorized_transport)
 
-    error = exc_info.value
-    response = error.response
-    assert response.status_code == http_client.BAD_REQUEST
-    assert response.content == ENCRYPTED_ERR
-    assert len(error.args) == 5
-    assert error.args[1] == http_client.BAD_REQUEST
-    assert error.args[3] == http_client.OK
-    assert error.args[4] == http_client.PARTIAL_CONTENT
+    check_error_response(exc_info, http_client.BAD_REQUEST, ENCRYPTED_ERR)
+    check_tombstoned(download_wo, authorized_transport)
 
 
 def test_non_existent_file(authorized_transport):
@@ -149,14 +153,7 @@ def test_non_existent_file(authorized_transport):
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download.consume(authorized_transport)
 
-    error = exc_info.value
-    response = error.response
-    assert response.status_code == http_client.NOT_FOUND
-    assert response.content == b'Not Found'
-    assert len(error.args) == 5
-    assert error.args[1] == http_client.NOT_FOUND
-    assert error.args[3] == http_client.OK
-    assert error.args[4] == http_client.PARTIAL_CONTENT
+    check_error_response(exc_info, http_client.NOT_FOUND, b'Not Found')
     check_tombstoned(download, authorized_transport)
 
 
@@ -188,14 +185,9 @@ def test_bad_range(simple_file, authorized_transport):
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download.consume(authorized_transport)
 
-    error = exc_info.value
-    response = error.response
-    assert response.status_code == http_client.REQUESTED_RANGE_NOT_SATISFIABLE
-    assert response.content == b'Request range not satisfiable'
-    assert len(error.args) == 5
-    assert error.args[1] == http_client.REQUESTED_RANGE_NOT_SATISFIABLE
-    assert error.args[3] == http_client.OK
-    assert error.args[4] == http_client.PARTIAL_CONTENT
+    check_error_response(
+        exc_info, http_client.REQUESTED_RANGE_NOT_SATISFIABLE,
+        b'Request range not satisfiable')
     check_tombstoned(download, authorized_transport)
 
 
