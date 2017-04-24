@@ -34,6 +34,7 @@ ICO_FILE = os.path.realpath(os.path.join(DATA_DIR, u'favicon.ico'))
 IMAGE_FILE = os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg'))
 ICO_CONTENT_TYPE = u'image/x-icon'
 JPEG_CONTENT_TYPE = u'image/jpeg'
+BYTES_CONTENT_TYPE = u'application/octet-stream'
 BAD_CHUNK_SIZE_MSG = (
     b'Invalid request.  The number of bytes uploaded is required to be equal '
     b'or greater than 262144, except for the final request (it\'s recommended '
@@ -51,13 +52,14 @@ def authorized_transport():
 def cleanup():
     to_delete = []
 
-    def add_cleanup(item_url, transport):
-        to_delete.append((item_url, transport))
+    def add_cleanup(blob_name, transport):
+        to_delete.append((blob_name, transport))
 
     yield add_cleanup
 
-    for item_url, transport in to_delete:
-        response = transport.delete(item_url)
+    for blob_name, transport in to_delete:
+        metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+        response = transport.delete(metadata_url)
         assert response.status_code == http_client.NO_CONTENT
 
 
@@ -107,20 +109,24 @@ def check_tombstoned(upload, transport, *args):
             upload.transmit_next_chunk(transport, *args)
 
 
+def check_does_not_exist(transport, blob_name):
+    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    # Make sure we are creating a **new** object.
+    response = transport.get(metadata_url)
+    assert response.status_code == http_client.NOT_FOUND
+
+
 def test_simple_upload(authorized_transport, cleanup):
     with open(ICO_FILE, u'rb') as file_obj:
         actual_contents = file_obj.read()
 
     blob_name = os.path.basename(ICO_FILE)
-    upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
-    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
     # Make sure to clean up the uploaded blob when we are done.
-    cleanup(metadata_url, authorized_transport)
-    # Make sure we are creating a **new** object.
-    response = authorized_transport.get(metadata_url)
-    assert response.status_code == http_client.NOT_FOUND
+    cleanup(blob_name, authorized_transport)
+    check_does_not_exist(authorized_transport, blob_name)
 
     # Create the actual upload object.
+    upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     upload = resumable_media.SimpleUpload(upload_url)
     # Transmit the resource.
     response = upload.transmit(
@@ -136,28 +142,25 @@ def test_simple_upload(authorized_transport, cleanup):
 def test_simple_upload_with_headers(authorized_transport, cleanup):
     blob_name = u'some-stuff.bin'
     # Make sure to clean up the uploaded blob when we are done.
-    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
-    cleanup(metadata_url, authorized_transport)
-    # Make sure we are creating a **new** object.
-    response = authorized_transport.get(metadata_url)
-    assert response.status_code == http_client.NOT_FOUND
+    cleanup(blob_name, authorized_transport)
+    check_does_not_exist(authorized_transport, blob_name)
 
     # Create the actual upload object.
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     headers = utils.get_encryption_headers()
     upload = resumable_media.SimpleUpload(upload_url, headers=headers)
     # Transmit the resource.
-    content_type = u'application/octet-stream'
     data = b'Binary contents\x00\x01\x02.'
-    response = upload.transmit(authorized_transport, data, content_type)
+    response = upload.transmit(authorized_transport, data, BYTES_CONTENT_TYPE)
     check_response(
-        response, blob_name, actual_contents=data, content_type=content_type)
+        response, blob_name, actual_contents=data,
+        content_type=BYTES_CONTENT_TYPE)
     # Download the content to make sure it's "working as expected".
     check_content(
         blob_name, data, authorized_transport, headers=headers)
     # Make sure the upload is tombstoned.
     check_tombstoned(
-        upload, authorized_transport, data, content_type)
+        upload, authorized_transport, data, BYTES_CONTENT_TYPE)
 
 
 def test_multipart_upload(authorized_transport, cleanup):
@@ -165,15 +168,12 @@ def test_multipart_upload(authorized_transport, cleanup):
         actual_contents = file_obj.read()
 
     blob_name = os.path.basename(ICO_FILE)
-    upload_url = utils.MULTIPART_UPLOAD
-    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
     # Make sure to clean up the uploaded blob when we are done.
-    cleanup(metadata_url, authorized_transport)
-    # Make sure we are creating a **new** object.
-    response = authorized_transport.get(metadata_url)
-    assert response.status_code == http_client.NOT_FOUND
+    cleanup(blob_name, authorized_transport)
+    check_does_not_exist(authorized_transport, blob_name)
 
     # Create the actual upload object.
+    upload_url = utils.MULTIPART_UPLOAD
     upload = resumable_media.MultipartUpload(upload_url)
     # Transmit the resource.
     metadata = {
@@ -191,6 +191,32 @@ def test_multipart_upload(authorized_transport, cleanup):
     check_tombstoned(
         upload, authorized_transport, actual_contents,
         metadata, ICO_CONTENT_TYPE)
+
+
+def test_multipart_upload_with_headers(authorized_transport, cleanup):
+    blob_name = u'some-multipart-stuff.bin'
+    # Make sure to clean up the uploaded blob when we are done.
+    cleanup(blob_name, authorized_transport)
+    check_does_not_exist(authorized_transport, blob_name)
+
+    # Create the actual upload object.
+    upload_url = utils.MULTIPART_UPLOAD
+    headers = utils.get_encryption_headers()
+    upload = resumable_media.MultipartUpload(upload_url, headers=headers)
+    # Transmit the resource.
+    metadata = {u'name': blob_name}
+    data = b'Binary contents\x00\x01\x02.'
+    response = upload.transmit(
+        authorized_transport, data, metadata, BYTES_CONTENT_TYPE)
+    check_response(
+        response, blob_name, actual_contents=data,
+        content_type=BYTES_CONTENT_TYPE)
+    # Download the content to make sure it's "working as expected".
+    check_content(
+        blob_name, data, authorized_transport, headers=headers)
+    # Make sure the upload is tombstoned.
+    check_tombstoned(
+        upload, authorized_transport, data, metadata, BYTES_CONTENT_TYPE)
 
 
 @pytest.fixture
@@ -251,8 +277,8 @@ def check_initiate(response, upload, stream, transport, metadata):
 def test_resumable_upload(authorized_transport, stream, cleanup):
     blob_name = os.path.basename(stream.name)
     # Make sure to clean up the uploaded blob when we are done.
-    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
-    cleanup(metadata_url, authorized_transport)
+    cleanup(blob_name, authorized_transport)
+    check_does_not_exist(authorized_transport, blob_name)
     # Create the actual upload object.
     chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
     upload = resumable_media.ResumableUpload(
@@ -330,11 +356,10 @@ def sabotage_and_recover(upload, stream, transport, chunk_size):
 def test_resumable_upload_recover(authorized_transport, cleanup):
     blob_name = u'some-bytes.bin'
     chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
-    content_type = u'application/octet-stream'
     data = b'123' * chunk_size  # 3 chunks worth.
     # Make sure to clean up the uploaded blob when we are done.
-    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
-    cleanup(metadata_url, authorized_transport)
+    cleanup(blob_name, authorized_transport)
+    check_does_not_exist(authorized_transport, blob_name)
     # Create the actual upload object.
     upload = resumable_media.ResumableUpload(
         utils.RESUMABLE_UPLOAD, chunk_size)
@@ -342,7 +367,7 @@ def test_resumable_upload_recover(authorized_transport, cleanup):
     metadata = {u'name': blob_name}
     stream = io.BytesIO(data)
     response = upload.initiate(
-        authorized_transport, stream, metadata, content_type)
+        authorized_transport, stream, metadata, BYTES_CONTENT_TYPE)
     # Make sure ``initiate`` succeeded and did not mangle the stream.
     check_initiate(response, upload, stream, authorized_transport, metadata)
     # Make the first request.
@@ -353,7 +378,7 @@ def test_resumable_upload_recover(authorized_transport, cleanup):
     # Now stream what remains.
     num_chunks = transmit_chunks(
         upload, authorized_transport, blob_name, None,
-        num_chunks=1, content_type=content_type)
+        num_chunks=1, content_type=BYTES_CONTENT_TYPE)
     assert num_chunks == 3
     # Download the content to make sure it's "working as expected".
     actual_contents = stream.getvalue()
