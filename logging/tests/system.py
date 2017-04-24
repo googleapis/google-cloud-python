@@ -389,7 +389,9 @@ class TestLogging(unittest.TestCase):
         self.assertTrue(sink.exists())
 
     def test_create_sink_pubsub_topic(self):
+        from google.cloud.iam import OWNER_ROLE
         from google.cloud.pubsub import client as pubsub_client
+
         SINK_NAME = 'test-create-sink-topic%s' % (_RESOURCE_ID,)
         TOPIC_NAME = 'logging-test-sink%s' % (_RESOURCE_ID,)
 
@@ -400,7 +402,9 @@ class TestLogging(unittest.TestCase):
         topic.create()
         self.to_delete.append(topic)
         policy = topic.get_iam_policy()
-        policy.owners.add(policy.group('cloud-logs@google.com'))
+        new_owners = set([policy.group('cloud-logs@google.com')])
+        new_owners.update(policy.owners)
+        policy[OWNER_ROLE] = new_owners
         topic.set_iam_policy(policy)
 
         TOPIC_URI = 'pubsub.googleapis.com/%s' % (topic.full_name,)
