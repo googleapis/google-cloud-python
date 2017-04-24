@@ -257,9 +257,9 @@ class ResumableUpload(_UploadBase):
         upload_url (str): The URL where the resumable upload will be initiated.
         chunk_size (int): The size of each chunk used to upload the resource.
         headers (Optional[Mapping[str, str]]): Extra headers that should
-            be sent with the :meth:`initiate` request and each
-            :meth:`transmit_next_chunk` request, e.g. headers for encrypted
-            data. These **will not** be sent with a :meth:`recover` request.
+            be sent with the :meth:`initiate` request, e.g. headers for
+            encrypted data. These **will not** be sent with
+            :meth:`transmit_next_chunk` or :meth:`recover` requests.
 
     Raises:
         ValueError: If ``chunk_size`` is not a multiple of
@@ -403,7 +403,9 @@ class ResumableUpload(_UploadBase):
         will (almost) certainly not be network I/O.
 
         Returns:
-            Tuple[bytes, dict]: The payload and headers for the request.
+            Tuple[bytes, dict]: The payload and headers for the request. The
+            headers **do not** incorporate the ``_headers`` on the
+            current instance.
 
         Raises:
             ValueError: If the current upload has finished.
@@ -437,7 +439,6 @@ class ResumableUpload(_UploadBase):
             _CONTENT_TYPE_HEADER: self._content_type,
             _helpers.CONTENT_RANGE_HEADER: content_range,
         }
-        headers.update(self._headers)
         return payload, headers
 
     def _make_invalid(self):
@@ -560,7 +561,8 @@ class ResumableUpload(_UploadBase):
         the upload can end up :attr:`invalid` is if it has been initiated.
 
         Returns:
-            dict: The headers for the request.
+            dict: The headers for the request (they **do not** incorporate the
+            ``_headers`` on the current instance).
 
         Raises:
             ValueError: If the current upload is not in an invalid state.

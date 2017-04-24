@@ -506,11 +506,12 @@ class TestResumableUpload(object):
         new_headers = self._prepare_request_helper(headers)
         assert new_headers is not headers
         expected_headers = {
-            u'cannot': u'touch this',
             u'content-range': u'bytes 0-32/33',
             u'content-type': BASIC_CONTENT,
         }
         assert new_headers == expected_headers
+        # Make sure the ``_headers`` are not incorporated.
+        assert u'cannot' not in new_headers
 
     def test__make_invalid(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -648,6 +649,19 @@ class TestResumableUpload(object):
         assert headers == {u'content-range': u'bytes */*'}
         # Make sure headers are untouched.
         assert upload._headers == {}
+
+    def test__prepare_recover_request_with_headers(self):
+        headers = {u'lake': u'ocean'}
+        upload = upload_mod.ResumableUpload(
+            RESUMABLE_URL, ONE_MB, headers=headers)
+        upload._invalid = True
+
+        new_headers = upload._prepare_recover_request()
+        assert new_headers == {u'content-range': u'bytes */*'}
+        # Make sure the ``_headers`` are not incorporated.
+        assert u'lake' not in new_headers
+        # Make sure headers are untouched.
+        assert upload._headers == {u'lake': u'ocean'}
 
     def test__process_recover_response_bad_status(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
