@@ -30,6 +30,9 @@ import httplib2
 import six
 from six.moves.urllib.parse import quote
 
+import google.auth.transport.requests
+from google import resumable_media
+
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
@@ -42,12 +45,13 @@ from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage.acl import ObjectACL
 from google.cloud.streaming.http_wrapper import Request
 from google.cloud.streaming.http_wrapper import make_api_request
-from google.cloud.streaming.transfer import Download
 from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
 from google.cloud.streaming.transfer import Upload
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
+_DOWNLOAD_URL_TEMPLATE = (
+    u'https://www.googleapis.com/download/storage/v1{path}?alt=media')
 
 
 class Blob(_PropertyMixin):
@@ -316,6 +320,24 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name, client=client)
 
+    def _get_download_url(self):
+        """Get the download URL for the current blob.
+
+        If the ``media_link`` has been loaded, it will be used, otherwise
+        the URL will be constructed from the current blob's path (and possibly
+        generation) to avoid a round trip.
+
+        :rtype: str
+        :returns: The download URL for the current blob.
+        """
+        if self.media_link is None:
+            download_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
+            if self.generation is not None:
+                download_url += u'&generation={:d}'.format(self.generation)
+            return download_url
+        else:
+            return self.media_link
+
     def download_to_file(self, file_obj, client=None):
         """Download the contents of this blob into a file-like object.
 
@@ -348,28 +370,24 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         client = self._require_client(client)
-        if self.media_link is None:  # not yet loaded
-            self.reload()
-
-        download_url = self.media_link
-
-        # Use apitools 'Download' facility.
-        download = Download.from_stream(file_obj)
-
-        if self.chunk_size is not None:
-            download.chunksize = self.chunk_size
-
+        # Get the download URL.
+        download_url = self._get_download_url()
+        # Get any extra headers for the request.
         headers = _get_encryption_headers(self._encryption_key)
+        # Create a ``requests`` transport with the client's credentials.
+        transport = google.auth.transport.requests.AuthorizedSession(
+            client._credentials)
 
-        request = Request(download_url, 'GET', headers)
-
-        # Use ``_base_connection`` rather ``_connection`` since the current
-        # connection may be a batch. A batch wraps a client's connection,
-        # but does not store the ``http`` object. The rest (API_BASE_URL and
-        # build_api_url) are also defined on the Batch class, but we just
-        # use the wrapped connection since it has all three (http,
-        # API_BASE_URL and build_api_url).
-        download.initialize_download(request, client._base_connection.http)
+        # Download the content.
+        if self.chunk_size is None:
+            download = resumable_media.Download(download_url, headers=headers)
+            response = download.consume(transport)
+            file_obj.write(response.content)
+        else:
+            download = resumable_media.ChunkedDownload(
+                download_url, self.chunk_size, file_obj, headers=headers)
+            while not download.finished:
+                download.consume_next_chunk(transport)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
