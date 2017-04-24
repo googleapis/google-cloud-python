@@ -17,6 +17,12 @@ import unittest
 import mock
 
 
+def _make_credentials():
+    import google.auth.credentials
+
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
+
 class Test_Blob(unittest.TestCase):
 
     def _make_one(self, *args, **kw):
@@ -298,87 +304,176 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob.exists())
         self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
 
-    def test_download_to_file_wo_media_link(self):
+    def test__get_download_url_with_media_link(self):
+        blob_name = 'something.txt'
+        bucket = mock.Mock(spec=[])
+        blob = self._make_one(blob_name, bucket=bucket)
+        media_link = 'http://test.invalid'
+        # Set the media link on the blob
+        blob._properties['mediaLink'] = media_link
+
+        download_url = blob._get_download_url()
+        self.assertEqual(download_url, media_link)
+
+    def test__get_download_url_on_the_fly(self):
+        blob_name = 'bzzz-fly.txt'
+        bucket = mock.Mock(path='/b/buhkit', spec=['path'])
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        self.assertIsNone(blob.media_link)
+        download_url = blob._get_download_url()
+        expected_url = (
+            'https://www.googleapis.com/download/storage/v1/b/'
+            'buhkit/o/bzzz-fly.txt?alt=media')
+        self.assertEqual(download_url, expected_url)
+
+    def test__get_download_url_on_the_fly_with_generation(self):
+        blob_name = 'pretend.txt'
+        bucket = mock.Mock(path='/b/fictional', spec=['path'])
+        blob = self._make_one(blob_name, bucket=bucket)
+        generation = 1493058489532987
+        # Set the media link on the blob
+        blob._properties['generation'] = str(generation)
+
+        self.assertIsNone(blob.media_link)
+        download_url = blob._get_download_url()
+        expected_url = (
+            'https://www.googleapis.com/download/storage/v1/b/'
+            'fictional/o/pretend.txt?alt=media&generation=1493058489532987')
+        self.assertEqual(download_url, expected_url)
+
+    @staticmethod
+    def _mock_requests_response(status_code, headers, content=b''):
+        return mock.Mock(
+            content=content, headers=headers, status_code=status_code,
+            spec=['content', 'headers', 'status_code'])
+
+    def _mock_transport(self):
+        from six.moves import http_client
+
+        fake_transport = mock.Mock(spec=['request'])
+        # Give the transport two fake responses.
+        chunk1_response = self._mock_requests_response(
+            http_client.PARTIAL_CONTENT,
+            {'content-length': '3', 'content-range': 'bytes 0-2/6'},
+            content=b'abc')
+        chunk2_response = self._mock_requests_response(
+            http_client.PARTIAL_CONTENT,
+            {'content-length': '3', 'content-range': 'bytes 3-5/6'},
+            content=b'def')
+        fake_transport.request.side_effect = [chunk1_response, chunk2_response]
+        return fake_transport
+
+    def _check_session_mocks(self, client, fake_session_factory,
+                             expected_url, headers=None):
+        # Check that exactly one transport was created.
+        fake_session_factory.assert_called_once_with(client._credentials)
+        fake_transport = fake_session_factory.return_value
+        # Check that the transport was called exactly twice.
+        self.assertEqual(fake_transport.request.call_count, 2)
+        if headers is None:
+            headers = {}
+        # NOTE: bytes=0-2 never shows up because the mock was called with
+        #       **MUTABLE** headers and it was mutated before the
+        #       second request.
+        headers['range'] = 'bytes=3-5'
+        call = mock.call(
+            'GET', expected_url, data=None, headers=headers)
+        self.assertEqual(fake_transport.request.mock_calls, [call, call])
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_to_file_wo_media_link(self, fake_session_factory):
         from io import BytesIO
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
 
-        BLOB_NAME = 'blob-name'
-        MEDIA_LINK = 'http://example.com/media/'
-        chunk1_response = {'status': PARTIAL_CONTENT,
-                           'content-range': 'bytes 0-2/6'}
-        chunk2_response = {'status': OK,
-                           'content-range': 'bytes 3-5/6'}
-        connection = _Connection(
-            (chunk1_response, b'abc'),
-            (chunk2_response, b'def'),
-        )
-        # Only the 'reload' request hits on this side:  the others are done
-        # through the 'http' object.
-        reload_response = {'status': OK, 'content-type': 'application/json'}
-        connection._responses = [(reload_response, {"mediaLink": MEDIA_LINK})]
-        client = _Client(connection)
+        blob_name = 'blob-name'
+        fake_session_factory.return_value = self._mock_transport()
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
         bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        fh = BytesIO()
-        blob.download_to_file(fh)
-        self.assertEqual(fh.getvalue(), b'abcdef')
-        self.assertEqual(blob.media_link, MEDIA_LINK)
+        blob = self._make_one(blob_name, bucket=bucket)
+        # Modify the blob so there there will be 2 chunks of size 3.
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 3
 
-    def _download_to_file_helper(self, chunk_size=None):
+        file_obj = BytesIO()
+        blob.download_to_file(file_obj)
+        self.assertEqual(file_obj.getvalue(), b'abcdef')
+        # Make sure the media link is still unknown.
+        self.assertIsNone(blob.media_link)
+
+        expected_url = (
+            'https://www.googleapis.com/download/storage/v1/b/'
+            'name/o/blob-name?alt=media')
+        self._check_session_mocks(client, fake_session_factory, expected_url)
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def _download_to_file_helper(self, fake_session_factory, use_chunks=False):
         from io import BytesIO
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
 
-        BLOB_NAME = 'blob-name'
-        chunk1_response = {'status': PARTIAL_CONTENT,
-                           'content-range': 'bytes 0-2/6'}
-        chunk2_response = {'status': OK,
-                           'content-range': 'bytes 3-5/6'}
-        connection = _Connection(
-            (chunk1_response, b'abc'),
-            (chunk2_response, b'def'),
-        )
-        client = _Client(connection)
+        blob_name = 'blob-name'
+        fake_transport = self._mock_transport()
+        fake_session_factory.return_value = fake_transport
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
         bucket = _Bucket(client)
-        MEDIA_LINK = 'http://example.com/media/'
-        properties = {'mediaLink': MEDIA_LINK}
-        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
-        if chunk_size is not None:
+        media_link = 'http://example.com/media/'
+        properties = {'mediaLink': media_link}
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+        if use_chunks:
+            # Modify the blob so there there will be 2 chunks of size 3.
             blob._CHUNK_SIZE_MULTIPLE = 1
-            blob.chunk_size = chunk_size
-        fh = BytesIO()
-        blob.download_to_file(fh)
-        self.assertEqual(fh.getvalue(), b'abcdef')
+            blob.chunk_size = 3
+        else:
+            # Modify the response.
+            single_chunk_response = self._mock_requests_response(
+                OK,
+                {'content-length': '6', 'content-range': 'bytes 0-5/6'},
+                content=b'abcdef')
+            fake_transport.request.side_effect = [single_chunk_response]
+
+        file_obj = BytesIO()
+        blob.download_to_file(file_obj)
+        self.assertEqual(file_obj.getvalue(), b'abcdef')
+
+        if use_chunks:
+            self._check_session_mocks(client, fake_session_factory, media_link)
+        else:
+            # Check that exactly one transport was created.
+            fake_session_factory.assert_called_once_with(client._credentials)
+            fake_transport.request.assert_called_once_with(
+                'GET', media_link, data=None, headers={})
 
     def test_download_to_file_default(self):
         self._download_to_file_helper()
 
     def test_download_to_file_with_chunk_size(self):
-        self._download_to_file_helper(chunk_size=3)
+        self._download_to_file_helper(use_chunks=True)
 
-    def test_download_to_filename(self):
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_to_filename(self, fake_session_factory):
         import os
         import time
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
         from google.cloud._testing import _NamedTemporaryFile
 
-        BLOB_NAME = 'blob-name'
-        chunk1_response = {'status': PARTIAL_CONTENT,
-                           'content-range': 'bytes 0-2/6'}
-        chunk2_response = {'status': OK,
-                           'content-range': 'bytes 3-5/6'}
-        connection = _Connection(
-            (chunk1_response, b'abc'),
-            (chunk2_response, b'def'),
-        )
-        client = _Client(connection)
+        blob_name = 'blob-name'
+        fake_session_factory.return_value = self._mock_transport()
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
         bucket = _Bucket(client)
-        MEDIA_LINK = 'http://example.com/media/'
-        properties = {'mediaLink': MEDIA_LINK,
+        media_link = 'http://example.com/media/'
+        properties = {'mediaLink': media_link,
                       'updated': '2014-12-06T13:13:50.690Z'}
-        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+        # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
 
@@ -387,37 +482,34 @@ class Test_Blob(unittest.TestCase):
             with open(temp.name, 'rb') as file_obj:
                 wrote = file_obj.read()
                 mtime = os.path.getmtime(temp.name)
-                updatedTime = time.mktime(blob.updated.timetuple())
+                updated_time = time.mktime(blob.updated.timetuple())
 
         self.assertEqual(wrote, b'abcdef')
-        self.assertEqual(mtime, updatedTime)
+        self.assertEqual(mtime, updated_time)
 
-    def test_download_to_filename_w_key(self):
+        self._check_session_mocks(client, fake_session_factory, media_link)
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_to_filename_w_key(self, fake_session_factory):
         import os
         import time
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
         from google.cloud._testing import _NamedTemporaryFile
 
-        BLOB_NAME = 'blob-name'
-        KEY = b'aa426195405adee2c8081bb9e7e74b19'
-        HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
-        HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
-        chunk1_response = {'status': PARTIAL_CONTENT,
-                           'content-range': 'bytes 0-2/6'}
-        chunk2_response = {'status': OK,
-                           'content-range': 'bytes 3-5/6'}
-        connection = _Connection(
-            (chunk1_response, b'abc'),
-            (chunk2_response, b'def'),
-        )
-        client = _Client(connection)
+        blob_name = 'blob-name'
+        fake_session_factory.return_value = self._mock_transport()
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
         bucket = _Bucket(client)
-        MEDIA_LINK = 'http://example.com/media/'
-        properties = {'mediaLink': MEDIA_LINK,
+        media_link = 'http://example.com/media/'
+        properties = {'mediaLink': media_link,
                       'updated': '2014-12-06T13:13:50.690Z'}
-        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties,
-                              encryption_key=KEY)
+        key = b'aa426195405adee2c8081bb9e7e74b19'
+        blob = self._make_one(
+            blob_name, bucket=bucket, properties=properties, encryption_key=key)
+        # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
 
@@ -426,40 +518,43 @@ class Test_Blob(unittest.TestCase):
             with open(temp.name, 'rb') as file_obj:
                 wrote = file_obj.read()
                 mtime = os.path.getmtime(temp.name)
-                updatedTime = time.mktime(blob.updated.timetuple())
+                updated_time = time.mktime(blob.updated.timetuple())
 
-        rq = connection.http._requested
-        headers = {
-            x.title(): str(y) for x, y in rq[0]['headers'].items()}
-        self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
-        self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)
-        self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'],
-                         HEADER_KEY_HASH_VALUE)
         self.assertEqual(wrote, b'abcdef')
-        self.assertEqual(mtime, updatedTime)
+        self.assertEqual(mtime, updated_time)
 
-    def test_download_as_string(self):
+        header_key_value = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
+        header_key_hash_value = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
+        key_headers = {
+            'X-Goog-Encryption-Key-Sha256': header_key_hash_value,
+            'X-Goog-Encryption-Algorithm': 'AES256',
+            'X-Goog-Encryption-Key': header_key_value,
+        }
+        self._check_session_mocks(
+            client, fake_session_factory, media_link, headers=key_headers)
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_as_string(self, fake_session_factory):
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
 
-        BLOB_NAME = 'blob-name'
-        chunk1_response = {'status': PARTIAL_CONTENT,
-                           'content-range': 'bytes 0-2/6'}
-        chunk2_response = {'status': OK,
-                           'content-range': 'bytes 3-5/6'}
-        connection = _Connection(
-            (chunk1_response, b'abc'),
-            (chunk2_response, b'def'),
-        )
-        client = _Client(connection)
+        blob_name = 'blob-name'
+        fake_session_factory.return_value = self._mock_transport()
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
         bucket = _Bucket(client)
-        MEDIA_LINK = 'http://example.com/media/'
-        properties = {'mediaLink': MEDIA_LINK}
-        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        media_link = 'http://example.com/media/'
+        properties = {'mediaLink': media_link}
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+        # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
+
         fetched = blob.download_as_string()
         self.assertEqual(fetched, b'abcdef')
+
+        self._check_session_mocks(client, fake_session_factory, media_link)
 
     def test_upload_from_file_size_failure(self):
         BLOB_NAME = 'blob-name'
