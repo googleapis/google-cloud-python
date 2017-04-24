@@ -15,6 +15,7 @@
 """Shared utilities used by both downloads and uploads."""
 
 
+import functools
 import random
 import time
 
@@ -166,6 +167,54 @@ def calculate_retry_wait(num_retries):
     return wait_time + 0.001 * jitter_ms
 
 
+def wait_and_retry(func, predicate):
+    """Attempts to retry a call to ``func`` until success.
+
+    Success is determined by ``predicate(result)`` being true.
+
+    Will retry until :attr:`MAX_CUMULATIVE_RETRY` seconds of wait time
+    have accrued. Uses :func:`calculate_retry_wait` to double the
+    wait time (with jitter) after each attempt.
+
+    Args:
+        func (Callable): A callable that takes no arguments and produces
+            a result which will be checked by ``predicate``.
+        predicate (Callable[Any, bool]): Determines if the result is valid.
+
+    Returns:
+        object: The return value of ``func``.
+    """
+    result = func()
+    if predicate(result):
+        return result
+
+    total_sleep = 0.0
+    num_retries = 0
+    while total_sleep < MAX_CUMULATIVE_RETRY:
+        wait_time = calculate_retry_wait(num_retries)
+        num_retries += 1
+        total_sleep += wait_time
+        time.sleep(wait_time)
+        result = func()
+        if predicate(result):
+            return result
+
+    return result
+
+
+def not_retryable_predicate(response):
+    """Determines if a ``response`` is retryable.
+
+    Args:
+        object: The return value of ``transport.request()``.
+
+    Returns:
+        bool: If the ``response`` is **not** retryable (which is
+        the "success" state).
+    """
+    return get_status_code(response) not in RETRYABLE
+
+
 def http_request(transport, method, url, data=None, headers=None):
     """Make an HTTP request.
 
@@ -183,19 +232,6 @@ def http_request(transport, method, url, data=None, headers=None):
     Returns:
         object: The return value of ``transport.request()``.
     """
-    response = transport.request(method, url, data=data, headers=headers)
-    if get_status_code(response) not in RETRYABLE:
-        return response
-
-    total_sleep = 0.0
-    num_retries = 0
-    while total_sleep < MAX_CUMULATIVE_RETRY:
-        wait_time = calculate_retry_wait(num_retries)
-        num_retries += 1
-        total_sleep += wait_time
-        time.sleep(wait_time)
-        response = transport.request(method, url, data=data, headers=headers)
-        if get_status_code(response) not in RETRYABLE:
-            return response
-
-    return response
+    func = functools.partial(
+        transport.request, method, url, data=data, headers=headers)
+    return wait_and_retry(func, not_retryable_predicate)
