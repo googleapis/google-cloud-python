@@ -87,12 +87,24 @@ def check_response(response, blob_name, actual_contents=None,
         assert json_response[u'metadata'] == metadata
 
 
-def check_content(blob_name, expected_content, transport):
+def check_content(blob_name, expected_content, transport, headers=None):
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-    download = resumable_media.Download(media_url)
+    download = resumable_media.Download(media_url, headers=headers)
     response = download.consume(transport)
     assert response.status_code == http_client.OK
     assert response.content == expected_content
+
+
+def check_tombstoned(upload, transport, *args):
+    assert upload.finished
+    basic_types = (
+        resumable_media.SimpleUpload, resumable_media.MultipartUpload)
+    if isinstance(upload, basic_types):
+        with pytest.raises(ValueError):
+            upload.transmit(transport, *args)
+    else:
+        with pytest.raises(ValueError):
+            upload.transmit_next_chunk(transport, *args)
 
 
 def test_simple_upload(authorized_transport, cleanup):
@@ -117,9 +129,35 @@ def test_simple_upload(authorized_transport, cleanup):
     # Download the content to make sure it's "working as expected".
     check_content(blob_name, actual_contents, authorized_transport)
     # Make sure the upload is tombstoned.
-    with pytest.raises(ValueError):
-        upload.transmit(
-            authorized_transport, actual_contents, ICO_CONTENT_TYPE)
+    check_tombstoned(
+        upload, authorized_transport, actual_contents, ICO_CONTENT_TYPE)
+
+
+def test_simple_upload_with_headers(authorized_transport, cleanup):
+    blob_name = u'some-stuff.bin'
+    # Make sure to clean up the uploaded blob when we are done.
+    metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
+    cleanup(metadata_url, authorized_transport)
+    # Make sure we are creating a **new** object.
+    response = authorized_transport.get(metadata_url)
+    assert response.status_code == http_client.NOT_FOUND
+
+    # Create the actual upload object.
+    upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
+    headers = utils.get_encryption_headers()
+    upload = resumable_media.SimpleUpload(upload_url, headers=headers)
+    # Transmit the resource.
+    content_type = u'application/octet-stream'
+    data = b'Binary contents\x00\x01\x02.'
+    response = upload.transmit(authorized_transport, data, content_type)
+    check_response(
+        response, blob_name, actual_contents=data, content_type=content_type)
+    # Download the content to make sure it's "working as expected".
+    check_content(
+        blob_name, data, authorized_transport, headers=headers)
+    # Make sure the upload is tombstoned.
+    check_tombstoned(
+        upload, authorized_transport, data, content_type)
 
 
 def test_multipart_upload(authorized_transport, cleanup):
@@ -150,9 +188,9 @@ def test_multipart_upload(authorized_transport, cleanup):
     # Download the content to make sure it's "working as expected".
     check_content(blob_name, actual_contents, authorized_transport)
     # Make sure the upload is tombstoned.
-    with pytest.raises(ValueError):
-        upload.transmit(
-            authorized_transport, actual_contents, metadata, ICO_CONTENT_TYPE)
+    check_tombstoned(
+        upload, authorized_transport, actual_contents,
+        metadata, ICO_CONTENT_TYPE)
 
 
 @pytest.fixture
@@ -237,8 +275,7 @@ def test_resumable_upload(authorized_transport, stream, cleanup):
     actual_contents = stream.read()
     check_content(blob_name, actual_contents, authorized_transport)
     # Make sure the upload is tombstoned.
-    with pytest.raises(ValueError):
-        upload.transmit_next_chunk(authorized_transport)
+    check_tombstoned(upload, authorized_transport)
 
 
 def check_bad_chunk(upload, transport):
@@ -322,5 +359,4 @@ def test_resumable_upload_recover(authorized_transport, cleanup):
     actual_contents = stream.getvalue()
     check_content(blob_name, actual_contents, authorized_transport)
     # Make sure the upload is tombstoned.
-    with pytest.raises(ValueError):
-        upload.transmit_next_chunk(authorized_transport)
+    check_tombstoned(upload, authorized_transport)
