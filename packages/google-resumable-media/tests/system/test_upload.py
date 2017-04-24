@@ -365,7 +365,8 @@ def sabotage_and_recover(upload, stream, transport, chunk_size):
     assert stream.tell() == chunk_size
 
 
-def test_resumable_upload_recover(authorized_transport, cleanup):
+def _resumable_upload_recover_helper(authorized_transport, cleanup,
+                                     headers=None):
     blob_name = u'some-bytes.bin'
     chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
     data = b'123' * chunk_size  # 3 chunks worth.
@@ -374,7 +375,7 @@ def test_resumable_upload_recover(authorized_transport, cleanup):
     check_does_not_exist(authorized_transport, blob_name)
     # Create the actual upload object.
     upload = resumable_media.ResumableUpload(
-        utils.RESUMABLE_UPLOAD, chunk_size)
+        utils.RESUMABLE_UPLOAD, chunk_size, headers=headers)
     # Initiate the upload.
     metadata = {u'name': blob_name}
     stream = io.BytesIO(data)
@@ -394,6 +395,17 @@ def test_resumable_upload_recover(authorized_transport, cleanup):
     assert num_chunks == 3
     # Download the content to make sure it's "working as expected".
     actual_contents = stream.getvalue()
-    check_content(blob_name, actual_contents, authorized_transport)
+    check_content(
+        blob_name, actual_contents, authorized_transport, headers=headers)
     # Make sure the upload is tombstoned.
     check_tombstoned(upload, authorized_transport)
+
+
+def test_resumable_upload_recover(authorized_transport, cleanup):
+    _resumable_upload_recover_helper(authorized_transport, cleanup)
+
+
+def test_resumable_upload_recover_with_headers(authorized_transport, cleanup):
+    headers = utils.get_encryption_headers()
+    _resumable_upload_recover_helper(
+        authorized_transport, cleanup, headers=headers)
