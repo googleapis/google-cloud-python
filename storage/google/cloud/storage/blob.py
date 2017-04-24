@@ -30,7 +30,7 @@ import httplib2
 import six
 from six.moves.urllib.parse import quote
 
-import google.auth.transport.requests as tr_requests
+import google.auth.transport.requests
 from google import resumable_media
 
 from google.cloud._helpers import _rfc3339_to_datetime
@@ -375,7 +375,8 @@ class Blob(_PropertyMixin):
         # Get any extra headers for the request.
         headers = _get_encryption_headers(self._encryption_key)
         # Create a ``requests`` transport with the client's credentials.
-        transport = tr_requests.AuthorizedSession(client._credentials)
+        transport = google.auth.transport.requests.AuthorizedSession(
+            client._credentials)
 
         # Download the content.
         if self.chunk_size is None:
