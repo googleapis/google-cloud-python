@@ -308,12 +308,14 @@ class TestResumableUpload(object):
         upload._total_bytes = 8192
         assert upload.total_bytes == 8192
 
-    def test__prepare_initiate_request(self):
+    def _prepare_initiate_request_helper(self, upload_headers=None):
         data = b'some really big big data.'
         stream = io.BytesIO(data)
         metadata = {u'name': u'big-data-file.txt'}
 
-        upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        upload = upload_mod.ResumableUpload(
+            RESUMABLE_URL, ONE_MB, headers=upload_headers)
+        orig_headers = upload._headers.copy()
         # Check ``upload``-s state before.
         assert upload._stream is None
         assert upload._content_type is None
@@ -322,20 +324,39 @@ class TestResumableUpload(object):
         payload, headers = upload._prepare_initiate_request(
             stream, metadata, BASIC_CONTENT)
         assert payload == b'{"name": "big-data-file.txt"}'
+        # Make sure the ``upload``-s state was updated.
+        assert upload._stream == stream
+        assert upload._content_type == BASIC_CONTENT
+        assert upload._total_bytes == len(data)
+        # Make sure headers are untouched.
+        assert headers is not upload._headers
+        assert upload._headers == orig_headers
+        # Make sure the stream is still at the beginning.
+        assert stream.tell() == 0
+
+        return data, headers
+
+    def test__prepare_initiate_request(self):
+        data, headers = self._prepare_initiate_request_helper()
         expected_headers = {
             u'content-type': JSON_TYPE,
             u'x-upload-content-length': u'{:d}'.format(len(data)),
             u'x-upload-content-type': BASIC_CONTENT,
         }
         assert headers == expected_headers
-        # Make sure the ``upload``-s state was updated.
-        assert upload._stream == stream
-        assert upload._content_type == BASIC_CONTENT
-        assert upload._total_bytes == len(data)
-        # Make sure headers are untouched.
-        assert upload._headers == {}
-        # Make sure the stream is still at the beginning.
-        assert stream.tell() == 0
+
+    def test__prepare_initiate_request_with_headers(self):
+        headers = {u'caviar': u'beluga', u'top': u'quark'}
+        data, new_headers = self._prepare_initiate_request_helper(
+            upload_headers=headers)
+        expected_headers = {
+            u'caviar': u'beluga',
+            u'content-type': JSON_TYPE,
+            u'top': u'quark',
+            u'x-upload-content-length': u'{:d}'.format(len(data)),
+            u'x-upload-content-type': BASIC_CONTENT,
+        }
+        assert new_headers == expected_headers
 
     def test__prepare_initiate_request_already_initiated(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -467,8 +488,8 @@ class TestResumableUpload(object):
         payload, new_headers = upload._prepare_request()
         # Check the response values.
         assert payload == data
-        # Make sure headers are updated
-        assert upload._headers == new_headers
+        # Make sure headers are **NOT** updated
+        assert upload._headers != new_headers
 
         return new_headers
 
@@ -483,7 +504,7 @@ class TestResumableUpload(object):
     def test__prepare_request_success_with_headers(self):
         headers = {u'cannot': u'touch this'}
         new_headers = self._prepare_request_helper(headers)
-        assert new_headers is headers
+        assert new_headers is not headers
         expected_headers = {
             u'cannot': u'touch this',
             u'content-range': u'bytes 0-32/33',

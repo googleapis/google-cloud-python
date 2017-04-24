@@ -205,7 +205,7 @@ def test_multipart_upload_with_headers(authorized_transport, cleanup):
     upload = resumable_media.MultipartUpload(upload_url, headers=headers)
     # Transmit the resource.
     metadata = {u'name': blob_name}
-    data = b'Binary contents\x00\x01\x02.'
+    data = b'Other binary contents\x03\x04\x05.'
     response = upload.transmit(
         authorized_transport, data, metadata, BYTES_CONTENT_TYPE)
     check_response(
@@ -274,7 +274,8 @@ def check_initiate(response, upload, stream, transport, metadata):
             transport, stream, metadata, JPEG_CONTENT_TYPE)
 
 
-def test_resumable_upload(authorized_transport, stream, cleanup):
+def _resumable_upload_helper(authorized_transport, stream, cleanup,
+                             headers=None):
     blob_name = os.path.basename(stream.name)
     # Make sure to clean up the uploaded blob when we are done.
     cleanup(blob_name, authorized_transport)
@@ -282,7 +283,7 @@ def test_resumable_upload(authorized_transport, stream, cleanup):
     # Create the actual upload object.
     chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
     upload = resumable_media.ResumableUpload(
-        utils.RESUMABLE_UPLOAD, chunk_size)
+        utils.RESUMABLE_UPLOAD, chunk_size, headers=headers)
     # Initiate the upload.
     metadata = {
         u'name': blob_name,
@@ -299,9 +300,20 @@ def test_resumable_upload(authorized_transport, stream, cleanup):
     # Download the content to make sure it's "working as expected".
     stream.seek(0)
     actual_contents = stream.read()
-    check_content(blob_name, actual_contents, authorized_transport)
+    check_content(
+        blob_name, actual_contents, authorized_transport, headers=headers)
     # Make sure the upload is tombstoned.
     check_tombstoned(upload, authorized_transport)
+
+
+def test_resumable_upload(authorized_transport, stream, cleanup):
+    _resumable_upload_helper(authorized_transport, stream, cleanup)
+
+
+def test_resumable_upload_with_headers(authorized_transport, stream, cleanup):
+    headers = utils.get_encryption_headers()
+    _resumable_upload_helper(
+        authorized_transport, stream, cleanup, headers=headers)
 
 
 def check_bad_chunk(upload, transport):

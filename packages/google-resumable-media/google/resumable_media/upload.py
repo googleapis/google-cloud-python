@@ -130,6 +130,11 @@ class SimpleUpload(_UploadBase):
         require network I/O (or other I/O). This is based on the `sans-I/O`_
         philosophy.
 
+        .. note:
+
+            This method will be used only once, so ``headers`` will be
+            mutated by having a new key added to it.
+
         Args:
             content_type (str): The content type for the request.
 
@@ -185,6 +190,11 @@ class MultipartUpload(_UploadBase):
         This is everything that must be done before a request that doesn't
         require network I/O (or other I/O). This is based on the `sans-I/O`_
         philosophy.
+
+        .. note:
+
+            This method will be used only once, so ``headers`` will be
+            mutated by having a new key added to it.
 
         Args:
             data (bytes): The resource content to be uploaded.
@@ -247,9 +257,9 @@ class ResumableUpload(_UploadBase):
         upload_url (str): The URL where the resumable upload will be initiated.
         chunk_size (int): The size of each chunk used to upload the resource.
         headers (Optional[Mapping[str, str]]): Extra headers that should
-            be sent with each :meth:`transmit_next_chunk` request, e.g.
-            headers for encrypted data. These **will not** be sent with
-            an :meth:`initiate` request or a :meth:`recover` request.
+            be sent with the :meth:`initiate` request and each
+            :meth:`transmit_next_chunk` request, e.g. headers for encrypted
+            data. These **will not** be sent with a :meth:`recover` request.
 
     Raises:
         ValueError: If ``chunk_size`` is not a multiple of
@@ -335,6 +345,7 @@ class ResumableUpload(_UploadBase):
             u'x-upload-content-type': content_type,
             u'x-upload-content-length': u'{:d}'.format(self._total_bytes),
         }
+        headers.update(self._headers)
         payload = json.dumps(metadata).encode(u'utf-8')
         return payload, headers
 
@@ -391,12 +402,6 @@ class ResumableUpload(_UploadBase):
         a chunk from ``stream`` (via :func:`_get_next_chunk`). However, this
         will (almost) certainly not be network I/O.
 
-        .. note:
-
-            This method will be used multiple times, so ``headers`` will
-            be mutated in between requests. However, we don't make a copy
-            since the same keys are being updated.
-
         Returns:
             Tuple[bytes, dict]: The payload and headers for the request.
 
@@ -426,11 +431,14 @@ class ResumableUpload(_UploadBase):
                 start_byte, self.bytes_uploaded)
             raise ValueError(msg)
 
-        self._headers[_CONTENT_TYPE_HEADER] = self._content_type
         content_range = _CONTENT_RANGE_TEMPLATE.format(
             start_byte, end_byte, self._total_bytes)
-        self._headers[_helpers.CONTENT_RANGE_HEADER] = content_range
-        return payload, self._headers
+        headers = {
+            _CONTENT_TYPE_HEADER: self._content_type,
+            _helpers.CONTENT_RANGE_HEADER: content_range,
+        }
+        headers.update(self._headers)
+        return payload, headers
 
     def _make_invalid(self):
         """Simple setter for ``invalid``.
