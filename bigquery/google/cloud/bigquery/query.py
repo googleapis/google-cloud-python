@@ -386,10 +386,11 @@ class QueryResults(object):
             (Optional) How long to wait for the query to complete, in
             milliseconds, before the request times out and returns. Note that
             this is only a timeout for the request, not the query. If the query
-            takes longer to run than the timeout value, the call returns without
-            any results and with the 'jobComplete' flag set to false. You can
-            call GetQueryResults() to wait for the query to complete and read
-            the results. The default value is 10000 milliseconds (10 seconds).
+            takes longer to run than the timeout value, the call returns
+            without any results and with the 'jobComplete' flag set to false.
+            You can call GetQueryResults() to wait for the query to complete
+            and read the results. The default value is 10000 milliseconds (10
+            seconds).
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
