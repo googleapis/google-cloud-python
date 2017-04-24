@@ -231,6 +231,13 @@ requests.</td>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.resumable_media.download.ChunkedDownload.invalid">
+<code class="descname">invalid</code><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload.invalid" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> &#8211; Indicates if the download is in an invalid state.</p>
+<p>This will occur if a call to <a class="reference internal" href="#google.resumable_media.download.ChunkedDownload.consume_next_chunk" title="google.resumable_media.download.ChunkedDownload.consume_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">consume_next_chunk()</span></code></a> fails.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.resumable_media.download.ChunkedDownload.total_bytes">
 <code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload.total_bytes" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The total number of bytes to be downloaded.</p>
