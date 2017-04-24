@@ -15,11 +15,36 @@
 """Shared utilities used by both downloads and uploads."""
 
 
+import random
+import time
+
+from six.moves import http_client
+
 from google.resumable_media import exceptions
 
 
 RANGE_HEADER = u'range'
 CONTENT_RANGE_HEADER = u'content-range'
+TOO_MANY_REQUESTS = 429
+"""int: Status code indicating rate-limiting.
+
+``http.client.TOO_MANY_REQUESTS`` was added in Python 3.3, so
+can't be used in a "general" code base.
+
+For more information, see `RFC 6585`_.
+
+.. _RFC 6585: https://tools.ietf.org/html/rfc6585#section-4
+"""
+RETRYABLE = (
+    TOO_MANY_REQUESTS,
+    http_client.INTERNAL_SERVER_ERROR,
+    http_client.BAD_GATEWAY,
+    http_client.SERVICE_UNAVAILABLE,
+    http_client.GATEWAY_TIMEOUT,
+)
+MAX_SLEEP = 64.0  # Just over 1 minute.
+MAX_SLEEP_EXPONENT = 6  # 2^6 = 64.
+MAX_CUMULATIVE_RETRY = 600.0  # 10 minutes
 
 
 def do_nothing():
@@ -114,6 +139,33 @@ def require_status_code(response, status_codes, callback=do_nothing):
     return status_code
 
 
+def calculate_retry_wait(num_retries):
+    """Calculate the amount of time to wait before a retry attempt.
+
+    Wait time grows exponentially with the number of attempts, until
+    it hits :attr:`MAX_SLEEP`.
+
+    A random amount of jitter (between 0 and 1 seconds) is added to spread out
+    retry attempts from different clients.
+
+    Args:
+        num_retries (int): The number of retries already attempted. If
+            no retries have been attempted, should return 1 second with
+            some jitter.
+
+    Returns:
+        float: The number of seconds to wait before retrying (with a random
+        amount of jitter between 0 and 1 seconds added).
+    """
+    if num_retries < MAX_SLEEP_EXPONENT:
+        wait_time = 2**num_retries
+    else:
+        wait_time = MAX_SLEEP
+
+    jitter_ms = random.randint(0, 1000)
+    return wait_time + 0.001 * jitter_ms
+
+
 def http_request(transport, method, url, data=None, headers=None):
     """Make an HTTP request.
 
@@ -131,4 +183,19 @@ def http_request(transport, method, url, data=None, headers=None):
     Returns:
         object: The return value of ``transport.request()``.
     """
-    return transport.request(method, url, data=data, headers=headers)
+    response = transport.request(method, url, data=data, headers=headers)
+    if get_status_code(response) not in RETRYABLE:
+        return response
+
+    total_sleep = 0.0
+    num_retries = 0
+    while total_sleep < MAX_CUMULATIVE_RETRY:
+        wait_time = calculate_retry_wait(num_retries)
+        num_retries += 1
+        total_sleep += wait_time
+        time.sleep(wait_time)
+        response = transport.request(method, url, data=data, headers=headers)
+        if get_status_code(response) not in RETRYABLE:
+            return response
+
+    return response

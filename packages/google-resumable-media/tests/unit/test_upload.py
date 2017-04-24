@@ -412,7 +412,7 @@ class TestResumableUpload(object):
         transport = mock.Mock(spec=[u'request'])
         location = u'http://test.invalid?upload_id=AACODBBBxuw9u3AA',
         response_headers = {u'location': location}
-        post_response = mock.Mock(headers=response_headers, spec=[u'headers'])
+        post_response = _make_response(headers=response_headers)
         transport.request.return_value = post_response
         # Check resumable_url before.
         assert upload._resumable_url is None
