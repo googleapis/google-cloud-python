@@ -193,6 +193,7 @@ class TestChunkedDownload(object):
         assert download._stream is stream
         assert download._bytes_downloaded == 0
         assert download._total_bytes is None
+        assert not download._invalid
 
     def test_constructor_bad_start(self):
         with pytest.raises(ValueError):
@@ -281,8 +282,18 @@ class TestChunkedDownload(object):
     def test__prepare_request_already_finished(self):
         download = download_mod.ChunkedDownload(EXAMPLE_URL, 64, None)
         download._finished = True
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as exc_info:
             download._prepare_request()
+
+        assert exc_info.match(u'Download has finished.')
+
+    def test__prepare_request_invalid(self):
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, 64, None)
+        download._invalid = True
+        with pytest.raises(ValueError) as exc_info:
+            download._prepare_request()
+
+        assert exc_info.match(u'Download is invalid and cannot be re-used.')
 
     def test__prepare_request(self):
         chunk_size = 2048
@@ -295,6 +306,12 @@ class TestChunkedDownload(object):
         download2._total_bytes = 20101
         headers2 = download2._prepare_request()
         assert headers2 == {u'range': u'bytes=19991-20100'}
+
+    def test__make_invalid(self):
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, 512, None)
+        assert not download.invalid
+        download._make_invalid()
+        assert download.invalid
 
     def test__prepare_request_with_headers(self):
         chunk_size = 2048
@@ -359,7 +376,62 @@ class TestChunkedDownload(object):
         assert not download.finished
         assert download.bytes_downloaded == 0
         assert download.total_bytes is None
+        assert download.invalid
         stream.write.assert_not_called()
+
+    def test__process_response_missing_content_length(self):
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, 256, None)
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert not download.invalid
+        # Actually call the method to update.
+        response = mock.Mock(
+            headers={}, status_code=int(http_client.PARTIAL_CONTENT),
+            spec=[u'headers', u'status_code'])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 2
+        assert error.args[1] == u'content-length'
+        # Check internal state after.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert download.invalid
+
+    def test__process_response_bad_content_range(self):
+        download = download_mod.ChunkedDownload(EXAMPLE_URL, 256, None)
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert not download.invalid
+        # Actually call the method to update.
+        data = b'stuff'
+        headers = {
+            u'content-length': u'{:d}'.format(len(data)),
+            u'content-range': u'kites x-y/58',
+        }
+        response = mock.Mock(
+            content=data, headers=headers,
+            status_code=int(http_client.PARTIAL_CONTENT),
+            spec=[u'content', u'headers', u'status_code'])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 3
+        assert error.args[1] == headers[u'content-range']
+        # Check internal state after.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert download.invalid
 
     def test__process_response_body_wrong_length(self):
         chunk_size = 10
@@ -389,6 +461,7 @@ class TestChunkedDownload(object):
         assert not download.finished
         assert download.bytes_downloaded == 0
         assert download.total_bytes is None
+        assert download.invalid
         stream.write.assert_not_called()
 
     def test__process_response_when_finished(self):

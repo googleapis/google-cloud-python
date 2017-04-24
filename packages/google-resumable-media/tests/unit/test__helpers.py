@@ -20,8 +20,8 @@ from google.resumable_media import _helpers
 from google.resumable_media import exceptions
 
 
-def test__do_nothing():
-    ret_val = _helpers._do_nothing()
+def test_do_nothing():
+    ret_val = _helpers.do_nothing()
     assert ret_val is None
 
 

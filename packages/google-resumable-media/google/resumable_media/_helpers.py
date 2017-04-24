@@ -22,7 +22,7 @@ RANGE_HEADER = u'range'
 CONTENT_RANGE_HEADER = u'content-range'
 
 
-def _do_nothing():
+def do_nothing():
     """Simple default callback."""
 
 
@@ -39,7 +39,7 @@ def get_headers(response):
     return response.headers
 
 
-def header_required(response, name, callback=_do_nothing):
+def header_required(response, name, callback=do_nothing):
     """Checks that a specific header is in a headers dictionary.
 
     Args:
@@ -89,7 +89,7 @@ def get_body(response):
     return response.content
 
 
-def require_status_code(response, status_codes, callback=_do_nothing):
+def require_status_code(response, status_codes, callback=do_nothing):
     """Require a response has a status code among a list.
 
     Args:

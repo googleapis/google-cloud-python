@@ -173,6 +173,7 @@ class ChunkedDownload(_DownloadBase):
         self._stream = stream
         self._bytes_downloaded = 0
         self._total_bytes = None
+        self._invalid = False
 
     @property
     def bytes_downloaded(self):
@@ -183,6 +184,14 @@ class ChunkedDownload(_DownloadBase):
     def total_bytes(self):
         """Optional[int]: The total number of bytes to be downloaded."""
         return self._total_bytes
+
+    @property
+    def invalid(self):
+        """bool: Indicates if the download is in an invalid state.
+
+        This will occur if a call to :meth:`consume_next_chunk` fails.
+        """
+        return self._invalid
 
     def _get_byte_range(self):
         """Determines the byte range for the next request.
@@ -219,15 +228,27 @@ class ChunkedDownload(_DownloadBase):
 
         Raises:
             ValueError: If the current download has finished.
+            ValueError: If the current download is invalid.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if self.finished:
             raise ValueError(u'Download has finished.')
+        if self.invalid:
+            raise ValueError(u'Download is invalid and cannot be re-used.')
 
         curr_start, curr_end = self._get_byte_range()
         _add_bytes_range(curr_start, curr_end, self._headers)
         return self._headers
+
+    def _make_invalid(self):
+        """Simple setter for ``invalid``.
+
+        This is intended to be passed along as a callback to helpers that
+        raise an exception so they can mark this instance as invalid before
+        raising.
+        """
+        self._invalid = True
 
     def _process_response(self, response):
         """Process the response from an HTTP request.
@@ -238,14 +259,14 @@ class ChunkedDownload(_DownloadBase):
 
         Updates the current state after consuming a chunk. First,
         increments ``bytes_downloaded`` by the number of bytes in the
-        ``Content-Length`` header.
+        ``content-length`` header.
 
         If ``total_bytes`` is already set, this assumes (but does not check)
         that we already have the correct value and doesn't bother to check
         that it agrees with the headers.
 
-        We expect the **total** length to be in the ``Content-Range`` header,
-        but this header is only present on requests which sent the ``Range``
+        We expect the **total** length to be in the ``content-range`` header,
+        but this header is only present on requests which sent the ``range``
         header. This response header should be of the form
         ``bytes {start}-{end}/{total}`` and ``{end} - {start} + 1``
         should be the same as the ``Content-Length``.
@@ -260,12 +281,16 @@ class ChunkedDownload(_DownloadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         # Verify the response before updating the current instance.
-        _helpers.require_status_code(response, _ACCEPTABLE_STATUS_CODES)
-        content_length = _helpers.header_required(response, u'content-length')
+        _helpers.require_status_code(
+            response, _ACCEPTABLE_STATUS_CODES, callback=self._make_invalid)
+        content_length = _helpers.header_required(
+            response, u'content-length', callback=self._make_invalid)
         num_bytes = int(content_length)
-        _, end_byte, total_bytes = _get_range_info(response)
+        _, end_byte, total_bytes = _get_range_info(
+            response, callback=self._make_invalid)
         response_body = _helpers.get_body(response)
         if len(response_body) != num_bytes:
+            self._make_invalid()
             raise exceptions.InvalidResponse(
                 response, u'Response is different size than content-length',
                 u'Expected', num_bytes, u'Received', len(response_body))
@@ -354,11 +379,13 @@ def _add_bytes_range(start, end, headers):
     headers[_helpers.RANGE_HEADER] = u'bytes=' + bytes_range
 
 
-def _get_range_info(response):
+def _get_range_info(response, callback=_helpers.do_nothing):
     """Get the start, end and total bytes from a content range header.
 
     Args:
         response (object): An HTTP response object.
+        callback (Optional[Callable]): A callback that takes no arguments,
+            to be executed when an exception is being raised.
 
     Returns:
         Tuple[int, int, int]: The start byte, end byte and total bytes.
@@ -372,6 +399,7 @@ def _get_range_info(response):
         response, _helpers.CONTENT_RANGE_HEADER)
     match = _CONTENT_RANGE_RE.match(content_range)
     if match is None:
+        callback()
         raise exceptions.InvalidResponse(
             response, u'Unexpected content-range header', content_range,
             u'Expected to be of the form "bytes {start}-{end}/{total}"')

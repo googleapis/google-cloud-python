@@ -347,3 +347,13 @@ def test_chunked_with_extra_headers(authorized_transport, secret_file):
     # Make sure the last chunk isn't the same size.
     assert len(last_response.content) < chunk_size
     check_tombstoned(download, authorized_transport)
+    # Attempt to consume the resource **without** the headers.
+    stream_wo = io.BytesIO()
+    download_wo = resumable_media.ChunkedDownload(
+        media_url, chunk_size, stream_wo)
+    with pytest.raises(resumable_media.InvalidResponse) as exc_info:
+        download_wo.consume_next_chunk(authorized_transport)
+
+    assert stream_wo.tell() == 0
+    check_error_response(exc_info, http_client.BAD_REQUEST, ENCRYPTED_ERR)
+    assert download_wo.invalid
