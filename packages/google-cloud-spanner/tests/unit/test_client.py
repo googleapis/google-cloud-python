@@ -164,6 +164,7 @@ class TestClient(unittest.TestCase):
         again = client.instance_admin_api
         self.assertTrue(again is api)
         self.assertEqual(api.kwargs['lib_name'], 'gccl')
+        self.assertIs(api.kwargs['credentials'], client.credentials)
 
     def test_database_admin_api(self):
         from google.cloud._testing import _Monkey
@@ -184,6 +185,7 @@ class TestClient(unittest.TestCase):
         again = client.database_admin_api
         self.assertTrue(again is api)
         self.assertEqual(api.kwargs['lib_name'], 'gccl')
+        self.assertIs(api.kwargs['credentials'], client.credentials)
 
     def test_copy(self):
         credentials = _Credentials('value')
