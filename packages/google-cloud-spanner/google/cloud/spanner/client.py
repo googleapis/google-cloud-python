@@ -154,6 +154,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """Helper for session-related API calls."""
         if self._instance_admin_api is None:
             self._instance_admin_api = InstanceAdminClient(
+                credentials=self.credentials,
                 lib_name='gccl',
                 lib_version=__version__,
             )
@@ -164,6 +165,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """Helper for session-related API calls."""
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient(
+                credentials=self.credentials,
                 lib_name='gccl',
                 lib_version=__version__,
             )
