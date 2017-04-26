@@ -2057,13 +2057,23 @@ class Test_Blob(unittest.TestCase):
                               properties={'size': str(SIZE)})
         self.assertEqual(blob.size, SIZE)
 
-    def test_storage_class(self):
-        BLOB_NAME = 'blob-name'
+    def test_storage_class_getter(self):
+        blob_name = 'blob-name'
         bucket = _Bucket()
-        STORAGE_CLASS = 'http://example.com/self/'
-        properties = {'storageClass': STORAGE_CLASS}
-        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
-        self.assertEqual(blob.storage_class, STORAGE_CLASS)
+        storage_class = 'MULTI_REGIONAL'
+        properties = {'storageClass': storage_class}
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+        self.assertEqual(blob.storage_class, storage_class)
+
+    def test_storage_class_setter(self):
+        blob_name = 'blob-name'
+        bucket = _Bucket()
+        storage_class = 'COLDLINE'
+        blob = self._make_one(blob_name, bucket=bucket)
+        self.assertIsNone(blob.storage_class)
+        blob.storage_class = storage_class
+        self.assertEqual(blob.storage_class, storage_class)
+        self.assertEqual(blob._properties, {'storageClass': storage_class})
 
     def test_time_deleted(self):
         import datetime
