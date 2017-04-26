@@ -352,7 +352,8 @@ class TestTable(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from tests.unit._testing import _FakeStub
         from google.cloud.bigtable.row_data import PartialRowsData
-        from google.cloud.bigtable import table as MUT
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -372,20 +373,18 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = stub = _FakeStub(response_iterator)
 
-        # Create expected_result.
-        expected_result = PartialRowsData(response_iterator)
-
-        # Perform the method and check the result.
         start_key = b'start-key'
         end_key = b'end-key'
         filter_obj = object()
         limit = 22
-        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):           
+            # Perform the method and check the result.
             result = table.read_rows(
                 start_key=start_key, end_key=end_key, filter_=filter_obj,
                 limit=limit)
 
-        self.assertEqual(result, expected_result)
+        self.assertIsInstance(result._response_iterator, ReadRowsIterator)
+        self.assertEqual(result._response_iterator.client, client)
         self.assertEqual(stub.method_calls, [(
             'ReadRows',
             (request_pb,),
@@ -396,6 +395,7 @@ class TestTable(unittest.TestCase):
             'end_key': end_key,
             'filter_': filter_obj,
             'limit': limit,
+            'start_key_closed': True,
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 

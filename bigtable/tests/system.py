@@ -295,6 +295,76 @@ class TestTableAdminAPI(unittest.TestCase):
         # Make sure we have successfully deleted it.
         self.assertEqual(temp_table.list_column_families(), {})
 
+    def test_retry(self):
+        import subprocess, os, stat, platform
+        from google.cloud.bigtable.client import Client
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable.table import Table
+
+        # import for urlopen based on version
+        try:
+            # python 3
+            from urllib.request import urlopen
+        except ImportError:
+            # python 2
+            from urllib2 import urlopen
+
+
+        TEST_SCRIPT = 'tests/retry_test_script.txt'
+        SERVER_NAME = 'retry_server'
+        SERVER_ZIP = SERVER_NAME + ".tar.gz"
+
+        def process_scan(table, range, ids):
+            range_chunks = range.split(",")
+            range_open = range_chunks[0].lstrip("[")
+            range_close = range_chunks[1].rstrip(")")
+            rows = table.read_rows(range_open, range_close)
+            rows.consume_all()
+
+        # Download server
+        MOCK_SERVER_URLS = {
+            'Linux': 'https://storage.googleapis.com/cloud-bigtable-test/retries/retry_server_linux.tar.gz',
+            'Darwin': 'https://storage.googleapis.com/cloud-bigtable-test/retries/retry_server_mac.tar.gz',
+        }
+
+        test_platform = platform.system()
+        if (test_platform not in MOCK_SERVER_URLS):
+            self.fail("Retry server not available for platform " + test_platform)
+
+        mock_server_download = urlopen(MOCK_SERVER_URLS[test_platform]).read()
+        mock_server_file = open(SERVER_ZIP, 'wb')
+        mock_server_file.write(mock_server_download)
+
+        # Unzip server
+        subprocess.call(['tar', 'zxvf', SERVER_ZIP, '-C', '.'])
+
+        # Connect to server 
+        server = subprocess.Popen(
+            ['./' + SERVER_NAME, '--script=' + TEST_SCRIPT],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+        )
+
+        (endpoint, port) = server.stdout.readline().rstrip("\n").split(":")
+        os.environ["BIGTABLE_EMULATOR_HOST"] = endpoint + ":" + port
+        client = Client(project="client", admin=True)
+        instance = Instance("instance", client)
+        table = instance.table("table")
+
+        # Run test, line by line
+        script = open(TEST_SCRIPT, 'r')
+        for line in script.readlines():
+            if line.startswith("CLIENT:"):
+                chunks = line.split(" ")
+                op = chunks[1]
+                if (op != "SCAN"):
+                    self.fail("Script contained " + op + " operation.  Only \'SCAN\' is supported.")
+                else:
+                    process_scan(table, chunks[2], chunks[3])
+
+        # Clean up
+        server.kill()
+        os.remove(SERVER_ZIP)
+        os.remove(SERVER_NAME)
 
 class TestDataAPI(unittest.TestCase):
 
