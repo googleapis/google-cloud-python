@@ -15,17 +15,12 @@
 """Support for downloading media from Google APIs."""
 
 
-from six.moves import http_client
-
 from google.resumable_media import _download
 from google.resumable_media import _helpers
 from google.resumable_media import exceptions
 
 
-_ACCEPTABLE_STATUS_CODES = (http_client.OK, http_client.PARTIAL_CONTENT)
-
-
-class Download(_download.DownloadBase):
+class Download(_download.Download):
     """Helper to manage downloading a resource from a Google API.
 
     "Slices" of the resource can be retrieved by specifying a range
@@ -44,53 +39,15 @@ class Download(_download.DownloadBase):
             be sent with the request, e.g. headers for encrypted data.
     """
 
-    def _prepare_request(self):
-        """Prepare the contents of an HTTP request.
-
-        This is everything that must be done before a request that doesn't
-        require network I/O (or other I/O). This is based on the `sans-I/O`_
-        philosophy.
-
-        Returns:
-            Mapping[str, str]: The headers for the request.
-
-        Raises:
-            ValueError: If the current :class:`Download` has already
-                finished.
-
-        .. _sans-I/O: https://sans-io.readthedocs.io/
-        """
-        if self.finished:
-            raise ValueError(u'A download can only be used once.')
-
-        _download.add_bytes_range(self.start, self.end, self._headers)
-        return self._headers
-
-    def _process_response(self, response):
-        """Process the response from an HTTP request.
-
-        This is everything that must be done after a request that doesn't
-        require network I/O (or other I/O). This is based on the `sans-I/O`_
-        philosophy.
-
-        Args:
-            response (object): The HTTP response object.
-
-        .. _sans-I/O: https://sans-io.readthedocs.io/
-        """
-        # Tombstone the current Download so it cannot be used again.
-        self._finished = True
-        _helpers.require_status_code(response, _ACCEPTABLE_STATUS_CODES)
-
     def consume(self, transport):
         """Consume the resource to be downloaded.
 
         Args:
-            transport (object): An object which can make authenticated
-                requests.
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
 
         Returns:
-            object: The HTTP response returned by ``transport``.
+            ~requests.Response: The HTTP response returned by ``transport``.
 
         Raises:
             ValueError: If the current :class:`Download` has already
@@ -247,7 +204,8 @@ class ChunkedDownload(_download.DownloadBase):
         """
         # Verify the response before updating the current instance.
         _helpers.require_status_code(
-            response, _ACCEPTABLE_STATUS_CODES, callback=self._make_invalid)
+            response, _download.ACCEPTABLE_STATUS_CODES,
+            callback=self._make_invalid)
         content_length = _helpers.header_required(
             response, u'content-length', callback=self._make_invalid)
         num_bytes = int(content_length)

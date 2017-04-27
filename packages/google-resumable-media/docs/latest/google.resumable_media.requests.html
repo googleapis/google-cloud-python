@@ -583,7 +583,7 @@ requests.</td>
 <dl class="class">
 <dt id="google.resumable_media.requests.Download">
 <em class="property">class </em><code class="descclassname">google.resumable_media.requests.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.Download" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.DownloadBase</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.Download</span></code></p>
 <p>Helper to manage downloading a resource from a Google API.</p>
 <p>&#8220;Slices&#8221; of the resource can be retrieved by specifying a range
 with <code class="docutils literal"><span class="pre">start</span></code> and / or <code class="docutils literal"><span class="pre">end</span></code>. However, in typical usage, neither
@@ -615,12 +615,12 @@ be sent with the request, e.g. headers for encrypted data.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) &#8211; An object which can make authenticated
-requests.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
+make authenticated requests.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)">object</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If the current <a class="reference internal" href="#google.resumable_media.requests.Download" title="google.resumable_media.requests.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> has already
 finished.</td>

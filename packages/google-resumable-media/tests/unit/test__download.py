@@ -14,6 +14,7 @@
 
 import mock
 import pytest
+from six.moves import http_client
 
 from google.resumable_media import _download
 from google.resumable_media import exceptions
@@ -58,6 +59,68 @@ class TestDownloadBase(object):
         # Set it privately and then check the @property.
         download._finished = True
         assert download.finished
+
+
+class TestDownload(object):
+
+    def test__prepare_request_already_finished(self):
+        download = _download.Download(EXAMPLE_URL)
+        download._finished = True
+        with pytest.raises(ValueError):
+            download._prepare_request()
+
+    def test__prepare_request(self):
+        download1 = _download.Download(EXAMPLE_URL)
+        headers1 = download1._prepare_request()
+        assert headers1 == {}
+
+        download2 = _download.Download(EXAMPLE_URL, start=53)
+        headers2 = download2._prepare_request()
+        assert headers2 == {u'range': u'bytes=53-'}
+
+    def test__prepare_request_with_headers(self):
+        headers = {u'spoonge': u'borb'}
+        download = _download.Download(
+            EXAMPLE_URL, start=11, end=111, headers=headers)
+        new_headers = download._prepare_request()
+        assert new_headers is headers
+        assert headers == {u'range': u'bytes=11-111', u'spoonge': u'borb'}
+
+    def test__process_response(self):
+        download = _download.Download(EXAMPLE_URL)
+        # Make sure **not finished** before.
+        assert not download.finished
+        response = mock.Mock(
+            status_code=int(http_client.OK), spec=[u'status_code'])
+        ret_val = download._process_response(response)
+        assert ret_val is None
+        # Make sure **finished** after.
+        assert download.finished
+
+    def test__process_response_bad_status(self):
+        download = _download.Download(EXAMPLE_URL)
+        # Make sure **not finished** before.
+        assert not download.finished
+        response = mock.Mock(
+            status_code=int(http_client.NOT_FOUND), spec=[u'status_code'])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 5
+        assert error.args[1] == response.status_code
+        assert error.args[3] == http_client.OK
+        assert error.args[4] == http_client.PARTIAL_CONTENT
+        # Make sure **finished** even after a failure.
+        assert download.finished
+
+    def test_consume(self):
+        download = _download.Download(EXAMPLE_URL)
+        with pytest.raises(NotImplementedError) as exc_info:
+            download.consume(None)
+
+        exc_info.match(u'virtual')
 
 
 class Test__add_bytes_range(object):

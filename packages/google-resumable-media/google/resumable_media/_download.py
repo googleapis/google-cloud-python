@@ -17,6 +17,8 @@
 
 import re
 
+from six.moves import http_client
+
 from google.resumable_media import _helpers
 from google.resumable_media import exceptions
 
@@ -24,6 +26,7 @@ from google.resumable_media import exceptions
 _CONTENT_RANGE_RE = re.compile(
     r'bytes (?P<start_byte>\d+)-(?P<end_byte>\d+)/(?P<total_bytes>\d+)',
     flags=re.IGNORECASE)
+ACCEPTABLE_STATUS_CODES = (http_client.OK, http_client.PARTIAL_CONTENT)
 
 
 class DownloadBase(object):
@@ -55,6 +58,79 @@ class DownloadBase(object):
     def finished(self):
         """bool: Flag indicating if the download has completed."""
         return self._finished
+
+
+class Download(DownloadBase):
+    """Helper to manage downloading a resource from a Google API.
+
+    "Slices" of the resource can be retrieved by specifying a range
+    with ``start`` and / or ``end``. However, in typical usage, neither
+    ``start`` nor ``end`` is expected to be provided.
+
+    Args:
+        media_url (str): The URL containing the media to be downloaded.
+        start (int): The first byte in a range to be downloaded. If not
+            provided, but ``end`` is provided, will download from the
+            beginning to ``end`` of the media.
+        end (int): The last byte in a range to be downloaded. If not
+            provided, but ``start`` is provided, will download from the
+            ``start`` to the end of the media.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with the request, e.g. headers for encrypted data.
+    """
+
+    def _prepare_request(self):
+        """Prepare the contents of an HTTP request.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Returns:
+            Mapping[str, str]: The headers for the request.
+
+        Raises:
+            ValueError: If the current :class:`Download` has already
+                finished.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.finished:
+            raise ValueError(u'A download can only be used once.')
+
+        add_bytes_range(self.start, self.end, self._headers)
+        return self._headers
+
+    def _process_response(self, response):
+        """Process the response from an HTTP request.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            response (object): The HTTP response object.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        # Tombstone the current Download so it cannot be used again.
+        self._finished = True
+        _helpers.require_status_code(response, ACCEPTABLE_STATUS_CODES)
+
+    def consume(self, transport):
+        """Consume the resource to be downloaded.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+
+        Returns:
+            object: The HTTP response returned by ``transport``.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError(u'This implementation is virtual.')
 
 
 def add_bytes_range(start, end, headers):

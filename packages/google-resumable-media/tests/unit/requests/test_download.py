@@ -29,58 +29,6 @@ EXAMPLE_URL = (
 
 class TestDownload(object):
 
-    def test__prepare_request_already_finished(self):
-        download = download_mod.Download(EXAMPLE_URL)
-        download._finished = True
-        with pytest.raises(ValueError):
-            download._prepare_request()
-
-    def test__prepare_request(self):
-        download1 = download_mod.Download(EXAMPLE_URL)
-        headers1 = download1._prepare_request()
-        assert headers1 == {}
-
-        download2 = download_mod.Download(EXAMPLE_URL, start=53)
-        headers2 = download2._prepare_request()
-        assert headers2 == {u'range': u'bytes=53-'}
-
-    def test__prepare_request_with_headers(self):
-        headers = {u'spoonge': u'borb'}
-        download = download_mod.Download(
-            EXAMPLE_URL, start=11, end=111, headers=headers)
-        new_headers = download._prepare_request()
-        assert new_headers is headers
-        assert headers == {u'range': u'bytes=11-111', u'spoonge': u'borb'}
-
-    def test__process_response(self):
-        download = download_mod.Download(EXAMPLE_URL)
-        # Make sure **not finished** before.
-        assert not download.finished
-        response = mock.Mock(
-            status_code=int(http_client.OK), spec=[u'status_code'])
-        ret_val = download._process_response(response)
-        assert ret_val is None
-        # Make sure **finished** after.
-        assert download.finished
-
-    def test__process_response_bad_status(self):
-        download = download_mod.Download(EXAMPLE_URL)
-        # Make sure **not finished** before.
-        assert not download.finished
-        response = mock.Mock(
-            status_code=int(http_client.NOT_FOUND), spec=[u'status_code'])
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
-            download._process_response(response)
-
-        error = exc_info.value
-        assert error.response is response
-        assert len(error.args) == 5
-        assert error.args[1] == response.status_code
-        assert error.args[3] == http_client.OK
-        assert error.args[4] == http_client.PARTIAL_CONTENT
-        # Make sure **finished** even after a failure.
-        assert download.finished
-
     def _consume_helper(self, end=65536, headers=None):
         download = download_mod.Download(EXAMPLE_URL, end=end, headers=headers)
         transport = mock.Mock(spec=[u'request'])
