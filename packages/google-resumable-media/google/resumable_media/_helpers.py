@@ -15,7 +15,6 @@
 """Shared utilities used by both downloads and uploads."""
 
 
-import functools
 import random
 import time
 
@@ -213,25 +212,3 @@ def not_retryable_predicate(response):
         the "success" state).
     """
     return get_status_code(response) not in RETRYABLE
-
-
-def http_request(transport, method, url, data=None, headers=None):
-    """Make an HTTP request.
-
-    Args:
-        transport (object): An object which can make authenticated requests
-            via a ``request()`` method. This method mustaccept an HTTP method,
-            an upload URL, a ``data`` keyword argument and a
-            ``headers`` keyword argument.
-        method (str): The HTTP method for the request.
-        url (str): The URL for the request.
-        data (Optional[bytes]): The body of the request.
-        headers (Mapping[str, str]): The headers for the request (``transport``
-            may also add additional headers).
-
-    Returns:
-        object: The return value of ``transport.request()``.
-    """
-    func = functools.partial(
-        transport.request, method, url, data=data, headers=headers)
-    return wait_and_retry(func, not_retryable_predicate)

@@ -28,9 +28,10 @@ import sys
 import six
 from six.moves import http_client
 
-from google.resumable_media import _helpers
+import google.resumable_media._helpers as _base_helpers
 from google.resumable_media import _upload
 from google.resumable_media import exceptions
+from google.resumable_media.requests import _helpers
 
 
 _CONTENT_TYPE_HEADER = u'content-type'
@@ -320,7 +321,7 @@ class ResumableUpload(_upload.UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        self._resumable_url = _helpers.header_required(
+        self._resumable_url = _base_helpers.header_required(
             response, u'location')
 
     def initiate(self, transport, stream, metadata, content_type):
@@ -392,7 +393,7 @@ class ResumableUpload(_upload.UploadBase):
             start_byte, end_byte, self._total_bytes)
         headers = {
             _CONTENT_TYPE_HEADER: self._content_type,
-            _helpers.CONTENT_RANGE_HEADER: content_range,
+            _base_helpers.CONTENT_RANGE_HEADER: content_range,
         }
         return payload, headers
 
@@ -424,7 +425,7 @@ class ResumableUpload(_upload.UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        status_code = _helpers.require_status_code(
+        status_code = _base_helpers.require_status_code(
             response, (http_client.OK, PERMANENT_REDIRECT),
             callback=self._make_invalid)
         if status_code == http_client.OK:
@@ -432,8 +433,9 @@ class ResumableUpload(_upload.UploadBase):
             # Tombstone the current upload so it cannot be used again.
             self._finished = True
         else:
-            bytes_range = _helpers.header_required(
-                response, _helpers.RANGE_HEADER, callback=self._make_invalid)
+            bytes_range = _base_helpers.header_required(
+                response, _base_helpers.RANGE_HEADER,
+                callback=self._make_invalid)
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 self._make_invalid()
@@ -528,7 +530,7 @@ class ResumableUpload(_upload.UploadBase):
             raise ValueError(
                 u'Upload is not in invalid state, no need to recover.')
 
-        headers = {_helpers.CONTENT_RANGE_HEADER: u'bytes */*'}
+        headers = {_base_helpers.CONTENT_RANGE_HEADER: u'bytes */*'}
         return headers
 
     def _process_recover_response(self, response):
@@ -550,10 +552,10 @@ class ResumableUpload(_upload.UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        _helpers.require_status_code(response, (PERMANENT_REDIRECT,))
-        headers = _helpers.get_headers(response)
-        if _helpers.RANGE_HEADER in headers:
-            bytes_range = headers[_helpers.RANGE_HEADER]
+        _base_helpers.require_status_code(response, (PERMANENT_REDIRECT,))
+        headers = _base_helpers.get_headers(response)
+        if _base_helpers.RANGE_HEADER in headers:
+            bytes_range = headers[_base_helpers.RANGE_HEADER]
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 raise exceptions.InvalidResponse(

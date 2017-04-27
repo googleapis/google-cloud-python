@@ -202,29 +202,5 @@ class Test_not_retryable_predicate(object):
             assert _helpers.not_retryable_predicate(response)
 
 
-class Test_http_request(object):
-
-    @staticmethod
-    def _make_transport(*status_codes):
-        transport = mock.Mock(spec=[u'request'])
-        responses = [
-            _make_response(status_code) for status_code in status_codes]
-        transport.request.side_effect = responses
-        return transport, responses
-
-    def test_success_no_retry(self):
-        transport, responses = self._make_transport(http_client.OK)
-        method = u'POST'
-        url = u'http://test.invalid'
-        data = mock.sentinel.data
-        headers = {u'one': u'fish', u'blue': u'fish'}
-        ret_val = _helpers.http_request(
-            transport, method, url, data=data, headers=headers)
-
-        assert ret_val is responses[0]
-        transport.request.assert_called_once_with(
-            method, url, data=data, headers=headers)
-
-
 def _make_response(status_code):
     return mock.Mock(status_code=status_code, spec=[u'status_code'])

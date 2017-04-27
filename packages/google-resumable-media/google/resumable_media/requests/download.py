@@ -16,8 +16,9 @@
 
 
 from google.resumable_media import _download
-from google.resumable_media import _helpers
+import google.resumable_media._helpers as _base_helpers
 from google.resumable_media import exceptions
+from google.resumable_media.requests import _helpers
 
 
 class Download(_download.Download):
@@ -203,15 +204,15 @@ class ChunkedDownload(_download.DownloadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         # Verify the response before updating the current instance.
-        _helpers.require_status_code(
+        _base_helpers.require_status_code(
             response, _download.ACCEPTABLE_STATUS_CODES,
             callback=self._make_invalid)
-        content_length = _helpers.header_required(
+        content_length = _base_helpers.header_required(
             response, u'content-length', callback=self._make_invalid)
         num_bytes = int(content_length)
         _, end_byte, total_bytes = _download.get_range_info(
             response, callback=self._make_invalid)
-        response_body = _helpers.get_body(response)
+        response_body = _base_helpers.get_body(response)
         if len(response_body) != num_bytes:
             self._make_invalid()
             raise exceptions.InvalidResponse(
