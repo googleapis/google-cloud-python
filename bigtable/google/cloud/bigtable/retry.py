@@ -9,7 +9,9 @@ from google.cloud.bigtable._generated import (
 from google.gax import config, errors
 from grpc import RpcError
 
+
 _MILLIS_PER_SECOND = 1000
+
 
 def _has_timeout_settings(backoff_settings):
     return (backoff_settings.rpc_timeout_multiplier is not None and
@@ -17,13 +19,14 @@ def _has_timeout_settings(backoff_settings):
             backoff_settings.total_timeout_millis is not None and
             backoff_settings.initial_rpc_timeout_millis is not None)
 
+
 class ReadRowsIterator():
     """Creates an iterator equivalent to a_iter, but that retries on certain
     exceptions.
     """
 
     def __init__(self, client, name, start_key, end_key, filter_, limit,
-        retry_options, **kwargs):
+                 retry_options, **kwargs):
         self.client = client
         self.retry_options = retry_options
         self.name = name
@@ -34,13 +37,20 @@ class ReadRowsIterator():
         self.limit = limit
 
         self.delay_mult = retry_options.backoff_settings.retry_delay_multiplier
-        self.max_delay_millis = retry_options.backoff_settings.max_retry_delay_millis
-        self.has_timeout_settings = _has_timeout_settings(retry_options.backoff_settings)
+        self.max_delay_millis = \
+            retry_options.backoff_settings.max_retry_delay_millis
+        self.has_timeout_settings = \
+            _has_timeout_settings(retry_options.backoff_settings)
 
         if self.has_timeout_settings:
-            self.timeout_mult = retry_options.backoff_settings.rpc_timeout_multiplier
-            self.max_timeout = (retry_options.backoff_settings.max_rpc_timeout_millis / _MILLIS_PER_SECOND)
-            self.total_timeout = (retry_options.backoff_settings.total_timeout_millis / _MILLIS_PER_SECOND)
+            self.timeout_mult = \
+                retry_options.backoff_settings.rpc_timeout_multiplier
+            self.max_timeout = \
+                (retry_options.backoff_settings.max_rpc_timeout_millis /
+                 _MILLIS_PER_SECOND)
+            self.total_timeout = \
+                (retry_options.backoff_settings.total_timeout_millis /
+                 _MILLIS_PER_SECOND)
             self.set_stream()
 
     def set_start_key(self, start_key):
@@ -54,23 +64,24 @@ class ReadRowsIterator():
         """
         Resets the read stream by making an RPC on the 'ReadRows' endpoint.
         """
-        request_pb = _create_row_request(
-            self.name, start_key=self.start_key,
-            start_key_closed=self.start_key_closed, end_key=self.end_key,
-            filter_= self.filter_, limit=self.limit)
-        self.stream = self.client._data_stub.ReadRows(request_pb)
+        req_pb = _create_row_request(self.name, start_key=self.start_key,
+                                     start_key_closed=self.start_key_closed,
+                                     end_key=self.end_key,
+                                     filter_=self.filter_, limit=self.limit)
+        self.stream = self.client._data_stub.ReadRows(req_pb)
 
     def next(self, *args, **kwargs):
         """
-        Read and return the next row from the stream.  Retry on idempotent failure.
+        Read and return the next row from the stream.
+        Retry on idempotent failure.
         """
         delay = self.retry_options.backoff_settings.initial_retry_delay_millis
         exc = errors.RetryError('Retry total timeout exceeded before any'
                                 'response was received')
         if self.has_timeout_settings:
-            timeout = (
-                self.retry_options.backoff_settings.initial_rpc_timeout_millis /
-                _MILLIS_PER_SECOND)
+            timeout = (self.retry_options.backoff_settings
+                       .initial_rpc_timeout_millis /
+                       _MILLIS_PER_SECOND)
 
             now = time.time()
             deadline = now + self.total_timeout
@@ -86,8 +97,8 @@ class ReadRowsIterator():
             except RpcError as error:  # pylint: disable=broad-except
                 code = config.exc_to_code(error)
                 if code not in self.retry_options.retry_codes:
-                    six.reraise(errors.RetryError, 
-                        errors.RetryError(str(error)))
+                    six.reraise(errors.RetryError,
+                                errors.RetryError(str(error)))
 
                 # pylint: disable=redefined-variable-type
                 exc = errors.RetryError(
@@ -102,7 +113,8 @@ class ReadRowsIterator():
                 if self.has_timeout_settings:
                     now = time.time()
                     timeout = min(
-                        timeout * self.timeout_mult, self.max_timeout, deadline - now)
+                        timeout * self.timeout_mult, self.max_timeout,
+                        deadline - now)
                 self.set_stream()
 
         six.reraise(errors.RetryError, exc)
@@ -112,6 +124,7 @@ class ReadRowsIterator():
 
     def __iter__(self):
         return self
+
 
 def _create_row_request(table_name, row_key=None, start_key=None,
                         start_key_closed=True, end_key=None, filter_=None,

@@ -15,7 +15,6 @@
 """User friendly container for Google Cloud Bigtable Table."""
 
 from __future__ import absolute_import
-from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable._generated import (
@@ -32,27 +31,26 @@ from google.gax import RetryOptions, BackoffSettings
 from google.cloud.bigtable.retry import ReadRowsIterator, _create_row_request
 from grpc import StatusCode
 
-import six
-
 BACKOFF_SETTINGS = BackoffSettings(
-    initial_retry_delay_millis = 10,
-    retry_delay_multiplier = 1.3,
-    max_retry_delay_millis = 30000,
-    initial_rpc_timeout_millis = 25 * 60 * 1000,
-    rpc_timeout_multiplier = 1.0,
-    max_rpc_timeout_millis = 25 * 60 * 1000,
-    total_timeout_millis = 30 * 60 * 1000
+    initial_retry_delay_millis=10,
+    retry_delay_multiplier=1.3,
+    max_retry_delay_millis=30000,
+    initial_rpc_timeout_millis=25 * 60 * 1000,
+    rpc_timeout_multiplier=1.0,
+    max_rpc_timeout_millis=25 * 60 * 1000,
+    total_timeout_millis=30 * 60 * 1000
 )
- 
+
 RETRY_OPTIONS = RetryOptions(
-    retry_codes = [
+    retry_codes=[
         StatusCode.DEADLINE_EXCEEDED,
         StatusCode.ABORTED,
         StatusCode.INTERNAL,
         StatusCode.UNAVAILABLE
     ],
-    backoff_settings = BACKOFF_SETTINGS
+    backoff_settings=BACKOFF_SETTINGS
 )
+
 
 class Table(object):
     """Representation of a Google Cloud Bigtable Table.
@@ -295,7 +293,8 @@ class Table(object):
         """
         client = self._instance._client
         retrying_iterator = ReadRowsIterator(client, self.name, start_key,
-            end_key, filter_, limit, RETRY_OPTIONS)
+                                             end_key, filter_, limit,
+                                             RETRY_OPTIONS)
         return PartialRowsData(retrying_iterator)
 
     def sample_row_keys(self):
