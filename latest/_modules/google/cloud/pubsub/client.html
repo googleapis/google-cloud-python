@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.client &mdash; google-cloud 0.24.1 documentation</title>
+  <title>google.cloud.pubsub.client &mdash; google-cloud df30d1a documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud df30d1a documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -530,6 +530,32 @@
         <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Client.list_snapshots"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client.list_snapshots">[docs]</a>    <span class="k">def</span> <span class="nf">list_snapshots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List snapshots for the project associated with this API.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/list</span>
+
+<span class="sd">        :type project: str</span>
+<span class="sd">        :param project: project ID</span>
+
+<span class="sd">        :type page_size: int</span>
+<span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
+<span class="sd">                          defaults to a value set by the API.</span>
+
+<span class="sd">        :type page_token: str</span>
+<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
+<span class="sd">                           passed, the API will return the first page of</span>
+<span class="sd">                           topics.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`</span>
+<span class="sd">                  accessible to the current API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_api</span>
+        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">list_snapshots</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.topic"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client.topic">[docs]</a>    <span class="k">def</span> <span class="nf">topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a topic bound to the current client.</span>
 
@@ -585,7 +611,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.24.1',
+            VERSION:'df30d1a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

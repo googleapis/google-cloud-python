@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.iam &mdash; google-cloud 0.24.1 documentation</title>
+  <title>google.cloud.iam &mdash; google-cloud df30d1a documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud df30d1a documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -410,7 +410,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -430,7 +430,7 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="n">_ASSIGNMENT_DEPRECATED_MSG</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;owners&#39;</span><span class="p">,</span> <span class="n">OWNER_ROLE</span><span class="p">),</span>
             <span class="ne">DeprecationWarning</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">editors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -447,7 +447,7 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="n">_ASSIGNMENT_DEPRECATED_MSG</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;editors&#39;</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">),</span>
             <span class="ne">DeprecationWarning</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">EDITOR_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">EDITOR_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">viewers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -464,7 +464,7 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="n">_ASSIGNMENT_DEPRECATED_MSG</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;viewers&#39;</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">),</span>
             <span class="ne">DeprecationWarning</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">VIEWER_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">VIEWER_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Policy.user"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.iam.Policy.user">[docs]</a>    <span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
@@ -548,7 +548,7 @@
         <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bindings&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="n">role</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span>
             <span class="n">members</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">binding</span><span class="p">[</span><span class="s1">&#39;members&#39;</span><span class="p">])</span>
-            <span class="n">policy</span><span class="o">.</span><span class="n">_bindings</span><span class="p">[</span><span class="n">role</span><span class="p">]</span> <span class="o">=</span> <span class="n">members</span>
+            <span class="n">policy</span><span class="p">[</span><span class="n">role</span><span class="p">]</span> <span class="o">=</span> <span class="n">members</span>
         <span class="k">return</span> <span class="n">policy</span></div>
 
 <div class="viewcode-block" id="Policy.to_api_repr"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.iam.Policy.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -615,7 +615,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.24.1',
+            VERSION:'df30d1a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

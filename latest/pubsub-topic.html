@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Topics &mdash; google-cloud 0.24.1 documentation</title>
+  <title>Topics &mdash; google-cloud df30d1a documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud df30d1a documentation" href="index.html"/>
         <link rel="next" title="Subscriptions" href="pubsub-subscription.html"/>
         <link rel="prev" title="Pub/Sub Client" href="pubsub-client.html"/> 
 
@@ -366,7 +366,7 @@ the value will be an RFC 3339 timestamp.</li>
 </table>
 <dl class="method">
 <dt id="google.cloud.pubsub.topic.Topic.subscription">
-<code class="descname">subscription</code><span class="sig-paren">(</span><em>name</em>, <em>ack_deadline=None</em>, <em>push_endpoint=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.subscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.subscription" title="Permalink to this definition">#</a></dt>
+<code class="descname">subscription</code><span class="sig-paren">(</span><em>name</em>, <em>ack_deadline=None</em>, <em>push_endpoint=None</em>, <em>retain_acked_messages=None</em>, <em>message_retention_duration=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.subscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a subscription bound to the current topic.</p>
 <p>Example:  pull-mode subcription, default paramter values</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">sub_defaults</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_DEFAULTS</span><span class="p">)</span>
@@ -392,6 +392,12 @@ from the back-end must be acknowledged.</li>
 <li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URL to which messages will be pushed by the
 back-end. If not set, the application must pull
 messages.</li>
+<li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription&#8217;s backlog for a duration indicated
+by <cite>message_retention_duration</cite>.</li>
+<li><strong>message_retention_duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription&#8217;s backlog for a duration indicated
+by <cite>message_retention_duration</cite>. If unset, defaults to 7 days.</li>
 </ul>
 </td>
 </tr>
@@ -852,7 +858,7 @@ before automatically commiting. Defaults to 9 MB
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.24.1',
+            VERSION:'df30d1a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

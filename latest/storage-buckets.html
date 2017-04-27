@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 0.24.1 documentation</title>
+  <title>Buckets &mdash; google-cloud df30d1a documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud df30d1a documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -805,6 +805,29 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.get_iam_policy">
+<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.get_iam_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve the IAM policy for the bucket.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy">https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google-cloud-api.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the policy instance, based on the resource returned from
+the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> API request.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.get_logging">
 <code class="descname">get_logging</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.get_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.get_logging" title="Permalink to this definition">#</a></dt>
 <dd><p>Return info about access logging for this bucket.</p>
@@ -1109,6 +1132,35 @@ not set locally.</td>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.set_iam_policy">
+<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>policy</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.set_iam_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the IAM policy for the bucket.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy">https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>policy</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a>) &#8211; policy instance used to update bucket&#8217;s IAM policy.</li>
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google-cloud-api.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the policy instance, based on the resource returned from
+the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> API request.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.storage.bucket.Bucket.storage_class">
 <code class="descname">storage_class</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.storage_class" title="Permalink to this definition">#</a></dt>
@@ -1123,6 +1175,35 @@ not set locally.</td>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If set, one of &#8220;MULTI_REGIONAL&#8221;, &#8220;REGIONAL&#8221;,
 &#8220;NEARLINE&#8221;, &#8220;COLDLINE&#8221;, &#8220;STANDARD&#8221;, or
 &#8220;DURABLE_REDUCED_AVAILABILITY&#8221;, else <code class="docutils literal"><span class="pre">None</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.test_iam_permissions">
+<code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>permissions</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.test_iam_permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  test permissions</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets/testIamPermissions">https://cloud.google.com/storage/docs/json_api/v1/buckets/testIamPermissions</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>permissions</strong> (<em>list of string</em>) &#8211; the permissions to check</li>
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the permissions returned by the <code class="docutils literal"><span class="pre">testIamPermissions</span></code> API
+request.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1212,7 +1293,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.24.1',
+            VERSION:'df30d1a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

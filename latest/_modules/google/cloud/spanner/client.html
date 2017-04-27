@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.spanner.client &mdash; google-cloud 0.24.1 documentation</title>
+  <title>google.cloud.spanner.client &mdash; google-cloud df30d1a documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud df30d1a documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -493,6 +493,7 @@
         <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="n">InstanceAdminClient</span><span class="p">(</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
                 <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span>
                 <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
             <span class="p">)</span>
@@ -503,6 +504,7 @@
         <span class="sd">&quot;&quot;&quot;Helper for session-related API calls.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="o">=</span> <span class="n">DatabaseAdminClient</span><span class="p">(</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
                 <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span>
                 <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
             <span class="p">)</span>
@@ -681,7 +683,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.24.1',
+            VERSION:'df30d1a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

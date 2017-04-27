@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.subscription &mdash; google-cloud 0.24.1 documentation</title>
+  <title>google.cloud.pubsub.subscription &mdash; google-cloud df30d1a documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud df30d1a documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -353,7 +353,11 @@
 
 <span class="sd">&quot;&quot;&quot;Define API Subscriptions.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">datetime</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub.snapshot</span> <span class="k">import</span> <span class="n">Snapshot</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub._helpers</span> <span class="k">import</span> <span class="n">topic_name_from_path</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub.iam</span> <span class="k">import</span> <span class="n">Policy</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub.message</span> <span class="k">import</span> <span class="n">Message</span>
@@ -382,6 +386,19 @@
 <span class="sd">        (Optional) URL to which messages will be pushed by the back-end.  If</span>
 <span class="sd">        not set, the application must pull messages.</span>
 
+<span class="sd">    :type retain_acked_messages: bool</span>
+<span class="sd">    :param retain_acked_messages:</span>
+<span class="sd">        (Optional) Whether to retain acked messages. If set, acked messages</span>
+<span class="sd">        are retained in the subscription&#39;s backlog for a duration indicated</span>
+<span class="sd">        by `message_retention_duration`.</span>
+
+<span class="sd">    :type message_retention_duration: :class:`datetime.timedelta`</span>
+<span class="sd">    :param message_retention_duration:</span>
+<span class="sd">        (Optional) Whether to retain acked messages. If set, acked messages</span>
+<span class="sd">        are retained in the subscription&#39;s backlog for a duration indicated</span>
+<span class="sd">        by `message_retention_duration`. If unset, defaults to 7 days.</span>
+
+
 <span class="sd">    :type client: :class:`~google.cloud.pubsub.client.Client`</span>
 <span class="sd">    :param client:</span>
 <span class="sd">        (Optional) The client to use.  If not passed, falls back to the</span>
@@ -396,6 +413,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">retain_acked_messages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message_retention_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -410,6 +428,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">ack_deadline</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_endpoint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retain_acked_messages</span> <span class="o">=</span> <span class="n">retain_acked_messages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_retention_duration</span> <span class="o">=</span> <span class="n">message_retention_duration</span>
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -446,10 +466,21 @@
         <span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
         <span class="n">push_config</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span>
+        <span class="n">retain_acked_messages</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retainAckedMessages&#39;</span><span class="p">)</span>
+        <span class="n">resource_duration</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">message_retention_duration</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
+            <span class="n">seconds</span><span class="o">=</span><span class="n">resource_duration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seconds&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">microseconds</span><span class="o">=</span><span class="n">resource_duration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nanos&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="n">ack_deadline</span><span class="p">,</span>
-                       <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span></div>
+                       <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">,</span>
+                       <span class="n">retain_acked_messages</span><span class="o">=</span><span class="n">retain_acked_messages</span><span class="p">,</span>
+                       <span class="n">message_retention_duration</span><span class="o">=</span><span class="n">message_retention_duration</span><span class="p">,</span>
+                       <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="n">ack_deadline</span><span class="p">,</span>
+                   <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">,</span>
+                   <span class="n">retain_acked_messages</span><span class="o">=</span><span class="n">retain_acked_messages</span><span class="p">,</span>
+                   <span class="n">message_retention_duration</span><span class="o">=</span><span class="n">message_retention_duration</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -521,8 +552,10 @@
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_create</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span>
+            <span class="n">ack_deadline</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span><span class="p">,</span>
+            <span class="n">retain_acked_messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retain_acked_messages</span><span class="p">,</span>
+            <span class="n">message_retention_duration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">message_retention_duration</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Subscription.exists"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test existence of the subscription via a GET request</span>
@@ -718,6 +751,44 @@
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_modify_ack_deadline</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Subscription.snapshot"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a snapshot of this subscription.</span>
+
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param name: the name of the subscription</span>
+
+<span class="sd">        :rtype: :class:`Snapshot`</span>
+<span class="sd">        :returns: The snapshot created with the passed in arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Snapshot</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Subscription.seek_snapshot"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.seek_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">seek_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  seek a subscription to a given snapshot</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek</span>
+
+<span class="sd">        :type snapshot: :class:`Snapshot`</span>
+<span class="sd">        :param snapshot: The snapshot to seek to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">subscription_seek</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Subscription.seek_timestamp"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.seek_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">seek_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  seek a subscription to a given point in time</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek</span>
+
+<span class="sd">        :type time: :class:`datetime.datetime`</span>
+<span class="sd">        :param time: The time to seek to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">subscription_seek</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Subscription.get_iam_policy"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch the IAM policy for the subscription.</span>
 
@@ -890,7 +961,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.24.1',
+            VERSION:'df30d1a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

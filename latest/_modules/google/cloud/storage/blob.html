@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 0.24.1 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud df30d1a documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud df30d1a documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -369,23 +369,28 @@
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="k">import</span> <span class="n">quote</span>
 
+<span class="kn">import</span> <span class="nn">google.auth.transport.requests</span>
+<span class="kn">from</span> <span class="nn">google</span> <span class="k">import</span> <span class="n">resumable_media</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_bytes_to_unicode</span>
 <span class="kn">from</span> <span class="nn">google.cloud.credentials</span> <span class="k">import</span> <span class="n">generate_signed_url</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">Policy</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">ObjectACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.http_wrapper</span> <span class="k">import</span> <span class="n">Request</span>
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.http_wrapper</span> <span class="k">import</span> <span class="n">make_api_request</span>
-<span class="kn">from</span> <span class="nn">google.cloud.streaming.transfer</span> <span class="k">import</span> <span class="n">Download</span>
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.transfer</span> <span class="k">import</span> <span class="n">RESUMABLE_UPLOAD</span>
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.transfer</span> <span class="k">import</span> <span class="n">Upload</span>
 
 
 <span class="n">_API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s1">&#39;https://storage.googleapis.com&#39;</span>
+<span class="n">_DOWNLOAD_URL_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/download/storage/v1</span><span class="si">{path}</span><span class="s1">?alt=media&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
@@ -429,7 +434,7 @@
 
 <span class="sd">    .. note::</span>
 <span class="sd">       This list does not include &#39;DURABLE_REDUCED_AVAILABILITY&#39;, which</span>
-<span class="sd">       is only documented for buckets (and deprectated.</span>
+<span class="sd">       is only documented for buckets (and deprecated).</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">       The documentation does *not* mention &#39;STANDARD&#39;, but it is the value</span>
@@ -654,6 +659,24 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
+    <span class="k">def</span> <span class="nf">_get_download_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the download URL for the current blob.</span>
+
+<span class="sd">        If the ``media_link`` has been loaded, it will be used, otherwise</span>
+<span class="sd">        the URL will be constructed from the current blob&#39;s path (and possibly</span>
+<span class="sd">        generation) to avoid a round trip.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The download URL for the current blob.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">download_url</span> <span class="o">=</span> <span class="n">_DOWNLOAD_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">download_url</span> <span class="o">+=</span> <span class="sa">u</span><span class="s1">&#39;&amp;generation=</span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generation</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">download_url</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span>
+
 <div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a file-like object.</span>
 
@@ -686,28 +709,24 @@
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># not yet loaded</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
-
-        <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span>
-
-        <span class="c1"># Use apitools &#39;Download&#39; facility.</span>
-        <span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="o">.</span><span class="n">from_stream</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">download</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
-
+        <span class="c1"># Get the download URL.</span>
+        <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_download_url</span><span class="p">()</span>
+        <span class="c1"># Get any extra headers for the request.</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
+        <span class="c1"># Create a ``requests`` transport with the client&#39;s credentials.</span>
+        <span class="n">transport</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">AuthorizedSession</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
-
-        <span class="c1"># Use ``_base_connection`` rather ``_connection`` since the current</span>
-        <span class="c1"># connection may be a batch. A batch wraps a client&#39;s connection,</span>
-        <span class="c1"># but does not store the ``http`` object. The rest (API_BASE_URL and</span>
-        <span class="c1"># build_api_url) are also defined on the Batch class, but we just</span>
-        <span class="c1"># use the wrapped connection since it has all three (http,</span>
-        <span class="c1"># API_BASE_URL and build_api_url).</span>
-        <span class="n">download</span><span class="o">.</span><span class="n">initialize_download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_base_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span></div>
+        <span class="c1"># Download the content.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">download</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">Download</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+            <span class="n">file_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">download</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">ChunkedDownload</span><span class="p">(</span>
+                <span class="n">download_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">download</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+                <span class="n">download</span><span class="o">.</span><span class="n">consume_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
@@ -1133,6 +1152,83 @@
 
         <span class="k">return</span> <span class="n">resumable_upload_session_url</span></div>
 
+<div class="viewcode-block" id="Blob.get_iam_policy"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve the IAM policy for the object.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current object&#39;s bucket.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.iam.Policy`</span>
+<span class="sd">        :returns: the policy instance, based on the resource returned from</span>
+<span class="sd">                  the ``getIamPolicy`` API request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Blob.set_iam_policy"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the IAM policy for the bucket.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy</span>
+
+<span class="sd">        :type policy: :class:`google.cloud.iam.Policy`</span>
+<span class="sd">        :param policy: policy instance used to update bucket&#39;s IAM policy.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.iam.Policy`</span>
+<span class="sd">        :returns: the policy instance, based on the resource returned from</span>
+<span class="sd">                  the ``setIamPolicy`` API request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;resourceId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Blob.test_iam_permissions"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  test permissions</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions</span>
+
+<span class="sd">        :type permissions: list of string</span>
+<span class="sd">        :param permissions: the permissions to check</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
+
+<span class="sd">        :rtype: list of string</span>
+<span class="sd">        :returns: the permissions returned by the ``testIamPermissions`` API</span>
+<span class="sd">                  request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">}</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/iam/testPermissions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span></div>
+
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
 
@@ -1463,18 +1559,21 @@
         <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the object.</span>
+    <span class="n">storage_class</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;storageClass&#39;</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/storage-classes</span>
+<span class="sd">    This can only be set at blob / object **creation** time. If you&#39;d</span>
+<span class="sd">    like to change the storage class **after** the blob / object already</span>
+<span class="sd">    exists in a bucket, call :meth:`update_storage_class` (which uses</span>
+<span class="sd">    the &quot;storage.objects.rewrite&quot; method).</span>
 
-<span class="sd">        :rtype: str or ``NoneType``</span>
-<span class="sd">        :returns: If set, one of &quot;MULTI_REGIONAL&quot;, &quot;REGIONAL&quot;,</span>
-<span class="sd">                  &quot;NEARLINE&quot;, &quot;COLDLINE&quot;, &quot;STANDARD&quot;, or</span>
-<span class="sd">                  &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;storageClass&#39;</span><span class="p">)</span>
+<span class="sd">    See: https://cloud.google.com/storage/docs/storage-classes</span>
+
+<span class="sd">    :rtype: str or ``NoneType``</span>
+<span class="sd">    :returns: If set, one of &quot;MULTI_REGIONAL&quot;, &quot;REGIONAL&quot;,</span>
+<span class="sd">              &quot;NEARLINE&quot;, &quot;COLDLINE&quot;, &quot;STANDARD&quot;, or</span>
+<span class="sd">              &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_deleted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1609,7 +1708,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.24.1',
+            VERSION:'df30d1a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

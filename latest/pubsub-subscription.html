@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Subscriptions &mdash; google-cloud 0.24.1 documentation</title>
+  <title>Subscriptions &mdash; google-cloud df30d1a documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud df30d1a documentation" href="index.html"/>
         <link rel="next" title="Message" href="pubsub-message.html"/>
         <link rel="prev" title="Topics" href="pubsub-topic.html"/> 
 
@@ -342,7 +342,7 @@
 <p>Define API Subscriptions.</p>
 <dl class="class">
 <dt id="google.cloud.pubsub.subscription.Subscription">
-<em class="property">class </em><code class="descclassname">google.cloud.pubsub.subscription.</code><code class="descname">Subscription</code><span class="sig-paren">(</span><em>name</em>, <em>topic=None</em>, <em>ack_deadline=None</em>, <em>push_endpoint=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub.subscription.</code><code class="descname">Subscription</code><span class="sig-paren">(</span><em>name</em>, <em>topic=None</em>, <em>ack_deadline=None</em>, <em>push_endpoint=None</em>, <em>retain_acked_messages=None</em>, <em>message_retention_duration=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Subscriptions receive messages published to their topics.</p>
 <p>See:
@@ -359,6 +359,12 @@ the subscription&#8217;s topic has been deleted.</li>
 from the back-end must be acknowledged.</li>
 <li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) URL to which messages will be pushed by the back-end.  If
 not set, the application must pull messages.</li>
+<li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription&#8217;s backlog for a duration indicated
+by <cite>message_retention_duration</cite>.</li>
+<li><strong>message_retention_duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription&#8217;s backlog for a duration indicated
+by <cite>message_retention_duration</cite>. If unset, defaults to 7 days.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the topic.</li>
 </ul>
@@ -661,6 +667,56 @@ is an instance of
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.pubsub.subscription.Subscription.snapshot">
+<code class="descname">snapshot</code><span class="sig-paren">(</span><em>name</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a snapshot of this subscription.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the subscription</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The snapshot created with the passed in arguments.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.pubsub.subscription.Subscription.seek_snapshot">
+<code class="descname">seek_snapshot</code><span class="sig-paren">(</span><em>snapshot</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.seek_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.seek_snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  seek a subscription to a given snapshot</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>snapshot</strong> (<code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code>) &#8211; The snapshot to seek to.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.pubsub.subscription.Subscription.seek_timestamp">
+<code class="descname">seek_timestamp</code><span class="sig-paren">(</span><em>timestamp</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.seek_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.seek_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  seek a subscription to a given point in time</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The time to seek to.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.pubsub.subscription.Subscription.get_iam_policy">
 <code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.get_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Fetch the IAM policy for the subscription.</p>
@@ -836,7 +892,7 @@ successfully processed, e.g.:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.24.1',
+            VERSION:'df30d1a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
