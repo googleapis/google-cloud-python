@@ -95,7 +95,7 @@ class Blob(_PropertyMixin):
 
     .. note::
        This list does not include 'DURABLE_REDUCED_AVAILABILITY', which
-       is only documented for buckets (and deprectated.
+       is only documented for buckets (and deprecated).
 
     .. note::
        The documentation does *not* mention 'STANDARD', but it is the value
@@ -1220,18 +1220,21 @@ class Blob(_PropertyMixin):
         if size is not None:
             return int(size)
 
-    @property
-    def storage_class(self):
-        """Retrieve the storage class for the object.
+    storage_class = _scalar_property('storageClass')
+    """Retrieve the storage class for the object.
 
-        See: https://cloud.google.com/storage/docs/storage-classes
+    This can only be set at blob / object **creation** time. If you'd
+    like to change the storage class **after** the blob / object already
+    exists in a bucket, call :meth:`update_storage_class` (which uses
+    the "storage.objects.rewrite" method).
 
-        :rtype: str or ``NoneType``
-        :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
-                  "NEARLINE", "COLDLINE", "STANDARD", or
-                  "DURABLE_REDUCED_AVAILABILITY", else ``None``.
-        """
-        return self._properties.get('storageClass')
+    See: https://cloud.google.com/storage/docs/storage-classes
+
+    :rtype: str or ``NoneType``
+    :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
+              "NEARLINE", "COLDLINE", "STANDARD", or
+              "DURABLE_REDUCED_AVAILABILITY", else ``None``.
+    """
 
     @property
     def time_deleted(self):
