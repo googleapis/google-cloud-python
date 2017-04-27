@@ -27,7 +27,7 @@ from six.moves import http_client
 from google.resumable_media import _helpers
 
 
-class _UploadBase(object):
+class UploadBase(object):
     """Base class for upload helpers.
 
     Defines core shared behavior across different upload types.

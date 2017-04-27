@@ -25,23 +25,23 @@ SIMPLE_URL = (
     u'uploadType=media&name={OBJECT}')
 
 
-class Test_UploadBase(object):
+class TestUploadBase(object):
 
     def test_constructor_defaults(self):
-        upload = _upload._UploadBase(SIMPLE_URL)
+        upload = _upload.UploadBase(SIMPLE_URL)
         assert upload.upload_url == SIMPLE_URL
         assert upload._headers == {}
         assert not upload._finished
 
     def test_constructor_explicit(self):
         headers = {u'spin': u'doctors'}
-        upload = _upload._UploadBase(SIMPLE_URL, headers=headers)
+        upload = _upload.UploadBase(SIMPLE_URL, headers=headers)
         assert upload.upload_url == SIMPLE_URL
         assert upload._headers is headers
         assert not upload._finished
 
     def test_finished_property(self):
-        upload = _upload._UploadBase(SIMPLE_URL)
+        upload = _upload.UploadBase(SIMPLE_URL)
         # Default value of @property.
         assert not upload.finished
 
@@ -54,7 +54,7 @@ class Test_UploadBase(object):
         assert upload.finished
 
     def test__process_response_bad_status(self):
-        upload = _upload._UploadBase(SIMPLE_URL)
+        upload = _upload.UploadBase(SIMPLE_URL)
         # Make sure **not finished** before.
         assert not upload.finished
         status_code = http_client.SERVICE_UNAVAILABLE
@@ -71,7 +71,7 @@ class Test_UploadBase(object):
         assert upload.finished
 
     def test__process_response(self):
-        upload = _upload._UploadBase(SIMPLE_URL)
+        upload = _upload.UploadBase(SIMPLE_URL)
         # Make sure **not finished** before.
         assert not upload.finished
         response = _make_response()

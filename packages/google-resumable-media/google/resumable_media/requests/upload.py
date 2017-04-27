@@ -66,7 +66,7 @@ For more information, see `RFC 7238`_.
 """
 
 
-class SimpleUpload(_upload._UploadBase):
+class SimpleUpload(_upload.UploadBase):
     """Upload a resource to a Google API.
 
     A **simple** media upload sends no metadata and completes the upload
@@ -127,7 +127,7 @@ class SimpleUpload(_upload._UploadBase):
         return result
 
 
-class MultipartUpload(_upload._UploadBase):
+class MultipartUpload(_upload.UploadBase):
     """Upload a resource with metadata to a Google API.
 
     A **multipart** upload sends both metadata and the resource in a single
@@ -200,7 +200,7 @@ class MultipartUpload(_upload._UploadBase):
         return result
 
 
-class ResumableUpload(_upload._UploadBase):
+class ResumableUpload(_upload.UploadBase):
     """Initiate and fulfill a resumable upload to a Google API.
 
     A **resumable** upload sends an initial request with the resource metadata
