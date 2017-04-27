@@ -338,6 +338,36 @@ class Blob(_PropertyMixin):
         else:
             return self.media_link
 
+    def _do_download(self, transport, file_obj, download_url, headers):
+        """Perform a download without any error handling.
+
+        This is intended to be called by :meth:`download_to_file` so it can
+        be wrapped with error handling / remapping.
+
+        :type transport:
+            :class:`~google.auth.transport.requests.AuthorizedSession`
+        :param transport: The transport (with credentials) that will
+                          make authenticated requests.
+
+        :type file_obj: file
+        :param file_obj: A file handle to which to write the blob's data.
+
+        :type download_url: str
+        :param download_url: The URL where the media can be accessed.
+
+        :type headers: dict
+        :param headers: Optional headers to be sent with the request(s).
+        """
+        if self.chunk_size is None:
+            download = resumable_media.Download(download_url, headers=headers)
+            response = download.consume(transport)
+            file_obj.write(response.content)
+        else:
+            download = resumable_media.ChunkedDownload(
+                download_url, self.chunk_size, file_obj, headers=headers)
+            while not download.finished:
+                download.consume_next_chunk(transport)
+
     def download_to_file(self, file_obj, client=None):
         """Download the contents of this blob into a file-like object.
 
@@ -378,16 +408,13 @@ class Blob(_PropertyMixin):
         transport = google.auth.transport.requests.AuthorizedSession(
             client._credentials)
 
-        # Download the content.
-        if self.chunk_size is None:
-            download = resumable_media.Download(download_url, headers=headers)
-            response = download.consume(transport)
-            file_obj.write(response.content)
-        else:
-            download = resumable_media.ChunkedDownload(
-                download_url, self.chunk_size, file_obj, headers=headers)
-            while not download.finished:
-                download.consume_next_chunk(transport)
+        try:
+            self._do_download(transport, file_obj, download_url, headers)
+        except resumable_media.InvalidResponse as exc:
+            response = exc.response
+            faux_response = httplib2.Response({'status': response.status_code})
+            raise make_exception(faux_response, response.content,
+                                 error_info=download_url, use_json=False)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
