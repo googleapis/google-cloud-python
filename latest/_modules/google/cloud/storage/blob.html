@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud df30d1a documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud ec8aa13 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud df30d1a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ec8aa13 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -677,6 +677,36 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span>
 
+    <span class="k">def</span> <span class="nf">_do_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a download without any error handling.</span>
+
+<span class="sd">        This is intended to be called by :meth:`download_to_file` so it can</span>
+<span class="sd">        be wrapped with error handling / remapping.</span>
+
+<span class="sd">        :type transport:</span>
+<span class="sd">            :class:`~google.auth.transport.requests.AuthorizedSession`</span>
+<span class="sd">        :param transport: The transport (with credentials) that will</span>
+<span class="sd">                          make authenticated requests.</span>
+
+<span class="sd">        :type file_obj: file</span>
+<span class="sd">        :param file_obj: A file handle to which to write the blob&#39;s data.</span>
+
+<span class="sd">        :type download_url: str</span>
+<span class="sd">        :param download_url: The URL where the media can be accessed.</span>
+
+<span class="sd">        :type headers: dict</span>
+<span class="sd">        :param headers: Optional headers to be sent with the request(s).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">download</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">Download</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+            <span class="n">file_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">download</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">ChunkedDownload</span><span class="p">(</span>
+                <span class="n">download_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">download</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+                <span class="n">download</span><span class="o">.</span><span class="n">consume_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a file-like object.</span>
 
@@ -717,16 +747,13 @@
         <span class="n">transport</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">AuthorizedSession</span><span class="p">(</span>
             <span class="n">client</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
 
-        <span class="c1"># Download the content.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">download</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">Download</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
-            <span class="n">file_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">download</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">ChunkedDownload</span><span class="p">(</span>
-                <span class="n">download_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-            <span class="k">while</span> <span class="ow">not</span> <span class="n">download</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
-                <span class="n">download</span><span class="o">.</span><span class="n">consume_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_do_download</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">response</span>
+            <span class="n">faux_response</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Response</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">})</span>
+            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">faux_response</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+                                 <span class="n">error_info</span><span class="o">=</span><span class="n">download_url</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
@@ -1708,7 +1735,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'df30d1a',
+            VERSION:'ec8aa13',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
