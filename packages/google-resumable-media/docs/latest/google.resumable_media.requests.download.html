@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.resumable_media.download module &mdash; google-resumable-media 0.0.3 documentation</title>
+  <title>google.resumable_media.requests.download module &mdash; google-resumable-media 0.0.3 documentation</title>
   
 
   
@@ -36,8 +36,9 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="google-resumable-media 0.0.3 documentation" href="index.html"/>
-        <link rel="next" title="google.resumable_media.exceptions module" href="google.resumable_media.exceptions.html"/>
-        <link rel="prev" title="google.resumable_media" href="index.html"/> 
+        <link rel="up" title="google.resumable_media.requests package" href="google.resumable_media.requests.html"/>
+        <link rel="next" title="google.resumable_media.requests.upload module" href="google.resumable_media.requests.upload.html"/>
+        <link rel="prev" title="google.resumable_media.requests package" href="google.resumable_media.requests.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -91,9 +92,16 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">google.resumable_media.download module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google.resumable_media.exceptions.html">google.resumable_media.exceptions module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.upload.html">google.resumable_media.upload module</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="google.resumable_media.requests.html">google.resumable_media.requests package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="google.resumable_media.requests.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">google.resumable_media.requests.download module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="google.resumable_media.requests.upload.html">google.resumable_media.requests.upload module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.html#module-google.resumable_media.requests">Module contents</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -138,13 +146,15 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>google.resumable_media.download module</li>
+          <li><a href="google.resumable_media.requests.html">google.resumable_media.requests package</a> &raquo;</li>
+        
+      <li>google.resumable_media.requests.download module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/google.resumable_media.download.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/google.resumable_media.requests.download.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -157,13 +167,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-google.resumable_media.download">
-<span id="google-resumable-media-download-module"></span><h1>google.resumable_media.download module<a class="headerlink" href="#module-google.resumable_media.download" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-google.resumable_media.requests.download">
+<span id="google-resumable-media-requests-download-module"></span><h1>google.resumable_media.requests.download module<a class="headerlink" href="#module-google.resumable_media.requests.download" title="Permalink to this headline">¶</a></h1>
 <p>Support for downloading media from Google APIs.</p>
 <dl class="class">
-<dt id="google.resumable_media.download.ChunkedDownload">
-<em class="property">class </em><code class="descclassname">google.resumable_media.download.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>stream</em>, <em>start=0</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.download._DownloadBase</span></code></p>
+<dt id="google.resumable_media.requests.download.ChunkedDownload">
+<em class="property">class </em><code class="descclassname">google.resumable_media.requests.download.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>stream</em>, <em>start=0</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests.download._DownloadBase</span></code></p>
 <p>Download a resource in chunks from a Google API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -192,20 +202,20 @@ key headers.</li>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="google.resumable_media.download.ChunkedDownload.bytes_downloaded">
-<code class="descname">bytes_downloaded</code><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload.bytes_downloaded" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.requests.download.ChunkedDownload.bytes_downloaded">
+<code class="descname">bytes_downloaded</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.bytes_downloaded" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>int</em> &#8211; Number of bytes that have been downloaded.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.resumable_media.download.ChunkedDownload.chunk_size">
-<code class="descname">chunk_size</code><em class="property"> = None</em><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload.chunk_size" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.requests.download.ChunkedDownload.chunk_size">
+<code class="descname">chunk_size</code><em class="property"> = None</em><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.chunk_size" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>int</em> &#8211; The number of bytes to be retrieved in each request.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.resumable_media.download.ChunkedDownload.consume_next_chunk">
-<code class="descname">consume_next_chunk</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload.consume_next_chunk" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.requests.download.ChunkedDownload.consume_next_chunk">
+<code class="descname">consume_next_chunk</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.consume_next_chunk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Consume the next chunk of the resource to be downloaded.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -225,30 +235,30 @@ requests.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.resumable_media.download.ChunkedDownload.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload.finished" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.requests.download.ChunkedDownload.finished">
+<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.finished" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> &#8211; Flag indicating if the download has completed.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.resumable_media.download.ChunkedDownload.invalid">
-<code class="descname">invalid</code><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload.invalid" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.requests.download.ChunkedDownload.invalid">
+<code class="descname">invalid</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> &#8211; Indicates if the download is in an invalid state.</p>
-<p>This will occur if a call to <a class="reference internal" href="#google.resumable_media.download.ChunkedDownload.consume_next_chunk" title="google.resumable_media.download.ChunkedDownload.consume_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">consume_next_chunk()</span></code></a> fails.</p>
+<p>This will occur if a call to <a class="reference internal" href="#google.resumable_media.requests.download.ChunkedDownload.consume_next_chunk" title="google.resumable_media.requests.download.ChunkedDownload.consume_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">consume_next_chunk()</span></code></a> fails.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.resumable_media.download.ChunkedDownload.total_bytes">
-<code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.download.ChunkedDownload.total_bytes" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.requests.download.ChunkedDownload.total_bytes">
+<code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.total_bytes" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The total number of bytes to be downloaded.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="google.resumable_media.download.Download">
-<em class="property">class </em><code class="descclassname">google.resumable_media.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.download.Download" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.download._DownloadBase</span></code></p>
+<dt id="google.resumable_media.requests.download.Download">
+<em class="property">class </em><code class="descclassname">google.resumable_media.requests.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.Download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests.download._DownloadBase</span></code></p>
 <p>Helper to manage downloading a resource from a Google API.</p>
 <p>&#8220;Slices&#8221; of the resource can be retrieved by specifying a range
 with <code class="docutils literal"><span class="pre">start</span></code> and / or <code class="docutils literal"><span class="pre">end</span></code>. However, in typical usage, neither
@@ -273,8 +283,8 @@ be sent with the request, e.g. headers for encrypted data.</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.resumable_media.download.Download.consume">
-<code class="descname">consume</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.download.Download.consume" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.requests.download.Download.consume">
+<code class="descname">consume</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.Download.consume" title="Permalink to this definition">¶</a></dt>
 <dd><p>Consume the resource to be downloaded.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -287,7 +297,7 @@ requests.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)">object</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If the current <a class="reference internal" href="#google.resumable_media.download.Download" title="google.resumable_media.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> has already
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If the current <a class="reference internal" href="#google.resumable_media.requests.download.Download" title="google.resumable_media.requests.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> has already
 finished.</td>
 </tr>
 </tbody>
@@ -295,8 +305,8 @@ finished.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.resumable_media.download.Download.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.download.Download.finished" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.requests.download.Download.finished">
+<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.download.Download.finished" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> &#8211; Flag indicating if the download has completed.</p>
 </dd></dl>
 
@@ -314,10 +324,10 @@ finished.</td>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="google.resumable_media.exceptions.html" class="btn btn-neutral float-right" title="google.resumable_media.exceptions module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="google.resumable_media.requests.upload.html" class="btn btn-neutral float-right" title="google.resumable_media.requests.upload module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="google.resumable_media" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="google.resumable_media.requests.html" class="btn btn-neutral" title="google.resumable_media.requests package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

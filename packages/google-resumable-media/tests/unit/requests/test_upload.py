@@ -21,7 +21,7 @@ import pytest
 from six.moves import http_client
 
 from google.resumable_media import exceptions
-import google.resumable_media.upload as upload_mod
+import google.resumable_media.requests.upload as upload_mod
 
 
 SIMPLE_URL = (
@@ -148,7 +148,7 @@ class TestMultipartUpload(object):
         with pytest.raises(TypeError):
             upload._prepare_request(data, {}, BASIC_CONTENT)
 
-    @mock.patch(u'google.resumable_media.upload._get_boundary',
+    @mock.patch(u'google.resumable_media.requests.upload._get_boundary',
                 return_value=b'==3==')
     def _prepare_request_helper(self, mock_get_boundary, headers=None):
         upload = upload_mod.MultipartUpload(MULTIPART_URL, headers=headers)
@@ -190,7 +190,7 @@ class TestMultipartUpload(object):
         }
         assert expected_headers == headers
 
-    @mock.patch(u'google.resumable_media.upload._get_boundary',
+    @mock.patch(u'google.resumable_media.requests.upload._get_boundary',
                 return_value=b'==4==')
     def test_transmit(self, mock_get_boundary):
         data = b'Mock data here and there.'
@@ -765,7 +765,7 @@ def test__get_boundary(mock_rand):
 
 class Test__construct_multipart_request(object):
 
-    @mock.patch(u'google.resumable_media.upload._get_boundary',
+    @mock.patch(u'google.resumable_media.requests.upload._get_boundary',
                 return_value=b'==1==')
     def test_binary(self, mock_get_boundary):
         data = b'By nary day tuh'
@@ -788,7 +788,7 @@ class Test__construct_multipart_request(object):
         assert payload == expected_payload
         mock_get_boundary.assert_called_once_with()
 
-    @mock.patch(u'google.resumable_media.upload._get_boundary',
+    @mock.patch(u'google.resumable_media.requests.upload._get_boundary',
                 return_value=b'==2==')
     def test_unicode(self, mock_get_boundary):
         data_unicode = u'\N{snowman}'

@@ -21,11 +21,12 @@ import pytest
 from six.moves import http_client
 
 from google import resumable_media
+import google.resumable_media.requests as resumable_requests
 from tests.system import utils
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-DATA_DIR = os.path.join(CURR_DIR, u'..', u'data')
+DATA_DIR = os.path.join(CURR_DIR, u'..', u'..', u'data')
 IMG_FILES = (
     os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg')),
     os.path.realpath(os.path.join(DATA_DIR, u'image2.jpg')),
@@ -57,7 +58,7 @@ def add_files(authorized_transport):
         blob_name = os.path.basename(img_file)
         blob_names.append(blob_name)
         upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
-        upload = resumable_media.SimpleUpload(upload_url)
+        upload = resumable_requests.SimpleUpload(upload_url)
         response = upload.transmit(
             authorized_transport, actual_contents, u'image/jpeg')
         assert response.status_code == http_client.OK
@@ -71,7 +72,7 @@ def add_files(authorized_transport):
 
 def check_tombstoned(download, transport):
     assert download.finished
-    if isinstance(download, resumable_media.Download):
+    if isinstance(download, resumable_requests.Download):
         with pytest.raises(ValueError) as exc_info:
             download.consume(transport)
         assert exc_info.match(u'A download can only be used once.')
@@ -90,7 +91,7 @@ def test_download_full(add_files, authorized_transport):
 
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-        download = resumable_media.Download(media_url)
+        download = resumable_requests.Download(media_url)
         # Consume the resource.
         response = download.consume(authorized_transport)
         assert response.status_code == http_client.OK
@@ -105,7 +106,7 @@ def secret_file(authorized_transport):
 
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     headers = utils.get_encryption_headers()
-    upload = resumable_media.SimpleUpload(upload_url, headers=headers)
+    upload = resumable_requests.SimpleUpload(upload_url, headers=headers)
     response = upload.transmit(authorized_transport, data, PLAIN_TEXT)
     assert response.status_code == http_client.OK
 
@@ -129,14 +130,14 @@ def test_extra_headers(authorized_transport, secret_file):
     blob_name, data, headers = secret_file
     # Create the actual download object.
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-    download = resumable_media.Download(media_url, headers=headers)
+    download = resumable_requests.Download(media_url, headers=headers)
     # Consume the resource.
     response = download.consume(authorized_transport)
     assert response.status_code == http_client.OK
     assert response.content == data
     check_tombstoned(download, authorized_transport)
     # Attempt to consume the resource **without** the headers.
-    download_wo = resumable_media.Download(media_url)
+    download_wo = resumable_requests.Download(media_url)
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download_wo.consume(authorized_transport)
 
@@ -147,7 +148,7 @@ def test_extra_headers(authorized_transport, secret_file):
 def test_non_existent_file(authorized_transport):
     blob_name = u'does-not-exist.txt'
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-    download = resumable_media.Download(media_url)
+    download = resumable_requests.Download(media_url)
 
     # Try to consume the resource and fail.
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
@@ -161,7 +162,7 @@ def test_non_existent_file(authorized_transport):
 def simple_file(authorized_transport):
     blob_name = u'basic-file.txt'
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
-    upload = resumable_media.SimpleUpload(upload_url)
+    upload = resumable_requests.SimpleUpload(upload_url)
     data = b'Simple contents'
     response = upload.transmit(authorized_transport, data, PLAIN_TEXT)
     assert response.status_code == http_client.OK
@@ -179,7 +180,7 @@ def test_bad_range(simple_file, authorized_transport):
     assert len(data) < start < end
     # Create the actual download object.
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-    download = resumable_media.Download(media_url, start=start, end=end)
+    download = resumable_requests.Download(media_url, start=start, end=end)
 
     # Try to consume the resource and fail.
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
@@ -207,10 +208,10 @@ def test_download_partial(add_files, authorized_transport):
         # Create the multiple download "slices".
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
         downloads = (
-            resumable_media.Download(media_url, start=1024, end=16385),
-            resumable_media.Download(media_url, end=8191),
-            resumable_media.Download(media_url, start=-256),
-            resumable_media.Download(media_url, start=262144),
+            resumable_requests.Download(media_url, start=1024, end=16385),
+            resumable_requests.Download(media_url, end=8191),
+            resumable_requests.Download(media_url, start=-256),
+            resumable_requests.Download(media_url, start=262144),
         )
         for download, slice_ in zip(downloads, slices):
             response = download.consume(authorized_transport)
@@ -267,7 +268,7 @@ def test_chunked_download(add_files, authorized_transport):
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
         stream = io.BytesIO()
-        download = resumable_media.ChunkedDownload(
+        download = resumable_requests.ChunkedDownload(
             media_url, chunk_size, stream)
         # Consume the resource in chunks.
         num_responses, last_response = consume_chunks(
@@ -312,7 +313,7 @@ def test_chunked_download_partial(add_files, authorized_transport):
                 7, end_byte - slice_.start + 1)
             # Create the actual download object.
             stream = io.BytesIO()
-            download = resumable_media.ChunkedDownload(
+            download = resumable_requests.ChunkedDownload(
                 media_url, chunk_size, stream, start=slice_.start, end=end)
             # Consume the resource in chunks.
             num_responses, last_response = consume_chunks(
@@ -335,7 +336,7 @@ def test_chunked_with_extra_headers(authorized_transport, secret_file):
     # Create the actual download object.
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
     stream = io.BytesIO()
-    download = resumable_media.ChunkedDownload(
+    download = resumable_requests.ChunkedDownload(
         media_url, chunk_size, stream, headers=headers)
     # Consume the resource in chunks.
     num_responses, last_response = consume_chunks(
@@ -349,7 +350,7 @@ def test_chunked_with_extra_headers(authorized_transport, secret_file):
     check_tombstoned(download, authorized_transport)
     # Attempt to consume the resource **without** the headers.
     stream_wo = io.BytesIO()
-    download_wo = resumable_media.ChunkedDownload(
+    download_wo = resumable_requests.ChunkedDownload(
         media_url, chunk_size, stream_wo)
     with pytest.raises(resumable_media.InvalidResponse) as exc_info:
         download_wo.consume_next_chunk(authorized_transport)

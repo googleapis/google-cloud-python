@@ -6,6 +6,5 @@
 .. toctree::
    :hidden:
 
-   google.resumable_media.download
    google.resumable_media.exceptions
-   google.resumable_media.upload
+   google.resumable_media.requests

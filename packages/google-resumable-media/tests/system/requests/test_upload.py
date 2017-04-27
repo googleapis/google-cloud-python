@@ -24,12 +24,13 @@ from six.moves import http_client
 from six.moves import urllib_parse
 
 from google import resumable_media
-import google.resumable_media.upload as upload_mod
+import google.resumable_media.requests as resumable_requests
+import google.resumable_media.requests.upload as upload_mod
 from tests.system import utils
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-DATA_DIR = os.path.join(CURR_DIR, u'..', u'data')
+DATA_DIR = os.path.join(CURR_DIR, u'..', u'..', u'data')
 ICO_FILE = os.path.realpath(os.path.join(DATA_DIR, u'favicon.ico'))
 IMAGE_FILE = os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg'))
 ICO_CONTENT_TYPE = u'image/x-icon'
@@ -91,7 +92,7 @@ def check_response(response, blob_name, actual_contents=None,
 
 def check_content(blob_name, expected_content, transport, headers=None):
     media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-    download = resumable_media.Download(media_url, headers=headers)
+    download = resumable_requests.Download(media_url, headers=headers)
     response = download.consume(transport)
     assert response.status_code == http_client.OK
     assert response.content == expected_content
@@ -100,7 +101,7 @@ def check_content(blob_name, expected_content, transport, headers=None):
 def check_tombstoned(upload, transport, *args):
     assert upload.finished
     basic_types = (
-        resumable_media.SimpleUpload, resumable_media.MultipartUpload)
+        resumable_requests.SimpleUpload, resumable_requests.MultipartUpload)
     if isinstance(upload, basic_types):
         with pytest.raises(ValueError):
             upload.transmit(transport, *args)
@@ -127,7 +128,7 @@ def test_simple_upload(authorized_transport, cleanup):
 
     # Create the actual upload object.
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
-    upload = resumable_media.SimpleUpload(upload_url)
+    upload = resumable_requests.SimpleUpload(upload_url)
     # Transmit the resource.
     response = upload.transmit(
         authorized_transport, actual_contents, ICO_CONTENT_TYPE)
@@ -148,7 +149,7 @@ def test_simple_upload_with_headers(authorized_transport, cleanup):
     # Create the actual upload object.
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     headers = utils.get_encryption_headers()
-    upload = resumable_media.SimpleUpload(upload_url, headers=headers)
+    upload = resumable_requests.SimpleUpload(upload_url, headers=headers)
     # Transmit the resource.
     data = b'Binary contents\x00\x01\x02.'
     response = upload.transmit(authorized_transport, data, BYTES_CONTENT_TYPE)
@@ -174,7 +175,7 @@ def test_multipart_upload(authorized_transport, cleanup):
 
     # Create the actual upload object.
     upload_url = utils.MULTIPART_UPLOAD
-    upload = resumable_media.MultipartUpload(upload_url)
+    upload = resumable_requests.MultipartUpload(upload_url)
     # Transmit the resource.
     metadata = {
         u'name': blob_name,
@@ -202,7 +203,7 @@ def test_multipart_upload_with_headers(authorized_transport, cleanup):
     # Create the actual upload object.
     upload_url = utils.MULTIPART_UPLOAD
     headers = utils.get_encryption_headers()
-    upload = resumable_media.MultipartUpload(upload_url, headers=headers)
+    upload = resumable_requests.MultipartUpload(upload_url, headers=headers)
     # Transmit the resource.
     metadata = {u'name': blob_name}
     data = b'Other binary contents\x03\x04\x05.'
@@ -282,7 +283,7 @@ def _resumable_upload_helper(authorized_transport, stream, cleanup,
     check_does_not_exist(authorized_transport, blob_name)
     # Create the actual upload object.
     chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
-    upload = resumable_media.ResumableUpload(
+    upload = resumable_requests.ResumableUpload(
         utils.RESUMABLE_UPLOAD, chunk_size, headers=headers)
     # Initiate the upload.
     metadata = {
@@ -328,7 +329,7 @@ def check_bad_chunk(upload, transport):
 def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
     blob_name = os.path.basename(stream.name)
     # Create the actual upload object.
-    upload = resumable_media.ResumableUpload(
+    upload = resumable_requests.ResumableUpload(
         utils.RESUMABLE_UPLOAD, upload_mod.UPLOAD_CHUNK_SIZE)
     # Modify the ``upload`` **after** construction so we can
     # use a bad chunk size.
@@ -374,7 +375,7 @@ def _resumable_upload_recover_helper(authorized_transport, cleanup,
     cleanup(blob_name, authorized_transport)
     check_does_not_exist(authorized_transport, blob_name)
     # Create the actual upload object.
-    upload = resumable_media.ResumableUpload(
+    upload = resumable_requests.ResumableUpload(
         utils.RESUMABLE_UPLOAD, chunk_size, headers=headers)
     # Initiate the upload.
     metadata = {u'name': blob_name}

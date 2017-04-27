@@ -31,6 +31,14 @@ except ImportError:
 
 
 _BASE_PACKAGE = 'google'
+_EXPECTED_SUBMODULE_LINES = (
+    '',
+    'Submodules',
+    '----------',
+    '',
+    '.. toctree::',
+    '',
+)
 _EXPECTED_AUTOMODULE_LINES = (
     '',
     '.. automodule:: google.resumable_media',
@@ -101,19 +109,31 @@ def main():
     rewritten_content.append(title)
     rewritten_content.append('=' * len(title))
 
-    # Find the sections **and** assert there are only two '--...--' line.
-    submod_index, mod_index = [i for i, line in enumerate(lines)
-                               if set(line) == set('-')]
-    if submod_index != 4:
-        raise ValueError('Unexpected submodules line', submod_index)
-    if lines[2:6] != ['', 'Submodules', lines[4], '']:
-        raise ValueError('Unexpected submodules header', lines[2:6])
-    if lines[mod_index - 1] != 'Module contents':
-        raise ValueError('Unexpected module header', lines[mod_index - 1])
+    # Assert there are only three '--...--' lines.
+    subpkg_index, submod_index, mod_index = [
+        i for i, line in enumerate(lines) if set(line) == set('-')]
+
+    # Handle subpackage section.
+    if subpkg_index != 4:
+        raise ValueError('Unexpected subpackages line', subpkg_index)
+    if lines[2:8] != ['', 'Subpackages', lines[4], '', '.. toctree::', '']:
+        raise ValueError('Unexpected subpackages header', lines[2:8])
+    subpkg_lines = [line.strip() for line in lines[8:submod_index - 2]]
+
+    # Handle submodule section.
+    submod_begin = tuple(lines[submod_index - 2:submod_index + 4])
+    if submod_begin != _EXPECTED_SUBMODULE_LINES:
+        raise ValueError('Unexpected submodules content', submod_begin)
+    submod_lines = [
+        line.strip() for line in lines[submod_index + 4:mod_index - 2]]
+
+    # Handle module/automodule section.
+    if lines[mod_index - 2:mod_index] != ['', 'Module contents']:
+        raise ValueError(
+            'Unexpected module header', lines[mod_index - 2:mod_index])
     if tuple(lines[mod_index + 1:]) != _EXPECTED_AUTOMODULE_LINES:
         raise ValueError('Unexpected automodule content',
                          lines[mod_index + 1:])
-
     automodule_lines = [
         '',
         '.. automodule:: google.resumable_media',
@@ -128,11 +148,13 @@ def main():
     rewritten_content.extend(automodule_lines)
 
     # Make the TOC tree hidden.
-    toctree_lines = lines[6:mod_index - 1]
-    if toctree_lines[:2] != ['.. toctree::', '']:
-        raise ValueError('Unexpected toctree start', toctree_lines[:2])
-    toctree_lines.insert(1, '   :hidden:')
+    toctree_elts = sorted(submod_lines + subpkg_lines)
+    toctree_elts = ['   ' + elt for elt in toctree_elts]
+    toctree_lines = ['.. toctree::', '   :hidden:', ''] + toctree_elts
     rewritten_content.extend(toctree_lines)
+
+    # Add an empty string for a trailing newline.
+    rewritten_content.append('')
 
     # Write the new content to a file.
     with open(INDEX_FILE, 'w') as file_obj:

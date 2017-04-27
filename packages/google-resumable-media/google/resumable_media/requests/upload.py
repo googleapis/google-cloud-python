@@ -502,7 +502,7 @@ class ResumableUpload(_UploadBase):
            from six.moves import http_client
 
            from google import resumable_media
-           import google.resumable_media.upload as upload_mod
+           import google.resumable_media.requests.upload as upload_mod
 
            transport = mock.Mock(spec=[u'request'])
            fake_response = requests.Response()

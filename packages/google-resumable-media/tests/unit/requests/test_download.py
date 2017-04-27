@@ -18,7 +18,7 @@ import mock
 import pytest
 from six.moves import http_client
 
-import google.resumable_media.download as download_mod
+import google.resumable_media.requests.download as download_mod
 from google.resumable_media import exceptions
 
 
