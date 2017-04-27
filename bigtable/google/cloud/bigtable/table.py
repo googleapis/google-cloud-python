@@ -29,6 +29,10 @@ from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 
 
+class RowBelongingError(Exception):
+    """Row from another table."""
+
+
 class Table(object):
     """Representation of a Google Cloud Bigtable Table.
 
@@ -276,6 +280,25 @@ class Table(object):
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         return PartialRowsData(response_iterator)
 
+    def mutate_rows(self, rows):
+
+        _check_rows(self.name, rows)
+        mutate_rows_request = _mutate_rows_request(self.name, rows)
+        print(mutate_rows_request)
+
+        unsuccessfully_mutated_rows = []
+        client = self._instance._client
+        responses = client._data_stub.MutateRows(mutate_rows_request)
+        for response in responses:
+            for entry in response.entries:
+                if not entry.status.code:
+                    rows[entry.index].clear()
+                else:
+                    unsuccessfully_mutated_rows.append(
+                        (entry, rows[entry.index]))
+
+        return unsuccessfully_mutated_rows
+
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
 
@@ -373,3 +396,27 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         message.rows.row_ranges.add(**range_kwargs)
 
     return message
+
+
+def _mutate_rows_request(table_name, rows):
+    request_pb = data_messages_v2_pb2.MutateRowsRequest(table_name=table_name)
+
+    for row in rows:
+        entry = request_pb.entries.add()
+        entry.row_key = row.row_key
+        for mutation in row._get_mutations(None):
+            entry.mutations.add().CopyFrom(mutation)
+
+    return request_pb
+
+
+def _check_rows(table_name, rows):
+    """Checks that all rows belong to the table."""
+    for row in rows:
+        if not isinstance(row, DirectRow):
+            raise TypeError("Bulk processing can not be applied for conditional"
+                            "or append mutations.")
+        if row.table.name != table_name:
+            raise RowBelongingError(
+                "Row %s is a part of %s table. Current table: %s" %
+                (row.row_key, row.table.name, table_name))
