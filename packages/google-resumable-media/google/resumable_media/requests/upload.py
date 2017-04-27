@@ -29,6 +29,7 @@ import six
 from six.moves import http_client
 
 from google.resumable_media import _helpers
+from google.resumable_media import _upload
 from google.resumable_media import exceptions
 
 
@@ -65,53 +66,7 @@ For more information, see `RFC 7238`_.
 """
 
 
-class _UploadBase(object):
-    """Base class for upload helpers.
-
-    Defines core shared behavior across different upload types.
-
-    Args:
-        upload_url (str): The URL where the content will be uploaded.
-        headers (Optional[Mapping[str, str]]): Extra headers that should
-            be sent with the request, e.g. headers for encrypted data.
-    """
-
-    def __init__(self, upload_url, headers=None):
-        self.upload_url = upload_url
-        """str: The URL where the content will be uploaded."""
-        if headers is None:
-            headers = {}
-        self._headers = headers
-        self._finished = False
-
-    @property
-    def finished(self):
-        """bool: Flag indicating if the upload has completed."""
-        return self._finished
-
-    def _process_response(self, response):
-        """Process the response from an HTTP request.
-
-        This is everything that must be done after a request that doesn't
-        require network I/O (or other I/O). This is based on the `sans-I/O`_
-        philosophy.
-
-        Args:
-            response (object): The HTTP response object.
-
-        Raises:
-            ~google.resumable_media.exceptions.InvalidResponse: If the status
-                code is not 200.
-
-        .. _sans-I/O: https://sans-io.readthedocs.io/
-        """
-        # Tombstone the current upload so it cannot be used again (in either
-        # failure or success).
-        self._finished = True
-        _helpers.require_status_code(response, (http_client.OK,))
-
-
-class SimpleUpload(_UploadBase):
+class SimpleUpload(_upload._UploadBase):
     """Upload a resource to a Google API.
 
     A **simple** media upload sends no metadata and completes the upload
@@ -172,7 +127,7 @@ class SimpleUpload(_UploadBase):
         return result
 
 
-class MultipartUpload(_UploadBase):
+class MultipartUpload(_upload._UploadBase):
     """Upload a resource with metadata to a Google API.
 
     A **multipart** upload sends both metadata and the resource in a single
@@ -245,7 +200,7 @@ class MultipartUpload(_UploadBase):
         return result
 
 
-class ResumableUpload(_UploadBase):
+class ResumableUpload(_upload._UploadBase):
     """Initiate and fulfill a resumable upload to a Google API.
 
     A **resumable** upload sends an initial request with the resource metadata

@@ -39,62 +39,6 @@ JSON_TYPE = u'application/json; charset=UTF-8'
 JSON_TYPE_LINE = b'content-type: application/json; charset=UTF-8\r\n'
 
 
-class Test_UploadBase(object):
-
-    def test_constructor_defaults(self):
-        upload = upload_mod._UploadBase(SIMPLE_URL)
-        assert upload.upload_url == SIMPLE_URL
-        assert upload._headers == {}
-        assert not upload._finished
-
-    def test_constructor_explicit(self):
-        headers = {u'spin': u'doctors'}
-        upload = upload_mod._UploadBase(SIMPLE_URL, headers=headers)
-        assert upload.upload_url == SIMPLE_URL
-        assert upload._headers is headers
-        assert not upload._finished
-
-    def test_finished_property(self):
-        upload = upload_mod._UploadBase(SIMPLE_URL)
-        # Default value of @property.
-        assert not upload.finished
-
-        # Make sure we cannot set it on public @property.
-        with pytest.raises(AttributeError):
-            upload.finished = False
-
-        # Set it privately and then check the @property.
-        upload._finished = True
-        assert upload.finished
-
-    def test__process_response_bad_status(self):
-        upload = upload_mod._UploadBase(SIMPLE_URL)
-        # Make sure **not finished** before.
-        assert not upload.finished
-        status_code = http_client.SERVICE_UNAVAILABLE
-        response = _make_response(status_code=status_code)
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
-            upload._process_response(response)
-
-        error = exc_info.value
-        assert error.response is response
-        assert len(error.args) == 4
-        assert error.args[1] == status_code
-        assert error.args[3] == http_client.OK
-        # Make sure **finished** after (even in failure).
-        assert upload.finished
-
-    def test__process_response(self):
-        upload = upload_mod._UploadBase(SIMPLE_URL)
-        # Make sure **not finished** before.
-        assert not upload.finished
-        response = _make_response()
-        ret_val = upload._process_response(response)
-        assert ret_val is None
-        # Make sure **finished** after.
-        assert upload.finished
-
-
 class TestSimpleUpload(object):
 
     def test__prepare_request_already_finished(self):

@@ -19,6 +19,7 @@ import re
 
 from six.moves import http_client
 
+from google.resumable_media import _download
 from google.resumable_media import _helpers
 from google.resumable_media import exceptions
 
@@ -29,38 +30,7 @@ _CONTENT_RANGE_RE = re.compile(
 _ACCEPTABLE_STATUS_CODES = (http_client.OK, http_client.PARTIAL_CONTENT)
 
 
-class _DownloadBase(object):
-    """Base class for download helpers.
-
-    Defines core shared behavior across different download types.
-
-    Args:
-        media_url (str): The URL containing the media to be downloaded.
-        start (int): The first byte in a range to be downloaded.
-        end (int): The last byte in a range to be downloaded.
-        headers (Optional[Mapping[str, str]]): Extra headers that should
-            be sent with the request, e.g. headers for encrypted data.
-    """
-
-    def __init__(self, media_url, start=None, end=None, headers=None):
-        self.media_url = media_url
-        """str: The URL containing the media to be downloaded."""
-        self.start = start
-        """Optional[int]: The first byte in a range to be downloaded."""
-        self.end = end
-        """Optional[int]: The last byte in a range to be downloaded."""
-        if headers is None:
-            headers = {}
-        self._headers = headers
-        self._finished = False
-
-    @property
-    def finished(self):
-        """bool: Flag indicating if the download has completed."""
-        return self._finished
-
-
-class Download(_DownloadBase):
+class Download(_download._DownloadBase):
     """Helper to manage downloading a resource from a Google API.
 
     "Slices" of the resource can be retrieved by specifying a range
@@ -138,7 +108,7 @@ class Download(_DownloadBase):
         return result
 
 
-class ChunkedDownload(_DownloadBase):
+class ChunkedDownload(_download._DownloadBase):
     """Download a resource in chunks from a Google API.
 
     Args:

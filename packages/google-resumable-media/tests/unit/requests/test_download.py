@@ -60,42 +60,6 @@ class Test__add_bytes_range(object):
         assert headers == {u'range': u'bytes=-123454321'}
 
 
-class Test_DownloadBase(object):
-
-    def test_constructor_defaults(self):
-        download = download_mod._DownloadBase(EXAMPLE_URL)
-        assert download.media_url == EXAMPLE_URL
-        assert download.start is None
-        assert download.end is None
-        assert download._headers == {}
-        assert not download._finished
-
-    def test_constructor_explicit(self):
-        start = 11
-        end = 10001
-        headers = {u'foof': u'barf'}
-        download = download_mod._DownloadBase(
-            EXAMPLE_URL, start=start, end=end, headers=headers)
-        assert download.media_url == EXAMPLE_URL
-        assert download.start == start
-        assert download.end == end
-        assert download._headers is headers
-        assert not download._finished
-
-    def test_finished_property(self):
-        download = download_mod._DownloadBase(EXAMPLE_URL)
-        # Default value of @property.
-        assert not download.finished
-
-        # Make sure we cannot set it on public @property.
-        with pytest.raises(AttributeError):
-            download.finished = False
-
-        # Set it privately and then check the @property.
-        download._finished = True
-        assert download.finished
-
-
 class TestDownload(object):
 
     def test__prepare_request_already_finished(self):
