@@ -55,19 +55,6 @@ def get_body(response):
     return response.content
 
 
-def not_retryable_predicate(response):
-    """Determines if a ``response`` is retryable.
-
-    Args:
-        object: The return value of ``transport.request()``.
-
-    Returns:
-        bool: If the ``response`` is **not** retryable (which is
-        the "success" state).
-    """
-    return RequestsMixin._get_status_code(response) not in _helpers.RETRYABLE
-
-
 def http_request(transport, method, url, data=None, headers=None):
     """Make an HTTP request.
 
@@ -87,4 +74,4 @@ def http_request(transport, method, url, data=None, headers=None):
     """
     func = functools.partial(
         transport.request, method, url, data=data, headers=headers)
-    return _helpers.wait_and_retry(func, not_retryable_predicate)
+    return _helpers.wait_and_retry(func, RequestsMixin._get_status_code)

@@ -33,27 +33,6 @@ def test_get_body():
     assert body == _helpers.get_body(response)
 
 
-class Test_not_retryable_predicate(object):
-
-    def test_failure(self):
-        status_codes = (
-            _base_helpers.TOO_MANY_REQUESTS,
-            http_client.INTERNAL_SERVER_ERROR,
-            http_client.BAD_GATEWAY,
-            http_client.SERVICE_UNAVAILABLE,
-            http_client.GATEWAY_TIMEOUT,
-        )
-        for status_code in status_codes:
-            response = _make_response(status_code)
-            assert not _helpers.not_retryable_predicate(response)
-
-    def test_success(self):
-        status_codes = (http_client.OK, http_client.BAD_REQUEST)
-        for status_code in status_codes:
-            response = _make_response(status_code)
-            assert _helpers.not_retryable_predicate(response)
-
-
 def test_http_request():
     transport, responses = _make_transport(http_client.OK)
     method = u'POST'

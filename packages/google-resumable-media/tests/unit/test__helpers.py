@@ -139,25 +139,35 @@ class Test_calculate_retry_wait(object):
 class Test_wait_and_retry(object):
 
     def test_success_no_retry(self):
-        truthy = 99
-        func = mock.Mock(return_value=truthy)
-        cutoff = 85.0
-        ret_val = _helpers.wait_and_retry(func, cutoff.__lt__)
+        truthy = http_client.OK
+        assert truthy not in _helpers.RETRYABLE
+        response = _make_response(truthy)
 
-        assert ret_val is truthy
+        func = mock.Mock(return_value=response, spec=[])
+        ret_val = _helpers.wait_and_retry(func, _get_status_code)
+
+        assert ret_val is response
         func.assert_called_once_with()
 
     @mock.patch('time.sleep')
     @mock.patch('random.randint')
     def test_success_with_retry(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
-        func = mock.Mock(side_effect=[883, 884, 885, 886])
-        cutoff = 885.0
-        predicate = cutoff.__lt__
-        ret_val = _helpers.wait_and_retry(func, predicate)
 
-        assert ret_val == 886
-        assert predicate(ret_val)
+        status_codes = (
+            http_client.INTERNAL_SERVER_ERROR,
+            http_client.BAD_GATEWAY,
+            http_client.SERVICE_UNAVAILABLE,
+            http_client.NOT_FOUND,
+        )
+        responses = [
+            _make_response(status_code) for status_code in status_codes]
+        func = mock.Mock(side_effect=responses, spec=[])
+
+        ret_val = _helpers.wait_and_retry(func, _get_status_code)
+
+        assert ret_val == responses[-1]
+        assert status_codes[-1] not in _helpers.RETRYABLE
 
         assert func.call_count == 4
         assert func.mock_calls == [mock.call()] * 4
@@ -176,13 +186,25 @@ class Test_wait_and_retry(object):
                 new=100.0)
     def test_retry_exceeds_max_cumulative(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125]
-        func = mock.Mock(side_effect=[64, 49, 36, 25, 16, 9, 4, 1])
-        cutoff = 0.0
-        predicate = cutoff.__gt__
-        ret_val = _helpers.wait_and_retry(func, predicate)
 
-        assert ret_val is 1
-        assert not predicate(ret_val)
+        status_codes = (
+            http_client.SERVICE_UNAVAILABLE,
+            http_client.GATEWAY_TIMEOUT,
+            _helpers.TOO_MANY_REQUESTS,
+            http_client.INTERNAL_SERVER_ERROR,
+            http_client.SERVICE_UNAVAILABLE,
+            http_client.BAD_GATEWAY,
+            http_client.GATEWAY_TIMEOUT,
+            _helpers.TOO_MANY_REQUESTS,
+        )
+        responses = [
+            _make_response(status_code) for status_code in status_codes]
+        func = mock.Mock(side_effect=responses, spec=[])
+
+        ret_val = _helpers.wait_and_retry(func, _get_status_code)
+
+        assert ret_val == responses[-1]
+        assert status_codes[-1] in _helpers.RETRYABLE
 
         assert func.call_count == 8
         assert func.mock_calls == [mock.call()] * 8
@@ -202,3 +224,7 @@ class Test_wait_and_retry(object):
 
 def _make_response(status_code):
     return mock.Mock(status_code=status_code, spec=[u'status_code'])
+
+
+def _get_status_code(response):
+    return response.status_code

@@ -145,10 +145,11 @@ def calculate_retry_wait(num_retries):
     return wait_time + 0.001 * jitter_ms
 
 
-def wait_and_retry(func, predicate):
+def wait_and_retry(func, get_status_code):
     """Attempts to retry a call to ``func`` until success.
 
-    Success is determined by ``predicate(result)`` being true.
+    Expects ``func`` to return an HTTP response and uses ``get_status_code``
+    to check if the response is retry-able.
 
     Will retry until :attr:`MAX_CUMULATIVE_RETRY` seconds of wait time
     have accrued. Uses :func:`calculate_retry_wait` to double the
@@ -156,15 +157,16 @@ def wait_and_retry(func, predicate):
 
     Args:
         func (Callable): A callable that takes no arguments and produces
-            a result which will be checked by ``predicate``.
-        predicate (Callable[Any, bool]): Determines if the result is valid.
+            an HTTP response which will be checked as retry-able.
+        get_status_code (Callable[Any, int]): Helper to get a status code
+            from a response.
 
     Returns:
         object: The return value of ``func``.
     """
-    result = func()
-    if predicate(result):
-        return result
+    response = func()
+    if get_status_code(response) not in RETRYABLE:
+        return response
 
     total_sleep = 0.0
     num_retries = 0
@@ -173,8 +175,8 @@ def wait_and_retry(func, predicate):
         num_retries += 1
         total_sleep += wait_time
         time.sleep(wait_time)
-        result = func()
-        if predicate(result):
-            return result
+        response = func()
+        if get_status_code(response) not in RETRYABLE:
+            return response
 
-    return result
+    return response
