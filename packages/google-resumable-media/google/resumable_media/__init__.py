@@ -43,9 +43,15 @@ To install with `pip`_:
 """
 
 
+from google.resumable_media.constants import PERMANENT_REDIRECT
+from google.resumable_media.constants import TOO_MANY_REQUESTS
+from google.resumable_media.constants import UPLOAD_CHUNK_SIZE
 from google.resumable_media.exceptions import InvalidResponse
 
 
 __all__ = [
     u'InvalidResponse',
+    u'PERMANENT_REDIRECT',
+    u'TOO_MANY_REQUESTS',
+    u'UPLOAD_CHUNK_SIZE',
 ]

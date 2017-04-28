@@ -17,6 +17,7 @@ import pytest
 from six.moves import http_client
 
 from google.resumable_media import _helpers
+from google.resumable_media import constants
 from google.resumable_media import exceptions
 
 
@@ -201,12 +202,12 @@ class Test_wait_and_retry(object):
         status_codes = (
             http_client.SERVICE_UNAVAILABLE,
             http_client.GATEWAY_TIMEOUT,
-            _helpers.TOO_MANY_REQUESTS,
+            constants.TOO_MANY_REQUESTS,
             http_client.INTERNAL_SERVER_ERROR,
             http_client.SERVICE_UNAVAILABLE,
             http_client.BAD_GATEWAY,
             http_client.GATEWAY_TIMEOUT,
-            _helpers.TOO_MANY_REQUESTS,
+            constants.TOO_MANY_REQUESTS,
         )
         responses = [
             _make_response(status_code) for status_code in status_codes]

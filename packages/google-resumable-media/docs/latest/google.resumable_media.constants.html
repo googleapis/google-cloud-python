@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python Module Index &mdash; google-resumable-media 0.0.3 documentation</title>
+  <title>google.resumable_media.constants module &mdash; google-resumable-media 0.0.3 documentation</title>
   
 
   
@@ -36,9 +36,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="google-resumable-media 0.0.3 documentation" href="index.html"/>
- 
-
-
+        <link rel="next" title="google.resumable_media.exceptions module" href="google.resumable_media.exceptions.html"/>
+        <link rel="prev" title="google.resumable_media" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -91,8 +90,8 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.constants.html">google.resumable_media.constants module</a></li>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">google.resumable_media.constants module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google.resumable_media.exceptions.html">google.resumable_media.exceptions module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google.resumable_media.requests.html">google.resumable_media.requests package</a></li>
 </ul>
@@ -139,12 +138,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Python Module Index</li>
+      <li>google.resumable_media.constants module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/google.resumable_media.constants.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -156,54 +157,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
+  <div class="section" id="module-google.resumable_media.constants">
+<span id="google-resumable-media-constants-module"></span><h1>google.resumable_media.constants module<a class="headerlink" href="#module-google.resumable_media.constants" title="Permalink to this headline">¶</a></h1>
+<p>Useful constants need for Google Media Downloads and Resumable Uploads.</p>
+<dl class="data">
+<dt id="google.resumable_media.constants.PERMANENT_REDIRECT">
+<code class="descclassname">google.resumable_media.constants.</code><code class="descname">PERMANENT_REDIRECT</code><em class="property"> = 308</em><a class="headerlink" href="#google.resumable_media.constants.PERMANENT_REDIRECT" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; Permanent redirect status code.</p>
+<p>It is used by Google services to indicate some (but not all) of
+a resumable upload has been completed.</p>
+<p><code class="docutils literal"><span class="pre">http.client.PERMANENT_REDIRECT</span></code> was added in Python 3.5, so
+can&#8217;t be used in a &#8220;general&#8221; code base.</p>
+<p>For more information, see <a class="reference external" href="https://tools.ietf.org/html/rfc7238">RFC 7238</a>.</p>
+</dd></dl>
 
-   <h1>Python Module Index</h1>
+<dl class="data">
+<dt id="google.resumable_media.constants.TOO_MANY_REQUESTS">
+<code class="descclassname">google.resumable_media.constants.</code><code class="descname">TOO_MANY_REQUESTS</code><em class="property"> = 429</em><a class="headerlink" href="#google.resumable_media.constants.TOO_MANY_REQUESTS" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; Status code indicating rate-limiting.</p>
+<p><code class="docutils literal"><span class="pre">http.client.TOO_MANY_REQUESTS</span></code> was added in Python 3.3, so
+can&#8217;t be used in a &#8220;general&#8221; code base.</p>
+<p>For more information, see <a class="reference external" href="https://tools.ietf.org/html/rfc6585#section-4">RFC 6585</a>.</p>
+</dd></dl>
 
-   <div class="modindex-jumpbox">
-   <a href="#cap-g"><strong>g</strong></a>
-   </div>
+<dl class="data">
+<dt id="google.resumable_media.constants.UPLOAD_CHUNK_SIZE">
+<code class="descclassname">google.resumable_media.constants.</code><code class="descname">UPLOAD_CHUNK_SIZE</code><em class="property"> = 262144</em><a class="headerlink" href="#google.resumable_media.constants.UPLOAD_CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; Chunks in a resumable upload must come in multiples of 256 KB.</p>
+</dd></dl>
 
-   <table class="indextable modindextable">
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-g"><td></td><td>
-       <strong>g</strong></td><td></td></tr>
-     <tr>
-       <td><img src="_static/minus.png" class="toggler"
-              id="toggle-1" style="display: none" alt="-" /></td>
-       <td>
-       <code class="xref">google</code></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="index.html#module-google.resumable_media"><code class="xref">google.resumable_media</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="google.resumable_media.constants.html#module-google.resumable_media.constants"><code class="xref">google.resumable_media.constants</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="google.resumable_media.exceptions.html#module-google.resumable_media.exceptions"><code class="xref">google.resumable_media.exceptions</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="google.resumable_media.requests.html#module-google.resumable_media.requests"><code class="xref">google.resumable_media.requests</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="google.resumable_media.requests.download.html#module-google.resumable_media.requests.download"><code class="xref">google.resumable_media.requests.download</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="google.resumable_media.requests.upload.html#module-google.resumable_media.requests.upload"><code class="xref">google.resumable_media.requests.upload</code></a></td><td>
-       <em></em></td></tr>
-   </table>
+</div>
 
 
            </div>
@@ -212,6 +195,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="google.resumable_media.exceptions.html" class="btn btn-neutral float-right" title="google.resumable_media.exceptions module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="google.resumable_media" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

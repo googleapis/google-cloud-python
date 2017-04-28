@@ -258,7 +258,7 @@ def transmit_chunks(upload, transport, blob_name, metadata,
                 metadata=metadata, content_type=content_type)
         else:
             assert upload.bytes_uploaded == num_chunks * upload.chunk_size
-            assert response.status_code == upload_mod.PERMANENT_REDIRECT
+            assert response.status_code == resumable_media.PERMANENT_REDIRECT
 
     return num_chunks
 
@@ -360,7 +360,7 @@ def sabotage_and_recover(upload, stream, transport, chunk_size):
     upload._bytes_uploaded = 0  # Make ``bytes_uploaded`` wrong as well.
     # Recover the (artifically) invalid upload.
     response = upload.recover(transport)
-    assert response.status_code == upload_mod.PERMANENT_REDIRECT
+    assert response.status_code == resumable_media.PERMANENT_REDIRECT
     assert not upload.invalid
     assert upload.bytes_uploaded == chunk_size
     assert stream.tell() == chunk_size
@@ -386,7 +386,7 @@ def _resumable_upload_recover_helper(authorized_transport, cleanup,
     check_initiate(response, upload, stream, authorized_transport, metadata)
     # Make the first request.
     response = upload.transmit_next_chunk(authorized_transport)
-    assert response.status_code == upload_mod.PERMANENT_REDIRECT
+    assert response.status_code == resumable_media.PERMANENT_REDIRECT
     # Call upload.recover().
     sabotage_and_recover(upload, stream, authorized_transport, chunk_size)
     # Now stream what remains.

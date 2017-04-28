@@ -20,23 +20,14 @@ import time
 
 from six.moves import http_client
 
+from google.resumable_media import constants
 from google.resumable_media import exceptions
 
 
 RANGE_HEADER = u'range'
 CONTENT_RANGE_HEADER = u'content-range'
-TOO_MANY_REQUESTS = 429
-"""int: Status code indicating rate-limiting.
-
-``http.client.TOO_MANY_REQUESTS`` was added in Python 3.3, so
-can't be used in a "general" code base.
-
-For more information, see `RFC 6585`_.
-
-.. _RFC 6585: https://tools.ietf.org/html/rfc6585#section-4
-"""
 RETRYABLE = (
-    TOO_MANY_REQUESTS,
+    constants.TOO_MANY_REQUESTS,
     http_client.INTERNAL_SERVER_ERROR,
     http_client.BAD_GATEWAY,
     http_client.SERVICE_UNAVAILABLE,

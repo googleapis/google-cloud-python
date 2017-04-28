@@ -108,7 +108,8 @@ class TestDownload(object):
 
     def test__process_response(self):
         download = _download.Download(EXAMPLE_URL)
-        download._get_status_code = _get_status_code
+        _fix_up_virtual(download)
+
         # Make sure **not finished** before.
         assert not download.finished
         response = mock.Mock(
@@ -120,7 +121,8 @@ class TestDownload(object):
 
     def test__process_response_bad_status(self):
         download = _download.Download(EXAMPLE_URL)
-        download._get_status_code = _get_status_code
+        _fix_up_virtual(download)
+
         # Make sure **not finished** before.
         assert not download.finished
         response = mock.Mock(
@@ -296,9 +298,8 @@ class TestChunkedDownload(object):
         stream = io.BytesIO()
         download = _download.ChunkedDownload(
             EXAMPLE_URL, chunk_size, stream)
-        download._get_status_code = _get_status_code
-        download._get_headers = _get_headers
-        download._get_body = _get_body
+        _fix_up_virtual(download)
+
         already = 22
         download._bytes_downloaded = already
         total_bytes = 4444
@@ -324,7 +325,8 @@ class TestChunkedDownload(object):
         stream = mock.Mock(spec=[u'write'])
         download = _download.ChunkedDownload(
             EXAMPLE_URL, chunk_size, stream)
-        download._get_status_code = _get_status_code
+        _fix_up_virtual(download)
+
         total_bytes = 300
 
         # Check internal state before.
@@ -353,8 +355,8 @@ class TestChunkedDownload(object):
 
     def test__process_response_missing_content_length(self):
         download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
-        download._get_status_code = _get_status_code
-        download._get_headers = _get_headers
+        _fix_up_virtual(download)
+
         # Check internal state before.
         assert not download.finished
         assert download.bytes_downloaded == 0
@@ -379,8 +381,8 @@ class TestChunkedDownload(object):
 
     def test__process_response_bad_content_range(self):
         download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
-        download._get_status_code = _get_status_code
-        download._get_headers = _get_headers
+        _fix_up_virtual(download)
+
         # Check internal state before.
         assert not download.finished
         assert download.bytes_downloaded == 0
@@ -414,9 +416,8 @@ class TestChunkedDownload(object):
         stream = mock.Mock(spec=[u'write'])
         download = _download.ChunkedDownload(
             EXAMPLE_URL, chunk_size, stream)
-        download._get_status_code = _get_status_code
-        download._get_headers = _get_headers
-        download._get_body = _get_body
+        _fix_up_virtual(download)
+
         total_bytes = 100
 
         # Check internal state before.
@@ -448,9 +449,8 @@ class TestChunkedDownload(object):
         stream = io.BytesIO()
         download = _download.ChunkedDownload(
             EXAMPLE_URL, chunk_size, stream)
-        download._get_status_code = _get_status_code
-        download._get_headers = _get_headers
-        download._get_body = _get_body
+        _fix_up_virtual(download)
+
         total_bytes = 200
 
         # Check internal state before.
@@ -476,9 +476,8 @@ class TestChunkedDownload(object):
         stream = io.BytesIO()
         download = _download.ChunkedDownload(
             EXAMPLE_URL, chunk_size, stream, end=end)
-        download._get_status_code = _get_status_code
-        download._get_headers = _get_headers
-        download._get_body = _get_body
+        _fix_up_virtual(download)
+
         download._bytes_downloaded = 7 * chunk_size
         download._total_bytes = 8 * chunk_size
 
@@ -613,3 +612,9 @@ def _get_headers(response):
 
 def _get_body(response):
     return response.content
+
+
+def _fix_up_virtual(download):
+    download._get_status_code = _get_status_code
+    download._get_headers = _get_headers
+    download._get_body = _get_body

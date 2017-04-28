@@ -584,6 +584,7 @@ transmitted in chunks until completion:
    import requests
    from six.moves import http_client
 
+   from google import resumable_media
    import google.resumable_media.requests.upload as upload_mod
 
    data = b'01234567891'
@@ -602,11 +603,11 @@ transmitted in chunks until completion:
    upload._chunk_size = 4
    # Make three fake responses.
    fake_response0 = requests.Response()
-   fake_response0.status_code = upload_mod.PERMANENT_REDIRECT
+   fake_response0.status_code = resumable_media.PERMANENT_REDIRECT
    fake_response0.headers[u'range'] = u'bytes=0-3'
 
    fake_response1 = requests.Response()
-   fake_response1.status_code = upload_mod.PERMANENT_REDIRECT
+   fake_response1.status_code = resumable_media.PERMANENT_REDIRECT
    fake_response1.headers[u'range'] = u'bytes=0-7'
 
    fake_response2 = requests.Response()

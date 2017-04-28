@@ -141,7 +141,7 @@ def main():
 
     members = public_members()
     if members:
-        members_config = '    :members:' + ', '.join(members)
+        members_config = '    :members: ' + ', '.join(members)
         automodule_lines.append(members_config)
 
     automodule_lines.append('')
