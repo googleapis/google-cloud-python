@@ -27,6 +27,9 @@ from six.moves import http_client
 from google.resumable_media import _helpers
 
 
+_CONTENT_TYPE_HEADER = u'content-type'
+
+
 class UploadBase(object):
     """Base class for upload helpers.
 
@@ -36,11 +39,13 @@ class UploadBase(object):
         upload_url (str): The URL where the content will be uploaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
+
+    Attributes:
+        upload_url (str): The URL where the content will be uploaded.
     """
 
     def __init__(self, upload_url, headers=None):
         self.upload_url = upload_url
-        """str: The URL where the content will be uploaded."""
         if headers is None:
             headers = {}
         self._headers = headers
@@ -79,6 +84,66 @@ class UploadBase(object):
 
         Args:
             response (object): The HTTP response object.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError(u'This implementation is virtual.')
+
+
+class SimpleUpload(UploadBase):
+    """Upload a resource to a Google API.
+
+    A **simple** media upload sends no metadata and completes the upload
+    in a single request.
+
+    Args:
+        upload_url (str): The URL where the content will be uploaded.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with the request, e.g. headers for encrypted data.
+
+    Attributes:
+        upload_url (str): The URL where the content will be uploaded.
+    """
+
+    def _prepare_request(self, content_type):
+        """Prepare the contents of an HTTP request.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        .. note:
+
+            This method will be used only once, so ``headers`` will be
+            mutated by having a new key added to it.
+
+        Args:
+            content_type (str): The content type for the request.
+
+        Returns:
+            dict: The headers for the request.
+
+        Raises:
+            ValueError: If the current upload has already finished.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.finished:
+            raise ValueError(u'An upload can only be used once.')
+
+        self._headers[_CONTENT_TYPE_HEADER] = content_type
+        return self._headers
+
+    def transmit(self, transport, data, content_type):
+        """Transmit the resource to be uploaded.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            data (bytes): The resource content to be uploaded.
+            content_type (str): The content type of the resource, e.g. a JPEG
+                image has content type ``image/jpeg``.
 
         Raises:
             NotImplementedError: Always, since virtual.

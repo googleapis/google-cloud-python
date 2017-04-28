@@ -34,7 +34,6 @@ from google.resumable_media import exceptions
 from google.resumable_media.requests import _helpers
 
 
-_CONTENT_TYPE_HEADER = u'content-type'
 _CONTENT_RANGE_TEMPLATE = u'bytes {:d}-{:d}/{:d}'
 _BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
 _BOUNDARY_FORMAT = u'==============={{:0{:d}d}}=='.format(_BOUNDARY_WIDTH)
@@ -67,7 +66,7 @@ For more information, see `RFC 7238`_.
 """
 
 
-class SimpleUpload(_helpers.RequestsMixin, _upload.UploadBase):
+class SimpleUpload(_helpers.RequestsMixin, _upload.SimpleUpload):
     """Upload a resource to a Google API.
 
     A **simple** media upload sends no metadata and completes the upload
@@ -77,49 +76,23 @@ class SimpleUpload(_helpers.RequestsMixin, _upload.UploadBase):
         upload_url (str): The URL where the content will be uploaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
+
+    Attributes:
+        upload_url (str): The URL where the content will be uploaded.
     """
-
-    def _prepare_request(self, content_type):
-        """Prepare the contents of an HTTP request.
-
-        This is everything that must be done before a request that doesn't
-        require network I/O (or other I/O). This is based on the `sans-I/O`_
-        philosophy.
-
-        .. note:
-
-            This method will be used only once, so ``headers`` will be
-            mutated by having a new key added to it.
-
-        Args:
-            content_type (str): The content type for the request.
-
-        Returns:
-            dict: The headers for the request.
-
-        Raises:
-            ValueError: If the current upload has already finished.
-
-        .. _sans-I/O: https://sans-io.readthedocs.io/
-        """
-        if self.finished:
-            raise ValueError(u'An upload can only be used once.')
-
-        self._headers[_CONTENT_TYPE_HEADER] = content_type
-        return self._headers
 
     def transmit(self, transport, data, content_type):
         """Transmit the resource to be uploaded.
 
         Args:
-            transport (object): An object which can make authenticated
-                requests.
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
             data (bytes): The resource content to be uploaded.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
 
         Returns:
-            object: The HTTP response returned by ``transport``.
+            ~requests.Response: The HTTP response returned by ``transport``.
         """
         headers = self._prepare_request(content_type)
         result = _helpers.http_request(
@@ -138,6 +111,9 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.UploadBase):
         upload_url (str): The URL where the content will be uploaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
+
+    Attributes:
+        upload_url (str): The URL where the content will be uploaded.
     """
 
     def _prepare_request(self, data, metadata, content_type):
@@ -176,7 +152,7 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.UploadBase):
         content, multipart_boundary = _construct_multipart_request(
             data, metadata, content_type)
         multipart_content_type = _RELATED_HEADER + multipart_boundary + b'"'
-        self._headers[_CONTENT_TYPE_HEADER] = multipart_content_type
+        self._headers[_upload._CONTENT_TYPE_HEADER] = multipart_content_type
         return content, self._headers
 
     def transmit(self, transport, data, metadata, content_type):
@@ -216,6 +192,9 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.UploadBase):
             be sent with the :meth:`initiate` request, e.g. headers for
             encrypted data. These **will not** be sent with
             :meth:`transmit_next_chunk` or :meth:`recover` requests.
+
+    Attributes:
+        upload_url (str): The URL where the content will be uploaded.
 
     Raises:
         ValueError: If ``chunk_size`` is not a multiple of
@@ -297,7 +276,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.UploadBase):
         self._content_type = content_type
         self._total_bytes = _get_total_bytes(stream)
         headers = {
-            _CONTENT_TYPE_HEADER: u'application/json; charset=UTF-8',
+            _upload._CONTENT_TYPE_HEADER: u'application/json; charset=UTF-8',
             u'x-upload-content-type': content_type,
             u'x-upload-content-length': u'{:d}'.format(self._total_bytes),
         }
@@ -392,7 +371,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.UploadBase):
         content_range = _CONTENT_RANGE_TEMPLATE.format(
             start_byte, end_byte, self._total_bytes)
         headers = {
-            _CONTENT_TYPE_HEADER: self._content_type,
+            _upload._CONTENT_TYPE_HEADER: self._content_type,
             _base_helpers.CONTENT_RANGE_HEADER: content_range,
         }
         return payload, headers

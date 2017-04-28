@@ -290,8 +290,11 @@ class ChunkedDownload(DownloadBase):
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
-        require network I/O (or other I/O). This is based on the `sans-I/O`_
-        philosophy.
+        require network I/O. This is based on the `sans-I/O`_ philosophy.
+
+        For the time being, this **does require** some form of I/O to write
+        a chunk to ``stream``. However, this will (almost) certainly not be
+        network I/O.
 
         Updates the current state after consuming a chunk. First,
         increments ``bytes_downloaded`` by the number of bytes in the

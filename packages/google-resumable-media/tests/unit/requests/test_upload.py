@@ -41,27 +41,6 @@ JSON_TYPE_LINE = b'content-type: application/json; charset=UTF-8\r\n'
 
 class TestSimpleUpload(object):
 
-    def test__prepare_request_already_finished(self):
-        upload = upload_mod.SimpleUpload(SIMPLE_URL)
-        upload._finished = True
-        with pytest.raises(ValueError):
-            upload._prepare_request(None)
-
-    def test__prepare_request(self):
-        upload = upload_mod.SimpleUpload(SIMPLE_URL)
-        content_type = u'image/jpeg'
-        headers = upload._prepare_request(content_type)
-        assert headers == {u'content-type': content_type}
-
-    def test__prepare_request_with_headers(self):
-        headers = {u'x-goog-cheetos': u'spicy'}
-        upload = upload_mod.SimpleUpload(SIMPLE_URL, headers=headers)
-        content_type = u'image/jpeg'
-        new_headers = upload._prepare_request(content_type)
-        assert new_headers is headers
-        expected = {u'content-type': content_type, u'x-goog-cheetos': u'spicy'}
-        assert headers == expected
-
     def test_transmit(self):
         data = b'I have got a lovely bunch of coconuts.'
         content_type = BASIC_CONTENT
