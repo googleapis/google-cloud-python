@@ -171,25 +171,59 @@ class Test_get_range_info(object):
         headers = {u'content-range': content_range}
         return mock.Mock(headers=headers, spec=[u'headers'])
 
-    def test_success(self):
+    def _success_helper(self, **kwargs):
         content_range = u'Bytes 7-11/42'
         response = self._make_response(content_range)
         start_byte, end_byte, total_bytes = _download.get_range_info(
-            response, _get_headers)
+            response, _get_headers, **kwargs)
         assert start_byte == 7
         assert end_byte == 11
         assert total_bytes == 42
 
-    def test_failure(self):
+    def test_success(self):
+        self._success_helper()
+
+    def test_success_with_callback(self):
+        callback = mock.Mock(spec=[])
+        self._success_helper(callback=callback)
+        callback.assert_not_called()
+
+    def _failure_helper(self, **kwargs):
         content_range = u'nope x-6/y'
         response = self._make_response(content_range)
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
-            _download.get_range_info(response, _get_headers)
+            _download.get_range_info(response, _get_headers, **kwargs)
 
         error = exc_info.value
         assert error.response is response
         assert len(error.args) == 3
         assert error.args[1] == content_range
+
+    def test_failure(self):
+        self._failure_helper()
+
+    def test_failure_with_callback(self):
+        callback = mock.Mock(spec=[])
+        self._failure_helper(callback=callback)
+        callback.assert_called_once_with()
+
+    def _missing_header_helper(self, **kwargs):
+        response = mock.Mock(headers={}, spec=[u'headers'])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            _download.get_range_info(response, _get_headers, **kwargs)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 2
+        assert error.args[1] == u'content-range'
+
+    def test_missing_header(self):
+        self._missing_header_helper()
+
+    def test_missing_header_with_callback(self):
+        callback = mock.Mock(spec=[])
+        self._missing_header_helper(callback=callback)
+        callback.assert_called_once_with()
 
 
 def _get_status_code(response):

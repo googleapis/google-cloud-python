@@ -27,24 +27,41 @@ def test_do_nothing():
 
 class Test_header_required(object):
 
-    def test_success(self):
+    def _success_helper(self, **kwargs):
         name = u'some-header'
         value = u'The Right Hand Side'
         headers = {name: value, u'other-name': u'other-value'}
         response = mock.Mock(headers=headers, spec=[u'headers'])
-        result = _helpers.header_required(response, name, _get_headers)
+        result = _helpers.header_required(
+            response, name, _get_headers, **kwargs)
         assert result == value
 
-    def test_failure(self):
+    def test_success(self):
+        self._success_helper()
+
+    def test_success_with_callback(self):
+        callback = mock.Mock(spec=[])
+        self._success_helper(callback=callback)
+        callback.assert_not_called()
+
+    def _failure_helper(self, **kwargs):
         response = mock.Mock(headers={}, spec=[u'headers'])
         name = u'any-name'
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
-            _helpers.header_required(response, name, _get_headers)
+            _helpers.header_required(response, name, _get_headers, **kwargs)
 
         error = exc_info.value
         assert error.response is response
         assert len(error.args) == 2
         assert error.args[1] == name
+
+    def test_failure(self):
+        self._failure_helper()
+
+    def test_failure_with_callback(self):
+        callback = mock.Mock(spec=[])
+        self._failure_helper(callback=callback)
+        callback.assert_called_once_with()
 
 
 class Test_require_status_code(object):
