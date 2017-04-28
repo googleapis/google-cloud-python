@@ -26,6 +26,9 @@ from google.resumable_media import exceptions
 SIMPLE_URL = (
     u'https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o?'
     u'uploadType=media&name={OBJECT}')
+MULTIPART_URL = (
+    u'https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o?'
+    u'uploadType=multipart')
 BASIC_CONTENT = u'text/plain'
 JSON_TYPE_LINE = b'content-type: application/json; charset=UTF-8\r\n'
 
@@ -121,6 +124,70 @@ class TestSimpleUpload(object):
         upload = _upload.SimpleUpload(SIMPLE_URL)
         with pytest.raises(NotImplementedError) as exc_info:
             upload.transmit(None, None, None)
+
+        exc_info.match(u'virtual')
+
+
+class TestMultipartUpload(object):
+
+    def test__prepare_request_already_finished(self):
+        upload = _upload.MultipartUpload(MULTIPART_URL)
+        upload._finished = True
+        with pytest.raises(ValueError):
+            upload._prepare_request(b'Hi', {}, BASIC_CONTENT)
+
+    def test__prepare_request_non_bytes_data(self):
+        data = u'Nope not bytes.'
+        upload = _upload.MultipartUpload(MULTIPART_URL)
+        with pytest.raises(TypeError):
+            upload._prepare_request(data, {}, BASIC_CONTENT)
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==3==')
+    def _prepare_request_helper(self, mock_get_boundary, headers=None):
+        upload = _upload.MultipartUpload(MULTIPART_URL, headers=headers)
+        data = b'Hi'
+        metadata = {u'Some': u'Stuff'}
+        content_type = BASIC_CONTENT
+        payload, new_headers = upload._prepare_request(
+            data, metadata, content_type)
+
+        expected_payload = (
+            b'--==3==\r\n' +
+            JSON_TYPE_LINE +
+            b'\r\n'
+            b'{"Some": "Stuff"}\r\n'
+            b'--==3==\r\n'
+            b'content-type: text/plain\r\n'
+            b'\r\n'
+            b'Hi\r\n'
+            b'--==3==--')
+        assert payload == expected_payload
+        multipart_type = b'multipart/related; boundary="==3=="'
+        mock_get_boundary.assert_called_once_with()
+
+        return new_headers, multipart_type
+
+    def test__prepare_request(self):
+        headers, multipart_type = self._prepare_request_helper()
+        assert headers == {u'content-type': multipart_type}
+
+    def test__prepare_request_with_headers(self):
+        headers = {u'best': u'shirt', u'worst': u'hat'}
+        new_headers, multipart_type = self._prepare_request_helper(
+            headers=headers)
+        assert new_headers is headers
+        expected_headers = {
+            u'best': u'shirt',
+            u'content-type': multipart_type,
+            u'worst': u'hat',
+        }
+        assert expected_headers == headers
+
+    def test_transmit(self):
+        upload = _upload.MultipartUpload(MULTIPART_URL)
+        with pytest.raises(NotImplementedError) as exc_info:
+            upload.transmit(None, None, None, None)
 
         exc_info.match(u'virtual')
 

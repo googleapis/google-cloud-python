@@ -174,7 +174,7 @@ uploads that contain both metadata and a small file as payload.</p>
 <dl class="class">
 <dt id="google.resumable_media.requests.upload.MultipartUpload">
 <em class="property">class </em><code class="descclassname">google.resumable_media.requests.upload.</code><code class="descname">MultipartUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.upload.MultipartUpload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.UploadBase</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.MultipartUpload</span></code></p>
 <p>Upload a resource with metadata to a Google API.</p>
 <p>A <strong>multipart</strong> upload sends both metadata and the resource in a single
 (multipart) request.</p>
@@ -212,8 +212,8 @@ be sent with the request, e.g. headers for encrypted data.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>transport</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) &#8211; An object which can make authenticated
-requests.</li>
+<li><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
+make authenticated requests.</li>
 <li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) &#8211; The resource content to be uploaded.</li>
 <li><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]) &#8211; The resource metadata, such as an
 ACL list.</li>
@@ -225,7 +225,7 @@ image has content type <code class="docutils literal"><span class="pre">image/jp
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)">object</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></p>
 </td>
 </tr>
 </tbody>

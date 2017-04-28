@@ -22,7 +22,6 @@ uploads that contain both metadata and a small file as payload.
 import json
 import re
 
-import six
 from six.moves import http_client
 
 import google.resumable_media._helpers as _base_helpers
@@ -32,7 +31,6 @@ from google.resumable_media.requests import _helpers
 
 
 _CONTENT_RANGE_TEMPLATE = u'bytes {:d}-{:d}/{:d}'
-_RELATED_HEADER = b'multipart/related; boundary="'
 _BYTES_RANGE_RE = re.compile(
     r'bytes=0-(?P<end_byte>\d+)', flags=re.IGNORECASE)
 _STREAM_ERROR_TEMPLATE = (
@@ -92,7 +90,7 @@ class SimpleUpload(_helpers.RequestsMixin, _upload.SimpleUpload):
         return result
 
 
-class MultipartUpload(_helpers.RequestsMixin, _upload.UploadBase):
+class MultipartUpload(_helpers.RequestsMixin, _upload.MultipartUpload):
     """Upload a resource with metadata to a Google API.
 
     A **multipart** upload sends both metadata and the resource in a single
@@ -107,51 +105,12 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.UploadBase):
         upload_url (str): The URL where the content will be uploaded.
     """
 
-    def _prepare_request(self, data, metadata, content_type):
-        """Prepare the contents of an HTTP request.
-
-        This is everything that must be done before a request that doesn't
-        require network I/O (or other I/O). This is based on the `sans-I/O`_
-        philosophy.
-
-        .. note:
-
-            This method will be used only once, so ``headers`` will be
-            mutated by having a new key added to it.
-
-        Args:
-            data (bytes): The resource content to be uploaded.
-            metadata (Mapping[str, str]): The resource metadata, such as an
-                ACL list.
-            content_type (str): The content type of the resource, e.g. a JPEG
-                image has content type ``image/jpeg``.
-
-        Returns:
-            Tuple[bytes, dict]: The payload and headers for the request.
-
-        Raises:
-            ValueError: If the current upload has already finished.
-            TypeError: If ``data`` isn't bytes.
-
-        .. _sans-I/O: https://sans-io.readthedocs.io/
-        """
-        if self.finished:
-            raise ValueError(u'An upload can only be used once.')
-
-        if not isinstance(data, six.binary_type):
-            raise TypeError(u'`data` must be bytes, received', type(data))
-        content, multipart_boundary = _upload.construct_multipart_request(
-            data, metadata, content_type)
-        multipart_content_type = _RELATED_HEADER + multipart_boundary + b'"'
-        self._headers[_upload._CONTENT_TYPE_HEADER] = multipart_content_type
-        return content, self._headers
-
     def transmit(self, transport, data, metadata, content_type):
         """Transmit the resource to be uploaded.
 
         Args:
-            transport (object): An object which can make authenticated
-                requests.
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
             data (bytes): The resource content to be uploaded.
             metadata (Mapping[str, str]): The resource metadata, such as an
                 ACL list.
@@ -159,7 +118,7 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.UploadBase):
                 image has content type ``image/jpeg``.
 
         Returns:
-            object: The HTTP response returned by ``transport``.
+            ~requests.Response: The HTTP response returned by ``transport``.
         """
         payload, headers = self._prepare_request(data, metadata, content_type)
         result = _helpers.http_request(
