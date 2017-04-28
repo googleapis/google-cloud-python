@@ -14,7 +14,6 @@
 
 import io
 import json
-import sys
 
 import mock
 import pytest
@@ -71,7 +70,7 @@ class TestMultipartUpload(object):
         with pytest.raises(TypeError):
             upload._prepare_request(data, {}, BASIC_CONTENT)
 
-    @mock.patch(u'google.resumable_media.requests.upload._get_boundary',
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==3==')
     def _prepare_request_helper(self, mock_get_boundary, headers=None):
         upload = upload_mod.MultipartUpload(MULTIPART_URL, headers=headers)
@@ -113,7 +112,7 @@ class TestMultipartUpload(object):
         }
         assert expected_headers == headers
 
-    @mock.patch(u'google.resumable_media.requests.upload._get_boundary',
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==4==')
     def test_transmit(self, mock_get_boundary):
         data = b'Mock data here and there.'
@@ -677,105 +676,6 @@ class TestResumableUpload(object):
         expected_headers = {u'content-range': u'bytes */*'}
         transport.request.assert_called_once_with(
             u'PUT', upload.resumable_url, data=None, headers=expected_headers)
-
-
-@mock.patch(u'random.randrange', return_value=1234567890123456789)
-def test__get_boundary(mock_rand):
-    result = upload_mod._get_boundary()
-    assert result == b'===============1234567890123456789=='
-    mock_rand.assert_called_once_with(sys.maxsize)
-
-
-class Test__construct_multipart_request(object):
-
-    @mock.patch(u'google.resumable_media.requests.upload._get_boundary',
-                return_value=b'==1==')
-    def test_binary(self, mock_get_boundary):
-        data = b'By nary day tuh'
-        metadata = {u'name': u'hi-file.bin'}
-        content_type = u'application/octet-stream'
-        payload, multipart_boundary = upload_mod._construct_multipart_request(
-            data, metadata, content_type)
-
-        assert multipart_boundary == mock_get_boundary.return_value
-        expected_payload = (
-            b'--==1==\r\n' +
-            JSON_TYPE_LINE +
-            b'\r\n'
-            b'{"name": "hi-file.bin"}\r\n'
-            b'--==1==\r\n'
-            b'content-type: application/octet-stream\r\n'
-            b'\r\n'
-            b'By nary day tuh\r\n'
-            b'--==1==--')
-        assert payload == expected_payload
-        mock_get_boundary.assert_called_once_with()
-
-    @mock.patch(u'google.resumable_media.requests.upload._get_boundary',
-                return_value=b'==2==')
-    def test_unicode(self, mock_get_boundary):
-        data_unicode = u'\N{snowman}'
-        # _construct_multipart_request ASSUMES callers pass bytes.
-        data = data_unicode.encode(u'utf-8')
-        metadata = {u'name': u'snowman.txt'}
-        content_type = BASIC_CONTENT
-        payload, multipart_boundary = upload_mod._construct_multipart_request(
-            data, metadata, content_type)
-
-        assert multipart_boundary == mock_get_boundary.return_value
-        expected_payload = (
-            b'--==2==\r\n' +
-            JSON_TYPE_LINE +
-            b'\r\n'
-            b'{"name": "snowman.txt"}\r\n'
-            b'--==2==\r\n'
-            b'content-type: text/plain\r\n'
-            b'\r\n'
-            b'\xe2\x98\x83\r\n'
-            b'--==2==--')
-        assert payload == expected_payload
-        mock_get_boundary.assert_called_once_with()
-
-
-def test__get_total_bytes():
-    data = b'some data'
-    stream = io.BytesIO(data)
-    # Check position before function call.
-    assert stream.tell() == 0
-    assert upload_mod._get_total_bytes(stream) == len(data)
-    # Check position after function call.
-    assert stream.tell() == 0
-
-    # Make sure this works just as well when not at beginning.
-    curr_pos = 3
-    stream.seek(curr_pos)
-    assert upload_mod._get_total_bytes(stream) == len(data)
-    # Check position after function call.
-    assert stream.tell() == curr_pos
-
-
-class Test__get_next_chunk(object):
-
-    def test_exhausted(self):
-        data = b'the end'
-        stream = io.BytesIO(data)
-        stream.seek(len(data))
-        with pytest.raises(ValueError):
-            upload_mod._get_next_chunk(stream, 1)
-
-    def test_success(self):
-        stream = io.BytesIO(b'0123456789')
-        chunk_size = 3
-        # Splits into 4 chunks: 012, 345, 678, 9
-        result0 = upload_mod._get_next_chunk(stream, chunk_size)
-        result1 = upload_mod._get_next_chunk(stream, chunk_size)
-        result2 = upload_mod._get_next_chunk(stream, chunk_size)
-        result3 = upload_mod._get_next_chunk(stream, chunk_size)
-        assert result0 == (0, 2, b'012')
-        assert result1 == (3, 5, b'345')
-        assert result2 == (6, 8, b'678')
-        assert result3 == (9, 9, b'9')
-        assert stream.tell() == 10
 
 
 def _make_response(status_code=http_client.OK, headers=None):

@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
+import sys
+
 import mock
 import pytest
 from six.moves import http_client
@@ -23,6 +26,8 @@ from google.resumable_media import exceptions
 SIMPLE_URL = (
     u'https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o?'
     u'uploadType=media&name={OBJECT}')
+BASIC_CONTENT = u'text/plain'
+JSON_TYPE_LINE = b'content-type: application/json; charset=UTF-8\r\n'
 
 
 class TestUploadBase(object):
@@ -118,6 +123,105 @@ class TestSimpleUpload(object):
             upload.transmit(None, None, None)
 
         exc_info.match(u'virtual')
+
+
+@mock.patch(u'random.randrange', return_value=1234567890123456789)
+def test_get_boundary(mock_rand):
+    result = _upload.get_boundary()
+    assert result == b'===============1234567890123456789=='
+    mock_rand.assert_called_once_with(sys.maxsize)
+
+
+class Test_construct_multipart_request(object):
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==1==')
+    def test_binary(self, mock_get_boundary):
+        data = b'By nary day tuh'
+        metadata = {u'name': u'hi-file.bin'}
+        content_type = u'application/octet-stream'
+        payload, multipart_boundary = _upload.construct_multipart_request(
+            data, metadata, content_type)
+
+        assert multipart_boundary == mock_get_boundary.return_value
+        expected_payload = (
+            b'--==1==\r\n' +
+            JSON_TYPE_LINE +
+            b'\r\n'
+            b'{"name": "hi-file.bin"}\r\n'
+            b'--==1==\r\n'
+            b'content-type: application/octet-stream\r\n'
+            b'\r\n'
+            b'By nary day tuh\r\n'
+            b'--==1==--')
+        assert payload == expected_payload
+        mock_get_boundary.assert_called_once_with()
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==2==')
+    def test_unicode(self, mock_get_boundary):
+        data_unicode = u'\N{snowman}'
+        # construct_multipart_request( ASSUMES callers pass bytes.
+        data = data_unicode.encode(u'utf-8')
+        metadata = {u'name': u'snowman.txt'}
+        content_type = BASIC_CONTENT
+        payload, multipart_boundary = _upload.construct_multipart_request(
+            data, metadata, content_type)
+
+        assert multipart_boundary == mock_get_boundary.return_value
+        expected_payload = (
+            b'--==2==\r\n' +
+            JSON_TYPE_LINE +
+            b'\r\n'
+            b'{"name": "snowman.txt"}\r\n'
+            b'--==2==\r\n'
+            b'content-type: text/plain\r\n'
+            b'\r\n'
+            b'\xe2\x98\x83\r\n'
+            b'--==2==--')
+        assert payload == expected_payload
+        mock_get_boundary.assert_called_once_with()
+
+
+def test_get_total_bytes():
+    data = b'some data'
+    stream = io.BytesIO(data)
+    # Check position before function call.
+    assert stream.tell() == 0
+    assert _upload.get_total_bytes(stream) == len(data)
+    # Check position after function call.
+    assert stream.tell() == 0
+
+    # Make sure this works just as well when not at beginning.
+    curr_pos = 3
+    stream.seek(curr_pos)
+    assert _upload.get_total_bytes(stream) == len(data)
+    # Check position after function call.
+    assert stream.tell() == curr_pos
+
+
+class Test_get_next_chunk(object):
+
+    def test_exhausted(self):
+        data = b'the end'
+        stream = io.BytesIO(data)
+        stream.seek(len(data))
+        with pytest.raises(ValueError):
+            _upload.get_next_chunk(stream, 1)
+
+    def test_success(self):
+        stream = io.BytesIO(b'0123456789')
+        chunk_size = 3
+        # Splits into 4 chunks: 012, 345, 678, 9
+        result0 = _upload.get_next_chunk(stream, chunk_size)
+        result1 = _upload.get_next_chunk(stream, chunk_size)
+        result2 = _upload.get_next_chunk(stream, chunk_size)
+        result3 = _upload.get_next_chunk(stream, chunk_size)
+        assert result0 == (0, 2, b'012')
+        assert result1 == (3, 5, b'345')
+        assert result2 == (6, 8, b'678')
+        assert result3 == (9, 9, b'9')
+        assert stream.tell() == 10
 
 
 def _make_response(status_code=http_client.OK):

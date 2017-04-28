@@ -22,12 +22,23 @@ Supported here are:
 """
 
 
+import json
+import os
+import random
+import sys
+
 from six.moves import http_client
 
 from google.resumable_media import _helpers
 
 
 _CONTENT_TYPE_HEADER = u'content-type'
+_BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
+_BOUNDARY_FORMAT = u'==============={{:0{:d}d}}=='.format(_BOUNDARY_WIDTH)
+_MULTIPART_SEP = b'--'
+_CRLF = b'\r\n'
+_MULTIPART_BEGIN = (
+    b'\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n')
 
 
 class UploadBase(object):
@@ -149,3 +160,98 @@ class SimpleUpload(UploadBase):
             NotImplementedError: Always, since virtual.
         """
         raise NotImplementedError(u'This implementation is virtual.')
+
+
+def get_boundary():
+    """Get a random boundary for a multipart request.
+
+    Returns:
+        bytes: The boundary used to separate parts of a multipart request.
+    """
+    random_int = random.randrange(sys.maxsize)
+    boundary = _BOUNDARY_FORMAT.format(random_int)
+    # NOTE: Neither % formatting nor .format() are available for byte strings
+    #       in Python 3.4, so we must use unicode strings as templates.
+    return boundary.encode(u'utf-8')
+
+
+def construct_multipart_request(data, metadata, content_type):
+    """Construct a multipart request body.
+
+    Args:
+        data (bytes): The resource content (UTF-8 encoded as bytes)
+            to be uploaded.
+        metadata (Mapping[str, str]): The resource metadata, such as an
+            ACL list.
+        content_type (str): The content type of the resource, e.g. a JPEG
+            image has content type ``image/jpeg``.
+
+    Returns:
+        Tuple[bytes, bytes]: The multipart request body and the boundary used
+        between each part.
+    """
+    multipart_boundary = get_boundary()
+    json_bytes = json.dumps(metadata).encode(u'utf-8')
+    content_type = content_type.encode(u'utf-8')
+    # Combine the two parts into a multipart payload.
+    # NOTE: We'd prefer a bytes template but are restricted by Python 3.4.
+    boundary_sep = _MULTIPART_SEP + multipart_boundary
+    content = (
+        boundary_sep +
+        _MULTIPART_BEGIN +
+        json_bytes + _CRLF +
+        boundary_sep + _CRLF +
+        b'content-type: ' + content_type + _CRLF +
+        _CRLF +  # Empty line between headers and body.
+        data + _CRLF +
+        boundary_sep + _MULTIPART_SEP)
+
+    return content, multipart_boundary
+
+
+def get_total_bytes(stream):
+    """Determine the total number of bytes in a stream.
+
+    Args:
+       stream (IO[bytes]): The stream (i.e. file-like object).
+
+    Returns:
+        int: The number of bytes.
+    """
+    current_position = stream.tell()
+    # NOTE: ``.seek()`` **should** return the same value that ``.tell()``
+    #       returns, but in Python 2, ``file`` objects do not.
+    stream.seek(0, os.SEEK_END)
+    end_position = stream.tell()
+    # Go back to the initial position.
+    stream.seek(current_position)
+
+    return end_position
+
+
+def get_next_chunk(stream, chunk_size):
+    """Get a chunk from an I/O stream.
+
+    The ``stream`` may have fewer bytes remaining than ``chunk_size``
+    so it may not always be the case that
+    ``end_byte == start_byte + chunk_size - 1``.
+
+    Args:
+       stream (IO[bytes]): The stream (i.e. file-like object).
+
+    Returns:
+        Tuple[int, int, bytes]: Triple of the start byte index, the end byte
+        index and the content in between those bytes.
+
+    Raises:
+        ValueError: If there is no data left to consume. This corresponds
+            exactly to the case ``end_byte < start_byte``, which can only
+            occur if ``end_byte == start_byte - 1``.
+    """
+    start_byte = stream.tell()
+    payload = stream.read(chunk_size)
+    end_byte = stream.tell() - 1
+    if end_byte < start_byte:
+        raise ValueError(
+            u'Stream is already exhausted. There is no content remaining.')
+    return start_byte, end_byte, payload
