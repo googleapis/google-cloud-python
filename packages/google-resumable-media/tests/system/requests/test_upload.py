@@ -25,7 +25,6 @@ from six.moves import urllib_parse
 
 from google import resumable_media
 import google.resumable_media.requests as resumable_requests
-import google.resumable_media.requests.upload as upload_mod
 from tests.system import utils
 
 

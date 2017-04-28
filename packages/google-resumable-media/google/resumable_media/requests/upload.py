@@ -123,8 +123,8 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         """Initiate a resumable upload.
 
         Args:
-            transport (object): An object which can make authenticated
-                requests.
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
             stream (IO[bytes]): The stream (i.e. file-like object) that will
                 be uploaded. The stream **must** be at the beginning (i.e.
                 ``stream.tell() == 0``).
@@ -134,7 +134,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
                 image has content type ``image/jpeg``.
 
         Returns:
-            object: The HTTP response returned by ``transport``.
+            ~requests.Response: The HTTP response returned by ``transport``.
         """
         payload, headers = self._prepare_initiate_request(
             stream, metadata, content_type)
@@ -190,11 +190,11 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
            <Response [400]>
 
         Args:
-            transport (object): An object which can make authenticated
-                requests.
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
 
         Returns:
-            object: The HTTP response returned by ``transport``.
+            ~requests.Response: The HTTP response returned by ``transport``.
 
         Raises:
             ~google.resumable_media.exceptions.InvalidResponse: If the status
@@ -218,11 +218,11 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         can be used again.
 
         Args:
-            transport (object): An object which can make authenticated
-                requests.
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
 
         Returns:
-            object: The HTTP response returned by ``transport``.
+            ~requests.Response: The HTTP response returned by ``transport``.
         """
         headers = self._prepare_recover_request()
         result = _helpers.http_request(
