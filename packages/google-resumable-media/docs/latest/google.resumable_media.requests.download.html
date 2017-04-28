@@ -173,7 +173,7 @@
 <dl class="class">
 <dt id="google.resumable_media.requests.download.ChunkedDownload">
 <em class="property">class </em><code class="descclassname">google.resumable_media.requests.download.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>stream</em>, <em>start=0</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.DownloadBase</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.ChunkedDownload</span></code></p>
 <p>Download a resource in chunks from a Google API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -205,12 +205,6 @@ key headers.</li>
 <dt id="google.resumable_media.requests.download.ChunkedDownload.bytes_downloaded">
 <code class="descname">bytes_downloaded</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.bytes_downloaded" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>int</em> &#8211; Number of bytes that have been downloaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.download.ChunkedDownload.chunk_size">
-<code class="descname">chunk_size</code><em class="property"> = None</em><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.chunk_size" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; The number of bytes to be retrieved in each request.</p>
 </dd></dl>
 
 <dl class="method">
