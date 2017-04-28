@@ -71,6 +71,30 @@ class DownloadBase(object):
         """
         raise NotImplementedError(u'This implementation is virtual.')
 
+    @staticmethod
+    def _get_headers(response):
+        """Access the headers from an HTTP response.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError(u'This implementation is virtual.')
+
+    @staticmethod
+    def _get_body(response):
+        """Access the response body from an HTTP response.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError(u'This implementation is virtual.')
+
 
 class Download(DownloadBase):
     """Helper to manage downloading a resource from a Google API.
@@ -137,8 +161,190 @@ class Download(DownloadBase):
             transport (object): An object which can make authenticated
                 requests.
 
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError(u'This implementation is virtual.')
+
+
+class ChunkedDownload(DownloadBase):
+    """Download a resource in chunks from a Google API.
+
+    Args:
+        media_url (str): The URL containing the media to be downloaded.
+        chunk_size (int): The number of bytes to be retrieved in each
+            request.
+        stream (IO[bytes]): A write-able stream (i.e. file-like object) that
+            will be used to concatenate chunks of the resource as they are
+            downloaded.
+        start (int): The first byte in a range to be downloaded. If not
+            provided, defaults to ``0``.
+        end (int): The last byte in a range to be downloaded. If not
+            provided, will download to the end of the media.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with each request, e.g. headers for data encryption
+            key headers.
+
+    Raises:
+        ValueError: If ``start`` is negative.
+    """
+
+    def __init__(self, media_url, chunk_size, stream,
+                 start=0, end=None, headers=None):
+        if start < 0:
+            raise ValueError(
+                u'On a chunked download the starting '
+                u'value cannot be negative.')
+        super(ChunkedDownload, self).__init__(
+            media_url, start=start, end=end, headers=headers)
+        self.chunk_size = chunk_size
+        """int: The number of bytes to be retrieved in each request."""
+        self._stream = stream
+        self._bytes_downloaded = 0
+        self._total_bytes = None
+        self._invalid = False
+
+    @property
+    def bytes_downloaded(self):
+        """int: Number of bytes that have been downloaded."""
+        return self._bytes_downloaded
+
+    @property
+    def total_bytes(self):
+        """Optional[int]: The total number of bytes to be downloaded."""
+        return self._total_bytes
+
+    @property
+    def invalid(self):
+        """bool: Indicates if the download is in an invalid state.
+
+        This will occur if a call to :meth:`consume_next_chunk` fails.
+        """
+        return self._invalid
+
+    def _get_byte_range(self):
+        """Determines the byte range for the next request.
+
         Returns:
-            object: The HTTP response returned by ``transport``.
+            Tuple[int, int]: The pair of begin and end byte for the next
+            chunked request.
+        """
+        curr_start = self.start + self.bytes_downloaded
+        curr_end = curr_start + self.chunk_size - 1
+        # Make sure ``curr_end`` does not exceed ``end``.
+        if self.end is not None:
+            curr_end = min(curr_end, self.end)
+        # Make sure ``curr_end`` does not exceed ``total_bytes - 1``.
+        if self.total_bytes is not None:
+            curr_end = min(curr_end, self.total_bytes - 1)
+        return curr_start, curr_end
+
+    def _prepare_request(self):
+        """Prepare the contents of an HTTP request.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        .. note:
+
+            This method will be used multiple times, so ``headers`` will
+            be mutated in between requests. However, we don't make a copy
+            since the same keys are being updated.
+
+        Returns:
+            Mapping[str, str]: The headers for the request.
+
+        Raises:
+            ValueError: If the current download has finished.
+            ValueError: If the current download is invalid.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.finished:
+            raise ValueError(u'Download has finished.')
+        if self.invalid:
+            raise ValueError(u'Download is invalid and cannot be re-used.')
+
+        curr_start, curr_end = self._get_byte_range()
+        add_bytes_range(curr_start, curr_end, self._headers)
+        return self._headers
+
+    def _make_invalid(self):
+        """Simple setter for ``invalid``.
+
+        This is intended to be passed along as a callback to helpers that
+        raise an exception so they can mark this instance as invalid before
+        raising.
+        """
+        self._invalid = True
+
+    def _process_response(self, response):
+        """Process the response from an HTTP request.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Updates the current state after consuming a chunk. First,
+        increments ``bytes_downloaded`` by the number of bytes in the
+        ``content-length`` header.
+
+        If ``total_bytes`` is already set, this assumes (but does not check)
+        that we already have the correct value and doesn't bother to check
+        that it agrees with the headers.
+
+        We expect the **total** length to be in the ``content-range`` header,
+        but this header is only present on requests which sent the ``range``
+        header. This response header should be of the form
+        ``bytes {start}-{end}/{total}`` and ``{end} - {start} + 1``
+        should be the same as the ``Content-Length``.
+
+        Args:
+            response (object): The HTTP response object (need headers).
+
+        Raises:
+            ~google.resumable_media.exceptions.InvalidResponse: If the number
+                of bytes in the body doesn't match the content length header.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        # Verify the response before updating the current instance.
+        _helpers.require_status_code(
+            response, ACCEPTABLE_STATUS_CODES,
+            self._get_status_code, callback=self._make_invalid)
+        content_length = _helpers.header_required(
+            response, u'content-length', self._get_headers,
+            callback=self._make_invalid)
+        num_bytes = int(content_length)
+        _, end_byte, total_bytes = get_range_info(
+            response, self._get_headers, callback=self._make_invalid)
+        response_body = self._get_body(response)
+        if len(response_body) != num_bytes:
+            self._make_invalid()
+            raise exceptions.InvalidResponse(
+                response, u'Response is different size than content-length',
+                u'Expected', num_bytes, u'Received', len(response_body))
+
+        # First update ``bytes_downloaded``.
+        self._bytes_downloaded += num_bytes
+        # If the end byte is past ``end`` or ``total_bytes - 1`` we are done.
+        if self.end is not None and end_byte >= self.end:
+            self._finished = True
+        elif end_byte >= total_bytes - 1:
+            self._finished = True
+        # NOTE: We only use ``total_bytes`` if not already known.
+        if self.total_bytes is None:
+            self._total_bytes = total_bytes
+        # Write the response body to the stream.
+        self._stream.write(response_body)
+
+    def consume_next_chunk(self, transport):
+        """Consume the next chunk of the resource to be downloaded.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
 
         Raises:
             NotImplementedError: Always, since virtual.

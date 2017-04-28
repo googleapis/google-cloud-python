@@ -47,25 +47,25 @@ class RequestsMixin(object):
         """Access the headers from an HTTP response.
 
         Args:
-            response (object): The HTTP response object.
+            response (~requests.Response): The HTTP response object.
 
         Returns:
-            Mapping[str, str]: The header mapping (expect keys to either be
-            all lowercase, or case-insensitive).
+            ~requests.structures.CaseInsensitiveDict: The header mapping (keys
+            are case-insensitive).
         """
         return response.headers
 
+    @staticmethod
+    def _get_body(response):
+        """Access the response body from an HTTP response.
 
-def get_body(response):
-    """Access the response body from an HTTP response.
+        Args:
+            response (~requests.Response): The HTTP response object.
 
-    Args:
-        response (~requests.Response): The HTTP response object.
-
-    Returns:
-        bytes: The body of the ``response``.
-    """
-    return response.content
+        Returns:
+            bytes: The body of the ``response``.
+        """
+        return response.content
 
 
 def http_request(transport, method, url, data=None, headers=None):

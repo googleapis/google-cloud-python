@@ -30,11 +30,10 @@ class TestRequestsMixin(object):
         response = mock.Mock(headers=headers, spec=[u'headers'])
         assert headers == _helpers.RequestsMixin._get_headers(response)
 
-
-def test_get_body():
-    body = b'This is the payload.'
-    response = mock.Mock(content=body, spec=[u'content'])
-    assert body == _helpers.get_body(response)
+    def test__get_body(self):
+        body = b'This is the payload.'
+        response = mock.Mock(content=body, spec=[u'content'])
+        assert body == _helpers.RequestsMixin._get_body(response)
 
 
 def test_http_request():

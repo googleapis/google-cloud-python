@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
+
 import mock
 import pytest
 from six.moves import http_client
@@ -63,6 +65,18 @@ class TestDownloadBase(object):
     def test__get_status_code(self):
         with pytest.raises(NotImplementedError) as exc_info:
             _download.DownloadBase._get_status_code(None)
+
+        exc_info.match(u'virtual')
+
+    def test__get_headers(self):
+        with pytest.raises(NotImplementedError) as exc_info:
+            _download.DownloadBase._get_headers(None)
+
+        exc_info.match(u'virtual')
+
+    def test__get_body(self):
+        with pytest.raises(NotImplementedError) as exc_info:
+            _download.DownloadBase._get_body(None)
 
         exc_info.match(u'virtual')
 
@@ -127,6 +141,369 @@ class TestDownload(object):
         download = _download.Download(EXAMPLE_URL)
         with pytest.raises(NotImplementedError) as exc_info:
             download.consume(None)
+
+        exc_info.match(u'virtual')
+
+
+class TestChunkedDownload(object):
+
+    def test_constructor_defaults(self):
+        chunk_size = 256
+        stream = mock.sentinel.stream
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
+        assert download.media_url == EXAMPLE_URL
+        assert download.chunk_size == chunk_size
+        assert download.start == 0
+        assert download.end is None
+        assert download._headers == {}
+        assert not download._finished
+        assert download._stream is stream
+        assert download._bytes_downloaded == 0
+        assert download._total_bytes is None
+        assert not download._invalid
+
+    def test_constructor_bad_start(self):
+        with pytest.raises(ValueError):
+            _download.ChunkedDownload(EXAMPLE_URL, 256, None, start=-11)
+
+    def test_bytes_downloaded_property(self):
+        download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
+        # Default value of @property.
+        assert download.bytes_downloaded == 0
+
+        # Make sure we cannot set it on public @property.
+        with pytest.raises(AttributeError):
+            download.bytes_downloaded = 1024
+
+        # Set it privately and then check the @property.
+        download._bytes_downloaded = 128
+        assert download.bytes_downloaded == 128
+
+    def test_total_bytes_property(self):
+        download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
+        # Default value of @property.
+        assert download.total_bytes is None
+
+        # Make sure we cannot set it on public @property.
+        with pytest.raises(AttributeError):
+            download.total_bytes = 65536
+
+        # Set it privately and then check the @property.
+        download._total_bytes = 8192
+        assert download.total_bytes == 8192
+
+    def test__get_byte_range(self):
+        chunk_size = 512
+        download = _download.ChunkedDownload(EXAMPLE_URL, chunk_size, None)
+        curr_start, curr_end = download._get_byte_range()
+        assert curr_start == 0
+        assert curr_end == chunk_size - 1
+
+    def test__get_byte_range_with_end(self):
+        chunk_size = 512
+        start = 1024
+        end = 1151
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, None, start=start, end=end)
+        curr_start, curr_end = download._get_byte_range()
+        assert curr_start == start
+        assert curr_end == end
+        # Make sure this is less than the chunk size.
+        actual_size = curr_end - curr_start + 1
+        assert actual_size < chunk_size
+
+    def test__get_byte_range_with_total_bytes(self):
+        chunk_size = 512
+        download = _download.ChunkedDownload(EXAMPLE_URL, chunk_size, None)
+        total_bytes = 207
+        download._total_bytes = total_bytes
+        curr_start, curr_end = download._get_byte_range()
+        assert curr_start == 0
+        assert curr_end == total_bytes - 1
+        # Make sure this is less than the chunk size.
+        actual_size = curr_end - curr_start + 1
+        assert actual_size < chunk_size
+
+    @staticmethod
+    def _response_content_range(start_byte, end_byte, total_bytes):
+        return u'bytes {:d}-{:d}/{:d}'.format(
+            start_byte, end_byte, total_bytes)
+
+    def _response_headers(self, start_byte, end_byte, total_bytes):
+        content_length = end_byte - start_byte + 1
+        resp_range = self._response_content_range(
+            start_byte, end_byte, total_bytes)
+        return {
+            u'content-length': u'{:d}'.format(content_length),
+            u'content-range': resp_range,
+        }
+
+    def _mock_response(self, start_byte, end_byte, total_bytes,
+                       content=None, status_code=None):
+        response_headers = self._response_headers(
+            start_byte, end_byte, total_bytes)
+        return mock.Mock(
+            content=content, headers=response_headers, status_code=status_code,
+            spec=[u'content', u'headers', u'status_code'])
+
+    def test__prepare_request_already_finished(self):
+        download = _download.ChunkedDownload(EXAMPLE_URL, 64, None)
+        download._finished = True
+        with pytest.raises(ValueError) as exc_info:
+            download._prepare_request()
+
+        assert exc_info.match(u'Download has finished.')
+
+    def test__prepare_request_invalid(self):
+        download = _download.ChunkedDownload(EXAMPLE_URL, 64, None)
+        download._invalid = True
+        with pytest.raises(ValueError) as exc_info:
+            download._prepare_request()
+
+        assert exc_info.match(u'Download is invalid and cannot be re-used.')
+
+    def test__prepare_request(self):
+        chunk_size = 2048
+        download1 = _download.ChunkedDownload(EXAMPLE_URL, chunk_size, None)
+        headers1 = download1._prepare_request()
+        assert headers1 == {u'range': u'bytes=0-2047'}
+
+        download2 = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, None, start=19991)
+        download2._total_bytes = 20101
+        headers2 = download2._prepare_request()
+        assert headers2 == {u'range': u'bytes=19991-20100'}
+
+    def test__prepare_request_with_headers(self):
+        chunk_size = 2048
+        headers = {u'patrizio': u'Starf-ish'}
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, None, headers=headers)
+        new_headers = download._prepare_request()
+        assert new_headers is headers
+        expected = {u'patrizio': u'Starf-ish', u'range': u'bytes=0-2047'}
+        assert headers == expected
+
+    def test__make_invalid(self):
+        download = _download.ChunkedDownload(EXAMPLE_URL, 512, None)
+        assert not download.invalid
+        download._make_invalid()
+        assert download.invalid
+
+    def test__process_response(self):
+        chunk_size = 333
+        stream = io.BytesIO()
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
+        download._get_status_code = _get_status_code
+        download._get_headers = _get_headers
+        download._get_body = _get_body
+        already = 22
+        download._bytes_downloaded = already
+        total_bytes = 4444
+
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == already
+        assert download.total_bytes is None
+        # Actually call the method to update.
+        data = b'1234xyztL' * 37  # 9 * 37 == 33
+        response = self._mock_response(
+            already, already + chunk_size - 1, total_bytes, content=data,
+            status_code=int(http_client.PARTIAL_CONTENT))
+        download._process_response(response)
+        # Check internal state after.
+        assert not download.finished
+        assert download.bytes_downloaded == already + chunk_size
+        assert download.total_bytes == total_bytes
+        assert stream.getvalue() == data
+
+    def test__process_response_bad_status(self):
+        chunk_size = 384
+        stream = mock.Mock(spec=[u'write'])
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
+        download._get_status_code = _get_status_code
+        total_bytes = 300
+
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        # Actually call the method to update.
+        response = self._mock_response(
+            0, total_bytes - 1, total_bytes,
+            status_code=int(http_client.NOT_FOUND))
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 5
+        assert error.args[1] == response.status_code
+        assert error.args[3] == http_client.OK
+        assert error.args[4] == http_client.PARTIAL_CONTENT
+        # Check internal state after.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert download.invalid
+        stream.write.assert_not_called()
+
+    def test__process_response_missing_content_length(self):
+        download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
+        download._get_status_code = _get_status_code
+        download._get_headers = _get_headers
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert not download.invalid
+        # Actually call the method to update.
+        response = mock.Mock(
+            headers={}, status_code=int(http_client.PARTIAL_CONTENT),
+            spec=[u'headers', u'status_code'])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 2
+        assert error.args[1] == u'content-length'
+        # Check internal state after.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert download.invalid
+
+    def test__process_response_bad_content_range(self):
+        download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
+        download._get_status_code = _get_status_code
+        download._get_headers = _get_headers
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert not download.invalid
+        # Actually call the method to update.
+        data = b'stuff'
+        headers = {
+            u'content-length': u'{:d}'.format(len(data)),
+            u'content-range': u'kites x-y/58',
+        }
+        response = mock.Mock(
+            content=data, headers=headers,
+            status_code=int(http_client.PARTIAL_CONTENT),
+            spec=[u'content', u'headers', u'status_code'])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 3
+        assert error.args[1] == headers[u'content-range']
+        # Check internal state after.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert download.invalid
+
+    def test__process_response_body_wrong_length(self):
+        chunk_size = 10
+        stream = mock.Mock(spec=[u'write'])
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
+        download._get_status_code = _get_status_code
+        download._get_headers = _get_headers
+        download._get_body = _get_body
+        total_bytes = 100
+
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        # Actually call the method to update.
+        data = b'not 10'
+        response = self._mock_response(
+            0, chunk_size - 1, total_bytes, content=data,
+            status_code=int(http_client.PARTIAL_CONTENT))
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            download._process_response(response)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 5
+        assert error.args[2] == chunk_size
+        assert error.args[4] == len(data)
+        # Check internal state after.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        assert download.invalid
+        stream.write.assert_not_called()
+
+    def test__process_response_when_finished(self):
+        chunk_size = 256
+        stream = io.BytesIO()
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream)
+        download._get_status_code = _get_status_code
+        download._get_headers = _get_headers
+        download._get_body = _get_body
+        total_bytes = 200
+
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 0
+        assert download.total_bytes is None
+        # Actually call the method to update.
+        data = b'abcd' * 50  # 4 * 50 == 200
+        response = self._mock_response(
+            0, total_bytes - 1, total_bytes, content=data,
+            status_code=int(http_client.OK))
+        download._process_response(response)
+        # Check internal state after.
+        assert download.finished
+        assert download.bytes_downloaded == total_bytes
+        assert total_bytes < chunk_size
+        assert download.total_bytes == total_bytes
+        assert stream.getvalue() == data
+
+    def test__process_response_when_reaching_end(self):
+        chunk_size = 8192
+        end = 65000
+        stream = io.BytesIO()
+        download = _download.ChunkedDownload(
+            EXAMPLE_URL, chunk_size, stream, end=end)
+        download._get_status_code = _get_status_code
+        download._get_headers = _get_headers
+        download._get_body = _get_body
+        download._bytes_downloaded = 7 * chunk_size
+        download._total_bytes = 8 * chunk_size
+
+        # Check internal state before.
+        assert not download.finished
+        assert download.bytes_downloaded == 7 * chunk_size
+        assert download.total_bytes == 8 * chunk_size
+        # Actually call the method to update.
+        expected_size = end - 7 * chunk_size + 1
+        data = b'B' * expected_size
+        response = self._mock_response(
+            7 * chunk_size, end, 8 * chunk_size, content=data,
+            status_code=int(http_client.PARTIAL_CONTENT))
+        download._process_response(response)
+        # Check internal state after.
+        assert download.finished
+        assert download.bytes_downloaded == end + 1
+        assert download.bytes_downloaded < download.total_bytes
+        assert download.total_bytes == 8 * chunk_size
+        assert stream.getvalue() == data
+
+    def test_consume_next_chunk(self):
+        download = _download.ChunkedDownload(EXAMPLE_URL, 256, None)
+        with pytest.raises(NotImplementedError) as exc_info:
+            download.consume_next_chunk(None)
 
         exc_info.match(u'virtual')
 
@@ -232,3 +609,7 @@ def _get_status_code(response):
 
 def _get_headers(response):
     return response.headers
+
+
+def _get_body(response):
+    return response.content
