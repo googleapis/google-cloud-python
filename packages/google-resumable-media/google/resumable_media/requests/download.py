@@ -96,11 +96,11 @@ class ChunkedDownload(_helpers.RequestsMixin, _download.ChunkedDownload):
         """Consume the next chunk of the resource to be downloaded.
 
         Args:
-            transport (object): An object which can make authenticated
-                requests.
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
 
         Returns:
-            object: The HTTP response returned by ``transport``.
+            ~requests.Response: The HTTP response returned by ``transport``.
 
         Raises:
             ValueError: If the current download has finished.
