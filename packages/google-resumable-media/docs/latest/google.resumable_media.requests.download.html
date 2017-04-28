@@ -179,7 +179,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>media_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL containing the media to be downloaded.</li>
 <li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The number of bytes to be retrieved in each
 request.</li>
@@ -196,8 +196,37 @@ key headers.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If <code class="docutils literal"><span class="pre">start</span></code> is negative.</p>
-</td>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.resumable_media.requests.download.ChunkedDownload.media_url">
+<code class="descname">media_url</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.media_url" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; The URL containing the media to be downloaded.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.resumable_media.requests.download.ChunkedDownload.start">
+<code class="descname">start</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.start" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The first byte in a range to be downloaded.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.resumable_media.requests.download.ChunkedDownload.end">
+<code class="descname">end</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.end" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The last byte in a range to be downloaded.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.resumable_media.requests.download.ChunkedDownload.chunk_size">
+<code class="descname">chunk_size</code><a class="headerlink" href="#google.resumable_media.requests.download.ChunkedDownload.chunk_size" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; The number of bytes to be retrieved in each request.</p>
+</dd></dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If <code class="docutils literal"><span class="pre">start</span></code> is negative.</td>
 </tr>
 </tbody>
 </table>
@@ -276,6 +305,24 @@ be sent with the request, e.g. headers for encrypted data.</li>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.resumable_media.requests.download.Download.media_url">
+<code class="descname">media_url</code><a class="headerlink" href="#google.resumable_media.requests.download.Download.media_url" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; The URL containing the media to be downloaded.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.resumable_media.requests.download.Download.start">
+<code class="descname">start</code><a class="headerlink" href="#google.resumable_media.requests.download.Download.start" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The first byte in a range to be downloaded.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.resumable_media.requests.download.Download.end">
+<code class="descname">end</code><a class="headerlink" href="#google.resumable_media.requests.download.Download.end" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The last byte in a range to be downloaded.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.resumable_media.requests.download.Download.consume">
 <code class="descname">consume</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.Download.consume" title="Permalink to this definition">¶</a></dt>

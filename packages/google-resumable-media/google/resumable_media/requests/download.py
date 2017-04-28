@@ -36,6 +36,11 @@ class Download(_helpers.RequestsMixin, _download.Download):
             ``start`` to the end of the media.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
+
+    Attributes:
+        media_url (str): The URL containing the media to be downloaded.
+        start (Optional[int]): The first byte in a range to be downloaded.
+        end (Optional[int]): The last byte in a range to be downloaded.
     """
 
     def consume(self, transport):
@@ -76,6 +81,12 @@ class ChunkedDownload(_helpers.RequestsMixin, _download.ChunkedDownload):
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with each request, e.g. headers for data encryption
             key headers.
+
+    Attributes:
+        media_url (str): The URL containing the media to be downloaded.
+        start (Optional[int]): The first byte in a range to be downloaded.
+        end (Optional[int]): The last byte in a range to be downloaded.
+        chunk_size (int): The number of bytes to be retrieved in each request.
 
     Raises:
         ValueError: If ``start`` is negative.

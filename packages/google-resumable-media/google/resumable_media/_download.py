@@ -40,15 +40,17 @@ class DownloadBase(object):
         end (int): The last byte in a range to be downloaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
+
+    Attributes:
+        media_url (str): The URL containing the media to be downloaded.
+        start (Optional[int]): The first byte in a range to be downloaded.
+        end (Optional[int]): The last byte in a range to be downloaded.
     """
 
     def __init__(self, media_url, start=None, end=None, headers=None):
         self.media_url = media_url
-        """str: The URL containing the media to be downloaded."""
         self.start = start
-        """Optional[int]: The first byte in a range to be downloaded."""
         self.end = end
-        """Optional[int]: The last byte in a range to be downloaded."""
         if headers is None:
             headers = {}
         self._headers = headers
@@ -185,6 +187,12 @@ class ChunkedDownload(DownloadBase):
             be sent with each request, e.g. headers for data encryption
             key headers.
 
+    Attributes:
+        media_url (str): The URL containing the media to be downloaded.
+        start (Optional[int]): The first byte in a range to be downloaded.
+        end (Optional[int]): The last byte in a range to be downloaded.
+        chunk_size (int): The number of bytes to be retrieved in each request.
+
     Raises:
         ValueError: If ``start`` is negative.
     """
@@ -198,7 +206,6 @@ class ChunkedDownload(DownloadBase):
         super(ChunkedDownload, self).__init__(
             media_url, start=start, end=end, headers=headers)
         self.chunk_size = chunk_size
-        """int: The number of bytes to be retrieved in each request."""
         self._stream = stream
         self._bytes_downloaded = 0
         self._total_bytes = None
