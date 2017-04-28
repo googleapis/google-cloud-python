@@ -282,7 +282,7 @@ def _resumable_upload_helper(authorized_transport, stream, cleanup,
     cleanup(blob_name, authorized_transport)
     check_does_not_exist(authorized_transport, blob_name)
     # Create the actual upload object.
-    chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
+    chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
     upload = resumable_requests.ResumableUpload(
         utils.RESUMABLE_UPLOAD, chunk_size, headers=headers)
     # Initiate the upload.
@@ -330,11 +330,11 @@ def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
     blob_name = os.path.basename(stream.name)
     # Create the actual upload object.
     upload = resumable_requests.ResumableUpload(
-        utils.RESUMABLE_UPLOAD, upload_mod.UPLOAD_CHUNK_SIZE)
+        utils.RESUMABLE_UPLOAD, resumable_media.UPLOAD_CHUNK_SIZE)
     # Modify the ``upload`` **after** construction so we can
     # use a bad chunk size.
     upload._chunk_size = 1024
-    assert upload._chunk_size < upload_mod.UPLOAD_CHUNK_SIZE
+    assert upload._chunk_size < resumable_media.UPLOAD_CHUNK_SIZE
     # Initiate the upload.
     metadata = {u'name': blob_name}
     response = upload.initiate(
@@ -345,7 +345,7 @@ def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
     check_bad_chunk(upload, authorized_transport)
     # Reset the chunk size (and the stream) and verify the "resumable"
     # URL is unusable.
-    upload._chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
+    upload._chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
     stream.seek(0)
     upload._invalid = False
     check_bad_chunk(upload, authorized_transport)
@@ -369,7 +369,7 @@ def sabotage_and_recover(upload, stream, transport, chunk_size):
 def _resumable_upload_recover_helper(authorized_transport, cleanup,
                                      headers=None):
     blob_name = u'some-bytes.bin'
-    chunk_size = upload_mod.UPLOAD_CHUNK_SIZE
+    chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
     data = b'123' * chunk_size  # 3 chunks worth.
     # Make sure to clean up the uploaded blob when we are done.
     cleanup(blob_name, authorized_transport)
