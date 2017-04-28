@@ -208,10 +208,11 @@ class ChunkedDownload(_helpers.RequestsMixin, _download.DownloadBase):
             response, _download.ACCEPTABLE_STATUS_CODES,
             self._get_status_code, callback=self._make_invalid)
         content_length = _base_helpers.header_required(
-            response, u'content-length', callback=self._make_invalid)
+            response, u'content-length', self._get_headers,
+            callback=self._make_invalid)
         num_bytes = int(content_length)
         _, end_byte, total_bytes = _download.get_range_info(
-            response, callback=self._make_invalid)
+            response, self._get_headers, callback=self._make_invalid)
         response_body = _helpers.get_body(response)
         if len(response_body) != num_bytes:
             self._make_invalid()

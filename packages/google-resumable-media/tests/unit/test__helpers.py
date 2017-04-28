@@ -25,12 +25,6 @@ def test_do_nothing():
     assert ret_val is None
 
 
-def test_get_headers():
-    headers = {u'fruit': u'apple'}
-    response = mock.Mock(headers=headers, spec=[u'headers'])
-    assert headers == _helpers.get_headers(response)
-
-
 class Test_header_required(object):
 
     def test_success(self):
@@ -38,14 +32,14 @@ class Test_header_required(object):
         value = u'The Right Hand Side'
         headers = {name: value, u'other-name': u'other-value'}
         response = mock.Mock(headers=headers, spec=[u'headers'])
-        result = _helpers.header_required(response, name)
+        result = _helpers.header_required(response, name, _get_headers)
         assert result == value
 
     def test_failure(self):
         response = mock.Mock(headers={}, spec=[u'headers'])
         name = u'any-name'
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
-            _helpers.header_required(response, name)
+            _helpers.header_required(response, name, _get_headers)
 
         error = exc_info.value
         assert error.response is response
@@ -228,3 +222,7 @@ def _make_response(status_code):
 
 def _get_status_code(response):
     return response.status_code
+
+
+def _get_headers(response):
+    return response.headers

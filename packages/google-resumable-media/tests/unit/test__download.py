@@ -175,7 +175,7 @@ class Test_get_range_info(object):
         content_range = u'Bytes 7-11/42'
         response = self._make_response(content_range)
         start_byte, end_byte, total_bytes = _download.get_range_info(
-            response)
+            response, _get_headers)
         assert start_byte == 7
         assert end_byte == 11
         assert total_bytes == 42
@@ -184,7 +184,7 @@ class Test_get_range_info(object):
         content_range = u'nope x-6/y'
         response = self._make_response(content_range)
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
-            _download.get_range_info(response)
+            _download.get_range_info(response, _get_headers)
 
         error = exc_info.value
         assert error.response is response
@@ -194,3 +194,7 @@ class Test_get_range_info(object):
 
 def _get_status_code(response):
     return response.status_code
+
+
+def _get_headers(response):
+    return response.headers

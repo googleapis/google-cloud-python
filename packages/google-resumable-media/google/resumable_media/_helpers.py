@@ -51,26 +51,15 @@ def do_nothing():
     """Simple default callback."""
 
 
-def get_headers(response):
-    """Access the headers from an HTTP response.
-
-    Args:
-        response (object): The HTTP response object.
-
-    Returns:
-        Mapping[str, str]: The header mapping (expect keys to either be
-        all lowercase, or case-insensitive).
-    """
-    return response.headers
-
-
-def header_required(response, name, callback=do_nothing):
+def header_required(response, name, get_headers, callback=do_nothing):
     """Checks that a specific header is in a headers dictionary.
 
     Args:
         response (object): An HTTP response object, expected to have a
             ``headers`` attribute that is a ``Mapping[str, str]``.
         name (str): The name of a required header.
+        get_headers (Callable[Any, Mapping[str, str]]): Helper to get headers
+            from an HTTP response.
         callback (Optional[Callable]): A callback that takes no arguments,
             to be executed when an exception is being raised.
 

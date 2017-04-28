@@ -42,6 +42,19 @@ class RequestsMixin(object):
         """
         return response.status_code
 
+    @staticmethod
+    def _get_headers(response):
+        """Access the headers from an HTTP response.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Returns:
+            Mapping[str, str]: The header mapping (expect keys to either be
+            all lowercase, or case-insensitive).
+        """
+        return response.headers
+
 
 def get_body(response):
     """Access the response body from an HTTP response.

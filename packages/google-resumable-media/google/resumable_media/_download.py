@@ -197,11 +197,13 @@ def add_bytes_range(start, end, headers):
     headers[_helpers.RANGE_HEADER] = u'bytes=' + bytes_range
 
 
-def get_range_info(response, callback=_helpers.do_nothing):
+def get_range_info(response, get_headers, callback=_helpers.do_nothing):
     """Get the start, end and total bytes from a content range header.
 
     Args:
         response (object): An HTTP response object.
+        get_headers (Callable[Any, Mapping[str, str]]): Helper to get headers
+            from an HTTP response.
         callback (Optional[Callable]): A callback that takes no arguments,
             to be executed when an exception is being raised.
 
@@ -214,7 +216,8 @@ def get_range_info(response, callback=_helpers.do_nothing):
             ``bytes {start}-{end}/{total}``.
     """
     content_range = _helpers.header_required(
-        response, _helpers.CONTENT_RANGE_HEADER)
+        response, _helpers.CONTENT_RANGE_HEADER,
+        get_headers, callback=callback)
     match = _CONTENT_RANGE_RE.match(content_range)
     if match is None:
         callback()

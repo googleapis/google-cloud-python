@@ -15,7 +15,6 @@
 import mock
 from six.moves import http_client
 
-import google.resumable_media._helpers as _base_helpers
 from google.resumable_media.requests import _helpers
 
 
@@ -25,6 +24,11 @@ class TestRequestsMixin(object):
         status_code = int(http_client.OK)
         response = _make_response(status_code)
         assert status_code == _helpers.RequestsMixin._get_status_code(response)
+
+    def test__get_headers(self):
+        headers = {u'fruit': u'apple'}
+        response = mock.Mock(headers=headers, spec=[u'headers'])
+        assert headers == _helpers.RequestsMixin._get_headers(response)
 
 
 def test_get_body():

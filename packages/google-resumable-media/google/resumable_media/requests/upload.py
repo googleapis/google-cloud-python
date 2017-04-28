@@ -322,7 +322,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         self._resumable_url = _base_helpers.header_required(
-            response, u'location')
+            response, u'location', self._get_headers)
 
     def initiate(self, transport, stream, metadata, content_type):
         """Initiate a resumable upload.
@@ -435,7 +435,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.UploadBase):
         else:
             bytes_range = _base_helpers.header_required(
                 response, _base_helpers.RANGE_HEADER,
-                callback=self._make_invalid)
+                self._get_headers, callback=self._make_invalid)
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 self._make_invalid()
@@ -554,7 +554,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.UploadBase):
         """
         _base_helpers.require_status_code(
             response, (PERMANENT_REDIRECT,), self._get_status_code)
-        headers = _base_helpers.get_headers(response)
+        headers = _helpers.RequestsMixin._get_headers(response)
         if _base_helpers.RANGE_HEADER in headers:
             bytes_range = headers[_base_helpers.RANGE_HEADER]
             match = _BYTES_RANGE_RE.match(bytes_range)
