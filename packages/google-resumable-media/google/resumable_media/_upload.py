@@ -51,6 +51,8 @@ _STREAM_ERROR_TEMPLATE = (
     u'Bytes stream is in unexpected state. '
     u'The local stream has had {:d} bytes read from it while '
     u'{:d} bytes have already been updated (they should match).')
+_POST = u'POST'
+_PUT = u'PUT'
 
 
 class UploadBase(object):
@@ -141,7 +143,7 @@ class SimpleUpload(UploadBase):
         upload_url (str): The URL where the content will be uploaded.
     """
 
-    def _prepare_request(self, content_type):
+    def _prepare_request(self, data, content_type):
         """Prepare the contents of an HTTP request.
 
         This is everything that must be done before a request that doesn't
@@ -154,21 +156,30 @@ class SimpleUpload(UploadBase):
             mutated by having a new key added to it.
 
         Args:
+            data (bytes): The resource content to be uploaded.
             content_type (str): The content type for the request.
 
         Returns:
-            dict: The headers for the request.
+            Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always POST)
+              * the URL for the request
+              * the body of the request
+              * headers for the request
 
         Raises:
             ValueError: If the current upload has already finished.
+            TypeError: If ``data`` isn't bytes.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if self.finished:
             raise ValueError(u'An upload can only be used once.')
 
+        if not isinstance(data, six.binary_type):
+            raise TypeError(u'`data` must be bytes, received', type(data))
         self._headers[_CONTENT_TYPE_HEADER] = content_type
-        return self._headers
+        return _POST, self.upload_url, data, self._headers
 
     def transmit(self, transport, data, content_type):
         """Transmit the resource to be uploaded.
@@ -221,7 +232,12 @@ class MultipartUpload(UploadBase):
                 image has content type ``image/jpeg``.
 
         Returns:
-            Tuple[bytes, dict]: The payload and headers for the request.
+            Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always POST)
+              * the URL for the request
+              * the body of the request
+              * headers for the request
 
         Raises:
             ValueError: If the current upload has already finished.
@@ -238,7 +254,7 @@ class MultipartUpload(UploadBase):
             data, metadata, content_type)
         multipart_content_type = _RELATED_HEADER + multipart_boundary + b'"'
         self._headers[_CONTENT_TYPE_HEADER] = multipart_content_type
-        return content, self._headers
+        return _POST, self.upload_url, content, self._headers
 
     def transmit(self, transport, data, metadata, content_type):
         """Transmit the resource to be uploaded.
@@ -340,7 +356,12 @@ class ResumableUpload(UploadBase):
                 image has content type ``image/jpeg``.
 
         Returns:
-            Tuple[bytes, dict]: The payload and headers for the request.
+            Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always POST)
+              * the URL for the request
+              * the body of the request
+              * headers for the request
 
         Raises:
             ValueError: If the current upload has already been initiated.
@@ -363,7 +384,7 @@ class ResumableUpload(UploadBase):
         }
         headers.update(self._headers)
         payload = json.dumps(metadata).encode(u'utf-8')
-        return payload, headers
+        return _POST, self.upload_url, payload, headers
 
     def _process_initiate_response(self, response):
         """Process the response from an HTTP request that initiated upload.
@@ -414,8 +435,14 @@ class ResumableUpload(UploadBase):
         will (almost) certainly not be network I/O.
 
         Returns:
-            Tuple[bytes, dict]: The payload and headers for the request. The
-            headers **do not** incorporate the ``_headers`` on the
+            Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always PUT)
+              * the URL for the request
+              * the body of the request
+              * headers for the request
+
+            The headers **do not** incorporate the ``_headers`` on the
             current instance.
 
         Raises:
@@ -450,7 +477,7 @@ class ResumableUpload(UploadBase):
             _CONTENT_TYPE_HEADER: self._content_type,
             _helpers.CONTENT_RANGE_HEADER: content_range,
         }
-        return payload, headers
+        return _PUT, self.resumable_url, payload, headers
 
     def _make_invalid(self):
         """Simple setter for ``invalid``.
@@ -521,8 +548,15 @@ class ResumableUpload(UploadBase):
         the upload can end up :attr:`invalid` is if it has been initiated.
 
         Returns:
-            dict: The headers for the request (they **do not** incorporate the
-            ``_headers`` on the current instance).
+            Tuple[str, str, NoneType, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always PUT)
+              * the URL for the request
+              * the body of the request (always :data:`None`)
+              * headers for the request
+
+            The headers **do not** incorporate the ``_headers`` on the
+            current instance.
 
         Raises:
             ValueError: If the current upload is not in an invalid state.
@@ -534,7 +568,7 @@ class ResumableUpload(UploadBase):
                 u'Upload is not in invalid state, no need to recover.')
 
         headers = {_helpers.CONTENT_RANGE_HEADER: u'bytes */*'}
-        return headers
+        return _PUT, self.resumable_url, None, headers
 
     def _process_recover_response(self, response):
         """Process the response from an HTTP request to recover from failure.

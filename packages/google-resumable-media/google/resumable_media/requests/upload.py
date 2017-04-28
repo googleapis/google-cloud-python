@@ -51,9 +51,10 @@ class SimpleUpload(_helpers.RequestsMixin, _upload.SimpleUpload):
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
         """
-        headers = self._prepare_request(content_type)
+        method, url, payload, headers = self._prepare_request(
+            data, content_type)
         result = _helpers.http_request(
-            transport, u'POST', self.upload_url, data=data, headers=headers)
+            transport, method, url, data=payload, headers=headers)
         self._process_response(result)
         return result
 
@@ -88,9 +89,10 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.MultipartUpload):
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
         """
-        payload, headers = self._prepare_request(data, metadata, content_type)
+        method, url, payload, headers = self._prepare_request(
+            data, metadata, content_type)
         result = _helpers.http_request(
-            transport, u'POST', self.upload_url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers)
         self._process_response(result)
         return result
 
@@ -136,10 +138,10 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
         """
-        payload, headers = self._prepare_initiate_request(
+        method, url, payload, headers = self._prepare_initiate_request(
             stream, metadata, content_type)
         result = _helpers.http_request(
-            transport, u'POST', self.upload_url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers)
         self._process_initiate_response(result)
         return result
 
@@ -200,10 +202,9 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
             ~google.resumable_media.exceptions.InvalidResponse: If the status
                 code is not 200 or 308.
         """
-        payload, headers = self._prepare_request()
+        method, url, payload, headers = self._prepare_request()
         result = _helpers.http_request(
-            transport, u'PUT', self.resumable_url,
-            data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers)
         self._process_response(result)
         return result
 
@@ -224,8 +225,9 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
         """
-        headers = self._prepare_recover_request()
+        method, url, payload, headers = self._prepare_recover_request()
+        # NOTE: We assume "payload is None" but pass it along anyway.
         result = _helpers.http_request(
-            transport, u'PUT', self.resumable_url, headers=headers)
+            transport, method, url, data=payload, headers=headers)
         self._process_recover_response(result)
         return result

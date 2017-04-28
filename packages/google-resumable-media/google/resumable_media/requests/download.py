@@ -57,9 +57,10 @@ class Download(_helpers.RequestsMixin, _download.Download):
             ValueError: If the current :class:`Download` has already
                 finished.
         """
-        headers = self._prepare_request()
+        method, url, payload, headers = self._prepare_request()
+        # NOTE: We assume "payload is None" but pass it along anyway.
         result = _helpers.http_request(
-            transport, u'GET', self.media_url, headers=headers)
+            transport, method, url, data=payload, headers=headers)
         self._process_response(result)
         return result
 
@@ -105,8 +106,9 @@ class ChunkedDownload(_helpers.RequestsMixin, _download.ChunkedDownload):
         Raises:
             ValueError: If the current download has finished.
         """
-        headers = self._prepare_request()
+        method, url, payload, headers = self._prepare_request()
+        # NOTE: We assume "payload is None" but pass it along anyway.
         result = _helpers.http_request(
-            transport, u'GET', self.media_url, headers=headers)
+            transport, method, url, data=payload, headers=headers)
         self._process_response(result)
         return result

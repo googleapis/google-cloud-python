@@ -116,20 +116,42 @@ class TestSimpleUpload(object):
     def test__prepare_request_already_finished(self):
         upload = _upload.SimpleUpload(SIMPLE_URL)
         upload._finished = True
-        with pytest.raises(ValueError):
-            upload._prepare_request(None)
+        with pytest.raises(ValueError) as exc_info:
+            upload._prepare_request(b'', None)
+
+        exc_info.match(u'An upload can only be used once.')
+
+    def test__prepare_request_non_bytes_data(self):
+        upload = _upload.SimpleUpload(SIMPLE_URL)
+        assert not upload.finished
+        with pytest.raises(TypeError) as exc_info:
+            upload._prepare_request(u'', None)
+
+        exc_info.match(u'must be bytes')
 
     def test__prepare_request(self):
         upload = _upload.SimpleUpload(SIMPLE_URL)
         content_type = u'image/jpeg'
-        headers = upload._prepare_request(content_type)
+        data = b'cheetos and eetos'
+        method, url, payload, headers = upload._prepare_request(
+            data, content_type)
+
+        assert method == u'POST'
+        assert url == SIMPLE_URL
+        assert payload == data
         assert headers == {u'content-type': content_type}
 
     def test__prepare_request_with_headers(self):
         headers = {u'x-goog-cheetos': u'spicy'}
         upload = _upload.SimpleUpload(SIMPLE_URL, headers=headers)
         content_type = u'image/jpeg'
-        new_headers = upload._prepare_request(content_type)
+        data = b'some stuff'
+        method, url, payload, new_headers = upload._prepare_request(
+            data, content_type)
+
+        assert method == u'POST'
+        assert url == SIMPLE_URL
+        assert payload == data
         assert new_headers is headers
         expected = {u'content-type': content_type, u'x-goog-cheetos': u'spicy'}
         assert headers == expected
@@ -163,9 +185,11 @@ class TestMultipartUpload(object):
         data = b'Hi'
         metadata = {u'Some': u'Stuff'}
         content_type = BASIC_CONTENT
-        payload, new_headers = upload._prepare_request(
+        method, url, payload, new_headers = upload._prepare_request(
             data, metadata, content_type)
 
+        assert method == u'POST'
+        assert url == MULTIPART_URL
         expected_payload = (
             b'--==3==\r\n' +
             JSON_TYPE_LINE +
@@ -305,7 +329,7 @@ class TestResumableUpload(object):
         assert upload._content_type is None
         assert upload._total_bytes is None
         # Call the method and check the output.
-        payload, headers = upload._prepare_initiate_request(
+        method, url, payload, headers = upload._prepare_initiate_request(
             stream, metadata, BASIC_CONTENT)
         assert payload == b'{"name": "big-data-file.txt"}'
         # Make sure the ``upload``-s state was updated.
@@ -315,6 +339,8 @@ class TestResumableUpload(object):
         # Make sure headers are untouched.
         assert headers is not upload._headers
         assert upload._headers == orig_headers
+        assert method == u'POST'
+        assert url == upload.upload_url
         # Make sure the stream is still at the beginning.
         assert stream.tell() == 0
 
@@ -451,8 +477,10 @@ class TestResumableUpload(object):
     def _prepare_request_helper(self, headers=None):
         data = b'All of the data goes in a stream.'
         upload = self._upload_in_flight(data, headers=headers)
-        payload, new_headers = upload._prepare_request()
+        method, url, payload, new_headers = upload._prepare_request()
         # Check the response values.
+        assert method == u'PUT'
+        assert url == upload.resumable_url
         assert payload == data
         # Make sure headers are **NOT** updated
         assert upload._headers != new_headers
@@ -590,7 +618,10 @@ class TestResumableUpload(object):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         upload._invalid = True
 
-        headers = upload._prepare_recover_request()
+        method, url, payload, headers = upload._prepare_recover_request()
+        assert method == u'PUT'
+        assert url == upload.resumable_url
+        assert payload is None
         assert headers == {u'content-range': u'bytes */*'}
         # Make sure headers are untouched.
         assert upload._headers == {}
@@ -601,7 +632,10 @@ class TestResumableUpload(object):
             RESUMABLE_URL, ONE_MB, headers=headers)
         upload._invalid = True
 
-        new_headers = upload._prepare_recover_request()
+        method, url, payload, new_headers = upload._prepare_recover_request()
+        assert method == u'PUT'
+        assert url == upload.resumable_url
+        assert payload is None
         assert new_headers == {u'content-range': u'bytes */*'}
         # Make sure the ``_headers`` are not incorporated.
         assert u'lake' not in new_headers

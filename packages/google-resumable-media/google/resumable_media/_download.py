@@ -26,7 +26,8 @@ from google.resumable_media import exceptions
 _CONTENT_RANGE_RE = re.compile(
     r'bytes (?P<start_byte>\d+)-(?P<end_byte>\d+)/(?P<total_bytes>\d+)',
     flags=re.IGNORECASE)
-ACCEPTABLE_STATUS_CODES = (http_client.OK, http_client.PARTIAL_CONTENT)
+_ACCEPTABLE_STATUS_CODES = (http_client.OK, http_client.PARTIAL_CONTENT)
+_GET = u'GET'
 
 
 class DownloadBase(object):
@@ -125,7 +126,12 @@ class Download(DownloadBase):
         philosophy.
 
         Returns:
-            Mapping[str, str]: The headers for the request.
+            Tuple[str, str, NoneType, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always GET)
+              * the URL for the request
+              * the body of the request (always :data:`None`)
+              * headers for the request
 
         Raises:
             ValueError: If the current :class:`Download` has already
@@ -137,7 +143,7 @@ class Download(DownloadBase):
             raise ValueError(u'A download can only be used once.')
 
         add_bytes_range(self.start, self.end, self._headers)
-        return self._headers
+        return _GET, self.media_url, None, self._headers
 
     def _process_response(self, response):
         """Process the response from an HTTP request.
@@ -154,7 +160,7 @@ class Download(DownloadBase):
         # Tombstone the current Download so it cannot be used again.
         self._finished = True
         _helpers.require_status_code(
-            response, ACCEPTABLE_STATUS_CODES, self._get_status_code)
+            response, _ACCEPTABLE_STATUS_CODES, self._get_status_code)
 
     def consume(self, transport):
         """Consume the resource to be downloaded.
@@ -260,7 +266,12 @@ class ChunkedDownload(DownloadBase):
             since the same keys are being updated.
 
         Returns:
-            Mapping[str, str]: The headers for the request.
+            Tuple[str, str, NoneType, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always GET)
+              * the URL for the request
+              * the body of the request (always :data:`None`)
+              * headers for the request
 
         Raises:
             ValueError: If the current download has finished.
@@ -275,7 +286,7 @@ class ChunkedDownload(DownloadBase):
 
         curr_start, curr_end = self._get_byte_range()
         add_bytes_range(curr_start, curr_end, self._headers)
-        return self._headers
+        return _GET, self.media_url, None, self._headers
 
     def _make_invalid(self):
         """Simple setter for ``invalid``.
@@ -321,7 +332,7 @@ class ChunkedDownload(DownloadBase):
         """
         # Verify the response before updating the current instance.
         _helpers.require_status_code(
-            response, ACCEPTABLE_STATUS_CODES,
+            response, _ACCEPTABLE_STATUS_CODES,
             self._get_status_code, callback=self._make_invalid)
         content_length = _helpers.header_required(
             response, u'content-length', self._get_headers,

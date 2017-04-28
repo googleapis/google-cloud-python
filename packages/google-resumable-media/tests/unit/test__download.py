@@ -91,18 +91,27 @@ class TestDownload(object):
 
     def test__prepare_request(self):
         download1 = _download.Download(EXAMPLE_URL)
-        headers1 = download1._prepare_request()
+        method1, url1, payload1, headers1 = download1._prepare_request()
+        assert method1 == u'GET'
+        assert url1 == EXAMPLE_URL
+        assert payload1 is None
         assert headers1 == {}
 
         download2 = _download.Download(EXAMPLE_URL, start=53)
-        headers2 = download2._prepare_request()
+        method2, url2, payload2, headers2 = download2._prepare_request()
+        assert method2 == u'GET'
+        assert url2 == EXAMPLE_URL
+        assert payload2 is None
         assert headers2 == {u'range': u'bytes=53-'}
 
     def test__prepare_request_with_headers(self):
         headers = {u'spoonge': u'borb'}
         download = _download.Download(
             EXAMPLE_URL, start=11, end=111, headers=headers)
-        new_headers = download._prepare_request()
+        method, url, payload, new_headers = download._prepare_request()
+        assert method == u'GET'
+        assert url == EXAMPLE_URL
+        assert payload is None
         assert new_headers is headers
         assert headers == {u'range': u'bytes=11-111', u'spoonge': u'borb'}
 
@@ -268,13 +277,19 @@ class TestChunkedDownload(object):
     def test__prepare_request(self):
         chunk_size = 2048
         download1 = _download.ChunkedDownload(EXAMPLE_URL, chunk_size, None)
-        headers1 = download1._prepare_request()
+        method1, url1, payload1, headers1 = download1._prepare_request()
+        assert method1 == u'GET'
+        assert url1 == EXAMPLE_URL
+        assert payload1 is None
         assert headers1 == {u'range': u'bytes=0-2047'}
 
         download2 = _download.ChunkedDownload(
             EXAMPLE_URL, chunk_size, None, start=19991)
         download2._total_bytes = 20101
-        headers2 = download2._prepare_request()
+        method2, url2, payload2, headers2 = download2._prepare_request()
+        assert method2 == u'GET'
+        assert url2 == EXAMPLE_URL
+        assert payload2 is None
         assert headers2 == {u'range': u'bytes=19991-20100'}
 
     def test__prepare_request_with_headers(self):
@@ -282,7 +297,10 @@ class TestChunkedDownload(object):
         headers = {u'patrizio': u'Starf-ish'}
         download = _download.ChunkedDownload(
             EXAMPLE_URL, chunk_size, None, headers=headers)
-        new_headers = download._prepare_request()
+        method, url, payload, new_headers = download._prepare_request()
+        assert method == u'GET'
+        assert url == EXAMPLE_URL
+        assert payload is None
         assert new_headers is headers
         expected = {u'patrizio': u'Starf-ish', u'range': u'bytes=0-2047'}
         assert headers == expected
