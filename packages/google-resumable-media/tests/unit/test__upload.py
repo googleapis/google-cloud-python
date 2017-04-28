@@ -55,6 +55,7 @@ class TestUploadBase(object):
 
     def test__process_response_bad_status(self):
         upload = _upload.UploadBase(SIMPLE_URL)
+        upload._get_status_code = _get_status_code
         # Make sure **not finished** before.
         assert not upload.finished
         status_code = http_client.SERVICE_UNAVAILABLE
@@ -72,6 +73,7 @@ class TestUploadBase(object):
 
     def test__process_response(self):
         upload = _upload.UploadBase(SIMPLE_URL)
+        upload._get_status_code = _get_status_code
         # Make sure **not finished** before.
         assert not upload.finished
         response = _make_response()
@@ -80,6 +82,16 @@ class TestUploadBase(object):
         # Make sure **finished** after.
         assert upload.finished
 
+    def test__get_status_code(self):
+        with pytest.raises(NotImplementedError) as exc_info:
+            _upload.UploadBase._get_status_code(None)
+
+        exc_info.match(u'virtual')
+
 
 def _make_response(status_code=http_client.OK):
     return mock.Mock(status_code=status_code, spec=[u'status_code'])
+
+
+def _get_status_code(response):
+    return response.status_code

@@ -23,6 +23,51 @@ import functools
 from google.resumable_media import _helpers
 
 
+class RequestsMixin(object):
+    """Mix-in class implementing ``requests``-specific behavior.
+
+    These are methods that are more general purpose, with implementations
+    specific to the types defined in ``requests``.
+    """
+
+    @staticmethod
+    def _get_status_code(response):
+        """Access the status code from an HTTP response.
+
+        Args:
+            response (~requests.Response): The HTTP response object.
+
+        Returns:
+            int: The status code.
+        """
+        return response.status_code
+
+
+def get_body(response):
+    """Access the response body from an HTTP response.
+
+    Args:
+        response (~requests.Response): The HTTP response object.
+
+    Returns:
+        bytes: The body of the ``response``.
+    """
+    return response.content
+
+
+def not_retryable_predicate(response):
+    """Determines if a ``response`` is retryable.
+
+    Args:
+        object: The return value of ``transport.request()``.
+
+    Returns:
+        bool: If the ``response`` is **not** retryable (which is
+        the "success" state).
+    """
+    return RequestsMixin._get_status_code(response) not in _helpers.RETRYABLE
+
+
 def http_request(transport, method, url, data=None, headers=None):
     """Make an HTTP request.
 
@@ -42,4 +87,4 @@ def http_request(transport, method, url, data=None, headers=None):
     """
     func = functools.partial(
         transport.request, method, url, data=data, headers=headers)
-    return _helpers.wait_and_retry(func, _helpers.not_retryable_predicate)
+    return _helpers.wait_and_retry(func, not_retryable_predicate)

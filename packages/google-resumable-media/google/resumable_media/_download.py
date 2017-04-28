@@ -59,6 +59,18 @@ class DownloadBase(object):
         """bool: Flag indicating if the download has completed."""
         return self._finished
 
+    @staticmethod
+    def _get_status_code(response):
+        """Access the status code from an HTTP response.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError(u'This implementation is virtual.')
+
 
 class Download(DownloadBase):
     """Helper to manage downloading a resource from a Google API.
@@ -115,7 +127,8 @@ class Download(DownloadBase):
         """
         # Tombstone the current Download so it cannot be used again.
         self._finished = True
-        _helpers.require_status_code(response, ACCEPTABLE_STATUS_CODES)
+        _helpers.require_status_code(
+            response, ACCEPTABLE_STATUS_CODES, self._get_status_code)
 
     def consume(self, transport):
         """Consume the resource to be downloaded.

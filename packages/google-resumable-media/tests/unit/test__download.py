@@ -60,6 +60,12 @@ class TestDownloadBase(object):
         download._finished = True
         assert download.finished
 
+    def test__get_status_code(self):
+        with pytest.raises(NotImplementedError) as exc_info:
+            _download.DownloadBase._get_status_code(None)
+
+        exc_info.match(u'virtual')
+
 
 class TestDownload(object):
 
@@ -88,6 +94,7 @@ class TestDownload(object):
 
     def test__process_response(self):
         download = _download.Download(EXAMPLE_URL)
+        download._get_status_code = _get_status_code
         # Make sure **not finished** before.
         assert not download.finished
         response = mock.Mock(
@@ -99,6 +106,7 @@ class TestDownload(object):
 
     def test__process_response_bad_status(self):
         download = _download.Download(EXAMPLE_URL)
+        download._get_status_code = _get_status_code
         # Make sure **not finished** before.
         assert not download.finished
         response = mock.Mock(
@@ -182,3 +190,7 @@ class Test_get_range_info(object):
         assert error.response is response
         assert len(error.args) == 3
         assert error.args[1] == content_range
+
+
+def _get_status_code(response):
+    return response.status_code

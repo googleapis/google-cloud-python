@@ -53,19 +53,11 @@ class Test_header_required(object):
         assert error.args[1] == name
 
 
-def test_get_status_code():
-    status_code = int(http_client.OK)
-    response = _make_response(status_code)
-    assert status_code == _helpers.get_status_code(response)
-
-
-def test_get_body():
-    body = b'This is the payload.'
-    response = mock.Mock(content=body, spec=[u'content'])
-    assert body == _helpers.get_body(response)
-
-
 class Test_require_status_code(object):
+
+    @staticmethod
+    def _get_status_code(response):
+        return response.status_code
 
     def test_success(self):
         status_codes = (http_client.OK, http_client.CREATED)
@@ -77,20 +69,47 @@ class Test_require_status_code(object):
         )
         for value in acceptable:
             response = _make_response(value)
-            status_code = _helpers.require_status_code(response, status_codes)
+            status_code = _helpers.require_status_code(
+                response, status_codes, self._get_status_code)
             assert value == status_code
+
+    def test_success_with_callback(self):
+        status_codes = (http_client.OK,)
+        response = _make_response(http_client.OK)
+        callback = mock.Mock(spec=[])
+        status_code = _helpers.require_status_code(
+            response, status_codes, self._get_status_code, callback=callback)
+        assert status_code == http_client.OK
+        callback.assert_not_called()
 
     def test_failure(self):
         status_codes = (http_client.CREATED, http_client.NO_CONTENT)
         response = _make_response(http_client.OK)
         with pytest.raises(exceptions.InvalidResponse) as exc_info:
-            _helpers.require_status_code(response, status_codes)
+            _helpers.require_status_code(
+                response, status_codes, self._get_status_code)
 
         error = exc_info.value
         assert error.response is response
         assert len(error.args) == 5
         assert error.args[1] == response.status_code
         assert error.args[3:] == status_codes
+
+    def test_failure_with_callback(self):
+        status_codes = (http_client.OK,)
+        response = _make_response(http_client.NOT_FOUND)
+        callback = mock.Mock(spec=[])
+        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+            _helpers.require_status_code(
+                response, status_codes, self._get_status_code,
+                callback=callback)
+
+        error = exc_info.value
+        assert error.response is response
+        assert len(error.args) == 4
+        assert error.args[1] == response.status_code
+        assert error.args[3:] == status_codes
+        callback.assert_called_once_with()
 
 
 class Test_calculate_retry_wait(object):
@@ -179,27 +198,6 @@ class Test_wait_and_retry(object):
         sleep_mock.assert_any_call(16.5)
         sleep_mock.assert_any_call(32.25)
         sleep_mock.assert_any_call(64.125)
-
-
-class Test_not_retryable_predicate(object):
-
-    def test_failure(self):
-        status_codes = (
-            _helpers.TOO_MANY_REQUESTS,
-            http_client.INTERNAL_SERVER_ERROR,
-            http_client.BAD_GATEWAY,
-            http_client.SERVICE_UNAVAILABLE,
-            http_client.GATEWAY_TIMEOUT,
-        )
-        for status_code in status_codes:
-            response = _make_response(status_code)
-            assert not _helpers.not_retryable_predicate(response)
-
-    def test_success(self):
-        status_codes = (http_client.OK, http_client.BAD_REQUEST)
-        for status_code in status_codes:
-            response = _make_response(status_code)
-            assert _helpers.not_retryable_predicate(response)
 
 
 def _make_response(status_code):

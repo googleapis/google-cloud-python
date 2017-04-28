@@ -90,36 +90,15 @@ def header_required(response, name, callback=do_nothing):
     return headers[name]
 
 
-def get_status_code(response):
-    """Access the status code from an HTTP response.
-
-    Args:
-        response (object): The HTTP response object.
-
-    Returns:
-        int: The status code.
-    """
-    return response.status_code
-
-
-def get_body(response):
-    """Access the response body from an HTTP response.
-
-    Args:
-        response (object): The HTTP response object.
-
-    Returns:
-        bytes: The body of the ``response``.
-    """
-    return response.content
-
-
-def require_status_code(response, status_codes, callback=do_nothing):
+def require_status_code(response, status_codes, get_status_code,
+                        callback=do_nothing):
     """Require a response has a status code among a list.
 
     Args:
         response (object): The HTTP response object.
         status_codes (tuple): The acceptable status codes.
+        get_status_code (Callable[Any, int]): Helper to get a status code
+            from a response.
         callback (Optional[Callable]): A callback that takes no arguments,
             to be executed when an exception is being raised.
 
@@ -199,16 +178,3 @@ def wait_and_retry(func, predicate):
             return result
 
     return result
-
-
-def not_retryable_predicate(response):
-    """Determines if a ``response`` is retryable.
-
-    Args:
-        object: The return value of ``transport.request()``.
-
-    Returns:
-        bool: If the ``response`` is **not** retryable (which is
-        the "success" state).
-    """
-    return get_status_code(response) not in RETRYABLE

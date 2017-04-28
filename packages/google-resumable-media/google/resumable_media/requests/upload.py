@@ -67,7 +67,7 @@ For more information, see `RFC 7238`_.
 """
 
 
-class SimpleUpload(_upload.UploadBase):
+class SimpleUpload(_helpers.RequestsMixin, _upload.UploadBase):
     """Upload a resource to a Google API.
 
     A **simple** media upload sends no metadata and completes the upload
@@ -128,7 +128,7 @@ class SimpleUpload(_upload.UploadBase):
         return result
 
 
-class MultipartUpload(_upload.UploadBase):
+class MultipartUpload(_helpers.RequestsMixin, _upload.UploadBase):
     """Upload a resource with metadata to a Google API.
 
     A **multipart** upload sends both metadata and the resource in a single
@@ -201,7 +201,7 @@ class MultipartUpload(_upload.UploadBase):
         return result
 
 
-class ResumableUpload(_upload.UploadBase):
+class ResumableUpload(_helpers.RequestsMixin, _upload.UploadBase):
     """Initiate and fulfill a resumable upload to a Google API.
 
     A **resumable** upload sends an initial request with the resource metadata
@@ -427,7 +427,7 @@ class ResumableUpload(_upload.UploadBase):
         """
         status_code = _base_helpers.require_status_code(
             response, (http_client.OK, PERMANENT_REDIRECT),
-            callback=self._make_invalid)
+            self._get_status_code, callback=self._make_invalid)
         if status_code == http_client.OK:
             self._bytes_uploaded = self._total_bytes
             # Tombstone the current upload so it cannot be used again.
@@ -552,7 +552,8 @@ class ResumableUpload(_upload.UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        _base_helpers.require_status_code(response, (PERMANENT_REDIRECT,))
+        _base_helpers.require_status_code(
+            response, (PERMANENT_REDIRECT,), self._get_status_code)
         headers = _base_helpers.get_headers(response)
         if _base_helpers.RANGE_HEADER in headers:
             bytes_range = headers[_base_helpers.RANGE_HEADER]

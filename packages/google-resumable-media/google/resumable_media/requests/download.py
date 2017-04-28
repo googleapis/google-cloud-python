@@ -21,7 +21,7 @@ from google.resumable_media import exceptions
 from google.resumable_media.requests import _helpers
 
 
-class Download(_download.Download):
+class Download(_helpers.RequestsMixin, _download.Download):
     """Helper to manage downloading a resource from a Google API.
 
     "Slices" of the resource can be retrieved by specifying a range
@@ -61,7 +61,7 @@ class Download(_download.Download):
         return result
 
 
-class ChunkedDownload(_download.DownloadBase):
+class ChunkedDownload(_helpers.RequestsMixin, _download.DownloadBase):
     """Download a resource in chunks from a Google API.
 
     Args:
@@ -206,13 +206,13 @@ class ChunkedDownload(_download.DownloadBase):
         # Verify the response before updating the current instance.
         _base_helpers.require_status_code(
             response, _download.ACCEPTABLE_STATUS_CODES,
-            callback=self._make_invalid)
+            self._get_status_code, callback=self._make_invalid)
         content_length = _base_helpers.header_required(
             response, u'content-length', callback=self._make_invalid)
         num_bytes = int(content_length)
         _, end_byte, total_bytes = _download.get_range_info(
             response, callback=self._make_invalid)
-        response_body = _base_helpers.get_body(response)
+        response_body = _helpers.get_body(response)
         if len(response_body) != num_bytes:
             self._make_invalid()
             raise exceptions.InvalidResponse(

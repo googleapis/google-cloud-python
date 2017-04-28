@@ -174,7 +174,7 @@ uploads that contain both metadata and a small file as payload.</p>
 <dl class="class">
 <dt id="google.resumable_media.requests.upload.MultipartUpload">
 <em class="property">class </em><code class="descclassname">google.resumable_media.requests.upload.</code><code class="descname">MultipartUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.upload.MultipartUpload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.UploadBase</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.UploadBase</span></code></p>
 <p>Upload a resource with metadata to a Google API.</p>
 <p>A <strong>multipart</strong> upload sends both metadata and the resource in a single
 (multipart) request.</p>
@@ -242,7 +242,7 @@ can&#8217;t be used in a &#8220;general&#8221; code base.</p>
 <dl class="class">
 <dt id="google.resumable_media.requests.upload.ResumableUpload">
 <em class="property">class </em><code class="descclassname">google.resumable_media.requests.upload.</code><code class="descname">ResumableUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>chunk_size</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.UploadBase</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.UploadBase</span></code></p>
 <p>Initiate and fulfill a resumable upload to a Google API.</p>
 <p>A <strong>resumable</strong> upload sends an initial request with the resource metadata
 and then gets assigned an upload ID / upload URL to send bytes to.
@@ -403,7 +403,7 @@ code is not 200 or 308.</td>
 <dl class="class">
 <dt id="google.resumable_media.requests.upload.SimpleUpload">
 <em class="property">class </em><code class="descclassname">google.resumable_media.requests.upload.</code><code class="descname">SimpleUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.upload.SimpleUpload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.UploadBase</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.UploadBase</span></code></p>
 <p>Upload a resource to a Google API.</p>
 <p>A <strong>simple</strong> media upload sends no metadata and completes the upload
 in a single request.</p>

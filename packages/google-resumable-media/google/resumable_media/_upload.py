@@ -70,4 +70,17 @@ class UploadBase(object):
         # Tombstone the current upload so it cannot be used again (in either
         # failure or success).
         self._finished = True
-        _helpers.require_status_code(response, (http_client.OK,))
+        _helpers.require_status_code(
+            response, (http_client.OK,), self._get_status_code)
+
+    @staticmethod
+    def _get_status_code(response):
+        """Access the status code from an HTTP response.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError(u'This implementation is virtual.')

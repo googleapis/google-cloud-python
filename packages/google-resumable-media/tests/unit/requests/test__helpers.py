@@ -15,7 +15,43 @@
 import mock
 from six.moves import http_client
 
+import google.resumable_media._helpers as _base_helpers
 from google.resumable_media.requests import _helpers
+
+
+class TestRequestsMixin(object):
+
+    def test__get_status_code(self):
+        status_code = int(http_client.OK)
+        response = _make_response(status_code)
+        assert status_code == _helpers.RequestsMixin._get_status_code(response)
+
+
+def test_get_body():
+    body = b'This is the payload.'
+    response = mock.Mock(content=body, spec=[u'content'])
+    assert body == _helpers.get_body(response)
+
+
+class Test_not_retryable_predicate(object):
+
+    def test_failure(self):
+        status_codes = (
+            _base_helpers.TOO_MANY_REQUESTS,
+            http_client.INTERNAL_SERVER_ERROR,
+            http_client.BAD_GATEWAY,
+            http_client.SERVICE_UNAVAILABLE,
+            http_client.GATEWAY_TIMEOUT,
+        )
+        for status_code in status_codes:
+            response = _make_response(status_code)
+            assert not _helpers.not_retryable_predicate(response)
+
+    def test_success(self):
+        status_codes = (http_client.OK, http_client.BAD_REQUEST)
+        for status_code in status_codes:
+            response = _make_response(status_code)
+            assert _helpers.not_retryable_predicate(response)
 
 
 def test_http_request():
