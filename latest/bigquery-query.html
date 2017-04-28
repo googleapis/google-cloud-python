@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Query &mdash; google-cloud ec8aa13 documentation</title>
+  <title>Query &mdash; google-cloud bd9fdfb documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud ec8aa13 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud bd9fdfb documentation" href="index.html"/>
         <link rel="next" title="Schemas" href="bigquery-schema.html"/>
         <link rel="prev" title="Tables" href="bigquery-table.html"/> 
 
@@ -449,7 +449,14 @@ until set by the server).</td>
 <li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) maximum number of rows to return.</li>
 <li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) token representing a cursor into the table&#8217;s rows.</li>
 <li><strong>start_index</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) zero-based index of starting row</li>
-<li><strong>timeout_ms</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) timeout, in milliseconds, to wait for query to complete</li>
+<li><strong>timeout_ms</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) How long to wait for the query to complete, in
+milliseconds, before the request times out and returns. Note that
+this is only a timeout for the request, not the query. If the query
+takes longer to run than the timeout value, the call returns
+without any results and with the &#8216;jobComplete&#8217; flag set to false.
+You can call GetQueryResults() to wait for the query to complete
+and read the results. The default value is 10000 milliseconds (10
+seconds).</li>
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</li>
@@ -735,7 +742,7 @@ until set by the server).</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'ec8aa13',
+            VERSION:'bd9fdfb',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
