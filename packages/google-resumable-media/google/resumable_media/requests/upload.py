@@ -105,6 +105,165 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
     Using the upload URL, the upload is then done in chunks (determined by
     the user) until all bytes have been uploaded.
 
+    When constructing a resumable upload, only the resumable upload URL and
+    the chunk size are required:
+
+    .. testsetup:: resumable-constructor
+
+       bucket = u'bucket-foo'
+
+    .. doctest:: resumable-constructor
+
+       >>> from google.resumable_media.requests import ResumableUpload
+       >>>
+       >>> url_template = (
+       ...     u'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
+       ...     u'uploadType=resumable')
+       >>> upload_url = url_template.format(bucket=bucket)
+       >>>
+       >>> chunk_size = 3 * 1024 * 1024  # 3MB
+       >>> upload = ResumableUpload(upload_url, chunk_size)
+
+    When initiating an upload (via :meth:`initiate`), the caller is expected
+    to pass the resource being uploaded as a file-like ``stream``. If the size
+    of the resource is explicitly known, it can be passed in directly:
+
+    .. testsetup:: resumable-explicit-size
+
+       import os
+       import tempfile
+
+       import mock
+       import requests
+       from six.moves import http_client
+
+       from google.resumable_media.requests import ResumableUpload
+
+       upload_url = u'http://test.invalid'
+       chunk_size = 3 * 1024 * 1024  # 3MB
+       upload = ResumableUpload(upload_url, chunk_size)
+
+       file_desc, filename = tempfile.mkstemp()
+       os.close(file_desc)
+
+       data = b'some bytes!'
+       with open(filename, u'wb') as file_obj:
+           file_obj.write(data)
+
+       fake_response = requests.Response()
+       fake_response.status_code = int(http_client.OK)
+       fake_response._content = b''
+       resumable_url = u'http://test.invalid?upload_id=7up'
+       fake_response.headers[u'location'] = resumable_url
+
+       post_method = mock.Mock(return_value=fake_response, spec=[])
+       transport = mock.Mock(request=post_method, spec=[u'request'])
+
+    .. doctest:: resumable-explicit-size
+
+       >>> import os
+       >>>
+       >>> upload.total_bytes is None
+       True
+       >>>
+       >>> stream = open(filename, u'rb')
+       >>> total_bytes = os.path.getsize(filename)
+       >>> metadata = {u'name': filename}
+       >>> response = upload.initiate(
+       ...     transport, stream, metadata, u'text/plain',
+       ...     total_bytes=total_bytes)
+       >>> response
+       <Response [200]>
+       >>>
+       >>> upload.total_bytes == total_bytes
+       True
+
+    .. testcleanup:: resumable-explicit-size
+
+       os.remove(filename)
+
+    If the stream is in a "final" state (i.e. it won't have any more bytes
+    written to it), the total number of bytes can be determined implicitly
+    from the ``stream`` itself:
+
+    .. testsetup:: resumable-implicit-size
+
+       import io
+
+       import mock
+       import requests
+       from six.moves import http_client
+
+       from google.resumable_media.requests import ResumableUpload
+
+       upload_url = u'http://test.invalid'
+       chunk_size = 3 * 1024 * 1024  # 3MB
+       upload = ResumableUpload(upload_url, chunk_size)
+
+       fake_response = requests.Response()
+       fake_response.status_code = int(http_client.OK)
+       fake_response._content = b''
+       resumable_url = u'http://test.invalid?upload_id=7up'
+       fake_response.headers[u'location'] = resumable_url
+
+       post_method = mock.Mock(return_value=fake_response, spec=[])
+       transport = mock.Mock(request=post_method, spec=[u'request'])
+
+       data = b'some MOAR bytes!'
+       metadata = {u'name': u'some-file.jpg'}
+       content_type = u'image/jpeg'
+
+    .. doctest:: resumable-implicit-size
+
+       >>> stream = io.BytesIO(data)
+       >>> response = upload.initiate(
+       ...     transport, stream, metadata, content_type)
+       >>>
+       >>> upload.total_bytes == len(data)
+       True
+
+    If the size of the resource is **unknown** when the upload is initiated,
+    the ``stream_final`` argument can be used. This might occur if the
+    resource is being dynamically created on the client (e.g. application
+    logs). To use this argument:
+
+    .. testsetup:: resumable-unknown-size
+
+       import io
+
+       import mock
+       import requests
+       from six.moves import http_client
+
+       from google.resumable_media.requests import ResumableUpload
+
+       upload_url = u'http://test.invalid'
+       chunk_size = 3 * 1024 * 1024  # 3MB
+       upload = ResumableUpload(upload_url, chunk_size)
+
+       fake_response = requests.Response()
+       fake_response.status_code = int(http_client.OK)
+       fake_response._content = b''
+       resumable_url = u'http://test.invalid?upload_id=7up'
+       fake_response.headers[u'location'] = resumable_url
+
+       post_method = mock.Mock(return_value=fake_response, spec=[])
+       transport = mock.Mock(request=post_method, spec=[u'request'])
+
+       metadata = {u'name': u'some-file.jpg'}
+       content_type = u'application/octet-stream'
+
+       stream = io.BytesIO(b'data')
+
+    .. doctest:: resumable-unknown-size
+
+       >>> response = upload.initiate(
+       ...     transport, stream, metadata, content_type,
+       ...     stream_final=False)
+       >>>
+       >>> upload.total_bytes is None
+       True
+
     Args:
         upload_url (str): The URL where the resumable upload will be initiated.
         chunk_size (int): The size of each chunk used to upload the resource.
