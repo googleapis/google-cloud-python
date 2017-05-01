@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.resumable_media.requests package &mdash; google-resumable-media 0.0.4 documentation</title>
+  <title>google.resumable_media.requests &mdash; google-resumable-media 0.0.4 documentation</title>
   
 
   
@@ -93,21 +93,15 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="google.resumable_media.constants.html">google.resumable_media.constants module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google.resumable_media.exceptions.html">google.resumable_media.exceptions module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">google.resumable_media.requests package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="google.resumable_media.requests.download.html">google.resumable_media.requests.download module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="google.resumable_media.requests.upload.html">google.resumable_media.requests.upload module</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#module-google.resumable_media.requests">Module contents</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#authorized-transport">Authorized Transport</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#simple-downloads">Simple Downloads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#chunked-downloads">Chunked Downloads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#simple-uploads">Simple Uploads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#multipart-uploads">Multipart Uploads</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#resumable-uploads">Resumable Uploads</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authorized-transport">Authorized Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simple-downloads">Simple Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chunked-downloads">Chunked Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simple-uploads">Simple Uploads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multipart-uploads">Multipart Uploads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resumable-uploads">Resumable Uploads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.download.html">google.resumable_media.requests.download module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="google.resumable_media.requests.upload.html">google.resumable_media.requests.upload module</a></li>
 </ul>
 </li>
 </ul>
@@ -154,7 +148,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>google.resumable_media.requests package</li>
+      <li><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -173,25 +167,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="google-resumable-media-requests-package">
-<h1>google.resumable_media.requests package<a class="headerlink" href="#google-resumable-media-requests-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.requests.download.html">google.resumable_media.requests.download module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.requests.upload.html">google.resumable_media.requests.upload module</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="module-google.resumable_media.requests">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-google.resumable_media.requests" title="Permalink to this headline">¶</a></h2>
-<p>Utilities for Google Media Downloads and Resumable Uploads.</p>
+  <div class="section" id="module-google.resumable_media.requests">
+<span id="google-resumable-media-requests"></span><h1><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code><a class="headerlink" href="#module-google.resumable_media.requests" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">requests</span></code> utilities for Google Media Downloads and Resumable Uploads.</p>
 <p>This sub-package assumes callers will use the <a class="reference external" href="http://docs.python-requests.org/">requests</a> library
-as transport and <a class="reference external" href="https://google-auth.readthedocs.io/">google-auth</a> for sending authenticated requests
+as transport and <a class="reference external" href="https://google-auth.readthedocs.io/">google-auth</a> for sending authenticated HTTP traffic
 with <code class="docutils literal"><span class="pre">requests</span></code>.</p>
 <div class="section" id="authorized-transport">
-<h3>Authorized Transport<a class="headerlink" href="#authorized-transport" title="Permalink to this headline">¶</a></h3>
+<h2>Authorized Transport<a class="headerlink" href="#authorized-transport" title="Permalink to this headline">¶</a></h2>
 <p>To use <code class="docutils literal"><span class="pre">google-auth</span></code> and <code class="docutils literal"><span class="pre">requests</span></code> to create an authorized transport
 that has read-only access to Google Cloud Storage (GCS):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.auth</span>
@@ -206,7 +189,7 @@ that has read-only access to Google Cloud Storage (GCS):</p>
 </div>
 </div>
 <div class="section" id="simple-downloads">
-<h3>Simple Downloads<a class="headerlink" href="#simple-downloads" title="Permalink to this headline">¶</a></h3>
+<h2>Simple Downloads<a class="headerlink" href="#simple-downloads" title="Permalink to this headline">¶</a></h2>
 <p>To download an object from Google Cloud Storage, construct the media URL
 for the GCS object and download it with an authorized transport that has
 access to the resource:</p>
@@ -248,14 +231,14 @@ specify <code class="docutils literal"><span class="pre">start</span></code> and
 </div>
 </div>
 <div class="section" id="chunked-downloads">
-<h3>Chunked Downloads<a class="headerlink" href="#chunked-downloads" title="Permalink to this headline">¶</a></h3>
+<h2>Chunked Downloads<a class="headerlink" href="#chunked-downloads" title="Permalink to this headline">¶</a></h2>
 <p>For very large objects or objects of unknown size, it may make more sense
 to download the object in chunks rather than all at once. This can be done
 to avoid dropped connections with a poor internet connection or can allow
 multiple chunks to be downloaded in parallel to speed up the total
 download.</p>
-<p>A <a class="reference internal" href="#google.resumable_media.requests.ChunkedDownload" title="google.resumable_media.requests.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> uses the same media URL and authorized
-transport that a basic <a class="reference internal" href="#google.resumable_media.requests.Download" title="google.resumable_media.requests.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> would use, but also
+<p>A <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.ChunkedDownload" title="google.resumable_media.requests.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> uses the same media URL and authorized
+transport that a basic <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.Download" title="google.resumable_media.requests.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> would use, but also
 requires a chunk size and a write-able byte <code class="docutils literal"><span class="pre">stream</span></code>. The chunk size is used
 to determine how much of the resouce to consume with each request and the
 stream is to allow the resource to be written out (e.g. to disk) without
@@ -319,13 +302,13 @@ not be the same size as the other chunks:</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>In addition, a <a class="reference internal" href="#google.resumable_media.requests.ChunkedDownload" title="google.resumable_media.requests.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> can also take optional
+<p>In addition, a <a class="reference internal" href="google.resumable_media.requests.download.html#google.resumable_media.requests.download.ChunkedDownload" title="google.resumable_media.requests.download.ChunkedDownload"><code class="xref py py-class docutils literal"><span class="pre">ChunkedDownload</span></code></a> can also take optional
 <code class="docutils literal"><span class="pre">start</span></code> and <code class="docutils literal"><span class="pre">end</span></code> byte positions.</p>
 </div>
 <div class="section" id="simple-uploads">
-<h3>Simple Uploads<a class="headerlink" href="#simple-uploads" title="Permalink to this headline">¶</a></h3>
+<h2>Simple Uploads<a class="headerlink" href="#simple-uploads" title="Permalink to this headline">¶</a></h2>
 <p>Among the three supported upload classes, the simplest is
-<a class="reference internal" href="#google.resumable_media.requests.SimpleUpload" title="google.resumable_media.requests.SimpleUpload"><code class="xref py py-class docutils literal"><span class="pre">SimpleUpload</span></code></a>. A simple upload should be used when the resource
+<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.SimpleUpload" title="google.resumable_media.requests.upload.SimpleUpload"><code class="xref py py-class docutils literal"><span class="pre">SimpleUpload</span></code></a>. A simple upload should be used when the resource
 being uploaded is small and when there is no metadata (other than the name)
 associated with the resource.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">SimpleUpload</span>
@@ -378,16 +361,16 @@ will be raised:</p>
 </pre></div>
 </div>
 <p>Even in the case of failure, we see that the upload is
-<a class="reference internal" href="#google.resumable_media.requests.SimpleUpload.finished" title="google.resumable_media.requests.SimpleUpload.finished"><code class="xref py py-attr docutils literal"><span class="pre">finished</span></code></a>, i.e. it cannot be re-used.</p>
+<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.SimpleUpload.finished" title="google.resumable_media.requests.upload.SimpleUpload.finished"><code class="xref py py-attr docutils literal"><span class="pre">finished</span></code></a>, i.e. it cannot be re-used.</p>
 </div>
 <div class="section" id="multipart-uploads">
-<h3>Multipart Uploads<a class="headerlink" href="#multipart-uploads" title="Permalink to this headline">¶</a></h3>
-<p>After the simple upload, the <a class="reference internal" href="#google.resumable_media.requests.MultipartUpload" title="google.resumable_media.requests.MultipartUpload"><code class="xref py py-class docutils literal"><span class="pre">MultipartUpload</span></code></a> can be used to
+<h2>Multipart Uploads<a class="headerlink" href="#multipart-uploads" title="Permalink to this headline">¶</a></h2>
+<p>After the simple upload, the <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.MultipartUpload" title="google.resumable_media.requests.upload.MultipartUpload"><code class="xref py py-class docutils literal"><span class="pre">MultipartUpload</span></code></a> can be used to
 achieve essentially the same task. However, a multipart upload allows some
 metadata about the resource to be sent along as well. (This is the &#8220;multi&#8221;:
 we send a first part with the metadata and a second part with the actual
 bytes in the resource.)</p>
-<p>Usage is similar to the simple upload, but <a class="reference internal" href="#google.resumable_media.requests.MultipartUpload.transmit" title="google.resumable_media.requests.MultipartUpload.transmit"><code class="xref py py-meth docutils literal"><span class="pre">transmit()</span></code></a>
+<p>Usage is similar to the simple upload, but <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.MultipartUpload.transmit" title="google.resumable_media.requests.upload.MultipartUpload.transmit"><code class="xref py py-meth docutils literal"><span class="pre">transmit()</span></code></a>
 accepts an extra required argument: <code class="docutils literal"><span class="pre">metadata</span></code>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">MultipartUpload</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -422,8 +405,8 @@ is raised, enclosing the <a class="reference internal" href="google.resumable_me
 the failure and the <code class="docutils literal"><span class="pre">upload</span></code> object cannot be re-used after a failure.</p>
 </div>
 <div class="section" id="resumable-uploads">
-<h3>Resumable Uploads<a class="headerlink" href="#resumable-uploads" title="Permalink to this headline">¶</a></h3>
-<p>A <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload" title="google.resumable_media.requests.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> deviates from the other two upload classes:
+<h2>Resumable Uploads<a class="headerlink" href="#resumable-uploads" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> deviates from the other two upload classes:
 it transmits a resource over the course of multiple requests. This
 is intended to be used in cases where:</p>
 <ul class="simple">
@@ -435,11 +418,11 @@ is intended to be used in cases where:</p>
 <p>In general, a resource should be sent in a <strong>single</strong> request to avoid
 latency and reduce QPS. See <a class="reference external" href="https://cloud.google.com/storage/docs/best-practices#uploading">GCS best practices</a> for more things to
 consider when using a resumable upload.</p>
-<p>After creating a <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload" title="google.resumable_media.requests.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> instance, a
+<p>After creating a <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> instance, a
 <strong>resumable upload session</strong> must be initiated to let the server know that
 a series of chunked upload requests will be coming and to obtain an
 <code class="docutils literal"><span class="pre">upload_id</span></code> for the session. In contrast to the other two upload classes,
-<a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.initiate" title="google.resumable_media.requests.ResumableUpload.initiate"><code class="xref py py-meth docutils literal"><span class="pre">initiate()</span></code></a> takes a byte <code class="docutils literal"><span class="pre">stream</span></code> as input rather
+<a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload.initiate" title="google.resumable_media.requests.upload.ResumableUpload.initiate"><code class="xref py py-meth docutils literal"><span class="pre">initiate()</span></code></a> takes a byte <code class="docutils literal"><span class="pre">stream</span></code> as input rather
 than raw bytes as <code class="docutils literal"><span class="pre">data</span></code>. This can be a file object, a <a class="reference external" href="https://docs.python.org/3.6/library/io.html#io.BytesIO" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">BytesIO</span></code></a>
 object or any other stream implementing the same interface.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
@@ -470,7 +453,7 @@ object or any other stream implementing the same interface.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>Once a <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload" title="google.resumable_media.requests.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> has been initiated, the resource is
+<p>Once a <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.ResumableUpload" title="google.resumable_media.requests.upload.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> has been initiated, the resource is
 transmitted in chunks until completion:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response0</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response0</span>
@@ -502,512 +485,8 @@ transmitted in chunks until completion:</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<dl class="class">
-<dt id="google.resumable_media.requests.ChunkedDownload">
-<em class="property">class </em><code class="descclassname">google.resumable_media.requests.</code><code class="descname">ChunkedDownload</code><span class="sig-paren">(</span><em>media_url</em>, <em>chunk_size</em>, <em>stream</em>, <em>start=0</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.ChunkedDownload</span></code></p>
-<p>Download a resource in chunks from a Google API.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>media_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL containing the media to be downloaded.</li>
-<li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The number of bytes to be retrieved in each
-request.</li>
-<li><strong>stream</strong> (<em>IO</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em>]</em><em></em>) &#8211; A write-able stream (i.e. file-like object) that
-will be used to concatenate chunks of the resource as they are
-downloaded.</li>
-<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The first byte in a range to be downloaded. If not
-provided, defaults to <code class="docutils literal"><span class="pre">0</span></code>.</li>
-<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The last byte in a range to be downloaded. If not
-provided, will download to the end of the media.</li>
-<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
-be sent with each request, e.g. headers for data encryption
-key headers.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ChunkedDownload.media_url">
-<code class="descname">media_url</code><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.media_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The URL containing the media to be downloaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ChunkedDownload.start">
-<code class="descname">start</code><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.start" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The first byte in a range to be downloaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ChunkedDownload.end">
-<code class="descname">end</code><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.end" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The last byte in a range to be downloaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ChunkedDownload.chunk_size">
-<code class="descname">chunk_size</code><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.chunk_size" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; The number of bytes to be retrieved in each request.</p>
-</dd></dl>
-
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If <code class="docutils literal"><span class="pre">start</span></code> is negative.</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ChunkedDownload.bytes_downloaded">
-<code class="descname">bytes_downloaded</code><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.bytes_downloaded" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; Number of bytes that have been downloaded.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.resumable_media.requests.ChunkedDownload.consume_next_chunk">
-<code class="descname">consume_next_chunk</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.consume_next_chunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Consume the next chunk of the resource to be downloaded.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
-make authenticated requests.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If the current download has finished.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ChunkedDownload.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.finished" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Flag indicating if the download has completed.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ChunkedDownload.invalid">
-<code class="descname">invalid</code><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.invalid" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Indicates if the download is in an invalid state.</p>
-<p>This will occur if a call to <a class="reference internal" href="#google.resumable_media.requests.ChunkedDownload.consume_next_chunk" title="google.resumable_media.requests.ChunkedDownload.consume_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">consume_next_chunk()</span></code></a> fails.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ChunkedDownload.total_bytes">
-<code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.requests.ChunkedDownload.total_bytes" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The total number of bytes to be downloaded.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.resumable_media.requests.Download">
-<em class="property">class </em><code class="descclassname">google.resumable_media.requests.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.Download" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.Download</span></code></p>
-<p>Helper to manage downloading a resource from a Google API.</p>
-<p>&#8220;Slices&#8221; of the resource can be retrieved by specifying a range
-with <code class="docutils literal"><span class="pre">start</span></code> and / or <code class="docutils literal"><span class="pre">end</span></code>. However, in typical usage, neither
-<code class="docutils literal"><span class="pre">start</span></code> nor <code class="docutils literal"><span class="pre">end</span></code> is expected to be provided.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>media_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL containing the media to be downloaded.</li>
-<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The first byte in a range to be downloaded. If not
-provided, but <code class="docutils literal"><span class="pre">end</span></code> is provided, will download from the
-beginning to <code class="docutils literal"><span class="pre">end</span></code> of the media.</li>
-<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The last byte in a range to be downloaded. If not
-provided, but <code class="docutils literal"><span class="pre">start</span></code> is provided, will download from the
-<code class="docutils literal"><span class="pre">start</span></code> to the end of the media.</li>
-<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
-be sent with the request, e.g. headers for encrypted data.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="google.resumable_media.requests.Download.media_url">
-<code class="descname">media_url</code><a class="headerlink" href="#google.resumable_media.requests.Download.media_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The URL containing the media to be downloaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.Download.start">
-<code class="descname">start</code><a class="headerlink" href="#google.resumable_media.requests.Download.start" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The first byte in a range to be downloaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.Download.end">
-<code class="descname">end</code><a class="headerlink" href="#google.resumable_media.requests.Download.end" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The last byte in a range to be downloaded.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.resumable_media.requests.Download.consume">
-<code class="descname">consume</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.Download.consume" title="Permalink to this definition">¶</a></dt>
-<dd><p>Consume the resource to be downloaded.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
-make authenticated requests.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If the current <a class="reference internal" href="#google.resumable_media.requests.Download" title="google.resumable_media.requests.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> has already
-finished.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.Download.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.Download.finished" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Flag indicating if the download has completed.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.resumable_media.requests.MultipartUpload">
-<em class="property">class </em><code class="descclassname">google.resumable_media.requests.</code><code class="descname">MultipartUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.MultipartUpload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.MultipartUpload</span></code></p>
-<p>Upload a resource with metadata to a Google API.</p>
-<p>A <strong>multipart</strong> upload sends both metadata and the resource in a single
-(multipart) request.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the content will be uploaded.</li>
-<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
-be sent with the request, e.g. headers for encrypted data.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="google.resumable_media.requests.MultipartUpload.upload_url">
-<code class="descname">upload_url</code><a class="headerlink" href="#google.resumable_media.requests.MultipartUpload.upload_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The URL where the content will be uploaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.MultipartUpload.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.MultipartUpload.finished" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Flag indicating if the upload has completed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.resumable_media.requests.MultipartUpload.transmit">
-<code class="descname">transmit</code><span class="sig-paren">(</span><em>transport</em>, <em>data</em>, <em>metadata</em>, <em>content_type</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.MultipartUpload.transmit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transmit the resource to be uploaded.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
-make authenticated requests.</li>
-<li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) &#8211; The resource content to be uploaded.</li>
-<li><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]) &#8211; The resource metadata, such as an
-ACL list.</li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The content type of the resource, e.g. a JPEG
-image has content type <code class="docutils literal"><span class="pre">image/jpeg</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.resumable_media.requests.ResumableUpload">
-<em class="property">class </em><code class="descclassname">google.resumable_media.requests.</code><code class="descname">ResumableUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>chunk_size</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.ResumableUpload</span></code></p>
-<p>Initiate and fulfill a resumable upload to a Google API.</p>
-<p>A <strong>resumable</strong> upload sends an initial request with the resource metadata
-and then gets assigned an upload ID / upload URL to send bytes to.
-Using the upload URL, the upload is then done in chunks (determined by
-the user) until all bytes have been uploaded.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the resumable upload will be initiated.</li>
-<li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The size of each chunk used to upload the resource.</li>
-<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
-be sent with the <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.initiate" title="google.resumable_media.requests.ResumableUpload.initiate"><code class="xref py py-meth docutils literal"><span class="pre">initiate()</span></code></a> request, e.g. headers for
-encrypted data. These <strong>will not</strong> be sent with
-<a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.transmit_next_chunk" title="google.resumable_media.requests.ResumableUpload.transmit_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">transmit_next_chunk()</span></code></a> or <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.recover" title="google.resumable_media.requests.ResumableUpload.recover"><code class="xref py py-meth docutils literal"><span class="pre">recover()</span></code></a> requests.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ResumableUpload.upload_url">
-<code class="descname">upload_url</code><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.upload_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The URL where the content will be uploaded.</p>
-</dd></dl>
-
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If <code class="docutils literal"><span class="pre">chunk_size</span></code> is not a multiple of
-<a class="reference internal" href="google.resumable_media.constants.html#google.resumable_media.constants.UPLOAD_CHUNK_SIZE" title="google.resumable_media.constants.UPLOAD_CHUNK_SIZE"><code class="xref py py-data docutils literal"><span class="pre">UPLOAD_CHUNK_SIZE</span></code></a>.</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ResumableUpload.bytes_uploaded">
-<code class="descname">bytes_uploaded</code><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.bytes_uploaded" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; Number of bytes that have been uploaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ResumableUpload.chunk_size">
-<code class="descname">chunk_size</code><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.chunk_size" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; The size of each chunk used to upload the resource.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ResumableUpload.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.finished" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Flag indicating if the upload has completed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.resumable_media.requests.ResumableUpload.initiate">
-<code class="descname">initiate</code><span class="sig-paren">(</span><em>transport</em>, <em>stream</em>, <em>metadata</em>, <em>content_type</em>, <em>total_bytes=None</em>, <em>stream_final=True</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.initiate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiate a resumable upload.</p>
-<p>By default, this method assumes your <code class="docutils literal"><span class="pre">stream</span></code> is in a &#8220;final&#8221;
-state ready to transmit. However, <code class="docutils literal"><span class="pre">stream_final=False</span></code> can be used
-to indicate that the size of the resource is not known. This can happen
-if bytes are being dynamically fed into <code class="docutils literal"><span class="pre">stream</span></code>, e.g. if the stream
-is attached to application logs.</p>
-<p>If <code class="docutils literal"><span class="pre">stream_final=False</span></code> is used, <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.chunk_size" title="google.resumable_media.requests.ResumableUpload.chunk_size"><code class="xref py py-attr docutils literal"><span class="pre">chunk_size</span></code></a> bytes will be
-read from the stream every time <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.transmit_next_chunk" title="google.resumable_media.requests.ResumableUpload.transmit_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">transmit_next_chunk()</span></code></a> is called.
-If one of those reads produces strictly fewer bites than the chunk
-size, the upload will be concluded.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
-make authenticated requests.</li>
-<li><strong>stream</strong> (<em>IO</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em>]</em><em></em>) &#8211; The stream (i.e. file-like object) that will
-be uploaded. The stream <strong>must</strong> be at the beginning (i.e.
-<code class="docutils literal"><span class="pre">stream.tell()</span> <span class="pre">==</span> <span class="pre">0</span></code>).</li>
-<li><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]) &#8211; The resource metadata, such as an
-ACL list.</li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The content type of the resource, e.g. a JPEG
-image has content type <code class="docutils literal"><span class="pre">image/jpeg</span></code>.</li>
-<li><strong>total_bytes</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]) &#8211; The total number of bytes to be
-uploaded. If specified, the upload size <strong>will not</strong> be
-determined from the stream (even if <code class="docutils literal"><span class="pre">stream_final=True</span></code>).</li>
-<li><strong>stream_final</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a> ]) &#8211; Indicates if the <code class="docutils literal"><span class="pre">stream</span></code> is
-&#8220;final&#8221; (i.e. no more bytes will be added to it). In this case
-we determine the upload size from the size of the stream. If
-<code class="docutils literal"><span class="pre">total_bytes</span></code> is passed, this argument will be ignored.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ResumableUpload.invalid">
-<code class="descname">invalid</code><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.invalid" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Indicates if the upload is in an invalid state.</p>
-<p>This will occur if a call to <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.transmit_next_chunk" title="google.resumable_media.requests.ResumableUpload.transmit_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">transmit_next_chunk()</span></code></a> fails.
-To recover from such a failure, call <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.recover" title="google.resumable_media.requests.ResumableUpload.recover"><code class="xref py py-meth docutils literal"><span class="pre">recover()</span></code></a>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.resumable_media.requests.ResumableUpload.recover">
-<code class="descname">recover</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.recover" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recover from a failure.</p>
-<p>This method should be used when a <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload" title="google.resumable_media.requests.ResumableUpload"><code class="xref py py-class docutils literal"><span class="pre">ResumableUpload</span></code></a> is in an
-<a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.invalid" title="google.resumable_media.requests.ResumableUpload.invalid"><code class="xref py py-attr docutils literal"><span class="pre">invalid</span></code></a> state due to a request failure.</p>
-<p>This will verify the progress with the server and make sure the
-current upload is in a valid state before <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.transmit_next_chunk" title="google.resumable_media.requests.ResumableUpload.transmit_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">transmit_next_chunk()</span></code></a>
-can be used again.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
-make authenticated requests.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ResumableUpload.resumable_url">
-<code class="descname">resumable_url</code><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.resumable_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  &#8211; The URL of the in-progress resumable upload.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.ResumableUpload.total_bytes">
-<code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.total_bytes" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The total number of bytes to be uploaded.</p>
-<p>If this upload is initiated (via <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.initiate" title="google.resumable_media.requests.ResumableUpload.initiate"><code class="xref py py-meth docutils literal"><span class="pre">initiate()</span></code></a>) with
-<code class="docutils literal"><span class="pre">stream_final=True</span></code>, this value will be populated based on the size
-of the <code class="docutils literal"><span class="pre">stream</span></code> being uploaded. (By default <code class="docutils literal"><span class="pre">stream_final=True</span></code>.)</p>
-<p>If this upload is initiated with <code class="docutils literal"><span class="pre">stream_final=False</span></code>,
-<a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.total_bytes" title="google.resumable_media.requests.ResumableUpload.total_bytes"><code class="xref py py-attr docutils literal"><span class="pre">total_bytes</span></code></a> will be <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> since it cannot be
-determined from the stream.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.resumable_media.requests.ResumableUpload.transmit_next_chunk">
-<code class="descname">transmit_next_chunk</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.ResumableUpload.transmit_next_chunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transmit the next chunk of the resource to be uploaded.</p>
-<p>If the current upload was initiated with <code class="docutils literal"><span class="pre">stream_final=False</span></code>,
-this method will dynamically determine if the upload has completed.
-The upload will be considered complete if the stream produces
-fewer than <a class="reference internal" href="#google.resumable_media.requests.ResumableUpload.chunk_size" title="google.resumable_media.requests.ResumableUpload.chunk_size"><code class="xref py py-attr docutils literal"><span class="pre">chunk_size</span></code></a> bytes when a chunk is read from it.</p>
-<p>In the case of failure, an exception is thrown that preserves the
-failed response:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">caught_exc</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">error</span> <span class="o">=</span> <span class="n">caught_exc</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">error</span>
-<span class="go">InvalidResponse(&#39;Request failed with status code&#39;, 400,</span>
-<span class="go">                &#39;Expected one of&#39;, &lt;HTTPStatus.OK: 200&gt;, 308)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">error</span><span class="o">.</span><span class="n">response</span>
-<span class="go">&lt;Response [400]&gt;</span>
-</pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
-make authenticated requests.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="google.resumable_media.exceptions.html#google.resumable_media.exceptions.InvalidResponse" title="google.resumable_media.exceptions.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a> &#8211; If the status
-code is not 200 or 308.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.resumable_media.requests.SimpleUpload">
-<em class="property">class </em><code class="descclassname">google.resumable_media.requests.</code><code class="descname">SimpleUpload</code><span class="sig-paren">(</span><em>upload_url</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.SimpleUpload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._upload.SimpleUpload</span></code></p>
-<p>Upload a resource to a Google API.</p>
-<p>A <strong>simple</strong> media upload sends no metadata and completes the upload
-in a single request.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>upload_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The URL where the content will be uploaded.</li>
-<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Mapping" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Mapping</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a> ]  ]) &#8211; Extra headers that should
-be sent with the request, e.g. headers for encrypted data.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
-<dt id="google.resumable_media.requests.SimpleUpload.upload_url">
-<code class="descname">upload_url</code><a class="headerlink" href="#google.resumable_media.requests.SimpleUpload.upload_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The URL where the content will be uploaded.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.resumable_media.requests.SimpleUpload.finished">
-<code class="descname">finished</code><a class="headerlink" href="#google.resumable_media.requests.SimpleUpload.finished" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Flag indicating if the upload has completed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.resumable_media.requests.SimpleUpload.transmit">
-<code class="descname">transmit</code><span class="sig-paren">(</span><em>transport</em>, <em>data</em>, <em>content_type</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.SimpleUpload.transmit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transmit the resource to be uploaded.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.11.1)"><em>Session</em></a>) &#8211; A <code class="docutils literal"><span class="pre">requests</span></code> object which can
-make authenticated requests.</li>
-<li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) &#8211; The resource content to be uploaded.</li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The content type of the resource, e.g. a JPEG
-image has content type <code class="docutils literal"><span class="pre">image/jpeg</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.11.1)">Response</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-</div>
+<div class="toctree-wrapper compound">
 </div>
 </div>
 
