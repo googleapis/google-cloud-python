@@ -110,6 +110,12 @@ class TestUploadBase(object):
 
         exc_info.match(u'virtual')
 
+    def test__get_body(self):
+        with pytest.raises(NotImplementedError) as exc_info:
+            _upload.UploadBase._get_body(None)
+
+        exc_info.match(u'virtual')
+
 
 class TestSimpleUpload(object):
 
@@ -316,7 +322,8 @@ class TestResumableUpload(object):
         upload._total_bytes = 8192
         assert upload.total_bytes == 8192
 
-    def _prepare_initiate_request_helper(self, upload_headers=None):
+    def _prepare_initiate_request_helper(self, upload_headers=None,
+                                         **method_kwargs):
         data = b'some really big big data.'
         stream = io.BytesIO(data)
         metadata = {u'name': u'big-data-file.txt'}
@@ -330,12 +337,15 @@ class TestResumableUpload(object):
         assert upload._total_bytes is None
         # Call the method and check the output.
         method, url, payload, headers = upload._prepare_initiate_request(
-            stream, metadata, BASIC_CONTENT)
+            stream, metadata, BASIC_CONTENT, **method_kwargs)
         assert payload == b'{"name": "big-data-file.txt"}'
         # Make sure the ``upload``-s state was updated.
         assert upload._stream == stream
         assert upload._content_type == BASIC_CONTENT
-        assert upload._total_bytes == len(data)
+        if method_kwargs == {u'stream_final': False}:
+            assert upload._total_bytes is None
+        else:
+            assert upload._total_bytes == len(data)
         # Make sure headers are untouched.
         assert headers is not upload._headers
         assert upload._headers == orig_headers
@@ -367,6 +377,27 @@ class TestResumableUpload(object):
             u'x-upload-content-type': BASIC_CONTENT,
         }
         assert new_headers == expected_headers
+
+    def test__prepare_initiate_request_known_size(self):
+        total_bytes = 25
+        data, headers = self._prepare_initiate_request_helper(
+            total_bytes=total_bytes)
+        assert len(data) == total_bytes
+        expected_headers = {
+            u'content-type': u'application/json; charset=UTF-8',
+            u'x-upload-content-length': u'{:d}'.format(total_bytes),
+            u'x-upload-content-type': BASIC_CONTENT,
+        }
+        assert headers == expected_headers
+
+    def test__prepare_initiate_request_unknown_size(self):
+        _, headers = self._prepare_initiate_request_helper(
+            stream_final=False)
+        expected_headers = {
+            u'content-type': u'application/json; charset=UTF-8',
+            u'x-upload-content-type': BASIC_CONTENT,
+        }
+        assert headers == expected_headers
 
     def test__prepare_initiate_request_already_initiated(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
@@ -425,6 +456,7 @@ class TestResumableUpload(object):
 
     def test__prepare_request_already_finished(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
+        assert not upload.invalid
         upload._finished = True
         with pytest.raises(ValueError) as exc_info:
             upload._prepare_request()
@@ -443,7 +475,8 @@ class TestResumableUpload(object):
 
     def test__prepare_request_not_initiated(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
-        assert not upload._finished
+        assert not upload.finished
+        assert not upload.invalid
         assert upload._resumable_url is None
         with pytest.raises(ValueError) as exc_info:
             upload._prepare_request()
@@ -536,15 +569,18 @@ class TestResumableUpload(object):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
-        upload._total_bytes = mock.sentinel.total_bytes
+        total_bytes = 158
+        response_body = u'{{"size": "{:d}"}}'.format(total_bytes)
         # Check status before.
         assert upload._bytes_uploaded == 0
         assert not upload._finished
-        response = _make_response()
+        response = mock.Mock(
+            content=response_body, status_code=http_client.OK,
+            spec=[u'content', u'status_code'])
         ret_val = upload._process_response(response)
         assert ret_val is None
         # Check status after.
-        assert upload._bytes_uploaded is mock.sentinel.total_bytes
+        assert upload._bytes_uploaded == total_bytes
         assert upload._finished
 
     def test__process_response_partial_no_range(self):
@@ -806,26 +842,75 @@ def test_get_total_bytes():
 
 class Test_get_next_chunk(object):
 
-    def test_exhausted(self):
+    def test_exhausted_known_size(self):
         data = b'the end'
         stream = io.BytesIO(data)
         stream.seek(len(data))
-        with pytest.raises(ValueError):
-            _upload.get_next_chunk(stream, 1)
+        with pytest.raises(ValueError) as exc_info:
+            _upload.get_next_chunk(stream, 1, len(data))
 
-    def test_success(self):
-        stream = io.BytesIO(b'0123456789')
+        exc_info.match(
+            u'Stream is already exhausted. There is no content remaining.')
+
+    def test_read_past_known_size(self):
+        data = b'more content than we expected'
+        stream = io.BytesIO(data)
+        chunk_size = len(data)
+        total_bytes = chunk_size - 3
+
+        with pytest.raises(ValueError) as exc_info:
+            _upload.get_next_chunk(stream, chunk_size, total_bytes)
+
+        exc_info.match(u'bytes have been read from the stream')
+        exc_info.match(u'exceeds the expected total')
+
+    def test_success_known_size(self):
+        data = b'0123456789'
+        stream = io.BytesIO(data)
+        total_bytes = len(data)
         chunk_size = 3
         # Splits into 4 chunks: 012, 345, 678, 9
-        result0 = _upload.get_next_chunk(stream, chunk_size)
-        result1 = _upload.get_next_chunk(stream, chunk_size)
-        result2 = _upload.get_next_chunk(stream, chunk_size)
-        result3 = _upload.get_next_chunk(stream, chunk_size)
-        assert result0 == (0, 2, b'012')
-        assert result1 == (3, 5, b'345')
-        assert result2 == (6, 8, b'678')
-        assert result3 == (9, 9, b'9')
-        assert stream.tell() == 10
+        result0 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
+        result1 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
+        result2 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
+        result3 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
+        assert result0 == (0, 2, b'012', u'bytes 0-2/10')
+        assert result1 == (3, 5, b'345', u'bytes 3-5/10')
+        assert result2 == (6, 8, b'678', u'bytes 6-8/10')
+        assert result3 == (9, 9, b'9', u'bytes 9-9/10')
+        assert stream.tell() == total_bytes
+
+    def test_success_unknown_size(self):
+        data = b'abcdefghij'
+        stream = io.BytesIO(data)
+        chunk_size = 6
+        # Splits into 4 chunks: abcdef, ghij
+        result0 = _upload.get_next_chunk(stream, chunk_size, None)
+        result1 = _upload.get_next_chunk(stream, chunk_size, None)
+        assert result0 == (0, chunk_size - 1, b'abcdef', u'bytes 0-5/*')
+        assert result1 == (chunk_size, len(data) - 1, b'ghij', u'bytes 6-9/10')
+        assert stream.tell() == len(data)
+
+        # Do the same when the chunk size evenly divides len(data)
+        stream.seek(0)
+        chunk_size = len(data)
+        # Splits into 2 chunks: `data` and empty string
+        result0 = _upload.get_next_chunk(stream, chunk_size, None)
+        result1 = _upload.get_next_chunk(stream, chunk_size, None)
+        assert result0 == (0, len(data) - 1, data, u'bytes 0-9/*')
+        assert result1 == (len(data), len(data) - 1, b'', u'bytes */10')
+        assert stream.tell() == len(data)
+
+
+class Test_get_content_range(object):
+
+    def test_known_size(self):
+        result = _upload.get_content_range(5, 10, 40)
+        assert result == u'bytes 5-10/40'
+
+    def test_unknown_size(self):
+        result = _upload.get_content_range(1000, 10000, None)
+        assert result == u'bytes 1000-10000/*'
 
 
 def _make_response(status_code=http_client.OK, headers=None):
@@ -843,6 +928,11 @@ def _get_headers(response):
     return response.headers
 
 
+def _get_body(response):
+    return response.content
+
+
 def _fix_up_virtual(upload):
     upload._get_status_code = _get_status_code
     upload._get_headers = _get_headers
+    upload._get_body = _get_body

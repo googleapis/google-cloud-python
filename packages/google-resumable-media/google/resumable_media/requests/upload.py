@@ -121,8 +121,20 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
             :data:`.UPLOAD_CHUNK_SIZE`.
     """
 
-    def initiate(self, transport, stream, metadata, content_type):
+    def initiate(self, transport, stream, metadata, content_type,
+                 total_bytes=None, stream_final=True):
         """Initiate a resumable upload.
+
+        By default, this method assumes your ``stream`` is in a "final"
+        state ready to transmit. However, ``stream_final=False`` can be used
+        to indicate that the size of the resource is not known. This can happen
+        if bytes are being dynamically fed into ``stream``, e.g. if the stream
+        is attached to application logs.
+
+        If ``stream_final=False`` is used, :attr:`chunk_size` bytes will be
+        read from the stream every time :meth:`transmit_next_chunk` is called.
+        If one of those reads produces strictly fewer bites than the chunk
+        size, the upload will be concluded.
 
         Args:
             transport (~requests.Session): A ``requests`` object which can
@@ -134,12 +146,19 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
                 ACL list.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
+            total_bytes (Optional[int]): The total number of bytes to be
+                uploaded. If specified, the upload size **will not** be
+                determined from the stream (even if ``stream_final=True``).
+            stream_final (Optional[bool]): Indicates if the ``stream`` is
+                "final" (i.e. no more bytes will be added to it). In this case
+                we determine the upload size from the size of the stream. If
+                ``total_bytes`` is passed, this argument will be ignored.
 
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
         """
         method, url, payload, headers = self._prepare_initiate_request(
-            stream, metadata, content_type)
+            stream, metadata, content_type, stream_final=stream_final)
         result = _helpers.http_request(
             transport, method, url, data=payload, headers=headers)
         self._process_initiate_response(result)
@@ -147,6 +166,11 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
 
     def transmit_next_chunk(self, transport):
         """Transmit the next chunk of the resource to be uploaded.
+
+        If the current upload was initiated with ``stream_final=False``,
+        this method will dynamically determine if the upload has completed.
+        The upload will be considered complete if the stream produces
+        fewer than :attr:`chunk_size` bytes when a chunk is read from it.
 
         In the case of failure, an exception is thrown that preserves the
         failed response:

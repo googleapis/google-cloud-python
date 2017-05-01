@@ -38,6 +38,8 @@ from google.resumable_media import exceptions
 
 _CONTENT_TYPE_HEADER = u'content-type'
 _CONTENT_RANGE_TEMPLATE = u'bytes {:d}-{:d}/{:d}'
+_RANGE_UNKNOWN_TEMPLATE = u'bytes {:d}-{:d}/*'
+_EMPTY_RANGE_TEMPLATE = u'bytes */{:d}'
 _BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
 _BOUNDARY_FORMAT = u'==============={{:0{:d}d}}=='.format(_BOUNDARY_WIDTH)
 _MULTIPART_SEP = b'--'
@@ -51,6 +53,9 @@ _STREAM_ERROR_TEMPLATE = (
     u'Bytes stream is in unexpected state. '
     u'The local stream has had {:d} bytes read from it while '
     u'{:d} bytes have already been updated (they should match).')
+_STREAM_READ_PAST_TEMPLATE = (
+    u'{:d} bytes have been read from the stream, which exceeds '
+    u'the expected total {:d}.')
 _POST = u'POST'
 _PUT = u'PUT'
 
@@ -118,6 +123,18 @@ class UploadBase(object):
     @staticmethod
     def _get_headers(response):
         """Access the headers from an HTTP response.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError(u'This implementation is virtual.')
+
+    @staticmethod
+    def _get_body(response):
+        """Access the response body from an HTTP response.
 
         Args:
             response (object): The HTTP response object.
@@ -336,10 +353,20 @@ class ResumableUpload(UploadBase):
 
     @property
     def total_bytes(self):
-        """Optional[int]: The total number of bytes to be uploaded."""
+        """Optional[int]: The total number of bytes to be uploaded.
+
+        If this upload is initiated (via :meth:`initiate`) with
+        ``stream_final=True``, this value will be populated based on the size
+        of the ``stream`` being uploaded. (By default ``stream_final=True``.)
+
+        If this upload is initiated with ``stream_final=False``,
+        :attr:`total_bytes` will be :data:`None` since it cannot be
+        determined from the stream.
+        """
         return self._total_bytes
 
-    def _prepare_initiate_request(self, stream, metadata, content_type):
+    def _prepare_initiate_request(self, stream, metadata, content_type,
+                                  total_bytes=None, stream_final=True):
         """Prepare the contents of HTTP request to initiate upload.
 
         This is everything that must be done before a request that doesn't
@@ -354,6 +381,13 @@ class ResumableUpload(UploadBase):
                 ACL list.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
+            total_bytes (Optional[int]): The total number of bytes to be
+                uploaded. If specified, the upload size **will not** be
+                determined from the stream (even if ``stream_final=True``).
+            stream_final (Optional[bool]): Indicates if the ``stream`` is
+                "final" (i.e. no more bytes will be added to it). In this case
+                we determine the upload size from the size of the stream. If
+                ``total_bytes`` is passed, this argument will be ignored.
 
         Returns:
             Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
@@ -376,12 +410,20 @@ class ResumableUpload(UploadBase):
 
         self._stream = stream
         self._content_type = content_type
-        self._total_bytes = get_total_bytes(stream)
         headers = {
             _CONTENT_TYPE_HEADER: u'application/json; charset=UTF-8',
             u'x-upload-content-type': content_type,
-            u'x-upload-content-length': u'{:d}'.format(self._total_bytes),
         }
+        # Set the total bytes if possible.
+        if total_bytes is not None:
+            self._total_bytes = total_bytes
+        elif stream_final:
+            self._total_bytes = get_total_bytes(stream)
+        # Add the total bytes to the headers if set.
+        if self._total_bytes is not None:
+            content_length = u'{:d}'.format(self._total_bytes)
+            headers[u'x-upload-content-length'] = content_length
+
         headers.update(self._headers)
         payload = json.dumps(metadata).encode(u'utf-8')
         return _POST, self.upload_url, payload, headers
@@ -405,8 +447,20 @@ class ResumableUpload(UploadBase):
         self._resumable_url = _helpers.header_required(
             response, u'location', self._get_headers)
 
-    def initiate(self, transport, stream, metadata, content_type):
+    def initiate(self, transport, stream, metadata, content_type,
+                 total_bytes=None, stream_final=True):
         """Initiate a resumable upload.
+
+        By default, this method assumes your ``stream`` is in a "final"
+        state ready to transmit. However, ``stream_final=False`` can be used
+        to indicate that the size of the resource is not known. This can happen
+        if bytes are being dynamically fed into ``stream``, e.g. if the stream
+        is attached to application logs.
+
+        If ``stream_final=False`` is used, :attr:`chunk_size` bytes will be
+        read from the stream every time :meth:`transmit_next_chunk` is called.
+        If one of those reads produces strictly fewer bites than the chunk
+        size, the upload will be concluded.
 
         Args:
             transport (object): An object which can make authenticated
@@ -418,6 +472,13 @@ class ResumableUpload(UploadBase):
                 ACL list.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
+            total_bytes (Optional[int]): The total number of bytes to be
+                uploaded. If specified, the upload size **will not** be
+                determined from the stream (even if ``stream_final=True``).
+            stream_final (Optional[bool]): Indicates if the ``stream`` is
+                "final" (i.e. no more bytes will be added to it). In this case
+                we determine the upload size from the size of the stream. If
+                ``total_bytes`` is passed, this argument will be ignored.
 
         Raises:
             NotImplementedError: Always, since virtual.
@@ -464,15 +525,13 @@ class ResumableUpload(UploadBase):
                 u'This upload has not been initiated. Please call '
                 u'initiate() before beginning to transmit chunks.')
 
-        start_byte, end_byte, payload = get_next_chunk(
-            self._stream, self._chunk_size)
+        start_byte, end_byte, payload, content_range = get_next_chunk(
+            self._stream, self._chunk_size, self._total_bytes)
         if start_byte != self.bytes_uploaded:
             msg = _STREAM_ERROR_TEMPLATE.format(
                 start_byte, self.bytes_uploaded)
             raise ValueError(msg)
 
-        content_range = _CONTENT_RANGE_TEMPLATE.format(
-            start_byte, end_byte, self._total_bytes)
         headers = {
             _CONTENT_TYPE_HEADER: self._content_type,
             _helpers.CONTENT_RANGE_HEADER: content_range,
@@ -511,7 +570,8 @@ class ResumableUpload(UploadBase):
             response, (http_client.OK, resumable_media.PERMANENT_REDIRECT),
             self._get_status_code, callback=self._make_invalid)
         if status_code == http_client.OK:
-            self._bytes_uploaded = self._total_bytes
+            json_response = json.loads(self._get_body(response))
+            self._bytes_uploaded = int(json_response[u'size'])
             # Tombstone the current upload so it cannot be used again.
             self._finished = True
         else:
@@ -528,6 +588,11 @@ class ResumableUpload(UploadBase):
 
     def transmit_next_chunk(self, transport):
         """Transmit the next chunk of the resource to be uploaded.
+
+        If the current upload was initiated with ``stream_final=False``,
+        this method will dynamically determine if the upload has completed.
+        The upload will be considered complete if the stream produces
+        fewer than :attr:`chunk_size` bytes when a chunk is read from it.
 
         Args:
             transport (object): An object which can make authenticated
@@ -695,7 +760,7 @@ def get_total_bytes(stream):
     return end_position
 
 
-def get_next_chunk(stream, chunk_size):
+def get_next_chunk(stream, chunk_size, total_bytes):
     """Get a chunk from an I/O stream.
 
     The ``stream`` may have fewer bytes remaining than ``chunk_size``
@@ -703,21 +768,72 @@ def get_next_chunk(stream, chunk_size):
     ``end_byte == start_byte + chunk_size - 1``.
 
     Args:
-       stream (IO[bytes]): The stream (i.e. file-like object).
+        stream (IO[bytes]): The stream (i.e. file-like object).
+        chunk_size (int): The size of the chunk to be read from the ``stream``.
+        total_bytes (Optional[int]): The (expected) total number of bytes
+            in the ``stream``.
 
     Returns:
-        Tuple[int, int, bytes]: Triple of the start byte index, the end byte
-        index and the content in between those bytes.
+        Tuple[int, int, bytes, str]: Quadruple of:
+
+          * the start byte index
+          * the end byte index
+          * the content in between the start and end bytes (inclusive)
+          * content range header for the chunk (slice) that has been read
 
     Raises:
         ValueError: If there is no data left to consume. This corresponds
             exactly to the case ``end_byte < start_byte``, which can only
             occur if ``end_byte == start_byte - 1``.
+        ValueError: If the stream has been read past ``total_bytes`` (this
+            is in the case that ``total_bytes`` is not :data:`None`).
     """
     start_byte = stream.tell()
     payload = stream.read(chunk_size)
     end_byte = stream.tell() - 1
-    if end_byte < start_byte:
-        raise ValueError(
-            u'Stream is already exhausted. There is no content remaining.')
-    return start_byte, end_byte, payload
+
+    num_bytes_read = len(payload)
+    if total_bytes is None:
+        if num_bytes_read < chunk_size:
+            # We now **KNOW** the total number of bytes.
+            total_bytes = end_byte + 1
+    else:
+        if num_bytes_read == 0:
+            raise ValueError(
+                u'Stream is already exhausted. There is no content remaining.')
+
+        if end_byte >= total_bytes:
+            msg = _STREAM_READ_PAST_TEMPLATE.format(end_byte + 1, total_bytes)
+            raise ValueError(msg)
+
+    content_range = get_content_range(start_byte, end_byte, total_bytes)
+    return start_byte, end_byte, payload, content_range
+
+
+def get_content_range(start_byte, end_byte, total_bytes):
+    """Convert start, end and total into content range header.
+
+    If ``total_bytes`` is not known, uses "bytes {start}-{end}/*".
+    If we are dealing with an empty range (i.e. ``end_byte < start_byte``)
+    then "bytes */{total}" is used.
+
+    This function **ASSUMES** that if the size is not known, the caller will
+    not also pass an empty range.
+
+    Args:
+        start_byte (int): The start (inclusive) of the byte range.
+        end_byte (int): The end (inclusive) of the byte range.
+        total_bytes (Optional[int]): The number of bytes in the byte
+            range (if known).
+
+    Returns:
+        str: The content range header.
+    """
+    if total_bytes is None:
+        return _RANGE_UNKNOWN_TEMPLATE.format(
+            start_byte, end_byte)
+    elif end_byte < start_byte:
+        return _EMPTY_RANGE_TEMPLATE.format(total_bytes)
+    else:
+        return _CONTENT_RANGE_TEMPLATE.format(
+            start_byte, end_byte, total_bytes)

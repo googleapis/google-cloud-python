@@ -617,6 +617,7 @@ transmitted in chunks until completion:
    payload = {
        u'bucket': bucket,
        u'name': blob_name,
+       u'size': u'{:d}'.format(len(data)),
    }
    fake_response2._content = json.dumps(payload).encode(u'utf-8')
 
