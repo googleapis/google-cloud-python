@@ -29,6 +29,7 @@ rm -f docs_build/modules.rst
 rm -f docs_build/google.rst
 mv docs_build/google.resumable_media.rst docs_build/index.rst
 python scripts/rewrite_index_rst.py
+python scripts/rewrite_requests_pkg_rst.py
 
 # If anything has changed, raise an error (to make sure it gets checked in).
 if [[ -n "$(git diff -- docs_build/)" ]]; then

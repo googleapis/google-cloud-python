@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Utilities for Google Media Downloads and Resumable Uploads.
+"""``requests`` utilities for Google Media Downloads and Resumable Uploads.
 
 This sub-package assumes callers will use the `requests`_ library
-as transport and `google-auth`_ for sending authenticated requests
+as transport and `google-auth`_ for sending authenticated HTTP traffic
 with ``requests``.
 
 .. _requests: http://docs.python-requests.org/

@@ -1,19 +1,10 @@
-google\.resumable\_media\.requests package
-==========================================
+``google.resumable_media.requests``
+===================================
 
-Submodules
-----------
+.. automodule:: google.resumable_media.requests
 
 .. toctree::
+   :hidden:
 
    google.resumable_media.requests.download
    google.resumable_media.requests.upload
-
-Module contents
----------------
-
-.. automodule:: google.resumable_media.requests
-    :members:
-    :inherited-members:
-    :undoc-members:
-    :show-inheritance:
