@@ -295,8 +295,17 @@ encrypted data. These <strong>will not</strong> be sent with
 
 <dl class="method">
 <dt id="google.resumable_media.requests.upload.ResumableUpload.initiate">
-<code class="descname">initiate</code><span class="sig-paren">(</span><em>transport</em>, <em>stream</em>, <em>metadata</em>, <em>content_type</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.initiate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">initiate</code><span class="sig-paren">(</span><em>transport</em>, <em>stream</em>, <em>metadata</em>, <em>content_type</em>, <em>total_bytes=None</em>, <em>stream_final=True</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.initiate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiate a resumable upload.</p>
+<p>By default, this method assumes your <code class="docutils literal"><span class="pre">stream</span></code> is in a &#8220;final&#8221;
+state ready to transmit. However, <code class="docutils literal"><span class="pre">stream_final=False</span></code> can be used
+to indicate that the size of the resource is not known. This can happen
+if bytes are being dynamically fed into <code class="docutils literal"><span class="pre">stream</span></code>, e.g. if the stream
+is attached to application logs.</p>
+<p>If <code class="docutils literal"><span class="pre">stream_final=False</span></code> is used, <a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.chunk_size" title="google.resumable_media.requests.upload.ResumableUpload.chunk_size"><code class="xref py py-attr docutils literal"><span class="pre">chunk_size</span></code></a> bytes will be
+read from the stream every time <a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.transmit_next_chunk" title="google.resumable_media.requests.upload.ResumableUpload.transmit_next_chunk"><code class="xref py py-meth docutils literal"><span class="pre">transmit_next_chunk()</span></code></a> is called.
+If one of those reads produces strictly fewer bites than the chunk
+size, the upload will be concluded.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -311,6 +320,13 @@ be uploaded. The stream <strong>must</strong> be at the beginning (i.e.
 ACL list.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The content type of the resource, e.g. a JPEG
 image has content type <code class="docutils literal"><span class="pre">image/jpeg</span></code>.</li>
+<li><strong>total_bytes</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]) &#8211; The total number of bytes to be
+uploaded. If specified, the upload size <strong>will not</strong> be
+determined from the stream (even if <code class="docutils literal"><span class="pre">stream_final=True</span></code>).</li>
+<li><strong>stream_final</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">bool</span></code></a> ]) &#8211; Indicates if the <code class="docutils literal"><span class="pre">stream</span></code> is
+&#8220;final&#8221; (i.e. no more bytes will be added to it). In this case
+we determine the upload size from the size of the stream. If
+<code class="docutils literal"><span class="pre">total_bytes</span></code> is passed, this argument will be ignored.</li>
 </ul>
 </td>
 </tr>
@@ -366,12 +382,22 @@ make authenticated requests.</td>
 <dt id="google.resumable_media.requests.upload.ResumableUpload.total_bytes">
 <code class="descname">total_bytes</code><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.total_bytes" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The total number of bytes to be uploaded.</p>
+<p>If this upload is initiated (via <a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.initiate" title="google.resumable_media.requests.upload.ResumableUpload.initiate"><code class="xref py py-meth docutils literal"><span class="pre">initiate()</span></code></a>) with
+<code class="docutils literal"><span class="pre">stream_final=True</span></code>, this value will be populated based on the size
+of the <code class="docutils literal"><span class="pre">stream</span></code> being uploaded. (By default <code class="docutils literal"><span class="pre">stream_final=True</span></code>.)</p>
+<p>If this upload is initiated with <code class="docutils literal"><span class="pre">stream_final=False</span></code>,
+<a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.total_bytes" title="google.resumable_media.requests.upload.ResumableUpload.total_bytes"><code class="xref py py-attr docutils literal"><span class="pre">total_bytes</span></code></a> will be <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> since it cannot be
+determined from the stream.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.resumable_media.requests.upload.ResumableUpload.transmit_next_chunk">
 <code class="descname">transmit_next_chunk</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.upload.ResumableUpload.transmit_next_chunk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transmit the next chunk of the resource to be uploaded.</p>
+<p>If the current upload was initiated with <code class="docutils literal"><span class="pre">stream_final=False</span></code>,
+this method will dynamically determine if the upload has completed.
+The upload will be considered complete if the stream produces
+fewer than <a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.chunk_size" title="google.resumable_media.requests.upload.ResumableUpload.chunk_size"><code class="xref py py-attr docutils literal"><span class="pre">chunk_size</span></code></a> bytes when a chunk is read from it.</p>
 <p>In the case of failure, an exception is thrown that preserves the
 failed response:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
