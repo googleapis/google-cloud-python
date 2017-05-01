@@ -246,6 +246,63 @@ image has content type <code class="docutils literal"><span class="pre">image/jp
 and then gets assigned an upload ID / upload URL to send bytes to.
 Using the upload URL, the upload is then done in chunks (determined by
 the user) until all bytes have been uploaded.</p>
+<p>When constructing a resumable upload, only the resumable upload URL and
+the chunk size are required:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url_template</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o?&#39;</span>
+<span class="gp">... </span>    <span class="sa">u</span><span class="s1">&#39;uploadType=resumable&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload_url</span> <span class="o">=</span> <span class="n">url_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c1"># 3MB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span> <span class="o">=</span> <span class="n">ResumableUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When initiating an upload (via <a class="reference internal" href="#google.resumable_media.requests.upload.ResumableUpload.initiate" title="google.resumable_media.requests.upload.ResumableUpload.initiate"><code class="xref py py-meth docutils literal"><span class="pre">initiate()</span></code></a>), the caller is expected
+to pass the resource being uploaded as a file-like <code class="docutils literal"><span class="pre">stream</span></code>. If the size
+of the resource is explicitly known, it can be passed in directly:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">total_bytes</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">total_bytes</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">filename</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">total_bytes</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span>
+<span class="go">&lt;Response [200]&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">total_bytes</span> <span class="o">==</span> <span class="n">total_bytes</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If the stream is in a &#8220;final&#8221; state (i.e. it won&#8217;t have any more bytes
+written to it), the total number of bytes can be determined implicitly
+from the <code class="docutils literal"><span class="pre">stream</span></code> itself:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">total_bytes</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If the size of the resource is <strong>unknown</strong> when the upload is initiated,
+the <code class="docutils literal"><span class="pre">stream_final</span></code> argument can be used. This might occur if the
+resource is being dynamically created on the client (e.g. application
+logs). To use this argument:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">stream_final</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span><span class="o">.</span><span class="n">total_bytes</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
