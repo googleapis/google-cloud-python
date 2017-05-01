@@ -220,7 +220,7 @@ def test_multipart_upload_with_headers(authorized_transport, cleanup):
 
 
 @pytest.fixture
-def stream():
+def img_stream():
     """Open-file as a fixture.
 
     This is so that an entire test can execute in the context of
@@ -269,9 +269,11 @@ def check_initiate(response, upload, stream, transport, metadata):
     assert response.headers[u'x-guploader-uploadid'] == upload_id
     assert stream.tell() == 0
     # Make sure the upload cannot be re-initiated.
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as exc_info:
         upload.initiate(
             transport, stream, metadata, JPEG_CONTENT_TYPE)
+
+    exc_info.match(u'This upload has already been initiated.')
 
 
 def _resumable_upload_helper(authorized_transport, stream, cleanup,
@@ -306,14 +308,15 @@ def _resumable_upload_helper(authorized_transport, stream, cleanup,
     check_tombstoned(upload, authorized_transport)
 
 
-def test_resumable_upload(authorized_transport, stream, cleanup):
-    _resumable_upload_helper(authorized_transport, stream, cleanup)
+def test_resumable_upload(authorized_transport, img_stream, cleanup):
+    _resumable_upload_helper(authorized_transport, img_stream, cleanup)
 
 
-def test_resumable_upload_with_headers(authorized_transport, stream, cleanup):
+def test_resumable_upload_with_headers(
+        authorized_transport, img_stream, cleanup):
     headers = utils.get_encryption_headers()
     _resumable_upload_helper(
-        authorized_transport, stream, cleanup, headers=headers)
+        authorized_transport, img_stream, cleanup, headers=headers)
 
 
 def check_bad_chunk(upload, transport):
@@ -325,8 +328,8 @@ def check_bad_chunk(upload, transport):
     assert response.content == BAD_CHUNK_SIZE_MSG
 
 
-def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
-    blob_name = os.path.basename(stream.name)
+def test_resumable_upload_bad_chunk_size(authorized_transport, img_stream):
+    blob_name = os.path.basename(img_stream.name)
     # Create the actual upload object.
     upload = resumable_requests.ResumableUpload(
         utils.RESUMABLE_UPLOAD, resumable_media.UPLOAD_CHUNK_SIZE)
@@ -337,15 +340,16 @@ def test_resumable_upload_bad_chunk_size(authorized_transport, stream):
     # Initiate the upload.
     metadata = {u'name': blob_name}
     response = upload.initiate(
-        authorized_transport, stream, metadata, JPEG_CONTENT_TYPE)
+        authorized_transport, img_stream, metadata, JPEG_CONTENT_TYPE)
     # Make sure ``initiate`` succeeded and did not mangle the stream.
-    check_initiate(response, upload, stream, authorized_transport, metadata)
+    check_initiate(
+        response, upload, img_stream, authorized_transport, metadata)
     # Make the first request and verify that it fails.
     check_bad_chunk(upload, authorized_transport)
     # Reset the chunk size (and the stream) and verify the "resumable"
     # URL is unusable.
     upload._chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
-    stream.seek(0)
+    img_stream.seek(0)
     upload._invalid = False
     check_bad_chunk(upload, authorized_transport)
 
@@ -409,3 +413,157 @@ def test_resumable_upload_recover_with_headers(authorized_transport, cleanup):
     headers = utils.get_encryption_headers()
     _resumable_upload_recover_helper(
         authorized_transport, cleanup, headers=headers)
+
+
+class TestResumableUploadUnknownSize(object):
+
+    @staticmethod
+    def _check_range_sent(response, start, end, total):
+        headers_sent = response.request.headers
+        if start is None and end is None:
+            expected_content_range = u'bytes */{:d}'.format(total)
+        else:
+            # Allow total to be an int or a string "*"
+            expected_content_range = u'bytes {:d}-{:d}/{}'.format(
+                start, end, total)
+
+        assert headers_sent[u'content-range'] == expected_content_range
+
+    @staticmethod
+    def _check_range_received(response, size):
+        assert response.headers[u'range'] == u'bytes=0-{:d}'.format(size - 1)
+
+    def _check_partial(self, upload, response, chunk_size, num_chunks):
+        start_byte = (num_chunks - 1) * chunk_size
+        end_byte = num_chunks * chunk_size - 1
+
+        assert not upload.finished
+        assert upload.bytes_uploaded == end_byte + 1
+        assert response.status_code == resumable_media.PERMANENT_REDIRECT
+        assert response.content == b''
+
+        self._check_range_sent(response, start_byte, end_byte, u'*')
+        self._check_range_received(response, end_byte + 1)
+
+    def test_smaller_than_chunk_size(self, authorized_transport, cleanup):
+        blob_name = os.path.basename(ICO_FILE)
+        chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+        # Make sure to clean up the uploaded blob when we are done.
+        cleanup(blob_name, authorized_transport)
+        check_does_not_exist(authorized_transport, blob_name)
+        # Make sure the blob is smaller than the chunk size.
+        total_bytes = os.path.getsize(ICO_FILE)
+        assert total_bytes < chunk_size
+        # Create the actual upload object.
+        upload = resumable_requests.ResumableUpload(
+            utils.RESUMABLE_UPLOAD, chunk_size)
+        # Initiate the upload.
+        metadata = {u'name': blob_name}
+        with open(ICO_FILE, 'rb') as stream:
+            response = upload.initiate(
+                authorized_transport, stream, metadata, ICO_CONTENT_TYPE,
+                stream_final=False)
+            # Make sure ``initiate`` succeeded and did not mangle the stream.
+            check_initiate(
+                response, upload, stream, authorized_transport, metadata)
+            # Make sure total bytes was never set.
+            assert upload.total_bytes is None
+            # Make the **ONLY** request.
+            response = upload.transmit_next_chunk(authorized_transport)
+            self._check_range_sent(response, 0, total_bytes - 1, total_bytes)
+            check_response(response, blob_name, total_bytes=total_bytes)
+            # Download the content to make sure it's "working as expected".
+            stream.seek(0)
+            actual_contents = stream.read()
+            check_content(
+                blob_name, actual_contents, authorized_transport)
+            # Make sure the upload is tombstoned.
+            check_tombstoned(upload, authorized_transport)
+
+    def test_finish_at_chunk(self, authorized_transport, cleanup):
+        blob_name = u'some-clean-stuff.bin'
+        chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+        # Make sure to clean up the uploaded blob when we are done.
+        cleanup(blob_name, authorized_transport)
+        check_does_not_exist(authorized_transport, blob_name)
+        # Make sure the blob size is an exact multiple of the chunk size.
+        data = b'ab' * chunk_size
+        total_bytes = len(data)
+        stream = io.BytesIO(data)
+        # Create the actual upload object.
+        upload = resumable_requests.ResumableUpload(
+            utils.RESUMABLE_UPLOAD, chunk_size)
+        # Initiate the upload.
+        metadata = {u'name': blob_name}
+        response = upload.initiate(
+            authorized_transport, stream, metadata, BYTES_CONTENT_TYPE,
+            stream_final=False)
+        # Make sure ``initiate`` succeeded and did not mangle the stream.
+        check_initiate(
+            response, upload, stream, authorized_transport, metadata)
+        # Make sure total bytes was never set.
+        assert upload.total_bytes is None
+        # Make three requests.
+        response0 = upload.transmit_next_chunk(authorized_transport)
+        self._check_partial(upload, response0, chunk_size, 1)
+
+        response1 = upload.transmit_next_chunk(authorized_transport)
+        self._check_partial(upload, response1, chunk_size, 2)
+
+        response2 = upload.transmit_next_chunk(authorized_transport)
+        assert upload.finished
+        # Verify the "clean-up" request.
+        assert upload.bytes_uploaded == 2 * chunk_size
+        check_response(
+            response2, blob_name, actual_contents=data,
+            total_bytes=total_bytes, content_type=BYTES_CONTENT_TYPE)
+        self._check_range_sent(response2, None, None, 2 * chunk_size)
+
+    @staticmethod
+    def _add_bytes(stream, data):
+        curr_pos = stream.tell()
+        stream.write(data)
+        # Go back to where we were before the write.
+        stream.seek(curr_pos)
+
+    def test_interleave_writes(self, authorized_transport, cleanup):
+        blob_name = u'some-moar-stuff.bin'
+        chunk_size = resumable_media.UPLOAD_CHUNK_SIZE
+        # Make sure to clean up the uploaded blob when we are done.
+        cleanup(blob_name, authorized_transport)
+        check_does_not_exist(authorized_transport, blob_name)
+        # Start out the blob as a single chunk (but we will add to it).
+        stream = io.BytesIO(b'Z' * chunk_size)
+        # Create the actual upload object.
+        upload = resumable_requests.ResumableUpload(
+            utils.RESUMABLE_UPLOAD, chunk_size)
+        # Initiate the upload.
+        metadata = {u'name': blob_name}
+        response = upload.initiate(
+            authorized_transport, stream, metadata, BYTES_CONTENT_TYPE,
+            stream_final=False)
+        # Make sure ``initiate`` succeeded and did not mangle the stream.
+        check_initiate(
+            response, upload, stream, authorized_transport, metadata)
+        # Make sure total bytes was never set.
+        assert upload.total_bytes is None
+        # Make three requests.
+        response0 = upload.transmit_next_chunk(authorized_transport)
+        self._check_partial(upload, response0, chunk_size, 1)
+        # Add another chunk before sending.
+        self._add_bytes(stream, b'K' * chunk_size)
+        response1 = upload.transmit_next_chunk(authorized_transport)
+        self._check_partial(upload, response1, chunk_size, 2)
+        # Add more bytes, but make sure less than a full chunk.
+        last_chunk = 155
+        self._add_bytes(stream, b'r' * last_chunk)
+        response2 = upload.transmit_next_chunk(authorized_transport)
+        assert upload.finished
+        # Verify the "clean-up" request.
+        total_bytes = 2 * chunk_size + last_chunk
+        assert upload.bytes_uploaded == total_bytes
+        check_response(
+            response2, blob_name, actual_contents=stream.getvalue(),
+            total_bytes=total_bytes, content_type=BYTES_CONTENT_TYPE)
+        self._check_range_sent(
+            response2, 2 * chunk_size, total_bytes - 1, total_bytes)
