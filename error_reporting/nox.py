@@ -63,6 +63,7 @@ def lint_setup_py(session):
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
 
+
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.6'])
 def system_tests(session, python_version):
@@ -77,6 +78,7 @@ def system_tests(session, python_version):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
+    session.install('flake8', *LOCAL_DEPS)
     session.install('.')
 
     # Run py.test against the system tests.
