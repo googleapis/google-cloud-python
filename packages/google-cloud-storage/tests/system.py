@@ -246,6 +246,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
 
 class TestUnicode(unittest.TestCase):
+
     def test_fetch_object_and_check_content(self):
         client = storage.Client()
         bucket = client.bucket('storage-library-test-bucket')
@@ -256,8 +257,8 @@ class TestUnicode(unittest.TestCase):
         # Normalization Form D: an ASCII e followed by U+0301 combining
         # character; URL should end with Caf%C3%A9
         test_data = {
-            u'Caf\u00e9'.encode('utf-8'): b'Normalization Form C',
-            u'Cafe\u0301'.encode('utf-8'): b'Normalization Form D',
+            u'Caf\u00e9': b'Normalization Form C',
+            u'Cafe\u0301': b'Normalization Form D',
         }
         for blob_name, file_contents in test_data.items():
             blob = bucket.blob(blob_name)
