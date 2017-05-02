@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import functools
+import time
 import unittest
 
 from google.cloud import error_reporting
@@ -22,75 +22,73 @@ from google.cloud.proto.devtools.clouderrorreporting.v1beta1 import (
     error_stats_service_pb2)
 from google.protobuf.duration_pb2 import Duration
 
-from test_utils.retry import RetryResult
+
+def setUpModule():
+    Config.CLIENT = error_reporting.Client()
 
 
-class _ErrorStatsGaxApi(object):
-    """Helper mapping Error Reporting-related APIs
+class Config(object):
+    """Run-time configuration to be modified at set-up.
 
-    This class provides a small wrapper around making calls to the GAX
+    This is a mutable stand-in to allow test set-up to modify
+    global state.
+    """
+    CLIENT = None
+
+
+def _list_groups(project):
+    """List Error Groups from the last 60 seconds.
+
+    This class provides a wrapper around making calls to the GAX
     API. It's used by the system tests to find the appropriate error group
     to verify the error was successfully reported.
 
     :type project: str
     :param project: Google Cloud Project ID
     """
-    def __init__(self, project):
-        self._project = project
-        self._gax_api = error_stats_service_client.ErrorStatsServiceClient()
+    gax_api = error_stats_service_client.ErrorStatsServiceClient()
+    project_name = gax_api.project_path(project)
 
-    def list_groups(self):
-        """Helper to list the groups that have had errors in the last hour."""
-        project_name = self._gax_api.project_path(self._project)
-        time_range = error_stats_service_pb2.QueryTimeRange()
-        time_range.period = (
-            error_stats_service_pb2.QueryTimeRange.PERIOD_1_HOUR
-        )
+    time_range = error_stats_service_pb2.QueryTimeRange()
+    time_range.period = (
+        error_stats_service_pb2.QueryTimeRange.PERIOD_1_HOUR
+    )
 
-        duration = Duration()
-        duration.seconds = 60 * 60
+    duration = Duration()
+    duration.seconds = 60 * 60
 
-        return self._gax_api.list_group_stats(
-            project_name, time_range, timed_count_duration=duration)
+    return gax_api.list_group_stats(
+        project_name, time_range, timed_count_duration=duration)
 
-
-def _is_incremented(initial, new):
-    """Helper to retry until new error is counted."""
-    return new == initial + 1
+ERROR_NAME = 'Stackdriver Error Reporting System Test'
 
 
 class TestErrorReporting(unittest.TestCase):
 
-    def setUp(self):
-        self._client = error_reporting.Client()
-        self._error_name = 'Stackdriver Error Reporting System Test'
-
     def _simulate_exception(self):
         """Simulates an exception to verify it was reported."""
         try:
-            raise RuntimeError(self._error_name)
+            raise RuntimeError(ERROR_NAME)
         except RuntimeError:
-            self._client.report_exception()
+            Config.CLIENT.report_exception()
 
     def _get_error_count(self):
         """Counts the number of errors in the group of the test exception."""
-        error_stats_api = _ErrorStatsGaxApi(self._client.project)
-        groups = error_stats_api.list_groups()
+        groups = _list_groups(Config.CLIENT.project)
         for group in groups:
-            if self._error_name in group.representative.message:
+            if ERROR_NAME in group.representative.message:
                 return group.count
 
     def test_report_exception(self):
-        """Verifies the exception reported increases the group count by one."""
         # If test has never run, group won't exist until we report first
         # exception, so first simulate it just to create the group
         self._simulate_exception()
+        time.sleep(2)
 
         initial_count = self._get_error_count()
         self._simulate_exception()
 
-        is_incremented = functools.partial(_is_incremented, initial_count)
-        retry_get_count = RetryResult(is_incremented)(self._get_error_count)
-        new_count = retry_get_count()
+        time.sleep(2)
+        new_count = self._get_error_count()
 
         self.assertEqual(new_count, initial_count + 1)
