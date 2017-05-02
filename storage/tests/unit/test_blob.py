@@ -25,7 +25,8 @@ def _make_credentials():
 
 class Test_Blob(unittest.TestCase):
 
-    def _make_one(self, *args, **kw):
+    @staticmethod
+    def _make_one(*args, **kw):
         from google.cloud.storage.blob import Blob
 
         properties = kw.pop('properties', None)
@@ -44,6 +45,13 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob._acl.loaded)
         self.assertIs(blob._acl.blob, blob)
         self.assertEqual(blob._encryption_key, None)
+
+    def test_ctor_with_encoded_unicode(self):
+        blob_name = b'wet \xe2\x9b\xb5'
+        blob = self._make_one(blob_name, bucket=None)
+        unicode_name = u'wet \N{sailboat}'
+        self.assertNotEqual(blob.name, blob_name)
+        self.assertEqual(blob.name, unicode_name)
 
     def test_ctor_w_encryption_key(self):
         KEY = b'01234567890123456789012345678901'  # 32 bytes
@@ -91,21 +99,21 @@ class Test_Blob(unittest.TestCase):
     def test_acl_property(self):
         from google.cloud.storage.acl import ObjectACL
 
-        FAKE_BUCKET = _Bucket()
-        blob = self._make_one(None, bucket=FAKE_BUCKET)
+        fake_bucket = _Bucket()
+        blob = self._make_one(u'name', bucket=fake_bucket)
         acl = blob.acl
         self.assertIsInstance(acl, ObjectACL)
         self.assertIs(acl, blob._acl)
 
-    def test_path_no_bucket(self):
-        FAKE_BUCKET = object()
-        NAME = 'blob-name'
-        blob = self._make_one(NAME, bucket=FAKE_BUCKET)
+    def test_path_bad_bucket(self):
+        fake_bucket = object()
+        name = u'blob-name'
+        blob = self._make_one(name, bucket=fake_bucket)
         self.assertRaises(AttributeError, getattr, blob, 'path')
 
     def test_path_no_name(self):
         bucket = _Bucket()
-        blob = self._make_one(None, bucket=bucket)
+        blob = self._make_one(u'', bucket=bucket)
         self.assertRaises(ValueError, getattr, blob, 'path')
 
     def test_path_normal(self):
@@ -119,6 +127,12 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.path, '/b/name/o/parent%2Fchild')
+
+    def test_path_with_non_ascii(self):
+        blob_name = u'Caf\xe9'
+        bucket = _Bucket()
+        blob = self._make_one(blob_name, bucket=bucket)
+        self.assertEqual(blob.path, '/b/name/o/Caf%C3%A9')
 
     def test_public_url(self):
         BLOB_NAME = 'blob-name'
@@ -135,6 +149,13 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(
             blob.public_url,
             'https://storage.googleapis.com/name/parent%2Fchild')
+
+    def test_public_url_with_non_ascii(self):
+        blob_name = u'winter \N{snowman}'
+        bucket = _Bucket()
+        blob = self._make_one(blob_name, bucket=bucket)
+        expected_url = 'https://storage.googleapis.com/name/winter%20%E2%98%83'
+        self.assertEqual(blob.public_url, expected_url)
 
     def _basic_generate_signed_url_helper(self, credentials=None):
         BLOB_NAME = 'blob-name'
@@ -2225,6 +2246,28 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         blob = self._make_one('blob-name', bucket=BUCKET)
         self.assertIsNone(blob.updated)
+
+
+class Test__quote(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(value):
+        from google.cloud.storage.blob import _quote
+
+        return _quote(value)
+
+    def test_bytes(self):
+        quoted = self._call_fut(b'\xDE\xAD\xBE\xEF')
+        self.assertEqual(quoted, '%DE%AD%BE%EF')
+
+    def test_unicode(self):
+        helicopter = u'\U0001f681'
+        quoted = self._call_fut(helicopter)
+        self.assertEqual(quoted, '%F0%9F%9A%81')
+
+    def test_bad_type(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None)
 
 
 class _Responder(object):
