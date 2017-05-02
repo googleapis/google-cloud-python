@@ -58,8 +58,11 @@ class Blob(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``.
 
     :type name: str
-    :param name: The name of the blob.  This corresponds to the
-                 unique path of the object in the bucket.
+    :param name: The name of the blob.  This corresponds to the unique path of
+                 the object in the bucket. If bytes, will be converted to a
+                 unicode object. Blob / object names can contain any sequence
+                 of valid unicode characters, of length 1-1024 bytes when
+                 UTF-8 encoded.
 
     :type bucket: :class:`google.cloud.storage.bucket.Bucket`
     :param bucket: The bucket to which this blob belongs.
@@ -104,6 +107,7 @@ class Blob(_PropertyMixin):
     """
 
     def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
+        name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
@@ -148,7 +152,7 @@ class Blob(_PropertyMixin):
         :rtype: str
         :returns: The relative URL path for ``blob_name``.
         """
-        return bucket_path + '/o/' + quote(blob_name, safe='')
+        return bucket_path + '/o/' + _quote(blob_name)
 
     @property
     def acl(self):
@@ -190,7 +194,7 @@ class Blob(_PropertyMixin):
         return '{storage_base_url}/{bucket_name}/{quoted_name}'.format(
             storage_base_url='https://storage.googleapis.com',
             bucket_name=self.bucket.name,
-            quoted_name=quote(self.name, safe=''))
+            quoted_name=_quote(self.name))
 
     def generate_signed_url(self, expiration, method='GET',
                             content_type=None,
@@ -261,7 +265,7 @@ class Blob(_PropertyMixin):
         """
         resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
-            quoted_name=quote(self.name, safe=''))
+            quoted_name=_quote(self.name))
 
         if credentials is None:
             client = self._require_client(client)
@@ -1362,3 +1366,21 @@ def _get_encryption_headers(key, source=False):
         prefix + 'Key': _bytes_to_unicode(key),
         prefix + 'Key-Sha256': _bytes_to_unicode(key_hash),
     }
+
+
+def _quote(value):
+    """URL-quote a string.
+
+    If the value is unicode, this method first UTF-8 encodes it as bytes and
+    then quotes the bytes. (In Python 3, ``urllib.parse.quote`` does this
+    encoding automatically, but in Python 2, non-ASCII characters cannot be
+    quoted.)
+
+    :type value: str or bytes
+    :param value: The value to be URL-quoted.
+
+    :rtype: str
+    :returns: The encoded value (bytes in Python 2, unicode in Python 3).
+    """
+    value = _to_bytes(value, encoding='utf-8')
+    return quote(value, safe='')
