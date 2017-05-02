@@ -61,14 +61,14 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-core',
-    version='0.24.0',
+    version='0.24.1',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
     ],
-    packages=find_packages(exclude=('unit_tests*',)),
+    packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
     **SETUP_BASE
 )

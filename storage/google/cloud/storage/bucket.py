@@ -116,7 +116,7 @@ class Bucket(_PropertyMixin):
         self._default_object_acl = DefaultObjectACL(self)
 
     def __repr__(self):
-        return '<Bucket: %s>' % self.name
+        return '<Bucket: %s>' % (self.name,)
 
     @property
     def client(self):

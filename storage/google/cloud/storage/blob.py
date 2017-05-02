@@ -30,6 +30,9 @@ import httplib2
 import six
 from six.moves.urllib.parse import quote
 
+import google.auth.transport.requests
+from google import resumable_media
+
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
@@ -42,12 +45,13 @@ from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage.acl import ObjectACL
 from google.cloud.streaming.http_wrapper import Request
 from google.cloud.streaming.http_wrapper import make_api_request
-from google.cloud.streaming.transfer import Download
 from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
 from google.cloud.streaming.transfer import Upload
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
+_DOWNLOAD_URL_TEMPLATE = (
+    u'https://www.googleapis.com/download/storage/v1{path}?alt=media')
 
 
 class Blob(_PropertyMixin):
@@ -91,7 +95,7 @@ class Blob(_PropertyMixin):
 
     .. note::
        This list does not include 'DURABLE_REDUCED_AVAILABILITY', which
-       is only documented for buckets (and deprectated.
+       is only documented for buckets (and deprecated).
 
     .. note::
        The documentation does *not* mention 'STANDARD', but it is the value
@@ -316,6 +320,54 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name, client=client)
 
+    def _get_download_url(self):
+        """Get the download URL for the current blob.
+
+        If the ``media_link`` has been loaded, it will be used, otherwise
+        the URL will be constructed from the current blob's path (and possibly
+        generation) to avoid a round trip.
+
+        :rtype: str
+        :returns: The download URL for the current blob.
+        """
+        if self.media_link is None:
+            download_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
+            if self.generation is not None:
+                download_url += u'&generation={:d}'.format(self.generation)
+            return download_url
+        else:
+            return self.media_link
+
+    def _do_download(self, transport, file_obj, download_url, headers):
+        """Perform a download without any error handling.
+
+        This is intended to be called by :meth:`download_to_file` so it can
+        be wrapped with error handling / remapping.
+
+        :type transport:
+            :class:`~google.auth.transport.requests.AuthorizedSession`
+        :param transport: The transport (with credentials) that will
+                          make authenticated requests.
+
+        :type file_obj: file
+        :param file_obj: A file handle to which to write the blob's data.
+
+        :type download_url: str
+        :param download_url: The URL where the media can be accessed.
+
+        :type headers: dict
+        :param headers: Optional headers to be sent with the request(s).
+        """
+        if self.chunk_size is None:
+            download = resumable_media.Download(download_url, headers=headers)
+            response = download.consume(transport)
+            file_obj.write(response.content)
+        else:
+            download = resumable_media.ChunkedDownload(
+                download_url, self.chunk_size, file_obj, headers=headers)
+            while not download.finished:
+                download.consume_next_chunk(transport)
+
     def download_to_file(self, file_obj, client=None):
         """Download the contents of this blob into a file-like object.
 
@@ -348,28 +400,21 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         client = self._require_client(client)
-        if self.media_link is None:  # not yet loaded
-            self.reload()
-
-        download_url = self.media_link
-
-        # Use apitools 'Download' facility.
-        download = Download.from_stream(file_obj)
-
-        if self.chunk_size is not None:
-            download.chunksize = self.chunk_size
-
+        # Get the download URL.
+        download_url = self._get_download_url()
+        # Get any extra headers for the request.
         headers = _get_encryption_headers(self._encryption_key)
+        # Create a ``requests`` transport with the client's credentials.
+        transport = google.auth.transport.requests.AuthorizedSession(
+            client._credentials)
 
-        request = Request(download_url, 'GET', headers)
-
-        # Use ``_base_connection`` rather ``_connection`` since the current
-        # connection may be a batch. A batch wraps a client's connection,
-        # but does not store the ``http`` object. The rest (API_BASE_URL and
-        # build_api_url) are also defined on the Batch class, but we just
-        # use the wrapped connection since it has all three (http,
-        # API_BASE_URL and build_api_url).
-        download.initialize_download(request, client._base_connection.http)
+        try:
+            self._do_download(transport, file_obj, download_url, headers)
+        except resumable_media.InvalidResponse as exc:
+            response = exc.response
+            faux_response = httplib2.Response({'status': response.status_code})
+            raise make_exception(faux_response, response.content,
+                                 error_info=download_url, use_json=False)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -387,8 +432,10 @@ class Blob(_PropertyMixin):
         with open(filename, 'wb') as file_obj:
             self.download_to_file(file_obj, client=client)
 
-        mtime = time.mktime(self.updated.timetuple())
-        os.utime(file_obj.name, (mtime, mtime))
+        updated = self.updated
+        if updated is not None:
+            mtime = time.mktime(updated.timetuple())
+            os.utime(file_obj.name, (mtime, mtime))
 
     def download_as_string(self, client=None):
         """Download the contents of this blob as a string.
@@ -1202,18 +1249,21 @@ class Blob(_PropertyMixin):
         if size is not None:
             return int(size)
 
-    @property
-    def storage_class(self):
-        """Retrieve the storage class for the object.
+    storage_class = _scalar_property('storageClass')
+    """Retrieve the storage class for the object.
 
-        See: https://cloud.google.com/storage/docs/storage-classes
+    This can only be set at blob / object **creation** time. If you'd
+    like to change the storage class **after** the blob / object already
+    exists in a bucket, call :meth:`update_storage_class` (which uses
+    the "storage.objects.rewrite" method).
 
-        :rtype: str or ``NoneType``
-        :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
-                  "NEARLINE", "COLDLINE", "STANDARD", or
-                  "DURABLE_REDUCED_AVAILABILITY", else ``None``.
-        """
-        return self._properties.get('storageClass')
+    See: https://cloud.google.com/storage/docs/storage-classes
+
+    :rtype: str or ``NoneType``
+    :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
+              "NEARLINE", "COLDLINE", "STANDARD", or
+              "DURABLE_REDUCED_AVAILABILITY", else ``None``.
+    """
 
     @property
     def time_deleted(self):
