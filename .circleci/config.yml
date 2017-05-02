@@ -133,6 +133,10 @@ jobs:
             if [[ -n $(grep vision ~/target_packages) ]]; then
               nox -f vision/nox.py
             fi
+      - run:
+          name: Make sure google-cloud setup.py is valid
+          command: |
+            nox -e lint_setup_py
       - deploy:
           name: Update the docs
           command: nox -e docs
