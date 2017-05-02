@@ -134,7 +134,7 @@ words to the vocabulary of the recognizer.
     >>> results = sample.recognize(
     ...     language_code='en-US',
     ...     max_alternatives=2,
-    ...     speech_context=hints,
+    ...     speech_contexts=hints,
     ... )
     >>> for result in results:
     ...     for alternative in result.alternatives:
