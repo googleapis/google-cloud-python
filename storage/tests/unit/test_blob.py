@@ -545,8 +545,7 @@ class Test_Blob(unittest.TestCase):
     def test_download_to_file_with_chunk_size(self):
         self._download_to_file_helper(use_chunks=True)
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_to_filename(self, fake_session_factory):
+    def _download_to_filename_helper(self, fake_session_factory, updated=None):
         import os
         import time
         from google.cloud._testing import _NamedTemporaryFile
@@ -558,8 +557,10 @@ class Test_Blob(unittest.TestCase):
             _credentials=_make_credentials(), spec=['_credentials'])
         bucket = _Bucket(client)
         media_link = 'http://example.com/media/'
-        properties = {'mediaLink': media_link,
-                      'updated': '2014-12-06T13:13:50.690Z'}
+        properties = {'mediaLink': media_link}
+        if updated is not None:
+            properties['updated'] = updated
+
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
         # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -569,13 +570,26 @@ class Test_Blob(unittest.TestCase):
             blob.download_to_filename(temp.name)
             with open(temp.name, 'rb') as file_obj:
                 wrote = file_obj.read()
-                mtime = os.path.getmtime(temp.name)
-                updated_time = time.mktime(blob.updated.timetuple())
+                if updated is None:
+                    self.assertIsNone(blob.updated)
+                else:
+                    mtime = os.path.getmtime(temp.name)
+                    updated_time = time.mktime(blob.updated.timetuple())
+                    self.assertEqual(mtime, updated_time)
 
         self.assertEqual(wrote, b'abcdef')
-        self.assertEqual(mtime, updated_time)
 
         self._check_session_mocks(client, fake_session_factory, media_link)
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_to_filename(self, fake_session_factory):
+        updated = '2014-12-06T13:13:50.690Z'
+        self._download_to_filename_helper(
+            fake_session_factory, updated=updated)
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_to_filename_wo_updated(self, fake_session_factory):
+        self._download_to_filename_helper(fake_session_factory)
 
     @mock.patch('google.auth.transport.requests.AuthorizedSession')
     def test_download_to_filename_w_key(self, fake_session_factory):
