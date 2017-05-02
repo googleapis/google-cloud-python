@@ -432,8 +432,10 @@ class Blob(_PropertyMixin):
         with open(filename, 'wb') as file_obj:
             self.download_to_file(file_obj, client=client)
 
-        mtime = time.mktime(self.updated.timetuple())
-        os.utime(file_obj.name, (mtime, mtime))
+        updated = self.updated
+        if updated is not None:
+            mtime = time.mktime(updated.timetuple())
+            os.utime(file_obj.name, (mtime, mtime))
 
     def download_as_string(self, client=None):
         """Download the contents of this blob as a string.
