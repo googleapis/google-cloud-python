@@ -131,9 +131,9 @@ Contributing
 
 Contributions to this library are always welcome and highly encouraged.
 
-See `CONTRIBUTING`_ for more information on how to get started.
+See the `CONTRIBUTING doc`_ for more information on how to get started.
 
-.. _CONTRIBUTING: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst
+.. _CONTRIBUTING doc: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst
 
 Community
 ---------
@@ -148,9 +148,9 @@ channel, click here to `get an invitation`_.
 License
 -------
 
-Apache 2.0 - See `LICENSE`_ for more information.
+Apache 2.0 - See `the LICENSE`_ for more information.
 
-.. _LICENSE: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/LICENSE
+.. _the LICENSE: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/LICENSE
 
 .. |circleci| image:: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python.svg?style=shield
    :target: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python
