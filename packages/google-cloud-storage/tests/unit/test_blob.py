@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 
 import mock
@@ -324,6 +325,15 @@ class Test_Blob(unittest.TestCase):
         blob.delete()
         self.assertFalse(blob.exists())
         self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test__make_transport(self, fake_session_factory):
+        client = mock.Mock(spec=[u'_credentials'])
+        blob = self._make_one(u'blob-name', bucket=None)
+        transport = blob._make_transport(client)
+
+        self.assertIs(transport, fake_session_factory.return_value)
+        fake_session_factory.assert_called_once_with(client._credentials)
 
     def test__get_download_url_with_media_link(self):
         blob_name = 'something.txt'
@@ -673,6 +683,32 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(fetched, b'abcdef')
 
         self._check_session_mocks(client, fake_session_factory, media_link)
+
+    def test__get_content_type_explicit(self):
+        blob = self._make_one(u'blob-name', bucket=None)
+
+        content_type = u'text/plain'
+        return_value = blob._get_content_type(content_type)
+        self.assertEqual(return_value, content_type)
+
+    def test__get_content_type_from_blob(self):
+        blob = self._make_one(u'blob-name', bucket=None)
+        blob.content_type = u'video/mp4'
+
+        return_value = blob._get_content_type(None)
+        self.assertEqual(return_value, blob.content_type)
+
+    def test__get_content_type_from_filename(self):
+        blob = self._make_one(u'blob-name', bucket=None)
+
+        return_value = blob._get_content_type(None, filename='archive.tar')
+        self.assertEqual(return_value, 'application/x-tar')
+
+    def test__get_content_type_default(self):
+        blob = self._make_one(u'blob-name', bucket=None)
+
+        return_value = blob._get_content_type(None)
+        self.assertEqual(return_value, u'application/octet-stream')
 
     def test_upload_from_file_size_failure(self):
         BLOB_NAME = 'blob-name'
@@ -2270,6 +2306,36 @@ class Test__quote(unittest.TestCase):
             self._call_fut(None)
 
 
+class Test__maybe_rewind(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage.blob import _maybe_rewind
+
+        return _maybe_rewind(*args, **kwargs)
+
+    def test_default(self):
+        stream = mock.Mock(spec=[u'seek'])
+        ret_val = self._call_fut(stream)
+        self.assertIsNone(ret_val)
+
+        stream.seek.assert_not_called()
+
+    def test_do_not_rewind(self):
+        stream = mock.Mock(spec=[u'seek'])
+        ret_val = self._call_fut(stream, rewind=False)
+        self.assertIsNone(ret_val)
+
+        stream.seek.assert_not_called()
+
+    def test_do_rewind(self):
+        stream = mock.Mock(spec=[u'seek'])
+        ret_val = self._call_fut(stream, rewind=True)
+        self.assertIsNone(ret_val)
+
+        stream.seek.assert_called_once_with(0, os.SEEK_SET)
+
+
 class _Responder(object):
 
     def __init__(self, *responses):
@@ -2362,6 +2428,10 @@ class _Client(object):
     @property
     def _connection(self):
         return self._base_connection
+
+    @property
+    def _credentials(self):
+        return self._base_connection.credentials
 
 
 class _Stream(object):

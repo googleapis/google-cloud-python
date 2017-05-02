@@ -27,7 +27,6 @@ import os
 import time
 
 import httplib2
-import six
 from six.moves.urllib.parse import quote
 
 import google.auth.transport.requests
@@ -50,8 +49,10 @@ from google.cloud.streaming.transfer import Upload
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
+_DEFAULT_CONTENT_TYPE = u'application/octet-stream'
 _DOWNLOAD_URL_TEMPLATE = (
     u'https://www.googleapis.com/download/storage/v1{path}?alt=media')
+_CONTENT_TYPE = 'contentType'
 
 
 class Blob(_PropertyMixin):
@@ -192,7 +193,7 @@ class Blob(_PropertyMixin):
         :returns: The public URL for this blob.
         """
         return '{storage_base_url}/{bucket_name}/{quoted_name}'.format(
-            storage_base_url='https://storage.googleapis.com',
+            storage_base_url=_API_ACCESS_ENDPOINT,
             bucket_name=self.bucket.name,
             quoted_name=_quote(self.name))
 
@@ -269,7 +270,7 @@ class Blob(_PropertyMixin):
 
         if credentials is None:
             client = self._require_client(client)
-            credentials = client._base_connection.credentials
+            credentials = client._credentials
 
         return generate_signed_url(
             credentials, resource=resource,
@@ -323,6 +324,23 @@ class Blob(_PropertyMixin):
                  :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).
         """
         return self.bucket.delete_blob(self.name, client=client)
+
+    def _make_transport(self, client):
+        """Make an authenticated transport with a client's credentials.
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+        :rtype transport:
+            :class:`~google.auth.transport.requests.AuthorizedSession`
+        :returns: The transport (with credentials) that will
+                  make authenticated requests.
+        """
+        client = self._require_client(client)
+        # Create a ``requests`` transport with the client's credentials.
+        transport = google.auth.transport.requests.AuthorizedSession(
+            client._credentials)
+        return transport
 
     def _get_download_url(self):
         """Get the download URL for the current blob.
@@ -403,14 +421,9 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        client = self._require_client(client)
-        # Get the download URL.
         download_url = self._get_download_url()
-        # Get any extra headers for the request.
         headers = _get_encryption_headers(self._encryption_key)
-        # Create a ``requests`` transport with the client's credentials.
-        transport = google.auth.transport.requests.AuthorizedSession(
-            client._credentials)
+        transport = self._make_transport(client)
 
         try:
             self._do_download(transport, file_obj, download_url, headers)
@@ -456,6 +469,36 @@ class Blob(_PropertyMixin):
         string_buffer = BytesIO()
         self.download_to_file(string_buffer, client=client)
         return string_buffer.getvalue()
+
+    def _get_content_type(self, content_type, filename=None):
+        """Determine the content type from the current object.
+
+        The return value will be determined in order of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
+        - The value stored on the current blob
+        - The default value ('application/octet-stream')
+
+        :type content_type: str
+        :param content_type: (Optional) type of content.
+
+        :type filename: str
+        :param filename: (Optional) The name of the file where the content
+                         is stored.
+
+        :rtype: str
+        :returns: Type of content gathered from the object.
+        """
+        if content_type is None:
+            content_type = self.content_type
+
+        if content_type is None and filename is not None:
+            content_type, _ = mimetypes.guess_type(filename)
+
+        if content_type is None:
+            content_type = _DEFAULT_CONTENT_TYPE
+
+        return content_type
 
     def _create_upload(
             self, client, file_obj=None, size=None, content_type=None,
@@ -509,8 +552,7 @@ class Blob(_PropertyMixin):
         # API_BASE_URL and build_api_url).
         connection = client._base_connection
 
-        content_type = (content_type or self._properties.get('contentType') or
-                        'application/octet-stream')
+        content_type = self._get_content_type(content_type)
 
         headers = {
             'Accept': 'application/json',
@@ -575,10 +617,12 @@ class Blob(_PropertyMixin):
                          content_type=None, num_retries=6, client=None):
         """Upload the contents of this blob from a file-like object.
 
-        The content type of the upload will either be
-        - The value passed in to the function (if any)
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
         - The value stored on the current blob
-        - The default value of 'application/octet-stream'
+        - The default value ('application/octet-stream')
 
         .. note::
            The effect of uploading to an existing blob depends on the
@@ -640,10 +684,7 @@ class Blob(_PropertyMixin):
         # API_BASE_URL and build_api_url).
         connection = client._base_connection
 
-        # Rewind the file if desired.
-        if rewind:
-            file_obj.seek(0, os.SEEK_SET)
-
+        _maybe_rewind(file_obj, rewind=rewind)
         # Get the basic stats about the file.
         total_bytes = size
         if total_bytes is None:
@@ -679,18 +720,19 @@ class Blob(_PropertyMixin):
         self._check_response_error(request, http_response)
         response_content = http_response.content
 
-        if not isinstance(response_content,
-                          six.string_types):  # pragma: NO COVER  Python3
-            response_content = response_content.decode('utf-8')
+        response_content = _bytes_to_unicode(response_content)
         self._set_properties(json.loads(response_content))
 
     def upload_from_filename(self, filename, content_type=None, client=None):
         """Upload this blob's contents from the content of a named file.
 
-        The content type of the upload will either be
-        - The value passed in to the function (if any)
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
         - The value stored on the current blob
-        - The value given by mimetypes.guess_type
+        - The value given by ``mimetypes.guess_type``
+        - The default value ('application/octet-stream')
 
         .. note::
            The effect of uploading to an existing blob depends on the
@@ -714,9 +756,7 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """
-        content_type = content_type or self._properties.get('contentType')
-        if content_type is None:
-            content_type, _ = mimetypes.guess_type(filename)
+        content_type = self._get_content_type(content_type, filename=filename)
 
         with open(filename, 'rb') as file_obj:
             self.upload_from_file(
@@ -749,8 +789,7 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """
-        if isinstance(data, six.text_type):
-            data = data.encode('utf-8')
+        data = _to_bytes(data, encoding='utf-8')
         string_buffer = BytesIO()
         string_buffer.write(data)
         self.upload_from_file(
@@ -777,10 +816,12 @@ class Blob(_PropertyMixin):
         .. _documentation on signed URLs: https://cloud.google.com/storage\
                 /docs/access-control/signed-urls#signing-resumable
 
-        The content type of the upload will either be
-        - The value passed in to the function (if any)
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
         - The value stored on the current blob
-        - The default value of 'application/octet-stream'
+        - The default value ('application/octet-stream')
 
         .. note::
            The effect of uploading to an existing blob depends on the
@@ -1080,7 +1121,7 @@ class Blob(_PropertyMixin):
     :rtype: str or ``NoneType``
     """
 
-    content_type = _scalar_property('contentType')
+    content_type = _scalar_property(_CONTENT_TYPE)
     """HTTP 'Content-Type' header for this object.
 
     See: https://tools.ietf.org/html/rfc2616#section-14.17 and
@@ -1353,8 +1394,8 @@ def _get_encryption_headers(key, source=False):
 
     key = _to_bytes(key)
     key_hash = hashlib.sha256(key).digest()
-    key_hash = base64.b64encode(key_hash).rstrip()
-    key = base64.b64encode(key).rstrip()
+    key_hash = base64.b64encode(key_hash)
+    key = base64.b64encode(key)
 
     if source:
         prefix = 'X-Goog-Copy-Source-Encryption-'
@@ -1384,3 +1425,16 @@ def _quote(value):
     """
     value = _to_bytes(value, encoding='utf-8')
     return quote(value, safe='')
+
+
+def _maybe_rewind(stream, rewind=False):
+    """Rewind the stream if desired.
+
+    :type stream: IO[Bytes]
+    :param stream: A bytes IO object open for reading.
+
+    :type rewind: bool
+    :param rewind: Indicates if we should seek to the beginning of the stream.
+    """
+    if rewind:
+        stream.seek(0, os.SEEK_SET)
