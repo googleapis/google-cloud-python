@@ -14,5 +14,4 @@
 
 from __future__ import absolute_import
 
-from google.cloud.vision_v1 import __all__
 from google.cloud.vision_v1 import *

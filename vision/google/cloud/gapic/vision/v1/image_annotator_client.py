@@ -126,7 +126,7 @@ class ImageAnnotatorClient(object):
 
         # Finally, track the GAPIC package version.
         metrics_headers['gapic'] = pkg_resources.get_distribution(
-            'gapic-google-cloud-vision-v1', ).version
+            'google-cloud-vision', ).version
 
         # Load the configuration defaults.
         default_client_config = json.loads(

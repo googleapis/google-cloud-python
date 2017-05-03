@@ -33,7 +33,7 @@ class VisionHelpersMeta(type):
         # Iterate over the Feature.Type enum and add get a list of
         # features which will receive single-feature detection methods.
         features = [k for k in cls.enums.Feature.Type.__dict__.keys()
-                    if k.isalpha() and k.upper() == k]
+                    if k.replace('_', '').isalpha() and k.upper() == k]
 
         # Add each single-feature method to the class.
         for feature in features:

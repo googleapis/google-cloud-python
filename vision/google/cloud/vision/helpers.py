@@ -21,7 +21,7 @@ from google.gax.utils import protobuf
 from google.cloud.vision import meta
 
 
-@six.add_metaclass(meta.VisionMeta)
+@six.add_metaclass(meta.VisionHelpersMeta)
 class VisionHelpers(object):
     """A set of convenience methods to make the Vision GAPIC easier to use.
 
