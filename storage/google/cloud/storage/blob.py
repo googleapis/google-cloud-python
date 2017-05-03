@@ -790,10 +790,9 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
         """
         data = _to_bytes(data, encoding='utf-8')
-        string_buffer = BytesIO()
-        string_buffer.write(data)
+        string_buffer = BytesIO(data)
         self.upload_from_file(
-            file_obj=string_buffer, rewind=True, size=len(data),
+            file_obj=string_buffer, size=len(data),
             content_type=content_type, client=client)
 
     def create_resumable_upload_session(
