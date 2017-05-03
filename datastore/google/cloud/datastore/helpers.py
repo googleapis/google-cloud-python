@@ -311,7 +311,7 @@ def _pb_attr_value(val):
         name, value = 'integer', val
     elif isinstance(val, six.text_type):
         name, value = 'string', val
-    elif isinstance(val, (bytes, str)):
+    elif isinstance(val, six.binary_type):
         name, value = 'blob', val
     elif isinstance(val, Entity):
         name, value = 'entity', val
