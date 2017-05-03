@@ -23,6 +23,8 @@ from google.cloud.proto.devtools.clouderrorreporting.v1beta1 import (
 from google.protobuf.duration_pb2 import Duration
 
 
+ERROR_NAME = 'Stackdriver Error Reporting System Test'
+
 def setUpModule():
     Config.CLIENT = error_reporting.Client()
 
@@ -46,31 +48,28 @@ def _list_groups(project):
     :type project: str
     :param project: Google Cloud Project ID
     """
-    gax_api = error_stats_service_client.ErrorStatsServiceClient()
+    gax_api = error_stats_service_client.ErrorStatsServiceClient(
+        credentials=Config.CLIENT._credentials)
     project_name = gax_api.project_path(project)
 
     time_range = error_stats_service_pb2.QueryTimeRange()
-    time_range.period = (
-        error_stats_service_pb2.QueryTimeRange.PERIOD_1_HOUR
-    )
+    time_range.period = error_stats_service_pb2.QueryTimeRange.PERIOD_1_HOUR
 
-    duration = Duration()
-    duration.seconds = 60 * 60
+    duration = Duration(seconds=60*60)
 
     return gax_api.list_group_stats(
         project_name, time_range, timed_count_duration=duration)
 
-ERROR_NAME = 'Stackdriver Error Reporting System Test'
+
+def _simulate_exception():
+    """Simulates an exception to verify it was reported."""
+    try:
+        raise RuntimeError(ERROR_NAME)
+    except RuntimeError:
+        Config.CLIENT.report_exception()
 
 
 class TestErrorReporting(unittest.TestCase):
-
-    def _simulate_exception(self):
-        """Simulates an exception to verify it was reported."""
-        try:
-            raise RuntimeError(ERROR_NAME)
-        except RuntimeError:
-            Config.CLIENT.report_exception()
 
     def _get_error_count(self):
         """Counts the number of errors in the group of the test exception."""
