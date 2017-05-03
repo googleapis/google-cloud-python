@@ -31,6 +31,6 @@ class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):
 
 
 __all__ = (
-    '__all__', 'enums', 'geometry', 'image_annotator', 'ImageAnnotatorClient',
+    'enums', 'geometry', 'image_annotator', 'ImageAnnotatorClient',
     'text_annotation', 'web_detection',
 )
