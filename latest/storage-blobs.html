@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Blobs / Objects &mdash; google-cloud d1c1a50 documentation</title>
+  <title>Blobs / Objects &mdash; google-cloud 4e6e2b1 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud d1c1a50 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 4e6e2b1 documentation" href="index.html"/>
         <link rel="next" title="Buckets" href="storage-buckets.html"/>
         <link rel="prev" title="Storage Client" href="storage-client.html"/> 
 
@@ -563,10 +563,13 @@ The client performs a PUT request on the session URL to complete the
 upload. This process allows untrusted clients to upload to an
 access-controlled bucket. For more details, see the
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control/signed-urls#signing-resumable">documentation on signed URLs</a>.</p>
-<p>The content type of the upload will either be
-- The value passed in to the function (if any)
-- The value stored on the current blob
-- The default value of &#8216;application/octet-stream&#8217;</p>
+<p>The content type of the upload will be determined in order
+of precedence:</p>
+<ul class="simple">
+<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>)</li>
+<li>The value stored on the current blob</li>
+<li>The default value (&#8216;application/octet-stream&#8217;)</li>
+</ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The effect of uploading to an existing blob depends on the
@@ -1309,10 +1312,13 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.blob.Blob.upload_from_file">
 <code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=6</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of this blob from a file-like object.</p>
-<p>The content type of the upload will either be
-- The value passed in to the function (if any)
-- The value stored on the current blob
-- The default value of &#8216;application/octet-stream&#8217;</p>
+<p>The content type of the upload will be determined in order
+of precedence:</p>
+<ul class="simple">
+<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>)</li>
+<li>The value stored on the current blob</li>
+<li>The default value (&#8216;application/octet-stream&#8217;)</li>
+</ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The effect of uploading to an existing blob depends on the
@@ -1369,10 +1375,14 @@ if the upload response returns an error status.</p>
 <dt id="google.cloud.storage.blob.Blob.upload_from_filename">
 <code class="descname">upload_from_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>content_type=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_filename" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload this blob&#8217;s contents from the content of a named file.</p>
-<p>The content type of the upload will either be
-- The value passed in to the function (if any)
-- The value stored on the current blob
-- The value given by mimetypes.guess_type</p>
+<p>The content type of the upload will be determined in order
+of precedence:</p>
+<ul class="simple">
+<li>The value passed in to this method (if not <a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>)</li>
+<li>The value stored on the current blob</li>
+<li>The value given by <code class="docutils literal"><span class="pre">mimetypes.guess_type</span></code></li>
+<li>The default value (&#8216;application/octet-stream&#8217;)</li>
+</ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>The effect of uploading to an existing blob depends on the
@@ -1481,7 +1491,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'d1c1a50',
+            VERSION:'4e6e2b1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
