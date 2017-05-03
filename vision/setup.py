@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 
 from setuptools import find_packages
@@ -20,21 +21,38 @@ from setuptools import setup
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
-    README = file_obj.read()
+with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
+    readme = readme_file.read()
 
-# NOTE: This is duplicated throughout and we should try to
-#       consolidate.
-SETUP_BASE = {
-    'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
-    'scripts': [],
-    'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
-    'license': 'Apache 2.0',
-    'platforms': 'Posix; MacOS X; Windows',
-    'include_package_data': True,
-    'zip_safe': False,
-    'classifiers': [
+cur_dir = os.path.realpath(os.path.dirname(__file__))
+with io.open('%s/requirements.txt' % cur_dir) as requirements_file:
+    requirements = requirements_file.read().strip().split('\n')
+
+
+setup(
+    author='Google Cloud Platform',
+    author_email='googleapis-packages@google.com',
+    name='google-cloud-vision',
+    version='0.25.0',
+    description='Python Client for Google Cloud Vision',
+    long_description=readme,
+    namespace_packages=[
+        'google',
+        'google.cloud',
+        'google.cloud.gapic',
+        'google.cloud.gapic.vision',
+        'google.cloud.proto',
+        'google.cloud.proto.vision',
+    ],
+    packages=find_packages(exclude=('tests*',)),
+    install_requires=requirements,
+    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
+    license='Apache 2.0',
+    platforms='Posix; MacOS X; Windows',
+    include_package_data=True,
+    zip_safe=False,
+    scripts=[],
+    classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
@@ -47,23 +65,4 @@ SETUP_BASE = {
         'Programming Language :: Python :: 3.6',
         'Topic :: Internet',
     ],
-}
-
-
-REQUIREMENTS = [
-    'gapic-google-cloud-vision-v1 >= 0.90.3, < 0.91dev',
-]
-
-setup(
-    name='google-cloud-vision',
-    version='0.25.0',
-    description='Python Client for Google Cloud Vision',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
 )

@@ -14,9 +14,14 @@
 
 from __future__ import absolute_import
 import collections
+import six
 
 from google.gax.utils import protobuf
 
+from google.cloud.vision import meta
+
+
+@six.add_metaclass(meta.VisionMeta)
 class VisionHelpers(object):
     """A set of convenience methods to make the Vision GAPIC easier to use.
 
