@@ -78,7 +78,9 @@ def system_tests(session, python_version):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install('flake8', *LOCAL_DEPS)
+    session.install('mock', 'pytest', *LOCAL_DEPS)
+    session.install('../test_utils/', '../bigquery/', '../pubsub/',
+                '../storage/')
     session.install('.')
 
     # Run py.test against the system tests.
