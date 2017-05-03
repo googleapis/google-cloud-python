@@ -20,17 +20,20 @@ import base64
 import copy
 import hashlib
 from io import BytesIO
-from io import UnsupportedOperation
-import json
 import mimetypes
 import os
 import time
+import warnings
 
 import httplib2
 from six.moves.urllib.parse import quote
 
 import google.auth.transport.requests
 from google import resumable_media
+from google.resumable_media.requests import ChunkedDownload
+from google.resumable_media.requests import Download
+from google.resumable_media.requests import MultipartUpload
+from google.resumable_media.requests import ResumableUpload
 
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
@@ -43,7 +46,6 @@ from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage.acl import ObjectACL
 from google.cloud.streaming.http_wrapper import Request
-from google.cloud.streaming.http_wrapper import make_api_request
 from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
 from google.cloud.streaming.transfer import Upload
 
@@ -52,7 +54,35 @@ _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
 _DEFAULT_CONTENT_TYPE = u'application/octet-stream'
 _DOWNLOAD_URL_TEMPLATE = (
     u'https://www.googleapis.com/download/storage/v1{path}?alt=media')
-_CONTENT_TYPE = 'contentType'
+_BASE_UPLOAD_TEMPLATE = (
+    u'https://www.googleapis.com/upload/storage/v1{bucket_path}/o?uploadType=')
+_MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u'multipart'
+_RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u'resumable'
+# NOTE: "acl" is also writeable but we defer ACL management to
+#       the classes in the google.cloud.storage.acl module.
+_CONTENT_TYPE_FIELD = 'contentType'
+_WRITABLE_FIELDS = (
+    'cacheControl',
+    'contentDisposition',
+    'contentEncoding',
+    'contentLanguage',
+    _CONTENT_TYPE_FIELD,
+    'crc32c',
+    'md5Hash',
+    'metadata',
+    'name',
+    'storageClass',
+)
+_NUM_RETRIES_MESSAGE = (
+    'num_retries is no longer supported. When a transient error occurs, '
+    'such as a 429 Too Many Requests or 500 Internal Server Error, upload '
+    'requests will be automatically retried. Subsequent retries will be '
+    'done after waiting 1, 2, 4, 8, etc. seconds (exponential backoff) until '
+    '10 minutes of wait time have elapsed. At that point, there will be no '
+    'more attempts to retry.')
+_READ_LESS_THAN_SIZE = (
+    'Size {:d} was specified but the file-like object only had '
+    '{:d} bytes remaining.')
 
 
 class Blob(_PropertyMixin):
@@ -381,11 +411,11 @@ class Blob(_PropertyMixin):
         :param headers: Optional headers to be sent with the request(s).
         """
         if self.chunk_size is None:
-            download = resumable_media.Download(download_url, headers=headers)
+            download = Download(download_url, headers=headers)
             response = download.consume(transport)
             file_obj.write(response.content)
         else:
-            download = resumable_media.ChunkedDownload(
+            download = ChunkedDownload(
                 download_url, self.chunk_size, file_obj, headers=headers)
             while not download.finished:
                 download.consume_next_chunk(transport)
@@ -428,10 +458,7 @@ class Blob(_PropertyMixin):
         try:
             self._do_download(transport, file_obj, download_url, headers)
         except resumable_media.InvalidResponse as exc:
-            response = exc.response
-            faux_response = httplib2.Response({'status': response.status_code})
-            raise make_exception(faux_response, response.content,
-                                 error_info=download_url, use_json=False)
+            _raise_from_invalid_response(exc, download_url)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -613,8 +640,213 @@ class Blob(_PropertyMixin):
             raise make_exception(faux_response, http_response.content,
                                  error_info=request.url)
 
+    def _get_writable_metadata(self):
+        """Get the object / blob metadata which is writable.
+
+        This is intended to be used when creating a new object / blob.
+
+        See the `API reference`_ for more information, the fields marked as
+        writable are:
+
+        * ``acl``
+        * ``cacheControl``
+        * ``contentDisposition``
+        * ``contentEncoding``
+        * ``contentLanguage``
+        * ``contentType``
+        * ``crc32c``
+        * ``md5Hash``
+        * ``metadata``
+        * ``name``
+        * ``storageClass``
+
+        For now, we don't support ``acl``, access control lists should be
+        managed directly through :class:`ObjectACL` methods.
+
+        .. _API reference: https://cloud.google.com/storage/\
+                           docs/json_api/v1/objects
+        """
+        # NOTE: This assumes `self.name` is unicode.
+        object_metadata = {'name': self.name}
+        for key in self._changes:
+            if key in _WRITABLE_FIELDS:
+                object_metadata[key] = self._properties[key]
+
+        return object_metadata
+
+    def _get_upload_arguments(self, client, content_type):
+        """Get required arguments for performing an upload.
+
+        The content type returned will be determined in order of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
+        - The value stored on the current blob
+        - The default value ('application/octet-stream')
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+        :type content_type: str
+        :param content_type: Type of content being uploaded (or :data:`None`).
+
+        :rtype: tuple
+        :returns: A quadruple of
+
+                  * An
+                    :class:`~google.auth.transport.requests.AuthorizedSession`
+                  * A header dictionary
+                  * An object metadata dictionary
+                  * The ``content_type`` as a string (according to precedence)
+        """
+        transport = self._make_transport(client)
+        headers = _get_encryption_headers(self._encryption_key)
+        object_metadata = self._get_writable_metadata()
+        content_type = self._get_content_type(content_type)
+        return transport, headers, object_metadata, content_type
+
+    def _do_multipart_upload(self, client, stream, content_type, size):
+        """Perform a multipart upload.
+
+        Assumes ``chunk_size`` is :data:`None` on the current blob.
+
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
+        - The value stored on the current blob
+        - The default value ('application/octet-stream')
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type content_type: str
+        :param content_type: Type of content being uploaded (or :data:`None`).
+
+        :type size: int
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``stream``). If not provided, the upload will be
+                     concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :rtype: :class:`~requests.Response`
+        :returns: The "200 OK" response object returned after the multipart
+                  upload request.
+        :raises: :exc:`ValueError` if ``size`` is not :data:`None` but the
+                 ``stream`` has fewer than ``size`` bytes remaining.
+        """
+        if size is None:
+            data = stream.read()
+        else:
+            data = stream.read(size)
+            if len(data) < size:
+                msg = _READ_LESS_THAN_SIZE.format(size, len(data))
+                raise ValueError(msg)
+
+        info = self._get_upload_arguments(client, content_type)
+        transport, headers, object_metadata, content_type = info
+
+        upload_url = _MULTIPART_URL_TEMPLATE.format(
+            bucket_path=self.bucket.path)
+        upload = MultipartUpload(upload_url, headers=headers)
+        response = upload.transmit(
+            transport, data, object_metadata, content_type)
+
+        return response
+
+    def _do_resumable_upload(self, client, stream, content_type, size):
+        """Perform a resumable upload.
+
+        Assumes ``chunk_size`` is not :data:`None` on the current blob.
+
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
+        - The value stored on the current blob
+        - The default value ('application/octet-stream')
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type content_type: str
+        :param content_type: Type of content being uploaded (or :data:`None`).
+
+        :type size: int
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``stream``). If not provided, the upload will be
+                     concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :rtype: :class:`~requests.Response`
+        :returns: The "200 OK" response object returned after the final chunk
+                  is uploaded.
+        """
+        info = self._get_upload_arguments(client, content_type)
+        transport, headers, object_metadata, content_type = info
+
+        upload_url = _RESUMABLE_URL_TEMPLATE.format(
+            bucket_path=self.bucket.path)
+        upload = ResumableUpload(upload_url, self.chunk_size, headers=headers)
+        upload.initiate(
+            transport, stream, object_metadata, content_type,
+            total_bytes=size, stream_final=False)
+        while not upload.finished:
+            response = upload.transmit_next_chunk(transport)
+
+        return response
+
+    def _do_upload(self, client, stream, content_type, size):
+        """Determine an upload strategy and then perform the upload.
+
+        If the current blob has a ``chunk_size`` set, then a resumable upload
+        will be used, otherwise the content and the metadata will be uploaded
+        in a single multipart upload request.
+
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
+        - The value stored on the current blob
+        - The default value ('application/octet-stream')
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type content_type: str
+        :param content_type: Type of content being uploaded (or :data:`None`).
+
+        :type size: int
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``stream``). If not provided, the upload will be
+                     concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :rtype: dict
+        :returns: The parsed JSON from the "200 OK" response. This will be the
+                  **only** response in the multipart case and it will be the
+                  **final** response in the resumable case.
+        """
+        if self.chunk_size is None:
+            response = self._do_multipart_upload(
+                client, stream, content_type, size)
+        else:
+            response = self._do_resumable_upload(
+                client, stream, content_type, size)
+
+        return response.json()
+
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         content_type=None, num_retries=6, client=None):
+                         content_type=None, num_retries=None, client=None):
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will be determined in order
@@ -655,73 +887,33 @@ class Blob(_PropertyMixin):
                        writing the file to Cloud Storage.
 
         :type size: int
-        :param size: The number of bytes to read from the file handle.
-                     If not provided, we'll try to guess the size using
-                     :func:`os.fstat`. (If the file handle is not from the
-                     filesystem this won't be possible.)
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``file_obj``). If not provided, the upload will be
+                     concluded once ``file_obj`` is exhausted.
 
         :type content_type: str
         :param content_type: Optional type of content being uploaded.
 
         :type num_retries: int
-        :param num_retries: Number of upload retries. Defaults to 6.
+        :param num_retries: Number of upload retries. (Deprecated.)
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
-        :raises: :class:`ValueError` if size is not passed in and can not be
-                 determined; :class:`google.cloud.exceptions.GoogleCloudError`
+        :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
         """
-        client = self._require_client(client)
-        # Use ``_base_connection`` rather ``_connection`` since the current
-        # connection may be a batch. A batch wraps a client's connection,
-        # but does not store the ``http`` object. The rest (API_BASE_URL and
-        # build_api_url) are also defined on the Batch class, but we just
-        # use the wrapped connection since it has all three (http,
-        # API_BASE_URL and build_api_url).
-        connection = client._base_connection
+        if num_retries is not None:
+            warnings.warn(_NUM_RETRIES_MESSAGE, DeprecationWarning)
 
         _maybe_rewind(file_obj, rewind=rewind)
-        # Get the basic stats about the file.
-        total_bytes = size
-        if total_bytes is None:
-            if hasattr(file_obj, 'fileno'):
-                try:
-                    total_bytes = os.fstat(file_obj.fileno()).st_size
-                except (OSError, UnsupportedOperation):
-                    pass  # Assuming fd is not an actual file (maybe socket).
-
-        chunk_size = None
-        strategy = None
-        if self.chunk_size is not None:
-            chunk_size = self.chunk_size
-
-            if total_bytes is None:
-                strategy = RESUMABLE_UPLOAD
-        elif total_bytes is None:
-            raise ValueError('total bytes could not be determined. Please '
-                             'pass an explicit size, or supply a chunk size '
-                             'for a streaming transfer.')
-
-        upload, request, _ = self._create_upload(
-            client, file_obj=file_obj, size=total_bytes,
-            content_type=content_type, chunk_size=chunk_size,
-            strategy=strategy)
-
-        if upload.strategy == RESUMABLE_UPLOAD:
-            http_response = upload.stream_file(use_chunks=True)
-        else:
-            http_response = make_api_request(
-                connection.http, request, retries=num_retries)
-
-        self._check_response_error(request, http_response)
-        response_content = http_response.content
-
-        response_content = _bytes_to_unicode(response_content)
-        self._set_properties(json.loads(response_content))
+        try:
+            created_json = self._do_upload(
+                client, file_obj, content_type, size)
+            self._set_properties(created_json)
+        except resumable_media.InvalidResponse as exc:
+            _raise_from_invalid_response(exc)
 
     def upload_from_filename(self, filename, content_type=None, client=None):
         """Upload this blob's contents from the content of a named file.
@@ -751,16 +943,17 @@ class Blob(_PropertyMixin):
         :type content_type: str
         :param content_type: Optional type of content being uploaded.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """
         content_type = self._get_content_type(content_type, filename=filename)
 
         with open(filename, 'rb') as file_obj:
+            total_bytes = os.fstat(file_obj.fileno()).st_size
             self.upload_from_file(
-                file_obj, content_type=content_type, client=client)
+                file_obj, content_type=content_type, client=client,
+                size=total_bytes)
 
     def upload_from_string(self, data, content_type='text/plain', client=None):
         """Upload contents of this blob from the provided string.
@@ -1121,7 +1314,7 @@ class Blob(_PropertyMixin):
     :rtype: str or ``NoneType``
     """
 
-    content_type = _scalar_property(_CONTENT_TYPE)
+    content_type = _scalar_property(_CONTENT_TYPE_FIELD)
     """HTTP 'Content-Type' header for this object.
 
     See: https://tools.ietf.org/html/rfc2616#section-14.17 and
@@ -1430,7 +1623,7 @@ def _quote(value):
 def _maybe_rewind(stream, rewind=False):
     """Rewind the stream if desired.
 
-    :type stream: IO[Bytes]
+    :type stream: IO[bytes]
     :param stream: A bytes IO object open for reading.
 
     :type rewind: bool
@@ -1438,3 +1631,22 @@ def _maybe_rewind(stream, rewind=False):
     """
     if rewind:
         stream.seek(0, os.SEEK_SET)
+
+
+def _raise_from_invalid_response(error, error_info=None):
+    """Re-wrap and raise an ``InvalidResponse`` exception.
+
+    :type error: :exc:`google.resumable_media.InvalidResponse`
+    :param error: A caught exception from the ``google-resumable-media``
+                  library.
+
+    :type error_info: str
+    :param error_info: (Optional) Extra information about the failed request.
+
+    :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding
+             to the failed status code
+    """
+    response = error.response
+    faux_response = httplib2.Response({'status': response.status_code})
+    raise make_exception(faux_response, response.content,
+                         error_info=error_info, use_json=False)
