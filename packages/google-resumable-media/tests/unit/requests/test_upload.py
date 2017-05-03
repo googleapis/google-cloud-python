@@ -105,7 +105,11 @@ class TestResumableUpload(object):
         # Check resumable_url before.
         assert upload._resumable_url is None
         # Make request and check the return value (against the mock).
-        response = upload.initiate(transport, stream, metadata, BASIC_CONTENT)
+        total_bytes = 100
+        assert total_bytes > len(data)
+        response = upload.initiate(
+            transport, stream, metadata, BASIC_CONTENT,
+            total_bytes=total_bytes, stream_final=False)
         assert response is transport.request.return_value
         # Check resumable_url after.
         assert upload._resumable_url == location
@@ -114,7 +118,7 @@ class TestResumableUpload(object):
         expected_headers = {
             u'content-type': JSON_TYPE,
             u'x-upload-content-type': BASIC_CONTENT,
-            u'x-upload-content-length': u'{:d}'.format(len(data)),
+            u'x-upload-content-length': u'{:d}'.format(total_bytes),
         }
         transport.request.assert_called_once_with(
             u'POST', RESUMABLE_URL, data=json_bytes, headers=expected_headers)

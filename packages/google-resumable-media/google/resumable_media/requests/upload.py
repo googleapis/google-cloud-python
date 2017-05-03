@@ -317,7 +317,8 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
             ~requests.Response: The HTTP response returned by ``transport``.
         """
         method, url, payload, headers = self._prepare_initiate_request(
-            stream, metadata, content_type, stream_final=stream_final)
+            stream, metadata, content_type,
+            total_bytes=total_bytes, stream_final=stream_final)
         result = _helpers.http_request(
             transport, method, url, data=payload, headers=headers)
         self._process_initiate_response(result)
