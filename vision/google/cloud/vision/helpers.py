@@ -52,7 +52,6 @@ class VisionHelpers(object):
         """
         # This method allows features not to be specified, and you get all
         # of them.
-        import pdb ; pdb.set_trace()
         protobuf.setdefault(request, 'features', self._get_all_features())
         return self.batch_annotate_images([request], options=options)[0]
 
@@ -68,5 +67,5 @@ class VisionHelpers(object):
                 continue
             if not isinstance(value, int) or value == 0:
                 continue
-            answer.append({'type': value, 'max_results': 10})
+            answer.append({'type': value})
         return answer

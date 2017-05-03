@@ -45,7 +45,8 @@ class TestSingleImageHelper(unittest.TestCase):
         # Evalute the request object to ensure it looks correct.
         request_sent = args[0][0]
         assert request_sent.image is request.image
-        assert request_sent.features == client._get_all_features()
+        assert len(request_sent.features) == len(client._get_all_features())
+    
 
     @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
     def test_explicit_features(self, batch_annotate):
@@ -56,9 +57,9 @@ class TestSingleImageHelper(unittest.TestCase):
         request = image_annotator.AnnotateImageRequest(
             image=image,
             features=[
-                image_annotator.Feature(type=1, max_results=1),
-                image_annotator.Feature(type=2, max_results=1),
-                image_annotator.Feature(type=3, max_results=1),
+                image_annotator.Feature(type=1),
+                image_annotator.Feature(type=2),
+                image_annotator.Feature(type=3),
             ],
         )
 
@@ -79,4 +80,4 @@ class TestSingleImageHelper(unittest.TestCase):
         assert len(request_sent.features) == 3
         for feature, i in zip(request_sent.features, range(1, 4)):
             assert feature.type == i
-            assert feature.max_results == 1
+            assert feature.max_results == 0
