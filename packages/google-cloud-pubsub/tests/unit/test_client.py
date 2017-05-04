@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import unittest
 
 import mock
@@ -365,7 +366,17 @@ class TestClient(unittest.TestCase):
         self.assertEqual(api._listed_subscriptions,
                          (self.PROJECT, None, None))
 
-    def test_topic(self):
+    def test_list_snapshots(self):
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        client._connection = object()
+        api = _FauxSubscriberAPI()
+        response = api._list_snapshots_response = object()
+        client._subscriber_api = api
+        self.assertEqual(client.list_snapshots(), response)
+        self.assertEqual(api._listed_snapshots, (self.PROJECT, None, None))
+
+    def test_topic_factory(self):
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'TOPIC_NAME'
         creds = _make_credentials()
@@ -379,17 +390,33 @@ class TestClient(unittest.TestCase):
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertFalse(new_topic.timestamp_messages)
 
-    def test_list_snapshots(self):
+    def test_subscription_factory(self):
+        project = 'PROJECT'
         creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds)
-        client._connection = object()
-        api = _FauxSubscriberAPI()
-        response = api._list_snapshots_response = object()
-        client._subscriber_api = api
-        self.assertEqual(client.list_snapshots(), response)
-        self.assertEqual(api._listed_snapshots, (self.PROJECT, None, None))
+        client_obj = self._make_one(project=project, credentials=creds)
 
-        
+        sub_name = 'hoot-n-holler'
+        ack_deadline = 60,
+        push_endpoint = 'https://api.example.com/push'
+        message_retention_duration = datetime.timedelta(3600)
+        new_subscription = client_obj.subscription(
+            sub_name, ack_deadline=ack_deadline,
+            push_endpoint=push_endpoint,
+            retain_acked_messages=True,
+            message_retention_duration=message_retention_duration)
+
+        self.assertEqual(new_subscription.name, sub_name)
+        self.assertIsNone(new_subscription.topic)
+        self.assertIs(new_subscription._client, client_obj)
+        self.assertEqual(new_subscription._project, project)
+        self.assertEqual(new_subscription.ack_deadline, ack_deadline)
+        self.assertEqual(new_subscription.push_endpoint, push_endpoint)
+        self.assertTrue(new_subscription.retain_acked_messages)
+        self.assertEqual(
+            new_subscription.message_retention_duration,
+            message_retention_duration)
+
+
 class _Iterator(object):
 
     def __init__(self, items, token):
@@ -419,7 +446,8 @@ class _FauxSubscriberAPI(object):
 
     def list_snapshots(self, project, page_size, page_token):
         self._listed_snapshots = (project, page_size, page_token)
-        return self._list_snapshots_response        
+        return self._list_snapshots_response
+
 
 class _Connection(object):
 
