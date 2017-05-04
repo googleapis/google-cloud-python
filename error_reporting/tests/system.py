@@ -81,11 +81,11 @@ class TestErrorReporting(unittest.TestCase):
     def test_report_exception(self):
         # If test has never run, group won't exist until we report first
         # exception, so first simulate it just to create the group
-        self._simulate_exception()
+        _simulate_exception()
         time.sleep(2)
 
         initial_count = self._get_error_count()
-        self._simulate_exception()
+        _simulate_exception()
 
         time.sleep(2)
         new_count = self._get_error_count()
