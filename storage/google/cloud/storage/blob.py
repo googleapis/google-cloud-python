@@ -559,7 +559,7 @@ class Blob(_PropertyMixin):
 
         return object_metadata
 
-    def _get_upload_arguments(self, client, content_type):
+    def _get_upload_arguments(self, content_type):
         """Get required arguments for performing an upload.
 
         The content type returned will be determined in order of precedence:
@@ -568,27 +568,20 @@ class Blob(_PropertyMixin):
         - The value stored on the current blob
         - The default value ('application/octet-stream')
 
-        :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
-
         :type content_type: str
         :param content_type: Type of content being uploaded (or :data:`None`).
 
         :rtype: tuple
-        :returns: A quadruple of
+        :returns: A triple of
 
-                  * An
-                    :class:`~google.auth.transport.requests.AuthorizedSession`
                   * A header dictionary
                   * An object metadata dictionary
                   * The ``content_type`` as a string (according to precedence)
         """
-        transport = self._make_transport(client)
         headers = _get_encryption_headers(self._encryption_key)
         object_metadata = self._get_writable_metadata()
         content_type = self._get_content_type(content_type)
-        return transport, headers, object_metadata, content_type
+        return headers, object_metadata, content_type
 
     def _do_multipart_upload(self, client, stream, content_type, size):
         """Perform a multipart upload.
@@ -631,8 +624,9 @@ class Blob(_PropertyMixin):
                 msg = _READ_LESS_THAN_SIZE.format(size, len(data))
                 raise ValueError(msg)
 
-        info = self._get_upload_arguments(client, content_type)
-        transport, headers, object_metadata, content_type = info
+        transport = self._make_transport(client)
+        info = self._get_upload_arguments(content_type)
+        headers, object_metadata, content_type = info
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
@@ -643,10 +637,8 @@ class Blob(_PropertyMixin):
         return response
 
     def _initiate_resumable_upload(self, client, stream, content_type,
-                                   size, extra_headers=None):
+                                   size, extra_headers=None, chunk_size=None):
         """Initiate a resumable upload.
-
-        Assumes ``chunk_size`` is not :data:`None` on the current blob.
 
         The content type of the upload will be determined in order
         of precedence:
@@ -674,6 +666,13 @@ class Blob(_PropertyMixin):
         :param extra_headers: (Optional) Extra headers to add to standard
                               headers.
 
+        :type chunk_size: int
+        :param chunk_size:
+            (Optional) Chunk size to use when creating a
+            :class:`~google.resumable_media.requests.ResumableUpload`.
+            If not passed, will fall back to the chunk size on the
+            current blob.
+
         :rtype: tuple
         :returns:
             Pair of
@@ -682,14 +681,18 @@ class Blob(_PropertyMixin):
               that was created
             * The ``transport`` used to initiate the upload.
         """
-        info = self._get_upload_arguments(client, content_type)
-        transport, headers, object_metadata, content_type = info
+        if chunk_size is None:
+            chunk_size = self.chunk_size
+
+        transport = self._make_transport(client)
+        info = self._get_upload_arguments(content_type)
+        headers, object_metadata, content_type = info
         if extra_headers is not None:
             headers.update(extra_headers)
 
         upload_url = _RESUMABLE_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
-        upload = ResumableUpload(upload_url, self.chunk_size, headers=headers)
+        upload = ResumableUpload(upload_url, chunk_size, headers=headers)
         upload.initiate(
             transport, stream, object_metadata, content_type,
             total_bytes=size, stream_final=False)
@@ -996,24 +999,19 @@ class Blob(_PropertyMixin):
             # determines the origins allowed for CORS.
             extra_headers['Origin'] = origin
 
-        curr_chunk_size = self.chunk_size
         try:
-            # Temporarily patch the chunk size. A user should still be able
-            # to initiate an upload session without setting the chunk size.
-            # The chunk size only matters when **sending** bytes to an upload.
-            self.chunk_size = self._CHUNK_SIZE_MULTIPLE
-
             dummy_stream = BytesIO(b'')
+            # Send a fake the chunk size which we **know** will be acceptable
+            # to the `ResumableUpload` constructor. The chunk size only
+            # matters when **sending** bytes to an upload.
             upload, _ = self._initiate_resumable_upload(
                 client, dummy_stream, content_type, size,
-                extra_headers=extra_headers)
+                extra_headers=extra_headers,
+                chunk_size=self._CHUNK_SIZE_MULTIPLE)
 
             return upload.resumable_url
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
-        finally:
-            # Put back the original chunk size.
-            self.chunk_size = curr_chunk_size
 
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.

@@ -734,15 +734,12 @@ class Test_Blob(unittest.TestCase):
         name = u'blob-name'
         key = b'[pXw@,p@@AfBfrR3x-2b2SCHR,.?YwRO'
         blob = self._make_one(name, bucket=None, encryption_key=key)
-        blob._make_transport = mock.Mock(spec=[])
         blob.content_disposition = 'inline'
 
-        client = mock.sentinel.mock
         content_type = u'image/jpeg'
-        info = blob._get_upload_arguments(client, content_type)
+        info = blob._get_upload_arguments(content_type)
 
-        transport, headers, object_metadata, new_content_type = info
-        self.assertIs(transport, blob._make_transport.return_value)
+        headers, object_metadata, new_content_type = info
         header_key_value = 'W3BYd0AscEBAQWZCZnJSM3gtMmIyU0NIUiwuP1l3Uk8='
         header_key_hash_value = 'G0++dxF4q5rG4o9kE8gvEKn15RH6wLm0wXV1MgAlXOg='
         expected_headers = {
@@ -757,8 +754,6 @@ class Test_Blob(unittest.TestCase):
         }
         self.assertEqual(object_metadata, expected_metadata)
         self.assertEqual(new_content_type, content_type)
-
-        blob._make_transport.assert_called_once_with(client)
 
     def _mock_transport(self, status_code, headers, content=b''):
         fake_transport = mock.Mock(spec=['request'])
@@ -838,7 +833,8 @@ class Test_Blob(unittest.TestCase):
             'was specified but the file-like object only had', exc_contents)
         self.assertEqual(stream.tell(), len(data))
 
-    def _initiate_resumable_helper(self, size=None, extra_headers=None):
+    def _initiate_resumable_helper(self, size=None, extra_headers=None,
+                                   chunk_size=None):
         from google.resumable_media.requests import ResumableUpload
 
         bucket = mock.Mock(path='/b/whammy', spec=[u'path'])
@@ -866,7 +862,8 @@ class Test_Blob(unittest.TestCase):
         stream = io.BytesIO(data)
         content_type = u'text/plain'
         upload, transport = blob._initiate_resumable_upload(
-            client, stream, content_type, size, extra_headers=extra_headers)
+            client, stream, content_type, size,
+            extra_headers=extra_headers, chunk_size=chunk_size)
 
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
@@ -881,7 +878,11 @@ class Test_Blob(unittest.TestCase):
             self.assertEqual(upload._headers, extra_headers)
             self.assertIsNot(upload._headers, extra_headers)
         self.assertFalse(upload.finished)
-        self.assertEqual(upload._chunk_size, blob.chunk_size)
+        if chunk_size is None:
+            self.assertEqual(upload._chunk_size, blob.chunk_size)
+        else:
+            self.assertNotEqual(blob.chunk_size, chunk_size)
+            self.assertEqual(upload._chunk_size, chunk_size)
         self.assertIs(upload._stream, stream)
         if size is None:
             self.assertIsNone(upload._total_bytes)
@@ -913,6 +914,10 @@ class Test_Blob(unittest.TestCase):
 
     def test__initiate_resumable_upload_with_size(self):
         self._initiate_resumable_helper(size=10000)
+
+    def test__initiate_resumable_upload_with_chunk_size(self):
+        one_mb = 1048576
+        self._initiate_resumable_helper(chunk_size=one_mb)
 
     def test__initiate_resumable_upload_with_extra_headers(self):
         extra_headers = {'origin': 'http://not-in-kansas-anymore.invalid'}
@@ -1222,7 +1227,8 @@ class Test_Blob(unittest.TestCase):
                                                 side_effect=None):
         bucket = mock.Mock(path='/b/alex-trebek', spec=[u'path'])
         blob = self._make_one('blob-name', bucket=bucket)
-        blob.chunk_size = 99 * blob._CHUNK_SIZE_MULTIPLE
+        chunk_size = 99 * blob._CHUNK_SIZE_MULTIPLE
+        blob.chunk_size = chunk_size
 
         # Create mocks to be checked for doing transport.
         resumable_url = 'http://test.invalid?upload_id=clean-up-everybody'
@@ -1241,8 +1247,9 @@ class Test_Blob(unittest.TestCase):
             content_type=content_type, size=size,
             origin=origin, client=client)
 
-        # Check the returned value.
+        # Check the returned value and (lack of) side-effect.
         self.assertEqual(new_url, resumable_url)
+        self.assertEqual(blob.chunk_size, chunk_size)
 
         # Check the mocks.
         blob._make_transport.assert_called_once_with(client)
