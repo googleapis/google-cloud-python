@@ -17,11 +17,18 @@ import unittest
 
 import mock
 
+from google.auth.credentials import Credentials
+
 from google.cloud.vision_v1 import ImageAnnotatorClient
 from google.cloud.vision_v1 import image_annotator
 
 
+
 class TestSingleImageHelper(unittest.TestCase):
+    def setUp(self):
+        credentials = mock.Mock(spec=Credentials)
+        self.client = ImageAnnotatorClient(credentials=credentials)
+
     @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
     def test_all_features_default(self, batch_annotate):
         # Set up an image annotation request with no features.
@@ -32,8 +39,7 @@ class TestSingleImageHelper(unittest.TestCase):
         assert not request.features
 
         # Perform the single image request.
-        client = ImageAnnotatorClient()
-        client.annotate_image(request)
+        self.client.annotate_image(request)
 
         # Evalute the argument sent to batch_annotate_images.
         assert batch_annotate.call_count == 1
@@ -44,8 +50,9 @@ class TestSingleImageHelper(unittest.TestCase):
 
         # Evalute the request object to ensure it looks correct.
         request_sent = args[0][0]
+        alL_features = self.client._get_all_features()
         assert request_sent.image is request.image
-        assert len(request_sent.features) == len(client._get_all_features())
+        assert len(request_sent.features) == len(all_features)
 
 
     @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
@@ -64,8 +71,7 @@ class TestSingleImageHelper(unittest.TestCase):
         )
 
         # Perform the single image request.
-        client = ImageAnnotatorClient()
-        client.annotate_image(request)
+        self.client.annotate_image(request)
 
         # Evalute the argument sent to batch_annotate_images.
         assert batch_annotate.call_count == 1
