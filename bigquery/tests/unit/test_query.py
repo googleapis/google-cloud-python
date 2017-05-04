@@ -546,7 +546,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
 
-    def test_run_w_named_query_paramter(self):
+    def test_run_w_named_query_parameter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
 
         PATH = 'projects/%s/queries' % self.PROJECT
@@ -582,7 +582,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
 
-    def test_run_w_positional_query_paramter(self):
+    def test_run_w_positional_query_parameter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
 
         PATH = 'projects/%s/queries' % self.PROJECT
