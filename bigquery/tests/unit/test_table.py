@@ -395,7 +395,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIs(table._dataset._client, client)
         self._verifyResourceProperties(table, RESOURCE)
 
-    def test_create_no_view_query_no_schema(self):
+    def test_create_no_view_query_no_schema_no_partitioning(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
@@ -403,6 +403,28 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         with self.assertRaises(ValueError):
             table.create()
+            
+    def test_create_new_day_partitioned_table(self):
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset)
+        table.partitioning_type = 'DAY'
+        table.create()            
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.TABLE_NAME},
+            'timePartitioning': 'DAY',
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(table, RESOURCE)
 
     def test_create_w_bound_client(self):
         from google.cloud.bigquery.table import SchemaField
