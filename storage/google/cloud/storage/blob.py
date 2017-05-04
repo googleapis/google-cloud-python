@@ -1482,28 +1482,6 @@ class Blob(_PropertyMixin):
             return _rfc3339_to_datetime(value)
 
 
-class _UploadConfig(object):
-    """Faux message FBO apitools' 'configure_request'.
-
-    Values extracted from apitools
-    'samples/storage_sample/storage/storage_v1_client.py'
-    """
-    accept = ['*/*']
-    max_size = None
-    resumable_multipart = True
-    resumable_path = u'/resumable/upload/storage/v1/b/{bucket}/o'
-    simple_multipart = True
-    simple_path = u'/upload/storage/v1/b/{bucket}/o'
-
-
-class _UrlBuilder(object):
-    """Faux builder FBO apitools' 'configure_request'"""
-    def __init__(self, bucket_name, object_name):
-        self.query_params = {'name': object_name}
-        self._bucket_name = bucket_name
-        self._relative_path = ''
-
-
 def _get_encryption_headers(key, source=False):
     """Builds customer encryption key headers
 
