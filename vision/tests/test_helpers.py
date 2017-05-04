@@ -46,7 +46,7 @@ class TestSingleImageHelper(unittest.TestCase):
         request_sent = args[0][0]
         assert request_sent.image is request.image
         assert len(request_sent.features) == len(client._get_all_features())
-    
+
 
     @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
     def test_explicit_features(self, batch_annotate):

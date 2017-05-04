@@ -22,9 +22,11 @@ from google.cloud.proto.vision.v1 import image_annotator_pb2 as image_annotator
 from google.cloud.proto.vision.v1 import text_annotation_pb2 as text_annotation
 from google.cloud.proto.vision.v1 import web_detection_pb2 as web_detection
 
+from google.cloud.vision.decorators import add_single_feature_methods
 from google.cloud.vision.helpers import VisionHelpers
 
 
+@add_single_feature_methods
 class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):
     __doc__ = iac.ImageAnnotatorClient.__doc__
     enums = enums
