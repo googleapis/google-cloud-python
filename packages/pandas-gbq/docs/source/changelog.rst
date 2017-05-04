@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.5 / 2017-05-04
+0.1.6 / 2017-05-03
 ------------------
 
 - All gbq errors will simply be subclasses of ``ValueError`` and no longer inherit from the deprecated ``PandasError``.
