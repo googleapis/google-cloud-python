@@ -45,9 +45,6 @@ from google.cloud.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage.acl import ObjectACL
-from google.cloud.streaming.http_wrapper import Request
-from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
-from google.cloud.streaming.transfer import Upload
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
@@ -417,6 +414,7 @@ class Blob(_PropertyMixin):
         else:
             download = ChunkedDownload(
                 download_url, self.chunk_size, file_obj, headers=headers)
+
             while not download.finished:
                 download.consume_next_chunk(transport)
 
@@ -526,119 +524,6 @@ class Blob(_PropertyMixin):
             content_type = _DEFAULT_CONTENT_TYPE
 
         return content_type
-
-    def _create_upload(
-            self, client, file_obj=None, size=None, content_type=None,
-            chunk_size=None, strategy=None, extra_headers=None):
-        """Helper for upload methods.
-
-        Creates a :class:`google.cloud.core.streaming.Upload` object to handle
-        the details of uploading a file to Cloud Storage.
-
-        :type client: :class:`~google.cloud.storage.client.Client` or
-            ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-            to the ``client`` stored on the blob's bucket.
-
-        :type file_obj: file
-        :param file_obj: A file handle open for reading.
-
-        :type size: int
-        :param size: The size of the upload, in bytes.
-
-        :type content_type: str
-        :param content_type: Optional type of content being uploaded.
-
-        :type chunk_size: int
-        :param chunk_size: The size of each chunk when doing resumable and
-            media uploads.
-
-        :type strategy: str
-        :param strategy: Either
-            :attr:`google.cloud.core.streaming.transfer.SIMPLE_UPLOAD` or
-            :attr:`google.cloud.core.streaming.transfer.RESUMABLE_UPLOAD`.
-
-        :type extra_headers: dict
-        :param extra_headers: Additional headers to be sent with the upload
-            initiation request.
-
-        :rtype: Tuple[google.cloud.core.streaming.Upload,
-                      google.cloud.core.streaming.Request,
-                      google.cloud.core.streaming.Response]
-        :returns: The Upload object, the upload HTTP request, and the upload
-                  initiation response.
-        """
-
-        client = self._require_client(client)
-
-        # Use ``_base_connection`` rather ``_connection`` since the current
-        # connection may be a batch. A batch wraps a client's connection,
-        # but does not store the ``http`` object. The rest (API_BASE_URL and
-        # build_api_url) are also defined on the Batch class, but we just
-        # use the wrapped connection since it has all three (http,
-        # API_BASE_URL and build_api_url).
-        connection = client._base_connection
-
-        content_type = self._get_content_type(content_type)
-
-        headers = {
-            'Accept': 'application/json',
-            'Accept-Encoding': 'gzip, deflate',
-            'User-Agent': connection.USER_AGENT,
-        }
-
-        if extra_headers:
-            headers.update(extra_headers)
-
-        headers.update(_get_encryption_headers(self._encryption_key))
-
-        # Use apitools' Upload functionality
-        upload = Upload(
-            file_obj, content_type, total_size=size, auto_transfer=False)
-
-        if chunk_size is not None:
-            upload.chunksize = chunk_size
-
-        if strategy is not None:
-            upload.strategy = RESUMABLE_UPLOAD
-
-        url_builder = _UrlBuilder(
-            bucket_name=self.bucket.name,
-            object_name=self.name)
-        upload_config = _UploadConfig()
-
-        # Temporary URL until strategy is determined.
-        base_url = connection.API_BASE_URL + '/upload'
-        upload_url = connection.build_api_url(
-            api_base_url=base_url,
-            path=self.bucket.path + '/o')
-
-        # Configure the upload request parameters.
-        request = Request(upload_url, 'POST', headers)
-        upload.configure_request(upload_config, request, url_builder)
-
-        # Configure final URL
-        query_params = url_builder.query_params
-        base_url = connection.API_BASE_URL + '/upload'
-        request.url = connection.build_api_url(
-            api_base_url=base_url,
-            path=self.bucket.path + '/o',
-            query_params=query_params)
-
-        # Start the upload session
-        response = upload.initialize_upload(request, connection.http)
-
-        return upload, request, response
-
-    @staticmethod
-    def _check_response_error(request, http_response):
-        """Helper for :meth:`upload_from_file`."""
-        info = http_response.info
-        status = int(info['status'])
-        if not 200 <= status < 300:
-            faux_response = httplib2.Response({'status': status})
-            raise make_exception(faux_response, http_response.content,
-                                 error_info=request.url)
 
     def _get_writable_metadata(self):
         """Get the object / blob metadata which is writable.
@@ -757,6 +642,60 @@ class Blob(_PropertyMixin):
 
         return response
 
+    def _initiate_resumable_upload(self, client, stream, content_type,
+                                   size, extra_headers=None):
+        """Initiate a resumable upload.
+
+        Assumes ``chunk_size`` is not :data:`None` on the current blob.
+
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
+        - The value stored on the current blob
+        - The default value ('application/octet-stream')
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type content_type: str
+        :param content_type: Type of content being uploaded (or :data:`None`).
+
+        :type size: int
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``stream``). If not provided, the upload will be
+                     concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :type extra_headers: dict
+        :param extra_headers: (Optional) Extra headers to add to standard
+                              headers.
+
+        :rtype: tuple
+        :returns:
+            Pair of
+
+            * The :class:`~google.resumable_media.requests.ResumableUpload`
+              that was created
+            * The ``transport`` used to initiate the upload.
+        """
+        info = self._get_upload_arguments(client, content_type)
+        transport, headers, object_metadata, content_type = info
+        if extra_headers is not None:
+            headers.update(extra_headers)
+
+        upload_url = _RESUMABLE_URL_TEMPLATE.format(
+            bucket_path=self.bucket.path)
+        upload = ResumableUpload(upload_url, self.chunk_size, headers=headers)
+        upload.initiate(
+            transport, stream, object_metadata, content_type,
+            total_bytes=size, stream_final=False)
+
+        return upload, transport
+
     def _do_resumable_upload(self, client, stream, content_type, size):
         """Perform a resumable upload.
 
@@ -788,15 +727,9 @@ class Blob(_PropertyMixin):
         :returns: The "200 OK" response object returned after the final chunk
                   is uploaded.
         """
-        info = self._get_upload_arguments(client, content_type)
-        transport, headers, object_metadata, content_type = info
+        upload, transport = self._initiate_resumable_upload(
+            client, stream, content_type, size)
 
-        upload_url = _RESUMABLE_URL_TEMPLATE.format(
-            bucket_path=self.bucket.path)
-        upload = ResumableUpload(upload_url, self.chunk_size, headers=headers)
-        upload.initiate(
-            transport, stream, object_metadata, content_type,
-            total_bytes=size, stream_final=False)
         while not upload.finished:
             response = upload.transmit_next_chunk(transport)
 
@@ -1033,52 +966,54 @@ class Blob(_PropertyMixin):
                                encryption#customer-supplied
 
         :type size: int
-        :param size: Optional, the maximum number of bytes that can be
-            uploaded using this session. If the size is not known when creating
-            the session, this should be left blank.
+        :param size: (Optional). The maximum number of bytes that can be
+                     uploaded using this session. If the size is not known
+                     when creating the session, this should be left blank.
 
         :type content_type: str
-        :param content_type: Optional type of content being uploaded. This can
-            be used to restrict the allowed file type that can be uploaded
-            to the size.
+        :param content_type: (Optional) Type of content being uploaded.
 
         :type origin: str
-        :param origin: Optional origin. If set, the upload can only be
-            completed by a user-agent that uploads from the given origin. This
-            can be useful when passing the session to a web client.
+        :param origin: (Optional) If set, the upload can only be completed
+                       by a user-agent that uploads from the given origin. This
+                       can be useful when passing the session to a web client.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :rtype: str
         :returns: The resumable upload session URL. The upload can be
-            completed by making an HTTP PUT request with the file's contents.
+                  completed by making an HTTP PUT request with the
+                  file's contents.
 
         :raises: :class:`google.cloud.exceptions.GoogleCloudError`
                  if the session creation response returns an error status.
         """
-
         extra_headers = {}
-
         if origin is not None:
             # This header is specifically for client-side uploads, it
             # determines the origins allowed for CORS.
             extra_headers['Origin'] = origin
 
-        _, _, start_response = self._create_upload(
-            client,
-            size=size,
-            content_type=content_type,
-            strategy=RESUMABLE_UPLOAD,
-            extra_headers=extra_headers)
+        curr_chunk_size = self.chunk_size
+        try:
+            # Temporarily patch the chunk size. A user should still be able
+            # to initiate an upload session without setting the chunk size.
+            # The chunk size only matters when **sending** bytes to an upload.
+            self.chunk_size = self._CHUNK_SIZE_MULTIPLE
 
-        # The location header contains the session URL. This can be used
-        # to continue the upload.
-        resumable_upload_session_url = start_response.info['location']
+            dummy_stream = BytesIO(b'')
+            upload, _ = self._initiate_resumable_upload(
+                client, dummy_stream, content_type, size,
+                extra_headers=extra_headers)
 
-        return resumable_upload_session_url
+            return upload.resumable_url
+        except resumable_media.InvalidResponse as exc:
+            _raise_from_invalid_response(exc)
+        finally:
+            # Put back the original chunk size.
+            self.chunk_size = curr_chunk_size
 
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.
