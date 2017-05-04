@@ -1,10 +1,7 @@
 Vision Client
 =============
 
-Client
-~~~~~~
-
-.. automodule:: google.cloud.vision.client
+.. automodule:: google.cloud.vision_v1
   :members:
   :undoc-members:
   :show-inheritance:

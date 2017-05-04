@@ -213,18 +213,7 @@
   :caption: Vision
 
   vision-usage
-  vision-annotations
-  vision-batch
-  vision-client
-  vision-color
-  vision-crop-hint
-  vision-entity
-  vision-feature
-  vision-face
-  vision-image
-  vision-safe-search
-  vision-text
-  vision-web
+  vision-api
 
 .. toctree::
   :maxdepth: 0
