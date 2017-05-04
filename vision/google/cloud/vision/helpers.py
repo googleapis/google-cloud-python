@@ -50,7 +50,8 @@ class VisionHelpers(object):
         # This method allows features not to be specified, and you get all
         # of them.
         protobuf.setdefault(request, 'features', self._get_all_features())
-        return self.batch_annotate_images([request], options=options)[0]
+        r = self.batch_annotate_images([request], options=options)
+        return r.responses[0]
 
     def _get_all_features(self):
         """Return a list of all features.

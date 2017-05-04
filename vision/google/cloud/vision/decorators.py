@@ -93,7 +93,7 @@ def _create_single_feature_method(feature, enum):
     """
 
     # Get the actual feature value to send.
-    feature_value = enum.__dict__[feature]
+    feature_value = {'type': enum.__dict__[feature]}
 
     # Define the function to be returned.
     def inner(self, image, options=None):

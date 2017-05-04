@@ -50,7 +50,7 @@ class TestSingleImageHelper(unittest.TestCase):
 
         # Evalute the request object to ensure it looks correct.
         request_sent = args[0][0]
-        alL_features = self.client._get_all_features()
+        all_features = self.client._get_all_features()
         assert request_sent.image is request.image
         assert len(request_sent.features) == len(all_features)
 
