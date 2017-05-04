@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.resumable_media.constants module &mdash; google-resumable-media 0.1.0 documentation</title>
+  <title>google.resumable_media.common module &mdash; google-resumable-media 0.1.0 documentation</title>
   
 
   
@@ -91,7 +91,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">google.resumable_media.constants module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">google.resumable_media.common module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google.resumable_media.exceptions.html">google.resumable_media.exceptions module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google.resumable_media.requests.html"><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></a></li>
 </ul>
@@ -138,13 +138,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>google.resumable_media.constants module</li>
+      <li>google.resumable_media.common module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/google.resumable_media.constants.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/google.resumable_media.common.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -157,12 +157,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-google.resumable_media.constants">
-<span id="google-resumable-media-constants-module"></span><h1>google.resumable_media.constants module<a class="headerlink" href="#module-google.resumable_media.constants" title="Permalink to this headline">¶</a></h1>
-<p>Useful constants need for Google Media Downloads and Resumable Uploads.</p>
+  <div class="section" id="module-google.resumable_media.common">
+<span id="google-resumable-media-common-module"></span><h1>google.resumable_media.common module<a class="headerlink" href="#module-google.resumable_media.common" title="Permalink to this headline">¶</a></h1>
+<p>Common utilities for Google Media Downloads and Resumable Uploads.</p>
 <dl class="data">
-<dt id="google.resumable_media.constants.PERMANENT_REDIRECT">
-<code class="descclassname">google.resumable_media.constants.</code><code class="descname">PERMANENT_REDIRECT</code><em class="property"> = 308</em><a class="headerlink" href="#google.resumable_media.constants.PERMANENT_REDIRECT" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.common.PERMANENT_REDIRECT">
+<code class="descclassname">google.resumable_media.common.</code><code class="descname">PERMANENT_REDIRECT</code><em class="property"> = 308</em><a class="headerlink" href="#google.resumable_media.common.PERMANENT_REDIRECT" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>int</em> &#8211; Permanent redirect status code.</p>
 <p>It is used by Google services to indicate some (but not all) of
 a resumable upload has been completed.</p>
@@ -172,8 +172,8 @@ can&#8217;t be used in a &#8220;general&#8221; code base.</p>
 </dd></dl>
 
 <dl class="data">
-<dt id="google.resumable_media.constants.TOO_MANY_REQUESTS">
-<code class="descclassname">google.resumable_media.constants.</code><code class="descname">TOO_MANY_REQUESTS</code><em class="property"> = 429</em><a class="headerlink" href="#google.resumable_media.constants.TOO_MANY_REQUESTS" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.common.TOO_MANY_REQUESTS">
+<code class="descclassname">google.resumable_media.common.</code><code class="descname">TOO_MANY_REQUESTS</code><em class="property"> = 429</em><a class="headerlink" href="#google.resumable_media.common.TOO_MANY_REQUESTS" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>int</em> &#8211; Status code indicating rate-limiting.</p>
 <p><code class="docutils literal"><span class="pre">http.client.TOO_MANY_REQUESTS</span></code> was added in Python 3.3, so
 can&#8217;t be used in a &#8220;general&#8221; code base.</p>
@@ -181,8 +181,8 @@ can&#8217;t be used in a &#8220;general&#8221; code base.</p>
 </dd></dl>
 
 <dl class="data">
-<dt id="google.resumable_media.constants.UPLOAD_CHUNK_SIZE">
-<code class="descclassname">google.resumable_media.constants.</code><code class="descname">UPLOAD_CHUNK_SIZE</code><em class="property"> = 262144</em><a class="headerlink" href="#google.resumable_media.constants.UPLOAD_CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
+<dt id="google.resumable_media.common.UPLOAD_CHUNK_SIZE">
+<code class="descclassname">google.resumable_media.common.</code><code class="descname">UPLOAD_CHUNK_SIZE</code><em class="property"> = 262144</em><a class="headerlink" href="#google.resumable_media.common.UPLOAD_CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>int</em> &#8211; Chunks in a resumable upload must come in multiples of 256 KB.</p>
 </dd></dl>
 

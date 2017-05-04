@@ -7,6 +7,6 @@
 .. toctree::
    :hidden:
 
-   google.resumable_media.constants
+   google.resumable_media.common
    google.resumable_media.exceptions
    google.resumable_media.requests
