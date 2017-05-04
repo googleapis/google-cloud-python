@@ -10,7 +10,6 @@ import numpy as np
 
 from distutils.version import StrictVersion
 from pandas import compat, DataFrame, concat
-from pandas.core.common import PandasError
 from pandas.compat import lzip, bytes_to_str
 
 
@@ -58,35 +57,35 @@ def _test_google_api_imports():
                           "support: {0}".format(str(e)))
 
 
-class InvalidPrivateKeyFormat(PandasError, ValueError):
+class InvalidPrivateKeyFormat(ValueError):
     """
     Raised when provided private key has invalid format.
     """
     pass
 
 
-class AccessDenied(PandasError, ValueError):
+class AccessDenied(ValueError):
     """
     Raised when invalid credentials are provided, or tokens have expired.
     """
     pass
 
 
-class DatasetCreationError(PandasError, ValueError):
+class DatasetCreationError(ValueError):
     """
     Raised when the create dataset method fails
     """
     pass
 
 
-class GenericGBQException(PandasError, ValueError):
+class GenericGBQException(ValueError):
     """
     Raised when an unrecognized Google API Error occurs.
     """
     pass
 
 
-class InvalidColumnOrder(PandasError, ValueError):
+class InvalidColumnOrder(ValueError):
     """
     Raised when the provided column order for output
     results DataFrame does not match the schema
@@ -95,7 +94,7 @@ class InvalidColumnOrder(PandasError, ValueError):
     pass
 
 
-class InvalidIndexColumn(PandasError, ValueError):
+class InvalidIndexColumn(ValueError):
     """
     Raised when the provided index column for output
     results DataFrame does not match the schema
@@ -104,7 +103,7 @@ class InvalidIndexColumn(PandasError, ValueError):
     pass
 
 
-class InvalidPageToken(PandasError, ValueError):
+class InvalidPageToken(ValueError):
     """
     Raised when Google BigQuery fails to return,
     or returns a duplicate page token.
@@ -112,7 +111,7 @@ class InvalidPageToken(PandasError, ValueError):
     pass
 
 
-class InvalidSchema(PandasError, ValueError):
+class InvalidSchema(ValueError):
     """
     Raised when the provided DataFrame does
     not match the schema of the destination
@@ -121,7 +120,7 @@ class InvalidSchema(PandasError, ValueError):
     pass
 
 
-class NotFoundException(PandasError, ValueError):
+class NotFoundException(ValueError):
     """
     Raised when the project_id, table or dataset provided in the query could
     not be found.
@@ -129,7 +128,7 @@ class NotFoundException(PandasError, ValueError):
     pass
 
 
-class StreamingInsertError(PandasError, ValueError):
+class StreamingInsertError(ValueError):
     """
     Raised when BigQuery reports a streaming insert error.
     For more information see `Streaming Data Into BigQuery
@@ -137,7 +136,7 @@ class StreamingInsertError(PandasError, ValueError):
     """
 
 
-class TableCreationError(PandasError, ValueError):
+class TableCreationError(ValueError):
     """
     Raised when the create table method fails
     """

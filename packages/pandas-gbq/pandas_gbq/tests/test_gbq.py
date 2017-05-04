@@ -257,9 +257,9 @@ def test_generate_bq_schema_deprecated():
         gbq.generate_bq_schema(df)
 
 
-class TestGBQConnectorIntegrationWithLocalUserAccountAuth(tm.TestCase):
+class TestGBQConnectorIntegrationWithLocalUserAccountAuth(object):
 
-    def setUp(self):
+    def setup_method(self, method):
         _setup_common()
         _skip_if_no_project_id()
         _skip_local_auth_if_in_travis_env()
@@ -267,31 +267,30 @@ class TestGBQConnectorIntegrationWithLocalUserAccountAuth(tm.TestCase):
         self.sut = gbq.GbqConnector(_get_project_id())
 
     def test_should_be_able_to_make_a_connector(self):
-        self.assertTrue(self.sut is not None,
-                        'Could not create a GbqConnector')
+        assert self.sut is not None, 'Could not create a GbqConnector'
 
     def test_should_be_able_to_get_valid_credentials(self):
         credentials = self.sut.get_credentials()
-        self.assertFalse(credentials.invalid, 'Returned credentials invalid')
+        assert credentials.invalid != 'Returned credentials invalid'
 
     def test_should_be_able_to_get_a_bigquery_service(self):
         bigquery_service = self.sut.get_service()
-        self.assertTrue(bigquery_service is not None, 'No service returned')
+        assert bigquery_service is not None
 
     def test_should_be_able_to_get_schema_from_query(self):
         schema, pages = self.sut.run_query('SELECT 1')
-        self.assertTrue(schema is not None)
+        assert schema is not None
 
     def test_should_be_able_to_get_results_from_query(self):
         schema, pages = self.sut.run_query('SELECT 1')
-        self.assertTrue(pages is not None)
+        assert pages is not None
 
     def test_get_application_default_credentials_does_not_throw_error(self):
         if _check_if_can_get_correct_default_credentials():
             pytest.skip("Can get default_credentials "
                         "from the environment!")
         credentials = self.sut.get_application_default_credentials()
-        self.assertIsNone(credentials)
+        assert credentials is None
 
     def test_get_application_default_credentials_returns_credentials(self):
         if not _check_if_can_get_correct_default_credentials():
@@ -299,11 +298,12 @@ class TestGBQConnectorIntegrationWithLocalUserAccountAuth(tm.TestCase):
                         "from the environment!")
         from oauth2client.client import GoogleCredentials
         credentials = self.sut.get_application_default_credentials()
-        self.assertTrue(isinstance(credentials, GoogleCredentials))
+        assert isinstance(credentials, GoogleCredentials)
 
 
-class TestGBQConnectorIntegrationWithServiceAccountKeyPath(tm.TestCase):
-    def setUp(self):
+class TestGBQConnectorIntegrationWithServiceAccountKeyPath(object):
+
+    def setup_method(self, method):
         _setup_common()
 
         _skip_if_no_project_id()
@@ -313,28 +313,28 @@ class TestGBQConnectorIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                     private_key=_get_private_key_path())
 
     def test_should_be_able_to_make_a_connector(self):
-        self.assertTrue(self.sut is not None,
-                        'Could not create a GbqConnector')
+        assert self.sut is not None
 
     def test_should_be_able_to_get_valid_credentials(self):
         credentials = self.sut.get_credentials()
-        self.assertFalse(credentials.invalid, 'Returned credentials invalid')
+        assert not credentials.invalid
 
     def test_should_be_able_to_get_a_bigquery_service(self):
         bigquery_service = self.sut.get_service()
-        self.assertTrue(bigquery_service is not None, 'No service returned')
+        assert bigquery_service is not None
 
     def test_should_be_able_to_get_schema_from_query(self):
         schema, pages = self.sut.run_query('SELECT 1')
-        self.assertTrue(schema is not None)
+        assert schema is not None
 
     def test_should_be_able_to_get_results_from_query(self):
         schema, pages = self.sut.run_query('SELECT 1')
-        self.assertTrue(pages is not None)
+        assert pages is not None
 
 
-class TestGBQConnectorIntegrationWithServiceAccountKeyContents(tm.TestCase):
-    def setUp(self):
+class TestGBQConnectorIntegrationWithServiceAccountKeyContents(object):
+
+    def setup_method(self, method):
         _setup_common()
 
         _skip_if_no_project_id()
@@ -344,29 +344,28 @@ class TestGBQConnectorIntegrationWithServiceAccountKeyContents(tm.TestCase):
                                     private_key=_get_private_key_contents())
 
     def test_should_be_able_to_make_a_connector(self):
-        self.assertTrue(self.sut is not None,
-                        'Could not create a GbqConnector')
+        assert self.sut is not None
 
     def test_should_be_able_to_get_valid_credentials(self):
         credentials = self.sut.get_credentials()
-        self.assertFalse(credentials.invalid, 'Returned credentials invalid')
+        assert not credentials.invalid
 
     def test_should_be_able_to_get_a_bigquery_service(self):
         bigquery_service = self.sut.get_service()
-        self.assertTrue(bigquery_service is not None, 'No service returned')
+        assert bigquery_service is not None
 
     def test_should_be_able_to_get_schema_from_query(self):
         schema, pages = self.sut.run_query('SELECT 1')
-        self.assertTrue(schema is not None)
+        assert schema is not None
 
     def test_should_be_able_to_get_results_from_query(self):
         schema, pages = self.sut.run_query('SELECT 1')
-        self.assertTrue(pages is not None)
+        assert pages is not None
 
 
-class GBQUnitTests(tm.TestCase):
+class GBQUnitTests(object):
 
-    def setUp(self):
+    def setup_method(self, method):
         _setup_common()
 
     def test_import_google_api_python_client(self):
@@ -455,10 +454,10 @@ class GBQUnitTests(tm.TestCase):
                 private_key=re.sub('[a-z]', '9', _get_private_key_contents()))
 
 
-class TestReadGBQIntegration(tm.TestCase):
+class TestReadGBQIntegration(object):
 
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         # - GLOBAL CLASS FIXTURES -
         #   put here any instruction you want to execute only *ONCE* *BEFORE*
         #   executing *ALL* tests described below.
@@ -467,20 +466,20 @@ class TestReadGBQIntegration(tm.TestCase):
 
         _setup_common()
 
-    def setUp(self):
+    def setup_method(self, method):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
         pass
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown_class(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *AFTER*
         # executing all tests.
         pass
 
-    def tearDown(self):
+    def teardown_method(self, method):
         # - PER-TEST FIXTURES -
         # put here any instructions you want to be run *AFTER* *EVERY* test is
         # executed.
@@ -508,10 +507,10 @@ class TestReadGBQIntegration(tm.TestCase):
         tm.assert_frame_equal(df, DataFrame({'valid_string': ['PI']}))
 
 
-class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
+class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
 
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         # - GLOBAL CLASS FIXTURES -
         #   put here any instruction you want to execute only *ONCE* *BEFORE*
         #   executing *ALL* tests described below.
@@ -521,7 +520,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
 
         _setup_common()
 
-    def setUp(self):
+    def setup_method(self, method):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
@@ -529,13 +528,13 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
             _get_project_id(), private_key=_get_private_key_path())
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown_class(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *AFTER*
         # executing all tests.
         pass
 
-    def tearDown(self):
+    def teardown_method(self):
         # - PER-TEST FIXTURES -
         # put here any instructions you want to be run *AFTER* *EVERY* test is
         # executed.
@@ -779,7 +778,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                           .format(test_size),
                           project_id=_get_project_id(),
                           private_key=_get_private_key_path())
-        self.assertEqual(len(df.drop_duplicates()), test_size)
+        assert len(df.drop_duplicates()) == test_size
 
     def test_zero_rows(self):
         # Bug fix for https://github.com/pandas-dev/pandas/issues/10273
@@ -794,7 +793,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                          ('is_bot', np.dtype(bool)), ('ts', 'M8[ns]')])
         expected_result = DataFrame(
             page_array, columns=['title', 'id', 'is_bot', 'ts'])
-        self.assert_frame_equal(df, expected_result)
+        tm.assert_frame_equal(df, expected_result)
 
     def test_legacy_sql(self):
         legacy_sql = "SELECT id FROM [publicdata.samples.wikipedia] LIMIT 10"
@@ -811,7 +810,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         df = gbq.read_gbq(legacy_sql, project_id=_get_project_id(),
                           dialect='legacy',
                           private_key=_get_private_key_path())
-        self.assertEqual(len(df.drop_duplicates()), 10)
+        assert len(df.drop_duplicates()) == 10
 
     def test_standard_sql(self):
         standard_sql = "SELECT DISTINCT id FROM " \
@@ -828,7 +827,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         df = gbq.read_gbq(standard_sql, project_id=_get_project_id(),
                           dialect='standard',
                           private_key=_get_private_key_path())
-        self.assertEqual(len(df.drop_duplicates()), 10)
+        assert len(df.drop_duplicates()) == 10
 
     def test_invalid_option_for_sql_dialect(self):
         sql_statement = "SELECT DISTINCT id FROM " \
@@ -943,38 +942,36 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
             }
         }
         # Test that only ValueError is raised with multiple configurations
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
                          private_key=_get_private_key_path(),
                          configuration=config)
 
     def test_query_response_bytes(self):
-        self.assertEqual(self.gbq_connector.sizeof_fmt(999), "999.0 B")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1024), "1.0 KB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1099), "1.1 KB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1044480), "1020.0 KB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1048576), "1.0 MB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1048576000),
-                         "1000.0 MB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1073741824), "1.0 GB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1.099512E12), "1.0 TB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1.125900E15), "1.0 PB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1.152922E18), "1.0 EB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1.180592E21), "1.0 ZB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1.208926E24), "1.0 YB")
-        self.assertEqual(self.gbq_connector.sizeof_fmt(1.208926E28),
-                         "10000.0 YB")
+        assert self.gbq_connector.sizeof_fmt(999) == "999.0 B"
+        assert self.gbq_connector.sizeof_fmt(1024) == "1.0 KB"
+        assert self.gbq_connector.sizeof_fmt(1099) == "1.1 KB"
+        assert self.gbq_connector.sizeof_fmt(1044480) == "1020.0 KB"
+        assert self.gbq_connector.sizeof_fmt(1048576) == "1.0 MB"
+        assert self.gbq_connector.sizeof_fmt(1048576000) == "1000.0 MB"
+        assert self.gbq_connector.sizeof_fmt(1073741824) == "1.0 GB"
+        assert self.gbq_connector.sizeof_fmt(1.099512E12) == "1.0 TB"
+        assert self.gbq_connector.sizeof_fmt(1.125900E15) == "1.0 PB"
+        assert self.gbq_connector.sizeof_fmt(1.152922E18) == "1.0 EB"
+        assert self.gbq_connector.sizeof_fmt(1.180592E21) == "1.0 ZB"
+        assert self.gbq_connector.sizeof_fmt(1.208926E24) == "1.0 YB"
+        assert self.gbq_connector.sizeof_fmt(1.208926E28) == "10000.0 YB"
 
 
-class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
+class TestToGBQIntegrationWithServiceAccountKeyPath(object):
     # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
     # As a workaround to this issue, each test should use a unique table name.
-    # Make sure to modify the for loop range in the tearDownClass when a new
+    # Make sure to modify the for loop range in the teardown_class when a new
     # test is added See `Issue 191
     # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
 
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *BEFORE*
         # executing *ALL* tests described below.
@@ -984,7 +981,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
 
         _setup_common()
 
-    def setUp(self):
+    def setup_method(self, method):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
@@ -1002,13 +999,13 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         self.dataset.create(self.dataset_prefix + "1")
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown_class(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *AFTER*
         # executing all tests.
         pass
 
-    def tearDown(self):
+    def teardown_method(self, method):
         # - PER-TEST FIXTURES -
         # put here any instructions you want to be run *AFTER* *EVERY* test is
         # executed.
@@ -1028,7 +1025,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                               .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
                               private_key=_get_private_key_path())
-        self.assertEqual(result['num_rows'][0], test_size)
+        assert result['num_rows'][0] == test_size
 
     def test_upload_data_if_table_exists_fail(self):
         test_id = "2"
@@ -1066,7 +1063,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                               .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
                               private_key=_get_private_key_path())
-        self.assertEqual(result['num_rows'][0], test_size * 2)
+        assert result['num_rows'][0] == test_size * 2
 
         # Try inserting with a different schema, confirm failure
         with tm.assertRaises(gbq.InvalidSchema):
@@ -1095,7 +1092,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                               .format(self.destination_table + test_id),
                               project_id=_get_project_id(),
                               private_key=_get_private_key_path())
-        self.assertEqual(result['num_rows'][0], 5)
+        assert result['num_rows'][0] == 5
 
     def test_upload_data_if_table_exists_raises_value_error(self):
         test_id = "4"
@@ -1130,26 +1127,24 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                   {'name': 'C', 'type': 'STRING'},
                                   {'name': 'D', 'type': 'TIMESTAMP'}]}
 
-        self.assertEqual(schema, test_schema)
+        assert schema == test_schema
 
     def test_create_table(self):
         test_id = "6"
         schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
         self.table.create(TABLE_ID + test_id, schema)
-        self.assertTrue(self.table.exists(TABLE_ID + test_id),
-                        'Expected table to exist')
+        assert self.table.exists(TABLE_ID + test_id)
 
     def test_create_table_already_exists(self):
         test_id = "6"
         schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
         self.table.create(TABLE_ID + test_id, schema)
-        with tm.assertRaises(gbq.TableCreationError):
+        with pytest.raises(gbq.TableCreationError):
             self.table.create(TABLE_ID + test_id, schema)
 
     def test_table_does_not_exist(self):
         test_id = "7"
-        self.assertTrue(not self.table.exists(TABLE_ID + test_id),
-                        'Expected table not to exist')
+        assert not self.table.exists(TABLE_ID + test_id)
 
     def test_delete_table(self):
         test_id = "8"
@@ -1159,11 +1154,11 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                   {'name': 'D', 'type': 'TIMESTAMP'}]}
         self.table.create(TABLE_ID + test_id, test_schema)
         self.table.delete(TABLE_ID + test_id)
-        self.assertTrue(not self.table.exists(
-            TABLE_ID + test_id), 'Expected table not to exist')
+        assert not self.table.exists(
+            TABLE_ID + test_id)
 
     def test_delete_table_not_found(self):
-        with tm.assertRaises(gbq.NotFoundException):
+        with pytest.raises(gbq.NotFoundException):
             self.table.delete(TABLE_ID + "not_found")
 
     def test_list_table(self):
@@ -1173,10 +1168,8 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                   {'name': 'C', 'type': 'STRING'},
                                   {'name': 'D', 'type': 'TIMESTAMP'}]}
         self.table.create(TABLE_ID + test_id, test_schema)
-        self.assertTrue(TABLE_ID + test_id in
-                        self.dataset.tables(self.dataset_prefix + "1"),
-                        'Expected table list to contain table {0}'
-                        .format(TABLE_ID + test_id))
+        assert TABLE_ID + test_id in self.dataset.tables(
+            self.dataset_prefix + "1")
 
     def test_verify_schema_allows_flexible_column_order(self):
         test_id = "10"
@@ -1190,9 +1183,8 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                     {'name': 'D', 'type': 'TIMESTAMP'}]}
 
         self.table.create(TABLE_ID + test_id, test_schema_1)
-        self.assertTrue(self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2),
-            'Expected schema to match')
+        assert self.sut.verify_schema(
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2)
 
     def test_verify_schema_fails_different_data_type(self):
         test_id = "11"
@@ -1206,9 +1198,8 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                     {'name': 'D', 'type': 'TIMESTAMP'}]}
 
         self.table.create(TABLE_ID + test_id, test_schema_1)
-        self.assertFalse(self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2),
-            'Expected different schema')
+        assert not self.sut.verify_schema(self.dataset_prefix + "1",
+                                          TABLE_ID + test_id, test_schema_2)
 
     def test_verify_schema_fails_different_structure(self):
         test_id = "12"
@@ -1222,9 +1213,8 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                     {'name': 'D', 'type': 'TIMESTAMP'}]}
 
         self.table.create(TABLE_ID + test_id, test_schema_1)
-        self.assertFalse(self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2),
-            'Expected different schema')
+        assert not self.sut.verify_schema(
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2)
 
     def test_upload_data_flexible_column_order(self):
         test_id = "13"
@@ -1265,15 +1255,12 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
                                      'type': 'TIMESTAMP'}]}
 
         self.table.create(TABLE_ID + test_id, test_schema_1)
-        self.assertTrue(self.sut.verify_schema(
-            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2),
-            'Expected schema to match')
+        assert self.sut.verify_schema(
+            self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2)
 
     def test_list_dataset(self):
         dataset_id = self.dataset_prefix + "1"
-        self.assertTrue(dataset_id in self.dataset.datasets(),
-                        'Expected dataset list to contain dataset {0}'
-                        .format(dataset_id))
+        assert dataset_id in self.dataset.datasets()
 
     def test_list_table_zero_results(self):
         dataset_id = self.dataset_prefix + "2"
@@ -1281,38 +1268,34 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         table_list = gbq._Dataset(_get_project_id(),
                                   private_key=_get_private_key_path()
                                   ).tables(dataset_id)
-        self.assertEqual(len(table_list), 0,
-                         'Expected gbq.list_table() to return 0')
+        assert len(table_list) == 0
 
     def test_create_dataset(self):
         dataset_id = self.dataset_prefix + "3"
         self.dataset.create(dataset_id)
-        self.assertTrue(dataset_id in self.dataset.datasets(),
-                        'Expected dataset to exist')
+        assert dataset_id in self.dataset.datasets()
 
     def test_create_dataset_already_exists(self):
         dataset_id = self.dataset_prefix + "3"
         self.dataset.create(dataset_id)
-        with tm.assertRaises(gbq.DatasetCreationError):
+        with pytest.raises(gbq.DatasetCreationError):
             self.dataset.create(dataset_id)
 
     def test_delete_dataset(self):
         dataset_id = self.dataset_prefix + "4"
         self.dataset.create(dataset_id)
         self.dataset.delete(dataset_id)
-        self.assertTrue(dataset_id not in self.dataset.datasets(),
-                        'Expected dataset not to exist')
+        assert dataset_id not in self.dataset.datasets()
 
     def test_delete_dataset_not_found(self):
         dataset_id = self.dataset_prefix + "not_found"
-        with tm.assertRaises(gbq.NotFoundException):
+        with pytest.raises(gbq.NotFoundException):
             self.dataset.delete(dataset_id)
 
     def test_dataset_exists(self):
         dataset_id = self.dataset_prefix + "5"
         self.dataset.create(dataset_id)
-        self.assertTrue(self.dataset.exists(dataset_id),
-                        'Expected dataset to exist')
+        assert self.dataset.exists(dataset_id)
 
     def create_table_data_dataset_does_not_exist(self):
         dataset_id = self.dataset_prefix + "6"
@@ -1320,27 +1303,23 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(tm.TestCase):
         table_with_new_dataset = gbq._Table(_get_project_id(), dataset_id)
         df = make_mixed_dataframe_v2(10)
         table_with_new_dataset.create(table_id, gbq._generate_bq_schema(df))
-        self.assertTrue(self.dataset.exists(dataset_id),
-                        'Expected dataset to exist')
-        self.assertTrue(table_with_new_dataset.exists(
-            table_id), 'Expected dataset to exist')
+        assert self.dataset.exists(dataset_id)
+        assert table_with_new_dataset.exists(table_id)
 
     def test_dataset_does_not_exist(self):
-        self.assertTrue(not self.dataset.exists(
-                        self.dataset_prefix + "_not_found"),
-                        'Expected dataset not to exist')
+        assert not self.dataset.exists(self.dataset_prefix + "_not_found")
 
 
-class TestToGBQIntegrationWithLocalUserAccountAuth(tm.TestCase):
+class TestToGBQIntegrationWithLocalUserAccountAuth(object):
     # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
     # As a workaround to this issue, each test should use a unique table name.
-    # Make sure to modify the for loop range in the tearDownClass when a new
+    # Make sure to modify the for loop range in the teardown_class when a new
     # test is added
     # See `Issue 191
     # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
 
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *BEFORE*
         # executing *ALL* tests described below.
@@ -1350,7 +1329,7 @@ class TestToGBQIntegrationWithLocalUserAccountAuth(tm.TestCase):
 
         _setup_common()
 
-    def setUp(self):
+    def setup_method(self, method):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test
         # is executed.
@@ -1361,13 +1340,13 @@ class TestToGBQIntegrationWithLocalUserAccountAuth(tm.TestCase):
                                                      TABLE_ID)
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown_class(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *AFTER*
         # executing all tests.
         pass
 
-    def tearDown(self):
+    def teardown_method(self):
         # - PER-TEST FIXTURES -
         # put here any instructions you want to be run *AFTER* *EVERY* test
         # is executed.
@@ -1387,19 +1366,19 @@ class TestToGBQIntegrationWithLocalUserAccountAuth(tm.TestCase):
             self.destination_table + test_id),
             project_id=_get_project_id())
 
-        self.assertEqual(result['num_rows'][0], test_size)
+        assert result['num_rows'][0] == test_size
 
 
-class TestToGBQIntegrationWithServiceAccountKeyContents(tm.TestCase):
+class TestToGBQIntegrationWithServiceAccountKeyContents(object):
     # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
     # As a workaround to this issue, each test should use a unique table name.
-    # Make sure to modify the for loop range in the tearDownClass when a new
+    # Make sure to modify the for loop range in the teardown_class when a new
     # test is added
     # See `Issue 191
     # <https://code.google.com/p/google-bigquery/issues/detail?id=191>`__
 
     @classmethod
-    def setUpClass(cls):
+    def setup_class(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *BEFORE*
         # executing *ALL* tests described below.
@@ -1409,7 +1388,7 @@ class TestToGBQIntegrationWithServiceAccountKeyContents(tm.TestCase):
 
         _skip_if_no_private_key_contents()
 
-    def setUp(self):
+    def setup_method(self, method):
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test
         # is executed.
@@ -1419,13 +1398,13 @@ class TestToGBQIntegrationWithServiceAccountKeyContents(tm.TestCase):
                                                      TABLE_ID)
 
     @classmethod
-    def tearDownClass(cls):
+    def teardown_class(cls):
         # - GLOBAL CLASS FIXTURES -
         # put here any instruction you want to execute only *ONCE* *AFTER*
         # executing all tests.
         pass
 
-    def tearDown(self):
+    def teardown_method(self, method):
         # - PER-TEST FIXTURES -
         # put here any instructions you want to be run *AFTER* *EVERY* test
         # is executed.
@@ -1445,4 +1424,4 @@ class TestToGBQIntegrationWithServiceAccountKeyContents(tm.TestCase):
             self.destination_table + test_id),
             project_id=_get_project_id(),
             private_key=_get_private_key_contents())
-        self.assertEqual(result['num_rows'][0], test_size)
+        assert result['num_rows'][0] == test_size
