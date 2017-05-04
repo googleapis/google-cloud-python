@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Useful constants need for Google Media Downloads and Resumable Uploads."""
+"""Common utilities for Google Media Downloads and Resumable Uploads."""
 
 
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024

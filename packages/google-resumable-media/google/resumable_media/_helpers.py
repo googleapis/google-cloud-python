@@ -20,14 +20,14 @@ import time
 
 from six.moves import http_client
 
-from google.resumable_media import constants
+from google.resumable_media import common
 from google.resumable_media import exceptions
 
 
 RANGE_HEADER = u'range'
 CONTENT_RANGE_HEADER = u'content-range'
 RETRYABLE = (
-    constants.TOO_MANY_REQUESTS,
+    common.TOO_MANY_REQUESTS,
     http_client.INTERNAL_SERVER_ERROR,
     http_client.BAD_GATEWAY,
     http_client.SERVICE_UNAVAILABLE,
