@@ -39,48 +39,78 @@ def add_single_feature_methods(cls):
         if feature == 'TYPE_UNSPECIFIED':
             continue
 
-        # Define the function properties.
-        fx_name = feature.lower()
-        fx_qualname = '{cls}.{name}'.format(cls=cls.__name__, name=fx_name)
-        if 'detection' in fx_name:
-            fx_doc = 'Perform {0}.'.format(fx_name.replace('_', ' '))
-        else:
-            fx_doc = 'Return {desc} information.'.format(
-                desc=fx_name.replace('_', ' '),
-            )
-
-        # Provide a complete docstring with argument and return value
-        # information.
-        fx_doc += """
-
-        Args:
-            image (:class:`~{module}.Image`): The image to analyze.
-            options (:class:`google.gax.CallOptions`): Overrides the
-                default settings for this call, e.g, timeout, retries, etc.
-
-        Returns:
-            :class:`~{module}.AnnotateImageResponse`: The API response.
-        """.format(module=cls.__module__ + '.image_annotator')
-
-        def detect_single_feature(self, image, options=None):
-            """Return a single feature annotation for the given image.
-
-            Intended for use with functools.partial, to create the particular
-            single-feature methods.
-            """
-            request = {
-                'image': image,
-                'features': [self.enums.Feature.Type.__dict__[feature]],
-            }
-            return self.annotate_image(request, options=options)
-
         # Assign the appropriate metadata to the function.
-        detect_single_feature.__name__ = fx_name
-        detect_single_feature.__qualname__ = fx_qualname
-        detect_single_feature.__doc__ = fx_doc
+        detect = _create_single_feature_method(feature, cls.enums.Feature.Type)
+
+        # Assign a qualified name to the function, and perform module
+        # replacement on the docstring.
+        detect.__qualname__ = '{cls}.{name}'.format(
+            cls=cls.__name__,
+            name=detect.__name__,
+        )
+        detect.__doc__ = detect.__doc__.format(
+            module=cls.__module__ + '.image_annotator',
+        )
 
         # Place the function on the class being created.
-        setattr(cls, fx_name, detect_single_feature)
+        setattr(cls, detect.__name__, detect)
 
     # Done; return the class.
     return cls
+
+
+def _create_single_feature_method(feature, enum):
+    """Return a function that will detect a single feature.
+
+    Args:
+        feature (str): A specific feature defined as an attribute on
+            :class:`~enums.Feature.Type`.
+        enum (class): The :class:`~enums.Feature.Type` class.
+
+    Returns:
+        function: A helper function to detect just that feature.
+    """
+    # Define the function properties.
+    fx_name = feature.lower()
+    if 'detection' in fx_name:
+        fx_doc = 'Perform {0}.'.format(fx_name.replace('_', ' '))
+    else:
+        fx_doc = 'Return {desc} information.'.format(
+            desc=fx_name.replace('_', ' '),
+        )
+
+    # Provide a complete docstring with argument and return value
+    # information.
+    fx_doc += """
+
+    Args:
+        image (:class:`~{module}.Image`): The image to analyze.
+        options (:class:`google.gax.CallOptions`): Overrides the
+            default settings for this call, e.g, timeout, retries, etc.
+
+    Returns:
+        :class:`~{module}.AnnotateImageResponse`: The API response.
+    """
+
+    # Get the actual feature value to send.
+    feature_value = enum.__dict__[feature]
+
+    # Define the function to be returned.
+    def inner(self, image, options=None):
+        """Return a single feature annotation for the given image.
+
+        Intended for use with functools.partial, to create the particular
+        single-feature methods.
+        """
+        request = {
+            'image': image,
+            'features': [feature_value],
+        }
+        return self.annotate_image(request, options=options)
+
+    # Set the appropriate function metadata.
+    inner.__name__ = fx_name
+    inner.__doc__ = fx_doc
+
+    # Return the final function.
+    return inner
