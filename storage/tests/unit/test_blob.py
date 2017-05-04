@@ -2218,28 +2218,21 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         self.assertEqual(exc_info.exception.errors, [])
 
 
-class _Responder(object):
-
-    def __init__(self, *responses):
-        self._responses = responses[:]
-        self._requested = []
-
-    def _respond(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
-
-
-class _Connection(_Responder):
+class _Connection(object):
 
     API_BASE_URL = 'http://example.com'
     USER_AGENT = 'testing 1.2.3'
     credentials = object()
 
     def __init__(self, *responses):
-        super(_Connection, self).__init__(*responses)
+        self._responses = responses[:]
+        self._requested = []
         self._signed = []
-        self.http = _HTTP(*responses)
+
+    def _respond(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
     def api_request(self, **kw):
         from google.cloud.exceptions import NotFound
@@ -2248,28 +2241,6 @@ class _Connection(_Responder):
         if info.get('status') == http_client.NOT_FOUND:
             raise NotFound(info)
         return content
-
-    def build_api_url(self, path, query_params=None,
-                      api_base_url=API_BASE_URL):
-        from six.moves.urllib.parse import urlencode
-        from six.moves.urllib.parse import urlsplit
-        from six.moves.urllib.parse import urlunsplit
-
-        # Mimic the build_api_url interface.
-        qs = urlencode(query_params or {})
-        scheme, netloc, _, _, _ = urlsplit(api_base_url)
-        return urlunsplit((scheme, netloc, path, qs, ''))
-
-
-class _HTTP(_Responder):
-
-    connections = {}  # For google-apitools debugging.
-
-    def request(self, uri, method, headers, body, **kw):
-        if hasattr(body, 'read'):
-            body = body.read()
-        return self._respond(uri=uri, method=method, headers=headers,
-                             body=body, **kw)
 
 
 class _Bucket(object):
@@ -2313,23 +2284,3 @@ class _Client(object):
     @property
     def _credentials(self):
         return self._base_connection.credentials
-
-
-class _Stream(object):
-    _closed = False
-
-    def __init__(self, to_read=b''):
-        self._written = []
-        self._to_read = io.BytesIO(to_read)
-
-    def seek(self, offset, whence=0):
-        self._to_read.seek(offset, whence)
-
-    def read(self, size):
-        return self._to_read.read(size)
-
-    def tell(self):
-        return self._to_read.tell()
-
-    def close(self):
-        self._closed = True
