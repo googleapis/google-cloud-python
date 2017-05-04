@@ -57,7 +57,7 @@ class Topic(object):
                      message_retention_duration=None):
         """Creates a subscription bound to the current topic.
 
-        Example:  pull-mode subcription, default paramter values
+        Example:  pull-mode subcription, default parameter values
 
         .. literalinclude:: pubsub_snippets.py
            :start-after: [START topic_subscription_defaults]
