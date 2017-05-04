@@ -463,6 +463,9 @@ class Table(object):
         if self.location is not None:
             resource['location'] = self.location
 
+        if self.partitioning_type is not None:
+            resource['timePartitioning'] = self._properties['timePartitioning']
+
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
@@ -470,10 +473,8 @@ class Table(object):
             resource['schema'] = {
                 'fields': _build_schema_resource(self._schema)
             }
-        elif self.partitioning_type is not None:
-            resource['timePartitioning'] = self._properties['timePartitioning']
-        else:
-            raise ValueError("Set either 'view_query' or 'schema'.")
+        elif self.partitioning_type is None:
+            raise ValueError("Set either 'view_query' or 'schema' or 'partitioning_type'.")
 
         return resource
 
