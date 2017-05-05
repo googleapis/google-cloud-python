@@ -50,7 +50,7 @@ class Operation(operation.Operation):
             :class:`~google.longrunning.operations_pb2.Operation`
         :param operation_pb: Protobuf to be parsed.
 
-        :raises ValueError: If there is more than one entry in ``results``.
+        :raises ValueError: If there are no ``results`` from the operation.
         """
         super(Operation, self)._update_state(operation_pb)
 
