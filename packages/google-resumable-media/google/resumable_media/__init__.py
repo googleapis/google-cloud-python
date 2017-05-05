@@ -44,6 +44,7 @@ To install with `pip`_:
 
 
 from google.resumable_media.common import PERMANENT_REDIRECT
+from google.resumable_media.common import RetryStrategy
 from google.resumable_media.common import TOO_MANY_REQUESTS
 from google.resumable_media.common import UPLOAD_CHUNK_SIZE
 from google.resumable_media.exceptions import InvalidResponse
@@ -52,6 +53,7 @@ from google.resumable_media.exceptions import InvalidResponse
 __all__ = [
     u'InvalidResponse',
     u'PERMANENT_REDIRECT',
+    u'RetryStrategy',
     u'TOO_MANY_REQUESTS',
     u'UPLOAD_CHUNK_SIZE',
 ]
