@@ -54,7 +54,8 @@ class SimpleUpload(_helpers.RequestsMixin, _upload.SimpleUpload):
         method, url, payload, headers = self._prepare_request(
             data, content_type)
         result = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers,
+            retry_strategy=self._retry_strategy)
         self._process_response(result)
         return result
 
@@ -92,7 +93,8 @@ class MultipartUpload(_helpers.RequestsMixin, _upload.MultipartUpload):
         method, url, payload, headers = self._prepare_request(
             data, metadata, content_type)
         result = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers,
+            retry_strategy=self._retry_strategy)
         self._process_response(result)
         return result
 
@@ -320,7 +322,8 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
             stream, metadata, content_type,
             total_bytes=total_bytes, stream_final=stream_final)
         result = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers,
+            retry_strategy=self._retry_strategy)
         self._process_initiate_response(result)
         return result
 
@@ -388,7 +391,8 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         """
         method, url, payload, headers = self._prepare_request()
         result = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers,
+            retry_strategy=self._retry_strategy)
         self._process_response(result)
         return result
 
@@ -412,6 +416,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         method, url, payload, headers = self._prepare_recover_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
         result = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers,
+            retry_strategy=self._retry_strategy)
         self._process_recover_response(result)
         return result

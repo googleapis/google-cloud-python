@@ -60,7 +60,8 @@ class Download(_helpers.RequestsMixin, _download.Download):
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
         result = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers,
+            retry_strategy=self._retry_strategy)
         self._process_response(result)
         return result
 
@@ -109,6 +110,7 @@ class ChunkedDownload(_helpers.RequestsMixin, _download.ChunkedDownload):
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
         result = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers)
+            transport, method, url, data=payload, headers=headers,
+            retry_strategy=self._retry_strategy)
         self._process_response(result)
         return result

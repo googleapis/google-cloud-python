@@ -68,7 +68,8 @@ class RequestsMixin(object):
         return response.content
 
 
-def http_request(transport, method, url, data=None, headers=None):
+def http_request(transport, method, url, data=None,
+                 headers=None, retry_strategy=None):
     """Make an HTTP request.
 
     Args:
@@ -81,6 +82,9 @@ def http_request(transport, method, url, data=None, headers=None):
         data (Optional[bytes]): The body of the request.
         headers (Mapping[str, str]): The headers for the request (``transport``
             may also add additional headers).
+        retry_stategy (~google.resumable_media.common.RetryStrategy): The
+            strategy to use if the request fails and must be retried.
+            Though this is a keyword argument, it is **required**.
 
     Returns:
         ~requests.Response: The return value of ``transport.request()``.
