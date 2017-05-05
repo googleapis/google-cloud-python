@@ -128,23 +128,26 @@ class Test_calculate_retry_wait(object):
 
     @mock.patch('random.randint', return_value=125)
     def test_past_limit(self, randint_mock):
-        wait_time = _helpers.calculate_retry_wait(7)
+        base_wait, wait_time = _helpers.calculate_retry_wait(70.0)
 
+        assert base_wait == 64.0
         assert wait_time == 64.125
         randint_mock.assert_called_once_with(0, 1000)
 
     @mock.patch('random.randint', return_value=250)
     def test_at_limit(self, randint_mock):
-        wait_time = _helpers.calculate_retry_wait(6)
+        base_wait, wait_time = _helpers.calculate_retry_wait(64.0)
 
+        assert base_wait == 64.0
         assert wait_time == 64.25
         randint_mock.assert_called_once_with(0, 1000)
 
     @mock.patch('random.randint', return_value=875)
     def test_under_limit(self, randint_mock):
-        wait_time = _helpers.calculate_retry_wait(4)
+        base_wait, wait_time = _helpers.calculate_retry_wait(16.0)
 
-        assert wait_time == 16.875
+        assert base_wait == 32.0
+        assert wait_time == 32.875
         randint_mock.assert_called_once_with(0, 1000)
 
 

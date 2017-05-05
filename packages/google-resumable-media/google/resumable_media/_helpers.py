@@ -34,7 +34,6 @@ RETRYABLE = (
     http_client.GATEWAY_TIMEOUT,
 )
 MAX_SLEEP = 64.0  # Just over 1 minute.
-MAX_SLEEP_EXPONENT = 6  # 2^6 = 64.
 MAX_CUMULATIVE_RETRY = 600.0  # 10 minutes
 
 
@@ -98,7 +97,7 @@ def require_status_code(response, status_codes, get_status_code,
     return status_code
 
 
-def calculate_retry_wait(num_retries):
+def calculate_retry_wait(base_wait):
     """Calculate the amount of time to wait before a retry attempt.
 
     Wait time grows exponentially with the number of attempts, until
@@ -108,21 +107,20 @@ def calculate_retry_wait(num_retries):
     retry attempts from different clients.
 
     Args:
-        num_retries (int): The number of retries already attempted. If
-            no retries have been attempted, should return 1 second with
-            some jitter.
+        base_wait (float): The "base" wait time (i.e. without any jitter)
+            that will be doubled until it reaches the maximum sleep.
 
     Returns:
-        float: The number of seconds to wait before retrying (with a random
-        amount of jitter between 0 and 1 seconds added).
+        Tuple[float, float]: The new base wait time as well as the wait time
+        to be applied (with a random amount of jitter between 0 and 1 seconds
+        added).
     """
-    if num_retries < MAX_SLEEP_EXPONENT:
-        wait_time = 2**num_retries
-    else:
-        wait_time = MAX_SLEEP
+    new_base_wait = 2.0 * base_wait
+    if new_base_wait > MAX_SLEEP:
+        new_base_wait = MAX_SLEEP
 
     jitter_ms = random.randint(0, 1000)
-    return wait_time + 0.001 * jitter_ms
+    return new_base_wait, new_base_wait + 0.001 * jitter_ms
 
 
 def wait_and_retry(func, get_status_code):
@@ -150,8 +148,9 @@ def wait_and_retry(func, get_status_code):
 
     total_sleep = 0.0
     num_retries = 0
+    base_wait = 0.5  # When doubled will give 1.0
     while total_sleep < MAX_CUMULATIVE_RETRY:
-        wait_time = calculate_retry_wait(num_retries)
+        base_wait, wait_time = calculate_retry_wait(base_wait)
         num_retries += 1
         total_sleep += wait_time
         time.sleep(wait_time)
