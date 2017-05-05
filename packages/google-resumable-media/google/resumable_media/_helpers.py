@@ -33,8 +33,6 @@ RETRYABLE = (
     http_client.SERVICE_UNAVAILABLE,
     http_client.GATEWAY_TIMEOUT,
 )
-MAX_SLEEP = 64.0  # Just over 1 minute.
-MAX_CUMULATIVE_RETRY = 600.0  # 10 minutes
 
 
 def do_nothing():
@@ -97,11 +95,11 @@ def require_status_code(response, status_codes, get_status_code,
     return status_code
 
 
-def calculate_retry_wait(base_wait):
+def calculate_retry_wait(base_wait, max_sleep):
     """Calculate the amount of time to wait before a retry attempt.
 
     Wait time grows exponentially with the number of attempts, until
-    it hits :attr:`MAX_SLEEP`.
+    it hits ``max_sleep``.
 
     A random amount of jitter (between 0 and 1 seconds) is added to spread out
     retry attempts from different clients.
@@ -109,6 +107,7 @@ def calculate_retry_wait(base_wait):
     Args:
         base_wait (float): The "base" wait time (i.e. without any jitter)
             that will be doubled until it reaches the maximum sleep.
+        max_sleep (float): Maximum value that a sleep time is allowed to be.
 
     Returns:
         Tuple[float, float]: The new base wait time as well as the wait time
@@ -116,28 +115,31 @@ def calculate_retry_wait(base_wait):
         added).
     """
     new_base_wait = 2.0 * base_wait
-    if new_base_wait > MAX_SLEEP:
-        new_base_wait = MAX_SLEEP
+    if new_base_wait > max_sleep:
+        new_base_wait = max_sleep
 
     jitter_ms = random.randint(0, 1000)
     return new_base_wait, new_base_wait + 0.001 * jitter_ms
 
 
-def wait_and_retry(func, get_status_code):
+def wait_and_retry(func, get_status_code, retry_strategy):
     """Attempts to retry a call to ``func`` until success.
 
     Expects ``func`` to return an HTTP response and uses ``get_status_code``
     to check if the response is retry-able.
 
-    Will retry until :attr:`MAX_CUMULATIVE_RETRY` seconds of wait time
-    have accrued. Uses :func:`calculate_retry_wait` to double the
-    wait time (with jitter) after each attempt.
+    Will retry until :meth:`~.RetryStrategy.retry_allowed` (on the current
+    ``retry_strategy``) returns :data:`False`. Uses
+    :func:`calculate_retry_wait` to double the wait time (with jitter) after
+    each attempt.
 
     Args:
         func (Callable): A callable that takes no arguments and produces
             an HTTP response which will be checked as retry-able.
         get_status_code (Callable[Any, int]): Helper to get a status code
             from a response.
+        retry_strategy (~google.resumable_media.common.RetryStrategy): The
+            strategy to use if the request fails and must be retried.
 
     Returns:
         object: The return value of ``func``.
@@ -149,8 +151,9 @@ def wait_and_retry(func, get_status_code):
     total_sleep = 0.0
     num_retries = 0
     base_wait = 0.5  # When doubled will give 1.0
-    while total_sleep < MAX_CUMULATIVE_RETRY:
-        base_wait, wait_time = calculate_retry_wait(base_wait)
+    while retry_strategy.retry_allowed(total_sleep, num_retries):
+        base_wait, wait_time = calculate_retry_wait(
+            base_wait, retry_strategy.max_sleep)
         num_retries += 1
         total_sleep += wait_time
         time.sleep(wait_time)

@@ -365,7 +365,7 @@ will be raised:
 
    from google import resumable_media
    from google.resumable_media import _helpers
-   from google.resumable_media.requests import SimpleUpload
+   from google.resumable_media.requests import SimpleUpload as constructor
 
    upload_url = u'http://test.invalid'
    data = b'Some not too large content.'
@@ -377,13 +377,16 @@ will be raised:
    post_method = mock.Mock(return_value=fake_response, spec=[])
    transport = mock.Mock(request=post_method, spec=[u'request'])
 
-   # Mock the cumulative sleep to avoid retries (and `time.sleep()`).
-   orig_cumulative = _helpers.MAX_CUMULATIVE_RETRY
-   _helpers.MAX_CUMULATIVE_RETRY = -1
-
    time_sleep = time.sleep
    def dont_sleep(seconds):
        raise RuntimeError(u'No sleep', seconds)
+
+   def SimpleUpload(*args, **kwargs):
+       upload = constructor(*args, **kwargs)
+       # Mock the cumulative sleep to avoid retries (and `time.sleep()`).
+       upload._retry_strategy = resumable_media.RetryStrategy(
+           max_cumulative_retry=-1.0)
+       return upload
 
    time.sleep = dont_sleep
 
@@ -408,8 +411,6 @@ will be raised:
 
 .. testcleanup:: simple-upload-fail
 
-   # Restore the cumulative retry.
-   _helpers.MAX_CUMULATIVE_RETRY = orig_cumulative
    # Put back the correct ``sleep`` function on the ``time`` module.
    time.sleep = time_sleep
 

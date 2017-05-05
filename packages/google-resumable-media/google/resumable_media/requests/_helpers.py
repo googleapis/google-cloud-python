@@ -21,6 +21,10 @@ This utilities are explicitly catered to ``requests``-like transports.
 import functools
 
 from google.resumable_media import _helpers
+from google.resumable_media import common
+
+
+_DEFAULT_RETRY_STRATEGY = common.RetryStrategy()
 
 
 class RequestsMixin(object):
@@ -68,8 +72,8 @@ class RequestsMixin(object):
         return response.content
 
 
-def http_request(transport, method, url, data=None,
-                 headers=None, retry_strategy=None):
+def http_request(transport, method, url, data=None, headers=None,
+                 retry_strategy=_DEFAULT_RETRY_STRATEGY):
     """Make an HTTP request.
 
     Args:
@@ -82,13 +86,13 @@ def http_request(transport, method, url, data=None,
         data (Optional[bytes]): The body of the request.
         headers (Mapping[str, str]): The headers for the request (``transport``
             may also add additional headers).
-        retry_stategy (~google.resumable_media.common.RetryStrategy): The
+        retry_strategy (~google.resumable_media.common.RetryStrategy): The
             strategy to use if the request fails and must be retried.
-            Though this is a keyword argument, it is **required**.
 
     Returns:
         ~requests.Response: The return value of ``transport.request()``.
     """
     func = functools.partial(
         transport.request, method, url, data=data, headers=headers)
-    return _helpers.wait_and_retry(func, RequestsMixin._get_status_code)
+    return _helpers.wait_and_retry(
+        func, RequestsMixin._get_status_code, retry_strategy)

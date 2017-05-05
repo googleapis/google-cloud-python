@@ -128,7 +128,7 @@ class Test_calculate_retry_wait(object):
 
     @mock.patch('random.randint', return_value=125)
     def test_past_limit(self, randint_mock):
-        base_wait, wait_time = _helpers.calculate_retry_wait(70.0)
+        base_wait, wait_time = _helpers.calculate_retry_wait(70.0, 64.0)
 
         assert base_wait == 64.0
         assert wait_time == 64.125
@@ -136,15 +136,15 @@ class Test_calculate_retry_wait(object):
 
     @mock.patch('random.randint', return_value=250)
     def test_at_limit(self, randint_mock):
-        base_wait, wait_time = _helpers.calculate_retry_wait(64.0)
+        base_wait, wait_time = _helpers.calculate_retry_wait(50.0, 50.0)
 
-        assert base_wait == 64.0
-        assert wait_time == 64.25
+        assert base_wait == 50.0
+        assert wait_time == 50.25
         randint_mock.assert_called_once_with(0, 1000)
 
     @mock.patch('random.randint', return_value=875)
     def test_under_limit(self, randint_mock):
-        base_wait, wait_time = _helpers.calculate_retry_wait(16.0)
+        base_wait, wait_time = _helpers.calculate_retry_wait(16.0, 33.0)
 
         assert base_wait == 32.0
         assert wait_time == 32.875
@@ -159,7 +159,9 @@ class Test_wait_and_retry(object):
         response = _make_response(truthy)
 
         func = mock.Mock(return_value=response, spec=[])
-        ret_val = _helpers.wait_and_retry(func, _get_status_code)
+        retry_strategy = common.RetryStrategy()
+        ret_val = _helpers.wait_and_retry(
+            func, _get_status_code, retry_strategy)
 
         assert ret_val is response
         func.assert_called_once_with()
@@ -179,7 +181,9 @@ class Test_wait_and_retry(object):
             _make_response(status_code) for status_code in status_codes]
         func = mock.Mock(side_effect=responses, spec=[])
 
-        ret_val = _helpers.wait_and_retry(func, _get_status_code)
+        retry_strategy = common.RetryStrategy()
+        ret_val = _helpers.wait_and_retry(
+            func, _get_status_code, retry_strategy)
 
         assert ret_val == responses[-1]
         assert status_codes[-1] not in _helpers.RETRYABLE
@@ -197,8 +201,6 @@ class Test_wait_and_retry(object):
 
     @mock.patch('time.sleep')
     @mock.patch('random.randint')
-    @mock.patch('google.resumable_media._helpers.MAX_CUMULATIVE_RETRY',
-                new=100.0)
     def test_retry_exceeds_max_cumulative(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125]
 
@@ -216,7 +218,9 @@ class Test_wait_and_retry(object):
             _make_response(status_code) for status_code in status_codes]
         func = mock.Mock(side_effect=responses, spec=[])
 
-        ret_val = _helpers.wait_and_retry(func, _get_status_code)
+        retry_strategy = common.RetryStrategy(max_cumulative_retry=100.0)
+        ret_val = _helpers.wait_and_retry(
+            func, _get_status_code, retry_strategy)
 
         assert ret_val == responses[-1]
         assert status_codes[-1] in _helpers.RETRYABLE
