@@ -33,6 +33,7 @@ from six.moves import http_client
 
 from google import resumable_media
 from google.resumable_media import _helpers
+from google.resumable_media import common
 from google.resumable_media import exceptions
 
 
@@ -80,6 +81,7 @@ class UploadBase(object):
             headers = {}
         self._headers = headers
         self._finished = False
+        self._retry_strategy = common.RetryStrategy()
 
     @property
     def finished(self):

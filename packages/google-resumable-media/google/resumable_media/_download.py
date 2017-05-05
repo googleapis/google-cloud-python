@@ -20,6 +20,7 @@ import re
 from six.moves import http_client
 
 from google.resumable_media import _helpers
+from google.resumable_media import common
 from google.resumable_media import exceptions
 
 
@@ -56,6 +57,7 @@ class DownloadBase(object):
             headers = {}
         self._headers = headers
         self._finished = False
+        self._retry_strategy = common.RetryStrategy()
 
     @property
     def finished(self):

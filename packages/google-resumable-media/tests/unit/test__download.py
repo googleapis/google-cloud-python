@@ -19,6 +19,7 @@ import pytest
 from six.moves import http_client
 
 from google.resumable_media import _download
+from google.resumable_media import common
 from google.resumable_media import exceptions
 
 
@@ -36,6 +37,7 @@ class TestDownloadBase(object):
         assert download.end is None
         assert download._headers == {}
         assert not download._finished
+        _check_retry_strategy(download)
 
     def test_constructor_explicit(self):
         start = 11
@@ -48,6 +50,7 @@ class TestDownloadBase(object):
         assert download.end == end
         assert download._headers is headers
         assert not download._finished
+        _check_retry_strategy(download)
 
     def test_finished_property(self):
         download = _download.DownloadBase(EXAMPLE_URL)
@@ -169,6 +172,7 @@ class TestChunkedDownload(object):
         assert download.end is None
         assert download._headers == {}
         assert not download._finished
+        _check_retry_strategy(download)
         assert download._stream is stream
         assert download._bytes_downloaded == 0
         assert download._total_bytes is None
@@ -636,3 +640,11 @@ def _fix_up_virtual(download):
     download._get_status_code = _get_status_code
     download._get_headers = _get_headers
     download._get_body = _get_body
+
+
+def _check_retry_strategy(download):
+    retry_strategy = download._retry_strategy
+    assert isinstance(retry_strategy, common.RetryStrategy)
+    assert retry_strategy.max_sleep == common.MAX_SLEEP
+    assert retry_strategy.max_cumulative_retry == common.MAX_CUMULATIVE_RETRY
+    assert retry_strategy.max_retries is None

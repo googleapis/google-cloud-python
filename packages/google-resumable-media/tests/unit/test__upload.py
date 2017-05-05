@@ -21,6 +21,7 @@ from six.moves import http_client
 
 from google import resumable_media
 from google.resumable_media import _upload
+from google.resumable_media import common
 from google.resumable_media import exceptions
 
 
@@ -46,6 +47,7 @@ class TestUploadBase(object):
         assert upload.upload_url == SIMPLE_URL
         assert upload._headers == {}
         assert not upload._finished
+        _check_retry_strategy(upload)
 
     def test_constructor_explicit(self):
         headers = {u'spin': u'doctors'}
@@ -53,6 +55,7 @@ class TestUploadBase(object):
         assert upload.upload_url == SIMPLE_URL
         assert upload._headers is headers
         assert not upload._finished
+        _check_retry_strategy(upload)
 
     def test_finished_property(self):
         upload = _upload.UploadBase(SIMPLE_URL)
@@ -244,6 +247,7 @@ class TestResumableUpload(object):
         assert upload.upload_url == RESUMABLE_URL
         assert upload._headers == {}
         assert not upload._finished
+        _check_retry_strategy(upload)
         assert upload._chunk_size == chunk_size
         assert upload._stream is None
         assert upload._content_type is None
@@ -936,3 +940,11 @@ def _fix_up_virtual(upload):
     upload._get_status_code = _get_status_code
     upload._get_headers = _get_headers
     upload._get_body = _get_body
+
+
+def _check_retry_strategy(upload):
+    retry_strategy = upload._retry_strategy
+    assert isinstance(retry_strategy, common.RetryStrategy)
+    assert retry_strategy.max_sleep == common.MAX_SLEEP
+    assert retry_strategy.max_cumulative_retry == common.MAX_CUMULATIVE_RETRY
+    assert retry_strategy.max_retries is None
