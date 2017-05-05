@@ -338,7 +338,8 @@ class TestBigQuery(unittest.TestCase):
 
     def test_load_table_from_local_file_then_dump_table(self):
         import csv
-        import tempfile
+        from google.cloud._testing import _NamedTemporaryFile
+
         ROWS = [
             ('Phred Phlyntstone', 32),
             ('Bharney Rhubble', 33),
@@ -360,13 +361,13 @@ class TestBigQuery(unittest.TestCase):
         table.create()
         self.to_delete.insert(0, table)
 
-        with tempfile.NamedTemporaryFile(mode='w+') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow(('Full Name', 'Age'))
-            writer.writerows(ROWS)
-            csv_file.flush()
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(('Full Name', 'Age'))
+                writer.writerows(ROWS)
 
-            with open(csv_file.name, 'rb') as csv_read:
+            with open(temp.name, 'rb') as csv_read:
                 job = table.upload_from_file(
                     csv_read,
                     source_format='CSV',
@@ -391,8 +392,9 @@ class TestBigQuery(unittest.TestCase):
 
     def test_load_table_from_storage_then_dump_table(self):
         import csv
-        import tempfile
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.storage import Client as StorageClient
+
         local_id = unique_resource_id()
         BUCKET_NAME = 'bq_load_test' + local_id
         BLOB_NAME = 'person_ages.csv'
@@ -414,12 +416,14 @@ class TestBigQuery(unittest.TestCase):
 
         blob = bucket.blob(BLOB_NAME)
 
-        with tempfile.TemporaryFile(mode='w+') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow(('Full Name', 'Age'))
-            writer.writerows(ROWS)
-            blob.upload_from_file(
-                csv_file, rewind=True, content_type='text/csv')
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(('Full Name', 'Age'))
+                writer.writerows(ROWS)
+
+            with open(temp.name, 'rb') as csv_read:
+                blob.upload_from_file(csv_read, content_type='text/csv')
 
         self.to_delete.insert(0, blob)
 
