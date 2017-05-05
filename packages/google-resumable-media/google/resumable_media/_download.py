@@ -21,7 +21,6 @@ from six.moves import http_client
 
 from google.resumable_media import _helpers
 from google.resumable_media import common
-from google.resumable_media import exceptions
 
 
 _CONTENT_RANGE_RE = re.compile(
@@ -327,7 +326,7 @@ class ChunkedDownload(DownloadBase):
             response (object): The HTTP response object (need headers).
 
         Raises:
-            ~google.resumable_media.exceptions.InvalidResponse: If the number
+            ~google.resumable_media.common.InvalidResponse: If the number
                 of bytes in the body doesn't match the content length header.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -345,7 +344,7 @@ class ChunkedDownload(DownloadBase):
         response_body = self._get_body(response)
         if len(response_body) != num_bytes:
             self._make_invalid()
-            raise exceptions.InvalidResponse(
+            raise common.InvalidResponse(
                 response, u'Response is different size than content-length',
                 u'Expected', num_bytes, u'Received', len(response_body))
 
@@ -440,7 +439,7 @@ def get_range_info(response, get_headers, callback=_helpers.do_nothing):
         Tuple[int, int, int]: The start byte, end byte and total bytes.
 
     Raises:
-        ~google.resumable_media.exceptions.InvalidResponse: If the
+        ~google.resumable_media.common.InvalidResponse: If the
             ``Content-Range`` header is not of the form
             ``bytes {start}-{end}/{total}``.
     """
@@ -450,7 +449,7 @@ def get_range_info(response, get_headers, callback=_helpers.do_nothing):
     match = _CONTENT_RANGE_RE.match(content_range)
     if match is None:
         callback()
-        raise exceptions.InvalidResponse(
+        raise common.InvalidResponse(
             response, u'Unexpected content-range header', content_range,
             u'Expected to be of the form "bytes {start}-{end}/{total}"')
 

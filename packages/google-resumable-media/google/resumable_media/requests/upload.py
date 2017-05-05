@@ -386,7 +386,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
             ~requests.Response: The HTTP response returned by ``transport``.
 
         Raises:
-            ~google.resumable_media.exceptions.InvalidResponse: If the status
+            ~google.resumable_media.common.InvalidResponse: If the status
                 code is not 200 or 308.
         """
         method, url, payload, headers = self._prepare_request()

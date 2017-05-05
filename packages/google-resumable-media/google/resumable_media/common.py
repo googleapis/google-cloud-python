@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Common utilities for Google Media Downloads and Resumable Uploads."""
+"""Common utilities for Google Media Downloads and Resumable Uploads.
+
+Includes custom exception types, useful constants and shared helpers.
+"""
 
 
 _SLEEP_RETRY_ERROR_MSG = (
@@ -56,6 +59,21 @@ MAX_CUMULATIVE_RETRY = 600.0
 This is provided (10 minutes) as a default. When the cumulative sleep
 exceeds this limit, no more retries will occur.
 """
+
+
+class InvalidResponse(Exception):
+    """Error class for responses which are not in the correct state.
+
+    Args:
+        response (object): The HTTP response which caused the failure.
+        args (tuple): The positional arguments typically passed to an
+            exception class.
+    """
+
+    def __init__(self, response, *args):
+        super(InvalidResponse, self).__init__(*args)
+        self.response = response
+        """object: The HTTP response object that caused the failure."""
 
 
 class RetryStrategy(object):

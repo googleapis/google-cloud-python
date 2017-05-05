@@ -18,7 +18,6 @@ from six.moves import http_client
 
 from google.resumable_media import _helpers
 from google.resumable_media import common
-from google.resumable_media import exceptions
 
 
 def test_do_nothing():
@@ -48,7 +47,7 @@ class Test_header_required(object):
     def _failure_helper(self, **kwargs):
         response = mock.Mock(headers={}, spec=[u'headers'])
         name = u'any-name'
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             _helpers.header_required(response, name, _get_headers, **kwargs)
 
         error = exc_info.value
@@ -97,7 +96,7 @@ class Test_require_status_code(object):
     def test_failure(self):
         status_codes = (http_client.CREATED, http_client.NO_CONTENT)
         response = _make_response(http_client.OK)
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             _helpers.require_status_code(
                 response, status_codes, self._get_status_code)
 
@@ -111,7 +110,7 @@ class Test_require_status_code(object):
         status_codes = (http_client.OK,)
         response = _make_response(http_client.NOT_FOUND)
         callback = mock.Mock(spec=[])
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             _helpers.require_status_code(
                 response, status_codes, self._get_status_code,
                 callback=callback)

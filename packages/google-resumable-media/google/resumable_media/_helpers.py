@@ -21,7 +21,6 @@ import time
 from six.moves import http_client
 
 from google.resumable_media import common
-from google.resumable_media import exceptions
 
 
 RANGE_HEADER = u'range'
@@ -55,13 +54,13 @@ def header_required(response, name, get_headers, callback=do_nothing):
         str: The desired header.
 
     Raises:
-        ~google.resumable_media.exceptions.InvalidResponse: If the header
+        ~google.resumable_media.common.InvalidResponse: If the header
             is missing.
     """
     headers = get_headers(response)
     if name not in headers:
         callback()
-        raise exceptions.InvalidResponse(
+        raise common.InvalidResponse(
             response, u'Response headers must contain header', name)
 
     return headers[name]
@@ -83,13 +82,13 @@ def require_status_code(response, status_codes, get_status_code,
         int: The status code.
 
     Raises:
-        ~google.resumable_media.exceptions.InvalidResponse: If the status code
+        ~google.resumable_media.common.InvalidResponse: If the status code
             is not one of the values in ``status_codes``.
     """
     status_code = get_status_code(response)
     if status_code not in status_codes:
         callback()
-        raise exceptions.InvalidResponse(
+        raise common.InvalidResponse(
             response, u'Request failed with status code',
             status_code, u'Expected one of', *status_codes)
     return status_code

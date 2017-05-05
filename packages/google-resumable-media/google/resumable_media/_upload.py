@@ -34,7 +34,6 @@ from six.moves import http_client
 from google import resumable_media
 from google.resumable_media import _helpers
 from google.resumable_media import common
-from google.resumable_media import exceptions
 
 
 _CONTENT_TYPE_HEADER = u'content-type'
@@ -99,7 +98,7 @@ class UploadBase(object):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.exceptions.InvalidResponse: If the status
+            ~google.resumable_media.common.InvalidResponse: If the status
                 code is not 200.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -560,10 +559,10 @@ class ResumableUpload(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.exceptions.InvalidResponse: If the status
+            ~google.resumable_media.common.InvalidResponse: If the status
                 code is 308 and the ``range`` header is not of the form
                 ``bytes 0-{end}``.
-            ~google.resumable_media.exceptions.InvalidResponse: If the status
+            ~google.resumable_media.common.InvalidResponse: If the status
                 code is not 200 or 308.
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
@@ -583,7 +582,7 @@ class ResumableUpload(UploadBase):
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
                 self._make_invalid()
-                raise exceptions.InvalidResponse(
+                raise common.InvalidResponse(
                     response, u'Unexpected "range" header', bytes_range,
                     u'Expected to be of the form "bytes=0-{end}"')
             self._bytes_uploaded = int(match.group(u'end_byte')) + 1
@@ -648,9 +647,9 @@ class ResumableUpload(UploadBase):
             response (object): The HTTP response object.
 
         Raises:
-            ~google.resumable_media.exceptions.InvalidResponse: If the status
+            ~google.resumable_media.common.InvalidResponse: If the status
                 code is not 308.
-            ~google.resumable_media.exceptions.InvalidResponse: If the status
+            ~google.resumable_media.common.InvalidResponse: If the status
                 code is 308 and the ``range`` header is not of the form
                 ``bytes 0-{end}``.
 
@@ -664,7 +663,7 @@ class ResumableUpload(UploadBase):
             bytes_range = headers[_helpers.RANGE_HEADER]
             match = _BYTES_RANGE_RE.match(bytes_range)
             if match is None:
-                raise exceptions.InvalidResponse(
+                raise common.InvalidResponse(
                     response, u'Unexpected "range" header', bytes_range,
                     u'Expected to be of the form "bytes=0-{end}"')
             self._bytes_uploaded = int(match.group(u'end_byte')) + 1

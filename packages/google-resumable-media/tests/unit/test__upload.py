@@ -22,7 +22,6 @@ from six.moves import http_client
 from google import resumable_media
 from google.resumable_media import _upload
 from google.resumable_media import common
-from google.resumable_media import exceptions
 
 
 SIMPLE_URL = (
@@ -78,7 +77,7 @@ class TestUploadBase(object):
         assert not upload.finished
         status_code = http_client.SERVICE_UNAVAILABLE
         response = _make_response(status_code=status_code)
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_response(response)
 
         error = exc_info.value
@@ -429,7 +428,7 @@ class TestResumableUpload(object):
         _fix_up_virtual(upload)
 
         response = _make_response()
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_initiate_response(response)
 
         error = exc_info.value
@@ -557,7 +556,7 @@ class TestResumableUpload(object):
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
         response = _make_response(status_code=http_client.NOT_FOUND)
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_response(response)
 
         error = exc_info.value
@@ -595,7 +594,7 @@ class TestResumableUpload(object):
             status_code=resumable_media.PERMANENT_REDIRECT)
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_response(response)
         # Make sure the upload is invalid after the failure.
         assert upload.invalid
@@ -615,7 +614,7 @@ class TestResumableUpload(object):
         headers = {u'range': u'nights 1-81'}
         response = _make_response(
             status_code=resumable_media.PERMANENT_REDIRECT, headers=headers)
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_response(response)
 
         # Check the error response.
@@ -689,7 +688,7 @@ class TestResumableUpload(object):
         upload._invalid = True
 
         response = _make_response(status_code=http_client.BAD_REQUEST)
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_recover_response(response)
 
         error = exc_info.value
@@ -729,7 +728,7 @@ class TestResumableUpload(object):
         headers = {u'range': u'bites=9-11'}
         response = _make_response(
             status_code=resumable_media.PERMANENT_REDIRECT, headers=headers)
-        with pytest.raises(exceptions.InvalidResponse) as exc_info:
+        with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_recover_response(response)
 
         error = exc_info.value

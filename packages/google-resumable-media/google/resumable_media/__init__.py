@@ -15,7 +15,7 @@
 """Utilities for Google Media Downloads and Resumable Uploads.
 
 This package has some general purposes modules, e.g.
-:mod:`~google.resumable_media.exceptions`, but the majority of the
+:mod:`~google.resumable_media.common`, but the majority of the
 public interface will be contained in subpackages.
 
 ===========
@@ -43,11 +43,11 @@ To install with `pip`_:
 """
 
 
+from google.resumable_media.common import InvalidResponse
 from google.resumable_media.common import PERMANENT_REDIRECT
 from google.resumable_media.common import RetryStrategy
 from google.resumable_media.common import TOO_MANY_REQUESTS
 from google.resumable_media.common import UPLOAD_CHUNK_SIZE
-from google.resumable_media.exceptions import InvalidResponse
 
 
 __all__ = [

@@ -12,9 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import mock
 import pytest
 
 from google.resumable_media import common
+
+
+class TestInvalidResponse(object):
+
+    def test_constructor(self):
+        response = mock.sentinel.response
+        error = common.InvalidResponse(
+            response, 1, u'a', [b'm'], True)
+
+        assert error.response is response
+        assert error.args == (1, u'a', [b'm'], True)
 
 
 class TestRetryStrategy(object):
