@@ -37,7 +37,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="google-resumable-media 0.1.1 documentation" href="index.html"/>
         <link rel="next" title="google.resumable_media.requests.download module" href="google.resumable_media.requests.download.html"/>
-        <link rel="prev" title="google.resumable_media.exceptions module" href="google.resumable_media.exceptions.html"/> 
+        <link rel="prev" title="google.resumable_media.common module" href="google.resumable_media.common.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -92,7 +92,6 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="google.resumable_media.common.html">google.resumable_media.common module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="google.resumable_media.exceptions.html">google.resumable_media.exceptions module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">google.resumable_media.requests</span></code></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#authorized-transport">Authorized Transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#simple-downloads">Simple Downloads</a></li>
@@ -341,7 +340,7 @@ associated with the resource.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>In the rare case that an upload fails, an <a class="reference internal" href="google.resumable_media.exceptions.html#google.resumable_media.exceptions.InvalidResponse" title="google.resumable_media.exceptions.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a>
+<p>In the rare case that an upload fails, an <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse" title="google.resumable_media.common.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a>
 will be raised:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">upload</span> <span class="o">=</span> <span class="n">SimpleUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
@@ -400,8 +399,8 @@ accepts an extra required argument: <code class="docutils literal"><span class="
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>As with the simple upload, in the case of failure an <a class="reference internal" href="google.resumable_media.exceptions.html#google.resumable_media.exceptions.InvalidResponse" title="google.resumable_media.exceptions.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a>
-is raised, enclosing the <a class="reference internal" href="google.resumable_media.exceptions.html#google.resumable_media.exceptions.InvalidResponse.response" title="google.resumable_media.exceptions.InvalidResponse.response"><code class="xref py py-attr docutils literal"><span class="pre">response</span></code></a> that caused
+<p>As with the simple upload, in the case of failure an <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse" title="google.resumable_media.common.InvalidResponse"><code class="xref py py-exc docutils literal"><span class="pre">InvalidResponse</span></code></a>
+is raised, enclosing the <a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.InvalidResponse.response" title="google.resumable_media.common.InvalidResponse.response"><code class="xref py py-attr docutils literal"><span class="pre">response</span></code></a> that caused
 the failure and the <code class="docutils literal"><span class="pre">upload</span></code> object cannot be re-used after a failure.</p>
 </div>
 <div class="section" id="resumable-uploads">
@@ -503,7 +502,7 @@ transmitted in chunks until completion:</p>
         <a href="google.resumable_media.requests.download.html" class="btn btn-neutral float-right" title="google.resumable_media.requests.download module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="google.resumable_media.exceptions.html" class="btn btn-neutral" title="google.resumable_media.exceptions module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="google.resumable_media.common.html" class="btn btn-neutral" title="google.resumable_media.common module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
