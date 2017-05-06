@@ -405,6 +405,7 @@ class Test_Blob(unittest.TestCase):
         #       **MUTABLE** headers and it was mutated before the
         #       second request.
         headers['range'] = 'bytes=3-5'
+        headers['accept-encoding'] = 'gzip'
         call = mock.call(
             'GET', expected_url, data=None, headers=headers)
         self.assertEqual(fake_transport.request.mock_calls, [call, call])
@@ -493,7 +494,8 @@ class Test_Blob(unittest.TestCase):
         fake_session_factory.assert_called_once_with(client._credentials)
         # Check that the transport was called once.
         transport.request.assert_called_once_with(
-            'GET', blob.media_link, data=None, headers={})
+            'GET', blob.media_link, data=None,
+            headers={'accept-encoding':'gzip'})
 
     @mock.patch('google.auth.transport.requests.AuthorizedSession')
     def test_download_to_file_wo_media_link(self, fake_session_factory):
@@ -553,7 +555,8 @@ class Test_Blob(unittest.TestCase):
             # Check that exactly one transport was created.
             fake_session_factory.assert_called_once_with(client._credentials)
             fake_transport.request.assert_called_once_with(
-                'GET', media_link, data=None, headers={})
+                'GET', media_link, data=None,
+                headers={'accept-encoding': 'gzip'})
 
     def test_download_to_file_default(self):
         self._download_to_file_helper()
@@ -645,6 +648,7 @@ class Test_Blob(unittest.TestCase):
             'X-Goog-Encryption-Key-Sha256': header_key_hash_value,
             'X-Goog-Encryption-Algorithm': 'AES256',
             'X-Goog-Encryption-Key': header_key_value,
+            'accept-encoding':'gzip'
         }
         self._check_session_mocks(
             client, fake_session_factory, media_link, headers=key_headers)

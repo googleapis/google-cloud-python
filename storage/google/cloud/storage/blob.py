@@ -462,6 +462,7 @@ class Blob(_PropertyMixin):
         """
         download_url = self._get_download_url()
         headers = _get_encryption_headers(self._encryption_key)
+        headers['accept-encoding'] = 'gzip'
         transport = self._make_transport(client)
 
         try:
