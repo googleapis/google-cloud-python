@@ -405,7 +405,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.create()
             
     def test_create_new_day_partitioned_table(self):
-        conn = _Connection()
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
         table = self._make_one(self.TABLE_NAME, dataset)
