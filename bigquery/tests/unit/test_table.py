@@ -423,7 +423,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_NAME,
                 'tableId': self.TABLE_NAME},
-            'timePartitioning': 'DAY',
+            'timePartitioning': {'type': 'DAY'},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
