@@ -377,7 +377,7 @@ class TestTable(unittest.TestCase):
         end_key = b'end-key'
         filter_obj = object()
         limit = 22
-        with _Monkey(MUT, _create_row_request=mock_create_row_request):           
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
             # Perform the method and check the result.
             result = table.read_rows(
                 start_key=start_key, end_key=end_key, filter_=filter_obj,
@@ -398,6 +398,114 @@ class TestTable(unittest.TestCase):
             'start_key_closed': True,
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
+
+    def test_read_rows_one_chunk(self):
+        from google.cloud._testing import _Monkey
+        from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
+        from google.cloud.bigtable.row_data import Cell
+        from google.cloud.bigtable.row_data import PartialRowsData
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create response_iterator
+        chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        response_pb = _ReadRowsResponsePB(chunks=[chunk])
+        response_iterator = iter([response_pb])
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub(response_iterator)
+
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            # Perform the method and check the result.
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                limit=limit)
+            result.consume_next()
+
+    def test_read_rows_retry_timeout(self):
+        from google.cloud._testing import _Monkey
+        from tests.unit._testing import _CustomFakeStub
+        from google.cloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
+        from google.gax import BackoffSettings
+        from google.gax.errors import RetryError
+        from grpc import StatusCode, RpcError
+        import time
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create a slow response iterator to cause a timeout
+        class MockTimeoutError(RpcError):
+            def code(self):
+                return StatusCode.DEADLINE_EXCEEDED
+
+        def _wait_then_raise():
+            time.sleep(0.5)
+            raise MockTimeoutError()
+
+        # Patch the stub used by the API method.  The stub should create a new
+        # slow_iterator every time its queried.
+        def make_slow_iterator():
+            return (_wait_then_raise() for i in range(10))
+        client._data_stub = stub = _CustomFakeStub(make_slow_iterator)
+
+        # Set to timeout before RPC completes
+        test_backoff_settings = BackoffSettings(
+            initial_retry_delay_millis=10,
+            retry_delay_multiplier=1.3,
+            max_retry_delay_millis=30000,
+            initial_rpc_timeout_millis=1000,
+            rpc_timeout_multiplier=1.0,
+            max_rpc_timeout_millis=25 * 60 * 1000,
+            total_timeout_millis=1000
+        )
+
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            # Verify that a RetryError is thrown on read.
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                limit=limit, backoff_settings=test_backoff_settings)
+            with self.assertRaises(RetryError):
+                result.consume_next()
+
 
     def test_sample_row_keys(self):
         from tests.unit._testing import _FakeStub

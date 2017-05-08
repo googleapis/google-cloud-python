@@ -41,15 +41,12 @@ BACKOFF_SETTINGS = BackoffSettings(
     total_timeout_millis=30 * 60 * 1000
 )
 
-RETRY_OPTIONS = RetryOptions(
-    retry_codes=[
-        StatusCode.DEADLINE_EXCEEDED,
-        StatusCode.ABORTED,
-        StatusCode.INTERNAL,
-        StatusCode.UNAVAILABLE
-    ],
-    backoff_settings=BACKOFF_SETTINGS
-)
+RETRY_CODES = [
+    StatusCode.DEADLINE_EXCEEDED,
+    StatusCode.ABORTED,
+    StatusCode.INTERNAL,
+    StatusCode.UNAVAILABLE
+]
 
 
 class Table(object):
@@ -264,7 +261,7 @@ class Table(object):
         return rows_data.rows[row_key]
 
     def read_rows(self, start_key=None, end_key=None, limit=None,
-                  filter_=None):
+                  filter_=None, backoff_settings=None):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -292,6 +289,13 @@ class Table(object):
                   the streamed results.
         """
         client = self._instance._client
+        if backoff_settings is None:
+            backoff_settings = BACKOFF_SETTINGS
+        RETRY_OPTIONS = RetryOptions(
+            retry_codes=RETRY_CODES,
+            backoff_settings=backoff_settings
+        )
+
         retrying_iterator = ReadRowsIterator(client, self.name, start_key,
                                              end_key, filter_, limit,
                                              RETRY_OPTIONS)

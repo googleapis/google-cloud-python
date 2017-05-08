@@ -13,13 +13,6 @@ from grpc import RpcError
 _MILLIS_PER_SECOND = 1000
 
 
-def _has_timeout_settings(backoff_settings):
-    return (backoff_settings.rpc_timeout_multiplier is not None and
-            backoff_settings.max_rpc_timeout_millis is not None and
-            backoff_settings.total_timeout_millis is not None and
-            backoff_settings.initial_rpc_timeout_millis is not None)
-
-
 class ReadRowsIterator():
     """Creates an iterator equivalent to a_iter, but that retries on certain
     exceptions.
@@ -35,23 +28,18 @@ class ReadRowsIterator():
         self.end_key = end_key
         self.filter_ = filter_
         self.limit = limit
-
         self.delay_mult = retry_options.backoff_settings.retry_delay_multiplier
         self.max_delay_millis = \
             retry_options.backoff_settings.max_retry_delay_millis
-        self.has_timeout_settings = \
-            _has_timeout_settings(retry_options.backoff_settings)
-
-        if self.has_timeout_settings:
-            self.timeout_mult = \
-                retry_options.backoff_settings.rpc_timeout_multiplier
-            self.max_timeout = \
-                (retry_options.backoff_settings.max_rpc_timeout_millis /
-                 _MILLIS_PER_SECOND)
-            self.total_timeout = \
-                (retry_options.backoff_settings.total_timeout_millis /
-                 _MILLIS_PER_SECOND)
-            self.set_stream()
+        self.timeout_mult = \
+            retry_options.backoff_settings.rpc_timeout_multiplier
+        self.max_timeout = \
+            (retry_options.backoff_settings.max_rpc_timeout_millis /
+             _MILLIS_PER_SECOND)
+        self.total_timeout = \
+            (retry_options.backoff_settings.total_timeout_millis /
+             _MILLIS_PER_SECOND)
+        self.set_stream()
 
     def set_start_key(self, start_key):
         """
@@ -78,17 +66,12 @@ class ReadRowsIterator():
         delay = self.retry_options.backoff_settings.initial_retry_delay_millis
         exc = errors.RetryError('Retry total timeout exceeded before any'
                                 'response was received')
-        if self.has_timeout_settings:
-            timeout = (self.retry_options.backoff_settings
-                       .initial_rpc_timeout_millis /
-                       _MILLIS_PER_SECOND)
+        timeout = (self.retry_options.backoff_settings
+                   .initial_rpc_timeout_millis /
+                   _MILLIS_PER_SECOND)
 
-            now = time.time()
-            deadline = now + self.total_timeout
-        else:
-            timeout = None
-            deadline = None
-
+        now = time.time()
+        deadline = now + self.total_timeout
         while deadline is None or now < deadline:
             try:
                 return six.next(self.stream)
@@ -109,12 +92,10 @@ class ReadRowsIterator():
                 to_sleep = random.uniform(0, delay * 2)
                 time.sleep(to_sleep / _MILLIS_PER_SECOND)
                 delay = min(delay * self.delay_mult, self.max_delay_millis)
-
-                if self.has_timeout_settings:
-                    now = time.time()
-                    timeout = min(
-                        timeout * self.timeout_mult, self.max_timeout,
-                        deadline - now)
+                now = time.time()
+                timeout = min(
+                    timeout * self.timeout_mult, self.max_timeout,
+                    deadline - now)
                 self.set_stream()
 
         six.reraise(errors.RetryError, exc)
