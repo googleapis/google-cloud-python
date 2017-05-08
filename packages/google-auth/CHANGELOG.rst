@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.0.1
+------
+
+- Fixed a bug in the clock skew accommodation logic where expired credentials could be used for up to 5 minutes. (#158)
+
 v1.0.0
 ------
 
