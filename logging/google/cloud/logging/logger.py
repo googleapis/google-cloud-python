@@ -16,6 +16,10 @@
 
 from google.protobuf.json_format import MessageToDict
 from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud.logging.resource import Resource
+
+
+_GLOBAL_RESOURCE = Resource(type='global', labels={})
 
 
 class Logger(object):
@@ -91,7 +95,8 @@ class Logger(object):
 
     def _make_entry_resource(self, text=None, info=None, message=None,
                              labels=None, insert_id=None, severity=None,
-                             http_request=None, timestamp=None):
+                             http_request=None, timestamp=None,
+                             resource=None):
         """Return a log entry resource of the appropriate type.
 
         Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
@@ -123,19 +128,24 @@ class Logger(object):
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (Optional) timestamp of event being logged.
 
+        :type resource :class:``google.cloud.logging.resource`
+        :param resource: (Optional) Monitored resource of the entry
+
         :rtype: dict
         :returns: The JSON resource created.
         """
-        resource = {
+        entry = {
             'logName': self.full_name,
-            'resource': {'type': 'global'},
         }
 
+        if resource is not None:
+            entry['resource'] = resource._to_dict()
+
         if text is not None:
-            resource['textPayload'] = text
+            entry['textPayload'] = text
 
         if info is not None:
-            resource['jsonPayload'] = info
+            entry['jsonPayload'] = info
 
         if message is not None:
             # NOTE: If ``message`` contains an ``Any`` field with an
@@ -144,30 +154,31 @@ class Logger(object):
             #       the assumption is that any types needed for the
             #       protobuf->JSON conversion will be known from already
             #       imported ``pb2`` modules.
-            resource['protoPayload'] = MessageToDict(message)
+            entry['protoPayload'] = MessageToDict(message)
 
         if labels is None:
             labels = self.labels
 
         if labels is not None:
-            resource['labels'] = labels
+            entry['labels'] = labels
 
         if insert_id is not None:
-            resource['insertId'] = insert_id
+            entry['insertId'] = insert_id
 
         if severity is not None:
-            resource['severity'] = severity
+            entry['severity'] = severity
 
         if http_request is not None:
-            resource['httpRequest'] = http_request
+            entry['httpRequest'] = http_request
 
         if timestamp is not None:
-            resource['timestamp'] = _datetime_to_rfc3339(timestamp)
+            entry['timestamp'] = _datetime_to_rfc3339(timestamp)
 
-        return resource
+        return entry
 
     def log_text(self, text, client=None, labels=None, insert_id=None,
-                 severity=None, http_request=None, timestamp=None):
+                 severity=None, http_request=None, timestamp=None,
+                 resource=_GLOBAL_RESOURCE):
         """API call:  log a text message via a POST request
 
         See:
@@ -194,17 +205,23 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry
 
+        :type resource :class:``google.cloud.logging.resource`
+        :param resource: (Optional) Monitored resource of the entry, defaults
+                         to the global resource type.
+
+
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             text=text, labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request, timestamp=timestamp)
+            http_request=http_request, timestamp=timestamp, resource=resource)
         client.logging_api.write_entries([entry_resource])
 
     def log_struct(self, info, client=None, labels=None, insert_id=None,
-                   severity=None, http_request=None, timestamp=None):
+                   severity=None, http_request=None, timestamp=None,
+                   resource=_GLOBAL_RESOURCE):
         """API call:  log a structured message via a POST request
 
         See:
@@ -231,17 +248,23 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
+        :type resource :class:``google.cloud.logging.resource`
+        :param resource: (Optional) Monitored resource of the entry, defaults
+                         to the global resource type.
+
+
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             info=info, labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request, timestamp=timestamp)
+            http_request=http_request, timestamp=timestamp, resource=resource)
         client.logging_api.write_entries([entry_resource])
 
     def log_proto(self, message, client=None, labels=None, insert_id=None,
-                  severity=None, http_request=None, timestamp=None):
+                  severity=None, http_request=None, timestamp=None,
+                  resource=_GLOBAL_RESOURCE):
         """API call:  log a protobuf message via a POST request
 
         See:
@@ -274,7 +297,8 @@ class Logger(object):
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             message=message, labels=labels, insert_id=insert_id,
-            severity=severity, http_request=http_request, timestamp=timestamp)
+            severity=severity, http_request=http_request, timestamp=timestamp,
+            resource=resource)
         client.logging_api.write_entries([entry_resource])
 
     def delete(self, client=None):
@@ -358,7 +382,7 @@ class Batch(object):
             self.commit()
 
     def log_text(self, text, labels=None, insert_id=None, severity=None,
-                 http_request=None, timestamp=None):
+                 http_request=None, timestamp=None, resource=_GLOBAL_RESOURCE):
         """Add a text entry to be logged during :meth:`commit`.
 
         :type text: str
@@ -382,10 +406,11 @@ class Batch(object):
         """
         self.entries.append(
             ('text', text, labels, insert_id, severity, http_request,
-             timestamp))
+             timestamp, resource))
 
     def log_struct(self, info, labels=None, insert_id=None, severity=None,
-                   http_request=None, timestamp=None):
+                   http_request=None, timestamp=None,
+                   resource=_GLOBAL_RESOURCE):
         """Add a struct entry to be logged during :meth:`commit`.
 
         :type info: dict
@@ -409,10 +434,11 @@ class Batch(object):
         """
         self.entries.append(
             ('struct', info, labels, insert_id, severity, http_request,
-             timestamp))
+             timestamp, resource))
 
     def log_proto(self, message, labels=None, insert_id=None, severity=None,
-                  http_request=None, timestamp=None):
+                  http_request=None, timestamp=None,
+                  resource=_GLOBAL_RESOURCE):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
         :type message: protobuf message
@@ -436,29 +462,34 @@ class Batch(object):
         """
         self.entries.append(
             ('proto', message, labels, insert_id, severity, http_request,
-             timestamp))
+             timestamp, resource))
 
-    def commit(self, client=None):
+    def commit(self, client=None, resource=None):
         """Send saved log entries as a single API call.
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
+
+        :type resource :class:``google.cloud.logging.resource`
+        :param resource: (Optional) Monitored resource of the batch
         """
         if client is None:
             client = self.client
 
         kwargs = {
             'logger_name': self.logger.full_name,
-            'resource': {'type': 'global'},
         }
+
+        if resource is not None:
+            kwargs['resource'] = resource._to_dict()
         if self.logger.labels is not None:
             kwargs['labels'] = self.logger.labels
 
         entries = []
         for (entry_type, entry, labels, iid, severity, http_req,
-             timestamp) in self.entries:
+             timestamp, resource) in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
@@ -473,6 +504,8 @@ class Batch(object):
                 info = {'protoPayload': MessageToDict(entry)}
             else:
                 raise ValueError('Unknown entry type: %s' % (entry_type,))
+            if resource is not None:
+                info['resource'] = resource._to_dict()
             if labels is not None:
                 info['labels'] = labels
             if iid is not None:
