@@ -12,14 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import math
 import operator
 import os
+import struct
 import unittest
 
 from google.cloud.proto.spanner.v1.type_pb2 import STRING
 from google.cloud.proto.spanner.v1.type_pb2 import Type
 
+from google.cloud._helpers import UTC
 from google.cloud.exceptions import GrpcRendezvous
+from google.cloud.spanner._helpers import TimestampWithNanoseconds
 from google.cloud.spanner.client import Client
 from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import BurstyPool
@@ -181,12 +186,37 @@ class _TestData(object):
     ALL = KeySet(all_=True)
     SQL = 'SELECT * FROM contacts ORDER BY contact_id'
 
-    def _check_row_data(self, row_data):
-        self.assertEqual(len(row_data), len(self.ROW_DATA))
-        for found, expected in zip(row_data, self.ROW_DATA):
+    def _assert_timestamp(self, value, nano_value):
+        self.assertIsInstance(value, datetime.datetime)
+        self.assertIsNone(value.tzinfo)
+        self.assertIs(nano_value.tzinfo, UTC)
+
+        self.assertEqual(value.year, nano_value.year)
+        self.assertEqual(value.month, nano_value.month)
+        self.assertEqual(value.day, nano_value.day)
+        self.assertEqual(value.hour, nano_value.hour)
+        self.assertEqual(value.minute, nano_value.minute)
+        self.assertEqual(value.second, nano_value.second)
+        self.assertEqual(value.microsecond, nano_value.microsecond)
+        if isinstance(value, TimestampWithNanoseconds):
+            self.assertEqual(value.nanosecond, nano_value.nanosecond)
+        else:
+            self.assertEqual(value.microsecond * 1000, nano_value.nanosecond)
+
+    def _check_row_data(self, row_data, expected=None):
+        if expected is None:
+            expected = self.ROW_DATA
+
+        self.assertEqual(len(row_data), len(expected))
+        for found, expected in zip(row_data, expected):
             self.assertEqual(len(found), len(expected))
-            for f_cell, e_cell in zip(found, expected):
-                self.assertEqual(f_cell, e_cell)
+            for found_cell, expected_cell in zip(found, expected):
+                if isinstance(found_cell, TimestampWithNanoseconds):
+                    self._assert_timestamp(expected_cell, found_cell)
+                elif isinstance(found_cell, float) and math.isnan(found_cell):
+                    self.assertTrue(math.isnan(expected_cell))
+                else:
+                    self.assertEqual(found_cell, expected_cell)
 
 
 class TestDatabaseAPI(unittest.TestCase, _TestData):
@@ -335,8 +365,49 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
 
-    def test_batch_insert_or_update_then_query(self):
+    def test_batch_insert_then_read_all_datatypes(self):
+        from google.cloud.spanner import KeySet
 
+        keyset = KeySet(all_=True)
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        table = 'all_types'
+        columns = (
+            'list_goes_on',
+            'are_you_sure',
+            'raw_data',
+            'hwhen',
+            'approx_value',
+            'eye_d',
+            'description',
+            'exactly_hwhen',
+        )
+        some_date = datetime.date(2011, 1, 17)
+        some_time = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
+        nano_time = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+        other_nan, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
+        row_data = (
+            ([1], True, b'Ymlu', some_date, 0.0, 19, u'dog', some_time),
+            ([5, 10], True, b'Ymlu', None, 1.25, 99, u'cat', None),
+            ([], False, b'Ym9vdHM=', None, float('inf'), 107, u'frog', None),
+            ([], False, None, None, float('-inf'), 207, None, None),
+            ([], False, None, None, float('nan'), 1207, None, None),
+            ([], False, None, None, other_nan, 2000, None, nano_time),
+        )
+        with session.batch() as batch:
+            batch.delete(table, keyset)
+            batch.insert(table, columns, row_data)
+
+        snapshot = session.snapshot(read_timestamp=batch.committed)
+        rows = list(snapshot.read(table, columns, keyset))
+        self._check_row_data(rows, expected=row_data)
+
+    def test_batch_insert_or_update_then_query(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
