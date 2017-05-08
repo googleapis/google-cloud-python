@@ -38,21 +38,19 @@ def test_expired_and_valid():
     assert credentials.valid
     assert not credentials.expired
 
-    # Set the expiration in the past, but because of clock skew accomodation
-    # the credentials should still be valid.
+    # Set the expiration to one second more than now plus the clock skew
+    # accomodation. These credentials should be valid.
     credentials.expiry = (
-        datetime.datetime.utcnow() -
+        datetime.datetime.utcnow() +
+        _helpers.CLOCK_SKEW +
         datetime.timedelta(seconds=1))
 
     assert credentials.valid
     assert not credentials.expired
 
-    # Set the credentials far enough in the past to exceed the clock skew
-    # accomodation. They should now be expired.
-    credentials.expiry = (
-        datetime.datetime.utcnow() -
-        _helpers.CLOCK_SKEW -
-        datetime.timedelta(seconds=1))
+    # Set the credentials expiration to now. Because of the clock skew
+    # accomodation, these credentials should report as expired.
+    credentials.expiry = datetime.datetime.utcnow()
 
     assert not credentials.valid
     assert credentials.expired

@@ -17,6 +17,7 @@ import datetime
 import mock
 import pytest
 
+from google.auth import _helpers
 from google.auth import credentials
 try:
     import google.auth.transport.grpc
@@ -56,7 +57,7 @@ class TestAuthMetadataPlugin(object):
 
     def test_call_refresh(self):
         credentials = MockCredentials()
-        credentials.expiry = datetime.datetime.min
+        credentials.expiry = datetime.datetime.min + _helpers.CLOCK_SKEW
         request = mock.Mock()
 
         plugin = google.auth.transport.grpc.AuthMetadataPlugin(

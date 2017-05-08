@@ -20,6 +20,7 @@ import mock
 import pytest
 from six.moves import http_client
 
+from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import iam
 from google.auth import transport
@@ -42,7 +43,7 @@ def make_credentials():
             super(CredentialsImpl, self).__init__()
             self.token = 'token'
             # Force refresh
-            self.expiry = datetime.datetime.min
+            self.expiry = datetime.datetime.min + _helpers.CLOCK_SKEW
 
         def refresh(self, request):
             pass

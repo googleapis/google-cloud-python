@@ -112,10 +112,10 @@ class TestCredentials(object):
 
     @mock.patch(
         'google.auth._helpers.utcnow',
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW)
+        return_value=datetime.datetime.min)
     def test_refresh(self, now_mock, app_identity_mock):
         token = 'token'
-        ttl = 100
+        ttl = _helpers.CLOCK_SKEW_SECS + 100
         app_identity_mock.get_access_token.return_value = token, ttl
         credentials = app_engine.Credentials(scopes=['email'])
 
