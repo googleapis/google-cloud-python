@@ -18,17 +18,18 @@ import unittest
 
 from google.cloud.proto.spanner.v1.type_pb2 import STRING
 from google.cloud.proto.spanner.v1.type_pb2 import Type
+
+from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.spanner.client import Client
 from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import BurstyPool
-from google.cloud.spanner._fixtures import DDL_STATEMENTS
-
-from grpc._channel import _Rendezvous
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
 from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
+from tests._fixtures import DDL_STATEMENTS
+
 
 IS_CIRCLE = os.getenv('CIRCLECI') == 'true'
 CREATE_INSTANCE = IS_CIRCLE or os.getenv(
@@ -64,9 +65,13 @@ def _has_all_ddl(database):
     return len(database.ddl_statements) == len(DDL_STATEMENTS)
 
 
+def _list_instances():
+    return list(Config.CLIENT.list_instances())
+
+
 def setUpModule():
     Config.CLIENT = Client()
-    retry = RetryErrors(_Rendezvous, error_predicate=_retry_on_unavailable)
+    retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
 
@@ -75,9 +80,6 @@ def setUpModule():
 
     Config.INSTANCE_CONFIG = configs[0]
     config_name = configs[0].name
-
-    def _list_instances():
-        return list(Config.CLIENT.list_instances())
 
     instances = retry(_list_instances)()
     EXISTING_INSTANCES[:] = instances
@@ -349,7 +351,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(snapshot.execute_sql(self.SQL))
         self._check_row_data(rows)
 
-    @RetryErrors(exception=_Rendezvous)
+    @RetryErrors(exception=GrpcRendezvous)
     def test_transaction_read_and_insert_then_rollback(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -377,7 +379,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
-    @RetryErrors(exception=_Rendezvous)
+    @RetryErrors(exception=GrpcRendezvous)
     def test_transaction_read_and_insert_or_update_then_commit(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -403,12 +405,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
 
-    def _set_up_table(self, row_count):
-        def _row_data(max_index):
-            for index in range(max_index):
-                yield [index, 'First%09d' % (index,), 'Last09%d' % (index),
-                       'test-%09d@example.com' % (index,)]
+    @staticmethod
+    def _row_data(max_index):
+        for index in range(max_index):
+            yield [
+                index,
+                'First%09d' % (index,),
+                'Last09%d' % (index),
+                'test-%09d@example.com' % (index,),
+            ]
 
+    def _set_up_table(self, row_count):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -418,7 +425,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         with session.transaction() as transaction:
             transaction.delete(self.TABLE, self.ALL)
-            transaction.insert(self.TABLE, self.COLUMNS, _row_data(row_count))
+            transaction.insert(
+                self.TABLE, self.COLUMNS, self._row_data(row_count))
 
         return session, transaction.committed
 
