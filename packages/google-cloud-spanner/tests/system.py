@@ -19,6 +19,7 @@ import unittest
 from google.cloud.proto.spanner.v1.type_pb2 import STRING
 from google.cloud.proto.spanner.v1.type_pb2 import Type
 from google.cloud.spanner.client import Client
+from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import BurstyPool
 from google.cloud.spanner._fixtures import DDL_STATEMENTS
 
@@ -167,12 +168,32 @@ class TestInstanceAdminAPI(unittest.TestCase):
         Config.INSTANCE.update()
 
 
-class TestDatabaseAdminAPI(unittest.TestCase):
+class _TestData(object):
+    TABLE = 'contacts'
+    COLUMNS = ('contact_id', 'first_name', 'last_name', 'email')
+    ROW_DATA = (
+        (1, u'Phred', u'Phlyntstone', u'phred@example.com'),
+        (2, u'Bharney', u'Rhubble', u'bharney@example.com'),
+        (3, u'Wylma', u'Phlyntstone', u'wylma@example.com'),
+    )
+    ALL = KeySet(all_=True)
+    SQL = 'SELECT * FROM contacts ORDER BY contact_id'
+
+    def _check_row_data(self, row_data):
+        self.assertEqual(len(row_data), len(self.ROW_DATA))
+        for found, expected in zip(row_data, self.ROW_DATA):
+            self.assertEqual(len(found), len(expected))
+            for f_cell, e_cell in zip(found, expected):
+                self.assertEqual(f_cell, e_cell)
+
+
+class TestDatabaseAPI(unittest.TestCase, _TestData):
 
     @classmethod
     def setUpClass(cls):
         pool = BurstyPool()
-        cls._db = Config.INSTANCE.database(DATABASE_ID, pool=pool)
+        cls._db = Config.INSTANCE.database(
+            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
         cls._db.create()
 
     @classmethod
@@ -228,16 +249,43 @@ class TestDatabaseAdminAPI(unittest.TestCase):
 
         self.assertEqual(len(temp_db.ddl_statements), len(DDL_STATEMENTS))
 
+    def test_db_batch_insert_then_db_snapshot_read_and_db_read(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
 
-class TestSessionAPI(unittest.TestCase):
-    TABLE = 'contacts'
-    COLUMNS = ('contact_id', 'first_name', 'last_name', 'email')
-    ROW_DATA = (
-        (1, u'Phred', u'Phlyntstone', u'phred@example.com'),
-        (2, u'Bharney', u'Rhubble', u'bharney@example.com'),
-        (3, u'Wylma', u'Phlyntstone', u'wylma@example.com'),
-    )
-    SQL = 'SELECT * FROM contacts ORDER BY contact_id'
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+            batch.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
+
+        with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
+            from_snap = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
+
+        self._check_row_data(from_snap)
+
+        from_db = list(self._db.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(from_db)
+
+    def test_db_run_in_transaction_then_db_execute_sql(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        def _unit_of_work(transaction, test):
+            rows = list(transaction.read(test.TABLE, test.COLUMNS, self.ALL))
+            test.assertEqual(rows, [])
+
+            transaction.insert_or_update(
+                test.TABLE, test.COLUMNS, test.ROW_DATA)
+
+        self._db.run_in_transaction(_unit_of_work, test=self)
+
+        rows = list(self._db.execute_sql(self.SQL))
+        self._check_row_data(rows)
+
+
+class TestSessionAPI(unittest.TestCase, _TestData):
 
     @classmethod
     def setUpClass(cls):
@@ -258,13 +306,6 @@ class TestSessionAPI(unittest.TestCase):
         for doomed in self.to_delete:
             doomed.delete()
 
-    def _check_row_data(self, row_data):
-        self.assertEqual(len(row_data), len(self.ROW_DATA))
-        for found, expected in zip(row_data, self.ROW_DATA):
-            self.assertEqual(len(found), len(expected))
-            for f_cell, e_cell in zip(found, expected):
-                self.assertEqual(f_cell, e_cell)
-
     def test_session_crud(self):
         retry_true = RetryResult(operator.truth)
         retry_false = RetryResult(operator.not_)
@@ -276,9 +317,6 @@ class TestSessionAPI(unittest.TestCase):
         retry_false(session.exists)()
 
     def test_batch_insert_then_read(self):
-        from google.cloud.spanner import KeySet
-        keyset = KeySet(all_=True)
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -287,12 +325,12 @@ class TestSessionAPI(unittest.TestCase):
         self.to_delete.append(session)
 
         batch = session.batch()
-        batch.delete(self.TABLE, keyset)
+        batch.delete(self.TABLE, self.ALL)
         batch.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
         batch.commit()
 
         snapshot = session.snapshot(read_timestamp=batch.committed)
-        rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
 
     def test_batch_insert_or_update_then_query(self):
@@ -313,9 +351,6 @@ class TestSessionAPI(unittest.TestCase):
 
     @RetryErrors(exception=_Rendezvous)
     def test_transaction_read_and_insert_then_rollback(self):
-        from google.cloud.spanner import KeySet
-        keyset = KeySet(all_=True)
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -324,29 +359,26 @@ class TestSessionAPI(unittest.TestCase):
         self.to_delete.append(session)
 
         with session.batch() as batch:
-            batch.delete(self.TABLE, keyset)
+            batch.delete(self.TABLE, self.ALL)
 
         transaction = session.transaction()
         transaction.begin()
 
-        rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
         transaction.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
 
         # Inserted rows can't be read until after commit.
-        rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
         transaction.rollback()
 
-        rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
     @RetryErrors(exception=_Rendezvous)
     def test_transaction_read_and_insert_or_update_then_commit(self):
-        from google.cloud.spanner import KeySet
-        keyset = KeySet(all_=True)
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -355,31 +387,27 @@ class TestSessionAPI(unittest.TestCase):
         self.to_delete.append(session)
 
         with session.batch() as batch:
-            batch.delete(self.TABLE, keyset)
+            batch.delete(self.TABLE, self.ALL)
 
         with session.transaction() as transaction:
-            rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
+            rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
             transaction.insert_or_update(
                 self.TABLE, self.COLUMNS, self.ROW_DATA)
 
             # Inserted rows can't be read until after commit.
-            rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
+            rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-        rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
 
     def _set_up_table(self, row_count):
-        from google.cloud.spanner import KeySet
-
         def _row_data(max_index):
             for index in range(max_index):
                 yield [index, 'First%09d' % (index,), 'Last09%d' % (index),
                        'test-%09d@example.com' % (index,)]
-
-        keyset = KeySet(all_=True)
 
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -389,17 +417,17 @@ class TestSessionAPI(unittest.TestCase):
         self.to_delete.append(session)
 
         with session.transaction() as transaction:
-            transaction.delete(self.TABLE, keyset)
+            transaction.delete(self.TABLE, self.ALL)
             transaction.insert(self.TABLE, self.COLUMNS, _row_data(row_count))
 
-        return session, keyset, transaction.committed
+        return session, transaction.committed
 
     def test_read_w_manual_consume(self):
         ROW_COUNT = 4000
-        session, keyset, committed = self._set_up_table(ROW_COUNT)
+        session, committed = self._set_up_table(ROW_COUNT)
 
         snapshot = session.snapshot(read_timestamp=committed)
-        streamed = snapshot.read(self.TABLE, self.COLUMNS, keyset)
+        streamed = snapshot.read(self.TABLE, self.COLUMNS, self.ALL)
 
         retrieved = 0
         while True:
@@ -416,7 +444,7 @@ class TestSessionAPI(unittest.TestCase):
 
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 4000
-        session, _, committed = self._set_up_table(ROW_COUNT)
+        session, committed = self._set_up_table(ROW_COUNT)
 
         snapshot = session.snapshot(read_timestamp=committed)
         streamed = snapshot.execute_sql(self.SQL)
@@ -437,7 +465,7 @@ class TestSessionAPI(unittest.TestCase):
     def test_execute_sql_w_query_param(self):
         SQL = 'SELECT * FROM contacts WHERE first_name = @first_name'
         ROW_COUNT = 10
-        session, _, committed = self._set_up_table(ROW_COUNT)
+        session, committed = self._set_up_table(ROW_COUNT)
 
         snapshot = session.snapshot(read_timestamp=committed)
         rows = list(snapshot.execute_sql(
