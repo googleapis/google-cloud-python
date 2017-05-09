@@ -19,7 +19,14 @@ import os
 import struct
 import unittest
 
+from google.cloud.proto.spanner.v1.type_pb2 import ARRAY
+from google.cloud.proto.spanner.v1.type_pb2 import BOOL
+from google.cloud.proto.spanner.v1.type_pb2 import BYTES
+from google.cloud.proto.spanner.v1.type_pb2 import DATE
+from google.cloud.proto.spanner.v1.type_pb2 import FLOAT64
+from google.cloud.proto.spanner.v1.type_pb2 import INT64
 from google.cloud.proto.spanner.v1.type_pb2 import STRING
+from google.cloud.proto.spanner.v1.type_pb2 import TIMESTAMP
 from google.cloud.proto.spanner.v1.type_pb2 import Type
 
 from google.cloud._helpers import UTC
@@ -318,6 +325,31 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
 
 class TestSessionAPI(unittest.TestCase, _TestData):
+    ALL_TYPES_TABLE = 'all_types'
+    ALL_TYPES_COLUMNS = (
+        'list_goes_on',
+        'are_you_sure',
+        'raw_data',
+        'hwhen',
+        'approx_value',
+        'eye_d',
+        'description',
+        'exactly_hwhen',
+    )
+    SOME_DATE = datetime.date(2011, 1, 17)
+    SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
+    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
+    BYTES_1 = b'Ymlu'
+    BYTES_2 = b'Ym9vdHM='
+    ALL_TYPES_ROWDATA = (
+        ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
+        ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
+        ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
+        ([], False, None, None, float('-inf'), 207, None, None),
+        ([], False, None, None, float('nan'), 1207, None, None),
+        ([], False, None, None, OTHER_NAN, 2000, None, NANO_TIME),
+    )
 
     @classmethod
     def setUpClass(cls):
@@ -366,9 +398,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(rows)
 
     def test_batch_insert_then_read_all_datatypes(self):
-        from google.cloud.spanner import KeySet
-
-        keyset = KeySet(all_=True)
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -376,36 +405,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         session.create()
         self.to_delete.append(session)
 
-        table = 'all_types'
-        columns = (
-            'list_goes_on',
-            'are_you_sure',
-            'raw_data',
-            'hwhen',
-            'approx_value',
-            'eye_d',
-            'description',
-            'exactly_hwhen',
-        )
-        some_date = datetime.date(2011, 1, 17)
-        some_time = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
-        nano_time = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
-        other_nan, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
-        row_data = (
-            ([1], True, b'Ymlu', some_date, 0.0, 19, u'dog', some_time),
-            ([5, 10], True, b'Ymlu', None, 1.25, 99, u'cat', None),
-            ([], False, b'Ym9vdHM=', None, float('inf'), 107, u'frog', None),
-            ([], False, None, None, float('-inf'), 207, None, None),
-            ([], False, None, None, float('nan'), 1207, None, None),
-            ([], False, None, None, other_nan, 2000, None, nano_time),
-        )
         with session.batch() as batch:
-            batch.delete(table, keyset)
-            batch.insert(table, columns, row_data)
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
 
         snapshot = session.snapshot(read_timestamp=batch.committed)
-        rows = list(snapshot.read(table, columns, keyset))
-        self._check_row_data(rows, expected=row_data)
+        rows = list(snapshot.read(
+            self.ALL_TYPES_TABLE, self.ALL_TYPES_COLUMNS, self.ALL))
+        self._check_row_data(rows, expected=self.ALL_TYPES_ROWDATA)
 
     def test_batch_insert_or_update_then_query(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -541,16 +551,114 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, None)
 
-    def test_execute_sql_w_query_param(self):
-        SQL = 'SELECT * FROM contacts WHERE first_name = @first_name'
-        ROW_COUNT = 10
-        session, committed = self._set_up_table(ROW_COUNT)
-
-        snapshot = session.snapshot(read_timestamp=committed)
+    def _check_sql_results(self, snapshot, sql, params, param_types, expected):
+        if 'ORDER' not in sql:
+            sql += ' ORDER BY eye_d'
         rows = list(snapshot.execute_sql(
-            SQL,
-            params={'first_name': 'First%09d' % (0,)},
-            param_types={'first_name': Type(code=STRING)},
-        ))
+            sql, params=params, param_types=param_types))
+        self._check_row_data(rows, expected=expected)
 
-        self.assertEqual(len(rows), 1)
+    def test_execute_sql_w_query_param(self):
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
+
+        snapshot = session.snapshot(read_timestamp=batch.committed)
+
+        # Cannot equality-test array values.  See below for a test w/
+        # array of IDs.
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE are_you_sure = @sure',
+            params={'sure': True},
+            param_types={'sure': Type(code=BOOL)},
+            expected=[(19,), (99,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE raw_data = @bytes_1',
+            params={'bytes_1': self.BYTES_1},
+            param_types={'bytes_1': Type(code=BYTES)},
+            expected=[(19,), (99,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE hwhen = @hwhen',
+            params={'hwhen': self.SOME_DATE},
+            param_types={'hwhen': Type(code=DATE)},
+            expected=[(19,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql=('SELECT eye_d FROM all_types WHERE approx_value >= @lower'
+                 ' AND approx_value < @upper '),
+            params={'lower': 0.0, 'upper': 1.0},
+            param_types={
+                'lower': Type(code=FLOAT64), 'upper': Type(code=FLOAT64)},
+            expected=[(19,)],
+        )
+
+        # Find -inf
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
+            params={'pos_inf': float('+inf')},
+            param_types={'pos_inf': Type(code=FLOAT64)},
+            expected=[(107,)],
+        )
+
+        # Find +inf
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
+            params={'neg_inf': float('-inf')},
+            param_types={'neg_inf': Type(code=FLOAT64)},
+            expected=[(207,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT description FROM all_types WHERE eye_d = @my_id',
+            params={'my_id': 19},
+            param_types={'my_id': Type(code=INT64)},
+            expected=[(u'dog',)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE description = @description',
+            params={'description': u'dog'},
+            param_types={'description': Type(code=STRING)},
+            expected=[(19,)],
+        )
+
+        # NaNs cannot be searched for by equality.
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE exactly_hwhen = @hwhen',
+            params={'hwhen': self.SOME_TIME},
+            param_types={'hwhen': Type(code=TIMESTAMP)},
+            expected=[(19,)],
+        )
+
+        array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
+        self._check_sql_results(
+            snapshot,
+            sql=('SELECT description FROM all_types '
+                 'WHERE eye_d in UNNEST(@my_list)'),
+            params={'my_list': [19, 99]},
+            param_types={'my_list': array_type},
+            expected=[(u'dog',), (u'cat',)],
+        )
