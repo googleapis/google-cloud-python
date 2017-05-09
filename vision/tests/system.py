@@ -14,6 +14,7 @@
 
 """System tests for Vision API."""
 
+import functools
 import os
 import unittest
 
@@ -27,6 +28,7 @@ from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
 
 from test_utils.retry import RetryErrors
+from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
 
 
@@ -672,44 +674,90 @@ class TestVisionWebAnnotation(BaseVisionTestCase):
         for value in self.to_delete_by_case:
             value.delete()
 
-    def _assert_web_entity(self, web_entity):
+    def _check_web_entity(self, web_entity):
         from google.cloud.vision.web import WebEntity
 
-        self.assertIsInstance(web_entity, WebEntity)
-        self.assertIsInstance(web_entity.entity_id, six.text_type)
-        self.assertIsInstance(web_entity.score, float)
-        self.assertIsInstance(web_entity.description, six.text_type)
+        if not isinstance(web_entity, WebEntity):
+            return False
+        if not isinstance(web_entity.entity_id, six.text_type):
+            return False
+        if not isinstance(web_entity.score, float):
+            return False
+        if not isinstance(web_entity.description, six.text_type):
+            return False
 
-    def _assert_web_image(self, web_image):
+        return True
+
+    def _assert_web_entity(self, web_entity):
+        return_value = self._check_web_entity(web_entity)
+        self.assertTrue(return_value)
+
+    def _check_web_image(self, web_image):
         from google.cloud.vision.web import WebImage
 
-        self.assertIsInstance(web_image, WebImage)
-        self.assertIsInstance(web_image.url, six.text_type)
-        self.assertIsInstance(web_image.score, float)
+        if not isinstance(web_image, WebImage):
+            return False
 
-    def _assert_web_page(self, web_page):
+        if not isinstance(web_image.url, six.text_type):
+            return False
+
+        if not isinstance(web_image.score, float):
+            return False
+
+        return True
+
+    def _assert_web_image(self, web_image):
+        return_value = self._check_web_image(web_image)
+        self.assertTrue(return_value)
+
+    def _check_web_page(self, web_page):
         from google.cloud.vision.web import WebPage
 
-        self.assertIsInstance(web_page, WebPage)
-        self.assertIsInstance(web_page.url, six.text_type)
-        self.assertIsInstance(web_page.score, float)
+        if not isinstance(web_page, WebPage):
+            return False
+
+        if not isinstance(web_page.url, six.text_type):
+            return False
+
+        if not isinstance(web_page.score, float):
+            return False
+
+        return True
+
+    def _assert_web_page(self, web_page):
+        return_value = self._check_web_page(web_page)
+        self.assertTrue(return_value)
+
+    def _check_web_images(self, web_images, limit):
+        if len(web_images.web_entities) != limit:
+            return False
+        for web_entity in web_images.web_entities:
+            if not self._check_web_entity(web_entity):
+                return False
+
+        if len(web_images.full_matching_images) != limit:
+            return False
+        for web_image in web_images.full_matching_images:
+            if not self._check_web_image(web_image):
+                return False
+
+        if len(web_images.partial_matching_images) != limit:
+            return False
+        for web_image in web_images.partial_matching_images:
+            if not self._check_web_image(web_image):
+                return False
+
+        if len(web_images.pages_with_matching_images) != limit:
+            return False
+        for web_page in web_images.pages_with_matching_images:
+            if not self._check_web_page(web_page):
+                return False
+
+        return True
 
     def _assert_web_images(self, web_images, limit):
-        self.assertEqual(len(web_images.web_entities), limit)
-        for web_entity in web_images.web_entities:
-            self._assert_web_entity(web_entity)
-
-        self.assertEqual(len(web_images.full_matching_images), limit)
-        for web_image in web_images.full_matching_images:
-            self._assert_web_image(web_image)
-
-        self.assertEqual(len(web_images.partial_matching_images), limit)
-        for web_image in web_images.partial_matching_images:
-            self._assert_web_image(web_image)
-
-        self.assertEqual(len(web_images.pages_with_matching_images), limit)
-        for web_page in web_images.pages_with_matching_images:
-            self._assert_web_page(web_page)
+        return_value = self._check_web_images(web_images, limit)
+        self.assertTrue(return_value)
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_detect_web_images_from_content(self):
@@ -733,7 +781,12 @@ class TestVisionWebAnnotation(BaseVisionTestCase):
 
         image = client.image(source_uri=source_uri)
         limit = 5
-        web_images = image.detect_web(limit=limit)
+
+        images_good = functools.partial(self._check_web_images, limit=limit)
+        images_good.__name__ = 'images_good'  # partial() has no name.
+        retry = RetryResult(images_good)
+        web_images = retry(image.detect_web)(limit=limit)
+
         self._assert_web_images(web_images, limit)
 
     def test_detect_web_images_from_filename(self):
