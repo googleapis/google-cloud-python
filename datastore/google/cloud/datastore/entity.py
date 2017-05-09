@@ -24,9 +24,9 @@ class Entity(dict):
     An entity storing the actual instance of data.
 
     Each entity is officially represented with a
-    :class:`google.cloud.datastore.key.Key` class, however it is possible that
-    you might create an Entity with only a partial Key (that is, a Key
-    with a Kind, and possibly a parent, but without an ID).  In such a
+    :class:`~google.cloud.datastore.key.Key`, however it is possible that
+    you might create an entity with only a partial key (that is, a key
+    with a kind, and possibly a parent, but without an ID).  In such a
     case, the datastore service will automatically assign an ID to the
     partial key.
 
@@ -65,6 +65,31 @@ class Entity(dict):
 
        >>> entity['age'] = 20
        >>> entity['name'] = 'JJ'
+
+    However, not all types are allowed as a value for a Google Cloud Datastore
+    entity. The following basic types are supported by the API:
+
+    * :class:`datetime.datetime`
+    * :class:`~google.cloud.datastore.key.Key`
+    * :class:`bool`
+    * :class:`float`
+    * :class:`int` (as well as :class:`long` in Python 2)
+    * ``unicode`` (called ``str`` in Python 3)
+    * ``bytes`` (called ``str`` in Python 2)
+    * :class:`~google.cloud.datastore.helpers.GeoPoint`
+    * :data:`None`
+
+    In addition, two container types are supported:
+
+    * :class:`list`
+    * :class:`~google.cloud.datastore.entity.Entity`
+
+    Each entry in a list must be one of the value types (basic or
+    container) and each value in an
+    :class:`~google.cloud.datastore.entity.Entity` must as well. In
+    this case an :class:`~google.cloud.datastore.entity.Entity` **as a
+    container** acts as a :class:`dict`, but also has the special annotations
+    of ``key`` and ``exclude_from_indexes``.
 
     And you can treat an entity like a regular Python dictionary:
 
