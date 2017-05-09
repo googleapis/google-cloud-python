@@ -81,7 +81,7 @@ class TestDatabase(_BaseTest):
                 ddl_statements=['CREATE DATABASE foo'])
 
     def test_ctor_w_ddl_statements_ok(self):
-        from google.cloud.spanner._fixtures import DDL_STATEMENTS
+        from tests._fixtures import DDL_STATEMENTS
 
         instance = _Instance(self.INSTANCE_NAME)
         pool = _Pool()
@@ -297,7 +297,7 @@ class TestDatabase(_BaseTest):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_create_success(self):
-        from google.cloud.spanner._fixtures import DDL_STATEMENTS
+        from tests._fixtures import DDL_STATEMENTS
 
         op_future = _FauxOperationFuture()
         client = _Client()
@@ -360,7 +360,7 @@ class TestDatabase(_BaseTest):
     def test_exists_success(self):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
-        from google.cloud.spanner._fixtures import DDL_STATEMENTS
+        from tests._fixtures import DDL_STATEMENTS
 
         client = _Client()
         ddl_pb = admin_v1_pb2.GetDatabaseDdlResponse(
@@ -417,7 +417,7 @@ class TestDatabase(_BaseTest):
     def test_reload_success(self):
         from google.cloud.proto.spanner.admin.database.v1 import (
             spanner_database_admin_pb2 as admin_v1_pb2)
-        from google.cloud.spanner._fixtures import DDL_STATEMENTS
+        from tests._fixtures import DDL_STATEMENTS
 
         client = _Client()
         ddl_pb = admin_v1_pb2.GetDatabaseDdlResponse(
@@ -439,7 +439,7 @@ class TestDatabase(_BaseTest):
 
     def test_update_ddl_grpc_error(self):
         from google.gax.errors import GaxError
-        from google.cloud.spanner._fixtures import DDL_STATEMENTS
+        from tests._fixtures import DDL_STATEMENTS
 
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
@@ -460,7 +460,7 @@ class TestDatabase(_BaseTest):
 
     def test_update_ddl_not_found(self):
         from google.cloud.exceptions import NotFound
-        from google.cloud.spanner._fixtures import DDL_STATEMENTS
+        from tests._fixtures import DDL_STATEMENTS
 
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
@@ -480,7 +480,7 @@ class TestDatabase(_BaseTest):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_update_ddl(self):
-        from google.cloud.spanner._fixtures import DDL_STATEMENTS
+        from tests._fixtures import DDL_STATEMENTS
 
         op_future = _FauxOperationFuture()
         client = _Client()
