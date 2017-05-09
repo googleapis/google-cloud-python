@@ -128,7 +128,7 @@ class Logger(object):
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (Optional) timestamp of event being logged.
 
-        :type resource :class:``google.cloud.logging.resource`
+        :type resource :class:`google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry
 
         :rtype: dict
@@ -205,7 +205,7 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry
 
-        :type resource :class:``google.cloud.logging.resource`
+        :type resource :class:`google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry, defaults
                          to the global resource type.
 
@@ -291,6 +291,9 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
+        :type resource :class:``google.cloud.logging.resource`
+        :param resource: (Optional) Monitored resource of the entry
+
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
@@ -368,11 +371,15 @@ class Batch(object):
 
     :type client: :class:`google.cloud.logging.client.Client`
     :param client: The client to use.
+
+    :type resource :class:`google.cloud.logging.resource.Resource`
+    :param resource: (Optional) Monitored resource of the batch
     """
-    def __init__(self, logger, client):
+    def __init__(self, logger, client, resource=None):
         self.logger = logger
         self.entries = []
         self.client = client
+        self.resource = resource
 
     def __enter__(self):
         return self
@@ -403,6 +410,9 @@ class Batch(object):
 
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
+
+        :type resource :class:``google.cloud.logging.resource`
+        :param resource: (Optional) Monitored resource of the entry
         """
         self.entries.append(
             ('text', text, labels, insert_id, severity, http_request,
@@ -431,6 +441,9 @@ class Batch(object):
 
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
+
+        :type resource :class:``google.cloud.logging.resource`
+        :param resource: (Optional) Monitored resource of the entry
         """
         self.entries.append(
             ('struct', info, labels, insert_id, severity, http_request,
@@ -459,21 +472,21 @@ class Batch(object):
 
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
+
+        :type resource :class:``google.cloud.logging.resource`
+        :param resource: (Optional) Monitored resource of the entry
         """
         self.entries.append(
             ('proto', message, labels, insert_id, severity, http_request,
              timestamp, resource))
 
-    def commit(self, client=None, resource=None):
+    def commit(self, client=None):
         """Send saved log entries as a single API call.
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
-
-        :type resource :class:``google.cloud.logging.resource`
-        :param resource: (Optional) Monitored resource of the batch
         """
         if client is None:
             client = self.client
@@ -482,8 +495,8 @@ class Batch(object):
             'logger_name': self.logger.full_name,
         }
 
-        if resource is not None:
-            kwargs['resource'] = resource._to_dict()
+        if self.resource is not None:
+            kwargs['resource'] = self.resource._to_dict()
         if self.logger.labels is not None:
             kwargs['labels'] = self.logger.labels
 

@@ -171,6 +171,24 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(entries[0].payload, text_payload)
         self.assertEqual(entries[0].timestamp, now.replace(tzinfo=UTC))
 
+    def test_log_text_with_resource(self):
+        from google.cloud.logging.resource import Resource
+        text_payload = 'System test: test_log_text_with_timestamp'
+
+        logger = Config.CLIENT.logger(self._logger_name())
+        now = datetime.datetime.utcnow()
+        RESOURCE = Resource(
+            type='gae_app', labels={'module_id': 'default',
+                                    'version_id': 'test'})
+
+        self.to_delete.append(logger)
+
+        logger.log_text(text_payload, timestamp=now, resource=RESOURCE)
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, text_payload)
+        self.assertEqual(entries[0].resource, RESOURCE._to_dict())
+
     def test_log_text_w_metadata(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
         INSERT_ID = 'INSERTID'
