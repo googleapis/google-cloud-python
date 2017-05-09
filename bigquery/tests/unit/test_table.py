@@ -395,15 +395,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIs(table._dataset._client, client)
         self._verifyResourceProperties(table, RESOURCE)
 
-    def test_create_no_view_query_no_schema_no_partitioning(self):
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = _Dataset(client)
-        table = self._make_one(self.TABLE_NAME, dataset)
-
-        with self.assertRaises(ValueError):
-            table.create()
-
     def test_create_new_day_partitioned_table(self):
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         RESOURCE = self._makeResource()
@@ -671,7 +662,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _millis
-        from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         DESCRIPTION = 'DESCRIPTION'
@@ -691,10 +681,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client=client1)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                               schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
         table.friendly_name = TITLE
         table.description = DESCRIPTION
         table.view_query = QUERY
