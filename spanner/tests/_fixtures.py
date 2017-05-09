@@ -28,6 +28,16 @@ CREATE TABLE contact_phones (
     phone_number STRING(1024) )
     PRIMARY KEY (contact_id, phone_type),
     INTERLEAVE IN PARENT contacts ON DELETE CASCADE;
+CREATE TABLE all_types (
+    list_goes_on ARRAY<INT64>,
+    are_you_sure BOOL,
+    raw_data BYTES(16),
+    hwhen DATE,
+    approx_value FLOAT64,
+    eye_d INT64,
+    description STRING(16),
+    exactly_hwhen TIMESTAMP)
+    PRIMARY KEY (eye_d);
 """
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]
