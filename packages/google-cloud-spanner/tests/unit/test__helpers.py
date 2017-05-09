@@ -190,14 +190,14 @@ class Test_make_value_pb(unittest.TestCase):
 
         value_pb = self._callFUT(float('-inf'))
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, '-inf')
+        self.assertEqual(value_pb.string_value, '-Infinity')
 
     def test_w_float_pos_inf(self):
         from google.protobuf.struct_pb2 import Value
 
         value_pb = self._callFUT(float('inf'))
         self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, 'inf')
+        self.assertEqual(value_pb.string_value, 'Infinity')
 
     def test_w_date(self):
         import datetime

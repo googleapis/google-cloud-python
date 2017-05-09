@@ -133,7 +133,10 @@ def _make_value_pb(value):
         if math.isnan(value):
             return Value(string_value='NaN')
         if math.isinf(value):
-            return Value(string_value=str(value))
+            if value > 0:
+                return Value(string_value='Infinity')
+            else:
+                return Value(string_value='-Infinity')
         return Value(number_value=value)
     if isinstance(value, TimestampWithNanoseconds):
         return Value(string_value=value.rfc3339())

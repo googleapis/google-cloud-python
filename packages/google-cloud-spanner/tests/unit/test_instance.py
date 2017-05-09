@@ -503,8 +503,8 @@ class TestInstance(unittest.TestCase):
         self.assertIs(pool._database, database)
 
     def test_database_factory_explicit(self):
-        from google.cloud.spanner._fixtures import DDL_STATEMENTS
         from google.cloud.spanner.database import Database
+        from tests._fixtures import DDL_STATEMENTS
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
