@@ -52,7 +52,7 @@ class DecoratorTests(unittest.TestCase):
 class SingleFeatureMethodTests(unittest.TestCase):
     @mock.patch.object(vision.ImageAnnotatorClient, 'annotate_image')
     def test_runs_generic_single_image(self, ai):
-        ai.return_value = vision.image_annotator.AnnotateImageResponse()
+        ai.return_value = vision.types.AnnotateImageResponse()
 
         # Make a face detection request.
         client = vision.ImageAnnotatorClient()
@@ -61,6 +61,6 @@ class SingleFeatureMethodTests(unittest.TestCase):
 
         # Assert that the single-image method was called as expected.
         ai.assert_called_once_with({
-            'features': [vision.enums.Feature.Type.FACE_DETECTION],
+            'features': [{'type': vision.enums.Feature.Type.FACE_DETECTION}],
             'image': image,
         }, options=None)

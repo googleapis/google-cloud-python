@@ -20,7 +20,7 @@ import mock
 from google.auth.credentials import Credentials
 
 from google.cloud.vision_v1 import ImageAnnotatorClient
-from google.cloud.vision_v1 import image_annotator
+from google.cloud.vision_v1 import types
 
 
 
@@ -32,10 +32,10 @@ class TestSingleImageHelper(unittest.TestCase):
     @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
     def test_all_features_default(self, batch_annotate):
         # Set up an image annotation request with no features.
-        image = image_annotator.Image(source={
+        image = types.Image(source={
             'image_uri': 'http://foo.com/img.jpg',
         })
-        request = image_annotator.AnnotateImageRequest(image=image)
+        request = types.AnnotateImageRequest(image=image)
         assert not request.features
 
         # Perform the single image request.
@@ -58,15 +58,15 @@ class TestSingleImageHelper(unittest.TestCase):
     @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
     def test_explicit_features(self, batch_annotate):
         # Set up an image annotation request with no features.
-        image = image_annotator.Image(source={
+        image = types.Image(source={
             'image_uri': 'http://foo.com/img.jpg',
         })
-        request = image_annotator.AnnotateImageRequest(
+        request = types.AnnotateImageRequest(
             image=image,
             features=[
-                image_annotator.Feature(type=1),
-                image_annotator.Feature(type=2),
-                image_annotator.Feature(type=3),
+                types.Feature(type=1),
+                types.Feature(type=2),
+                types.Feature(type=3),
             ],
         )
 

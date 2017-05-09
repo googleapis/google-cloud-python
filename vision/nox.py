@@ -28,7 +28,7 @@ def unit_tests(session, python_version):
     session.interpreter = 'python{}'.format(python_version)
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('mock', 'pytest', 'pytest-cov', '../core/')
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -42,7 +42,7 @@ def unit_tests(session, python_version):
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.6'])
 def system_tests(session, python_version):
-    """Run the unit test suite."""
+    """Run the system test suite."""
 
     # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
@@ -54,6 +54,23 @@ def system_tests(session, python_version):
 
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet', 'tests/system.py')
+
+
+@nox.session
+@nox.parametrize('python_version', ['2.7', '3.6'])
+def system_tests_manual_layer(session, python_version):
+    """Run the system test suite for the old manual layer."""
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(python_version)
+
+    # Install all test dependencies, then install this package in-place.
+    session.install('pytest', '../core/', '../storage/')
+    session.install('../test_utils/')
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run('py.test', '--quiet', 'tests/system_old.py')
 
 
 @nox.session
