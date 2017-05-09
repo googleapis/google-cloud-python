@@ -1,3 +1,0 @@
-googleapis-common-protos >= 1.5.2, < 2.0dev
-google-gax >= 0.15.11, < 0.16dev
-six >= 1.10.0
