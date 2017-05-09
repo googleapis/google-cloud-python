@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Blobs / Objects &mdash; google-cloud 4e6e2b1 documentation</title>
+  <title>Blobs / Objects &mdash; google-cloud 27470a7 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 4e6e2b1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 27470a7 documentation" href="index.html"/>
         <link rel="next" title="Buckets" href="storage-buckets.html"/>
         <link rel="prev" title="Storage Client" href="storage-client.html"/> 
 
@@ -586,17 +586,14 @@ API documents for details.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Optional, the maximum number of bytes that can be
-uploaded using this session. If the size is not known when creating
-the session, this should be left blank.</li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Optional type of content being uploaded. This can
-be used to restrict the allowed file type that can be uploaded
-to the size.</li>
-<li><strong>origin</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Optional origin. If set, the upload can only be
-completed by a user-agent that uploads from the given origin. This
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional). The maximum number of bytes that can be
+uploaded using this session. If the size is not known
+when creating the session, this should be left blank.</li>
+<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Type of content being uploaded.</li>
+<li><strong>origin</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) If set, the upload can only be completed
+by a user-agent that uploads from the given origin. This
 can be useful when passing the session to a web client.</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
 </ul>
 </td>
@@ -605,7 +602,8 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The resumable upload session URL. The upload can be
-completed by making an HTTP PUT request with the file&#8217;s contents.</p>
+completed by making an HTTP PUT request with the
+file&#8217;s contents.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.GoogleCloudError</span></code></a>
@@ -1310,7 +1308,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.upload_from_file">
-<code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=6</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_file" title="Permalink to this definition">#</a></dt>
+<code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of this blob from a file-like object.</p>
 <p>The content type of the upload will be determined in order
 of precedence:</p>
@@ -1350,20 +1348,17 @@ least 32.</p>
 <li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle open for reading.</li>
 <li><strong>rewind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, seek to the beginning of the file handle before
 writing the file to Cloud Storage.</li>
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of bytes to read from the file handle.
-If not provided, we&#8217;ll try to guess the size using
-<a class="reference external" href="https://docs.python.org/2/library/os.html#os.fstat" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></a>. (If the file handle is not from the
-filesystem this won&#8217;t be possible.)</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of bytes to be uploaded (which will be read
+from <code class="docutils literal"><span class="pre">file_obj</span></code>). If not provided, the upload will be
+concluded once <code class="docutils literal"><span class="pre">file_obj</span></code> is exhausted.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Optional type of content being uploaded.</li>
-<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of upload retries. Defaults to 6.</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of upload retries. (Deprecated.)</li>
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if size is not passed in and can not be
-determined; <a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.GoogleCloudError</span></code></a>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a>
 if the upload response returns an error status.</p>
 </td>
 </tr>
@@ -1400,8 +1395,7 @@ API documents for details.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The path to the file.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Optional type of content being uploaded.</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
 </ul>
 </td>
@@ -1491,7 +1485,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4e6e2b1',
+            VERSION:'27470a7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

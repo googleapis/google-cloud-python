@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.entity &mdash; google-cloud 4e6e2b1 documentation</title>
+  <title>google.cloud.datastore.entity &mdash; google-cloud 27470a7 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 4e6e2b1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 27470a7 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -363,9 +363,9 @@
 <span class="sd">    An entity storing the actual instance of data.</span>
 
 <span class="sd">    Each entity is officially represented with a</span>
-<span class="sd">    :class:`google.cloud.datastore.key.Key` class, however it is possible that</span>
-<span class="sd">    you might create an Entity with only a partial Key (that is, a Key</span>
-<span class="sd">    with a Kind, and possibly a parent, but without an ID).  In such a</span>
+<span class="sd">    :class:`~google.cloud.datastore.key.Key`, however it is possible that</span>
+<span class="sd">    you might create an entity with only a partial key (that is, a key</span>
+<span class="sd">    with a kind, and possibly a parent, but without an ID).  In such a</span>
 <span class="sd">    case, the datastore service will automatically assign an ID to the</span>
 <span class="sd">    partial key.</span>
 
@@ -404,6 +404,31 @@
 
 <span class="sd">       &gt;&gt;&gt; entity[&#39;age&#39;] = 20</span>
 <span class="sd">       &gt;&gt;&gt; entity[&#39;name&#39;] = &#39;JJ&#39;</span>
+
+<span class="sd">    However, not all types are allowed as a value for a Google Cloud Datastore</span>
+<span class="sd">    entity. The following basic types are supported by the API:</span>
+
+<span class="sd">    * :class:`datetime.datetime`</span>
+<span class="sd">    * :class:`~google.cloud.datastore.key.Key`</span>
+<span class="sd">    * :class:`bool`</span>
+<span class="sd">    * :class:`float`</span>
+<span class="sd">    * :class:`int` (as well as :class:`long` in Python 2)</span>
+<span class="sd">    * ``unicode`` (called ``str`` in Python 3)</span>
+<span class="sd">    * ``bytes`` (called ``str`` in Python 2)</span>
+<span class="sd">    * :class:`~google.cloud.datastore.helpers.GeoPoint`</span>
+<span class="sd">    * :data:`None`</span>
+
+<span class="sd">    In addition, two container types are supported:</span>
+
+<span class="sd">    * :class:`list`</span>
+<span class="sd">    * :class:`~google.cloud.datastore.entity.Entity`</span>
+
+<span class="sd">    Each entry in a list must be one of the value types (basic or</span>
+<span class="sd">    container) and each value in an</span>
+<span class="sd">    :class:`~google.cloud.datastore.entity.Entity` must as well. In</span>
+<span class="sd">    this case an :class:`~google.cloud.datastore.entity.Entity` **as a</span>
+<span class="sd">    container** acts as a :class:`dict`, but also has the special annotations</span>
+<span class="sd">    of ``key`` and ``exclude_from_indexes``.</span>
 
 <span class="sd">    And you can treat an entity like a regular Python dictionary:</span>
 
@@ -541,7 +566,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'4e6e2b1',
+            VERSION:'27470a7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

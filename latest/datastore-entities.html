@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Entities &mdash; google-cloud 4e6e2b1 documentation</title>
+  <title>Entities &mdash; google-cloud 27470a7 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 4e6e2b1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 27470a7 documentation" href="index.html"/>
         <link rel="next" title="Keys" href="datastore-keys.html"/>
         <link rel="prev" title="Datastore Client" href="datastore-client.html"/> 
 
@@ -347,9 +347,9 @@
 <p>Entities are akin to rows in a relational database</p>
 <p>An entity storing the actual instance of data.</p>
 <p>Each entity is officially represented with a
-<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a> class, however it is possible that
-you might create an Entity with only a partial Key (that is, a Key
-with a Kind, and possibly a parent, but without an ID).  In such a
+<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>, however it is possible that
+you might create an entity with only a partial key (that is, a key
+with a kind, and possibly a parent, but without an ID).  In such a
 case, the datastore service will automatically assign an ID to the
 partial key.</p>
 <p>Entities in this API act like dictionaries with extras built in that
@@ -369,6 +369,30 @@ other dictionary.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;JJ&#39;</span>
 </pre></div>
 </div>
+<p>However, not all types are allowed as a value for a Google Cloud Datastore
+entity. The following basic types are supported by the API:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a></li>
+<li><a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">float</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a> (as well as <a class="reference external" href="https://docs.python.org/2/library/functions.html#long" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">long</span></code></a> in Python 2)</li>
+<li><code class="docutils literal"><span class="pre">unicode</span></code> (called <code class="docutils literal"><span class="pre">str</span></code> in Python 3)</li>
+<li><code class="docutils literal"><span class="pre">bytes</span></code> (called <code class="docutils literal"><span class="pre">str</span></code> in Python 2)</li>
+<li><a class="reference internal" href="datastore-helpers.html#google.cloud.datastore.helpers.GeoPoint" title="google.cloud.datastore.helpers.GeoPoint"><code class="xref py py-class docutils literal"><span class="pre">GeoPoint</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a></li>
+</ul>
+<p>In addition, two container types are supported:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a></li>
+<li><a class="reference internal" href="#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a></li>
+</ul>
+<p>Each entry in a list must be one of the value types (basic or
+container) and each value in an
+<a class="reference internal" href="#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a> must as well. In
+this case an <a class="reference internal" href="#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a> <strong>as a
+container</strong> acts as a <a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a>, but also has the special annotations
+of <code class="docutils literal"><span class="pre">key</span></code> and <code class="docutils literal"><span class="pre">exclude_from_indexes</span></code>.</p>
 <p>And you can treat an entity like a regular Python dictionary:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="go">[&#39;age&#39;, &#39;name&#39;]</span>
@@ -476,7 +500,7 @@ Key which knows its Kind.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4e6e2b1',
+            VERSION:'27470a7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
