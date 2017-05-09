@@ -248,7 +248,7 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
-        :type resource :class:``google.cloud.logging.resource`
+        :type resource :class:``google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry, defaults
                          to the global resource type.
 
@@ -291,7 +291,7 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
-        :type resource :class:``google.cloud.logging.resource`
+        :type resource :class:``google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry
 
         :type timestamp: :class:`datetime.datetime`
@@ -473,7 +473,7 @@ class Batch(object):
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
 
-        :type resource :class:``google.cloud.logging.resource`
+        :type resource :class:``google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry
         """
         self.entries.append(
