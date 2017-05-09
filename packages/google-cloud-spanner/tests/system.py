@@ -318,6 +318,29 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
 
 class TestSessionAPI(unittest.TestCase, _TestData):
+    ALL_TYPES_TABLE = 'all_types'
+    ALL_TYPES_COLUMNS = (
+        'list_goes_on',
+        'are_you_sure',
+        'raw_data',
+        'hwhen',
+        'approx_value',
+        'eye_d',
+        'description',
+        'exactly_hwhen',
+    )
+    SOME_DATE = datetime.date(2011, 1, 17)
+    SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
+    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
+    ALL_TYPES_ROWDATA = (
+        ([1], True, b'Ymlu', SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
+        ([5, 10], True, b'Ymlu', None, 1.25, 99, u'cat', None),
+        ([], False, b'Ym9vdHM=', None, float('inf'), 107, u'frog', None),
+        ([], False, None, None, float('-inf'), 207, None, None),
+        ([], False, None, None, float('nan'), 1207, None, None),
+        ([], False, None, None, OTHER_NAN, 2000, None, NANO_TIME),
+    )
 
     @classmethod
     def setUpClass(cls):
@@ -366,9 +389,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(rows)
 
     def test_batch_insert_then_read_all_datatypes(self):
-        from google.cloud.spanner import KeySet
-
-        keyset = KeySet(all_=True)
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -376,36 +396,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         session.create()
         self.to_delete.append(session)
 
-        table = 'all_types'
-        columns = (
-            'list_goes_on',
-            'are_you_sure',
-            'raw_data',
-            'hwhen',
-            'approx_value',
-            'eye_d',
-            'description',
-            'exactly_hwhen',
-        )
-        some_date = datetime.date(2011, 1, 17)
-        some_time = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
-        nano_time = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
-        other_nan, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
-        row_data = (
-            ([1], True, b'Ymlu', some_date, 0.0, 19, u'dog', some_time),
-            ([5, 10], True, b'Ymlu', None, 1.25, 99, u'cat', None),
-            ([], False, b'Ym9vdHM=', None, float('inf'), 107, u'frog', None),
-            ([], False, None, None, float('-inf'), 207, None, None),
-            ([], False, None, None, float('nan'), 1207, None, None),
-            ([], False, None, None, other_nan, 2000, None, nano_time),
-        )
         with session.batch() as batch:
-            batch.delete(table, keyset)
-            batch.insert(table, columns, row_data)
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
 
         snapshot = session.snapshot(read_timestamp=batch.committed)
-        rows = list(snapshot.read(table, columns, keyset))
-        self._check_row_data(rows, expected=row_data)
+        rows = list(snapshot.read(
+            self.ALL_TYPES_TABLE, self.ALL_TYPES_COLUMNS, self.ALL))
+        self._check_row_data(rows, expected=self.ALL_TYPES_ROWDATA)
 
     def test_batch_insert_or_update_then_query(self):
         retry = RetryInstanceState(_has_all_ddl)
