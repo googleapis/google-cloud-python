@@ -72,7 +72,8 @@ class _BaseEntry(object):
 
     :type http_request: dict
     :param http_request: (optional) info about HTTP request associated with
-                         the entry
+                         the entry.
+
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry
     """

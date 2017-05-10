@@ -288,7 +288,8 @@ class Logger(object):
                              the entry.
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: Monitored resource of the entry
+        :param resource: Monitored resource of the entry, defaults
+                         to the global resource type.
 
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
@@ -369,7 +370,12 @@ class Batch(object):
     :param client: The client to use.
 
     :type resource: :class:`~google.cloud.logging.resource.Resource`
-    :param resource: (Optional) Monitored resource of the batch
+    :param resource: (Optional) Monitored resource of the batch, defaults
+                     to None, which requires that every entry should have a
+                     resource specified. Since the methods used to write
+                     entries default the entry's resource to the global
+                     resource type, this parameter is only required and used
+                     if an entry resource is explicitly set to None.
     """
     def __init__(self, logger, client, resource=None):
         self.logger = logger
@@ -408,7 +414,11 @@ class Batch(object):
         :param timestamp: (optional) timestamp of event being logged.
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry
+        :param resource: (Optional) Monitored resource of the entry. Defaults
+                         to the global resource type. If set to None, the
+                         resource of the batch is used for this entry. If
+                         both this resource and the Batch resource are None,
+                         the API will return an error.
         """
         self.entries.append(
             ('text', text, labels, insert_id, severity, http_request,
@@ -439,7 +449,11 @@ class Batch(object):
         :param timestamp: (optional) timestamp of event being logged.
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry
+        :param resource: (Optional) Monitored resource of the entry. Defaults
+                         to the global resource type. If set to None, the
+                         resource of the batch is used for this entry. If
+                         both this resource and the Batch resource are None,
+                         the API will return an error.
         """
         self.entries.append(
             ('struct', info, labels, insert_id, severity, http_request,
@@ -470,7 +484,11 @@ class Batch(object):
         :param timestamp: (optional) timestamp of event being logged.
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry
+        :param resource: (Optional) Monitored resource of the entry. Defaults
+                         to the global resource type. If set to None, the
+                         resource of the batch is used for this entry. If
+                         both this resource and the Batch resource are None,
+                         the API will return an error.
         """
         self.entries.append(
             ('proto', message, labels, insert_id, severity, http_request,
