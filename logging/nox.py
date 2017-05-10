@@ -36,7 +36,7 @@ def unit_tests(session, python_version):
 
     # Run py.test against the unit tests.
     session.run(
-        'py.test', '--quiet',
+        'py.test', '-s', '--quiet',
         '--cov=google.cloud.logging', '--cov=tests.unit', '--cov-append',
         '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
         'tests/unit',
