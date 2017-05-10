@@ -71,12 +71,13 @@ _WRITABLE_FIELDS = (
     'storageClass',
 )
 _NUM_RETRIES_MESSAGE = (
-    'num_retries is no longer supported. When a transient error occurs, '
-    'such as a 429 Too Many Requests or 500 Internal Server Error, upload '
-    'requests will be automatically retried. Subsequent retries will be '
-    'done after waiting 1, 2, 4, 8, etc. seconds (exponential backoff) until '
-    '10 minutes of wait time have elapsed. At that point, there will be no '
-    'more attempts to retry.')
+    '`num_retries` has been deprecated and will be removed in a future '
+    'release. The default behavior (when `num_retries` is not specified) when '
+    'a transient error (e.g. 429 Too Many Requests or 500 Internal Server '
+    'Error) occurs will be as follows: upload requests will be automatically '
+    'retried. Subsequent retries will be sent after waiting 1, 2, 4, 8, etc. '
+    'seconds (exponential backoff) until 10 minutes of wait time have '
+    'elapsed. At that point, there will be no more attempts to retry.')
 _READ_LESS_THAN_SIZE = (
     'Size {:d} was specified but the file-like object only had '
     '{:d} bytes remaining.')
@@ -583,7 +584,8 @@ class Blob(_PropertyMixin):
         content_type = self._get_content_type(content_type)
         return headers, object_metadata, content_type
 
-    def _do_multipart_upload(self, client, stream, content_type, size):
+    def _do_multipart_upload(self, client, stream, content_type,
+                             size, num_retries):
         """Perform a multipart upload.
 
         Assumes ``chunk_size`` is :data:`None` on the current blob.
@@ -610,6 +612,10 @@ class Blob(_PropertyMixin):
                      from ``stream``). If not provided, the upload will be
                      concluded once ``stream`` is exhausted (or :data:`None`).
 
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the multipart
                   upload request.
@@ -631,13 +637,19 @@ class Blob(_PropertyMixin):
         upload_url = _MULTIPART_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
         upload = MultipartUpload(upload_url, headers=headers)
+
+        if num_retries is not None:
+            upload._retry_strategy = resumable_media.RetryStrategy(
+                max_retries=num_retries)
+
         response = upload.transmit(
             transport, data, object_metadata, content_type)
 
         return response
 
     def _initiate_resumable_upload(self, client, stream, content_type,
-                                   size, extra_headers=None, chunk_size=None):
+                                   size, num_retries, extra_headers=None,
+                                   chunk_size=None):
         """Initiate a resumable upload.
 
         The content type of the upload will be determined in order
@@ -661,6 +673,10 @@ class Blob(_PropertyMixin):
         :param size: The number of bytes to be uploaded (which will be read
                      from ``stream``). If not provided, the upload will be
                      concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
 
         :type extra_headers: dict
         :param extra_headers: (Optional) Extra headers to add to standard
@@ -693,13 +709,19 @@ class Blob(_PropertyMixin):
         upload_url = _RESUMABLE_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
+
+        if num_retries is not None:
+            upload._retry_strategy = resumable_media.RetryStrategy(
+                max_retries=num_retries)
+
         upload.initiate(
             transport, stream, object_metadata, content_type,
             total_bytes=size, stream_final=False)
 
         return upload, transport
 
-    def _do_resumable_upload(self, client, stream, content_type, size):
+    def _do_resumable_upload(self, client, stream, content_type,
+                             size, num_retries):
         """Perform a resumable upload.
 
         Assumes ``chunk_size`` is not :data:`None` on the current blob.
@@ -726,19 +748,23 @@ class Blob(_PropertyMixin):
                      from ``stream``). If not provided, the upload will be
                      concluded once ``stream`` is exhausted (or :data:`None`).
 
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the final chunk
                   is uploaded.
         """
         upload, transport = self._initiate_resumable_upload(
-            client, stream, content_type, size)
+            client, stream, content_type, size, num_retries)
 
         while not upload.finished:
             response = upload.transmit_next_chunk(transport)
 
         return response
 
-    def _do_upload(self, client, stream, content_type, size):
+    def _do_upload(self, client, stream, content_type, size, num_retries):
         """Determine an upload strategy and then perform the upload.
 
         If the current blob has a ``chunk_size`` set, then a resumable upload
@@ -767,6 +793,10 @@ class Blob(_PropertyMixin):
                      from ``stream``). If not provided, the upload will be
                      concluded once ``stream`` is exhausted (or :data:`None`).
 
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
         :rtype: dict
         :returns: The parsed JSON from the "200 OK" response. This will be the
                   **only** response in the multipart case and it will be the
@@ -774,10 +804,10 @@ class Blob(_PropertyMixin):
         """
         if self.chunk_size is None:
             response = self._do_multipart_upload(
-                client, stream, content_type, size)
+                client, stream, content_type, size, num_retries)
         else:
             response = self._do_resumable_upload(
-                client, stream, content_type, size)
+                client, stream, content_type, size, num_retries)
 
         return response.json()
 
@@ -831,7 +861,8 @@ class Blob(_PropertyMixin):
         :param content_type: Optional type of content being uploaded.
 
         :type num_retries: int
-        :param num_retries: Number of upload retries. (Deprecated.)
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
@@ -846,7 +877,7 @@ class Blob(_PropertyMixin):
         _maybe_rewind(file_obj, rewind=rewind)
         try:
             created_json = self._do_upload(
-                client, file_obj, content_type, size)
+                client, file_obj, content_type, size, num_retries)
             self._set_properties(created_json)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
@@ -1004,7 +1035,7 @@ class Blob(_PropertyMixin):
             # to the `ResumableUpload` constructor. The chunk size only
             # matters when **sending** bytes to an upload.
             upload, _ = self._initiate_resumable_upload(
-                client, dummy_stream, content_type, size,
+                client, dummy_stream, content_type, size, None,
                 extra_headers=extra_headers,
                 chunk_size=self._CHUNK_SIZE_MULTIPLE)
 
