@@ -150,7 +150,9 @@ class Test_BaseEntry(unittest.TestCase):
                 'labels': {
                     'module_id':'default',
                     'version': 'test'
-        }})
+                }
+            }
+        )
         STATUS = '500'
         API_REPR = {
             'dummyPayload': PAYLOAD,

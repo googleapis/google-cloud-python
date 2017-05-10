@@ -339,7 +339,6 @@ class TestLogger(unittest.TestCase):
             'resource': {
                 'type': 'global',
                 'labels': {},
-
             },
             'labels': DEFAULT_LABELS,
         }]
