@@ -368,7 +368,7 @@ class Batch(object):
     :type client: :class:`google.cloud.logging.client.Client`
     :param client: The client to use.
 
-    :type resource: :class:`google.cloud.logging.resource.Resource`
+    :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the batch
     """
     def __init__(self, logger, client, resource=None):
