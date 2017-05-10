@@ -588,7 +588,7 @@ class Test__create_row_request(unittest.TestCase):
 
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
                   filter_=None, limit=None):
-        from google.cloud.bigtable.table import _create_row_request
+        from google.cloud.bigtable.retry import _create_row_request
 
         return _create_row_request(
             table_name, row_key=row_key, start_key=start_key, end_key=end_key,
