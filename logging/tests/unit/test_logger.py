@@ -688,8 +688,8 @@ class TestBatch(unittest.TestCase):
             batch.commit()
 
     def test_commit_w_resource_specified(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         from google.cloud.logging.resource import Resource
-        from google.protobuf.struct_pb2 import Struct, Value
 
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
@@ -700,8 +700,12 @@ class TestBatch(unittest.TestCase):
 
         batch = self._make_one(logger, client, resource=RESOURCE)
         MESSAGE = 'This is the entry text'
-        ENTRIES = [{'textPayload': MESSAGE}]
+        ENTRIES = [
+            {'textPayload': MESSAGE},
+            {'textPayload': MESSAGE, 'resource': _GLOBAL_RESOURCE._to_dict()},
+        ]
         batch.log_text(MESSAGE, resource=None)
+        batch.log_text(MESSAGE)
         batch.commit()
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, logger.full_name,
@@ -829,9 +833,9 @@ class TestBatch(unittest.TestCase):
         logger = Logger('logger_name', client, labels=DEFAULT_LABELS)
         ENTRIES = [
             {'textPayload': TEXT, 'httpRequest': REQUEST,
-             'resource':_GLOBAL_RESOURCE._to_dict()},
+             'resource': _GLOBAL_RESOURCE._to_dict()},
             {'jsonPayload': STRUCT, 'labels': LABELS,
-             'resource':_GLOBAL_RESOURCE._to_dict()},
+             'resource': _GLOBAL_RESOURCE._to_dict()},
             {'protoPayload': json.loads(MessageToJson(message)),
              'resource': _GLOBAL_RESOURCE._to_dict(),
              'severity': SEVERITY}
