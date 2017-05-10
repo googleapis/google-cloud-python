@@ -81,7 +81,7 @@ def client_subscription(client, to_delete):  # pylint: disable=unused-argument
     SUBSCRIPTION_NAME = 'subscription_factory-%d' % (_millis(),)
 
     # [START client_subscription]
-    subscription = client.topic(
+    subscription = client.subscription(
         SUBSCRIPTION_NAME, ack_deadline=60,
         retain_acked_messages=True)
     # [END client_subscription]
