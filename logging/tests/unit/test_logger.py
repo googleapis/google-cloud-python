@@ -620,7 +620,7 @@ class TestBatch(unittest.TestCase):
             type='gae_app',
             labels={
                 'module_id': 'default',
-                'version_id': 'test'
+                'version_id': 'test',
             }
         )
 
@@ -672,7 +672,7 @@ class TestBatch(unittest.TestCase):
             type='gae_app',
             labels={
                 'module_id': 'default',
-                'version_id': 'test'
+                'version_id': 'test',
             }
         )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
@@ -706,7 +706,7 @@ class TestBatch(unittest.TestCase):
             type='gae_app',
             labels={
                 'module_id': 'default',
-                'version_id': 'test'
+                'version_id': 'test',
             }
         )
 
