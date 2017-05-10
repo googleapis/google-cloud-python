@@ -617,8 +617,12 @@ class TestBatch(unittest.TestCase):
         }
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app', labels={'module_id': 'default',
-                                    'version_id': 'test'})
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
 
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -665,8 +669,12 @@ class TestBatch(unittest.TestCase):
         }
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app', labels={'module_id': 'default',
-                                    'version_id': 'test'})
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
@@ -695,8 +703,12 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         api = client.logging_api = _DummyLoggingAPI()
         RESOURCE = Resource(
-            type='gae_app', labels={'module_id': 'default',
-                                    'version_id': 'test'})
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
 
         batch = self._make_one(logger, client, resource=RESOURCE)
         MESSAGE = 'This is the entry text'
@@ -838,7 +850,7 @@ class TestBatch(unittest.TestCase):
              'resource': _GLOBAL_RESOURCE._to_dict()},
             {'protoPayload': json.loads(MessageToJson(message)),
              'resource': _GLOBAL_RESOURCE._to_dict(),
-             'severity': SEVERITY}
+             'severity': SEVERITY},
         ]
         batch = self._make_one(logger, client=client)
 
