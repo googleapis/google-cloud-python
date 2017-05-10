@@ -148,8 +148,8 @@ class Test_BaseEntry(unittest.TestCase):
             labels={
                 'type': 'gae_app',
                 'labels': {
-                    'module_id':'default',
-                    'version': 'test'
+                    'module_id': 'default',
+                    'version': 'test',
                 }
             }
         )
@@ -166,7 +166,7 @@ class Test_BaseEntry(unittest.TestCase):
                 'requestUrl': URI,
                 'status': STATUS,
             },
-            'resource': RESOURCE._to_dict()
+            'resource': RESOURCE._to_dict(),
         }
         loggers = {}
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
