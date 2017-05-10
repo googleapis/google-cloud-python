@@ -44,6 +44,10 @@ def unit_tests(session, python_version):
 def system_tests(session, python_version):
     """Run the system test suite."""
 
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        return
+
     # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
 
@@ -60,6 +64,10 @@ def system_tests(session, python_version):
 @nox.parametrize('python_version', ['2.7', '3.6'])
 def system_tests_manual_layer(session, python_version):
     """Run the system test suite for the old manual layer."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        return
 
     # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
