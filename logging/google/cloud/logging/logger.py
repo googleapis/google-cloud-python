@@ -136,9 +136,8 @@ class Logger(object):
         """
         entry = {
             'logName': self.full_name,
+            'resource': resource._to_dict()
         }
-
-        entry['resource'] = resource._to_dict()
 
         if text is not None:
             entry['textPayload'] = text
