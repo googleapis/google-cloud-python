@@ -36,7 +36,7 @@ def unit_tests(session, python_version):
 
     # Run py.test against the unit tests.
     session.run(
-        'py.test', '-s', '--quiet',
+        'py.test', '--quiet',
         '--cov=google.cloud.logging', '--cov=tests.unit', '--cov-append',
         '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
         'tests/unit',
@@ -95,7 +95,7 @@ def cover(session):
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.interpreter = 'python3.5'
+    session.interpreter = 'python3.6'
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
