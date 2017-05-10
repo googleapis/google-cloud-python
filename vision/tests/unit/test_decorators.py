@@ -17,6 +17,7 @@ import unittest
 
 import mock
 
+from google.auth.credentials import Credentials
 from google.cloud import vision
 
 
@@ -55,7 +56,9 @@ class SingleFeatureMethodTests(unittest.TestCase):
         ai.return_value = vision.types.AnnotateImageResponse()
 
         # Make a face detection request.
-        client = vision.ImageAnnotatorClient()
+        client = vision.ImageAnnotatorClient(
+            credentials=mock.Mock(spec=Credentials),
+        )
         image = {'source': {'image_uri': 'gs://my-test-bucket/image.jpg'}}
         response = client.face_detection(image)
 
