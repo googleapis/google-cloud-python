@@ -96,7 +96,7 @@ class Logger(object):
     def _make_entry_resource(self, text=None, info=None, message=None,
                              labels=None, insert_id=None, severity=None,
                              http_request=None, timestamp=None,
-                             resource=None):
+                             resource=_GLOBAL_RESOURCE):
         """Return a log entry resource of the appropriate type.
 
         Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
@@ -138,8 +138,7 @@ class Logger(object):
             'logName': self.full_name,
         }
 
-        if resource is not None:
-            entry['resource'] = resource._to_dict()
+        entry['resource'] = resource._to_dict()
 
         if text is not None:
             entry['textPayload'] = text
@@ -206,9 +205,8 @@ class Logger(object):
                              the entry
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry, defaults
+        :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
-
 
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
@@ -249,9 +247,8 @@ class Logger(object):
                              the entry.
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry, defaults
+        :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
-
 
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
@@ -292,7 +289,7 @@ class Logger(object):
                              the entry.
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: (Optional) Monitored resource of the entry
+        :param resource: Monitored resource of the entry
 
         :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
