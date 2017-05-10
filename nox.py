@@ -22,7 +22,7 @@ def docs(session):
     """Build the docs."""
 
     # Build docs against the latest version of Python, because we can.
-    session.interpreter = 'python3.5'
+    session.interpreter = 'python3.6'
 
     # Install Sphinx and also all of the google-cloud-* packages.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
