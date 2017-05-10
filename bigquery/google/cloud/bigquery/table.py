@@ -843,6 +843,29 @@ class Table(object):
 
     def _initiate_resumable_upload(self, client, stream,
                                    metadata, num_retries):
+        """Initiate a resumable upload.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type metadata: dict
+        :param metadata: The metadata associated with the upload.
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
+        :rtype: tuple
+        :returns:
+            Pair of
+
+            * The :class:`~google.resumable_media.requests.ResumableUpload`
+              that was created
+            * The ``transport`` used to initiate the upload.
+        """
         chunk_size = _DEFAULT_CHUNKSIZE
         transport = self._make_transport(client)
         headers = _get_upload_headers(client._connection.USER_AGENT)
@@ -860,6 +883,25 @@ class Table(object):
         return upload, transport
 
     def _do_resumable_upload(self, client, stream, metadata, num_retries):
+        """Perform a resumable upload.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type metadata: dict
+        :param metadata: The metadata associated with the upload.
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
+        :rtype: :class:`~requests.Response`
+        :returns: The "200 OK" response object returned after the final chunk
+                  is uploaded.
+        """
         upload, transport = self._initiate_resumable_upload(
             client, stream, metadata, num_retries)
 
@@ -870,6 +912,32 @@ class Table(object):
 
     def _do_multipart_upload(self, client, stream, metadata,
                              size, num_retries):
+        """Perform a multipart upload.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type metadata: dict
+        :param metadata: The metadata associated with the upload.
+
+        :type size: int
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``stream``). If not provided, the upload will be
+                     concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
+        :rtype: :class:`~requests.Response`
+        :returns: The "200 OK" response object returned after the multipart
+                  upload request.
+        :raises: :exc:`ValueError` if the ``stream`` has fewer than ``size``
+                 bytes remaining.
+        """
         data = stream.read(size)
         if len(data) < size:
             msg = _READ_LESS_THAN_SIZE.format(size, len(data))
@@ -891,6 +959,35 @@ class Table(object):
         return response
 
     def _do_upload(self, client, stream, metadata, size, num_retries):
+        """Determine an upload strategy and then perform the upload.
+
+        If ``size`` is :data:`None`, then a resumable upload will be used,
+        otherwise the content and the metadata will be uploaded
+        in a single multipart upload request.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type metadata: dict
+        :param metadata: The metadata associated with the upload.
+
+        :type size: int
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``stream``). If not provided, the upload will be
+                     concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
+        :rtype: dict
+        :returns: The parsed JSON from the "200 OK" response. This will be the
+                  **only** response in the multipart case and it will be the
+                  **final** response in the resumable case.
+        """
         if size is None:
             response = self._do_resumable_upload(
                 client, stream, metadata, num_retries)
@@ -1178,6 +1275,14 @@ def _maybe_rewind(stream, rewind=False):
 
 
 def _check_mode(stream):
+    """Check that a stream was opened in read-binary mode.
+
+    :type stream: IO[bytes]
+    :param stream: A bytes IO object open for reading.
+
+    :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute
+             and is not among ``rb``, ``r+b`` or ``rb+``.
+    """
     mode = getattr(stream, 'mode', None)
 
     if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
@@ -1186,19 +1291,15 @@ def _check_mode(stream):
             "open(filename, mode='rb') or open(filename, mode='r+b')")
 
 
-def _get_total_bytes(stream, size):
-    total_bytes = size
-    if total_bytes is None:
-        if hasattr(stream, 'fileno'):
-            total_bytes = os.fstat(stream.fileno()).st_size
-        else:
-            raise ValueError('total bytes could not be determined. Please '
-                             'pass an explicit size.')
-
-    return total_bytes
-
-
 def _get_upload_headers(user_agent):
+    """Get the headers for an upload request.
+
+    :type user_agent: str
+    :param user_agent: The user-agent for requests.
+
+    :rtype: dict
+    :returns: The headers to be used for the request.
+    """
     return {
         'Accept': 'application/json',
         'Accept-Encoding': 'gzip, deflate',
@@ -1208,6 +1309,24 @@ def _get_upload_headers(user_agent):
 
 
 def _get_upload_metadata(source_format, schema, dataset, name):
+    """Get base metadata for creating a table.
+
+    :type source_format: str
+    :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
+                          job configuration option.
+
+    :type schema: list
+    :param schema: List of :class:`SchemaField` associated with a table.
+
+    :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`
+    :param dataset: A dataset which contains a table.
+
+    :type name: str
+    :param name: The name of the table.
+
+    :rtype: dict
+    :returns: The metadata dictionary.
+    """
     return {
         'configuration': {
             'load': {
