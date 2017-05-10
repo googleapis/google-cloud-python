@@ -73,7 +73,7 @@ def lint(session):
     Returns a failure if flake8 finds linting errors or sufficiently
     serious code quality issues.
     """
-    session.interpreter = 'python3.5'
+    session.interpreter = 'python3.6'
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google/cloud/logging')

@@ -89,7 +89,6 @@ class TestLogger(unittest.TestCase):
         self.assertIs(batch.client, client2)
 
     def test_log_text_w_str_implicit_client(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         TEXT = 'TEXT'
         ENTRIES = [{
             'logName': 'projects/%s/logs/%s' % (
@@ -97,7 +96,7 @@ class TestLogger(unittest.TestCase):
             'textPayload': TEXT,
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -110,7 +109,6 @@ class TestLogger(unittest.TestCase):
                          (ENTRIES, None, None, None))
 
     def test_log_text_w_default_labels(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         TEXT = 'TEXT'
         DEFAULT_LABELS = {'foo': 'spam'}
         ENTRIES = [{
@@ -119,7 +117,7 @@ class TestLogger(unittest.TestCase):
             'textPayload': TEXT,
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
             'labels': DEFAULT_LABELS,
         }]
@@ -135,7 +133,6 @@ class TestLogger(unittest.TestCase):
 
     def test_log_text_w_timestamp(self):
         import datetime
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         TEXT = 'TEXT'
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
@@ -146,7 +143,7 @@ class TestLogger(unittest.TestCase):
             'timestamp': '2016-12-31T00:01:02.999999Z',
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -159,7 +156,6 @@ class TestLogger(unittest.TestCase):
                          (ENTRIES, None, None, None))
 
     def test_log_text_w_unicode_explicit_client_labels_severity_httpreq(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         TEXT = u'TEXT'
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -179,7 +175,7 @@ class TestLogger(unittest.TestCase):
             'textPayload': TEXT,
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
             'labels': LABELS,
             'insertId': IID,
@@ -199,7 +195,6 @@ class TestLogger(unittest.TestCase):
                          (ENTRIES, None, None, None))
 
     def test_log_struct_w_implicit_client(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         ENTRIES = [{
             'logName': 'projects/%s/logs/%s' % (
@@ -207,7 +202,7 @@ class TestLogger(unittest.TestCase):
             'jsonPayload': STRUCT,
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -220,7 +215,6 @@ class TestLogger(unittest.TestCase):
                          (ENTRIES, None, None, None))
 
     def test_log_struct_w_default_labels(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         DEFAULT_LABELS = {'foo': 'spam'}
         ENTRIES = [{
@@ -229,7 +223,7 @@ class TestLogger(unittest.TestCase):
             'jsonPayload': STRUCT,
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
             'labels': DEFAULT_LABELS,
         }]
@@ -244,7 +238,6 @@ class TestLogger(unittest.TestCase):
                          (ENTRIES, None, None, None))
 
     def test_log_struct_w_explicit_client_labels_severity_httpreq(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -264,7 +257,7 @@ class TestLogger(unittest.TestCase):
             'jsonPayload': STRUCT,
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
             'labels': LABELS,
             'insertId': IID,
@@ -286,7 +279,6 @@ class TestLogger(unittest.TestCase):
 
     def test_log_struct_w_timestamp(self):
         import datetime
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
@@ -297,7 +289,7 @@ class TestLogger(unittest.TestCase):
             'timestamp': '2016-12-31T00:01:02.999999Z',
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -321,7 +313,7 @@ class TestLogger(unittest.TestCase):
             'protoPayload': json.loads(MessageToJson(message)),
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -346,7 +338,7 @@ class TestLogger(unittest.TestCase):
             'protoPayload': json.loads(MessageToJson(message)),
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
 
             },
             'labels': DEFAULT_LABELS,
@@ -386,7 +378,7 @@ class TestLogger(unittest.TestCase):
             'protoPayload': json.loads(MessageToJson(message)),
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
             'labels': LABELS,
             'insertId': IID,
@@ -422,7 +414,7 @@ class TestLogger(unittest.TestCase):
             'timestamp': '2016-12-31T00:01:02.999999Z',
             'resource': {
                 'type': 'global',
-                'labels': {}
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -693,7 +685,6 @@ class TestBatch(unittest.TestCase):
             batch.commit()
 
     def test_commit_w_resource_specified(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         from google.cloud.logging.resource import Resource
         from google.protobuf.struct_pb2 import Struct, Value
 
@@ -843,7 +834,7 @@ class TestBatch(unittest.TestCase):
             {'jsonPayload': STRUCT, 'labels': LABELS,
              'resource':_GLOBAL_RESOURCE._to_dict()},
             {'protoPayload': json.loads(MessageToJson(message)),
-            'resource': _GLOBAL_RESOURCE._to_dict(),
+             'resource': _GLOBAL_RESOURCE._to_dict(),
              'severity': SEVERITY}
         ]
         batch = self._make_one(logger, client=client)
@@ -862,7 +853,6 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
-
 
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}

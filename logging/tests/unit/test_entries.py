@@ -67,9 +67,11 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIsNone(entry.labels)
         self.assertIsNone(entry.severity)
         self.assertIsNone(entry.http_request)
+        self.assertIsNone(entry.resource)
 
     def test_ctor_explicit(self):
         import datetime
+        from google.cloud.logging.resource import Resource
 
         PAYLOAD = 'PAYLOAD'
         IID = 'IID'
@@ -84,13 +86,16 @@ class Test_BaseEntry(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
+        resource = Resource(type='global', labels={})
+
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
         entry = self._make_one(PAYLOAD, logger,
                                insert_id=IID,
                                timestamp=TIMESTAMP,
                                labels=LABELS,
                                severity=SEVERITY,
-                               http_request=REQUEST)
+                               http_request=REQUEST,
+                               resource=resource)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, logger)
         self.assertEqual(entry.insert_id, IID)
@@ -100,6 +105,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.http_request['requestMethod'], METHOD)
         self.assertEqual(entry.http_request['requestUrl'], URI)
         self.assertEqual(entry.http_request['status'], STATUS)
+        self.assertEqual(entry.resource, resource)
 
     def test_from_api_repr_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
@@ -124,6 +130,7 @@ class Test_BaseEntry(unittest.TestCase):
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
+        from google.cloud.logging.resource import Resource
 
         klass = self._get_target_class()
         client = _Client(self.PROJECT)
@@ -136,6 +143,14 @@ class Test_BaseEntry(unittest.TestCase):
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'type': 'gae_app',
+                'labels': {
+                    'module_id':'default',
+                    'version': 'test'
+        }})
         STATUS = '500'
         API_REPR = {
             'dummyPayload': PAYLOAD,
@@ -149,6 +164,7 @@ class Test_BaseEntry(unittest.TestCase):
                 'requestUrl': URI,
                 'status': STATUS,
             },
+            'resource': RESOURCE._to_dict()
         }
         loggers = {}
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
@@ -165,6 +181,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIs(logger.client, client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertEqual(loggers, {LOG_NAME: logger})
+        self.assertEqual(entry.resource, RESOURCE)
 
     def test_from_api_repr_w_loggers_w_logger_match(self):
         from datetime import datetime

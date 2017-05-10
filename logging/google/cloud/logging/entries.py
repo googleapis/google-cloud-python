@@ -20,6 +20,7 @@ import re
 from google.protobuf import any_pb2
 from google.protobuf.json_format import Parse
 
+from google.cloud.logging.resource import Resource
 from google.cloud._helpers import _name_from_project_path
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
 
@@ -72,9 +73,11 @@ class _BaseEntry(object):
     :type http_request: dict
     :param http_request: (optional) info about HTTP request associated with
                          the entry
+    :type resource :class:`google.cloud.logging.resource.Resource`
+    :param resource: (Optional) Monitored resource of the entry
     """
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
-                 labels=None, severity=None, http_request=None):
+                 labels=None, severity=None, http_request=None, resource=None):
         self.payload = payload
         self.logger = logger
         self.insert_id = insert_id
@@ -82,6 +85,7 @@ class _BaseEntry(object):
         self.labels = labels
         self.severity = severity
         self.http_request = http_request
+        self.resource = resource
 
     @classmethod
     def from_api_repr(cls, resource, client, loggers=None):
@@ -118,8 +122,15 @@ class _BaseEntry(object):
         labels = resource.get('labels')
         severity = resource.get('severity')
         http_request = resource.get('httpRequest')
+
+        monitored_resource_dict = resource.get('resource')
+        monitored_resource = None
+        if monitored_resource_dict is not None:
+            monitored_resource = Resource._from_dict(monitored_resource_dict)
+
         return cls(payload, logger, insert_id=insert_id, timestamp=timestamp,
-                   labels=labels, severity=severity, http_request=http_request)
+                   labels=labels, severity=severity, http_request=http_request,
+                   resource=monitored_resource)
 
 
 class TextEntry(_BaseEntry):
@@ -170,14 +181,18 @@ class ProtobufEntry(_BaseEntry):
     :type http_request: dict
     :param http_request: (optional) info about HTTP request associated with
                          the entry
+
+    :type resource :class:`google.cloud.logging.resource.Resource`
+    :param resource: (Optional) Monitored resource of the entry
     """
     _PAYLOAD_KEY = 'protoPayload'
 
     def __init__(self, payload, logger, insert_id=None, timestamp=None,
-                 labels=None, severity=None, http_request=None):
+                 labels=None, severity=None, http_request=None, resource=None):
         super(ProtobufEntry, self).__init__(
             payload, logger, insert_id=insert_id, timestamp=timestamp,
-            labels=labels, severity=severity, http_request=http_request)
+            labels=labels, severity=severity, http_request=http_request,
+            resource=resource)
         if isinstance(self.payload, any_pb2.Any):
             self.payload_pb = self.payload
             self.payload = None

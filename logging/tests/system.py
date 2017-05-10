@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import google.cloud.logging.handlers.handlers
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import SyncTransport
 from google.cloud.logging import client
+from google.cloud.logging.resource import Resource
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryResult
@@ -172,14 +173,16 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(entries[0].timestamp, now.replace(tzinfo=UTC))
 
     def test_log_text_with_resource(self):
-        from google.cloud.logging.resource import Resource
         text_payload = 'System test: test_log_text_with_timestamp'
 
         logger = Config.CLIENT.logger(self._logger_name())
         now = datetime.datetime.utcnow()
         RESOURCE = Resource(
-            type='gae_app', labels={'module_id': 'default',
-                                    'version_id': 'test'})
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+        })
 
         self.to_delete.append(logger)
 
@@ -187,7 +190,9 @@ class TestLogging(unittest.TestCase):
         entries = _list_entries(logger)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, text_payload)
-        self.assertEqual(entries[0].resource, RESOURCE._to_dict())
+        # project_id is output only so we don't want it in assertion
+        del entries[0].resource.labels['project_id']
+        self.assertEqual(entries[0].resource, RESOURCE)
 
     def test_log_text_w_metadata(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
