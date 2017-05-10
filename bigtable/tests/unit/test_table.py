@@ -587,12 +587,12 @@ class TestTable(unittest.TestCase):
 class Test__create_row_request(unittest.TestCase):
 
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
-                  filter_=None, limit=None):
+                  start_key_closed=True, filter_=None, limit=None):
         from google.cloud.bigtable.retry import _create_row_request
 
         return _create_row_request(
             table_name, row_key=row_key, start_key=start_key, end_key=end_key,
-            filter_=filter_, limit=limit)
+            start_key_closed=start_key_closed, filter_=filter_, limit=limit)
 
     def test_table_name_only(self):
         table_name = 'table_name'
@@ -615,12 +615,21 @@ class Test__create_row_request(unittest.TestCase):
         expected_result.rows.row_keys.append(row_key)
         self.assertEqual(result, expected_result)
 
-    def test_row_range_start_key(self):
+    def test_row_range_start_key_closed(self):
         table_name = 'table_name'
         start_key = b'start_key'
         result = self._call_fut(table_name, start_key=start_key)
         expected_result = _ReadRowsRequestPB(table_name=table_name)
         expected_result.rows.row_ranges.add(start_key_closed=start_key)
+        self.assertEqual(result, expected_result)
+
+    def test_row_range_start_key_open(self):
+        table_name = 'table_name'
+        start_key = b'start_key'
+        result = self._call_fut(table_name, start_key=start_key,
+            start_key_closed=False)
+        expected_result = _ReadRowsRequestPB(table_name=table_name)
+        expected_result.rows.row_ranges.add(start_key_open=start_key)
         self.assertEqual(result, expected_result)
 
     def test_row_range_end_key(self):
