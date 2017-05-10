@@ -571,8 +571,11 @@ class TestBatch(unittest.TestCase):
         }
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         RESOURCE = Resource(
-            type='gae_app', labels={'module_id': 'default',
-                                    'version_id': 'test'})
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test',
+        })
 
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -691,7 +694,6 @@ class TestBatch(unittest.TestCase):
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         api = client.logging_api = _DummyLoggingAPI()
-        STRUCT = Struct(fields={'foo': Value(bool_value=True)})
         RESOURCE = Resource(
             type='gae_app', labels={'module_id': 'default',
                                     'version_id': 'test'})
@@ -724,9 +726,6 @@ class TestBatch(unittest.TestCase):
         TIMESTAMP1 = datetime.datetime(2016, 12, 31, 0, 0, 1, 999999)
         TIMESTAMP2 = datetime.datetime(2016, 12, 31, 0, 0, 2, 999999)
         TIMESTAMP3 = datetime.datetime(2016, 12, 31, 0, 0, 3, 999999)
-        RESOURCE = {
-            'type': 'global',
-        }
         ENTRIES = [
             {'textPayload': TEXT, 'insertId': IID1,
              'timestamp': _datetime_to_rfc3339(TIMESTAMP1),
