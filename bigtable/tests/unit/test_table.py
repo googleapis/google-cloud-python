@@ -443,7 +443,7 @@ class TestTable(unittest.TestCase):
             result = table.read_rows(
                 start_key=start_key, end_key=end_key, filter_=filter_obj,
                 limit=limit)
-            result.consume_next()
+            result.consume_all()
 
     def test_read_rows_retry_timeout(self):
         from google.cloud._testing import _Monkey
@@ -506,6 +506,54 @@ class TestTable(unittest.TestCase):
             with self.assertRaises(RetryError):
                 result.consume_next()
 
+    def test_read_rows_non_idempotent_error_throws(self):
+        from google.cloud._testing import _Monkey
+        from tests.unit._testing import _CustomFakeStub
+        from google.cloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
+        from google.gax import BackoffSettings
+        from google.gax.errors import RetryError
+        from grpc import StatusCode, RpcError
+        import time
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create response iterator that raises a non-idempotent exception
+        class MockNonIdempotentError(RpcError):
+            def code(self):
+                return StatusCode.RESOURCE_EXHAUSTED
+
+        def _raise():
+            raise MockNonIdempotentError()
+
+        # Patch the stub used by the API method.  The stub should create a new
+        # slow_iterator every time its queried.
+        def make_raising_iterator():
+            return (_raise() for i in range(10))
+        client._data_stub = stub = _CustomFakeStub(make_raising_iterator)
+
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            # Verify that a RetryError is thrown on read.
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                limit=limit)
+            with self.assertRaises(MockNonIdempotentError):
+                result.consume_next()
 
     def test_sample_row_keys(self):
         from tests.unit._testing import _FakeStub

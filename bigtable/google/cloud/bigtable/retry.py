@@ -80,8 +80,7 @@ class ReadRowsIterator():
             except RpcError as error:  # pylint: disable=broad-except
                 code = config.exc_to_code(error)
                 if code not in self.retry_options.retry_codes:
-                    six.reraise(errors.RetryError,
-                                errors.RetryError(str(error)))
+                    six.reraise(type(error), error)
 
                 # pylint: disable=redefined-variable-type
                 exc = errors.RetryError(
