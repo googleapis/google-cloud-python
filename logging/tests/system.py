@@ -177,7 +177,7 @@ class TestLogging(unittest.TestCase):
 
         logger = Config.CLIENT.logger(self._logger_name())
         now = datetime.datetime.utcnow()
-        RESOURCE = Resource(
+        resource = Resource(
             type='gae_app',
             labels={
                 'module_id': 'default',
@@ -186,13 +186,13 @@ class TestLogging(unittest.TestCase):
 
         self.to_delete.append(logger)
 
-        logger.log_text(text_payload, timestamp=now, resource=RESOURCE)
+        logger.log_text(text_payload, timestamp=now, resource=resource)
         entries = _list_entries(logger)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, text_payload)
         # project_id is output only so we don't want it in assertion
         del entries[0].resource.labels['project_id']
-        self.assertEqual(entries[0].resource, RESOURCE)
+        self.assertEqual(entries[0].resource, resource)
 
     def test_log_text_w_metadata(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
