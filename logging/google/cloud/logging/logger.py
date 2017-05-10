@@ -374,8 +374,9 @@ class Batch(object):
                      to None, which requires that every entry should have a
                      resource specified. Since the methods used to write
                      entries default the entry's resource to the global
-                     resource type, this parameter is only required and used
-                     if an entry resource is explicitly set to None.
+                     resource type, this parameter is only required
+                     if explicitly set to None. If no entries' resource are
+                     set to None, this parameter will be ignored on the server.
     """
     def __init__(self, logger, client, resource=None):
         self.logger = logger
