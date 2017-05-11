@@ -1,3 +1,8 @@
+v0.1.0
+------
+
+Add command line tool.
+
 v0.0.1
 ------
 
