@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 3333f71 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud 9ad6965 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 3333f71 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 9ad6965 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -410,12 +410,13 @@
     <span class="s1">&#39;storageClass&#39;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">_NUM_RETRIES_MESSAGE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;num_retries is no longer supported. When a transient error occurs, &#39;</span>
-    <span class="s1">&#39;such as a 429 Too Many Requests or 500 Internal Server Error, upload &#39;</span>
-    <span class="s1">&#39;requests will be automatically retried. Subsequent retries will be &#39;</span>
-    <span class="s1">&#39;done after waiting 1, 2, 4, 8, etc. seconds (exponential backoff) until &#39;</span>
-    <span class="s1">&#39;10 minutes of wait time have elapsed. At that point, there will be no &#39;</span>
-    <span class="s1">&#39;more attempts to retry.&#39;</span><span class="p">)</span>
+    <span class="s1">&#39;`num_retries` has been deprecated and will be removed in a future &#39;</span>
+    <span class="s1">&#39;release. The default behavior (when `num_retries` is not specified) when &#39;</span>
+    <span class="s1">&#39;a transient error (e.g. 429 Too Many Requests or 500 Internal Server &#39;</span>
+    <span class="s1">&#39;Error) occurs will be as follows: upload requests will be automatically &#39;</span>
+    <span class="s1">&#39;retried. Subsequent retries will be sent after waiting 1, 2, 4, 8, etc. &#39;</span>
+    <span class="s1">&#39;seconds (exponential backoff) until 10 minutes of wait time have &#39;</span>
+    <span class="s1">&#39;elapsed. At that point, there will be no more attempts to retry.&#39;</span><span class="p">)</span>
 <span class="n">_READ_LESS_THAN_SIZE</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;Size </span><span class="si">{:d}</span><span class="s1"> was specified but the file-like object only had &#39;</span>
     <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> bytes remaining.&#39;</span><span class="p">)</span>
@@ -922,7 +923,8 @@
         <span class="n">content_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_content_type</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">headers</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span>
 
-    <span class="k">def</span> <span class="nf">_do_multipart_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_multipart_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
+                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a multipart upload.</span>
 
 <span class="sd">        Assumes ``chunk_size`` is :data:`None` on the current blob.</span>
@@ -949,6 +951,10 @@
 <span class="sd">                     from ``stream``). If not provided, the upload will be</span>
 <span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
 
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
 <span class="sd">        :rtype: :class:`~requests.Response`</span>
 <span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the multipart</span>
 <span class="sd">                  upload request.</span>
@@ -970,13 +976,19 @@
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_MULTIPART_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">bucket_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="n">upload</span> <span class="o">=</span> <span class="n">MultipartUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+
         <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span>
             <span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span>
 
     <span class="k">def</span> <span class="nf">_initiate_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
-                                   <span class="n">size</span><span class="p">,</span> <span class="n">extra_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                                   <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">,</span> <span class="n">extra_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initiate a resumable upload.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -1000,6 +1012,10 @@
 <span class="sd">        :param size: The number of bytes to be uploaded (which will be read</span>
 <span class="sd">                     from ``stream``). If not provided, the upload will be</span>
 <span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
 
 <span class="sd">        :type extra_headers: dict</span>
 <span class="sd">        :param extra_headers: (Optional) Extra headers to add to standard</span>
@@ -1032,13 +1048,19 @@
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_RESUMABLE_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">bucket_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="n">upload</span> <span class="o">=</span> <span class="n">ResumableUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+
         <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span>
             <span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
             <span class="n">total_bytes</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">stream_final</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span>
 
-    <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span>
+                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a resumable upload.</span>
 
 <span class="sd">        Assumes ``chunk_size`` is not :data:`None` on the current blob.</span>
@@ -1065,19 +1087,23 @@
 <span class="sd">                     from ``stream``). If not provided, the upload will be</span>
 <span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
 
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
 <span class="sd">        :rtype: :class:`~requests.Response`</span>
 <span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the final chunk</span>
 <span class="sd">                  is uploaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
 
         <span class="k">while</span> <span class="ow">not</span> <span class="n">upload</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span>
 
-    <span class="k">def</span> <span class="nf">_do_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_do_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine an upload strategy and then perform the upload.</span>
 
 <span class="sd">        If the current blob has a ``chunk_size`` set, then a resumable upload</span>
@@ -1106,6 +1132,10 @@
 <span class="sd">                     from ``stream``). If not provided, the upload will be</span>
 <span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
 
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: The parsed JSON from the &quot;200 OK&quot; response. This will be the</span>
 <span class="sd">                  **only** response in the multipart case and it will be the</span>
@@ -1113,10 +1143,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_multipart_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_resumable_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
@@ -1170,7 +1200,8 @@
 <span class="sd">        :param content_type: Optional type of content being uploaded.</span>
 
 <span class="sd">        :type num_retries: int</span>
-<span class="sd">        :param num_retries: Number of upload retries. (Deprecated.)</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client`</span>
 <span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
@@ -1185,7 +1216,7 @@
         <span class="n">_maybe_rewind</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="n">rewind</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">created_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">created_json</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
@@ -1343,7 +1374,7 @@
             <span class="c1"># to the `ResumableUpload` constructor. The chunk size only</span>
             <span class="c1"># matters when **sending** bytes to an upload.</span>
             <span class="n">upload</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">dummy_stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">dummy_stream</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">extra_headers</span><span class="o">=</span><span class="n">extra_headers</span><span class="p">,</span>
                 <span class="n">chunk_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">)</span>
 
@@ -1935,7 +1966,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'3333f71',
+            VERSION:'9ad6965',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

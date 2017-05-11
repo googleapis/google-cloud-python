@@ -12,7 +12,7 @@ Client
 
 :class:`~google.cloud.speech.client.Client` objects provide a
 means to configure your application. Each instance holds
-an authenticated connection to the Natural Language service.
+an authenticated connection to the Cloud Speech Service.
 
 For an overview of authentication in ``google-cloud-python``, see
 :doc:`google-cloud-auth`.
