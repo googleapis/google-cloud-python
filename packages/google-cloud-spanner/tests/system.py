@@ -563,6 +563,36 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             [(row[0], row[2]) for row in self._row_data(ROW_COUNT)]))
         self._check_row_data(rows, expected)
 
+    def test_read_w_limit(self):
+        ROW_COUNT = 4000
+        LIMIT = 100
+        session, committed = self._set_up_table(ROW_COUNT)
+
+        snapshot = session.snapshot(read_timestamp=committed)
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, self.ALL, limit=LIMIT))
+
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        expected = all_data_rows[:LIMIT]
+        self._check_row_data(rows, expected)
+
+    def test_read_w_range(self):
+        from google.cloud.spanner.keyset import KeyRange
+        ROW_COUNT = 4000
+        START_CLOSED = 1000
+        END_OPEN = 2000
+        session, committed = self._set_up_table(ROW_COUNT)
+        key_range = KeyRange(start_closed=[START_CLOSED], end_open=[END_OPEN])
+        keyset = KeySet(ranges=(key_range,))
+
+        snapshot = session.snapshot(read_timestamp=committed)
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        expected = all_data_rows[START_CLOSED:END_OPEN]
+        self._check_row_data(rows, expected)
+
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 4000
         session, committed = self._set_up_table(ROW_COUNT)
