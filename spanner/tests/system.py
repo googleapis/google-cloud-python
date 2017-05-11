@@ -12,22 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import math
 import operator
 import os
+import struct
 import unittest
 
+from google.cloud.proto.spanner.v1.type_pb2 import ARRAY
+from google.cloud.proto.spanner.v1.type_pb2 import BOOL
+from google.cloud.proto.spanner.v1.type_pb2 import BYTES
+from google.cloud.proto.spanner.v1.type_pb2 import DATE
+from google.cloud.proto.spanner.v1.type_pb2 import FLOAT64
+from google.cloud.proto.spanner.v1.type_pb2 import INT64
 from google.cloud.proto.spanner.v1.type_pb2 import STRING
+from google.cloud.proto.spanner.v1.type_pb2 import TIMESTAMP
 from google.cloud.proto.spanner.v1.type_pb2 import Type
-from google.cloud.spanner.client import Client
-from google.cloud.spanner.pool import BurstyPool
-from google.cloud.spanner._fixtures import DDL_STATEMENTS
 
-from grpc._channel import _Rendezvous
+from google.cloud._helpers import UTC
+from google.cloud.exceptions import GrpcRendezvous
+from google.cloud.spanner._helpers import TimestampWithNanoseconds
+from google.cloud.spanner.client import Client
+from google.cloud.spanner.keyset import KeySet
+from google.cloud.spanner.pool import BurstyPool
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
 from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
+from tests._fixtures import DDL_STATEMENTS
+
 
 IS_CIRCLE = os.getenv('CIRCLECI') == 'true'
 CREATE_INSTANCE = IS_CIRCLE or os.getenv(
@@ -63,9 +77,13 @@ def _has_all_ddl(database):
     return len(database.ddl_statements) == len(DDL_STATEMENTS)
 
 
+def _list_instances():
+    return list(Config.CLIENT.list_instances())
+
+
 def setUpModule():
     Config.CLIENT = Client()
-    retry = RetryErrors(_Rendezvous, error_predicate=_retry_on_unavailable)
+    retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
 
@@ -74,9 +92,6 @@ def setUpModule():
 
     Config.INSTANCE_CONFIG = configs[0]
     config_name = configs[0].name
-
-    def _list_instances():
-        return list(Config.CLIENT.list_instances())
 
     instances = retry(_list_instances)()
     EXISTING_INSTANCES[:] = instances
@@ -167,12 +182,57 @@ class TestInstanceAdminAPI(unittest.TestCase):
         Config.INSTANCE.update()
 
 
-class TestDatabaseAdminAPI(unittest.TestCase):
+class _TestData(object):
+    TABLE = 'contacts'
+    COLUMNS = ('contact_id', 'first_name', 'last_name', 'email')
+    ROW_DATA = (
+        (1, u'Phred', u'Phlyntstone', u'phred@example.com'),
+        (2, u'Bharney', u'Rhubble', u'bharney@example.com'),
+        (3, u'Wylma', u'Phlyntstone', u'wylma@example.com'),
+    )
+    ALL = KeySet(all_=True)
+    SQL = 'SELECT * FROM contacts ORDER BY contact_id'
+
+    def _assert_timestamp(self, value, nano_value):
+        self.assertIsInstance(value, datetime.datetime)
+        self.assertIsNone(value.tzinfo)
+        self.assertIs(nano_value.tzinfo, UTC)
+
+        self.assertEqual(value.year, nano_value.year)
+        self.assertEqual(value.month, nano_value.month)
+        self.assertEqual(value.day, nano_value.day)
+        self.assertEqual(value.hour, nano_value.hour)
+        self.assertEqual(value.minute, nano_value.minute)
+        self.assertEqual(value.second, nano_value.second)
+        self.assertEqual(value.microsecond, nano_value.microsecond)
+        if isinstance(value, TimestampWithNanoseconds):
+            self.assertEqual(value.nanosecond, nano_value.nanosecond)
+        else:
+            self.assertEqual(value.microsecond * 1000, nano_value.nanosecond)
+
+    def _check_row_data(self, row_data, expected=None):
+        if expected is None:
+            expected = self.ROW_DATA
+
+        self.assertEqual(len(row_data), len(expected))
+        for found, expected in zip(row_data, expected):
+            self.assertEqual(len(found), len(expected))
+            for found_cell, expected_cell in zip(found, expected):
+                if isinstance(found_cell, TimestampWithNanoseconds):
+                    self._assert_timestamp(expected_cell, found_cell)
+                elif isinstance(found_cell, float) and math.isnan(found_cell):
+                    self.assertTrue(math.isnan(expected_cell))
+                else:
+                    self.assertEqual(found_cell, expected_cell)
+
+
+class TestDatabaseAPI(unittest.TestCase, _TestData):
 
     @classmethod
     def setUpClass(cls):
         pool = BurstyPool()
-        cls._db = Config.INSTANCE.database(DATABASE_ID, pool=pool)
+        cls._db = Config.INSTANCE.database(
+            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
         cls._db.create()
 
     @classmethod
@@ -228,16 +288,68 @@ class TestDatabaseAdminAPI(unittest.TestCase):
 
         self.assertEqual(len(temp_db.ddl_statements), len(DDL_STATEMENTS))
 
+    def test_db_batch_insert_then_db_snapshot_read_and_db_read(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
 
-class TestSessionAPI(unittest.TestCase):
-    TABLE = 'contacts'
-    COLUMNS = ('contact_id', 'first_name', 'last_name', 'email')
-    ROW_DATA = (
-        (1, u'Phred', u'Phlyntstone', u'phred@example.com'),
-        (2, u'Bharney', u'Rhubble', u'bharney@example.com'),
-        (3, u'Wylma', u'Phlyntstone', u'wylma@example.com'),
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+            batch.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
+
+        with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
+            from_snap = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
+
+        self._check_row_data(from_snap)
+
+        from_db = list(self._db.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(from_db)
+
+    def test_db_run_in_transaction_then_db_execute_sql(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        def _unit_of_work(transaction, test):
+            rows = list(transaction.read(test.TABLE, test.COLUMNS, self.ALL))
+            test.assertEqual(rows, [])
+
+            transaction.insert_or_update(
+                test.TABLE, test.COLUMNS, test.ROW_DATA)
+
+        self._db.run_in_transaction(_unit_of_work, test=self)
+
+        rows = list(self._db.execute_sql(self.SQL))
+        self._check_row_data(rows)
+
+
+class TestSessionAPI(unittest.TestCase, _TestData):
+    ALL_TYPES_TABLE = 'all_types'
+    ALL_TYPES_COLUMNS = (
+        'list_goes_on',
+        'are_you_sure',
+        'raw_data',
+        'hwhen',
+        'approx_value',
+        'eye_d',
+        'description',
+        'exactly_hwhen',
     )
-    SQL = 'SELECT * FROM contacts ORDER BY contact_id'
+    SOME_DATE = datetime.date(2011, 1, 17)
+    SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
+    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
+    BYTES_1 = b'Ymlu'
+    BYTES_2 = b'Ym9vdHM='
+    ALL_TYPES_ROWDATA = (
+        ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
+        ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
+        ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
+        ([], False, None, None, float('-inf'), 207, None, None),
+        ([], False, None, None, float('nan'), 1207, None, None),
+        ([], False, None, None, OTHER_NAN, 2000, None, NANO_TIME),
+    )
 
     @classmethod
     def setUpClass(cls):
@@ -258,13 +370,6 @@ class TestSessionAPI(unittest.TestCase):
         for doomed in self.to_delete:
             doomed.delete()
 
-    def _check_row_data(self, row_data):
-        self.assertEqual(len(row_data), len(self.ROW_DATA))
-        for found, expected in zip(row_data, self.ROW_DATA):
-            self.assertEqual(len(found), len(expected))
-            for f_cell, e_cell in zip(found, expected):
-                self.assertEqual(f_cell, e_cell)
-
     def test_session_crud(self):
         retry_true = RetryResult(operator.truth)
         retry_false = RetryResult(operator.not_)
@@ -276,9 +381,6 @@ class TestSessionAPI(unittest.TestCase):
         retry_false(session.exists)()
 
     def test_batch_insert_then_read(self):
-        from google.cloud.spanner import KeySet
-        keyset = KeySet(all_=True)
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -287,16 +389,35 @@ class TestSessionAPI(unittest.TestCase):
         self.to_delete.append(session)
 
         batch = session.batch()
-        batch.delete(self.TABLE, keyset)
+        batch.delete(self.TABLE, self.ALL)
         batch.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
         batch.commit()
 
         snapshot = session.snapshot(read_timestamp=batch.committed)
-        rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
 
-    def test_batch_insert_or_update_then_query(self):
+    def test_batch_insert_then_read_all_datatypes(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
 
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
+
+        snapshot = session.snapshot(read_timestamp=batch.committed)
+        rows = list(snapshot.read(
+            self.ALL_TYPES_TABLE, self.ALL_TYPES_COLUMNS, self.ALL))
+        self._check_row_data(rows, expected=self.ALL_TYPES_ROWDATA)
+
+    def test_batch_insert_or_update_then_query(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -311,11 +432,8 @@ class TestSessionAPI(unittest.TestCase):
         rows = list(snapshot.execute_sql(self.SQL))
         self._check_row_data(rows)
 
-    @RetryErrors(exception=_Rendezvous)
+    @RetryErrors(exception=GrpcRendezvous)
     def test_transaction_read_and_insert_then_rollback(self):
-        from google.cloud.spanner import KeySet
-        keyset = KeySet(all_=True)
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -324,29 +442,26 @@ class TestSessionAPI(unittest.TestCase):
         self.to_delete.append(session)
 
         with session.batch() as batch:
-            batch.delete(self.TABLE, keyset)
+            batch.delete(self.TABLE, self.ALL)
 
         transaction = session.transaction()
         transaction.begin()
 
-        rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
         transaction.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
 
         # Inserted rows can't be read until after commit.
-        rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
         transaction.rollback()
 
-        rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
-    @RetryErrors(exception=_Rendezvous)
+    @RetryErrors(exception=GrpcRendezvous)
     def test_transaction_read_and_insert_or_update_then_commit(self):
-        from google.cloud.spanner import KeySet
-        keyset = KeySet(all_=True)
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -355,32 +470,33 @@ class TestSessionAPI(unittest.TestCase):
         self.to_delete.append(session)
 
         with session.batch() as batch:
-            batch.delete(self.TABLE, keyset)
+            batch.delete(self.TABLE, self.ALL)
 
         with session.transaction() as transaction:
-            rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
+            rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
             transaction.insert_or_update(
                 self.TABLE, self.COLUMNS, self.ROW_DATA)
 
             # Inserted rows can't be read until after commit.
-            rows = list(transaction.read(self.TABLE, self.COLUMNS, keyset))
+            rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
             self.assertEqual(rows, [])
 
-        rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
+        rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
 
+    @staticmethod
+    def _row_data(max_index):
+        for index in range(max_index):
+            yield [
+                index,
+                'First%09d' % (index,),
+                'Last09%d' % (index),
+                'test-%09d@example.com' % (index,),
+            ]
+
     def _set_up_table(self, row_count):
-        from google.cloud.spanner import KeySet
-
-        def _row_data(max_index):
-            for index in range(max_index):
-                yield [index, 'First%09d' % (index,), 'Last09%d' % (index),
-                       'test-%09d@example.com' % (index,)]
-
-        keyset = KeySet(all_=True)
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -389,17 +505,18 @@ class TestSessionAPI(unittest.TestCase):
         self.to_delete.append(session)
 
         with session.transaction() as transaction:
-            transaction.delete(self.TABLE, keyset)
-            transaction.insert(self.TABLE, self.COLUMNS, _row_data(row_count))
+            transaction.delete(self.TABLE, self.ALL)
+            transaction.insert(
+                self.TABLE, self.COLUMNS, self._row_data(row_count))
 
-        return session, keyset, transaction.committed
+        return session, transaction.committed
 
     def test_read_w_manual_consume(self):
         ROW_COUNT = 4000
-        session, keyset, committed = self._set_up_table(ROW_COUNT)
+        session, committed = self._set_up_table(ROW_COUNT)
 
         snapshot = session.snapshot(read_timestamp=committed)
-        streamed = snapshot.read(self.TABLE, self.COLUMNS, keyset)
+        streamed = snapshot.read(self.TABLE, self.COLUMNS, self.ALL)
 
         retrieved = 0
         while True:
@@ -416,7 +533,7 @@ class TestSessionAPI(unittest.TestCase):
 
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 4000
-        session, _, committed = self._set_up_table(ROW_COUNT)
+        session, committed = self._set_up_table(ROW_COUNT)
 
         snapshot = session.snapshot(read_timestamp=committed)
         streamed = snapshot.execute_sql(self.SQL)
@@ -434,16 +551,114 @@ class TestSessionAPI(unittest.TestCase):
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, None)
 
-    def test_execute_sql_w_query_param(self):
-        SQL = 'SELECT * FROM contacts WHERE first_name = @first_name'
-        ROW_COUNT = 10
-        session, _, committed = self._set_up_table(ROW_COUNT)
-
-        snapshot = session.snapshot(read_timestamp=committed)
+    def _check_sql_results(self, snapshot, sql, params, param_types, expected):
+        if 'ORDER' not in sql:
+            sql += ' ORDER BY eye_d'
         rows = list(snapshot.execute_sql(
-            SQL,
-            params={'first_name': 'First%09d' % (0,)},
-            param_types={'first_name': Type(code=STRING)},
-        ))
+            sql, params=params, param_types=param_types))
+        self._check_row_data(rows, expected=expected)
 
-        self.assertEqual(len(rows), 1)
+    def test_execute_sql_w_query_param(self):
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
+
+        snapshot = session.snapshot(read_timestamp=batch.committed)
+
+        # Cannot equality-test array values.  See below for a test w/
+        # array of IDs.
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE are_you_sure = @sure',
+            params={'sure': True},
+            param_types={'sure': Type(code=BOOL)},
+            expected=[(19,), (99,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE raw_data = @bytes_1',
+            params={'bytes_1': self.BYTES_1},
+            param_types={'bytes_1': Type(code=BYTES)},
+            expected=[(19,), (99,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE hwhen = @hwhen',
+            params={'hwhen': self.SOME_DATE},
+            param_types={'hwhen': Type(code=DATE)},
+            expected=[(19,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql=('SELECT eye_d FROM all_types WHERE approx_value >= @lower'
+                 ' AND approx_value < @upper '),
+            params={'lower': 0.0, 'upper': 1.0},
+            param_types={
+                'lower': Type(code=FLOAT64), 'upper': Type(code=FLOAT64)},
+            expected=[(19,)],
+        )
+
+        # Find -inf
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
+            params={'pos_inf': float('+inf')},
+            param_types={'pos_inf': Type(code=FLOAT64)},
+            expected=[(107,)],
+        )
+
+        # Find +inf
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
+            params={'neg_inf': float('-inf')},
+            param_types={'neg_inf': Type(code=FLOAT64)},
+            expected=[(207,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT description FROM all_types WHERE eye_d = @my_id',
+            params={'my_id': 19},
+            param_types={'my_id': Type(code=INT64)},
+            expected=[(u'dog',)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE description = @description',
+            params={'description': u'dog'},
+            param_types={'description': Type(code=STRING)},
+            expected=[(19,)],
+        )
+
+        # NaNs cannot be searched for by equality.
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE exactly_hwhen = @hwhen',
+            params={'hwhen': self.SOME_TIME},
+            param_types={'hwhen': Type(code=TIMESTAMP)},
+            expected=[(19,)],
+        )
+
+        array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
+        self._check_sql_results(
+            snapshot,
+            sql=('SELECT description FROM all_types '
+                 'WHERE eye_d in UNNEST(@my_list)'),
+            params={'my_list': [19, 99]},
+            param_types={'my_list': array_type},
+            expected=[(u'dog',), (u'cat',)],
+        )

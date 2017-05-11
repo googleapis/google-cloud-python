@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import io
+import json
+import os
 import unittest
 
 import mock
+from six.moves import http_client
 
 
 def _make_credentials():
@@ -25,7 +30,8 @@ def _make_credentials():
 
 class Test_Blob(unittest.TestCase):
 
-    def _make_one(self, *args, **kw):
+    @staticmethod
+    def _make_one(*args, **kw):
         from google.cloud.storage.blob import Blob
 
         properties = kw.pop('properties', None)
@@ -44,6 +50,13 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob._acl.loaded)
         self.assertIs(blob._acl.blob, blob)
         self.assertEqual(blob._encryption_key, None)
+
+    def test_ctor_with_encoded_unicode(self):
+        blob_name = b'wet \xe2\x9b\xb5'
+        blob = self._make_one(blob_name, bucket=None)
+        unicode_name = u'wet \N{sailboat}'
+        self.assertNotEqual(blob.name, blob_name)
+        self.assertEqual(blob.name, unicode_name)
 
     def test_ctor_w_encryption_key(self):
         KEY = b'01234567890123456789012345678901'  # 32 bytes
@@ -91,21 +104,21 @@ class Test_Blob(unittest.TestCase):
     def test_acl_property(self):
         from google.cloud.storage.acl import ObjectACL
 
-        FAKE_BUCKET = _Bucket()
-        blob = self._make_one(None, bucket=FAKE_BUCKET)
+        fake_bucket = _Bucket()
+        blob = self._make_one(u'name', bucket=fake_bucket)
         acl = blob.acl
         self.assertIsInstance(acl, ObjectACL)
         self.assertIs(acl, blob._acl)
 
-    def test_path_no_bucket(self):
-        FAKE_BUCKET = object()
-        NAME = 'blob-name'
-        blob = self._make_one(NAME, bucket=FAKE_BUCKET)
+    def test_path_bad_bucket(self):
+        fake_bucket = object()
+        name = u'blob-name'
+        blob = self._make_one(name, bucket=fake_bucket)
         self.assertRaises(AttributeError, getattr, blob, 'path')
 
     def test_path_no_name(self):
         bucket = _Bucket()
-        blob = self._make_one(None, bucket=bucket)
+        blob = self._make_one(u'', bucket=bucket)
         self.assertRaises(ValueError, getattr, blob, 'path')
 
     def test_path_normal(self):
@@ -119,6 +132,12 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.path, '/b/name/o/parent%2Fchild')
+
+    def test_path_with_non_ascii(self):
+        blob_name = u'Caf\xe9'
+        bucket = _Bucket()
+        blob = self._make_one(blob_name, bucket=bucket)
+        self.assertEqual(blob.path, '/b/name/o/Caf%C3%A9')
 
     def test_public_url(self):
         BLOB_NAME = 'blob-name'
@@ -135,6 +154,13 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(
             blob.public_url,
             'https://storage.googleapis.com/name/parent%2Fchild')
+
+    def test_public_url_with_non_ascii(self):
+        blob_name = u'winter \N{snowman}'
+        bucket = _Bucket()
+        blob = self._make_one(blob_name, bucket=bucket)
+        expected_url = 'https://storage.googleapis.com/name/winter%20%E2%98%83'
+        self.assertEqual(blob.public_url, expected_url)
 
     def _basic_generate_signed_url_helper(self, credentials=None):
         BLOB_NAME = 'blob-name'
@@ -269,10 +295,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_exists_miss(self):
-        from six.moves.http_client import NOT_FOUND
-
         NONESUCH = 'nonesuch'
-        not_found_response = ({'status': NOT_FOUND}, b'')
+        not_found_response = ({'status': http_client.NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -280,10 +304,8 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob.exists())
 
     def test_exists_hit(self):
-        from six.moves.http_client import OK
-
         BLOB_NAME = 'blob-name'
-        found_response = ({'status': OK}, b'')
+        found_response = ({'status': http_client.OK}, b'')
         connection = _Connection(found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -292,9 +314,8 @@ class Test_Blob(unittest.TestCase):
         self.assertTrue(blob.exists())
 
     def test_delete(self):
-        from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
-        not_found_response = ({'status': NOT_FOUND}, b'')
+        not_found_response = ({'status': http_client.NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -303,6 +324,15 @@ class Test_Blob(unittest.TestCase):
         blob.delete()
         self.assertFalse(blob.exists())
         self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test__make_transport(self, fake_session_factory):
+        client = mock.Mock(spec=[u'_credentials'])
+        blob = self._make_one(u'blob-name', bucket=None)
+        transport = blob._make_transport(client)
+
+        self.assertIs(transport, fake_session_factory.return_value)
+        fake_session_factory.assert_called_once_with(client._credentials)
 
     def test__get_download_url_with_media_link(self):
         blob_name = 'something.txt'
@@ -348,9 +378,7 @@ class Test_Blob(unittest.TestCase):
             content=content, headers=headers, status_code=status_code,
             spec=['content', 'headers', 'status_code'])
 
-    def _mock_transport(self):
-        from six.moves import http_client
-
+    def _mock_download_transport(self):
         fake_transport = mock.Mock(spec=['request'])
         # Give the transport two fake responses.
         chunk1_response = self._mock_requests_response(
@@ -381,14 +409,96 @@ class Test_Blob(unittest.TestCase):
             'GET', expected_url, data=None, headers=headers)
         self.assertEqual(fake_transport.request.mock_calls, [call, call])
 
+    def test__do_download_simple(self):
+        blob_name = 'blob-name'
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        # Make sure this will not be chunked.
+        self.assertIsNone(blob.chunk_size)
+
+        transport = mock.Mock(spec=['request'])
+        transport.request.return_value = self._mock_requests_response(
+            http_client.OK,
+            {'content-length': '6', 'content-range': 'bytes 0-5/6'},
+            content=b'abcdef')
+        file_obj = io.BytesIO()
+        download_url = 'http://test.invalid'
+        headers = {}
+        blob._do_download(transport, file_obj, download_url, headers)
+        # Make sure the download was as expected.
+        self.assertEqual(file_obj.getvalue(), b'abcdef')
+
+        transport.request.assert_called_once_with(
+            'GET', download_url, data=None, headers=headers)
+
+    def test__do_download_chunked(self):
+        blob_name = 'blob-name'
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        # Modify the blob so there there will be 2 chunks of size 3.
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 3
+
+        transport = self._mock_download_transport()
+        file_obj = io.BytesIO()
+        download_url = 'http://test.invalid'
+        headers = {}
+        blob._do_download(transport, file_obj, download_url, headers)
+        # Make sure the download was as expected.
+        self.assertEqual(file_obj.getvalue(), b'abcdef')
+
+        # Check that the transport was called exactly twice.
+        self.assertEqual(transport.request.call_count, 2)
+        # ``headers`` was modified (in place) once for each API call.
+        self.assertEqual(headers, {'range': 'bytes=3-5'})
+        call = mock.call(
+            'GET', download_url, data=None, headers=headers)
+        self.assertEqual(transport.request.mock_calls, [call, call])
+
     @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_to_file_wo_media_link(self, fake_session_factory):
-        from io import BytesIO
-        from six.moves.http_client import OK
-        from six.moves.http_client import PARTIAL_CONTENT
+    def test_download_to_file_with_failure(self, fake_session_factory):
+        from google.cloud import exceptions
 
         blob_name = 'blob-name'
-        fake_session_factory.return_value = self._mock_transport()
+        transport = mock.Mock(spec=['request'])
+        bad_response_headers = {
+            'Content-Length': '9',
+            'Content-Type': 'text/html; charset=UTF-8',
+        }
+        transport.request.return_value = self._mock_requests_response(
+            http_client.NOT_FOUND, bad_response_headers, content=b'Not found')
+        fake_session_factory.return_value = transport
+        # Create a fake client/bucket and use them in the Blob() constructor.
+        client = mock.Mock(
+            _credentials=_make_credentials(), spec=['_credentials'])
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        # Set the media link on the blob
+        blob._properties['mediaLink'] = 'http://test.invalid'
+
+        file_obj = io.BytesIO()
+        with self.assertRaises(exceptions.NotFound):
+            blob.download_to_file(file_obj)
+
+        self.assertEqual(file_obj.tell(), 0)
+        # Check that exactly one transport was created.
+        fake_session_factory.assert_called_once_with(client._credentials)
+        # Check that the transport was called once.
+        transport.request.assert_called_once_with(
+            'GET', blob.media_link, data=None, headers={})
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_to_file_wo_media_link(self, fake_session_factory):
+        blob_name = 'blob-name'
+        fake_session_factory.return_value = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(
             _credentials=_make_credentials(), spec=['_credentials'])
@@ -398,7 +508,7 @@ class Test_Blob(unittest.TestCase):
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
 
-        file_obj = BytesIO()
+        file_obj = io.BytesIO()
         blob.download_to_file(file_obj)
         self.assertEqual(file_obj.getvalue(), b'abcdef')
         # Make sure the media link is still unknown.
@@ -411,12 +521,8 @@ class Test_Blob(unittest.TestCase):
 
     @mock.patch('google.auth.transport.requests.AuthorizedSession')
     def _download_to_file_helper(self, fake_session_factory, use_chunks=False):
-        from io import BytesIO
-        from six.moves.http_client import OK
-        from six.moves.http_client import PARTIAL_CONTENT
-
         blob_name = 'blob-name'
-        fake_transport = self._mock_transport()
+        fake_transport = self._mock_download_transport()
         fake_session_factory.return_value = fake_transport
         # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(
@@ -432,12 +538,12 @@ class Test_Blob(unittest.TestCase):
         else:
             # Modify the response.
             single_chunk_response = self._mock_requests_response(
-                OK,
+                http_client.OK,
                 {'content-length': '6', 'content-range': 'bytes 0-5/6'},
                 content=b'abcdef')
             fake_transport.request.side_effect = [single_chunk_response]
 
-        file_obj = BytesIO()
+        file_obj = io.BytesIO()
         blob.download_to_file(file_obj)
         self.assertEqual(file_obj.getvalue(), b'abcdef')
 
@@ -455,23 +561,22 @@ class Test_Blob(unittest.TestCase):
     def test_download_to_file_with_chunk_size(self):
         self._download_to_file_helper(use_chunks=True)
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_to_filename(self, fake_session_factory):
+    def _download_to_filename_helper(self, fake_session_factory, updated=None):
         import os
         import time
-        from six.moves.http_client import OK
-        from six.moves.http_client import PARTIAL_CONTENT
         from google.cloud._testing import _NamedTemporaryFile
 
         blob_name = 'blob-name'
-        fake_session_factory.return_value = self._mock_transport()
+        fake_session_factory.return_value = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(
             _credentials=_make_credentials(), spec=['_credentials'])
         bucket = _Bucket(client)
         media_link = 'http://example.com/media/'
-        properties = {'mediaLink': media_link,
-                      'updated': '2014-12-06T13:13:50.690Z'}
+        properties = {'mediaLink': media_link}
+        if updated is not None:
+            properties['updated'] = updated
+
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
         # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -481,24 +586,35 @@ class Test_Blob(unittest.TestCase):
             blob.download_to_filename(temp.name)
             with open(temp.name, 'rb') as file_obj:
                 wrote = file_obj.read()
-                mtime = os.path.getmtime(temp.name)
-                updated_time = time.mktime(blob.updated.timetuple())
+                if updated is None:
+                    self.assertIsNone(blob.updated)
+                else:
+                    mtime = os.path.getmtime(temp.name)
+                    updated_time = time.mktime(blob.updated.timetuple())
+                    self.assertEqual(mtime, updated_time)
 
         self.assertEqual(wrote, b'abcdef')
-        self.assertEqual(mtime, updated_time)
 
         self._check_session_mocks(client, fake_session_factory, media_link)
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_to_filename(self, fake_session_factory):
+        updated = '2014-12-06T13:13:50.690Z'
+        self._download_to_filename_helper(
+            fake_session_factory, updated=updated)
+
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test_download_to_filename_wo_updated(self, fake_session_factory):
+        self._download_to_filename_helper(fake_session_factory)
 
     @mock.patch('google.auth.transport.requests.AuthorizedSession')
     def test_download_to_filename_w_key(self, fake_session_factory):
         import os
         import time
-        from six.moves.http_client import OK
-        from six.moves.http_client import PARTIAL_CONTENT
         from google.cloud._testing import _NamedTemporaryFile
 
         blob_name = 'blob-name'
-        fake_session_factory.return_value = self._mock_transport()
+        fake_session_factory.return_value = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(
             _credentials=_make_credentials(), spec=['_credentials'])
@@ -535,11 +651,8 @@ class Test_Blob(unittest.TestCase):
 
     @mock.patch('google.auth.transport.requests.AuthorizedSession')
     def test_download_as_string(self, fake_session_factory):
-        from six.moves.http_client import OK
-        from six.moves.http_client import PARTIAL_CONTENT
-
         blob_name = 'blob-name'
-        fake_session_factory.return_value = self._mock_transport()
+        fake_session_factory.return_value = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
         client = mock.Mock(
             _credentials=_make_credentials(), spec=['_credentials'])
@@ -556,720 +669,656 @@ class Test_Blob(unittest.TestCase):
 
         self._check_session_mocks(client, fake_session_factory, media_link)
 
-    def test_upload_from_file_size_failure(self):
-        BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        file_obj = object()
-        with self.assertRaises(ValueError):
-            blob.upload_from_file(file_obj, size=None)
+    def test__get_content_type_explicit(self):
+        blob = self._make_one(u'blob-name', bucket=None)
 
-    def _upload_from_file_simple_test_helper(self, properties=None,
-                                             content_type_arg=None,
-                                             expected_content_type=None,
-                                             chunk_size=5,
-                                             status=None):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _NamedTemporaryFile
+        content_type = u'text/plain'
+        return_value = blob._get_content_type(content_type)
+        self.assertEqual(return_value, content_type)
 
-        BLOB_NAME = 'blob-name'
-        DATA = b'ABCDEF'
-        if status is None:
-            status = OK
-        response = {'status': status}
-        connection = _Connection(
-            (response, b'{}'),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = chunk_size
+    def test__get_content_type_from_blob(self):
+        blob = self._make_one(u'blob-name', bucket=None)
+        blob.content_type = u'video/mp4'
 
-        with _NamedTemporaryFile() as temp:
-            with open(temp.name, 'wb') as file_obj:
-                file_obj.write(DATA)
+        return_value = blob._get_content_type(None)
+        self.assertEqual(return_value, blob.content_type)
 
-            with open(temp.name, 'rb') as file_obj:
-                blob.upload_from_file(file_obj, rewind=True,
-                                      content_type=content_type_arg)
+    def test__get_content_type_from_filename(self):
+        blob = self._make_one(u'blob-name', bucket=None)
 
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = {
-            x.title(): str(y) for x, y in rq[0]['headers'].items()}
-        self.assertEqual(headers['Content-Length'], '6')
-        self.assertEqual(headers['Content-Type'], expected_content_type)
+        return_value = blob._get_content_type(None, filename='archive.tar')
+        self.assertEqual(return_value, 'application/x-tar')
 
-    def test_upload_from_file_stream(self):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud.streaming import http_wrapper
+    def test__get_content_type_default(self):
+        blob = self._make_one(u'blob-name', bucket=None)
 
-        BLOB_NAME = 'blob-name'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = b'ABCDE'
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
-                           'range': 'bytes 0-4'}
-        chunk2_response = {'status': OK}
-        # Need valid JSON on last response, since resumable.
-        connection = _Connection(
-            (loc_response, b''),
-            (chunk1_response, b''),
-            (chunk2_response, b'{}'),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
+        return_value = blob._get_content_type(None)
+        self.assertEqual(return_value, u'application/octet-stream')
 
-        file_obj = _Stream(DATA)
+    def test__get_writable_metadata_no_changes(self):
+        name = u'blob-name'
+        blob = self._make_one(name, bucket=None)
 
-        # Mock stream closes at end of data, like a socket might
-        def is_stream_closed(stream):
-            if stream.tell() < len(DATA):
-                return stream._closed
-            else:
-                return stream.close() or True
+        object_metadata = blob._get_writable_metadata()
+        expected = {'name': name}
+        self.assertEqual(object_metadata, expected)
 
-        _Stream.closed = property(is_stream_closed)
+    def test__get_writable_metadata_with_changes(self):
+        name = u'blob-name'
+        blob = self._make_one(name, bucket=None)
+        blob.storage_class = 'NEARLINE'
+        blob.cache_control = 'max-age=3600'
+        blob.metadata = {'color': 'red'}
 
-        def fileno_mock():
-            from io import UnsupportedOperation
-            raise UnsupportedOperation()
+        object_metadata = blob._get_writable_metadata()
+        expected = {
+            'cacheControl': blob.cache_control,
+            'metadata': blob.metadata,
+            'name': name,
+            'storageClass': blob.storage_class,
+        }
+        self.assertEqual(object_metadata, expected)
 
-        file_obj.fileno = fileno_mock
+    def test__get_writable_metadata_unwritable_field(self):
+        name = u'blob-name'
+        properties = {'updated': '2016-10-16T18:18:18.181Z'}
+        blob = self._make_one(name, bucket=None, properties=properties)
+        # Fake that `updated` is in changes.
+        blob._changes.add('updated')
 
-        blob.upload_from_file(file_obj)
+        object_metadata = blob._get_writable_metadata()
+        expected = {'name': name}
+        self.assertEqual(object_metadata, expected)
 
-        # Remove the temp property
-        delattr(_Stream, "closed")
+    def test__get_upload_arguments(self):
+        name = u'blob-name'
+        key = b'[pXw@,p@@AfBfrR3x-2b2SCHR,.?YwRO'
+        blob = self._make_one(name, bucket=None, encryption_key=key)
+        blob.content_disposition = 'inline'
 
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 3)
+        content_type = u'image/jpeg'
+        info = blob._get_upload_arguments(content_type)
 
-        # Requested[0]
-        headers = {
-            x.title(): str(y) for x, y in rq[0].pop('headers').items()}
-        self.assertEqual(headers['Content-Length'], '0')
-        self.assertEqual(headers['X-Upload-Content-Type'],
-                         'application/octet-stream')
+        headers, object_metadata, new_content_type = info
+        header_key_value = 'W3BYd0AscEBAQWZCZnJSM3gtMmIyU0NIUiwuP1l3Uk8='
+        header_key_hash_value = 'G0++dxF4q5rG4o9kE8gvEKn15RH6wLm0wXV1MgAlXOg='
+        expected_headers = {
+            'X-Goog-Encryption-Algorithm': 'AES256',
+            'X-Goog-Encryption-Key': header_key_value,
+            'X-Goog-Encryption-Key-Sha256': header_key_hash_value,
+        }
+        self.assertEqual(headers, expected_headers)
+        expected_metadata = {
+            'contentDisposition': blob.content_disposition,
+            'name': name,
+        }
+        self.assertEqual(object_metadata, expected_metadata)
+        self.assertEqual(new_content_type, content_type)
 
-        uri = rq[0].pop('uri')
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': BLOB_NAME})
-        self.assertEqual(rq[0], {
-            'method': 'POST',
-            'body': '',
-            'connection_type': None,
-            'redirections': 5,
-        })
+    def _mock_transport(self, status_code, headers, content=b''):
+        fake_transport = mock.Mock(spec=['request'])
+        fake_response = self._mock_requests_response(
+            status_code, headers, content=content)
+        fake_transport.request.return_value = fake_response
+        return fake_transport
 
-        # Requested[1]
-        headers = {
-            x.title(): str(y) for x, y in rq[1].pop('headers').items()}
-        self.assertEqual(headers['Content-Range'], 'bytes 0-4/*')
-        self.assertEqual(rq[1], {
-            'method': 'PUT',
-            'uri': UPLOAD_URL,
-            'body': DATA[:5],
-            'connection_type': None,
-            'redirections': 5,
-        })
+    def _do_multipart_success(self, mock_get_boundary, size=None,
+                              num_retries=None):
+        bucket = mock.Mock(path='/b/w00t', spec=[u'path'])
+        blob = self._make_one(u'blob-name', bucket=bucket)
+        self.assertIsNone(blob.chunk_size)
 
-        # Requested[2]
-        headers = {
-            x.title(): str(y) for x, y in rq[2].pop('headers').items()}
-        self.assertEqual(headers['Content-Range'], 'bytes */5')
-        self.assertEqual(rq[2], {
-            'method': 'PUT',
-            'uri': UPLOAD_URL,
-            'body': DATA[5:],
-            'connection_type': None,
-            'redirections': 5,
-        })
+        # Create mocks to be checked for doing transport.
+        fake_transport = self._mock_transport(http_client.OK, {})
+        blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
-    def test_upload_from_file_simple(self):
-        self._upload_from_file_simple_test_helper(
-            expected_content_type='application/octet-stream')
+        # Create some mock arguments.
+        client = mock.sentinel.mock
+        data = b'data here hear hier'
+        stream = io.BytesIO(data)
+        content_type = u'application/xml'
+        response = blob._do_multipart_upload(
+            client, stream, content_type, size, num_retries)
 
-    def test_upload_from_file_simple_not_found(self):
-        from six.moves.http_client import NOT_FOUND
-        from google.cloud.exceptions import NotFound
+        # Check the mocks and the returned value.
+        self.assertIs(response, fake_transport.request.return_value)
+        if size is None:
+            data_read = data
+            self.assertEqual(stream.tell(), len(data))
+        else:
+            data_read = data[:size]
+            self.assertEqual(stream.tell(), size)
 
-        with self.assertRaises(NotFound):
-            self._upload_from_file_simple_test_helper(status=NOT_FOUND)
+        blob._make_transport.assert_called_once_with(client)
+        mock_get_boundary.assert_called_once_with()
 
-    def test_upload_from_file_simple_w_chunk_size_None(self):
-        self._upload_from_file_simple_test_helper(
-            expected_content_type='application/octet-stream',
-            chunk_size=None)
+        upload_url = (
+            'https://www.googleapis.com/upload/storage/v1' +
+            bucket.path +
+            '/o?uploadType=multipart')
+        payload = (
+            b'--==0==\r\n' +
+            b'content-type: application/json; charset=UTF-8\r\n\r\n' +
+            b'{"name": "blob-name"}\r\n' +
+            b'--==0==\r\n' +
+            b'content-type: application/xml\r\n\r\n' +
+            data_read +
+            b'\r\n--==0==--')
+        headers = {'content-type': b'multipart/related; boundary="==0=="'}
+        fake_transport.request.assert_called_once_with(
+            'POST', upload_url, data=payload, headers=headers)
 
-    def test_upload_from_file_simple_with_content_type(self):
-        EXPECTED_CONTENT_TYPE = 'foo/bar'
-        self._upload_from_file_simple_test_helper(
-            properties={'contentType': EXPECTED_CONTENT_TYPE},
-            expected_content_type=EXPECTED_CONTENT_TYPE)
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload_no_size(self, mock_get_boundary):
+        self._do_multipart_success(mock_get_boundary)
 
-    def test_upload_from_file_simple_with_content_type_passed(self):
-        EXPECTED_CONTENT_TYPE = 'foo/bar'
-        self._upload_from_file_simple_test_helper(
-            content_type_arg=EXPECTED_CONTENT_TYPE,
-            expected_content_type=EXPECTED_CONTENT_TYPE)
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload_with_size(self, mock_get_boundary):
+        self._do_multipart_success(mock_get_boundary, size=10)
 
-    def test_upload_from_file_simple_both_content_type_sources(self):
-        EXPECTED_CONTENT_TYPE = 'foo/bar'
-        ALT_CONTENT_TYPE = 'foo/baz'
-        self._upload_from_file_simple_test_helper(
-            properties={'contentType': ALT_CONTENT_TYPE},
-            content_type_arg=EXPECTED_CONTENT_TYPE,
-            expected_content_type=EXPECTED_CONTENT_TYPE)
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload_with_retry(self, mock_get_boundary):
+        self._do_multipart_success(mock_get_boundary, num_retries=8)
 
-    def test_upload_from_file_resumable(self):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.streaming import http_wrapper
+    def test__do_multipart_upload_bad_size(self):
+        blob = self._make_one(u'blob-name', bucket=None)
 
-        BLOB_NAME = 'blob-name'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = b'ABCDEF'
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
-                           'range': 'bytes 0-4'}
-        chunk2_response = {'status': OK}
-        # Need valid JSON on last response, since resumable.
-        connection = _Connection(
-            (loc_response, b''),
-            (chunk1_response, b''),
-            (chunk2_response, b'{}'),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
+        data = b'data here hear hier'
+        stream = io.BytesIO(data)
+        size = 50
+        self.assertGreater(size, len(data))
 
-        # Set the threshhold low enough that we force a resumable upload.
-        patch = mock.patch(
-            'google.cloud.streaming.transfer.RESUMABLE_UPLOAD_THRESHOLD',
-            new=5)
+        with self.assertRaises(ValueError) as exc_info:
+            blob._do_multipart_upload(None, stream, None, size, None)
 
-        with patch:
-            with _NamedTemporaryFile() as temp:
-                with open(temp.name, 'wb') as file_obj:
-                    file_obj.write(DATA)
-                with open(temp.name, 'rb') as file_obj:
-                    blob.upload_from_file(file_obj, rewind=True)
+        exc_contents = str(exc_info.exception)
+        self.assertIn(
+            'was specified but the file-like object only had', exc_contents)
+        self.assertEqual(stream.tell(), len(data))
 
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 3)
+    def _initiate_resumable_helper(self, size=None, extra_headers=None,
+                                   chunk_size=None, num_retries=None):
+        from google.resumable_media.requests import ResumableUpload
 
-        # Requested[0]
-        headers = {
-            x.title(): str(y) for x, y in rq[0].pop('headers').items()}
-        self.assertEqual(headers['X-Upload-Content-Length'], '6')
-        self.assertEqual(headers['X-Upload-Content-Type'],
-                         'application/octet-stream')
+        bucket = mock.Mock(path='/b/whammy', spec=[u'path'])
+        blob = self._make_one(u'blob-name', bucket=bucket)
+        blob.metadata = {'rook': 'takes knight'}
+        blob.chunk_size = 3 * blob._CHUNK_SIZE_MULTIPLE
+        self.assertIsNotNone(blob.chunk_size)
 
-        uri = rq[0].pop('uri')
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': BLOB_NAME})
-        self.assertEqual(rq[0], {
-            'method': 'POST',
-            'body': '',
-            'connection_type': None,
-            'redirections': 5,
-        })
+        # Need to make sure **same** dict is used because ``json.dumps()``
+        # will depend on the hash order.
+        object_metadata = blob._get_writable_metadata()
+        blob._get_writable_metadata = mock.Mock(
+            return_value=object_metadata, spec=[])
 
-        # Requested[1]
-        headers = {
-            x.title(): str(y) for x, y in rq[1].pop('headers').items()}
-        self.assertEqual(headers['Content-Range'], 'bytes 0-4/6')
-        self.assertEqual(rq[1], {
-            'method': 'PUT',
-            'uri': UPLOAD_URL,
-            'body': DATA[:5],
-            'connection_type': None,
-            'redirections': 5,
-        })
+        # Create mocks to be checked for doing transport.
+        resumable_url = 'http://test.invalid?upload_id=hey-you'
+        response_headers = {'location': resumable_url}
+        fake_transport = self._mock_transport(
+            http_client.OK, response_headers)
+        blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
-        # Requested[2]
-        headers = {
-            x.title(): str(y) for x, y in rq[2].pop('headers').items()}
-        self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
-        self.assertEqual(rq[2], {
-            'method': 'PUT',
-            'uri': UPLOAD_URL,
-            'body': DATA[5:],
-            'connection_type': None,
-            'redirections': 5,
-        })
+        # Create some mock arguments and call the method under test.
+        client = mock.sentinel.mock
+        data = b'hello hallo halo hi-low'
+        stream = io.BytesIO(data)
+        content_type = u'text/plain'
+        upload, transport = blob._initiate_resumable_upload(
+            client, stream, content_type, size, num_retries,
+            extra_headers=extra_headers, chunk_size=chunk_size)
 
-    def test_upload_from_file_resumable_w_error(self):
-        from six.moves.http_client import NOT_FOUND
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.streaming.exceptions import HttpError
+        # Check the returned values.
+        self.assertIsInstance(upload, ResumableUpload)
+        upload_url = (
+            'https://www.googleapis.com/upload/storage/v1' +
+            bucket.path +
+            '/o?uploadType=resumable')
+        self.assertEqual(upload.upload_url, upload_url)
+        if extra_headers is None:
+            self.assertEqual(upload._headers, {})
+        else:
+            self.assertEqual(upload._headers, extra_headers)
+            self.assertIsNot(upload._headers, extra_headers)
+        self.assertFalse(upload.finished)
+        if chunk_size is None:
+            self.assertEqual(upload._chunk_size, blob.chunk_size)
+        else:
+            self.assertNotEqual(blob.chunk_size, chunk_size)
+            self.assertEqual(upload._chunk_size, chunk_size)
+        self.assertIs(upload._stream, stream)
+        if size is None:
+            self.assertIsNone(upload._total_bytes)
+        else:
+            self.assertEqual(upload._total_bytes, size)
+        self.assertEqual(upload._content_type, content_type)
+        self.assertEqual(upload.resumable_url, resumable_url)
+        retry_strategy = upload._retry_strategy
+        self.assertEqual(retry_strategy.max_sleep, 64.0)
+        if num_retries is None:
+            self.assertEqual(retry_strategy.max_cumulative_retry, 600.0)
+            self.assertIsNone(retry_strategy.max_retries)
+        else:
+            self.assertIsNone(retry_strategy.max_cumulative_retry)
+            self.assertEqual(retry_strategy.max_retries, num_retries)
+        self.assertIs(transport, fake_transport)
+        # Make sure we never read from the stream.
+        self.assertEqual(stream.tell(), 0)
 
-        BLOB_NAME = 'blob-name'
-        DATA = b'ABCDEF'
-        loc_response = {'status': NOT_FOUND}
-        connection = _Connection(
-            (loc_response, b'{"error": "no such bucket"}'),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
+        # Check the mocks.
+        blob._get_writable_metadata.assert_called_once_with()
+        blob._make_transport.assert_called_once_with(client)
+        payload = json.dumps(object_metadata).encode('utf-8')
+        expected_headers = {
+            'content-type': 'application/json; charset=UTF-8',
+            'x-upload-content-type': content_type,
+        }
+        if size is not None:
+            expected_headers['x-upload-content-length'] = str(size)
+        if extra_headers is not None:
+            expected_headers.update(extra_headers)
+        fake_transport.request.assert_called_once_with(
+            'POST', upload_url, data=payload, headers=expected_headers)
 
-        # Set the threshhold low enough that we force a resumable upload.
-        patch = mock.patch(
-            'google.cloud.streaming.transfer.RESUMABLE_UPLOAD_THRESHOLD',
-            new=5)
+    def test__initiate_resumable_upload_no_size(self):
+        self._initiate_resumable_helper()
 
-        with patch:
-            with _NamedTemporaryFile() as temp:
-                with open(temp.name, 'wb') as file_obj:
-                    file_obj.write(DATA)
-                with open(temp.name, 'rb') as file_obj:
-                    with self.assertRaises(HttpError):
-                        blob.upload_from_file(file_obj, rewind=True)
+    def test__initiate_resumable_upload_with_size(self):
+        self._initiate_resumable_helper(size=10000)
 
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
+    def test__initiate_resumable_upload_with_chunk_size(self):
+        one_mb = 1048576
+        self._initiate_resumable_helper(chunk_size=one_mb)
 
-        # Requested[0]
-        headers = {
-            x.title(): str(y) for x, y in rq[0].pop('headers').items()}
-        self.assertEqual(headers['X-Upload-Content-Length'], '6')
-        self.assertEqual(headers['X-Upload-Content-Type'],
-                         'application/octet-stream')
+    def test__initiate_resumable_upload_with_extra_headers(self):
+        extra_headers = {'origin': 'http://not-in-kansas-anymore.invalid'}
+        self._initiate_resumable_helper(extra_headers=extra_headers)
 
-        uri = rq[0].pop('uri')
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': BLOB_NAME})
-        self.assertEqual(rq[0], {
-            'method': 'POST',
-            'body': '',
-            'connection_type': None,
-            'redirections': 5,
-        })
+    def test__initiate_resumable_upload_with_retry(self):
+        self._initiate_resumable_helper(num_retries=11)
 
-    def test_upload_from_file_w_slash_in_name(self):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.streaming import http_wrapper
+    def _make_resumable_transport(self, headers1, headers2,
+                                  headers3, total_bytes):
+        from google import resumable_media
 
-        BLOB_NAME = 'parent/child'
-        UPLOAD_URL = 'http://example.com/upload/name/parent%2Fchild'
-        DATA = b'ABCDEF'
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
-                           'range': 'bytes 0-4'}
-        chunk2_response = {'status': OK}
-        connection = _Connection(
-            (loc_response, '{}'),
-            (chunk1_response, ''),
-            (chunk2_response, ''),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
+        fake_transport = mock.Mock(spec=['request'])
 
-        with _NamedTemporaryFile() as temp:
-            with open(temp.name, 'wb') as file_obj:
-                file_obj.write(DATA)
-            with open(temp.name, 'rb') as file_obj:
-                blob.upload_from_file(file_obj, rewind=True)
-                self.assertEqual(file_obj.tell(), len(DATA))
+        fake_response1 = self._mock_requests_response(
+            http_client.OK, headers1)
+        fake_response2 = self._mock_requests_response(
+            resumable_media.PERMANENT_REDIRECT, headers2)
+        json_body = '{{"size": "{:d}"}}'.format(total_bytes)
+        fake_response3 = self._mock_requests_response(
+            http_client.OK, headers3, content=json_body)
 
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['redirections'], 5)
-        self.assertEqual(rq[0]['body'], DATA)
-        self.assertIsNone(rq[0]['connection_type'])
-        self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': 'parent/child'})
-        headers = {
-            x.title(): str(y) for x, y in rq[0]['headers'].items()}
-        self.assertEqual(headers['Content-Length'], '6')
-        self.assertEqual(headers['Content-Type'], 'application/octet-stream')
+        responses = [fake_response1, fake_response2, fake_response3]
+        fake_transport.request.side_effect = responses
+        return fake_transport, responses
 
-    def test_upload_from_filename_w_key(self):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.streaming import http_wrapper
+    @staticmethod
+    def _do_resumable_upload_call0(blob, content_type, size=None):
+        # First mock transport.request() does initiates upload.
+        upload_url = (
+            'https://www.googleapis.com/upload/storage/v1' +
+            blob.bucket.path +
+            '/o?uploadType=resumable')
+        expected_headers = {
+            'content-type': 'application/json; charset=UTF-8',
+            'x-upload-content-type': content_type,
+        }
+        if size is not None:
+            expected_headers['x-upload-content-length'] = str(size)
+        payload = json.dumps({'name': blob.name}).encode('utf-8')
+        return mock.call(
+            'POST', upload_url, data=payload, headers=expected_headers)
 
-        BLOB_NAME = 'blob-name'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = b'ABCDEF'
-        KEY = b'aa426195405adee2c8081bb9e7e74b19'
-        HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
-        HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
-        EXPECTED_CONTENT_TYPE = 'foo/bar'
-        properties = {'contentType': EXPECTED_CONTENT_TYPE}
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
-                           'range': 'bytes 0-4'}
-        chunk2_response = {'status': OK}
-        connection = _Connection(
-            (loc_response, '{}'),
-            (chunk1_response, ''),
-            (chunk2_response, ''),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket,
-                              properties=properties, encryption_key=KEY)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
+    @staticmethod
+    def _do_resumable_upload_call1(blob, content_type, data,
+                                   resumable_url, size=None):
+        # Second mock transport.request() does sends first chunk.
+        if size is None:
+            content_range = 'bytes 0-{:d}/*'.format(blob.chunk_size - 1)
+        else:
+            content_range = 'bytes 0-{:d}/{:d}'.format(
+                blob.chunk_size - 1, size)
 
-        with _NamedTemporaryFile(suffix='.jpeg') as temp:
-            with open(temp.name, 'wb') as file_obj:
-                file_obj.write(DATA)
-            blob.upload_from_filename(temp.name,
-                                      content_type=EXPECTED_CONTENT_TYPE)
+        expected_headers = {
+            'content-type': content_type,
+            'content-range': content_range,
+        }
+        payload = data[:blob.chunk_size]
+        return mock.call(
+            'PUT', resumable_url, data=payload, headers=expected_headers)
 
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = {
-            x.title(): str(y) for x, y in rq[0]['headers'].items()}
-        self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
-        self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)
-        self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'],
-                         HEADER_KEY_HASH_VALUE)
-        self.assertEqual(headers['Content-Length'], '6')
-        self.assertEqual(headers['Content-Type'], 'foo/bar')
+    @staticmethod
+    def _do_resumable_upload_call2(blob, content_type, data,
+                                   resumable_url, total_bytes):
+        # Third mock transport.request() does sends last chunk.
+        content_range = 'bytes {:d}-{:d}/{:d}'.format(
+            blob.chunk_size, total_bytes - 1, total_bytes)
+        expected_headers = {
+            'content-type': content_type,
+            'content-range': content_range,
+        }
+        payload = data[blob.chunk_size:]
+        return mock.call(
+            'PUT', resumable_url, data=payload, headers=expected_headers)
 
-    def _upload_from_filename_test_helper(self, properties=None,
-                                          content_type_arg=None,
-                                          expected_content_type=None):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.streaming import http_wrapper
+    def _do_resumable_helper(self, use_size=False, num_retries=None):
+        bucket = mock.Mock(path='/b/yesterday', spec=[u'path'])
+        blob = self._make_one(u'blob-name', bucket=bucket)
+        blob.chunk_size = blob._CHUNK_SIZE_MULTIPLE
+        self.assertIsNotNone(blob.chunk_size)
 
-        BLOB_NAME = 'blob-name'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = b'ABCDEF'
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
-                           'range': 'bytes 0-4'}
-        chunk2_response = {'status': OK}
-        connection = _Connection(
-            (loc_response, '{}'),
-            (chunk1_response, ''),
-            (chunk2_response, ''),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket,
-                              properties=properties)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
+        # Data to be uploaded.
+        data = b'<html>' + (b'A' * blob.chunk_size) + b'</html>'
+        total_bytes = len(data)
+        if use_size:
+            size = total_bytes
+        else:
+            size = None
 
-        with _NamedTemporaryFile(suffix='.jpeg') as temp:
-            with open(temp.name, 'wb') as file_obj:
-                file_obj.write(DATA)
-            blob.upload_from_filename(temp.name,
-                                      content_type=content_type_arg)
+        # Create mocks to be checked for doing transport.
+        resumable_url = 'http://test.invalid?upload_id=and-then-there-was-1'
+        headers1 = {'location': resumable_url}
+        headers2 = {'range': 'bytes=0-{:d}'.format(blob.chunk_size - 1)}
+        fake_transport, responses = self._make_resumable_transport(
+            headers1, headers2, {}, total_bytes)
+        blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = {
-            x.title(): str(y) for x, y in rq[0]['headers'].items()}
-        self.assertEqual(headers['Content-Length'], '6')
-        self.assertEqual(headers['Content-Type'], expected_content_type)
+        # Create some mock arguments and call the method under test.
+        client = mock.sentinel.mock
+        stream = io.BytesIO(data)
+        content_type = u'text/html'
+        response = blob._do_resumable_upload(
+            client, stream, content_type, size, num_retries)
+
+        # Check the returned values.
+        self.assertIs(response, responses[2])
+        self.assertEqual(stream.tell(), total_bytes)
+
+        # Check the mocks.
+        blob._make_transport.assert_called_once_with(client)
+        call0 = self._do_resumable_upload_call0(blob, content_type, size=size)
+        call1 = self._do_resumable_upload_call1(
+            blob, content_type, data, resumable_url, size=size)
+        call2 = self._do_resumable_upload_call2(
+            blob, content_type, data, resumable_url, total_bytes)
+        self.assertEqual(
+            fake_transport.request.mock_calls, [call0, call1, call2])
+
+    def test__do_resumable_upload_no_size(self):
+        self._do_resumable_helper()
+
+    def test__do_resumable_upload_with_size(self):
+        self._do_resumable_helper(use_size=True)
+
+    def test__do_resumable_upload_with_retry(self):
+        self._do_resumable_helper(num_retries=6)
+
+    def _do_upload_helper(self, chunk_size=None, num_retries=None):
+        blob = self._make_one(u'blob-name', bucket=None)
+
+        # Create a fake response.
+        response = mock.Mock(spec=[u'json'])
+        response.json.return_value = mock.sentinel.json
+        # Mock **both** helpers.
+        blob._do_multipart_upload = mock.Mock(return_value=response, spec=[])
+        blob._do_resumable_upload = mock.Mock(return_value=response, spec=[])
+
+        if chunk_size is None:
+            self.assertIsNone(blob.chunk_size)
+        else:
+            blob.chunk_size = chunk_size
+            self.assertIsNotNone(blob.chunk_size)
+
+        client = mock.sentinel.client
+        stream = mock.sentinel.stream
+        content_type = u'video/mp4'
+        size = 12345654321
+
+        # Make the request and check the mocks.
+        created_json = blob._do_upload(
+            client, stream, content_type, size, num_retries)
+        self.assertIs(created_json, mock.sentinel.json)
+        response.json.assert_called_once_with()
+        if chunk_size is None:
+            blob._do_multipart_upload.assert_called_once_with(
+                client, stream, content_type, size, num_retries)
+            blob._do_resumable_upload.assert_not_called()
+        else:
+            blob._do_multipart_upload.assert_not_called()
+            blob._do_resumable_upload.assert_called_once_with(
+                client, stream, content_type, size, num_retries)
+
+    def test__do_upload_without_chunk_size(self):
+        self._do_upload_helper()
+
+    def test__do_upload_with_chunk_size(self):
+        chunk_size = 1024 * 1024 * 1024  # 1GB
+        self._do_upload_helper(chunk_size=chunk_size)
+
+    def test__do_upload_with_retry(self):
+        self._do_upload_helper(num_retries=20)
+
+    def _upload_from_file_helper(self, side_effect=None, **kwargs):
+        from google.cloud._helpers import UTC
+
+        blob = self._make_one('blob-name', bucket=None)
+
+        # Mock low-level upload helper on blob (it is tested elsewhere).
+        created_json = {'updated': '2017-01-01T09:09:09.081Z'}
+        blob._do_upload = mock.Mock(return_value=created_json, spec=[])
+        if side_effect is not None:
+            blob._do_upload.side_effect = side_effect
+        # Make sure `updated` is empty before the request.
+        self.assertIsNone(blob.updated)
+
+        data = b'data is here'
+        stream = io.BytesIO(data)
+        stream.seek(2)  # Not at zero.
+        content_type = u'font/woff'
+        client = mock.sentinel.client
+        ret_val = blob.upload_from_file(
+            stream, size=len(data), content_type=content_type,
+            client=client, **kwargs)
+
+        # Check the response and side-effects.
+        self.assertIsNone(ret_val)
+        new_updated = datetime.datetime(
+            2017, 1, 1, 9, 9, 9, 81000, tzinfo=UTC)
+        self.assertEqual(blob.updated, new_updated)
+
+        # Check the mock.
+        num_retries = kwargs.get('num_retries')
+        blob._do_upload.assert_called_once_with(
+            client, stream, content_type, len(data), num_retries)
+
+        return stream
+
+    def test_upload_from_file_success(self):
+        stream = self._upload_from_file_helper()
+        assert stream.tell() == 2
+
+    @mock.patch('warnings.warn')
+    def test_upload_from_file_with_retries(self, mock_warn):
+        from google.cloud.storage import blob as blob_module
+
+        self._upload_from_file_helper(num_retries=20)
+        mock_warn.assert_called_once_with(
+            blob_module._NUM_RETRIES_MESSAGE, DeprecationWarning)
+
+    def test_upload_from_file_with_rewind(self):
+        stream = self._upload_from_file_helper(rewind=True)
+        assert stream.tell() == 0
+
+    def test_upload_from_file_failure(self):
+        from google.resumable_media import InvalidResponse
+        from google.cloud import exceptions
+
+        message = u'Someone is already in this spot.'
+        response = mock.Mock(
+            content=message, status_code=http_client.CONFLICT,
+            spec=[u'content', u'status_code'])
+        side_effect = InvalidResponse(response)
+
+        with self.assertRaises(exceptions.Conflict) as exc_info:
+            self._upload_from_file_helper(side_effect=side_effect)
+
+        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.errors, [])
+
+    def _do_upload_mock_call_helper(self, blob, client, content_type, size):
+        self.assertEqual(blob._do_upload.call_count, 1)
+        mock_call = blob._do_upload.mock_calls[0]
+        call_name, pos_args, kwargs = mock_call
+        self.assertEqual(call_name, '')
+        self.assertEqual(len(pos_args), 5)
+        self.assertEqual(pos_args[0], client)
+        self.assertEqual(pos_args[2], content_type)
+        self.assertEqual(pos_args[3], size)
+        self.assertIsNone(pos_args[4])  # num_retries
+        self.assertEqual(kwargs, {})
+
+        return pos_args[1]
 
     def test_upload_from_filename(self):
-        self._upload_from_filename_test_helper(
-            expected_content_type='image/jpeg')
+        from google.cloud._testing import _NamedTemporaryFile
 
-    def test_upload_from_filename_with_content_type(self):
-        EXPECTED_CONTENT_TYPE = 'foo/bar'
-        self._upload_from_filename_test_helper(
-            properties={'contentType': EXPECTED_CONTENT_TYPE},
-            expected_content_type=EXPECTED_CONTENT_TYPE)
+        blob = self._make_one('blob-name', bucket=None)
+        # Mock low-level upload helper on blob (it is tested elsewhere).
+        created_json = {'metadata': {'mint': 'ice-cream'}}
+        blob._do_upload = mock.Mock(return_value=created_json, spec=[])
+        # Make sure `metadata` is empty before the request.
+        self.assertIsNone(blob.metadata)
 
-    def test_upload_from_filename_with_content_type_passed(self):
-        EXPECTED_CONTENT_TYPE = 'foo/bar'
-        self._upload_from_filename_test_helper(
-            content_type_arg=EXPECTED_CONTENT_TYPE,
-            expected_content_type=EXPECTED_CONTENT_TYPE)
+        data = b'soooo much data'
+        content_type = u'image/svg+xml'
+        client = mock.sentinel.client
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'wb') as file_obj:
+                file_obj.write(data)
 
-    def test_upload_from_filename_both_content_type_sources(self):
-        EXPECTED_CONTENT_TYPE = 'foo/bar'
-        ALT_CONTENT_TYPE = 'foo/baz'
-        self._upload_from_filename_test_helper(
-            properties={'contentType': ALT_CONTENT_TYPE},
-            content_type_arg=EXPECTED_CONTENT_TYPE,
-            expected_content_type=EXPECTED_CONTENT_TYPE)
+            ret_val = blob.upload_from_filename(
+                temp.name, content_type=content_type, client=client)
+
+        # Check the response and side-effects.
+        self.assertIsNone(ret_val)
+        self.assertEqual(blob.metadata, created_json['metadata'])
+
+        # Check the mock.
+        stream = self._do_upload_mock_call_helper(
+            blob, client, content_type, len(data))
+        self.assertTrue(stream.closed)
+        self.assertEqual(stream.mode, 'rb')
+        self.assertEqual(stream.name, temp.name)
+
+    def _upload_from_string_helper(self, data, **kwargs):
+        from google.cloud._helpers import _to_bytes
+
+        blob = self._make_one('blob-name', bucket=None)
+
+        # Mock low-level upload helper on blob (it is tested elsewhere).
+        created_json = {'componentCount': '5'}
+        blob._do_upload = mock.Mock(return_value=created_json, spec=[])
+        # Make sure `metadata` is empty before the request.
+        self.assertIsNone(blob.component_count)
+
+        client = mock.sentinel.client
+        ret_val = blob.upload_from_string(data, client=client, **kwargs)
+
+        # Check the response and side-effects.
+        self.assertIsNone(ret_val)
+        self.assertEqual(blob.component_count, 5)
+
+        # Check the mock.
+        payload = _to_bytes(data, encoding='utf-8')
+        stream = self._do_upload_mock_call_helper(
+            blob, client, 'text/plain', len(payload))
+        self.assertIsInstance(stream, io.BytesIO)
+        self.assertEqual(stream.getvalue(), payload)
 
     def test_upload_from_string_w_bytes(self):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud.streaming import http_wrapper
-
-        BLOB_NAME = 'blob-name'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = b'ABCDEF'
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
-                           'range': 'bytes 0-4'}
-        chunk2_response = {'status': OK}
-        connection = _Connection(
-            (loc_response, '{}'),
-            (chunk1_response, ''),
-            (chunk2_response, ''),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
-        blob.upload_from_string(DATA)
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = {
-            x.title(): str(y) for x, y in rq[0]['headers'].items()}
-        self.assertEqual(headers['Content-Length'], '6')
-        self.assertEqual(headers['Content-Type'], 'text/plain')
-        self.assertEqual(rq[0]['body'], DATA)
+        data = b'XB]jb\xb8tad\xe0'
+        self._upload_from_string_helper(data)
 
     def test_upload_from_string_w_text(self):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud.streaming import http_wrapper
+        data = u'\N{snowman} \N{sailboat}'
+        self._upload_from_string_helper(data)
 
-        BLOB_NAME = 'blob-name'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = u'ABCDEF\u1234'
-        ENCODED = DATA.encode('utf-8')
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
-                           'range': 'bytes 0-4'}
-        chunk2_response = {'status': OK}
-        connection = _Connection(
-            (loc_response, '{}'),
-            (chunk1_response, ''),
-            (chunk2_response, ''),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client=client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
-        blob.upload_from_string(DATA)
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = {
-            x.title(): str(y) for x, y in rq[0]['headers'].items()}
-        self.assertEqual(headers['Content-Length'], str(len(ENCODED)))
-        self.assertEqual(headers['Content-Type'], 'text/plain')
-        self.assertEqual(rq[0]['body'], ENCODED)
+    def _create_resumable_upload_session_helper(self, origin=None,
+                                                side_effect=None):
+        bucket = mock.Mock(path='/b/alex-trebek', spec=[u'path'])
+        blob = self._make_one('blob-name', bucket=bucket)
+        chunk_size = 99 * blob._CHUNK_SIZE_MULTIPLE
+        blob.chunk_size = chunk_size
 
-    def test_upload_from_string_text_w_key(self):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
-        from google.cloud.streaming import http_wrapper
+        # Create mocks to be checked for doing transport.
+        resumable_url = 'http://test.invalid?upload_id=clean-up-everybody'
+        response_headers = {'location': resumable_url}
+        fake_transport = self._mock_transport(
+            http_client.OK, response_headers)
+        blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
+        if side_effect is not None:
+            fake_transport.request.side_effect = side_effect
 
-        BLOB_NAME = 'blob-name'
-        KEY = b'aa426195405adee2c8081bb9e7e74b19'
-        HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
-        HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = u'ABCDEF\u1234'
-        ENCODED = DATA.encode('utf-8')
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
-                           'range': 'bytes 0-4'}
-        chunk2_response = {'status': OK}
-        connection = _Connection(
-            (loc_response, '{}'),
-            (chunk1_response, ''),
-            (chunk2_response, ''),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client=client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=KEY)
-        blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
-        blob.upload_from_string(DATA)
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = {
-            x.title(): str(y) for x, y in rq[0]['headers'].items()}
+        # Create some mock arguments and call the method under test.
+        content_type = u'text/plain'
+        size = 10000
+        client = mock.sentinel.mock
+        new_url = blob.create_resumable_upload_session(
+            content_type=content_type, size=size,
+            origin=origin, client=client)
 
-        self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
-        self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)
-        self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'],
-                         HEADER_KEY_HASH_VALUE)
-        self.assertEqual(headers['Content-Length'], str(len(ENCODED)))
-        self.assertEqual(headers['Content-Type'], 'text/plain')
-        self.assertEqual(rq[0]['body'], ENCODED)
+        # Check the returned value and (lack of) side-effect.
+        self.assertEqual(new_url, resumable_url)
+        self.assertEqual(blob.chunk_size, chunk_size)
+
+        # Check the mocks.
+        blob._make_transport.assert_called_once_with(client)
+        upload_url = (
+            'https://www.googleapis.com/upload/storage/v1' +
+            bucket.path +
+            '/o?uploadType=resumable')
+        payload = b'{"name": "blob-name"}'
+        expected_headers = {
+            'content-type': 'application/json; charset=UTF-8',
+            'x-upload-content-length': str(size),
+            'x-upload-content-type': content_type,
+        }
+        if origin is not None:
+            expected_headers['Origin'] = origin
+        fake_transport.request.assert_called_once_with(
+            'POST', upload_url, data=payload, headers=expected_headers)
 
     def test_create_resumable_upload_session(self):
-        from six.moves.http_client import OK
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
+        self._create_resumable_upload_session_helper()
 
-        BLOB_NAME = 'blob-name'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        connection = _Connection(
-            (loc_response, '{}'),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client=client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
+    def test_create_resumable_upload_session_with_origin(self):
+        self._create_resumable_upload_session_helper(
+            origin='http://google.com')
 
-        resumable_url = blob.create_resumable_upload_session()
+    def test_create_resumable_upload_session_with_failure(self):
+        from google.resumable_media import InvalidResponse
+        from google.cloud import exceptions
 
-        self.assertEqual(resumable_url, UPLOAD_URL)
+        message = u'5-oh-3 woe is me.'
+        response = mock.Mock(
+            content=message, status_code=http_client.SERVICE_UNAVAILABLE,
+            spec=[u'content', u'status_code'])
+        side_effect = InvalidResponse(response)
 
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['method'], 'POST')
+        with self.assertRaises(exceptions.ServiceUnavailable) as exc_info:
+            self._create_resumable_upload_session_helper(
+                side_effect=side_effect)
 
-        uri = rq[0]['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual(scheme, 'http')
-        self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': BLOB_NAME})
-        headers = {
-            key.title(): str(value) for key, value in rq[0]['headers'].items()}
-        self.assertEqual(headers['Content-Length'], '0')
-        self.assertEqual(
-            headers['X-Upload-Content-Type'], 'application/octet-stream')
-
-    def test_create_resumable_upload_session_args(self):
-        from six.moves.http_client import OK
-
-        BLOB_NAME = 'blob-name'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
-        CONTENT_TYPE = 'text/plain'
-        SIZE = 1024
-        ORIGIN = 'http://google.com'
-
-        loc_response = {'status': OK, 'location': UPLOAD_URL}
-        connection = _Connection(
-            (loc_response, '{}'),
-        )
-        client = _Client(connection)
-        bucket = _Bucket(client=client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-
-        resumable_url = blob.create_resumable_upload_session(
-            content_type=CONTENT_TYPE,
-            size=SIZE,
-            origin=ORIGIN)
-
-        self.assertEqual(resumable_url, UPLOAD_URL)
-
-        rq = connection.http._requested
-        self.assertEqual(len(rq), 1)
-        self.assertEqual(rq[0]['method'], 'POST')
-
-        headers = {
-            key.title(): str(value) for key, value in rq[0]['headers'].items()}
-        self.assertEqual(headers['Content-Length'], '0')
-        self.assertEqual(headers['X-Upload-Content-Length'], str(SIZE))
-        self.assertEqual(
-            headers['X-Upload-Content-Type'], 'text/plain')
-        self.assertEqual(
-            headers['Origin'], ORIGIN)
+        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.errors, [])
 
     def test_get_iam_policy(self):
-        from six.moves.http_client import OK
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
         from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
         from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
@@ -1295,7 +1344,7 @@ class Test_Blob(unittest.TestCase):
                 {'role': STORAGE_VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
-        after = ({'status': OK}, RETURNED)
+        after = ({'status': http_client.OK}, RETURNED)
         EXPECTED = {
             binding['role']: set(binding['members'])
             for binding in RETURNED['bindings']}
@@ -1318,7 +1367,6 @@ class Test_Blob(unittest.TestCase):
 
     def test_set_iam_policy(self):
         import operator
-        from six.moves.http_client import OK
         from google.cloud.storage.iam import STORAGE_OWNER_ROLE
         from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
         from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
@@ -1344,7 +1392,7 @@ class Test_Blob(unittest.TestCase):
             'version': VERSION,
             'bindings': BINDINGS,
         }
-        after = ({'status': OK}, RETURNED)
+        after = ({'status': http_client.OK}, RETURNED)
         policy = Policy()
         for binding in BINDINGS:
             policy[binding['role']] = binding['members']
@@ -1376,7 +1424,6 @@ class Test_Blob(unittest.TestCase):
                 sorted(found['members']), sorted(expected['members']))
 
     def test_test_iam_permissions(self):
-        from six.moves.http_client import OK
         from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
         from google.cloud.storage.iam import STORAGE_BUCKETS_GET
         from google.cloud.storage.iam import STORAGE_BUCKETS_UPDATE
@@ -1390,7 +1437,7 @@ class Test_Blob(unittest.TestCase):
         ]
         ALLOWED = PERMISSIONS[1:]
         RETURNED = {'permissions': ALLOWED}
-        after = ({'status': OK}, RETURNED)
+        after = ({'status': http_client.OK}, RETURNED)
         connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1407,12 +1454,11 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['query_params'], {'permissions': PERMISSIONS})
 
     def test_make_public(self):
-        from six.moves.http_client import OK
         from google.cloud.storage.acl import _ACLEntity
 
         BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
-        after = ({'status': OK}, {'acl': permissive})
+        after = ({'status': http_client.OK}, {'acl': permissive})
         connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1442,15 +1488,13 @@ class Test_Blob(unittest.TestCase):
             destination.compose(sources=[source_1, source_2])
 
     def test_compose_minimal(self):
-        from six.moves.http_client import OK
-
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
         DESTINATION = 'destinaton'
         RESOURCE = {
             'etag': 'DEADBEEF'
         }
-        after = ({'status': OK}, RESOURCE)
+        after = ({'status': http_client.OK}, RESOURCE)
         connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1479,15 +1523,13 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['data'], SENT)
 
     def test_compose_w_additional_property_changes(self):
-        from six.moves.http_client import OK
-
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
         DESTINATION = 'destinaton'
         RESOURCE = {
             'etag': 'DEADBEEF'
         }
-        after = ({'status': OK}, RESOURCE)
+        after = ({'status': http_client.OK}, RESOURCE)
         connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1522,8 +1564,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['data'], SENT)
 
     def test_rewrite_response_without_resource(self):
-        from six.moves.http_client import OK
-
         SOURCE_BLOB = 'source'
         DEST_BLOB = 'dest'
         DEST_BUCKET = 'other-bucket'
@@ -1534,7 +1574,7 @@ class Test_Blob(unittest.TestCase):
             'done': False,
             'rewriteToken': TOKEN,
         }
-        response = ({'status': OK}, RESPONSE)
+        response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
         source_bucket = _Bucket(client=client)
@@ -1549,8 +1589,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(size, 42)
 
     def test_rewrite_other_bucket_other_name_no_encryption_partial(self):
-        from six.moves.http_client import OK
-
         SOURCE_BLOB = 'source'
         DEST_BLOB = 'dest'
         DEST_BUCKET = 'other-bucket'
@@ -1562,7 +1600,7 @@ class Test_Blob(unittest.TestCase):
             'rewriteToken': TOKEN,
             'resource': {'etag': 'DEADBEEF'},
         }
-        response = ({'status': OK}, RESPONSE)
+        response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
         source_bucket = _Bucket(client=client)
@@ -1598,7 +1636,6 @@ class Test_Blob(unittest.TestCase):
     def test_rewrite_same_name_no_old_key_new_key_done(self):
         import base64
         import hashlib
-        from six.moves.http_client import OK
 
         KEY = b'01234567890123456789012345678901'  # 32 bytes
         KEY_B64 = base64.b64encode(KEY).rstrip().decode('ascii')
@@ -1611,7 +1648,7 @@ class Test_Blob(unittest.TestCase):
             'done': True,
             'resource': {'etag': 'DEADBEEF'},
         }
-        response = ({'status': OK}, RESPONSE)
+        response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1646,7 +1683,6 @@ class Test_Blob(unittest.TestCase):
     def test_rewrite_same_name_no_key_new_key_w_token(self):
         import base64
         import hashlib
-        from six.moves.http_client import OK
 
         SOURCE_KEY = b'01234567890123456789012345678901'  # 32 bytes
         SOURCE_KEY_B64 = base64.b64encode(SOURCE_KEY).rstrip().decode('ascii')
@@ -1666,7 +1702,7 @@ class Test_Blob(unittest.TestCase):
             'done': True,
             'resource': {'etag': 'DEADBEEF'},
         }
-        response = ({'status': OK}, RESPONSE)
+        response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1714,13 +1750,12 @@ class Test_Blob(unittest.TestCase):
             blob.update_storage_class(u'BOGUS')
 
     def test_update_storage_class_wo_encryption_key(self):
-        from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
         STORAGE_CLASS = u'NEARLINE'
         RESPONSE = {
             'resource': {'storageClass': STORAGE_CLASS},
         }
-        response = ({'status': OK}, RESPONSE)
+        response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1752,7 +1787,6 @@ class Test_Blob(unittest.TestCase):
     def test_update_storage_class_w_encryption_key(self):
         import base64
         import hashlib
-        from six.moves.http_client import OK
 
         BLOB_NAME = 'blob-name'
         BLOB_KEY = b'01234567890123456789012345678901'  # 32 bytes
@@ -1764,7 +1798,7 @@ class Test_Blob(unittest.TestCase):
         RESPONSE = {
             'resource': {'storageClass': STORAGE_CLASS},
         }
-        response = ({'status': OK}, RESPONSE)
+        response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -2057,16 +2091,25 @@ class Test_Blob(unittest.TestCase):
                               properties={'size': str(SIZE)})
         self.assertEqual(blob.size, SIZE)
 
-    def test_storage_class(self):
-        BLOB_NAME = 'blob-name'
+    def test_storage_class_getter(self):
+        blob_name = 'blob-name'
         bucket = _Bucket()
-        STORAGE_CLASS = 'http://example.com/self/'
-        properties = {'storageClass': STORAGE_CLASS}
-        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
-        self.assertEqual(blob.storage_class, STORAGE_CLASS)
+        storage_class = 'MULTI_REGIONAL'
+        properties = {'storageClass': storage_class}
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+        self.assertEqual(blob.storage_class, storage_class)
+
+    def test_storage_class_setter(self):
+        blob_name = 'blob-name'
+        bucket = _Bucket()
+        storage_class = 'COLDLINE'
+        blob = self._make_one(blob_name, bucket=bucket)
+        self.assertIsNone(blob.storage_class)
+        blob.storage_class = storage_class
+        self.assertEqual(blob.storage_class, storage_class)
+        self.assertEqual(blob._properties, {'storageClass': storage_class})
 
     def test_time_deleted(self):
-        import datetime
         from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud._helpers import UTC
 
@@ -2084,7 +2127,6 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.time_deleted)
 
     def test_time_created(self):
-        import datetime
         from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud._helpers import UTC
 
@@ -2102,7 +2144,6 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.time_created)
 
     def test_updated(self):
-        import datetime
         from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud._helpers import UTC
 
@@ -2120,59 +2161,119 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.updated)
 
 
-class _Responder(object):
+class Test__quote(unittest.TestCase):
 
-    def __init__(self, *responses):
-        self._responses = responses[:]
-        self._requested = []
+    @staticmethod
+    def _call_fut(value):
+        from google.cloud.storage.blob import _quote
 
-    def _respond(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
+        return _quote(value)
+
+    def test_bytes(self):
+        quoted = self._call_fut(b'\xDE\xAD\xBE\xEF')
+        self.assertEqual(quoted, '%DE%AD%BE%EF')
+
+    def test_unicode(self):
+        helicopter = u'\U0001f681'
+        quoted = self._call_fut(helicopter)
+        self.assertEqual(quoted, '%F0%9F%9A%81')
+
+    def test_bad_type(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None)
 
 
-class _Connection(_Responder):
+class Test__maybe_rewind(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage.blob import _maybe_rewind
+
+        return _maybe_rewind(*args, **kwargs)
+
+    def test_default(self):
+        stream = mock.Mock(spec=[u'seek'])
+        ret_val = self._call_fut(stream)
+        self.assertIsNone(ret_val)
+
+        stream.seek.assert_not_called()
+
+    def test_do_not_rewind(self):
+        stream = mock.Mock(spec=[u'seek'])
+        ret_val = self._call_fut(stream, rewind=False)
+        self.assertIsNone(ret_val)
+
+        stream.seek.assert_not_called()
+
+    def test_do_rewind(self):
+        stream = mock.Mock(spec=[u'seek'])
+        ret_val = self._call_fut(stream, rewind=True)
+        self.assertIsNone(ret_val)
+
+        stream.seek.assert_called_once_with(0, os.SEEK_SET)
+
+
+class Test__raise_from_invalid_response(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage.blob import _raise_from_invalid_response
+
+        return _raise_from_invalid_response(*args, **kwargs)
+
+    def _helper(self, message, **kwargs):
+        from google.resumable_media import InvalidResponse
+        from google.cloud import exceptions
+
+        response = mock.Mock(
+            content=message, status_code=http_client.BAD_REQUEST,
+            spec=[u'content', u'status_code'])
+        error = InvalidResponse(response)
+
+        with self.assertRaises(exceptions.BadRequest) as exc_info:
+            self._call_fut(error, **kwargs)
+
+        return exc_info
+
+    def test_default(self):
+        message = u'Failure'
+        exc_info = self._helper(message)
+        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.errors, [])
+
+    def test_with_error_info(self):
+        message = u'Eeek bad.'
+        error_info = 'http://test.invalid'
+        exc_info = self._helper(message, error_info=error_info)
+
+        full_message = u'{} ({})'.format(message, error_info)
+        self.assertEqual(exc_info.exception.message, full_message)
+        self.assertEqual(exc_info.exception.errors, [])
+
+
+class _Connection(object):
 
     API_BASE_URL = 'http://example.com'
     USER_AGENT = 'testing 1.2.3'
     credentials = object()
 
     def __init__(self, *responses):
-        super(_Connection, self).__init__(*responses)
+        self._responses = responses[:]
+        self._requested = []
         self._signed = []
-        self.http = _HTTP(*responses)
+
+    def _respond(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
     def api_request(self, **kw):
-        from six.moves.http_client import NOT_FOUND
         from google.cloud.exceptions import NotFound
 
         info, content = self._respond(**kw)
-        if info.get('status') == NOT_FOUND:
+        if info.get('status') == http_client.NOT_FOUND:
             raise NotFound(info)
         return content
-
-    def build_api_url(self, path, query_params=None,
-                      api_base_url=API_BASE_URL):
-        from six.moves.urllib.parse import urlencode
-        from six.moves.urllib.parse import urlsplit
-        from six.moves.urllib.parse import urlunsplit
-
-        # Mimic the build_api_url interface.
-        qs = urlencode(query_params or {})
-        scheme, netloc, _, _, _ = urlsplit(api_base_url)
-        return urlunsplit((scheme, netloc, path, qs, ''))
-
-
-class _HTTP(_Responder):
-
-    connections = {}  # For google-apitools debugging.
-
-    def request(self, uri, method, headers, body, **kw):
-        if hasattr(body, 'read'):
-            body = body.read()
-        return self._respond(uri=uri, method=method, headers=headers,
-                             body=body, **kw)
 
 
 class _Bucket(object):
@@ -2213,24 +2314,6 @@ class _Client(object):
     def _connection(self):
         return self._base_connection
 
-
-class _Stream(object):
-    _closed = False
-
-    def __init__(self, to_read=b''):
-        import io
-
-        self._written = []
-        self._to_read = io.BytesIO(to_read)
-
-    def seek(self, offset, whence=0):
-        self._to_read.seek(offset, whence)
-
-    def read(self, size):
-        return self._to_read.read(size)
-
-    def tell(self):
-        return self._to_read.tell()
-
-    def close(self):
-        self._closed = True
+    @property
+    def _credentials(self):
+        return self._base_connection.credentials

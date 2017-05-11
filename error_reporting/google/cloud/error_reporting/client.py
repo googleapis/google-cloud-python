@@ -123,6 +123,9 @@ class Client(ClientWithProject):
              set in the environment.
     """
 
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating as an API consumer."""
+
     def __init__(self, project=None,
                  credentials=None,
                  _http=None,
