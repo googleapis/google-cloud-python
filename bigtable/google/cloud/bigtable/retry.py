@@ -102,6 +102,7 @@ class ReadRowsIterator():
     def __next__(self, *args, **kwargs):
         return self.next(*args, **kwargs)
 
+
 def _create_row_request(table_name, row_key=None, start_key=None,
                         start_key_closed=True, end_key=None, filter_=None,
                         limit=None):
