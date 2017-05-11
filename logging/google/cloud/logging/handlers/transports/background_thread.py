@@ -23,6 +23,7 @@ import threading
 
 from google.cloud.logging.handlers.transports.base import Transport
 
+
 _WORKER_THREAD_NAME = 'google.cloud.logging.handlers.transport.Worker'
 
 
@@ -39,6 +40,7 @@ class _Worker(object):
     """
 
     def __init__(self, logger):
+        print('_Worker.__init__({!r}): {!r}'.format(logger, self))
         self.started = False
         self.stopping = False
         self.stopped = False
@@ -69,6 +71,7 @@ class _Worker(object):
         Loops until ``stopping`` is set to :data:`True`, and commits batch
         entries written during :meth:`enqueue`.
         """
+        print('_Worker._run(): {!r}'.format(self))
         try:
             self._entries_condition.acquire()
             self.started = True
@@ -94,6 +97,7 @@ class _Worker(object):
         This method is responsible for starting the thread and registering
         the exit handlers.
         """
+        print('_Worker._start(): {!r}'.format(self))
         try:
             self._entries_condition.acquire()
             self._thread = threading.Thread(
@@ -112,6 +116,7 @@ class _Worker(object):
         This method is called by the ``atexit`` handler registered by
          :meth:`start`.
         """
+        print('_Worker._stop(): {!r}'.format(self))
         if not self.started or self.stopping:
             return
 
@@ -132,6 +137,9 @@ class _Worker(object):
 
     def enqueue(self, record, message):
         """Queues up a log entry to be written by the background thread."""
+        msg = '_Worker.enqueue({!r}, {!r}): {!r}'.format(
+            record, message, self)
+        print(msg)
         try:
             self._entries_condition.acquire()
             if self.stopping:
@@ -150,6 +158,9 @@ class BackgroundThreadTransport(Transport):
     """
 
     def __init__(self, client, name):
+        msg = 'BackgroundThreadTransport.__init__({!r}, {!r}): {!r}'.format(
+            client, name, self)
+        print(msg)
         http = copy.deepcopy(client._http)
         self.client = client.__class__(
             client.project, client._credentials, http)
@@ -166,4 +177,7 @@ class BackgroundThreadTransport(Transport):
         :param message: The message from the ``LogRecord`` after being
                         formatted by the associated log formatters.
         """
+        msg = 'BackgroundThreadTransport.send({!r}, {!r}): {!r}'.format(
+            record, message, self)
+        print(msg)
         self.worker.enqueue(record, message)

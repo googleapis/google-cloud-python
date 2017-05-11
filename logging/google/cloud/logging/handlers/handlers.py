@@ -18,8 +18,8 @@ import logging
 
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 
-DEFAULT_LOGGER_NAME = 'python'
 
+DEFAULT_LOGGER_NAME = 'python'
 EXCLUDED_LOGGER_DEFAULTS = ('google.cloud', 'oauth2client')
 
 
