@@ -51,10 +51,12 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'enum34',
     'google-cloud-core >= 0.24.0, < 0.25dev',
     'gapic-google-cloud-vision-v1 >= 0.90.3, < 0.91dev',
 ]
+EXTRAS_REQUIRE = {
+    ':python_version<"3.4"': ['enum34'],
+}
 
 setup(
     name='google-cloud-vision',
@@ -67,5 +69,6 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIRE,
     **SETUP_BASE
 )
