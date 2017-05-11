@@ -18,6 +18,10 @@ from setuptools import find_packages
 from setuptools import setup
 
 
+TOOL_DEPENDENCIES = (
+    'click'
+)
+
 DEPENDENCIES = (
     'google-auth',
     'requests-oauthlib>=0.7.0',
@@ -38,6 +42,15 @@ setup(
     url='https://github.com/GoogleCloudPlatform/google-auth-library-python',
     packages=find_packages(exclude=('tests*',)),
     install_requires=DEPENDENCIES,
+    extras_require={
+        'tool': TOOL_DEPENDENCIES,
+    },
+    entry_points={
+        'console_scripts': [
+            'google-oauthlib-tool'
+            '=google_auth_oauthlib.tool.__main__:main [tool]',
+        ],
+    },
     license='Apache 2.0',
     keywords='google auth oauth client oauthlib',
     classifiers=(
