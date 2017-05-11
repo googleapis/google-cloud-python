@@ -16,6 +16,53 @@
 import unittest
 
 
+class Test___mutate_rows_request(unittest.TestCase):
+
+    def _call_fut(self, table_name, rows):
+        from google.cloud.bigtable.table import _mutate_rows_request
+
+        return _mutate_rows_request(table_name, rows)
+
+    def test__mutate_rows_too_many_mutations(self):
+        from google.cloud.bigtable.table import TooManyMutationsError
+        from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable._generated.data_pb2 import Mutation
+
+        mutation = Mutation()
+        rows = [DirectRow(row_key=b'row_key', table='table'),
+                DirectRow(row_key=b'row_key_2', table='table')]
+        rows[0]._pb_mutations = [mutation for _ in range(0, 50000)]
+        rows[1]._pb_mutations = [mutation for _ in range(0, 50001)]
+        with self.assertRaises(TooManyMutationsError):
+            self._call_fut('table', rows)
+
+
+class Test__check_rows(unittest.TestCase):
+
+    def _call_fut(self, table_name, rows):
+        from google.cloud.bigtable.table import _check_rows
+
+        return _check_rows(table_name, rows)
+
+    def test__check_rows_wrong_row_type(self):
+        from google.cloud.bigtable.row import ConditionalRow
+
+        rows = [ConditionalRow(row_key=b'row_key', table='table', filter_=None)]
+        with self.assertRaises(TypeError):
+            self._call_fut('table', rows)
+
+    def test__check_rows_wrong_table_name(self):
+        from collections import namedtuple
+        from google.cloud.bigtable.table import RowBelongingError
+        from google.cloud.bigtable.row import DirectRow
+
+        table = namedtuple('Table', ['name'])
+        table.name = 'table'
+        rows = [DirectRow(row_key=b'row_key', table=table)]
+        with self.assertRaises(RowBelongingError):
+            self._call_fut('other_table', rows)
+
+
 class TestTable(unittest.TestCase):
 
     PROJECT_ID = 'project-id'
@@ -569,6 +616,11 @@ def _SampleRowKeysRequestPB(*args, **kw):
 
     return messages_v2_pb2.SampleRowKeysRequest(*args, **kw)
 
+def _MutateRowsRequestPB(*args, **kw):
+    from google.cloud.bigtable._generated import (
+        bigtable_pb2 as data_messages_v2_pb2)
+
+    return data_messages_v2_pb2.MutateRowsRequest(*args, **kw)
 
 def _TablePB(*args, **kw):
     from google.cloud.bigtable._generated import (

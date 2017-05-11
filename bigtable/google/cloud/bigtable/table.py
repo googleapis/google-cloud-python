@@ -33,6 +33,10 @@ class RowBelongingError(Exception):
     """Row from another table."""
 
 
+class TooManyMutationsError(Exception):
+    """The number of mutations for bulk request is too big."""
+
+
 class Table(object):
     """Representation of a Google Cloud Bigtable Table.
 
@@ -281,10 +285,17 @@ class Table(object):
         return PartialRowsData(response_iterator)
 
     def mutate_rows(self, rows):
-
+        """Mutates multiple rows in bulk.
+    
+        :type rows: list
+        :param rows: List or other iterable of :class:`.DirectRow` instances.
+        
+        :rtype: list
+        :returns: A list of tuples (``MutateRowsResponse.Entry`` protobuf 
+                  corresponding to the errors, :class:`.DirectRow`) 
+        """
         _check_rows(self.name, rows)
         mutate_rows_request = _mutate_rows_request(self.name, rows)
-        print(mutate_rows_request)
 
         unsuccessfully_mutated_rows = []
         client = self._instance._client
@@ -296,7 +307,6 @@ class Table(object):
                 else:
                     unsuccessfully_mutated_rows.append(
                         (entry, rows[entry.index]))
-
         return unsuccessfully_mutated_rows
 
     def sample_row_keys(self):
@@ -399,24 +409,47 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
 
 
 def _mutate_rows_request(table_name, rows):
-    request_pb = data_messages_v2_pb2.MutateRowsRequest(table_name=table_name)
+    """Creates a request to read rows in a table.
 
+    :type table_name: str
+    :param table_name: The name of the table to read from.
+
+    :type rows: list
+    :param rows: List or other iterable of :class:`.DirectRow` instances.
+    
+    :rtype: :class:`data_messages_v2_pb2.MutateRowsRequest`
+    :returns: The ``MutateRowsRequest`` protobuf corresponding to the inputs.
+    :raises: :class:`TooManyMutationsError <exceptions.TooManyMutationsError>` 
+             if the number of mutations is grater than 100.000
+    """
+    request_pb = data_messages_v2_pb2.MutateRowsRequest(table_name=table_name)
+    mutations_count = 0
     for row in rows:
         entry = request_pb.entries.add()
         entry.row_key = row.row_key
         for mutation in row._get_mutations(None):
+            mutations_count += 1
             entry.mutations.add().CopyFrom(mutation)
-
+    if mutations_count > 100000:
+        raise TooManyMutationsError('Maximum number of the entries mutations '
+                                    'is 100000')
     return request_pb
 
 
 def _check_rows(table_name, rows):
-    """Checks that all rows belong to the table."""
+    """Checks that all rows belong to the table.
+
+    :type table_name: str
+    :param table_name: The name of the table to read from.
+
+    :type rows: list
+    :param rows: List or other iterable of :class:`.DirectRow` instances.
+    """
     for row in rows:
         if not isinstance(row, DirectRow):
-            raise TypeError("Bulk processing can not be applied for conditional"
-                            "or append mutations.")
+            raise TypeError('Bulk processing can not be applied for '
+                            'conditional or append mutations.')
         if row.table.name != table_name:
             raise RowBelongingError(
-                "Row %s is a part of %s table. Current table: %s" %
+                'Row %s is a part of %s table. Current table: %s' %
                 (row.row_key, row.table.name, table_name))
