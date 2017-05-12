@@ -33,3 +33,9 @@ class Transport(object):
                         formatted by the associated log formatters.
         """
         raise NotImplementedError
+
+    def flush(self):
+        """Submit any pending log records.
+
+        For blocking/sync transports, this is a no-op.
+        """

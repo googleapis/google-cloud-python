@@ -221,6 +221,10 @@ class _Worker(object):
             'severity': record.levelname,
         })
 
+    def flush(self):
+        """Submit any pending log records."""
+        self._queue.join()
+
 
 class BackgroundThreadTransport(Transport):
     """Asynchronous transport that uses a background thread.
@@ -260,3 +264,7 @@ class BackgroundThreadTransport(Transport):
                         formatted by the associated log formatters.
         """
         self.worker.enqueue(record, message)
+
+    def flush(self):
+        """Submit any pending log records."""
+        self.worker.flush()
