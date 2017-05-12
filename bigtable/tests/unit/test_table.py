@@ -37,12 +37,12 @@ class Test___mutate_rows_request(unittest.TestCase):
             self._call_fut('table', rows)
 
 
-class Test__check_rows(unittest.TestCase):
+class Test__check_rows_table_name_and_types(unittest.TestCase):
 
     def _call_fut(self, table_name, rows):
-        from google.cloud.bigtable.table import _check_rows
+        from google.cloud.bigtable.table import _check_rows_table_name_and_types
 
-        return _check_rows(table_name, rows)
+        return _check_rows_table_name_and_types(table_name, rows)
 
     def test__check_rows_wrong_row_type(self):
         from google.cloud.bigtable.row import ConditionalRow
@@ -53,13 +53,13 @@ class Test__check_rows(unittest.TestCase):
 
     def test__check_rows_wrong_table_name(self):
         from collections import namedtuple
-        from google.cloud.bigtable.table import RowBelongingError
+        from google.cloud.bigtable.table import TableMismatchError
         from google.cloud.bigtable.row import DirectRow
 
         table = namedtuple('Table', ['name'])
         table.name = 'table'
         rows = [DirectRow(row_key=b'row_key', table=table)]
-        with self.assertRaises(RowBelongingError):
+        with self.assertRaises(TableMismatchError):
             self._call_fut('other_table', rows)
 
 

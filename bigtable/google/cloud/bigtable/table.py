@@ -29,7 +29,7 @@ from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 
 
-class RowBelongingError(Exception):
+class TableMismatchError(Exception):
     """Row from another table."""
 
 
@@ -294,7 +294,7 @@ class Table(object):
         :returns: A list of tuples (``MutateRowsResponse.Entry`` protobuf 
                   corresponding to the errors, :class:`.DirectRow`) 
         """
-        _check_rows(self.name, rows)
+        _check_rows_table_name_and_types(self.name, rows)
         mutate_rows_request = _mutate_rows_request(self.name, rows)
 
         unsuccessfully_mutated_rows = []
@@ -409,10 +409,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
 
 
 def _mutate_rows_request(table_name, rows):
-    """Creates a request to read rows in a table.
+    """Creates a request to mutate rows in a table.
 
     :type table_name: str
-    :param table_name: The name of the table to read from.
+    :param table_name: The name of the table to write to.
 
     :type rows: list
     :param rows: List or other iterable of :class:`.DirectRow` instances.
@@ -431,12 +431,11 @@ def _mutate_rows_request(table_name, rows):
             mutations_count += 1
             entry.mutations.add().CopyFrom(mutation)
     if mutations_count > 100000:
-        raise TooManyMutationsError('Maximum number of the entries mutations '
-                                    'is 100000')
+        raise TooManyMutationsError('Maximum number of mutations is 100000')
     return request_pb
 
 
-def _check_rows(table_name, rows):
+def _check_rows_table_name_and_types(table_name, rows):
     """Checks that all rows belong to the table.
 
     :type table_name: str
@@ -450,6 +449,6 @@ def _check_rows(table_name, rows):
             raise TypeError('Bulk processing can not be applied for '
                             'conditional or append mutations.')
         if row.table.name != table_name:
-            raise RowBelongingError(
+            raise TableMismatchError(
                 'Row %s is a part of %s table. Current table: %s' %
                 (row.row_key, row.table.name, table_name))
