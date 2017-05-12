@@ -16,6 +16,25 @@
 import unittest
 
 
+class TestRow(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigtable.row import Row
+        return Row
+
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
+
+    def test_row_key_getter(self):
+        row = self._make_one(row_key=b'row_key', table='table')
+        self.assertEqual(b'row_key', row.row_key)
+
+    def test_row_table_getter(self):
+        row = self._make_one(row_key=b'row_key', table='table')
+        self.assertEqual('table', row.table)
+
+
 class Test_SetDeleteRow(unittest.TestCase):
 
     @staticmethod
