@@ -12,11 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import os
 
 INSTANCE_NAME = 'gcp-streaming-systests'
 DATABASE_NAME = 'testing'
 _SHOULD_PRINT = os.getenv('GOOGLE_CLOUD_NO_PRINT') != 'true'
+
+
+class _TableDesc(collections.namedtuple(
+    'TableDesc', ('table', 'row_count', 'value_size', 'column_count'))):
+
+    def value(self):
+        return u'X' * self.value_size
+
+
+FOUR_KAY = _TableDesc('four_kay', 1000, 4096, 1)
+FORTY_KAY = _TableDesc('forty_kay', 100, 4096 * 10, 1)
+FOUR_HUNDRED_KAY = _TableDesc('four_hundred_kay', 25, 4096 * 100, 1)
+FOUR_MEG = _TableDesc('four_meg', 10, 2048 *  1024, 2)
 
 
 def print_func(message):
