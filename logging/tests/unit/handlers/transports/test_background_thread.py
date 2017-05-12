@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import logging
-import time
 import unittest
 
 import mock
