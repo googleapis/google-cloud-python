@@ -247,6 +247,7 @@ class BackgroundThreadTransport(Transport):
             client.project, client._credentials, http)
         logger = self.client.logger(name)
         self.worker = _Worker(logger)
+        self.worker.start()
 
     def send(self, record, message):
         """Overrides Transport.send().
