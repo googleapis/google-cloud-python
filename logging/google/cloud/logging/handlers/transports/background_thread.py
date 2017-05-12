@@ -113,8 +113,6 @@ class _Worker(object):
 
                 batch.log_struct(**item)
 
-            print(items)
-
             total_logs = len(batch.entries)
 
             try:
