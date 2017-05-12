@@ -26,24 +26,24 @@ from six.moves import queue
 
 from google.cloud.logging.handlers.transports.base import Transport
 
-_DEFAULT_GRACE_PERIOD = 5.0
-_DEFAULT_BATCH_SIZE = 10
+_DEFAULT_GRACE_PERIOD = 5.0  # Seconds
+_DEFAULT_MAX_BATCH_SIZE = 10
 _WORKER_THREAD_NAME = 'google.cloud.logging.Worker'
 _WORKER_TERMINATOR = object()
 _LOGGER = logging.getLogger(__name__)
 
 
-def _get_many(q, max=None):
+def _get_many(q, max_items=None):
     """Get multiple items from a Queue.
 
-    Gets at least one (blocking) and at most :param:`max` items (non-blocking)
-    from a given Queue. Does not mark the items as done.
+    Gets at least one (blocking) and at most :param:`max_items` items
+    (non-blocking) from a given Queue. Does not mark the items as done.
 
     :type q: ~queue.Queue
     :param q: The Queue to get items from.
 
-    :type max: int
-    :param max: The maximum number of items to get. If ``None``, then all
+    :type max_items: int
+    :param max_items: The maximum number of items to get. If ``None``, then all
         available items in the queue are returned.
 
     :rtype: Sequence
@@ -51,7 +51,7 @@ def _get_many(q, max=None):
     """
     # Always return at least one item.
     items = [q.get()]
-    while max is None or len(items) < max:
+    while max_items is None or len(items) < max_items:
         try:
             items.append(q.get_nowait())
         except queue.Empty:
@@ -63,7 +63,7 @@ class _Worker(object):
     """A background thread that writes batches of log entries."""
 
     def __init__(self, cloud_logger, grace_period=_DEFAULT_GRACE_PERIOD,
-                 batch_size=_DEFAULT_BATCH_SIZE):
+                 max_batch_size=_DEFAULT_MAX_BATCH_SIZE):
         """
         The background thread is started automatically.
 
@@ -74,13 +74,13 @@ class _Worker(object):
         :param grace_period: The amount of time to wait for pending logs to
             be submitted when the process is shutting down.
 
-        :type batch_size: int
-        :param batch_size: The maximum number of items to send at a time in the
-            background thread.
+        :type max_batch_size: int
+        :param max_batch_size: The maximum number of items to send at a time
+            in the background thread.
         """
         self._cloud_logger = cloud_logger
         self._grace_period = grace_period
-        self._batch_size = batch_size
+        self._max_batch_size = max_batch_size
         self._queue = queue.Queue(-1)
         self._operational_lock = threading.Lock()
         self._thread = None
@@ -102,7 +102,7 @@ class _Worker(object):
         quit = False
         while True:
             batch = self._cloud_logger.batch()
-            items = _get_many(self._queue, max=self._batch_size)
+            items = _get_many(self._queue, max_items=self._max_batch_size)
 
             for item in items:
                 if item is _WORKER_TERMINATOR:
@@ -221,7 +221,7 @@ class BackgroundThreadTransport(Transport):
     """Asynchronous transport that uses a background thread."""
 
     def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,
-                 batch_size=_DEFAULT_BATCH_SIZE):
+                 batch_size=_DEFAULT_MAX_BATCH_SIZE):
         """
         :type client: ~google.cloud.logging.client.Client
         :param client: The Logging client.

@@ -83,14 +83,14 @@ class TestWorker(unittest.TestCase):
     def test_ctor(self):
         logger = _Logger(self.NAME)
         grace_period = 50
-        batch_size = 50
+        max_batch_size = 50
 
         worker = self._make_one_with_mock_thread(
-            logger, grace_period=grace_period, batch_size=batch_size)
+            logger, grace_period=grace_period, max_batch_size=max_batch_size)
 
         self.assertEqual(worker._cloud_logger, logger)
         self.assertEqual(worker._grace_period, grace_period)
-        self.assertEqual(worker._batch_size, batch_size)
+        self.assertEqual(worker._max_batch_size, max_batch_size)
         self.assertTrue(worker.is_alive)
         self.assertIsNotNone(worker._thread)
 
@@ -208,7 +208,7 @@ class TestWorker(unittest.TestCase):
         from google.cloud.logging.handlers.transports import background_thread
 
         worker = self._make_one_with_mock_thread(
-            _Logger(self.NAME), batch_size=2)
+            _Logger(self.NAME), max_batch_size=2)
 
         # Enqueue three records and the termination signal. This should be
         # enough to perform two separate batches and a third loop with just
