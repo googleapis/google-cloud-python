@@ -14,15 +14,14 @@
 
 """Populate spanner databases with data for streaming system tests."""
 
-import os
-
 from google.cloud.spanner import Client
 from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import BurstyPool
 
-
-INSTANCE_NAME = 'gcp-streaming-systests'
-DATABASE_NAME = 'testing'
+# Import relative to the script's directory
+from streaming_utils import DATABASE_NAME
+from streaming_utils import INSTANCE_NAME
+from streaming_utils import print_func
 
 DDL = """\
 CREATE TABLE four_kay (
@@ -45,11 +44,6 @@ CREATE TABLE four_meg (
 """
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]
-
-
-def print_func(message):
-    if os.getenv('GOOGLE_CLOUD_NO_PRINT') != 'true':
-        print(message)
 
 
 def ensure_database(client):
