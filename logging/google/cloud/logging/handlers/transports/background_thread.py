@@ -28,12 +28,15 @@ from six.moves import range
 from six.moves import queue
 
 from google.cloud.logging.handlers.transports.base import Transport
+from google.cloud.logging.resource import Resource
+
 
 _DEFAULT_GRACE_PERIOD = 5.0  # Seconds
 _DEFAULT_MAX_BATCH_SIZE = 10
 _WORKER_THREAD_NAME = 'google.cloud.logging.Worker'
 _WORKER_TERMINATOR = object()
 _LOGGER = logging.getLogger(__name__)
+_GLOBAL_RESOURCE = Resource(type='global', labels={})
 
 
 def _get_many(queue_, max_items=None):
@@ -203,7 +206,7 @@ class _Worker(object):
         else:
             print('Failed to send %d pending logs.' % (self._queue.qsize(),))
 
-    def enqueue(self, record, message):
+    def enqueue(self, record, message, resource=None):
         """Queues a log entry to be written by the background thread.
 
         :type record: :class:`logging.LogRecord`
@@ -212,6 +215,9 @@ class _Worker(object):
         :type message: str
         :param message: The message from the ``LogRecord`` after being
                         formatted by the associated log formatters.
+        
+        :type resource: :class:`~google.cloud.logging.resource.Resource`
+        :param resource: (Optional) Monitored resource of the entry
         """
         self._queue.put_nowait({
             'info': {
@@ -219,6 +225,7 @@ class _Worker(object):
                 'python_logger': record.name,
             },
             'severity': record.levelname,
+            'resource': resource,
         })
 
     def flush(self):
@@ -253,7 +260,7 @@ class BackgroundThreadTransport(Transport):
         self.worker = _Worker(logger)
         self.worker.start()
 
-    def send(self, record, message):
+    def send(self, record, message, resource=_GLOBAL_RESOURCE):
         """Overrides Transport.send().
 
         :type record: :class:`logging.LogRecord`
@@ -262,8 +269,12 @@ class BackgroundThreadTransport(Transport):
         :type message: str
         :param message: The message from the ``LogRecord`` after being
                         formatted by the associated log formatters.
+
+        :type resource: :class:`~google.cloud.logging.resource.Resource`
+        :param resource: Monitored resource of the entry, defaults
+                         to the global resource type.
         """
-        self.worker.enqueue(record, message)
+        self.worker.enqueue(record, message, resource)
 
     def flush(self):
         """Submit any pending log records."""

@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import unittest
+from google.cloud.logging.resource import Resource
 
 
 class TestAppEngineHandlerHandler(unittest.TestCase):
@@ -24,34 +26,42 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         return AppEngineHandler
 
     def _make_one(self, *args, **kw):
-        import tempfile
+        return self._get_target_class()(*args, **kw)
 
-        from google.cloud._testing import _Monkey
-        from google.cloud.logging.handlers import app_engine as _MUT
+    def test_ctor(self):
+        client = _Client(self.PROJECT)
+        handler = self._make_one(client, transport=_Transport)
+        self.assertEqual(handler.client, client)
 
-        tmpdir = tempfile.mktemp()
-        with _Monkey(_MUT, _LOG_PATH_TEMPLATE=tmpdir):
-            return self._get_target_class()(*args, **kw)
+    def test_emit(self):
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test',
+        })
 
-    def test_format(self):
-        import json
-        import logging
-
-        handler = self._make_one()
+        client = _Client(self.PROJECT)
+        handler = self._make_one(client, transport=_Transport, resource=RESOURCE)
         logname = 'loggername'
         message = 'hello world'
-        record = logging.LogRecord(logname, logging.INFO, None,
-                                   None, message, None, None)
-        record.created = 5.03
-        expected_payload = {
-            'message': message,
-            'timestamp': {
-                'seconds': 5,
-                'nanos': int(.03 * 1e9),
-            },
-            'thread': record.thread,
-            'severity': record.levelname,
-        }
-        payload = handler.format(record)
+        record = logging.LogRecord(logname, logging, None, None, message,
+                                   None, None)
+        handler.emit(record)
 
-        self.assertEqual(payload, json.dumps(expected_payload))
+        self.assertEqual(handler.transport.send_called_with, (record, message, RESOURCE))
+
+
+class _Client(object):
+
+    def __init__(self, project):
+        self.project = project
+
+
+class _Transport(object):
+
+    def __init__(self, client, name):
+        pass
+
+    def send(self, record, message, resource):
+        self.send_called_with = (record, message, resource)

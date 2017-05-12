@@ -18,6 +18,10 @@ Logs directly to the the Stackdriver Logging API with a synchronous call.
 """
 
 from google.cloud.logging.handlers.transports.base import Transport
+from google.cloud.logging.resource import Resource
+
+
+_GLOBAL_RESOURCE = Resource(type='global', labels={})
 
 
 class SyncTransport(Transport):
@@ -29,7 +33,7 @@ class SyncTransport(Transport):
     def __init__(self, client, name):
         self.logger = client.logger(name)
 
-    def send(self, record, message):
+    def send(self, record, message, resource=_GLOBAL_RESOURCE):
         """Overrides transport.send().
 
         :type record: :class:`logging.LogRecord`
@@ -40,4 +44,4 @@ class SyncTransport(Transport):
                         formatted by the associated log formatters.
         """
         info = {'message': message, 'python_logger': record.name}
-        self.logger.log_struct(info, severity=record.levelname)
+        self.logger.log_struct(info, severity=record.levelname, resource=resource)

@@ -27,47 +27,63 @@ https://github.com/GoogleCloudPlatform/appengine-sidecars-docker/tree/master/flu
 # /appengine-vmruntime/vmruntime/cloud_logging.py
 
 import logging.handlers
-import os
 
-from google.cloud.logging.handlers._helpers import format_stackdriver_json
+from google.cloud.logging.handlers.handlers import CloudLoggingHandler
+from google.cloud.logging.handlers.transports import BackgroundThreadTransport
+from google.cloud.logging.resource import Resource
 
-_LOG_PATH_TEMPLATE = '/var/log/app_engine/app.{pid}.json'
-_MAX_LOG_BYTES = 128 * 1024 * 1024
-_LOG_FILE_COUNT = 3
+DEFAULT_LOGGER_NAME = 'python'
+
+EXCLUDED_LOGGER_DEFAULTS = ('google.cloud', 'oauth2client')
+
+_GLOBAL_RESOURCE = Resource(type='global', labels={})
 
 
-class AppEngineHandler(logging.handlers.RotatingFileHandler):
-    """A handler that writes to the App Engine fluentd Stackdriver log file.
+class AppEngineHandler(CloudLoggingHandler):
+    """A handler that directly makes Stackdriver logging API calls.
 
-    Writes to the file that the fluentd agent on App Engine Flexible is
-    configured to discover logs and send them to  Stackdriver Logging.
-    Log entries are wrapped in JSON and with appropriate metadata. The
-    process of converting the user's formatted logs into a JSON payload for
-    Stackdriver Logging consumption is implemented as part of the handler
-    itself, and not as a formatting step, so as not to interfere with
-    user-defined logging formats.
+    This handler can be used to route Python standard logging messages directly
+    to the Stackdriver Logging API.
+
+    This handler supports both an asynchronous and synchronous transport.
+
+    :type client: :class:`google.cloud.logging.client`
+    :param client: the authenticated Google Cloud Logging client for this
+                   handler to use
+
+    :type name: str
+    :param name: the name of the custom log in Stackdriver Logging. Defaults
+                 to 'python'. The name of the Python logger will be represented
+                 in the ``python_logger`` field.
+
+    :type transport: type
+    :param transport: Class for creating new transport objects. It should
+                      extend from the base :class:`.Transport` type and
+                      implement :meth`.Transport.send`. Defaults to
+                      :class:`.BackgroundThreadTransport`. The other
+                      option is :class:`.SyncTransport`.
+
+    :type resource: :class:`~google.cloud.logging.resource.Resource`
+    :param resource: Monitored resource of the entry, defaults
+                     to the global resource type.
     """
 
-    def __init__(self):
-        """Construct the handler
+    def __init__(self, client,
+                 name=DEFAULT_LOGGER_NAME,
+                 transport=BackgroundThreadTransport,
+                 resource=_GLOBAL_RESOURCE):
+        super(AppEngineHandler, self).__init__(client, name, transport)
+        self.resource=resource
 
-        Large log entries will get mangled if multiple workers write to the
-        same file simultaneously, so we'll use the worker's PID to pick a log
-        filename.
+    def emit(self, record):
+        """Actually log the specified logging record.
+
+        Overrides the default emit behavior of ``StreamHandler``.
+
+        See: https://docs.python.org/2/library/logging.html#handler-objects
+
+        :type record: :class:`logging.LogRecord`
+        :param record: The record to be logged.
         """
-        self.filename = _LOG_PATH_TEMPLATE.format(pid=os.getpid())
-        super(AppEngineHandler, self).__init__(self.filename,
-                                               maxBytes=_MAX_LOG_BYTES,
-                                               backupCount=_LOG_FILE_COUNT)
-
-    def format(self, record):
-        """Format the specified record into the expected JSON structure.
-
-        :type record: :class:`~logging.LogRecord`
-        :param record: the log record
-
-        :rtype: str
-        :returns: JSON str to be written to the log file
-        """
-        message = super(AppEngineHandler, self).format(record)
-        return format_stackdriver_json(record, message)
+        message = super(CloudLoggingHandler, self).format(record)
+        self.transport.send(record, message, self.resource)
