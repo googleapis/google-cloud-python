@@ -726,6 +726,59 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         )
 
 
+class TestStreamingChunking(unittest.TestCase, _TestData):
+
+    @classmethod
+    def setUpClass(cls):
+        from tests.system.utils.streaming_utils import INSTANCE_NAME
+        from tests.system.utils.streaming_utils import DATABASE_NAME
+
+        instance = Config.CLIENT.instance(INSTANCE_NAME)
+        if not instance.exists():
+            raise unittest.SkipTest(
+                "Run 'tests/system/utils/populate_streaming.py' to enable.")
+
+        database = instance.database(DATABASE_NAME)
+        if not instance.exists():
+            raise unittest.SkipTest(
+                "Run 'tests/system/utils/populate_streaming.py' to enable.")
+
+        cls._db = database
+
+    def _verify_one_column(self, table_desc):
+        sql = 'SELECT chunk_me FROM {}'.format(table_desc.table)
+        rows = list(self._db.execute_sql(sql))
+        self.assertEqual(len(rows), table_desc.row_count)
+        expected = table_desc.value()
+        for row in rows:
+            self.assertEqual(row[0], expected)
+
+    def _verify_two_columns(self, table_desc):
+        sql = 'SELECT chunk_me, chunk_me_2 FROM {}'.format(table_desc.table)
+        rows = list(self._db.execute_sql(sql))
+        self.assertEqual(len(rows), table_desc.row_count)
+        expected = table_desc.value()
+        for row in rows:
+            self.assertEqual(row[0], expected)
+            self.assertEqual(row[1], expected)
+
+    def test_four_kay(self):
+        from tests.system.utils.streaming_utils import FOUR_KAY
+        self._verify_one_column(FOUR_KAY)
+
+    def test_forty_kay(self):
+        from tests.system.utils.streaming_utils import FOUR_KAY
+        self._verify_one_column(FOUR_KAY)
+
+    def test_four_hundred_kay(self):
+        from tests.system.utils.streaming_utils import FOUR_HUNDRED_KAY
+        self._verify_one_column(FOUR_HUNDRED_KAY)
+
+    def test_four_meg(self):
+        from tests.system.utils.streaming_utils import FOUR_MEG
+        self._verify_two_columns(FOUR_MEG)
+
+
 class _DatabaseDropper(object):
     """Helper for cleaning up databases created on-the-fly."""
 
