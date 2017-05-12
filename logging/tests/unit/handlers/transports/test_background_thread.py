@@ -75,10 +75,10 @@ class Test_Worker(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def _start_with_thread_patch(self, worker):
-        with mock.patch('threading.Thread', new=_Thread):
+        with mock.patch('threading.Thread', new=_Thread) as thread_mock:
             with mock.patch('atexit.register') as atexit_mock:
-                self.atexit_mock = atexit_mock
-                return worker.start()
+                worker.start()
+                return thread_mock, atexit_mock
 
     def test_constructor(self):
         logger = _Logger(self.NAME)
@@ -99,7 +99,7 @@ class Test_Worker(unittest.TestCase):
 
         worker = self._make_one(_Logger(self.NAME))
 
-        self._start_with_thread_patch(worker)
+        _, atexit_mock = self._start_with_thread_patch(worker)
 
         self.assertTrue(worker.is_alive)
         self.assertIsNotNone(worker._thread)
@@ -107,6 +107,7 @@ class Test_Worker(unittest.TestCase):
         self.assertEqual(worker._thread._target, worker._thread_main)
         self.assertEqual(
             worker._thread._name, background_thread._WORKER_THREAD_NAME)
+        atexit_mock.assert_called_once_with(worker._main_thread_terminated)
 
         # Calling start again should not start a new thread.
         current_thread = worker._thread

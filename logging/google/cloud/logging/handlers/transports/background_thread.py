@@ -65,7 +65,7 @@ def _get_many(queue_, max_items=None):
 class _Worker(object):
     """A background thread that writes batches of log entries.
 
-    :type cloud_logger: ~google.cloud.logging.logger.Logger
+    :type cloud_logger: :class:`~google.cloud.logging.logger.Logger`
     :param cloud_logger: The logger to send entries to.
 
     :type grace_period: float
@@ -225,7 +225,7 @@ class _Worker(object):
 class BackgroundThreadTransport(Transport):
     """Asynchronous transport that uses a background thread.
 
-    :type client: ~google.cloud.logging.client.Client
+    :type client: :class:`~google.cloud.logging.client.Client`
     :param client: The Logging client.
 
     :type name: str
@@ -242,8 +242,6 @@ class BackgroundThreadTransport(Transport):
 
     def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,
                  batch_size=_DEFAULT_MAX_BATCH_SIZE):
-        """
-        """
         http = copy.deepcopy(client._http)
         self.client = client.__class__(
             client.project, client._credentials, http)
