@@ -19,29 +19,35 @@ from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import BurstyPool
 
 # Import relative to the script's directory
+from streaming_utils import FOUR_KAY
+from streaming_utils import FORTY_KAY
+from streaming_utils import FOUR_HUNDRED_KAY
+from streaming_utils import FOUR_MEG
 from streaming_utils import DATABASE_NAME
 from streaming_utils import INSTANCE_NAME
 from streaming_utils import print_func
 
+
 DDL = """\
-CREATE TABLE four_kay (
+CREATE TABLE {0.table} (
     pkey INT64,
-    chunk_me STRING(4096) )
+    chunk_me STRING({0.value_size}) )
     PRIMARY KEY (pkey);
-CREATE TABLE forty_kay (
+CREATE TABLE {1.table} (
     pkey INT64,
-    chunk_me STRING(40960) )
+    chunk_me STRING({1.value_size}) )
     PRIMARY KEY (pkey);
-CREATE TABLE four_hundred_kay (
+CREATE TABLE {2.table} (
     pkey INT64,
-    chunk_me STRING(409600) )
+    chunk_me STRING({2.value_size}) )
     PRIMARY KEY (pkey);
-CREATE TABLE four_meg (
+CREATE TABLE {3.table} (
     pkey INT64,
-    chunk_me STRING(2097152),
-    chunk_me_2 STRING(2097152) )
+    chunk_me STRING({3.value_size}),
+    chunk_me_2 STRING({3.value_size}) )
     PRIMARY KEY (pkey);
-"""
+""".format(FOUR_KAY, FORTY_KAY, FOUR_HUNDRED_KAY, FOUR_MEG)
+
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]
 
@@ -75,49 +81,51 @@ def ensure_database(client):
     return database
 
 
-def populate_table(database, table_name, row_count, val_size):
+def populate_table(database, table_desc):
     all_ = KeySet(all_=True)
     columns = ('pkey', 'chunk_me')
     rows = list(database.execute_sql(
-        'SELECT COUNT(*) FROM {}'.format(table_name)))
+        'SELECT COUNT(*) FROM {}'.format(table_desc.table)))
     assert len(rows) == 1
     count = rows[0][0]
-    if count != row_count:
-        print_func("Repopulating table: {}".format(table_name))
-        chunk_me = 'X' * val_size
-        row_data = [(index, chunk_me) for index in range(row_count)]
+    if count != table_desc.row_count:
+        print_func("Repopulating table: {}".format(table_desc.table))
+        chunk_me = table_desc.value()
+        row_data = [(index, chunk_me) for index in range(table_desc.row_count)]
         with database.batch() as batch:
-            batch.delete(table_name, all_)
-            batch.insert(table_name, columns, row_data)
+            batch.delete(table_desc.table, all_)
+            batch.insert(table_desc.table, columns, row_data)
     else:
-        print_func("Leaving table: {}".format(table_name))
+        print_func("Leaving table: {}".format(table_desc.table))
 
 
-def populate_table_2_columns(database, table_name, row_count, val_size):
+def populate_table_2_columns(database, table_desc):
     all_ = KeySet(all_=True)
     columns = ('pkey', 'chunk_me', 'chunk_me_2')
     rows = list(database.execute_sql(
-        'SELECT COUNT(*) FROM {}'.format(table_name)))
+        'SELECT COUNT(*) FROM {}'.format(table_desc.table)))
     assert len(rows) == 1
     count = rows[0][0]
-    if count != row_count:
-        print_func("Repopulating table: {}".format(table_name))
-        chunk_me = 'X' * val_size
-        row_data = [(index, chunk_me, chunk_me) for index in range(row_count)]
+    if count != table_desc.row_count:
+        print_func("Repopulating table: {}".format(table_desc.table))
+        chunk_me = table_desc.value()
+        row_data = [
+            (index, chunk_me, chunk_me)
+            for index in range(table_desc.row_count)]
         with database.batch() as batch:
-            batch.delete(table_name, all_)
-            batch.insert(table_name, columns, row_data)
+            batch.delete(table_desc.table, all_)
+            batch.insert(table_desc.table, columns, row_data)
     else:
-        print_func("Leaving table: {}".format(table_name))
+        print_func("Leaving table: {}".format(table_desc.table))
 
 
 def populate_streaming(client):
     database = ensure_database(client)
-    populate_table(database, 'four_kay', 1000, 4096)
-    populate_table(database, 'forty_kay', 100, 4096 * 10)
-    populate_table(database, 'four_hundred_kay', 25, 4096 * 100)
+    populate_table(database, FOUR_KAY)
+    populate_table(database, FORTY_KAY)
+    populate_table(database, FOUR_HUNDRED_KAY)
     # Max STRING column size is just larger than 2 Mb, so use two columns
-    populate_table_2_columns(database, 'four_meg', 10, 2048 * 1024)
+    populate_table_2_columns(database, FOUR_MEG)
 
 
 if __name__ == '__main__':
