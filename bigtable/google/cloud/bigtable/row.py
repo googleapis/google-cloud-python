@@ -58,7 +58,7 @@ class Row(object):
     @property
     def row_key(self):
         """Row key.
-    
+
         :rtype: bytes
         :returns: The key for the current row.
         """
@@ -67,7 +67,7 @@ class Row(object):
     @property
     def table(self):
         """Row table.
-        
+
         :rtype: table: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: table: The table that owns the row.
         """
