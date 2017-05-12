@@ -17,139 +17,231 @@
 Uses a background worker to log to Stackdriver Logging asynchronously.
 """
 
+from __future__ import print_function
+
 import atexit
 import copy
+import logging
 import threading
+
+from six.moves import range
+from six.moves import queue
 
 from google.cloud.logging.handlers.transports.base import Transport
 
-_WORKER_THREAD_NAME = 'google.cloud.logging.handlers.transport.Worker'
+_DEFAULT_GRACE_PERIOD = 5.0  # Seconds
+_DEFAULT_MAX_BATCH_SIZE = 10
+_WORKER_THREAD_NAME = 'google.cloud.logging.Worker'
+_WORKER_TERMINATOR = object()
+_LOGGER = logging.getLogger(__name__)
+
+
+def _get_many(queue_, max_items=None):
+    """Get multiple items from a Queue.
+
+    Gets at least one (blocking) and at most ``max_items`` items
+    (non-blocking) from a given Queue. Does not mark the items as done.
+
+    :type queue_: :class:`~queue.Queue`
+    :param queue_: The Queue to get items from.
+
+    :type max_items: int
+    :param max_items: The maximum number of items to get. If ``None``, then all
+        available items in the queue are returned.
+
+    :rtype: Sequence
+    :returns: A sequence of items retrieved from the queue.
+    """
+    # Always return at least one item.
+    items = [queue_.get()]
+    while max_items is None or len(items) < max_items:
+        try:
+            items.append(queue_.get_nowait())
+        except queue.Empty:
+            break
+    return items
 
 
 class _Worker(object):
-    """A threaded worker that writes batches of log entries
+    """A background thread that writes batches of log entries.
 
-    Writes entries to the logger API.
+    :type cloud_logger: :class:`~google.cloud.logging.logger.Logger`
+    :param cloud_logger: The logger to send entries to.
 
-    This class reuses a single :class:`Batch` method to write successive
-    entries.
+    :type grace_period: float
+    :param grace_period: The amount of time to wait for pending logs to
+        be submitted when the process is shutting down.
 
-    Currently, the only public methods are constructing it (which also starts
-    it) and enqueuing :class:`Logger` (record, message) pairs.
+    :type max_batch_size: int
+    :param max_batch_size: The maximum number of items to send at a time
+        in the background thread.
     """
 
-    def __init__(self, logger):
-        self.started = False
-        self.stopping = False
-        self.stopped = False
-
-        # _entries_condition is used to signal from the main thread whether
-        # there are any waiting queued logger entries to be written
-        self._entries_condition = threading.Condition()
-
-        # _stop_condition is used to signal from the worker thread to the
-        # main thread that it's finished its last entries
-        self._stop_condition = threading.Condition()
-
-        # This object continually reuses the same :class:`Batch` object to
-        # write multiple entries at the same time.
-        self.logger = logger
-        self.batch = self.logger.batch()
-
+    def __init__(self, cloud_logger, grace_period=_DEFAULT_GRACE_PERIOD,
+                 max_batch_size=_DEFAULT_MAX_BATCH_SIZE):
+        self._cloud_logger = cloud_logger
+        self._grace_period = grace_period
+        self._max_batch_size = max_batch_size
+        self._queue = queue.Queue(0)
+        self._operational_lock = threading.Lock()
         self._thread = None
 
-        # Number in seconds of  how long to wait for worker to send remaining
-        self._stop_timeout = 5
+    @property
+    def is_alive(self):
+        """Returns True is the background thread is running."""
+        return self._thread is not None and self._thread.is_alive()
 
-        self._start()
+    def _safely_commit_batch(self, batch):
+        total_logs = len(batch.entries)
 
-    def _run(self):
+        try:
+            if total_logs > 0:
+                batch.commit()
+                _LOGGER.debug('Submitted %d logs', total_logs)
+        except Exception:
+            _LOGGER.error(
+                'Failed to submit %d logs.', total_logs, exc_info=True)
+
+    def _thread_main(self):
         """The entry point for the worker thread.
 
-        Loops until ``stopping`` is set to :data:`True`, and commits batch
-        entries written during :meth:`enqueue`.
+        Pulls pending log entries off the queue and writes them in batches to
+        the Cloud Logger.
         """
-        try:
-            self._entries_condition.acquire()
-            self.started = True
-            while not self.stopping:
-                if len(self.batch.entries) == 0:
-                    # branch coverage of this code extremely flaky
-                    self._entries_condition.wait()  # pragma: NO COVER
+        _LOGGER.debug('Background thread started.')
 
-                if len(self.batch.entries) > 0:
-                    self.batch.commit()
-        finally:
-            self._entries_condition.release()
+        quit_ = False
+        while True:
+            batch = self._cloud_logger.batch()
+            items = _get_many(self._queue, max_items=self._max_batch_size)
 
-        # main thread may be waiting for worker thread to finish writing its
-        # final entries. here we signal that it's done.
-        self._stop_condition.acquire()
-        self._stop_condition.notify()
-        self._stop_condition.release()
+            for item in items:
+                if item is _WORKER_TERMINATOR:
+                    quit_ = True
+                    # Continue processing items, don't break, try to process
+                    # all items we got back before quitting.
+                else:
+                    batch.log_struct(**item)
 
-    def _start(self):
-        """Called by this class's constructor
+            self._safely_commit_batch(batch)
 
-        This method is responsible for starting the thread and registering
-        the exit handlers.
+            for _ in range(len(items)):
+                self._queue.task_done()
+
+            if quit_:
+                break
+
+        _LOGGER.debug('Background thread exited gracefully.')
+
+    def start(self):
+        """Starts the background thread.
+
+        Additionally, this registers a handler for process exit to attempt
+        to send any pending log entries before shutdown.
         """
-        try:
-            self._entries_condition.acquire()
+        with self._operational_lock:
+            if self.is_alive:
+                return
+
             self._thread = threading.Thread(
-                target=self._run, name=_WORKER_THREAD_NAME)
-            self._thread.setDaemon(True)
+                target=self._thread_main,
+                name=_WORKER_THREAD_NAME)
+            self._thread.daemon = True
             self._thread.start()
-        finally:
-            self._entries_condition.release()
-            atexit.register(self._stop)
+            atexit.register(self._main_thread_terminated)
 
-    def _stop(self):
-        """Signals the worker thread to shut down
+    def stop(self, grace_period=None):
+        """Signals the background thread to stop.
 
-        Also waits for ``stop_timeout`` seconds for the worker to finish.
+        This does not terminate the background thread. It simply queues the
+        stop signal. If the main process exits before the background thread
+        processes the stop signal, it will be terminated without finishing
+        work. The ``grace_period`` parameter will give the background
+        thread some time to finish processing before this function returns.
 
-        This method is called by the ``atexit`` handler registered by
-         :meth:`start`.
+        :type grace_period: float
+        :param grace_period: If specified, this method will block up to this
+            many seconds to allow the background thread to finish work before
+            returning.
+
+        :rtype: bool
+        :returns: True if the thread terminated. False if the thread is still
+            running.
         """
-        if not self.started or self.stopping:
+        if not self.is_alive:
+            return True
+
+        with self._operational_lock:
+            self._queue.put_nowait(_WORKER_TERMINATOR)
+
+            if grace_period is not None:
+                print('Waiting up to %d seconds.' % (grace_period,))
+
+            self._thread.join(timeout=grace_period)
+
+            # Check this before disowning the thread, because after we disown
+            # the thread is_alive will be False regardless of if the thread
+            # exited or not.
+            success = not self.is_alive
+
+            self._thread = None
+
+            return success
+
+    def _main_thread_terminated(self):
+        """Callback that attempts to send pending logs before termination."""
+        if not self.is_alive:
             return
 
-        # lock the stop condition first so that the worker
-        # thread can't notify it's finished before we wait
-        self._stop_condition.acquire()
+        if not self._queue.empty():
+            print(
+                'Program shutting down, attempting to send %d queued log '
+                'entries to Stackdriver Logging...' % (self._queue.qsize(),))
 
-        # now notify the worker thread to shutdown
-        self._entries_condition.acquire()
-        self.stopping = True
-        self._entries_condition.notify()
-        self._entries_condition.release()
-
-        # now wait for it to signal it's finished
-        self._stop_condition.wait(self._stop_timeout)
-        self._stop_condition.release()
-        self.stopped = True
+        if self.stop(self._grace_period):
+            print('Sent all pending logs.')
+        else:
+            print('Failed to send %d pending logs.' % (self._queue.qsize(),))
 
     def enqueue(self, record, message):
-        """Queues up a log entry to be written by the background thread."""
-        try:
-            self._entries_condition.acquire()
-            if self.stopping:
-                return
-            info = {'message': message, 'python_logger': record.name}
-            self.batch.log_struct(info, severity=record.levelname)
-            self._entries_condition.notify()
-        finally:
-            self._entries_condition.release()
+        """Queues a log entry to be written by the background thread.
+
+        :type record: :class:`logging.LogRecord`
+        :param record: Python log record that the handler was called with.
+
+        :type message: str
+        :param message: The message from the ``LogRecord`` after being
+                        formatted by the associated log formatters.
+        """
+        self._queue.put_nowait({
+            'info': {
+                'message': message,
+                'python_logger': record.name,
+            },
+            'severity': record.levelname,
+        })
 
 
 class BackgroundThreadTransport(Transport):
-    """Aysnchronous transport that uses a background thread.
+    """Asynchronous transport that uses a background thread.
 
-    Writes logging entries as a batch process.
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The Logging client.
+
+    :type name: str
+    :param name: the name of the logger.
+
+    :type grace_period: float
+    :param grace_period: The amount of time to wait for pending logs to
+        be submitted when the process is shutting down.
+
+    :type batch_size: int
+    :param batch_size: The maximum number of items to send at a time in the
+        background thread.
     """
 
-    def __init__(self, client, name):
+    def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,
+                 batch_size=_DEFAULT_MAX_BATCH_SIZE):
         http = copy.deepcopy(client._http)
         self.client = client.__class__(
             client.project, client._credentials, http)
