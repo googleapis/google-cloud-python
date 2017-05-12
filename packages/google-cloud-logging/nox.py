@@ -39,7 +39,7 @@ def unit_tests(session, python_version):
         'py.test', '--quiet',
         '--cov=google.cloud.logging', '--cov=tests.unit', '--cov-append',
         '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
+        'tests/unit', *session.posargs
     )
 
 
@@ -63,7 +63,7 @@ def system_tests(session, python_version):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '-vvv', 'tests/system.py')
+    session.run('py.test', '-vvv', 'tests/system.py', *session.posargs)
 
 
 @nox.session
