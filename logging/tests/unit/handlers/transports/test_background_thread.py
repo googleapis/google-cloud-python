@@ -36,13 +36,13 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         with worker_patch as worker_mock:
             return self._get_target_class()(*args, **kw), worker_mock
 
-    def test_ctor(self):
+    def test_constructor(self):
         client = _Client(self.PROJECT)
         name = 'python_logger'
 
         transport, worker = self._make_one(client, name)
 
-        logger = worker.call_args[0][0]
+        logger, = worker.call_args[0]  # call_args[0] is *args.
         self.assertEqual(logger.name, name)
 
     def test_send(self):
@@ -62,7 +62,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.worker.enqueue.assert_called_once_with(record, message)
 
 
-class TestWorker(unittest.TestCase):
+class Test_Worker(unittest.TestCase):
     NAME = 'python_logger'
 
     @staticmethod
@@ -74,50 +74,52 @@ class TestWorker(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def _make_one_with_mock_thread(self, *args, **kw):
+    def _start_with_thread_patch(self, worker):
         with mock.patch('threading.Thread', new=_Thread):
             with mock.patch('atexit.register') as atexit_mock:
                 self.atexit_mock = atexit_mock
-                return self._make_one(*args, **kw)
+                return worker.start()
 
-    def test_ctor(self):
+    def test_constructor(self):
         logger = _Logger(self.NAME)
         grace_period = 50
         max_batch_size = 50
 
-        worker = self._make_one_with_mock_thread(
+        worker = self._make_one(
             logger, grace_period=grace_period, max_batch_size=max_batch_size)
 
         self.assertEqual(worker._cloud_logger, logger)
         self.assertEqual(worker._grace_period, grace_period)
         self.assertEqual(worker._max_batch_size, max_batch_size)
-        self.assertTrue(worker.is_alive)
-        self.assertIsNotNone(worker._thread)
+        self.assertFalse(worker.is_alive)
+        self.assertIsNone(worker._thread)
 
     def test_start(self):
         from google.cloud.logging.handlers.transports import background_thread
 
-        worker = self._make_one_with_mock_thread(_Logger(self.NAME))
+        worker = self._make_one(_Logger(self.NAME))
 
-        # Start is implicitly called by worker's ctor
+        self._start_with_thread_patch(worker)
 
         self.assertTrue(worker.is_alive)
         self.assertIsNotNone(worker._thread)
-        self.assertTrue(worker._thread._daemon)
+        self.assertTrue(worker._thread.daemon)
         self.assertEqual(worker._thread._target, worker._thread_main)
         self.assertEqual(
             worker._thread._name, background_thread._WORKER_THREAD_NAME)
 
         # Calling start again should not start a new thread.
         current_thread = worker._thread
-        worker.start()
+        self._start_with_thread_patch(worker)
         self.assertIs(current_thread, worker._thread)
 
     def test_stop(self):
         from google.cloud.logging.handlers.transports import background_thread
 
         grace_period = 5.0
-        worker = self._make_one_with_mock_thread(_Logger(self.NAME))
+        worker = self._make_one(_Logger(self.NAME))
+
+        self._start_with_thread_patch(worker)
         thread = worker._thread
 
         worker.stop(grace_period)
@@ -133,7 +135,9 @@ class TestWorker(unittest.TestCase):
         worker.stop()
 
     def test_stop_no_grace(self):
-        worker = self._make_one_with_mock_thread(_Logger(self.NAME))
+        worker = self._make_one(_Logger(self.NAME))
+
+        self._start_with_thread_patch(worker)
         thread = worker._thread
 
         worker.stop()
@@ -141,8 +145,9 @@ class TestWorker(unittest.TestCase):
         self.assertEqual(thread._timeout, None)
 
     def test__main_thread_terminated(self):
-        worker = self._make_one_with_mock_thread(_Logger(self.NAME))
+        worker = self._make_one(_Logger(self.NAME))
 
+        self._start_with_thread_patch(worker)
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
@@ -151,23 +156,26 @@ class TestWorker(unittest.TestCase):
         worker._main_thread_terminated()
 
     def test__main_thread_terminated_non_empty_queue(self):
-        worker = self._make_one_with_mock_thread(_Logger(self.NAME))
+        worker = self._make_one(_Logger(self.NAME))
 
+        self._start_with_thread_patch(worker)
         worker.enqueue(mock.Mock(), '')
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
 
     def test__main_thread_terminated_did_not_join(self):
-        worker = self._make_one_with_mock_thread(_Logger(self.NAME))
+        worker = self._make_one(_Logger(self.NAME))
 
+        self._start_with_thread_patch(worker)
         worker._thread._terminate_on_join = False
         worker.enqueue(mock.Mock(), '')
         worker._main_thread_terminated()
 
         self.assertFalse(worker.is_alive)
 
-    def _enqueue_record(self, worker, message):
+    @staticmethod
+    def _enqueue_record(worker, message):
         record = logging.LogRecord(
             'python_logger', logging.INFO,
             None, None, message, None, None)
@@ -176,7 +184,7 @@ class TestWorker(unittest.TestCase):
     def test__thread_main(self):
         from google.cloud.logging.handlers.transports import background_thread
 
-        worker = self._make_one_with_mock_thread(_Logger(self.NAME))
+        worker = self._make_one(_Logger(self.NAME))
 
         # Enqueue two records and the termination signal.
         self._enqueue_record(worker, '1')
@@ -192,7 +200,7 @@ class TestWorker(unittest.TestCase):
     def test__thread_main_error(self):
         from google.cloud.logging.handlers.transports import background_thread
 
-        worker = self._make_one_with_mock_thread(_Logger(self.NAME))
+        worker = self._make_one(_Logger(self.NAME))
         worker._cloud_logger._batch_cls = _RaisingBatch
 
         # Enqueue one record and the termination signal.
@@ -207,8 +215,7 @@ class TestWorker(unittest.TestCase):
     def test__thread_main_batches(self):
         from google.cloud.logging.handlers.transports import background_thread
 
-        worker = self._make_one_with_mock_thread(
-            _Logger(self.NAME), max_batch_size=2)
+        worker = self._make_one(_Logger(self.NAME), max_batch_size=2)
 
         # Enqueue three records and the termination signal. This should be
         # enough to perform two separate batches and a third loop with just
@@ -231,9 +238,9 @@ class _Thread(object):
     def __init__(self, target, name):
         self._target = target
         self._name = name
-        self._daemon = False
         self._timeout = None
         self._terminate_on_join = True
+        self.daemon = False
 
     def is_alive(self):
         return self._is_alive
@@ -243,9 +250,6 @@ class _Thread(object):
 
     def stop(self):
         self._is_alive = False
-
-    def setDaemon(self, value):
-        self._daemon = value
 
     def join(self, timeout=None):
         self._timeout = timeout
