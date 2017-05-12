@@ -61,6 +61,16 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
         transport.worker.enqueue.assert_called_once_with(record, message)
 
+    def test_flush(self):
+        client = _Client(self.PROJECT)
+        name = 'python_logger'
+
+        transport, _ = self._make_one(client, name)
+
+        transport.flush()
+
+        transport.worker.flush.assert_called()
+
 
 class Test_Worker(unittest.TestCase):
     NAME = 'python_logger'
@@ -232,6 +242,12 @@ class Test_Worker(unittest.TestCase):
         # The last batch should not have been executed because it had no items.
         self.assertFalse(worker._cloud_logger._batch.commit_called)
         self.assertEqual(worker._queue.qsize(), 0)
+
+    def test_flush(self):
+        worker = self._make_one(_Logger(self.NAME))
+
+        # Queue is empty, should not block.
+        worker.flush()
 
 
 class _Thread(object):

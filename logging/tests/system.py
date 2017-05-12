@@ -247,6 +247,7 @@ class TestLogging(unittest.TestCase):
         cloud_logger = logging.getLogger(handler.name)
         cloud_logger.addHandler(handler)
         cloud_logger.warn(LOG_MESSAGE)
+        handler.flush()
         entries = _list_entries(logger)
         expected_payload = {
             'message': LOG_MESSAGE,
