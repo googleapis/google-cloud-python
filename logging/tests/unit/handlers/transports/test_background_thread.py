@@ -16,6 +16,7 @@ import logging
 import unittest
 
 import mock
+from six.moves import queue
 
 
 class TestBackgroundThreadHandler(unittest.TestCase):
@@ -245,9 +246,11 @@ class Test_Worker(unittest.TestCase):
 
     def test_flush(self):
         worker = self._make_one(_Logger(self.NAME))
+        worker._queue = mock.Mock(spec=queue.Queue)
 
         # Queue is empty, should not block.
         worker.flush()
+        worker._queue.join.assert_called()
 
 
 class _Thread(object):
