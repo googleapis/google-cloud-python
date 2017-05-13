@@ -294,9 +294,9 @@ class _Batch(object):
         self.commit_called = False
         self.commit_count = None
 
-    def log_struct(self, record, severity=logging.INFO, resource=_GLOBAL_RESOURCE):
-        self.log_struct_called_with = (record, severity, resource)
-        self.entries.append(record)
+    def log_struct(self, info, severity=logging.INFO, resource=_GLOBAL_RESOURCE):
+        self.log_struct_called_with = (info, severity, resource)
+        self.entries.append(info)
 
     def commit(self):
         self.commit_called = True

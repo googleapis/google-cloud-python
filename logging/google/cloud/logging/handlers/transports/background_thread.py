@@ -28,15 +28,13 @@ from six.moves import range
 from six.moves import queue
 
 from google.cloud.logging.handlers.transports.base import Transport
-from google.cloud.logging.resource import Resource
-
+from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
 _DEFAULT_GRACE_PERIOD = 5.0  # Seconds
 _DEFAULT_MAX_BATCH_SIZE = 10
 _WORKER_THREAD_NAME = 'google.cloud.logging.Worker'
 _WORKER_TERMINATOR = object()
 _LOGGER = logging.getLogger(__name__)
-_GLOBAL_RESOURCE = Resource(type='global', labels={})
 
 
 def _get_many(queue_, max_items=None):

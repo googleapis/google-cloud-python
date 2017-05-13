@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import logging
+import os
 import unittest
 from google.cloud.logging.resource import Resource
 
@@ -37,12 +38,14 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         RESOURCE = Resource(
             type='gae_app',
             labels={
-                'module_id': 'default',
-                'version_id': 'test',
-        })
+                'project_id': os.getenv('GCLOUD_PROJECT'),
+                'module_id': os.getenv('GAE_SERVICE'),
+                'version_id': os.getenv('GAE_VERSION'),
+            },
+        )
 
         client = _Client(self.PROJECT)
-        handler = self._make_one(client, transport=_Transport, resource=RESOURCE)
+        handler = self._make_one(client, transport=_Transport)
         logname = 'loggername'
         message = 'hello world'
         record = logging.LogRecord(logname, logging, None, None, message,

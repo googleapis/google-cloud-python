@@ -27,6 +27,7 @@ https://github.com/GoogleCloudPlatform/appengine-sidecars-docker/tree/master/flu
 # /appengine-vmruntime/vmruntime/cloud_logging.py
 
 import logging.handlers
+import os
 
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
@@ -36,7 +37,14 @@ DEFAULT_LOGGER_NAME = 'python'
 
 EXCLUDED_LOGGER_DEFAULTS = ('google.cloud', 'oauth2client')
 
-_GLOBAL_RESOURCE = Resource(type='global', labels={})
+GAE_RESOURCE = Resource(
+    type='gae_app',
+    labels={
+        'project_id': os.getenv('GCLOUD_PROJECT'),
+        'module_id': os.getenv('GAE_SERVICE'),
+        'version_id': os.getenv('GAE_VERSION'),
+    },
+)
 
 
 class AppEngineHandler(CloudLoggingHandler):
@@ -71,19 +79,5 @@ class AppEngineHandler(CloudLoggingHandler):
     def __init__(self, client,
                  name=DEFAULT_LOGGER_NAME,
                  transport=BackgroundThreadTransport,
-                 resource=_GLOBAL_RESOURCE):
-        super(AppEngineHandler, self).__init__(client, name, transport)
-        self.resource=resource
-
-    def emit(self, record):
-        """Actually log the specified logging record.
-
-        Overrides the default emit behavior of ``StreamHandler``.
-
-        See: https://docs.python.org/2/library/logging.html#handler-objects
-
-        :type record: :class:`logging.LogRecord`
-        :param record: The record to be logged.
-        """
-        message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(record, message, self.resource)
+                 resource=GAE_RESOURCE):
+        super(AppEngineHandler, self).__init__(client, name, transport, resource)
