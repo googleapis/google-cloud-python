@@ -4,6 +4,8 @@ Changelog
 0.1.7 / 2017-??-??
 ------------------
 
+- Resolve issue where the optional ``--noauth_local_webserver`` command line argument would not be propagated during the authentication process.
+
 0.1.6 / 2017-05-03
 ------------------
 

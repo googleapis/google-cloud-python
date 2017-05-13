@@ -231,7 +231,7 @@ class GbqConnector(object):
         credentials = storage.get()
 
         if credentials is None or credentials.invalid or self.reauth:
-            credentials = run_flow(flow, storage, argparser.parse_args([]))
+            credentials = run_flow(flow, storage, argparser.parse_args())
 
         return credentials
 
