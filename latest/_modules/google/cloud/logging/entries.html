@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.entries &mdash; google-cloud 9ad6965 documentation</title>
+  <title>google.cloud.logging.entries &mdash; google-cloud 2d63cda documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 9ad6965 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 2d63cda documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -359,6 +359,7 @@
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">any_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf.json_format</span> <span class="k">import</span> <span class="n">Parse</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud.logging.resource</span> <span class="k">import</span> <span class="n">Resource</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_name_from_project_path</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_nanos_to_datetime</span>
 
@@ -410,10 +411,13 @@
 
 <span class="sd">    :type http_request: dict</span>
 <span class="sd">    :param http_request: (optional) info about HTTP request associated with</span>
-<span class="sd">                         the entry</span>
+<span class="sd">                         the entry.</span>
+
+<span class="sd">    :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">    :param resource: (Optional) Monitored resource of the entry</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="n">payload</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">insert_id</span> <span class="o">=</span> <span class="n">insert_id</span>
@@ -421,6 +425,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">severity</span> <span class="o">=</span> <span class="n">severity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">http_request</span> <span class="o">=</span> <span class="n">http_request</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="o">=</span> <span class="n">resource</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">loggers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -457,8 +462,15 @@
         <span class="n">labels</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
         <span class="n">severity</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;severity&#39;</span><span class="p">)</span>
         <span class="n">http_request</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">)</span>
+
+        <span class="n">monitored_resource_dict</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;resource&#39;</span><span class="p">)</span>
+        <span class="n">monitored_resource</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">monitored_resource_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">monitored_resource</span> <span class="o">=</span> <span class="n">Resource</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">monitored_resource_dict</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
-                   <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">)</span>
+                   <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span>
+                   <span class="n">resource</span><span class="o">=</span><span class="n">monitored_resource</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="TextEntry"><a class="viewcode-back" href="../../../../logging-entries.html#google.cloud.logging.entries.TextEntry">[docs]</a><span class="k">class</span> <span class="nc">TextEntry</span><span class="p">(</span><span class="n">_BaseEntry</span><span class="p">):</span>
@@ -509,14 +521,18 @@
 <span class="sd">    :type http_request: dict</span>
 <span class="sd">    :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                         the entry</span>
+
+<span class="sd">    :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">    :param resource: (Optional) Monitored resource of the entry</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_PAYLOAD_KEY</span> <span class="o">=</span> <span class="s1">&#39;protoPayload&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ProtobufEntry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">payload</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
-            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">)</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">,</span> <span class="n">any_pb2</span><span class="o">.</span><span class="n">Any</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">payload_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="kc">None</span>
@@ -571,7 +587,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'9ad6965',
+            VERSION:'2d63cda',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

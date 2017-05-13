@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.handlers.transports.background_thread &mdash; google-cloud 9ad6965 documentation</title>
+  <title>google.cloud.logging.handlers.transports.background_thread &mdash; google-cloud 2d63cda documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../../search.html"/>
-    <link rel="top" title="google-cloud 9ad6965 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="google-cloud 2d63cda documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -356,144 +356,241 @@
 <span class="sd">Uses a background worker to log to Stackdriver Logging asynchronously.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
 <span class="kn">import</span> <span class="nn">atexit</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="nb">range</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">queue</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.logging.handlers.transports.base</span> <span class="k">import</span> <span class="n">Transport</span>
 
-<span class="n">_WORKER_THREAD_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.logging.handlers.transport.Worker&#39;</span>
+<span class="n">_DEFAULT_GRACE_PERIOD</span> <span class="o">=</span> <span class="mf">5.0</span>  <span class="c1"># Seconds</span>
+<span class="n">_DEFAULT_MAX_BATCH_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">_WORKER_THREAD_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.logging.Worker&#39;</span>
+<span class="n">_WORKER_TERMINATOR</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_many</span><span class="p">(</span><span class="n">queue_</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get multiple items from a Queue.</span>
+
+<span class="sd">    Gets at least one (blocking) and at most ``max_items`` items</span>
+<span class="sd">    (non-blocking) from a given Queue. Does not mark the items as done.</span>
+
+<span class="sd">    :type queue_: :class:`~queue.Queue`</span>
+<span class="sd">    :param queue_: The Queue to get items from.</span>
+
+<span class="sd">    :type max_items: int</span>
+<span class="sd">    :param max_items: The maximum number of items to get. If ``None``, then all</span>
+<span class="sd">        available items in the queue are returned.</span>
+
+<span class="sd">    :rtype: Sequence</span>
+<span class="sd">    :returns: A sequence of items retrieved from the queue.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Always return at least one item.</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">queue_</span><span class="o">.</span><span class="n">get</span><span class="p">()]</span>
+    <span class="k">while</span> <span class="n">max_items</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_items</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">queue_</span><span class="o">.</span><span class="n">get_nowait</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">items</span>
 
 
 <span class="k">class</span> <span class="nc">_Worker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A threaded worker that writes batches of log entries</span>
+    <span class="sd">&quot;&quot;&quot;A background thread that writes batches of log entries.</span>
 
-<span class="sd">    Writes entries to the logger API.</span>
+<span class="sd">    :type cloud_logger: :class:`~google.cloud.logging.logger.Logger`</span>
+<span class="sd">    :param cloud_logger: The logger to send entries to.</span>
 
-<span class="sd">    This class reuses a single :class:`Batch` method to write successive</span>
-<span class="sd">    entries.</span>
+<span class="sd">    :type grace_period: float</span>
+<span class="sd">    :param grace_period: The amount of time to wait for pending logs to</span>
+<span class="sd">        be submitted when the process is shutting down.</span>
 
-<span class="sd">    Currently, the only public methods are constructing it (which also starts</span>
-<span class="sd">    it) and enqueuing :class:`Logger` (record, message) pairs.</span>
+<span class="sd">    :type max_batch_size: int</span>
+<span class="sd">    :param max_batch_size: The maximum number of items to send at a time</span>
+<span class="sd">        in the background thread.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">started</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stopping</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stopped</span> <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="c1"># _entries_condition is used to signal from the main thread whether</span>
-        <span class="c1"># there are any waiting queued logger entries to be written</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Condition</span><span class="p">()</span>
-
-        <span class="c1"># _stop_condition is used to signal from the worker thread to the</span>
-        <span class="c1"># main thread that it&#39;s finished its last entries</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_condition</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Condition</span><span class="p">()</span>
-
-        <span class="c1"># This object continually reuses the same :class:`Batch` object to</span>
-        <span class="c1"># write multiple entries at the same time.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
-
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cloud_logger</span><span class="p">,</span> <span class="n">grace_period</span><span class="o">=</span><span class="n">_DEFAULT_GRACE_PERIOD</span><span class="p">,</span>
+                 <span class="n">max_batch_size</span><span class="o">=</span><span class="n">_DEFAULT_MAX_BATCH_SIZE</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cloud_logger</span> <span class="o">=</span> <span class="n">cloud_logger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grace_period</span> <span class="o">=</span> <span class="n">grace_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_batch_size</span> <span class="o">=</span> <span class="n">max_batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operational_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Number in seconds of  how long to wait for worker to send remaining</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_timeout</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns True is the background thread is running.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_safely_commit_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="n">total_logs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">total_logs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Submitted </span><span class="si">%d</span><span class="s1"> logs&#39;</span><span class="p">,</span> <span class="n">total_logs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s1">&#39;Failed to submit </span><span class="si">%d</span><span class="s1"> logs.&#39;</span><span class="p">,</span> <span class="n">total_logs</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_thread_main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The entry point for the worker thread.</span>
 
-<span class="sd">        Loops until ``stopping`` is set to :data:`True`, and commits batch</span>
-<span class="sd">        entries written during :meth:`enqueue`.</span>
+<span class="sd">        Pulls pending log entries off the queue and writes them in batches to</span>
+<span class="sd">        the Cloud Logger.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">started</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopping</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="c1"># branch coverage of this code extremely flaky</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>  <span class="c1"># pragma: NO COVER</span>
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Background thread started.&#39;</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+        <span class="n">quit_</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cloud_logger</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">_get_many</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_batch_size</span><span class="p">)</span>
 
-        <span class="c1"># main thread may be waiting for worker thread to finish writing its</span>
-        <span class="c1"># final entries. here we signal that it&#39;s done.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_condition</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_condition</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_condition</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="n">_WORKER_TERMINATOR</span><span class="p">:</span>
+                    <span class="n">quit_</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1"># Continue processing items, don&#39;t break, try to process</span>
+                    <span class="c1"># all items we got back before quitting.</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">batch</span><span class="o">.</span><span class="n">log_struct</span><span class="p">(</span><span class="o">**</span><span class="n">item</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Called by this class&#39;s constructor</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_safely_commit_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 
-<span class="sd">        This method is responsible for starting the thread and registering</span>
-<span class="sd">        the exit handlers.</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">task_done</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">quit_</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Background thread exited gracefully.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Starts the background thread.</span>
+
+<span class="sd">        Additionally, this registers a handler for process exit to attempt</span>
+<span class="sd">        to send any pending log entries before shutdown.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operational_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">:</span>
+                <span class="k">return</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
-                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">_WORKER_THREAD_NAME</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_thread_main</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">_WORKER_THREAD_NAME</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-            <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">)</span>
+            <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_main_thread_terminated</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Signals the worker thread to shut down</span>
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grace_period</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Signals the background thread to stop.</span>
 
-<span class="sd">        Also waits for ``stop_timeout`` seconds for the worker to finish.</span>
+<span class="sd">        This does not terminate the background thread. It simply queues the</span>
+<span class="sd">        stop signal. If the main process exits before the background thread</span>
+<span class="sd">        processes the stop signal, it will be terminated without finishing</span>
+<span class="sd">        work. The ``grace_period`` parameter will give the background</span>
+<span class="sd">        thread some time to finish processing before this function returns.</span>
 
-<span class="sd">        This method is called by the ``atexit`` handler registered by</span>
-<span class="sd">         :meth:`start`.</span>
+<span class="sd">        :type grace_period: float</span>
+<span class="sd">        :param grace_period: If specified, this method will block up to this</span>
+<span class="sd">            many seconds to allow the background thread to finish work before</span>
+<span class="sd">            returning.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: True if the thread terminated. False if the thread is still</span>
+<span class="sd">            running.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopping</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operational_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="n">_WORKER_TERMINATOR</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">grace_period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Waiting up to </span><span class="si">%d</span><span class="s1"> seconds.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">grace_period</span><span class="p">,))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">grace_period</span><span class="p">)</span>
+
+            <span class="c1"># Check this before disowning the thread, because after we disown</span>
+            <span class="c1"># the thread is_alive will be False regardless of if the thread</span>
+            <span class="c1"># exited or not.</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">success</span>
+
+    <span class="k">def</span> <span class="nf">_main_thread_terminated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Callback that attempts to send pending logs before termination.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="c1"># lock the stop condition first so that the worker</span>
-        <span class="c1"># thread can&#39;t notify it&#39;s finished before we wait</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_condition</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s1">&#39;Program shutting down, attempting to send </span><span class="si">%d</span><span class="s1"> queued log &#39;</span>
+                <span class="s1">&#39;entries to Stackdriver Logging...&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">qsize</span><span class="p">(),))</span>
 
-        <span class="c1"># now notify the worker thread to shutdown</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stopping</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-
-        <span class="c1"># now wait for it to signal it&#39;s finished</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_condition</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_timeout</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_condition</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stopped</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_grace_period</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent all pending logs.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Failed to send </span><span class="si">%d</span><span class="s1"> pending logs.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">qsize</span><span class="p">(),))</span>
 
     <span class="k">def</span> <span class="nf">enqueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Queues up a log entry to be written by the background thread.&quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopping</span><span class="p">:</span>
-                <span class="k">return</span>
-            <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;python_logger&#39;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">log_struct</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;Queues a log entry to be written by the background thread.</span>
+
+<span class="sd">        :type record: :class:`logging.LogRecord`</span>
+<span class="sd">        :param record: Python log record that the handler was called with.</span>
+
+<span class="sd">        :type message: str</span>
+<span class="sd">        :param message: The message from the ``LogRecord`` after being</span>
+<span class="sd">                        formatted by the associated log formatters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">({</span>
+            <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+                <span class="s1">&#39;python_logger&#39;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">,</span>
+        <span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Submit any pending log records.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="BackgroundThreadTransport"><a class="viewcode-back" href="../../../../../../logging-transports-thread.html#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport">[docs]</a><span class="k">class</span> <span class="nc">BackgroundThreadTransport</span><span class="p">(</span><span class="n">Transport</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Aysnchronous transport that uses a background thread.</span>
+    <span class="sd">&quot;&quot;&quot;Asynchronous transport that uses a background thread.</span>
 
-<span class="sd">    Writes logging entries as a batch process.</span>
+<span class="sd">    :type client: :class:`~google.cloud.logging.client.Client`</span>
+<span class="sd">    :param client: The Logging client.</span>
+
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param name: the name of the logger.</span>
+
+<span class="sd">    :type grace_period: float</span>
+<span class="sd">    :param grace_period: The amount of time to wait for pending logs to</span>
+<span class="sd">        be submitted when the process is shutting down.</span>
+
+<span class="sd">    :type batch_size: int</span>
+<span class="sd">    :param batch_size: The maximum number of items to send at a time in the</span>
+<span class="sd">        background thread.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">grace_period</span><span class="o">=</span><span class="n">_DEFAULT_GRACE_PERIOD</span><span class="p">,</span>
+                 <span class="n">batch_size</span><span class="o">=</span><span class="n">_DEFAULT_MAX_BATCH_SIZE</span><span class="p">):</span>
         <span class="n">http</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
             <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
         <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">_Worker</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
 <div class="viewcode-block" id="BackgroundThreadTransport.send"><a class="viewcode-back" href="../../../../../../logging-transports-thread.html#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.send">[docs]</a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Overrides Transport.send().</span>
@@ -505,7 +602,11 @@
 <span class="sd">        :param message: The message from the ``LogRecord`` after being</span>
 <span class="sd">                        formatted by the associated log formatters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BackgroundThreadTransport.flush"><a class="viewcode-back" href="../../../../../../logging-transports-thread.html#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Submit any pending log records.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>
@@ -542,7 +643,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'9ad6965',
+            VERSION:'2d63cda',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigtable.row &mdash; google-cloud 9ad6965 documentation</title>
+  <title>google.cloud.bigtable.row &mdash; google-cloud 2d63cda documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 9ad6965 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 2d63cda documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -392,7 +392,25 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">table</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">table</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">row_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Row key.</span>
+
+<span class="sd">        :rtype: bytes</span>
+<span class="sd">        :returns: The key for the current row.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Row table.</span>
+
+<span class="sd">        :rtype: table: :class:`Table &lt;google.cloud.bigtable.table.Table&gt;`</span>
+<span class="sd">        :returns: table: The table that owns the row.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span></div>
 
 
 <span class="k">class</span> <span class="nc">_SetDeleteRow</span><span class="p">(</span><span class="n">Row</span><span class="p">):</span>
@@ -1260,7 +1278,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'9ad6965',
+            VERSION:'2d63cda',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

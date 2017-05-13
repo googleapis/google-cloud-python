@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.logger &mdash; google-cloud 9ad6965 documentation</title>
+  <title>google.cloud.logging.logger &mdash; google-cloud 2d63cda documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 9ad6965 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 2d63cda documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -355,6 +355,10 @@
 
 <span class="kn">from</span> <span class="nn">google.protobuf.json_format</span> <span class="k">import</span> <span class="n">MessageToDict</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
+<span class="kn">from</span> <span class="nn">google.cloud.logging.resource</span> <span class="k">import</span> <span class="n">Resource</span>
+
+
+<span class="n">_GLOBAL_RESOURCE</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{})</span>
 
 
 <div class="viewcode-block" id="Logger"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Logger">[docs]</a><span class="k">class</span> <span class="nc">Logger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -430,7 +434,8 @@
 
     <span class="k">def</span> <span class="nf">_make_entry_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                             <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a log entry resource of the appropriate type.</span>
 
 <span class="sd">        Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.</span>
@@ -462,19 +467,22 @@
 <span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
 <span class="sd">        :param timestamp: (Optional) timestamp of event being logged.</span>
 
+<span class="sd">        :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">        :param resource: (Optional) Monitored resource of the entry</span>
+
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: The JSON resource created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;logName&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span>
-            <span class="s1">&#39;resource&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;global&#39;</span><span class="p">},</span>
+            <span class="s1">&#39;resource&#39;</span><span class="p">:</span> <span class="n">resource</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">(),</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;textPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;textPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
 
         <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jsonPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;jsonPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span>
 
         <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># NOTE: If ``message`` contains an ``Any`` field with an</span>
@@ -483,30 +491,31 @@
             <span class="c1">#       the assumption is that any types needed for the</span>
             <span class="c1">#       protobuf-&gt;JSON conversion will be known from already</span>
             <span class="c1">#       imported ``pb2`` modules.</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MessageToDict</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MessageToDict</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>
 
         <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
 
         <span class="k">if</span> <span class="n">insert_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">insert_id</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">insert_id</span>
 
         <span class="k">if</span> <span class="n">severity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;severity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">severity</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;severity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">severity</span>
 
         <span class="k">if</span> <span class="n">http_request</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">http_request</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">http_request</span>
 
         <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+            <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">resource</span>
+        <span class="k">return</span> <span class="n">entry</span>
 
 <div class="viewcode-block" id="Logger.log_text"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Logger.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a text message via a POST request</span>
 
 <span class="sd">        See:</span>
@@ -533,17 +542,22 @@
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry</span>
 
+<span class="sd">        :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">        :param resource: Monitored resource of the entry, defaults</span>
+<span class="sd">                         to the global resource type.</span>
+
 <span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
 <span class="sd">        :param timestamp: (optional) timestamp of event being logged.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span>
-            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
+            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Logger.log_struct"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Logger.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a structured message via a POST request</span>
 
 <span class="sd">        See:</span>
@@ -570,17 +584,22 @@
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry.</span>
 
+<span class="sd">        :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">        :param resource: Monitored resource of the entry, defaults</span>
+<span class="sd">                         to the global resource type.</span>
+
 <span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
 <span class="sd">        :param timestamp: (optional) timestamp of event being logged.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span>
-            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
+            <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Logger.log_proto"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Logger.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                  <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a protobuf message via a POST request</span>
 
 <span class="sd">        See:</span>
@@ -607,13 +626,18 @@
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry.</span>
 
+<span class="sd">        :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">        :param resource: Monitored resource of the entry, defaults</span>
+<span class="sd">                         to the global resource type.</span>
+
 <span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
 <span class="sd">        :param timestamp: (optional) timestamp of event being logged.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">entry_resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_entry_resource</span><span class="p">(</span>
             <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="n">insert_id</span><span class="p">,</span>
-            <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
+            <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Logger.delete"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Logger.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -683,11 +707,21 @@
 
 <span class="sd">    :type client: :class:`google.cloud.logging.client.Client`</span>
 <span class="sd">    :param client: The client to use.</span>
+
+<span class="sd">    :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">    :param resource: (Optional) Monitored resource of the batch, defaults</span>
+<span class="sd">                     to None, which requires that every entry should have a</span>
+<span class="sd">                     resource specified. Since the methods used to write</span>
+<span class="sd">                     entries default the entry&#39;s resource to the global</span>
+<span class="sd">                     resource type, this parameter is only required</span>
+<span class="sd">                     if explicitly set to None. If no entries&#39; resource are</span>
+<span class="sd">                     set to None, this parameter will be ignored on the server.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="o">=</span> <span class="n">resource</span>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -697,7 +731,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Batch.log_text"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Batch.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a text entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type text: str</span>
@@ -718,13 +752,21 @@
 
 <span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
 <span class="sd">        :param timestamp: (optional) timestamp of event being logged.</span>
+
+<span class="sd">        :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">        :param resource: (Optional) Monitored resource of the entry. Defaults</span>
+<span class="sd">                         to the global resource type. If set to None, the</span>
+<span class="sd">                         resource of the batch is used for this entry. If</span>
+<span class="sd">                         both this resource and the Batch resource are None,</span>
+<span class="sd">                         the API will return an error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">))</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Batch.log_struct"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Batch.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a struct entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type info: dict</span>
@@ -745,13 +787,21 @@
 
 <span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
 <span class="sd">        :param timestamp: (optional) timestamp of event being logged.</span>
+
+<span class="sd">        :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">        :param resource: (Optional) Monitored resource of the entry. Defaults</span>
+<span class="sd">                         to the global resource type. If set to None, the</span>
+<span class="sd">                         resource of the batch is used for this entry. If</span>
+<span class="sd">                         both this resource and the Batch resource are None,</span>
+<span class="sd">                         the API will return an error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">))</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Batch.log_proto"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Batch.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                  <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">resource</span><span class="o">=</span><span class="n">_GLOBAL_RESOURCE</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a protobuf entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type message: protobuf message</span>
@@ -772,10 +822,17 @@
 
 <span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
 <span class="sd">        :param timestamp: (optional) timestamp of event being logged.</span>
+
+<span class="sd">        :type resource: :class:`~google.cloud.logging.resource.Resource`</span>
+<span class="sd">        :param resource: (Optional) Monitored resource of the entry. Defaults</span>
+<span class="sd">                         to the global resource type. If set to None, the</span>
+<span class="sd">                         resource of the batch is used for this entry. If</span>
+<span class="sd">                         both this resource and the Batch resource are None,</span>
+<span class="sd">                         the API will return an error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;proto&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">))</span></div>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../../logging-logger.html#google.cloud.logging.logger.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send saved log entries as a single API call.</span>
@@ -790,14 +847,16 @@
 
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;logger_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span>
-            <span class="s1">&#39;resource&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;global&#39;</span><span class="p">},</span>
         <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">labels</span>
 
         <span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">iid</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_req</span><span class="p">,</span>
-             <span class="n">timestamp</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+             <span class="n">timestamp</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">entry_type</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span>
                 <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;textPayload&#39;</span><span class="p">:</span> <span class="n">entry</span><span class="p">}</span>
             <span class="k">elif</span> <span class="n">entry_type</span> <span class="o">==</span> <span class="s1">&#39;struct&#39;</span><span class="p">:</span>
@@ -812,6 +871,8 @@
                 <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">:</span> <span class="n">MessageToDict</span><span class="p">(</span><span class="n">entry</span><span class="p">)}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown entry type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">entry_type</span><span class="p">,))</span>
+            <span class="k">if</span> <span class="n">resource</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
             <span class="k">if</span> <span class="n">iid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -862,7 +923,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'9ad6965',
+            VERSION:'2d63cda',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

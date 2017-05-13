@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Entries &mdash; google-cloud 9ad6965 documentation</title>
+  <title>Entries &mdash; google-cloud 2d63cda documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 9ad6965 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 2d63cda documentation" href="index.html"/>
         <link rel="next" title="Metrics" href="logging-metric.html"/>
         <link rel="prev" title="Logger" href="logging-logger.html"/> 
 
@@ -342,7 +342,7 @@
 <p>Log entries within the Google Stackdriver Logging API.</p>
 <dl class="class">
 <dt id="google.cloud.logging.entries.ProtobufEntry">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.entries.</code><code class="descname">ProtobufEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/entries.html#ProtobufEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.ProtobufEntry" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.logging.entries.</code><code class="descname">ProtobufEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>resource=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/entries.html#ProtobufEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.ProtobufEntry" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.entries._BaseEntry</span></code></p>
 <p>Entry created with <code class="docutils literal"><span class="pre">protoPayload</span></code>.</p>
 <p>See:
@@ -363,6 +363,7 @@ not be deserialized.</li>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
 the entry</li>
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; (Optional) Monitored resource of the entry</li>
 </ul>
 </td>
 </tr>
@@ -387,7 +388,7 @@ the entry</li>
 
 <dl class="class">
 <dt id="google.cloud.logging.entries.StructEntry">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.entries.</code><code class="descname">StructEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/entries.html#StructEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.StructEntry" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.logging.entries.</code><code class="descname">StructEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>resource=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/entries.html#StructEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.StructEntry" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.entries._BaseEntry</span></code></p>
 <p>Entry created with <code class="docutils literal"><span class="pre">jsonPayload</span></code>.</p>
 <p>See:
@@ -396,7 +397,7 @@ the entry</li>
 
 <dl class="class">
 <dt id="google.cloud.logging.entries.TextEntry">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.entries.</code><code class="descname">TextEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/entries.html#TextEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.TextEntry" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.logging.entries.</code><code class="descname">TextEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>resource=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/entries.html#TextEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.entries.TextEntry" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.entries._BaseEntry</span></code></p>
 <p>Entry created with <code class="docutils literal"><span class="pre">textPayload</span></code>.</p>
 <p>See:
@@ -471,7 +472,7 @@ the project from the <code class="docutils literal"><span class="pre">path</span
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'9ad6965',
+            VERSION:'2d63cda',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

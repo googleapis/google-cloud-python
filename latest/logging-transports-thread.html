@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python Logging Handler Threaded Transport &mdash; google-cloud 9ad6965 documentation</title>
+  <title>Python Logging Handler Threaded Transport &mdash; google-cloud 2d63cda documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 9ad6965 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 2d63cda documentation" href="index.html"/>
         <link rel="next" title="Python Logging Handler Sync Transport" href="logging-transports-base.html"/>
         <link rel="prev" title="Python Logging Handler Sync Transport" href="logging-transports-sync.html"/> 
 
@@ -343,10 +343,31 @@
 <p>Uses a background worker to log to Stackdriver Logging asynchronously.</p>
 <dl class="class">
 <dt id="google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.transports.background_thread.</code><code class="descname">BackgroundThreadTransport</code><span class="sig-paren">(</span><em>client</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.transports.background_thread.</code><code class="descname">BackgroundThreadTransport</code><span class="sig-paren">(</span><em>client</em>, <em>name</em>, <em>grace_period=5.0</em>, <em>batch_size=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="logging-transports-base.html#google.cloud.logging.handlers.transports.base.Transport" title="google.cloud.logging.handlers.transports.base.Transport"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.handlers.transports.base.Transport</span></code></a></p>
-<p>Aysnchronous transport that uses a background thread.</p>
-<p>Writes logging entries as a batch process.</p>
+<p>Asynchronous transport that uses a background thread.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The Logging client.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the logger.</li>
+<li><strong>grace_period</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The amount of time to wait for pending logs to
+be submitted when the process is shutting down.</li>
+<li><strong>batch_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The maximum number of items to send at a time in the
+background thread.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.flush">
+<code class="descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport.flush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.flush" title="Permalink to this definition">#</a></dt>
+<dd><p>Submit any pending log records.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.send">
 <code class="descname">send</code><span class="sig-paren">(</span><em>record</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/handlers/transports/background_thread.html#BackgroundThreadTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.send" title="Permalink to this definition">#</a></dt>
@@ -414,7 +435,7 @@ formatted by the associated log formatters.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'9ad6965',
+            VERSION:'2d63cda',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

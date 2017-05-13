@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Bigtable Row &mdash; google-cloud 9ad6965 documentation</title>
+  <title>Bigtable Row &mdash; google-cloud 2d63cda documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 9ad6965 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 2d63cda documentation" href="index.html"/>
         <link rel="next" title="Bigtable Row Filters" href="bigtable-row-filters.html"/>
         <link rel="prev" title="Column Families" href="bigtable-column-family.html"/> 
 
@@ -491,6 +491,38 @@ will fail.</li>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.bigtable.row.AppendRow.row_key">
+<code class="descname">row_key</code><a class="headerlink" href="#google.cloud.bigtable.row.AppendRow.row_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Row key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key for the current row.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigtable.row.AppendRow.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.bigtable.row.AppendRow.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Row table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">table: The table that owns the row.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -658,6 +690,22 @@ applied in. Defaults to <a class="reference external" href="https://docs.python.
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.bigtable.row.ConditionalRow.row_key">
+<code class="descname">row_key</code><a class="headerlink" href="#google.cloud.bigtable.row.ConditionalRow.row_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Row key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key for the current row.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.bigtable.row.ConditionalRow.set_cell">
 <code class="descname">set_cell</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>column</em>, <em>value</em>, <em>timestamp=None</em>, <em>state=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigtable/row.html#ConditionalRow.set_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.ConditionalRow.set_cell" title="Permalink to this definition">#</a></dt>
@@ -691,6 +739,22 @@ integer (8 bytes).</li>
 applied in. Defaults to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigtable.row.ConditionalRow.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.bigtable.row.ConditionalRow.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Row table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">table: The table that owns the row.</td>
 </tr>
 </tbody>
 </table>
@@ -837,6 +901,22 @@ should be deleted.</li>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.bigtable.row.DirectRow.row_key">
+<code class="descname">row_key</code><a class="headerlink" href="#google.cloud.bigtable.row.DirectRow.row_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Row key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key for the current row.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.bigtable.row.DirectRow.set_cell">
 <code class="descname">set_cell</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>column</em>, <em>value</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigtable/row.html#DirectRow.set_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row.DirectRow.set_cell" title="Permalink to this definition">#</a></dt>
@@ -867,6 +947,22 @@ integer (8 bytes).</li>
 <li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The timestamp of the operation.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigtable.row.DirectRow.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.bigtable.row.DirectRow.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Row table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">table: The table that owns the row.</td>
 </tr>
 </tbody>
 </table>
@@ -904,6 +1000,38 @@ RPC methods for sending row mutations:</p>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.cloud.bigtable.row.Row.row_key">
+<code class="descname">row_key</code><a class="headerlink" href="#google.cloud.bigtable.row.Row.row_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Row key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key for the current row.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigtable.row.Row.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.bigtable.row.Row.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Row table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">table: <a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">table: The table that owns the row.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -952,7 +1080,7 @@ RPC methods for sending row mutations:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'9ad6965',
+            VERSION:'2d63cda',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
