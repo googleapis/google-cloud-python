@@ -473,8 +473,9 @@ class Table(object):
             resource['schema'] = {
                 'fields': _build_schema_resource(self._schema)
             }
-        else:
-            raise ValueError("Set either 'view_query' or 'schema'.")
+        elif self.partitioning_type is None:
+            raise ValueError(
+                "Set either 'view_query' or 'schema' or 'partitioning_type'.")
 
         return resource
 
