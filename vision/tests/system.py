@@ -14,6 +14,7 @@
 
 """System tests for Vision API."""
 
+import io
 import os
 import unittest
 
@@ -71,7 +72,7 @@ def tearDownModule():
 class TestVisionClientLogo(VisionSystemTestBase):
     def test_detect_logos_content(self):
         # Read the file.
-        with open(LOGO_FILE, 'rb') as image_file:
+        with io.open(LOGO_FILE, 'rb') as image_file:
             content = image_file.read()
 
         # Make the request.
@@ -83,12 +84,31 @@ class TestVisionClientLogo(VisionSystemTestBase):
         assert len(response.logo_annotations) == 1
         assert response.logo_annotations[0].description == 'Google'
 
+    def test_detect_logos_file_handler(self):
+        # Get a file handler, and make the request using it.
+        with io.open(LOGO_FILE, 'rb') as image_file:
+            response = self.client.logo_detection(image_file)
+
+        # Check to ensure we got what we expect.
+        assert len(response.logo_annotations) == 1
+        assert response.logo_annotations[0].description == 'Google'
+
+    def test_detect_logos_filename(self):
+        # Make the request with the filename directly.
+        response = self.client.logo_detection({
+            'source': {'filename': LOGO_FILE},
+        })
+
+        # Check to ensure we got what we expect.
+        assert len(response.logo_annotations) == 1
+        assert response.logo_annotations[0].description == 'Google'
+
     def test_detect_logos_gcs(self):
         # Upload the image to Google Cloud Storage.
         blob_name = 'logo.png'
         blob = self.test_bucket.blob(blob_name)
         self.to_delete_by_case.append(blob)
-        with open(LOGO_FILE, 'rb') as image_file:
+        with io.open(LOGO_FILE, 'rb') as image_file:
             blob.upload_from_file(image_file)
 
         # Make the request.

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+import io
 import unittest
 
 import mock
@@ -54,7 +55,6 @@ class TestSingleImageHelper(unittest.TestCase):
         assert request_sent.image is request.image
         assert len(request_sent.features) == len(all_features)
 
-
     @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
     def test_explicit_features(self, batch_annotate):
         # Set up an image annotation request with no features.
@@ -87,3 +87,10 @@ class TestSingleImageHelper(unittest.TestCase):
         for feature, i in zip(request_sent.features, range(1, 4)):
             assert feature.type == i
             assert feature.max_results == 0
+
+    @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
+    def test_image_file_handler(self, batch_annotate):
+        # Set up a file handler.
+        file_ = io.BytesIO(b'bogus==')
+
+        # Perform the single image request.
