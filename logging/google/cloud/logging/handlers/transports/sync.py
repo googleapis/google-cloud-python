@@ -21,9 +21,6 @@ from google.cloud.logging.handlers.transports.base import Transport
 from google.cloud.logging.resource import Resource
 
 
-_GLOBAL_RESOURCE = Resource(type='global', labels={})
-
-
 class SyncTransport(Transport):
     """Basic sychronous transport.
 
@@ -33,7 +30,7 @@ class SyncTransport(Transport):
     def __init__(self, client, name):
         self.logger = client.logger(name)
 
-    def send(self, record, message, resource=_GLOBAL_RESOURCE):
+    def send(self, record, message, resource=None):
         """Overrides transport.send().
 
         :type record: :class:`logging.LogRecord`

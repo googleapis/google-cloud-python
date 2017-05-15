@@ -14,7 +14,6 @@
 
 import logging
 import unittest
-from google.cloud.logging.resource import Resource
 
 import mock
 from six.moves import queue
@@ -48,12 +47,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         self.assertEqual(logger.name, name)
 
     def test_send(self):
-        RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'module_id': 'default',
-                'version_id': 'test',
-        })
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
         name = 'python_logger'
@@ -67,9 +61,9 @@ class TestBackgroundThreadHandler(unittest.TestCase):
             python_logger_name, logging.INFO,
             None, None, message, None, None)
 
-        transport.send(record, message, RESOURCE)
+        transport.send(record, message, _GLOBAL_RESOURCE)
 
-        transport.worker.enqueue.assert_called_once_with(record, message, RESOURCE)
+        transport.worker.enqueue.assert_called_once_with(record, message, _GLOBAL_RESOURCE)
 
     def test_flush(self):
         client = _Client(self.PROJECT)

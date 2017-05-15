@@ -83,7 +83,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         self.name = name
         self.client = client
         self.transport = transport(client, name)
-        self.resource=resource
+        self.resource = resource
 
     def emit(self, record):
         """Actually log the specified logging record.
@@ -96,7 +96,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         :param record: The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(record, message, self.resource)
+        self.transport.send(record, message, resource=self.resource)
 
 
 def setup_logging(handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,

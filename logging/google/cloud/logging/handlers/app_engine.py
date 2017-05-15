@@ -14,37 +14,18 @@
 
 """Logging handler for App Engine Flexible
 
-Logs to the well-known file that the fluentd sidecar container on App Engine
-Flexible is configured to read from and send to Stackdriver Logging.
-
-See the fluentd configuration here:
-
-https://github.com/GoogleCloudPlatform/appengine-sidecars-docker/tree/master/fluentd_logger
+Sends logs to the Stackdriver Logging API with the appropriate resource and labels for App Engine logs.
 """
 
-# This file is largely copied from:
-#  https://github.com/GoogleCloudPlatform/python-compat-runtime/blob/master
-# /appengine-vmruntime/vmruntime/cloud_logging.py
-
-import logging.handlers
 import os
 
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging.resource import Resource
 
-DEFAULT_LOGGER_NAME = 'python'
-
-EXCLUDED_LOGGER_DEFAULTS = ('google.cloud', 'oauth2client')
-
-GAE_RESOURCE = Resource(
-    type='gae_app',
-    labels={
-        'project_id': os.getenv('GCLOUD_PROJECT'),
-        'module_id': os.getenv('GAE_SERVICE'),
-        'version_id': os.getenv('GAE_VERSION'),
-    },
-)
+_GAE_PROJECT_ENV = 'GCLOUD_PROJECT'
+_GAE_SERVICE_ENV = 'GAE_SERVICE'
+_GAE_VERSION_ENV = 'GAE_VERSION'
 
 
 class AppEngineHandler(CloudLoggingHandler):
@@ -76,8 +57,21 @@ class AppEngineHandler(CloudLoggingHandler):
                      to the global resource type.
     """
 
+    DEFAULT_LOGGER_NAME = 'projects/{}/logs/app'.format(os.environ.get(_GAE_PROJECT_ENV))
+
     def __init__(self, client,
-                 name=DEFAULT_LOGGER_NAME,
-                 transport=BackgroundThreadTransport,
-                 resource=GAE_RESOURCE):
-        super(AppEngineHandler, self).__init__(client, name, transport, resource)
+                 transport=BackgroundThreadTransport):
+        super(AppEngineHandler, self).__init__(client, name=self.DEFAULT_LOGGER_NAME,
+                                               transport=transport, resource=self.gae_resource)
+
+    @property
+    def gae_resource(self):
+        gae_resource = Resource(
+            type='gae_app',
+            labels={
+                'project_id': os.environ.get(_GAE_PROJECT_ENV),
+                'module_id': os.environ.get(_GAE_SERVICE_ENV),
+                'version_id': os.environ.get(_GAE_VERSION_ENV),
+            },
+        )
+        return gae_resource

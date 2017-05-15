@@ -13,12 +13,11 @@
 # limitations under the License.
 
 import logging
-import os
 import unittest
-from google.cloud.logging.resource import Resource
 
 
 class TestAppEngineHandlerHandler(unittest.TestCase):
+
     PROJECT = 'PROJECT'
 
     def _get_target_class(self):
@@ -30,29 +29,32 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
+        import os
+        from google.cloud._testing import _Monkey
+        from google.cloud.logging.handlers.app_engine import _GAE_PROJECT_ENV, _GAE_SERVICE_ENV, _GAE_VERSION_ENV
+
         client = _Client(self.PROJECT)
-        handler = self._make_one(client, transport=_Transport)
+        with _Monkey(os, environ={_GAE_PROJECT_ENV: 'test_project',
+                                  _GAE_SERVICE_ENV: 'test_service',
+                                  _GAE_VERSION_ENV: 'test_version'}):
+            handler = self._make_one(client, transport=_Transport)
         self.assertEqual(handler.client, client)
+        self.assertEqual(handler.resource.type, 'gae_app')
+        self.assertEqual(handler.resource.labels['project_id'], 'test_project')
+        self.assertEqual(handler.resource.labels['module_id'], 'test_service')
+        self.assertEqual(handler.resource.labels['version_id'], 'test_version')
 
     def test_emit(self):
-        RESOURCE = Resource(
-            type='gae_app',
-            labels={
-                'project_id': os.getenv('GCLOUD_PROJECT'),
-                'module_id': os.getenv('GAE_SERVICE'),
-                'version_id': os.getenv('GAE_VERSION'),
-            },
-        )
-
         client = _Client(self.PROJECT)
         handler = self._make_one(client, transport=_Transport)
+        gae_resource = handler.gae_resource
         logname = 'loggername'
         message = 'hello world'
         record = logging.LogRecord(logname, logging, None, None, message,
                                    None, None)
         handler.emit(record)
 
-        self.assertEqual(handler.transport.send_called_with, (record, message, RESOURCE))
+        self.assertEqual(handler.transport.send_called_with, (record, message, gae_resource))
 
 
 class _Client(object):

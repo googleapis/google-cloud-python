@@ -28,7 +28,6 @@ from six.moves import range
 from six.moves import queue
 
 from google.cloud.logging.handlers.transports.base import Transport
-from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
 _DEFAULT_GRACE_PERIOD = 5.0  # Seconds
 _DEFAULT_MAX_BATCH_SIZE = 10
@@ -258,7 +257,7 @@ class BackgroundThreadTransport(Transport):
         self.worker = _Worker(logger)
         self.worker.start()
 
-    def send(self, record, message, resource=_GLOBAL_RESOURCE):
+    def send(self, record, message, resource=None):
         """Overrides Transport.send().
 
         :type record: :class:`logging.LogRecord`
@@ -272,7 +271,7 @@ class BackgroundThreadTransport(Transport):
         :param resource: Monitored resource of the entry, defaults
                          to the global resource type.
         """
-        self.worker.enqueue(record, message, resource)
+        self.worker.enqueue(record, message, resource=resource)
 
     def flush(self):
         """Submit any pending log records."""
