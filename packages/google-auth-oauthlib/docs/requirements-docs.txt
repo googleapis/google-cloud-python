@@ -1,0 +1,4 @@
+sphinx-docstring-typing
+requests
+requests-oauthlib
+click
