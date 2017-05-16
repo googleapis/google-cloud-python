@@ -122,6 +122,36 @@ _CELLDATA_FROM_JSON = {
 }
 
 
+def _row_from_json(row, schema):
+    """Convert JSON row data to row with appropriate types.
+
+    :type row: dict
+    :param row: A JSON response row to be converted.
+
+    :type schema: tuple
+    :param schema: A tuple of
+                   :class:`~google.cloud.bigquery.schema.SchemaField`.
+
+    :rtype: tuple
+    :returns: A tuple of data converted to native types.
+    """
+    row_data = []
+    for field, cell in zip(schema, row['f']):
+        converter = _CELLDATA_FROM_JSON[field.field_type]
+        if field.mode == 'REPEATED':
+            row_data.append([converter(item['v'], field)
+                             for item in cell['v']])
+        else:
+            row_data.append(converter(cell['v'], field))
+
+    return tuple(row_data)
+
+
+def _rows_from_json(rows, schema):
+    """Convert JSON row data to rows with appropriate types."""
+    return [_row_from_json(row, schema) for row in rows]
+
+
 def _int_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, int):
@@ -193,36 +223,6 @@ _SCALAR_VALUE_TO_JSON = {
     'DATE': _date_to_json,
     'TIME': _time_to_json,
 }
-
-
-def _row_from_json(row, schema):
-    """Convert JSON row data to row with appropriate types.
-
-    :type row: dict
-    :param row: A JSON response row to be converted.
-
-    :type schema: tuple
-    :param schema: A tuple of
-                   :class:`~google.cloud.bigquery.schema.SchemaField`.
-
-    :rtype: tuple
-    :returns: A tuple of data converted to native types.
-    """
-    row_data = []
-    for field, cell in zip(schema, row['f']):
-        converter = _CELLDATA_FROM_JSON[field.field_type]
-        if field.mode == 'REPEATED':
-            row_data.append([converter(item['v'], field)
-                             for item in cell['v']])
-        else:
-            row_data.append(converter(cell['v'], field))
-
-    return tuple(row_data)
-
-
-def _rows_from_json(rows, schema):
-    """Convert JSON row data to rows with appropriate types."""
-    return [_row_from_json(row, schema) for row in rows]
 
 
 class _ConfigurationProperty(object):
