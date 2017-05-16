@@ -53,13 +53,6 @@ be :class:`_ACLEntity` factories):
    :start-after: [START acl_user_settings]
    :end-before: [END acl_user_settings]
 
-You can also chain these ``grant_*`` and ``revoke_*`` methods together
-for brevity:
-
-.. literalinclude:: storage_snippets.py
-   :start-after: [START acl_revoke_write]
-   :end-before: [END acl_revoke_write]
-
 After that, you can save any changes you make with the
 :func:`google.cloud.storage.acl.ACL.save` method:
 
