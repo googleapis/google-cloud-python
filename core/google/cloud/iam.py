@@ -59,7 +59,7 @@ class Policy(collections.MutableMapping):
     def __init__(self, etag=None, version=None):
         self.etag = etag
         self.version = version
-        self._bindings = {}
+        self._bindings = collections.defaultdict(set)
 
     def __iter__(self):
         return iter(self._bindings)
