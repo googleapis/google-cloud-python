@@ -917,9 +917,6 @@ class Table(object):
             'configuration': {
                 'load': {
                     'sourceFormat': source_format,
-                    'schema': {
-                        'fields': _build_schema_resource(self._schema),
-                    },
                     'destinationTable': {
                         'projectId': self._dataset.project,
                         'datasetId': self._dataset.name,
@@ -928,6 +925,12 @@ class Table(object):
                 }
             }
         }
+
+        if len(self._schema) > 0:
+            load_config = metadata['configuration']['load']
+            load_config['schema'] = {
+                'fields': _build_schema_resource(self._schema)
+            }
 
         _configure_job_metadata(metadata, allow_jagged_rows,
                                 allow_quoted_newlines, create_disposition,
