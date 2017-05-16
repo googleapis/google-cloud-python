@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.job &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>google.cloud.bigquery.job &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -947,8 +947,8 @@
         <span class="n">schema</span> <span class="o">=</span> <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">()})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="LoadTableFromStorageJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="LoadTableFromStorageJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
 
 <span class="sd">        .. note:</span>
@@ -1057,8 +1057,8 @@
 
         <span class="k">return</span> <span class="n">resource</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="CopyJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.CopyJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="CopyJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.CopyJob.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
 
 <span class="sd">        .. note:</span>
@@ -1190,8 +1190,8 @@
 
         <span class="k">return</span> <span class="n">resource</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="ExtractTableToStorageJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="ExtractTableToStorageJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
 
 <span class="sd">        .. note:</span>
@@ -1446,8 +1446,8 @@
                 <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dest_remote</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">dest_remote</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">])</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="QueryJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.QueryJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryJob.from_api_repr"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.QueryJob.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -1510,7 +1510,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

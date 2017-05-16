@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Using the API &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Stackdriver Logging Client" href="logging-client.html"/>
         <link rel="prev" title="Error Reporting Utilities" href="error-reporting-util.html"/> 
 
@@ -361,7 +361,7 @@
 see <a class="reference internal" href="google-cloud-auth.html"><span class="doc">Authentication</span></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you&#8217;d like
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d like
 to interact with. If you are Google App Engine or Google Compute Engine
 this will be detected automatically.</p>
 </li>
@@ -373,13 +373,13 @@ non-empty string, e.g.:  <code class="docutils literal"><span class="pre">$</spa
 </li>
 <li><p class="first">After configuring your environment, create a
 <a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -388,72 +388,72 @@ non-empty string, e.g.:  <code class="docutils literal"><span class="pre">$</spa
 <div class="section" id="writing-log-entries">
 <h2>Writing log entries<a class="headerlink" href="#writing-log-entries" title="Permalink to this headline">#</a></h2>
 <p>To write log entries, first create a
-<a class="reference internal" href="logging-logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">Logger</span></code></a>, passing the &#8220;log name&#8221; with
+<a class="reference internal" href="logging-logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">Logger</span></code></a>, passing the “log name” with
 which to associate the entries:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">logger</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="n">LOG_NAME</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">logger</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="n">LOG_NAME</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Write a simple text entry to the logger.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">log_text</span><span class="p">(</span><span class="s2">&quot;A simple entry&quot;</span><span class="p">)</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">logger</span><span class="o">.</span><span class="n">log_text</span><span class="p">(</span><span class="s2">&quot;A simple entry&quot;</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>Write a dictionary entry to the logger.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">log_struct</span><span class="p">({</span>
-    <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;My second entry&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;partly cloudy&#39;</span><span class="p">,</span>
-<span class="p">})</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">logger</span><span class="o">.</span><span class="n">log_struct</span><span class="p">({</span>
+        <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;My second entry&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;partly cloudy&#39;</span><span class="p">,</span>
+    <span class="p">})</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="retrieving-log-entries">
 <h2>Retrieving log entries<a class="headerlink" href="#retrieving-log-entries" title="Permalink to this headline">#</a></h2>
 <p>Fetch entries for the default project.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Fetch entries across multiple projects.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PROJECT_IDS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one-project&#39;</span><span class="p">,</span> <span class="s1">&#39;another-project&#39;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">project_ids</span><span class="o">=</span><span class="n">PROJECT_IDS</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">PROJECT_IDS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one-project&#39;</span><span class="p">,</span> <span class="s1">&#39;another-project&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">project_ids</span><span class="o">=</span><span class="n">PROJECT_IDS</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Filter entries retrieved using the <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">Advanced Logs Filters</a> syntax</p>
 <p>Fetch entries for the default project.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">FILTER</span> <span class="o">=</span> <span class="s1">&#39;logName:log_name AND textPayload:simple&#39;</span>
-<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">FILTER</span> <span class="o">=</span> <span class="s1">&#39;logName:log_name AND textPayload:simple&#39;</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Sort entries in descending timestamp order.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.logging</span> <span class="k">import</span> <span class="n">DESCENDING</span>
-<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">DESCENDING</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.logging</span> <span class="k">import</span> <span class="n">DESCENDING</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">DESCENDING</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Retrieve entries in batches of 10, iterating until done.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">()</span>
-<span class="n">pages</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">pages</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">()</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">pages</span>
 
-<span class="n">page1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># API call</span>
-<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page1</span><span class="p">:</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+    <span class="n">page1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># API call</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page1</span><span class="p">:</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 
-<span class="n">page2</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># API call</span>
-<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page2</span><span class="p">:</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+    <span class="n">page2</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># API call</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page2</span><span class="p">:</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Retrieve entries for a single logger, sorting in descending timestamp order:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.logging</span> <span class="k">import</span> <span class="n">DESCENDING</span>
-<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">DESCENDING</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.logging</span> <span class="k">import</span> <span class="n">DESCENDING</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">DESCENDING</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="delete-all-entries-for-a-logger">
 <h2>Delete all entries for a logger<a class="headerlink" href="#delete-all-entries-for-a-logger" title="Permalink to this headline">#</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>        <span class="n">logger</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 </div>
@@ -462,31 +462,31 @@ which to associate the entries:</p>
 <p>Metrics are counters of entries which match a given filter.  They can be
 used within Stackdriver Monitoring to create charts and alerts.</p>
 <p>List all metrics for a project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metrics</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metrics</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Create a metric:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span>
-    <span class="n">METRIC_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">DESCRIPTION</span><span class="p">)</span>
-<span class="k">assert</span> <span class="ow">not</span> <span class="n">metric</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="n">metric</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="k">assert</span> <span class="n">metric</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span>
+        <span class="n">METRIC_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">DESCRIPTION</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">metric</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="n">metric</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="k">assert</span> <span class="n">metric</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>Refresh local information about a metric:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">existing_metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="n">METRIC_NAME</span><span class="p">)</span>
-<span class="n">existing_metric</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">existing_metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="n">METRIC_NAME</span><span class="p">)</span>
+    <span class="n">existing_metric</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>Update a metric:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">existing_metric</span><span class="o">.</span><span class="n">filter_</span> <span class="o">=</span> <span class="n">UPDATED_FILTER</span>
-<span class="n">existing_metric</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">UPDATED_DESCRIPTION</span>
-<span class="n">existing_metric</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">existing_metric</span><span class="o">.</span><span class="n">filter_</span> <span class="o">=</span> <span class="n">UPDATED_FILTER</span>
+    <span class="n">existing_metric</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">UPDATED_DESCRIPTION</span>
+    <span class="n">existing_metric</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>Delete a metric:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">metric</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>        <span class="n">metric</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -500,19 +500,19 @@ buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
 <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner. See
 <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_cloud_storage">Setting permissions for Cloud Storage</a>.</p>
 <p>Add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner of the bucket:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="n">logs_group</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
-<span class="n">logs_group</span><span class="o">.</span><span class="n">grant_owner</span><span class="p">()</span>
-<span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="n">logs_group</span><span class="p">)</span>
-<span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="n">logs_group</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
+    <span class="n">logs_group</span><span class="o">.</span><span class="n">grant_owner</span><span class="p">()</span>
+    <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="n">logs_group</span><span class="p">)</span>
+    <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>Create a Cloud Storage sink:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;storage.googleapis.com/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span>
-<span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
-<span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;storage.googleapis.com/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 </div>
@@ -521,20 +521,20 @@ buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
 <p>To export logs to BigQuery you must log into the Cloud Platform Console
 and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> to a dataset.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_bigquery">Setting permissions for BigQuery</a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">AccessGrant</span>
-<span class="n">grants</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span>
-<span class="n">grants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AccessGrant</span><span class="p">(</span>
-    <span class="s1">&#39;WRITER&#39;</span><span class="p">,</span> <span class="s1">&#39;groupByEmail&#39;</span><span class="p">,</span> <span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">))</span>
-<span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span> <span class="o">=</span> <span class="n">grants</span>
-<span class="n">dataset</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">AccessGrant</span>
+    <span class="n">grants</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span>
+    <span class="n">grants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AccessGrant</span><span class="p">(</span>
+        <span class="s1">&#39;WRITER&#39;</span><span class="p">,</span> <span class="s1">&#39;groupByEmail&#39;</span><span class="p">,</span> <span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">))</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span> <span class="o">=</span> <span class="n">grants</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>Create a BigQuery sink:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;bigquery.googleapis.com</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
-<span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
-<span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;bigquery.googleapis.com</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 </div>
@@ -543,55 +543,55 @@ and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.c
 <p>To export logs to BigQuery you must log into the Cloud Platform Console
 and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> to a topic.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_logs_to_cloud_pubsub">Setting permissions for Pub/Sub</a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="n">policy</span><span class="o">.</span><span class="n">owners</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">))</span>
-<span class="n">topic</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">owners</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">))</span>
+    <span class="n">topic</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>Create a Cloud Pub/Sub sink:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;pubsub.googleapis.com/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
-<span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
-<span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;pubsub.googleapis.com/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+    <span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="manage-sinks">
 <h3>Manage Sinks<a class="headerlink" href="#manage-sinks" title="Permalink to this headline">#</a></h3>
 <p>List all sinks for a project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sink</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_sinks</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">sink</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">sink</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_sinks</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">sink</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Refresh local information about a sink:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">existing_sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">)</span>
-<span class="n">existing_sink</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">existing_sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">)</span>
+    <span class="n">existing_sink</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Update a sink:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">existing_sink</span><span class="o">.</span><span class="n">filter_</span> <span class="o">=</span> <span class="n">UPDATED_FILTER</span>
-<span class="n">existing_sink</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">existing_sink</span><span class="o">.</span><span class="n">filter_</span> <span class="o">=</span> <span class="n">UPDATED_FILTER</span>
+    <span class="n">existing_sink</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Delete a sink:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sink</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">sink</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="integration-with-python-logging-module">
 <h2>Integration with Python logging module<a class="headerlink" href="#integration-with-python-logging-module" title="Permalink to this headline">#</a></h2>
-<p>It&#8217;s possible to tie the Python <a class="reference external" href="https://docs.python.org/2/library/logging.html#module-logging" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">logging</span></code></a> module directly into Google
+<p>It’s possible to tie the Python <a class="reference external" href="https://docs.python.org/2/library/logging.html#module-logging" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">logging</span></code></a> module directly into Google
 Stackdriver Logging. There are different handler options to accomplish this.
 To automatically pick the default for your current environment, use
 <a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client.get_default_handler" title="google.cloud.logging.client.Client.get_default_handler"><code class="xref py py-meth docutils literal"><span class="pre">get_default_handler()</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">handler</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_default_handler</span><span class="p">()</span>
-<span class="n">cloud_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;cloudLogger&#39;</span><span class="p">)</span>
-<span class="n">cloud_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-<span class="n">cloud_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
-<span class="n">cloud_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">import</span> <span class="nn">logging</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_default_handler</span><span class="p">()</span>
+    <span class="n">cloud_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;cloudLogger&#39;</span><span class="p">)</span>
+    <span class="n">cloud_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="n">cloud_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+    <span class="n">cloud_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>It is also possible to attach the handler to the root Python logger, so that
@@ -599,7 +599,7 @@ for example a plain <code class="docutils literal"><span class="pre">logging.war
 as well as any other loggers created. A helper method
 <a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client.setup_logging" title="google.cloud.logging.client.Client.setup_logging"><code class="xref py py-meth docutils literal"><span class="pre">setup_logging()</span></code></a> is provided
 to configure this automatically.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">client</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -608,8 +608,8 @@ to configure this automatically.</p>
 handlers while testing locally.</p>
 </div>
 <p>You can also exclude certain loggers:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-                     <span class="n">excluded_loggers</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">,))</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">client</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                         <span class="n">excluded_loggers</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -621,12 +621,12 @@ handlers while testing locally.</p>
 directly create a
 <a class="reference internal" href="logging-handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="google.cloud.logging.handlers.handlers.CloudLoggingHandler"><code class="xref py py-class docutils literal"><span class="pre">CloudLoggingHandler</span></code></a> instance
 which will write directly to the API.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.logging.handlers</span> <span class="k">import</span> <span class="n">CloudLoggingHandler</span>
-<span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-<span class="n">cloud_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;cloudLogger&#39;</span><span class="p">)</span>
-<span class="n">cloud_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-<span class="n">cloud_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
-<span class="n">cloud_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.logging.handlers</span> <span class="k">import</span> <span class="n">CloudLoggingHandler</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">cloud_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;cloudLogger&#39;</span><span class="p">)</span>
+    <span class="n">cloud_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="n">cloud_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+    <span class="n">cloud_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -636,10 +636,10 @@ entries on a background thread. However, the API call will still be made
 in the same process. For other transport options, see the transports
 section.</p>
 </div>
-<p>All logs will go to a single custom log, which defaults to &#8220;python&#8221;. The name
+<p>All logs will go to a single custom log, which defaults to “python”. The name
 of the Python logger will be included in the structured log entry under the
-&#8220;python_logger&#8221; field. You can change it by providing a name to the handler:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mycustomlog&#39;</span><span class="p">)</span>
+“python_logger” field. You can change it by providing a name to the handler:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mycustomlog&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -724,7 +724,7 @@ direct API call on each logging statement to write the entry.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

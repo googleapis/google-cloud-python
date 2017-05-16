@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.web &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>google.cloud.vision.web &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -385,8 +385,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_partial_matching_images</span> <span class="o">=</span> <span class="n">partial_matching_images</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pages_with_matching_images</span> <span class="o">=</span> <span class="n">pages_with_matching_images</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="WebDetection.from_api_repr"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebDetection.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">detection</span><span class="p">):</span>
+<div class="viewcode-block" id="WebDetection.from_api_repr"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebDetection.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">detection</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``WebDetection`` from Vision API response.</span>
 
 <span class="sd">        :type detection: dict</span>
@@ -414,8 +414,8 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">web_detection</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="WebDetection.from_pb"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebDetection.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">detection</span><span class="p">):</span>
+<div class="viewcode-block" id="WebDetection.from_pb"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebDetection.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">detection</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``WebDetection`` from Vision API response.</span>
 
 <span class="sd">        :type detection: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -493,8 +493,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="WebEntity.from_api_repr"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebEntity.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_entity</span><span class="p">):</span>
+<div class="viewcode-block" id="WebEntity.from_api_repr"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebEntity.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``WebImage`` from Vision API response.</span>
 
 <span class="sd">        :type web_entity: dict</span>
@@ -506,8 +506,8 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">web_entity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;entityId&#39;</span><span class="p">),</span> <span class="n">web_entity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">),</span>
                    <span class="n">web_entity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">))</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="WebEntity.from_pb"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebEntity.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_entity</span><span class="p">):</span>
+<div class="viewcode-block" id="WebEntity.from_pb"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebEntity.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``WebEntity`` from Vision API response.</span>
 
 <span class="sd">        :type web_entity: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -565,8 +565,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="WebImage.from_api_repr"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebImage.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_image</span><span class="p">):</span>
+<div class="viewcode-block" id="WebImage.from_api_repr"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebImage.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_image</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``WebImage`` from Vision API response.</span>
 
 <span class="sd">        :type web_image: dict</span>
@@ -577,8 +577,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">web_image</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span> <span class="n">web_image</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">])</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="WebImage.from_pb"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebImage.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_image</span><span class="p">):</span>
+<div class="viewcode-block" id="WebImage.from_pb"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebImage.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_image</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``WebImage`` from Vision API response.</span>
 
 <span class="sd">        :type web_image: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -626,8 +626,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="WebPage.from_api_repr"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebPage.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_page</span><span class="p">):</span>
+<div class="viewcode-block" id="WebPage.from_api_repr"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebPage.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_page</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``WebPage`` from Vision API response.</span>
 
 <span class="sd">        :type web_page: dict</span>
@@ -638,8 +638,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">web_page</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span> <span class="n">web_page</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">])</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="WebPage.from_pb"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebPage.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_page</span><span class="p">):</span>
+<div class="viewcode-block" id="WebPage.from_pb"><a class="viewcode-back" href="../../../../vision-web.html#google.cloud.vision.web.WebPage.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">web_page</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``WebPage`` from Vision API response.</span>
 
 <span class="sd">        :type web_page: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -708,7 +708,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

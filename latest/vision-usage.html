@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Using the Vision API &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Vision Annotations" href="vision-annotations.html"/>
         <link rel="prev" title="Translation Client" href="translate-client.html"/> 
 
@@ -367,7 +367,7 @@
 see <a class="reference internal" href="google-cloud-auth.html"><span class="doc">Authentication</span></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you&#8217;d
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d
 like to interact with. If the GOOGLE_CLOUD_PROJECT environment variable is
 not present, the project ID from JSON file credentials is used.</p>
 <p>If you are using Google App Engine or Google Compute Engine
@@ -501,7 +501,7 @@ certainty from <code class="docutils literal"><span class="pre">0.0</span> <span
 <div class="section" id="landmark-detection">
 <h2>Landmark Detection<a class="headerlink" href="#landmark-detection" title="Permalink to this headline">#</a></h2>
 <p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_landmarks" title="google.cloud.vision.image.Image.detect_landmarks"><code class="xref py py-meth docutils literal"><span class="pre">detect_landmarks()</span></code></a> will attempt to
-detect landmarks such as &#8220;Mount Rushmore&#8221; and the &#8220;Sydney Opera House&#8221;. The API
+detect landmarks such as “Mount Rushmore” and the “Sydney Opera House”. The API
 will also provide their known geographical locations if available.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
@@ -525,7 +525,7 @@ will also provide their known geographical locations if available.</p>
 <h2>Logo Detection<a class="headerlink" href="#logo-detection" title="Permalink to this headline">#</a></h2>
 <p>With <a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_logos" title="google.cloud.vision.image.Image.detect_logos"><code class="xref py py-meth docutils literal"><span class="pre">detect_logos()</span></code></a>, you can identify
 brand logos in an image. Their shape and location in the image can be found by
-iterating through the detected logo&#8217;s <code class="docutils literal"><span class="pre">vertices</span></code>.</p>
+iterating through the detected logo’s <code class="docutils literal"><span class="pre">vertices</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
@@ -553,7 +553,7 @@ iterating through the detected logo&#8217;s <code class="docutils literal"><span
 categorize the entire contents of the image under four categories.</p>
 <ul class="simple">
 <li>adult: Represents the likelihood that the image contains adult content.</li>
-<li>spoof: The likelihood that an obvious modification was made to the image&#8217;s
+<li>spoof: The likelihood that an obvious modification was made to the image’s
 canonical version to make it appear funny or offensive.</li>
 <li>medical: Likelihood this is a medical image.</li>
 <li>violence: Violence likelihood.</li>
@@ -738,7 +738,7 @@ an empty list is returned. This behavior is similiar with all detection types.</
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

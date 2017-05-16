@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>BigQuery Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>BigQuery Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Datasets" href="bigquery-dataset.html"/>
         <link rel="prev" title="Using the API" href="bigquery-usage.html"/> 
 
@@ -350,14 +350,14 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of. Will be
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the project which the client acts on behalf of. Will be
 passed when creating a dataset / job.  If not passed,
 falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
@@ -371,7 +371,7 @@ change in the future.</li>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/bigquery', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#google.cloud.bigquery.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = (‘https://www.googleapis.com/auth/bigquery’, ‘https://www.googleapis.com/auth/cloud-platform’)</em><a class="headerlink" href="#google.cloud.bigquery.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating as a BigQuery consumer.</p>
 </dd></dl>
 
@@ -386,9 +386,9 @@ change in the future.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the job.</li>
-<li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be copied.</li>
-<li><strong>sources</strong> (sequence of <a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) &#8211; tables to be copied.</li>
+<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the job.</li>
+<li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) – Table into which data is to be copied.</li>
+<li><strong>sources</strong> (sequence of <a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) – tables to be copied.</li>
 </ul>
 </td>
 </tr>
@@ -411,8 +411,8 @@ change in the future.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the dataset.</li>
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) project ID for the dataset (defaults to
+<li><strong>dataset_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the dataset.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) project ID for the dataset (defaults to
 the project of the client).</li>
 </ul>
 </td>
@@ -438,9 +438,9 @@ the project of the client).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the job.</li>
-<li><strong>source</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) &#8211; table to be extracted.</li>
-<li><strong>destination_uris</strong> (<em>sequence of string</em>) &#8211; URIs of CloudStorage file(s) into which
+<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the job.</li>
+<li><strong>source</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) – table to be extracted.</li>
+<li><strong>destination_uris</strong> (<em>sequence of string</em>) – URIs of CloudStorage file(s) into which
 table data is to be extracted; in format
 <code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
 </ul>
@@ -464,7 +464,7 @@ table data is to be extracted; in format
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; one job resource from API response</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – one job resource from API response</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">One of:
 <a class="reference internal" href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob" title="google.cloud.bigquery.job.LoadTableFromStorageJob"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.job.LoadTableFromStorageJob</span></code></a>,
@@ -490,10 +490,10 @@ table data is to be extracted; in format
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>include_all</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; True if results include hidden datasets.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of datasets to return, If not
+<li><strong>include_all</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – True if results include hidden datasets.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of datasets to return, If not
 passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of datasets. If
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of datasets. If
 not passed, the API will return the first page of
 datasets.</li>
 </ul>
@@ -521,14 +521,14 @@ accessible to the current client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of jobs to return, If not
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of jobs to return, If not
 passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of jobs. If
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of jobs. If
 not passed, the API will return the first page of
 jobs.</li>
-<li><strong>all_users</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if true, include jobs owned by all users in the
+<li><strong>all_users</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – if true, include jobs owned by all users in the
 project.</li>
-<li><strong>state_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; <p>if passed, include only jobs matching the given
+<li><strong>state_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – <p>if passed, include only jobs matching the given
 state.  One of</p>
 <ul>
 <li><code class="docutils literal"><span class="pre">&quot;done&quot;</span></code></li>
@@ -560,9 +560,9 @@ state.  One of</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of projects to return, If not
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of projects to return, If not
 passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of projects. If
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of projects. If
 not passed, the API will return the first page of
 projects.</li>
 </ul>
@@ -590,9 +590,9 @@ accessible to the current client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the job.</li>
-<li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
-<li><strong>source_uris</strong> (<em>sequence of string</em>) &#8211; URIs of data files to be loaded; in format
+<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the job.</li>
+<li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) – Table into which data is to be loaded.</li>
+<li><strong>source_uris</strong> (<em>sequence of string</em>) – URIs of data files to be loaded; in format
 <code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
 </ul>
 </td>
@@ -618,12 +618,12 @@ accessible to the current client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the job.</li>
-<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; SQL query to be executed</li>
-<li><strong>udf_resources</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; An iterable of
+<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the job.</li>
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – SQL query to be executed</li>
+<li><strong>udf_resources</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – An iterable of
 <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery._helpers.UDFResource</span></code>
 (empty by default)</li>
-<li><strong>query_parameters</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; An iterable of
+<li><strong>query_parameters</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – An iterable of
 <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery._helpers.AbstractQueryParameter</span></code>
 (empty by default)</li>
 </ul>
@@ -648,11 +648,11 @@ accessible to the current client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; SQL query to be executed</li>
-<li><strong>udf_resources</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; An iterable of
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – SQL query to be executed</li>
+<li><strong>udf_resources</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – An iterable of
 <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery._helpers.UDFResource</span></code>
 (empty by default)</li>
-<li><strong>query_parameters</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; An iterable of
+<li><strong>query_parameters</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – An iterable of
 <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery._helpers.AbstractQueryParameter</span></code>
 (empty by default)</li>
 </ul>
@@ -680,9 +680,9 @@ accessible to the current client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Opaque ID of the project</li>
-<li><strong>numeric_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Numeric ID of the project</li>
-<li><strong>friendly_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Display name of the project</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Opaque ID of the project</li>
+<li><strong>numeric_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Numeric ID of the project</li>
+<li><strong>friendly_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Display name of the project</li>
 </ul>
 </td>
 </tr>
@@ -742,7 +742,7 @@ accessible to the current client.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

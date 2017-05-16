@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Using the API &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Stackdriver Monitoring Client" href="monitoring-client.html"/>
         <link rel="prev" title="Python Logging Handler Sync Transport" href="logging-transports-base.html"/> 
 
@@ -438,8 +438,8 @@ You can list all of these with the
 <p>You can create new metric descriptors to define custom metrics in
 the <code class="docutils literal"><span class="pre">custom.googleapis.com</span></code> namespace. You do this by creating a
 <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a> object using the
-client&#8217;s <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.metric_descriptor" title="google.cloud.monitoring.client.Client.metric_descriptor"><code class="xref py py-meth docutils literal"><span class="pre">metric_descriptor()</span></code></a>
-factory and then calling the object&#8217;s
+client’s <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.metric_descriptor" title="google.cloud.monitoring.client.Client.metric_descriptor"><code class="xref py py-meth docutils literal"><span class="pre">metric_descriptor()</span></code></a>
+factory and then calling the object’s
 <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricDescriptor.create" title="google.cloud.monitoring.metric.MetricDescriptor.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.monitoring</span> <span class="kn">import</span> <span class="n">MetricKind</span><span class="p">,</span> <span class="n">ValueType</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
@@ -491,7 +491,7 @@ defined by a <a class="reference external" href="https://cloud.google.com/monito
 </div>
 <p>See <a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> and the API documentation for
 <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups">Groups</a> and <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups.members">Group members</a> for more information.</p>
-<p>You can get a specific group based on it&#8217;s ID as follows:</p>
+<p>You can get a specific group based on it’s ID as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_group</span><span class="p">(</span><span class="s1">&#39;a001&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -507,8 +507,8 @@ membership changes over time, as <em>monitored resources</em> come and go, and a
 change properties.</p>
 <p>You can create new groups to define new collections of <em>monitored resources</em>.
 You do this by creating a <a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> object using
-the client&#8217;s <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.group" title="google.cloud.monitoring.client.Client.group"><code class="xref py py-meth docutils literal"><span class="pre">group()</span></code></a> factory and then
-calling the object&#8217;s <a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group.create" title="google.cloud.monitoring.group.Group.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method:</p>
+the client’s <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.group" title="google.cloud.monitoring.client.Client.group"><code class="xref py py-meth docutils literal"><span class="pre">group()</span></code></a> factory and then
+calling the object’s <a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group.create" title="google.cloud.monitoring.group.Group.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_string</span> <span class="o">=</span> <span class="s1">&#39;resource.zone = &quot;us-central1-a&quot;&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">display_name</span><span class="o">=</span><span class="s1">&#39;My group&#39;</span><span class="p">,</span>
@@ -521,7 +521,7 @@ calling the object&#8217;s <a class="reference internal" href="monitoring-group.
 </pre></div>
 </div>
 <p>You can further manipulate an existing group by first initializing a Group
-object with it&#8217;s ID or name, and then calling various methods on it.</p>
+object with it’s ID or name, and then calling various methods on it.</p>
 <p>Delete a group:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
@@ -589,7 +589,7 @@ the metric labels. You will need to have either created the metric descriptor ea
 custom metrics</a>).</p>
 <p>You will also need to provide a <a class="reference internal" href="monitoring-resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a> instance
 specifying a monitored resource type as well as values for all of the monitored resource labels,
-except for <code class="docutils literal"><span class="pre">project_id</span></code>, which is ignored when it&#8217;s included in writes to the API. A good
+except for <code class="docutils literal"><span class="pre">project_id</span></code>, which is ignored when it’s included in writes to the API. A good
 choice is to use the underlying physical resource where your application code runs – e.g., a
 monitored resource type of <code class="docutils literal"><span class="pre">gce_instance</span></code> or <code class="docutils literal"><span class="pre">aws_ec2_instance</span></code>. In some limited
 circumstances, such as when only a single process writes to the custom metric, you may choose to
@@ -697,7 +697,7 @@ the API must only include a single point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

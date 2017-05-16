@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Resource Manager Overview &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Resource Manager Overview &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Client" href="resource-manager-client.html"/>
         <link rel="prev" title="IAM Policy" href="pubsub-iam.html"/> 
 
@@ -350,12 +350,12 @@ With this API, you can do the following:</p>
 <li>Create new projects</li>
 <li>Update existing projects</li>
 <li>Delete projects</li>
-<li>Undelete, or recover, projects that you don&#8217;t want to delete</li>
+<li>Undelete, or recover, projects that you don’t want to delete</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Don&#8217;t forget to look at the <a class="reference internal" href="#authentication"><span class="std std-ref">Authentication</span></a> section below.
-It&#8217;s slightly different from the rest of this library.</p>
+<p class="last">Don’t forget to look at the <a class="reference internal" href="#authentication"><span class="std std-ref">Authentication</span></a> section below.
+It’s slightly different from the rest of this library.</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -366,7 +366,7 @@ not subject to any SLA or deprecation policy. Access to this feature is
 currently invite-only. For an invitation, contact our sales team at
 <a class="reference external" href="https://cloud.google.com/contact">https://cloud.google.com/contact</a>.</p>
 </div>
-<p>Here&#8217;s a quick example of the full life-cycle:</p>
+<p>Here’s a quick example of the full life-cycle:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">resource_manager</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">resource_manager</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 
@@ -401,16 +401,16 @@ currently invite-only. For an invitation, contact our sales team at
 <span id="id1"></span><h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">#</a></h2>
 <p>Unlike the other APIs, the Resource Manager API is focused on managing your
 various projects inside Google Cloud Platform. What this means (currently, as
-of August 2015) is that you can&#8217;t use a Service Account to work with some
+of August 2015) is that you can’t use a Service Account to work with some
 parts of this API (for example, creating projects).</p>
 <p>The reason is actually pretty simple: if your API call is trying to do
-something like create a project, what project&#8217;s Service Account can you use?
+something like create a project, what project’s Service Account can you use?
 Currently none.</p>
 <p>This means that for this API you should always use the credentials
 provided by the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>, which you can get by running
 <code class="docutils literal"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>.</p>
 <p>Once you run that command, <code class="docutils literal"><span class="pre">google-cloud-python</span></code> will automatically pick up the
-credentials, and you can use the &#8220;automatic discovery&#8221; feature of the library.</p>
+credentials, and you can use the “automatic discovery” feature of the library.</p>
 <p>Start by authenticating:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ gcloud auth login
 </pre></div>
@@ -467,7 +467,7 @@ credentials, and you can use the &#8220;automatic discovery&#8221; feature of th
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

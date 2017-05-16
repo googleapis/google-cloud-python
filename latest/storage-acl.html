@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ACL &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>ACL &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Batches" href="storage-batch.html"/>
         <link rel="prev" title="Buckets" href="storage-buckets.html"/> 
 
@@ -409,7 +409,7 @@ when sending metadata for ACLs to the API.</p>
 <p>Container class representing a list of access controls.</p>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS">
-<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({'bucketOwnerFullControl', 'projectPrivate', 'bucketOwnerRead', 'authenticatedRead', 'publicRead', 'publicReadWrite', 'private'})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
+<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({‘authenticatedRead’, ‘bucketOwnerFullControl’, ‘publicRead’, ‘publicReadWrite’, ‘private’, ‘projectPrivate’, ‘bucketOwnerRead’})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
 <dd><p>See:
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control/lists#predefined-acl">https://cloud.google.com/storage/docs/access-control/lists#predefined-acl</a></p>
 </dd></dl>
@@ -422,7 +422,7 @@ when sending metadata for ACLs to the API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code>) &#8211; The entity to add to this ACL.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code>) – The entity to add to this ACL.</td>
 </tr>
 </tbody>
 </table>
@@ -464,8 +464,8 @@ when sending metadata for ACLs to the API.</p>
 <dt id="google.cloud.storage.acl.ACL.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/acl.html#ACL.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.acl.ACL.clear" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove all ACL entries.</p>
-<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules, but it
-will remove all the non-default rules.  In short, you&#8217;ll still
+<p>Note that this won’t actually remove <em>ALL</em> the rules, but it
+will remove all the non-default rules.  In short, you’ll still
 have access to a bucket that you created even after you clear
 ACL rules with this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -473,8 +473,8 @@ ACL rules with this method.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the ACL&#8217;s parent.</td>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the ACL’s parent.</td>
 </tr>
 </tbody>
 </table>
@@ -494,7 +494,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The domain for this entity.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The domain for this entity.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
@@ -517,9 +517,9 @@ this ACL.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of entity to create
+<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The type of entity to create
 (ie, <code class="docutils literal"><span class="pre">user</span></code>, <code class="docutils literal"><span class="pre">group</span></code>, etc)</li>
-<li><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the entity (if applicable).
+<li><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the entity (if applicable).
 This can be either an ID or an e-mail address.</li>
 </ul>
 </td>
@@ -545,7 +545,7 @@ users and all authenticated users.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity_dict</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary full of data from an ACL lookup.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity_dict</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Dictionary full of data from an ACL lookup.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
@@ -580,9 +580,9 @@ users and all authenticated users.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code> or string) &#8211; The entity to get lookup in the ACL.</li>
-<li><strong>default</strong> (<em>anything</em>) &#8211; This value will be returned if the entity
-doesn&#8217;t exist.</li>
+<li><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code> or string) – The entity to get lookup in the ACL.</li>
+<li><strong>default</strong> (<em>anything</em>) – This value will be returned if the entity
+doesn’t exist.</li>
 </ul>
 </td>
 </tr>
@@ -605,7 +605,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An id or e-mail for this particular group.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – An id or e-mail for this particular group.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
@@ -623,7 +623,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code>) &#8211; The entity to check for existence in this ACL.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code>) – The entity to check for existence in this ACL.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
@@ -642,8 +642,8 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the ACL&#8217;s parent.</td>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the ACL’s parent.</td>
 </tr>
 </tbody>
 </table>
@@ -664,11 +664,11 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>acl</strong> (<a class="reference internal" href="#google.cloud.storage.acl.ACL" title="google.cloud.storage.acl.ACL"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.acl.ACL</span></code></a>, or a compatible list.) &#8211; The ACL object to save.  If left blank, this will save
+<li><strong>acl</strong> (<a class="reference internal" href="#google.cloud.storage.acl.ACL" title="google.cloud.storage.acl.ACL"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.acl.ACL</span></code></a>, or a compatible list.) – The ACL object to save.  If left blank, this will save
 current entries.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the ACL&#8217;s parent.</li>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the ACL’s parent.</li>
 </ul>
 </td>
 </tr>
@@ -685,14 +685,14 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>predefined</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An identifier for a predefined ACL.  Must be one
+<li><strong>predefined</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – An identifier for a predefined ACL.  Must be one
 of the keys in <a class="reference internal" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS"><code class="xref py py-attr docutils literal"><span class="pre">PREDEFINED_JSON_ACLS</span></code></a>
 or <code class="xref py py-attr docutils literal"><span class="pre">PREDEFINED_XML_ACLS</span></code> (which will be
 aliased to the corresponding JSON name).
 If passed, <cite>acl</cite> must be None.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the ACL&#8217;s parent.</li>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the ACL’s parent.</li>
 </ul>
 </td>
 </tr>
@@ -708,7 +708,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An id or e-mail for this particular user.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – An id or e-mail for this particular user.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
@@ -729,14 +729,14 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a>) &#8211; The bucket to which this ACL relates.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a>) – The bucket to which this ACL relates.</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.BucketACL.client">
 <code class="descname">client</code><a class="headerlink" href="#google.cloud.storage.acl.BucketACL.client" title="Permalink to this definition">#</a></dt>
-<dd><p>The client bound to this ACL&#8217;s bucket.</p>
+<dd><p>The client bound to this ACL’s bucket.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -769,14 +769,14 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blob</strong> (<a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.blob.Blob</span></code></a>) &#8211; The blob that this ACL corresponds to.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blob</strong> (<a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.blob.Blob</span></code></a>) – The blob that this ACL corresponds to.</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.ObjectACL.client">
 <code class="descname">client</code><a class="headerlink" href="#google.cloud.storage.acl.ObjectACL.client" title="Permalink to this definition">#</a></dt>
-<dd><p>The client bound to this ACL&#8217;s blob.</p>
+<dd><p>The client bound to this ACL’s blob.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -839,7 +839,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

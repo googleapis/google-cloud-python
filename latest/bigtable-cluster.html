@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Cluster &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Cluster &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Table" href="bigtable-table.html"/>
         <link rel="prev" title="Instance" href="bigtable-instance.html"/> 
 
@@ -362,9 +362,9 @@ which if not sent will end up as <code class="xref py py-data docutils literal">
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the cluster.</li>
-<li><strong>instance</strong> (<a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) &#8211; The instance where the cluster resides.</li>
-<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The number of nodes in the cluster.
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the cluster.</li>
+<li><strong>instance</strong> (<a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) – The instance where the cluster resides.</li>
+<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) The number of nodes in the cluster.
 Defaults to <a class="reference internal" href="#google.cloud.bigtable.cluster.DEFAULT_SERVE_NODES" title="google.cloud.bigtable.cluster.DEFAULT_SERVE_NODES"><code class="xref py py-data docutils literal"><span class="pre">DEFAULT_SERVE_NODES</span></code></a>.</li>
 </ul>
 </td>
@@ -424,14 +424,14 @@ create operation.</td>
 <p>Marks a cluster and all of its tables for permanent deletion in 7 days.</p>
 <p>Immediately upon completion of the request:</p>
 <ul class="simple">
-<li>Billing will cease for all of the cluster&#8217;s reserved resources.</li>
-<li>The cluster&#8217;s <code class="docutils literal"><span class="pre">delete_time</span></code> field will be set 7 days in the future.</li>
+<li>Billing will cease for all of the cluster’s reserved resources.</li>
+<li>The cluster’s <code class="docutils literal"><span class="pre">delete_time</span></code> field will be set 7 days in the future.</li>
 </ul>
 <p>Soon afterward:</p>
 <ul class="simple">
 <li>All tables within the cluster will become unavailable.</li>
 </ul>
-<p>At the cluster&#8217;s <code class="docutils literal"><span class="pre">delete_time</span></code>:</p>
+<p>At the cluster’s <code class="docutils literal"><span class="pre">delete_time</span></code>:</p>
 <ul class="simple">
 <li>The cluster and <strong>all of its tables</strong> will immediately and
 irrevocably disappear from the API, and their data will be
@@ -448,8 +448,8 @@ permanently deleted.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cluster_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">instance_pb2.Cluster</span></code>) &#8211; A cluster protobuf object.</li>
-<li><strong>instance</strong> (<code class="xref py py-class docutils literal"><span class="pre">Instance&gt;</span></code>) &#8211; The instance that owns the cluster.</li>
+<li><strong>cluster_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">instance_pb2.Cluster</span></code>) – A cluster protobuf object.</li>
+<li><strong>instance</strong> (<code class="xref py py-class docutils literal"><span class="pre">Instance&gt;</span></code>) – The instance that owns the cluster.</li>
 </ul>
 </td>
 </tr>
@@ -506,7 +506,7 @@ do not, but the return value is not cached.</p>
 <dd><p>Update this cluster.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Updates the <code class="docutils literal"><span class="pre">serve_nodes</span></code>. If you&#8217;d like to
+<p>Updates the <code class="docutils literal"><span class="pre">serve_nodes</span></code>. If you’d like to
 change them before updating, reset the values via</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">cluster</span><span class="o">.</span><span class="n">serve_nodes</span> <span class="o">=</span> <span class="mi">8</span>
 </pre></div>
@@ -580,7 +580,7 @@ update operation.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

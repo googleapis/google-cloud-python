@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Session API &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Session API &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Keyset API" href="spanner-keyset-api.html"/>
         <link rel="prev" title="Database API" href="spanner-database-api.html"/> 
 
@@ -361,7 +361,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) &#8211; The database to which the session is bound.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – The database to which the session is bound.</td>
 </tr>
 </tbody>
 </table>
@@ -417,22 +417,22 @@
 
 <dl class="method">
 <dt id="google.cloud.spanner.session.Session.execute_sql">
-<code class="descname">execute_sql</code><span class="sig-paren">(</span><em>sql</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em>, <em>resume_token=b''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/session.html#Session.execute_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.execute_sql" title="Permalink to this definition">#</a></dt>
+<code class="descname">execute_sql</code><span class="sig-paren">(</span><em>sql</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em>, <em>resume_token=b”</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/session.html#Session.execute_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.execute_sql" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform an <code class="docutils literal"><span class="pre">ExecuteStreamingSql</span></code> API request.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; SQL query statement</li>
-<li><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>{str -&gt; column value}</em>) &#8211; values for parameter replacement.  Keys must match
+<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – SQL query statement</li>
+<li><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>{str -&gt; column value}</em>) – values for parameter replacement.  Keys must match
 the names used in <code class="docutils literal"><span class="pre">sql</span></code>.</li>
-<li><strong>param_types</strong> (dict, {str -&gt; <code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.type_pb2.TypeCode</span></code>}) &#8211; (Optional) explicit types for one or more param
+<li><strong>param_types</strong> (dict, {str -&gt; <code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.type_pb2.TypeCode</span></code>}) – (Optional) explicit types for one or more param
 values;  overrides default type detection on the
 back-end.</li>
-<li><strong>query_mode</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode</span></code>) &#8211; Mode governing return of results / query plan. See:
+<li><strong>query_mode</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode</span></code>) – Mode governing return of results / query plan. See:
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</a></li>
-<li><strong>resume_token</strong> (<em>bytes</em>) &#8211; token for resuming previously-interrupted query</li>
+<li><strong>resume_token</strong> (<em>bytes</em>) – token for resuming previously-interrupted query</li>
 </ul>
 </td>
 </tr>
@@ -490,20 +490,20 @@ return value is not cached.</p>
 
 <dl class="method">
 <dt id="google.cloud.spanner.session.Session.read">
-<code class="descname">read</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>keyset</em>, <em>index=''</em>, <em>limit=0</em>, <em>resume_token=b''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/session.html#Session.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.read" title="Permalink to this definition">#</a></dt>
+<code class="descname">read</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>keyset</em>, <em>index=”</em>, <em>limit=0</em>, <em>resume_token=b”</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/session.html#Session.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.read" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform a <code class="docutils literal"><span class="pre">StreamingRead</span></code> API request for rows in a table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of the table from which to fetch data</li>
-<li><strong>columns</strong> (<em>list of str</em>) &#8211; names of columns to be retrieved</li>
-<li><strong>keyset</strong> (<a class="reference internal" href="spanner-keyset-api.html#google.cloud.spanner.keyset.KeySet" title="google.cloud.spanner.keyset.KeySet"><code class="xref py py-class docutils literal"><span class="pre">KeySet</span></code></a>) &#8211; keys / ranges identifying rows to be retrieved</li>
-<li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) name of index to use, rather than the
-table&#8217;s primary key</li>
-<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) maxiumn number of rows to return</li>
-<li><strong>resume_token</strong> (<em>bytes</em>) &#8211; token for resuming previously-interrupted read</li>
+<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – name of the table from which to fetch data</li>
+<li><strong>columns</strong> (<em>list of str</em>) – names of columns to be retrieved</li>
+<li><strong>keyset</strong> (<a class="reference internal" href="spanner-keyset-api.html#google.cloud.spanner.keyset.KeySet" title="google.cloud.spanner.keyset.KeySet"><code class="xref py py-class docutils literal"><span class="pre">KeySet</span></code></a>) – keys / ranges identifying rows to be retrieved</li>
+<li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) name of index to use, rather than the
+table’s primary key</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) maxiumn number of rows to return</li>
+<li><strong>resume_token</strong> (<em>bytes</em>) – token for resuming previously-interrupted read</li>
 </ul>
 </td>
 </tr>
@@ -526,12 +526,12 @@ table&#8217;s primary key</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>func</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; takes a required positional argument, the transaction,
+<li><strong>func</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) – takes a required positional argument, the transaction,
 and additional positional / keyword arguments as supplied
 by the caller.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; additional positional arguments to be passed to <code class="docutils literal"><span class="pre">func</span></code>.</li>
-<li><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; optional keyword arguments to be passed to <code class="docutils literal"><span class="pre">func</span></code>.
-If passed, &#8220;timeout_secs&#8221; will be removed and used to
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – additional positional arguments to be passed to <code class="docutils literal"><span class="pre">func</span></code>.</li>
+<li><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – optional keyword arguments to be passed to <code class="docutils literal"><span class="pre">func</span></code>.
+If passed, “timeout_secs” will be removed and used to
 override the default timeout.</li>
 </ul>
 </td>
@@ -565,12 +565,12 @@ at a timestamp where all previously committed transactions are visible.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; Execute all reads at the given timestamp.</li>
-<li><strong>min_read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; Execute all reads at a
+<li><strong>read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at the given timestamp.</li>
+<li><strong>min_read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at a
 timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</li>
-<li><strong>max_staleness</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; Read data at a
+<li><strong>max_staleness</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Read data at a
 timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_staleness</span></code> seconds.</li>
-<li><strong>exact_staleness</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; Execute all reads at a timestamp that is
+<li><strong>exact_staleness</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Execute all reads at a timestamp that is
 <code class="docutils literal"><span class="pre">exact_staleness</span></code> old.</li>
 </ul>
 </td>
@@ -625,7 +625,7 @@ timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_stale
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) &#8211; database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -660,7 +660,7 @@ session is available.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) &#8211; the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 </tbody>
 </table>
@@ -677,7 +677,7 @@ not full.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) keyword arguments, passed through to
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) keyword arguments, passed through to
 the returned checkout.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">SessionCheckout</span></code></td>
@@ -697,7 +697,7 @@ accessing the session and returning it to the pool.</td>
 <dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.pool.AbstractSessionPool</span></code></a></p>
 <p>Concrete session pool implementation:</p>
 <ul class="simple">
-<li>&#8220;Pings&#8221; existing sessions via <code class="xref py py-meth docutils literal"><span class="pre">session.exists()</span></code> before returning
+<li>“Pings” existing sessions via <code class="xref py py-meth docutils literal"><span class="pre">session.exists()</span></code> before returning
 them.</li>
 <li>Creates a new session, rather than blocking, when <a class="reference internal" href="#google.cloud.spanner.pool.BurstyPool.get" title="google.cloud.spanner.pool.BurstyPool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called
 on an empty pool.</li>
@@ -708,7 +708,7 @@ is called on a full pool.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; max pool size</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – max pool size</td>
 </tr>
 </tbody>
 </table>
@@ -720,7 +720,7 @@ is called on a full pool.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) &#8211; database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -760,7 +760,7 @@ discarded.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) &#8211; the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 </tbody>
 </table>
@@ -775,7 +775,7 @@ discarded.</p>
 <p>Concrete session pool implementation:</p>
 <ul class="simple">
 <li>Pre-allocates / creates a fixed number of sessions.</li>
-<li>&#8220;Pings&#8221; existing sessions via <code class="xref py py-meth docutils literal"><span class="pre">session.exists()</span></code> before returning
+<li>“Pings” existing sessions via <code class="xref py py-meth docutils literal"><span class="pre">session.exists()</span></code> before returning
 them, and replaces expired sessions.</li>
 <li>Blocks, with a timeout, when <a class="reference internal" href="#google.cloud.spanner.pool.FixedSizePool.get" title="google.cloud.spanner.pool.FixedSizePool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called on an empty pool.
 Raises after timing out.</li>
@@ -788,8 +788,8 @@ never expected in normal practice, as users should be calling
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; fixed pool size</li>
-<li><strong>default_timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; default timeout, in seconds, to wait for
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – fixed pool size</li>
+<li><strong>default_timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – default timeout, in seconds, to wait for
 a returned session.</li>
 </ul>
 </td>
@@ -804,7 +804,7 @@ a returned session.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) &#8211; database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -825,7 +825,7 @@ when needed.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; seconds to block waiting for an available session</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – seconds to block waiting for an available session</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
 </tr>
@@ -847,7 +847,7 @@ session.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) &#8211; the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">six.moves.queue.Full</span></code> if the queue is full.</td>
 </tr>
@@ -864,8 +864,8 @@ session.</td>
 <p>Concrete session pool implementation:</p>
 <ul class="simple">
 <li>Pre-allocates / creates a fixed number of sessions.</li>
-<li>Sessions are used in &#8220;round-robin&#8221; order (LRU first).</li>
-<li>&#8220;Pings&#8221; existing sessions in the background after a specified interval
+<li>Sessions are used in “round-robin” order (LRU first).</li>
+<li>“Pings” existing sessions in the background after a specified interval
 via an API call (<code class="docutils literal"><span class="pre">session.exists()</span></code>).</li>
 <li>Blocks, with a timeout, when <a class="reference internal" href="#google.cloud.spanner.pool.PingingPool.get" title="google.cloud.spanner.pool.PingingPool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called on an empty pool.
 Raises after timing out.</li>
@@ -880,10 +880,10 @@ times, e.g. from a background thread.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; fixed pool size</li>
-<li><strong>default_timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; default timeout, in seconds, to wait for
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – fixed pool size</li>
+<li><strong>default_timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – default timeout, in seconds, to wait for
 a returned session.</li>
-<li><strong>ping_interval</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; interval at which to ping sessions.</li>
+<li><strong>ping_interval</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – interval at which to ping sessions.</li>
 </ul>
 </td>
 </tr>
@@ -897,7 +897,7 @@ a returned session.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) &#8211; database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -918,7 +918,7 @@ when needed.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; seconds to block waiting for an available session</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – seconds to block waiting for an available session</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
 </tr>
@@ -936,7 +936,7 @@ session.</td>
 <code class="descname">ping</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/pool.html#PingingPool.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.PingingPool.ping" title="Permalink to this definition">#</a></dt>
 <dd><p>Refresh maybe-expired sessions in the pool.</p>
 <p>This method is designed to be called from a background thread,
-or during the &#8220;idle&#8221; phase of an event loop.</p>
+or during the “idle” phase of an event loop.</p>
 </dd></dl>
 
 <dl class="method">
@@ -948,7 +948,7 @@ or during the &#8220;idle&#8221; phase of an event loop.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) &#8211; the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">six.moves.queue.Full</span></code> if the queue is full.</td>
 </tr>
@@ -969,8 +969,8 @@ or during the &#8220;idle&#8221; phase of an event loop.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>pool</strong> (concrete subclass of
-<code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code>) &#8211; Pool from which to check out a session.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; extra keyword arguments to be passed to <code class="xref py py-meth docutils literal"><span class="pre">pool.get()</span></code>.</li>
+<code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code>) – Pool from which to check out a session.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – extra keyword arguments to be passed to <code class="xref py py-meth docutils literal"><span class="pre">pool.get()</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -987,18 +987,18 @@ or during the &#8220;idle&#8221; phase of an event loop.</p>
 creates and begins a transaction for each of its sessions at startup.</p>
 <p>When a session is returned to the pool, if its transaction has been
 committed or rolled back, the pool creates a new transaction for the
-session and pushes the transaction onto a separate queue of &#8220;transactions
-to begin.&#8221;  The application is responsible for flushing this queue
-as appropriate via the pool&#8217;s <a class="reference internal" href="#google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions" title="google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions"><code class="xref py py-meth docutils literal"><span class="pre">begin_pending_transactions()</span></code></a> method.</p>
+session and pushes the transaction onto a separate queue of “transactions
+to begin.”  The application is responsible for flushing this queue
+as appropriate via the pool’s <a class="reference internal" href="#google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions" title="google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions"><code class="xref py py-meth docutils literal"><span class="pre">begin_pending_transactions()</span></code></a> method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; fixed pool size</li>
-<li><strong>default_timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; default timeout, in seconds, to wait for
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – fixed pool size</li>
+<li><strong>default_timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – default timeout, in seconds, to wait for
 a returned session.</li>
-<li><strong>ping_interval</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; interval at which to ping sessions.</li>
+<li><strong>ping_interval</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – interval at which to ping sessions.</li>
 </ul>
 </td>
 </tr>
@@ -1018,7 +1018,7 @@ a returned session.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) &#8211; database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="spanner-database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -1034,7 +1034,7 @@ when needed.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) &#8211; the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">six.moves.queue.Full</span></code> if the queue is full.</td>
 </tr>
@@ -1090,7 +1090,7 @@ when needed.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

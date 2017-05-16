@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -353,7 +353,16 @@
 
 <span class="c1"># pylint: disable=too-many-lines</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Storage blobs.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Storage blobs.</span>
+
+<span class="sd">.. _API reference docs: https://cloud.google.com/storage/docs/\</span>
+<span class="sd">                        json_api/v1/objects</span>
+<span class="sd">.. _customer-supplied: https://cloud.google.com/storage/docs/\</span>
+<span class="sd">                       encryption#customer-supplied</span>
+<span class="sd">.. _google-resumable-media: https://googlecloudplatform.github.io/\</span>
+<span class="sd">                            google-resumable-media-python/latest/\</span>
+<span class="sd">                            google.resumable_media.requests.html</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">copy</span>
@@ -507,8 +516,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">,))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="Blob.path_helper"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.path_helper">[docs]</a>    <span class="k">def</span> <span class="nf">path_helper</span><span class="p">(</span><span class="n">bucket_path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.path_helper"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.path_helper">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">path_helper</span><span class="p">(</span><span class="n">bucket_path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Relative URL path for a blob.</span>
 
 <span class="sd">        :type bucket_path: str</span>
@@ -766,8 +775,8 @@
 <span class="sd">           If the server-set property, :attr:`media_link`, is not yet</span>
 <span class="sd">           initialized, makes an additional API request to load it.</span>
 
-<span class="sd">         Downloading a file that has been encrypted with a `customer-supplied`_</span>
-<span class="sd">         encryption key:</span>
+<span class="sd">        Downloading a file that has been encrypted with a `customer-supplied`_</span>
+<span class="sd">        encryption key:</span>
 
 <span class="sd">         .. literalinclude:: storage_snippets.py</span>
 <span class="sd">            :start-after: [START download_to_file]</span>
@@ -776,8 +785,9 @@
 <span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
 <span class="sd">        least 32.</span>
 
-<span class="sd">        .. _customer-supplied: https://cloud.google.com/storage/docs/\</span>
-<span class="sd">                               encryption#customer-supplied</span>
+<span class="sd">        For more fine-grained over the download process, check out</span>
+<span class="sd">        `google-resumable-media`_. For example, this library allows</span>
+<span class="sd">        downloading **parts** of a blob rather than the whole thing.</span>
 
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle to which to write the blob&#39;s data.</span>
@@ -870,8 +880,8 @@
 
 <span class="sd">        This is intended to be used when creating a new object / blob.</span>
 
-<span class="sd">        See the `API reference`_ for more information, the fields marked as</span>
-<span class="sd">        writable are:</span>
+<span class="sd">        See the `API reference docs`_ for more information, the fields</span>
+<span class="sd">        marked as writable are:</span>
 
 <span class="sd">        * ``acl``</span>
 <span class="sd">        * ``cacheControl``</span>
@@ -887,9 +897,6 @@
 
 <span class="sd">        For now, we don&#39;t support ``acl``, access control lists should be</span>
 <span class="sd">        managed directly through :class:`ObjectACL` methods.</span>
-
-<span class="sd">        .. _API reference: https://cloud.google.com/storage/\</span>
-<span class="sd">                           docs/json_api/v1/objects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># NOTE: This assumes `self.name` is unicode.</span>
         <span class="n">object_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
@@ -1167,10 +1174,8 @@
 <span class="sd">           bucket.  In the absence of those policies, upload will</span>
 <span class="sd">           overwrite any existing contents.</span>
 
-<span class="sd">           See the `object versioning</span>
-<span class="sd">           &lt;https://cloud.google.com/storage/docs/object-versioning&gt;`_ and</span>
-<span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
-<span class="sd">           API documents for details.</span>
+<span class="sd">           See the `object versioning`_ and `lifecycle`_ API documents</span>
+<span class="sd">           for details.</span>
 
 <span class="sd">        Uploading a file with a `customer-supplied`_ encryption key:</span>
 
@@ -1181,8 +1186,8 @@
 <span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
 <span class="sd">        least 32.</span>
 
-<span class="sd">        .. _customer-supplied: https://cloud.google.com/storage/docs/\</span>
-<span class="sd">                               encryption#customer-supplied</span>
+<span class="sd">        For more fine-grained over the upload process, check out</span>
+<span class="sd">        `google-resumable-media`_.</span>
 
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle open for reading.</span>
@@ -1209,6 +1214,10 @@
 
 <span class="sd">        :raises: :class:`~google.cloud.exceptions.GoogleCloudError`</span>
 <span class="sd">                 if the upload response returns an error status.</span>
+
+<span class="sd">        .. _object versioning: https://cloud.google.com/storage/\</span>
+<span class="sd">                               docs/object-versioning</span>
+<span class="sd">        .. _lifecycle: https://cloud.google.com/storage/docs/lifecycle</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_NUM_RETRIES_MESSAGE</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
@@ -1311,8 +1320,9 @@
 <span class="sd">        access-controlled bucket. For more details, see the</span>
 <span class="sd">        `documentation on signed URLs`_.</span>
 
-<span class="sd">        .. _documentation on signed URLs: https://cloud.google.com/storage\</span>
-<span class="sd">                /docs/access-control/signed-urls#signing-resumable</span>
+<span class="sd">        .. _documentation on signed URLs:</span>
+<span class="sd">            https://cloud.google.com/storage/\</span>
+<span class="sd">            docs/access-control/signed-urls#signing-resumable</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
 <span class="sd">        of precedence:</span>
@@ -1332,10 +1342,8 @@
 <span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
 <span class="sd">           API documents for details.</span>
 
-<span class="sd">        If :attr:`encryption_key` is set, the blob will be `encrypted`_.</span>
-
-<span class="sd">        .. _encrypted: https://cloud.google.com/storage/docs/\</span>
-<span class="sd">                               encryption#customer-supplied</span>
+<span class="sd">        If :attr:`encryption_key` is set, the blob will be encrypted with</span>
+<span class="sd">        a `customer-supplied`_ encryption key.</span>
 
 <span class="sd">        :type size: int</span>
 <span class="sd">        :param size: (Optional). The maximum number of bytes that can be</span>
@@ -1575,67 +1583,73 @@
     <span class="n">cache_control</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;cacheControl&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Cache-Control&#39; header for this object.</span>
 
-<span class="sd">    See: https://tools.ietf.org/html/rfc7234#section-5.2 and</span>
-<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">    See: `RFC 7234`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns ``None``.</span>
+<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
+
+<span class="sd">    .. _RFC 7234: https://tools.ietf.org/html/rfc7234#section-5.2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_disposition</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentDisposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Disposition&#39; header for this object.</span>
 
-<span class="sd">    See: https://tools.ietf.org/html/rfc6266 and</span>
-<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">    See: `RFC 6266`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns ``None``.</span>
+<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
+
+<span class="sd">    .. _RFC 6266: https://tools.ietf.org/html/rfc7234#section-5.2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_encoding</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentEncoding&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Encoding&#39; header for this object.</span>
 
-<span class="sd">    See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and</span>
-<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">    See: `RFC 7231`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
+
+<span class="sd">    .. _RFC 7231: https://tools.ietf.org/html/rfc7231#section-3.1.2.2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_language</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentLanguage&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Language&#39; header for this object.</span>
 
-<span class="sd">    See: https://tools.ietf.org/html/bcp47 and</span>
-<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">    See: `BCP47`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns ``None``.</span>
+<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
+
+<span class="sd">    .. _BCP47: https://tools.ietf.org/html/bcp47</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_type</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="n">_CONTENT_TYPE_FIELD</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Type&#39; header for this object.</span>
 
-<span class="sd">    See: https://tools.ietf.org/html/rfc2616#section-14.17 and</span>
-<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">    See: `RFC 2616`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns ``None``.</span>
+<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
+
+<span class="sd">    .. _RFC 2616: https://tools.ietf.org/html/rfc2616#section-14.17</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">crc32c</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;crc32c&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;CRC32C checksum for this object.</span>
 
-<span class="sd">    See: https://tools.ietf.org/html/rfc4960#appendix-B and</span>
-<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">    See: `RFC 4960`_ and `API reference docs`_.</span>
 
-<span class="sd">    If the property is not set locally, returns ``None``.</span>
+<span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
+
+<span class="sd">    .. _RFC 4960: https://tools.ietf.org/html/rfc4960#appendix-B</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -1657,11 +1671,12 @@
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ETag for the object.</span>
 
-<span class="sd">        See: https://tools.ietf.org/html/rfc2616#section-3.11 and</span>
-<span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See: `RFC 2616 (etags)`_ and `API reference docs`_.</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The blob etag or ``None`` if the property is not set locally.</span>
+
+<span class="sd">        .. _RFC 2616 (etags): https://tools.ietf.org/html/rfc2616#section-3.11</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
 
@@ -1694,12 +1709,13 @@
     <span class="n">md5_hash</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;md5Hash&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;MD5 hash for this object.</span>
 
-<span class="sd">    See: https://tools.ietf.org/html/rfc4960#appendix-B and</span>
-<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">    See: `RFC 1321`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
+
+<span class="sd">    .. _RFC 1321: https://tools.ietf.org/html/rfc1321</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -1966,7 +1982,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

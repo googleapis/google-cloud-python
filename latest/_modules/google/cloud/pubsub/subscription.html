@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.subscription &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>google.cloud.pubsub.subscription &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -425,14 +425,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">topic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="n">topic</span><span class="o">.</span><span class="n">_client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">ack_deadline</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_endpoint</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">retain_acked_messages</span> <span class="o">=</span> <span class="n">retain_acked_messages</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message_retention_duration</span> <span class="o">=</span> <span class="n">message_retention_duration</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a topic given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -612,7 +611,10 @@
         <span class="n">data</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">subscription_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
         <span class="n">push_config</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s1">&#39;topic&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">topic_name</span> <span class="o">=</span> <span class="n">topic_name_from_path</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;topic&#39;</span><span class="p">],</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">topic_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Subscription.delete"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  delete the subscription via a DELETE request.</span>
@@ -961,7 +963,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

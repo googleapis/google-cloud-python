@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Entries &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Entries &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Metrics" href="logging-metric.html"/>
         <link rel="prev" title="Logger" href="logging-logger.html"/> 
 
@@ -352,18 +352,18 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em> or </em><em>any_pb2.Any</em>) &#8211; The payload passed as <code class="docutils literal"><span class="pre">textPayload</span></code>, <code class="docutils literal"><span class="pre">jsonPayload</span></code>,
+<li><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em> or </em><em>any_pb2.Any</em>) – The payload passed as <code class="docutils literal"><span class="pre">textPayload</span></code>, <code class="docutils literal"><span class="pre">jsonPayload</span></code>,
 or <code class="docutils literal"><span class="pre">protoPayload</span></code>. This also may be passed as a raw
 <code class="xref py py-class docutils literal"><span class="pre">any_pb2.Any</span></code> if the <code class="docutils literal"><span class="pre">protoPayload</span></code> could
 not be deserialized.</li>
-<li><strong>logger</strong> (<a class="reference internal" href="logging-logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">Logger</span></code></a>) &#8211; the logger used to write the entry.</li>
-<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) the ID used to identify an entry uniquely.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp for the entry</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of labels for the entry</li>
-<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
-<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
+<li><strong>logger</strong> (<a class="reference internal" href="logging-logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">Logger</span></code></a>) – the logger used to write the entry.</li>
+<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) the ID used to identify an entry uniquely.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp for the entry</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) mapping of labels for the entry</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
+<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; (Optional) Monitored resource of the entry</li>
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry</li>
 </ul>
 </td>
 </tr>
@@ -378,7 +378,7 @@ the entry</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<em>Protobuf message</em>) &#8211; the message to be logged</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<em>Protobuf message</em>) – the message to be logged</td>
 </tr>
 </tbody>
 </table>
@@ -412,7 +412,7 @@ the entry</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URI path for a logger API request.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – URI path for a logger API request.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
 </tr>
@@ -472,7 +472,7 @@ the project from the <code class="docutils literal"><span class="pre">path</span
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

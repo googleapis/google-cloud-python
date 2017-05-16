@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Read-write Transactions &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Read-write Transactions &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Spanner Client" href="spanner-client-api.html"/>
         <link rel="prev" title="Read-only Transactions via Snapshots" href="spanner-snapshot-usage.html"/> 
 
@@ -364,7 +364,7 @@ mutations to the server.</p>
 </div>
 <div class="section" id="read-table-data">
 <h2>Read Table Data<a class="headerlink" href="#read-table-data" title="Permalink to this headline">#</a></h2>
-<p>Read data for selected rows from a table in the session&#8217;s database.  Calls
+<p>Read data for selected rows from a table in the session’s database.  Calls
 the <code class="docutils literal"><span class="pre">Read</span></code> API, which returns all rows specified in <code class="docutils literal"><span class="pre">key_set</span></code>, or else
 fails if the result set is too large,</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
@@ -377,14 +377,14 @@ fails if the result set is too large,</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If streaming a chunk fails due to a &#8220;resumable&#8221; error,
+<p class="last">If streaming a chunk fails due to a “resumable” error,
 <code class="xref py py-meth docutils literal"><span class="pre">Session.read()</span></code> retries the <code class="docutils literal"><span class="pre">StreamingRead</span></code> API reqeust,
 passing the <code class="docutils literal"><span class="pre">resume_token</span></code> from the last partial result streamed.</p>
 </div>
 </div>
 <div class="section" id="execute-a-sql-select-statement">
 <h2>Execute a SQL Select Statement<a class="headerlink" href="#execute-a-sql-select-statement" title="Permalink to this headline">#</a></h2>
-<p>Read data from a query against tables in the session&#8217;s database.  Calls
+<p>Read data from a query against tables in the session’s database.  Calls
 the <code class="docutils literal"><span class="pre">ExecuteSql</span></code> API, which returns all rows matching the query, or else
 fails if the result set is too large,</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
@@ -517,9 +517,9 @@ the back-end by calling <code class="xref py py-meth docutils literal"><span cla
 <h2>Use a Transaction as a Context Manager<a class="headerlink" href="#use-a-transaction-as-a-context-manager" title="Permalink to this headline">#</a></h2>
 <p>Rather than calling <code class="xref py py-meth docutils literal"><span class="pre">Transaction.commit()</span></code> or <code class="xref py py-meth docutils literal"><span class="pre">Transaction.rollback()</span></code>
 manually, you can use the <code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code> instance as a context manager:
-in that case, the transaction&#8217;s <code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> method will
+in that case, the transaction’s <code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> method will
 called automatically if the <code class="docutils literal"><span class="pre">with</span></code> block exits without raising an exception.</p>
-<p>If an exception is raised inside the <code class="docutils literal"><span class="pre">with</span></code> block, the transaction&#8217;s
+<p>If an exception is raised inside the <code class="docutils literal"><span class="pre">with</span></code> block, the transaction’s
 <code class="xref py py-meth docutils literal"><span class="pre">rollback()</span></code> method will be called instead.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span>
 
@@ -590,7 +590,7 @@ called automatically if the <code class="docutils literal"><span class="pre">wit
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

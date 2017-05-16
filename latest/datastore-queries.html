@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Queries &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Queries &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Transactions" href="datastore-transactions.html"/>
         <link rel="prev" title="Keys" href="datastore-keys.html"/> 
 
@@ -350,15 +350,15 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>query</strong> (<a class="reference internal" href="#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>) &#8211; Query object holding permanent configuration (i.e.
-things that don&#8217;t change on with each page in
+<li><strong>query</strong> (<a class="reference internal" href="#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>) – Query object holding permanent configuration (i.e.
+things that don’t change on with each page in
 a results set).</li>
-<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to make a request.</li>
-<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Limit the number of results returned.</li>
-<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Offset used to begin a query.</li>
-<li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; (Optional) Cursor to begin paging through
+<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – The client used to make a request.</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Limit the number of results returned.</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Offset used to begin a query.</li>
+<li><strong>start_cursor</strong> (<em>bytes</em>) – (Optional) Cursor to begin paging through
 query results.</li>
-<li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; (Optional) Cursor to end paging through
+<li><strong>end_cursor</strong> (<em>bytes</em>) – (Optional) Cursor to end paging through
 query results.</li>
 </ul>
 </td>
@@ -379,19 +379,19 @@ stored in the Cloud Datastore.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) &#8211; The client used to connect to Datastore.</li>
-<li><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The kind to query.</li>
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The project associated with the query.  If not passed, uses
-the client&#8217;s value.</li>
-<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The namespace to which to restrict results.  If not passed,
-uses the client&#8217;s value.</li>
-<li><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>) &#8211; (Optional) key of the ancestor to which this query&#8217;s results are
+<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – The client used to connect to Datastore.</li>
+<li><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The kind to query.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The project associated with the query.  If not passed, uses
+the client’s value.</li>
+<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The namespace to which to restrict results.  If not passed,
+uses the client’s value.</li>
+<li><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>) – (Optional) key of the ancestor to which this query’s results are
 restricted.</li>
-<li><strong>filters</strong> (<em>sequence of</em><em> (</em><em>property_name</em><em>, </em><a class="reference external" href="https://docs.python.org/2/library/operator.html#module-operator" title="(in Python v2.7)"><em>operator</em></a><em>, </em><a class="reference internal" href="runtimeconfig-variable.html#google.cloud.runtimeconfig.variable.Variable.value" title="google.cloud.runtimeconfig.variable.Variable.value"><em>value</em></a><em>) </em><em>tuples</em>) &#8211; property filters applied by this query.</li>
-<li><strong>projection</strong> (<em>sequence of string</em>) &#8211; fields returned as part of query results.</li>
-<li><strong>order</strong> (<em>sequence of string</em>) &#8211; field names used to order query results. Prepend &#8216;-&#8216;
+<li><strong>filters</strong> (<em>sequence of</em><em> (</em><em>property_name</em><em>, </em><a class="reference external" href="https://docs.python.org/2/library/operator.html#module-operator" title="(in Python v2.7)"><em>operator</em></a><em>, </em><a class="reference internal" href="runtimeconfig-variable.html#google.cloud.runtimeconfig.variable.Variable.value" title="google.cloud.runtimeconfig.variable.Variable.value"><em>value</em></a><em>) </em><em>tuples</em>) – property filters applied by this query.</li>
+<li><strong>projection</strong> (<em>sequence of string</em>) – fields returned as part of query results.</li>
+<li><strong>order</strong> (<em>sequence of string</em>) – field names used to order query results. Prepend ‘-‘
 to a field name to sort it in descending order.</li>
-<li><strong>distinct_on</strong> (<em>sequence of string</em>) &#8211; field names used to group query results.</li>
+<li><strong>distinct_on</strong> (<em>sequence of string</em>) – field names used to group query results.</li>
 </ul>
 </td>
 </tr>
@@ -403,7 +403,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&lt;=': 2, '&gt;=': 4, '&lt;': 1, '&gt;': 3, '=': 5}</em><a class="headerlink" href="#google.cloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {‘&lt;=’: 2, ‘&gt;=’: 4, ‘&lt;’: 1, ‘&gt;’: 3, ‘=’: 5}</em><a class="headerlink" href="#google.cloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -430,12 +430,12 @@ and operator is one of <code class="docutils literal"><span class="pre">OPERATOR
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>property_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A property name.</li>
-<li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; One of <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>.</li>
+<li><strong>property_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – A property name.</li>
+<li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – One of <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>.</li>
 <li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>,
 <a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">float</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>,
 <a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>,
-<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; The value to filter on.</li>
+<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The value to filter on.</li>
 </ul>
 </td>
 </tr>
@@ -474,7 +474,7 @@ passes an invalid value (a key is required).</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sequence of string</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The &#8220;distinct on&#8221; fields set on the query.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The “distinct on” fields set on the query.</td>
 </tr>
 </tbody>
 </table>
@@ -500,12 +500,12 @@ passes an invalid value (a key is required).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) limit passed through to the iterator.</li>
-<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) offset passed through to the iterator.</li>
-<li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; (Optional) cursor passed through to the iterator.</li>
-<li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; (Optional) cursor passed through to the iterator.</li>
-<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) &#8211; client used to connect to datastore.
-If not supplied, uses the query&#8217;s value.</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) limit passed through to the iterator.</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) offset passed through to the iterator.</li>
+<li><strong>start_cursor</strong> (<em>bytes</em>) – (Optional) cursor passed through to the iterator.</li>
+<li><strong>end_cursor</strong> (<em>bytes</em>) – (Optional) cursor passed through to the iterator.</li>
+<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – client used to connect to datastore.
+If not supplied, uses the query’s value.</li>
 </ul>
 </td>
 </tr>
@@ -537,15 +537,15 @@ If not supplied, uses the query&#8217;s value.</li>
 
 <dl class="method">
 <dt id="google.cloud.datastore.query.Query.key_filter">
-<code class="descname">key_filter</code><span class="sig-paren">(</span><em>key</em>, <em>operator='='</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/query.html#Query.key_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.query.Query.key_filter" title="Permalink to this definition">#</a></dt>
+<code class="descname">key_filter</code><span class="sig-paren">(</span><em>key</em>, <em>operator=’=’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/query.html#Query.key_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.query.Query.key_filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Filter on a key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; The key to filter on.</li>
-<li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) One of <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>.
+<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to filter on.</li>
+<li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) One of <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>.
 Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</li>
 </ul>
 </td>
@@ -579,7 +579,7 @@ Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</l
 <dl class="attribute">
 <dt id="google.cloud.datastore.query.Query.namespace">
 <code class="descname">namespace</code><a class="headerlink" href="#google.cloud.datastore.query.Query.namespace" title="Permalink to this definition">#</a></dt>
-<dd><p>This query&#8217;s namespace</p>
+<dd><p>This query’s namespace</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -688,7 +688,7 @@ Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</l
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

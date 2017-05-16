@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Spanner Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Spanner Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Instance API" href="spanner-instance-api.html"/>
         <link rel="prev" title="Read-write Transactions" href="spanner-transaction-usage.html"/> 
 
@@ -350,7 +350,7 @@
 </ul>
 <dl class="class">
 <dt id="google.cloud.spanner.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>user_agent='gcloud-python/0.24.1'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.spanner.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>user_agent=’gcloud-python/0.24.1’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientFactoryMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientProjectMixin</span></code></p>
 <p>Client for interacting with Cloud Spanner API.</p>
 <div class="admonition note">
@@ -363,14 +363,14 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>) &#8211; (Optional) The ID of the project which owns the
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>) – (Optional) The ID of the project which owns the
 instances, tables and data. If not provided, will
 attempt to determine from the environment.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.1.0)"><code class="xref py py-class docutils literal"><span class="pre">OAuth2Credentials</span></code></a> or
-<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not provided, defaults to the Google
 Application Default Credentials.</li>
-<li><strong>user_agent</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The user agent to be used with API request.
+<li><strong>user_agent</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The user agent to be used with API request.
 Defaults to <code class="xref py py-const docutils literal"><span class="pre">DEFAULT_USER_AGENT</span></code>.</li>
 </ul>
 </td>
@@ -402,7 +402,7 @@ current state of any open connections with the Cloud Bigtable API.</p>
 <dl class="attribute">
 <dt id="google.cloud.spanner.client.Client.credentials">
 <code class="descname">credentials</code><a class="headerlink" href="#google.cloud.spanner.client.Client.credentials" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for client&#8217;s credentials.</p>
+<dd><p>Getter for client’s credentials.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -430,17 +430,17 @@ current state of any open connections with the Cloud Bigtable API.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the instance.</li>
-<li><strong>configuration_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; (Optional) Name of the instance configuration used to set up the
-instance&#8217;s cluster, in the form:
+<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the instance.</li>
+<li><strong>configuration_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – (Optional) Name of the instance configuration used to set up the
+instance’s cluster, in the form:
 <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;</span></code>.
 <strong>Required</strong> for instances which do not yet exist.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The display name for the instance in
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The display name for the instance in
 the Cloud Console UI. (Must be between 4 and 30
 characters.) If this value is not set in the
 constructor, will fall back to the instance ID.</li>
-<li><strong>node_count</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The number of nodes in the instance&#8217;s
-cluster; used to set up the instance&#8217;s cluster.</li>
+<li><strong>node_count</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) The number of nodes in the instance’s
+cluster; used to set up the instance’s cluster.</li>
 </ul>
 </td>
 </tr>
@@ -463,7 +463,7 @@ cluster; used to set up the instance&#8217;s cluster.</li>
 <dl class="method">
 <dt id="google.cloud.spanner.client.Client.list_instance_configs">
 <code class="descname">list_instance_configs</code><span class="sig-paren">(</span><em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/client.html#Client.list_instance_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client.list_instance_configs" title="Permalink to this definition">#</a></dt>
-<dd><p>List available instance configurations for the client&#8217;s project.</p>
+<dd><p>List available instance configurations for the client’s project.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstanceConfigs">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstanceConfigs</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -471,8 +471,8 @@ cluster; used to set up the instance&#8217;s cluster.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of results to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Token for fetching next page of results.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of results to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) Token for fetching next page of results.</li>
 </ul>
 </td>
 </tr>
@@ -481,7 +481,7 @@ cluster; used to set up the instance&#8217;s cluster.</li>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of
 <code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code>
-resources within the client&#8217;s project.</p>
+resources within the client’s project.</p>
 </td>
 </tr>
 </tbody>
@@ -490,8 +490,8 @@ resources within the client&#8217;s project.</p>
 
 <dl class="method">
 <dt id="google.cloud.spanner.client.Client.list_instances">
-<code class="descname">list_instances</code><span class="sig-paren">(</span><em>filter_=''</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/client.html#Client.list_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client.list_instances" title="Permalink to this definition">#</a></dt>
-<dd><p>List instances for the client&#8217;s project.</p>
+<code class="descname">list_instances</code><span class="sig-paren">(</span><em>filter_=”</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/spanner/client.html#Client.list_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client.list_instances" title="Permalink to this definition">#</a></dt>
+<dd><p>List instances for the client’s project.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstances">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstances</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -499,10 +499,10 @@ resources within the client&#8217;s project.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; (Optional) Filter to select instances listed.  See:
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – (Optional) Filter to select instances listed.  See:
 the <code class="docutils literal"><span class="pre">ListInstancesRequest</span></code> docs above for examples.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of results to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Token for fetching next page of results.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of results to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) Token for fetching next page of results.</li>
 </ul>
 </td>
 </tr>
@@ -510,7 +510,7 @@ the <code class="docutils literal"><span class="pre">ListInstancesRequest</span>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="spanner-instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>
-resources within the client&#8217;s project.</p>
+resources within the client’s project.</p>
 </td>
 </tr>
 </tbody>
@@ -554,8 +554,8 @@ API RPC service.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; ID of the instance configuration</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the instance configuration</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ID of the instance configuration</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the instance configuration</li>
 </ul>
 </td>
 </tr>
@@ -569,7 +569,7 @@ API RPC service.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code>) &#8211; the protobuf to parse</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code>) – the protobuf to parse</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.client.InstanceConfig" title="google.cloud.spanner.client.InstanceConfig"><code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code></a></td>
 </tr>
@@ -627,7 +627,7 @@ API RPC service.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

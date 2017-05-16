@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configuration &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Configuration &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Variables" href="runtimeconfig-variable.html"/>
         <link rel="prev" title="Runtime Configuration Client" href="runtimeconfig-client.html"/> 
 
@@ -353,9 +353,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.runtimeconfig.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+<li><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.runtimeconfig.client.Client</span></code></a>) – A client which holds credentials and project configuration
 for the config (which requires a project).</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the config.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The name of the config.</li>
 </ul>
 </td>
 </tr>
@@ -393,7 +393,7 @@ for the config (which requires a project).</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back to the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current config.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
@@ -428,7 +428,7 @@ for the config (which requires a project).</li>
 <dt id="google.cloud.runtimeconfig.config.Config.get_variable">
 <code class="descname">get_variable</code><span class="sig-paren">(</span><em>variable_name</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/runtimeconfig/config.html#Config.get_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.runtimeconfig.config.Config.get_variable" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  get a variable via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
-<p>This will return None if the variable doesn&#8217;t exist:</p>
+<p>This will return None if the variable doesn’t exist:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">runtimeconfig</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">runtimeconfig</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="s1">&#39;my-config&#39;</span><span class="p">)</span>
@@ -443,8 +443,8 @@ for the config (which requires a project).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>variable_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the variable to retrieve.</li>
-<li><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back to the
+<li><strong>variable_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The name of the variable to retrieve.</li>
+<li><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current config.</li>
 </ul>
 </td>
@@ -471,10 +471,10 @@ for the config (which requires a project).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of variables to return per page.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of variables. If
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of variables to return per page.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of variables. If
 not passed, will return the first page of variables.</li>
-<li><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back to the
+<li><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current config.</li>
 </ul>
 </td>
@@ -493,7 +493,7 @@ belonging to this project.</p>
 <dl class="attribute">
 <dt id="google.cloud.runtimeconfig.config.Config.path">
 <code class="descname">path</code><a class="headerlink" href="#google.cloud.runtimeconfig.config.Config.path" title="Permalink to this definition">#</a></dt>
-<dd><p>URL path for the config&#8217;s APIs.</p>
+<dd><p>URL path for the config’s APIs.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -533,7 +533,7 @@ belonging to this project.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.runtimeconfig.client.Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back to the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="runtimeconfig-client.html#google.cloud.runtimeconfig.client.Client" title="google.cloud.runtimeconfig.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.runtimeconfig.client.Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back to the
 client stored on the current config.</td>
 </tr>
 </tbody>
@@ -553,7 +553,7 @@ a variable object owned by this config.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>variable_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the variable to be instantiated.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>variable_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The name of the variable to be instantiated.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="runtimeconfig-variable.html#google.cloud.runtimeconfig.variable.Variable" title="google.cloud.runtimeconfig.variable.Variable"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.runtimeconfig.variable.Variable</span></code></a></td>
 </tr>
@@ -611,7 +611,7 @@ a variable object owned by this config.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

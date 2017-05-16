@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Instance API &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Instance API &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Database API" href="spanner-database-api.html"/>
         <link rel="prev" title="Spanner Client" href="spanner-client-api.html"/> 
 
@@ -357,14 +357,14 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the instance.</li>
-<li><strong>client</strong> (<a class="reference internal" href="spanner-client-api.html#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client that owns the instance. Provides
+<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the instance.</li>
+<li><strong>client</strong> (<a class="reference internal" href="spanner-client-api.html#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – The client that owns the instance. Provides
 authorization and a project ID.</li>
-<li><strong>configuration_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the instance configuration defining
+<li><strong>configuration_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the instance configuration defining
 how the instance will be created.
 Required for instances which do not yet exist.</li>
-<li><strong>node_count</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Number of nodes allocated to the instance.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The display name for the instance in the
+<li><strong>node_count</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Number of nodes allocated to the instance.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The display name for the instance in the
 Cloud Console UI. (Must be between 4 and 30
 characters.) If this value is not set in the
 constructor, will fall back to the instance ID.</li>
@@ -429,11 +429,11 @@ To change them before creating, reset the values via</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>database_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the instance.</li>
-<li><strong>ddl_statements</strong> (<em>list of string</em>) &#8211; (Optional) DDL statements, excluding the
-&#8216;CREATE DATABSE&#8217; statement.</li>
+<li><strong>database_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the instance.</li>
+<li><strong>ddl_statements</strong> (<em>list of string</em>) – (Optional) DDL statements, excluding the
+‘CREATE DATABSE’ statement.</li>
 <li><strong>pool</strong> (concrete subclass of
-<a class="reference internal" href="spanner-session-api.html#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code></a>.) &#8211; (Optional) session pool to be used by database.</li>
+<a class="reference internal" href="spanner-session-api.html#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code></a>.) – (Optional) session pool to be used by database.</li>
 </ul>
 </td>
 </tr>
@@ -455,7 +455,7 @@ To change them before creating, reset the values via</p>
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance</a></p>
 <p>Immediately upon completion of the request:</p>
 <ul class="simple">
-<li>Billing will cease for all of the instance&#8217;s reserved resources.</li>
+<li>Billing will cease for all of the instance’s reserved resources.</li>
 </ul>
 <p>Soon afterward:</p>
 <ul class="simple">
@@ -481,8 +481,8 @@ All data in the databases will be permanently deleted.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>instance_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.spanner.v2.spanner_instance_admin_pb2.Instance</span></code>) &#8211; A instance protobuf object.</li>
-<li><strong>client</strong> (<a class="reference internal" href="spanner-client-api.html#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client that owns the instance.</li>
+<li><strong>instance_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.spanner.v2.spanner_instance_admin_pb2.Instance</span></code>) – A instance protobuf object.</li>
+<li><strong>client</strong> (<a class="reference internal" href="spanner-client-api.html#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – The client that owns the instance.</li>
 </ul>
 </td>
 </tr>
@@ -514,8 +514,8 @@ on the client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of results to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Token for fetching next page of results.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of results to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) Token for fetching next page of results.</li>
 </ul>
 </td>
 </tr>
@@ -639,7 +639,7 @@ before calling :meth:`update`.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

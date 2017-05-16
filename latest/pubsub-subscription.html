@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Subscriptions &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Subscriptions &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Message" href="pubsub-message.html"/>
         <link rel="prev" title="Topics" href="pubsub-topic.html"/> 
 
@@ -352,20 +352,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the subscription.</li>
-<li><strong>topic</strong> (<a class="reference internal" href="pubsub-topic.html#google.cloud.pubsub.topic.Topic" title="google.cloud.pubsub.topic.Topic"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.topic.Topic</span></code></a>) &#8211; (Optional) the topic to which the subscription belongs;  if <code class="docutils literal"><span class="pre">None</span></code>,
-the subscription&#8217;s topic has been deleted.</li>
-<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the deadline (in seconds) by which messages pulled
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the subscription.</li>
+<li><strong>topic</strong> (<a class="reference internal" href="pubsub-topic.html#google.cloud.pubsub.topic.Topic" title="google.cloud.pubsub.topic.Topic"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.topic.Topic</span></code></a>) – (Optional) the topic to which the subscription belongs;  if <code class="docutils literal"><span class="pre">None</span></code>,
+the subscription’s topic has been deleted.</li>
+<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – the deadline (in seconds) by which messages pulled
 from the back-end must be acknowledged.</li>
-<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) URL to which messages will be pushed by the back-end.  If
+<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) URL to which messages will be pushed by the back-end.  If
 not set, the application must pull messages.</li>
-<li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Whether to retain acked messages. If set, acked messages
-are retained in the subscription&#8217;s backlog for a duration indicated
+<li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription’s backlog for a duration indicated
 by <cite>message_retention_duration</cite>.</li>
-<li><strong>message_retention_duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; (Optional) Whether to retain acked messages. If set, acked messages
-are retained in the subscription&#8217;s backlog for a duration indicated
+<li><strong>message_retention_duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription’s backlog for a duration indicated
 by <cite>message_retention_duration</cite>. If unset, defaults to 7 days.</li>
-<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back to the
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the topic.</li>
 </ul>
 </td>
@@ -381,10 +381,10 @@ by <cite>message_retention_duration</cite>. If unset, defaults to 7 days.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; topic resource representation returned from the API.</li>
-<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.client.Client</span></code></a>) &#8211; Client which holds credentials and project
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – topic resource representation returned from the API.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.client.Client</span></code></a>) – Client which holds credentials and project
 configuration for a topic.</li>
-<li><strong>topics</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (Optional) A mapping of topic names -&gt; topics.  If not passed, the
+<li><strong>topics</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (Optional) A mapping of topic names -&gt; topics.  If not passed, the
 subscription will have a newly-created topic.</li>
 </ul>
 </td>
@@ -414,7 +414,7 @@ subscription will have a newly-created topic.</li>
 <dl class="attribute">
 <dt id="google.cloud.pubsub.subscription.Subscription.path">
 <code class="descname">path</code><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.path" title="Permalink to this definition">#</a></dt>
-<dd><p>URL path for the subscription&#8217;s APIs</p>
+<dd><p>URL path for the subscription’s APIs</p>
 </dd></dl>
 
 <dl class="method">
@@ -426,10 +426,10 @@ subscription will have a newly-created topic.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>return_immediately</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a></li>
-<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a></li>
+<li><strong>return_immediately</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a></li>
+<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a></li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a> and
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a> and
 <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.acknowledge" title="google.cloud.pubsub.subscription.Subscription.acknowledge"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.acknowledge()</span></code></a>.</li>
 </ul>
 </td>
@@ -460,8 +460,8 @@ subscription will have a newly-created topic.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</td>
 </tr>
 </tbody>
 </table>
@@ -482,8 +482,8 @@ subscription will have a newly-created topic.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
@@ -511,8 +511,8 @@ method fetches their values from the server.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</td>
 </tr>
 </tbody>
 </table>
@@ -533,8 +533,8 @@ method fetches their values from the server.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</td>
 </tr>
 </tbody>
 </table>
@@ -559,12 +559,12 @@ method fetches their values from the server.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URL to which messages will be pushed by the
+<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – URL to which messages will be pushed by the
 back-end.  If None, the application must pull
 messages.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</li>
 </ul>
 </td>
 </tr>
@@ -587,14 +587,14 @@ messages.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>return_immediately</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, the back-end returns even if no
+<li><strong>return_immediately</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – if True, the back-end returns even if no
 messages are available;  if False, the API
 call blocks until one or more messages are
 available.</li>
-<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the maximum number of messages to return.</li>
+<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – the maximum number of messages to return.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</li>
 </ul>
 </td>
 </tr>
@@ -632,10 +632,10 @@ is an instance of
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being acknowledged</li>
+<li><strong>ack_ids</strong> (<em>list of string</em>) – ack IDs of messages being acknowledged</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</li>
 </ul>
 </td>
 </tr>
@@ -654,11 +654,11 @@ is an instance of
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being updated</li>
-<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; new deadline for the message, in seconds</li>
+<li><strong>ack_ids</strong> (<em>list of string</em>) – ack IDs of messages being updated</li>
+<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – new deadline for the message, in seconds</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</li>
 </ul>
 </td>
 </tr>
@@ -674,7 +674,7 @@ is an instance of
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the subscription</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the subscription</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></td>
 </tr>
@@ -694,7 +694,7 @@ is an instance of
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>snapshot</strong> (<code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code>) &#8211; The snapshot to seek to.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>snapshot</strong> (<code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code>) – The snapshot to seek to.</td>
 </tr>
 </tbody>
 </table>
@@ -710,7 +710,7 @@ is an instance of
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The time to seek to.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – The time to seek to.</td>
 </tr>
 </tbody>
 </table>
@@ -731,8 +731,8 @@ is an instance of
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pubsub-iam.html#google.cloud.pubsub.iam.Policy" title="google.cloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.iam.Policy</span></code></a></td>
 </tr>
@@ -762,11 +762,11 @@ is an instance of
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>policy</strong> (<a class="reference internal" href="pubsub-iam.html#google.cloud.pubsub.iam.Policy" title="google.cloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.iam.Policy</span></code></a>) &#8211; the new policy, typically fetched via
+<li><strong>policy</strong> (<a class="reference internal" href="pubsub-iam.html#google.cloud.pubsub.iam.Policy" title="google.cloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.iam.Policy</span></code></a>) – the new policy, typically fetched via
 <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.get_iam_policy" title="google.cloud.pubsub.subscription.Subscription.get_iam_policy"><code class="xref py py-meth docutils literal"><span class="pre">get_iam_policy()</span></code></a> and updated in place.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</li>
 </ul>
 </td>
 </tr>
@@ -799,10 +799,10 @@ is an instance of
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>permissions</strong> (<em>list of string</em>) &#8211; list of permissions to be tested</li>
+<li><strong>permissions</strong> (<em>list of string</em>) – list of permissions to be tested</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription’s topic.</li>
 </ul>
 </td>
 </tr>
@@ -833,11 +833,11 @@ successfully processed, e.g.:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>subscription</strong> (<a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription" title="google.cloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a>) &#8211; subscription to be pulled.</li>
-<li><strong>return_immediately</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a></li>
-<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a></li>
+<li><strong>subscription</strong> (<a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription" title="google.cloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a>) – subscription to be pulled.</li>
+<li><strong>return_immediately</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a></li>
+<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a></li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a> and
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – passed through to <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.pull" title="google.cloud.pubsub.subscription.Subscription.pull"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.pull()</span></code></a> and
 <a class="reference internal" href="#google.cloud.pubsub.subscription.Subscription.acknowledge" title="google.cloud.pubsub.subscription.Subscription.acknowledge"><code class="xref py py-meth docutils literal"><span class="pre">Subscription.acknowledge()</span></code></a>.</li>
 </ul>
 </td>
@@ -892,7 +892,7 @@ successfully processed, e.g.:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

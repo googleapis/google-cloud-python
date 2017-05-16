@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Metric Descriptors &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Metric Descriptors &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Monitored Resource Descriptors" href="monitoring-resource.html"/>
         <link rel="prev" title="Stackdriver Monitoring Client" href="monitoring-client.html"/> 
 
@@ -353,8 +353,8 @@ of the <a class="reference internal" href="monitoring-client.html#google.cloud.m
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The metric type name.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A mapping from label names to values for all labels
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The metric type name.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – A mapping from label names to values for all labels
 enumerated in the associated <a class="reference internal" href="#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a>.</li>
 </ul>
 </td>
@@ -366,7 +366,7 @@ enumerated in the associated <a class="reference internal" href="#google.cloud.m
 
 <dl class="class">
 <dt id="google.cloud.monitoring.metric.MetricDescriptor">
-<em class="property">class </em><code class="descclassname">google.cloud.monitoring.metric.</code><code class="descname">MetricDescriptor</code><span class="sig-paren">(</span><em>client</em>, <em>type_</em>, <em>metric_kind='METRIC_KIND_UNSPECIFIED'</em>, <em>value_type='VALUE_TYPE_UNSPECIFIED'</em>, <em>labels=()</em>, <em>unit=''</em>, <em>description=''</em>, <em>display_name=''</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/metric.html#MetricDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.metric.MetricDescriptor" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring.metric.</code><code class="descname">MetricDescriptor</code><span class="sig-paren">(</span><em>client</em>, <em>type_</em>, <em>metric_kind=’METRIC_KIND_UNSPECIFIED’</em>, <em>value_type=’VALUE_TYPE_UNSPECIFIED’</em>, <em>labels=()</em>, <em>unit=”</em>, <em>description=”</em>, <em>display_name=”</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/metric.html#MetricDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.metric.MetricDescriptor" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Specification of a metric type and its schema.</p>
 <p>The preferred way to construct a metric descriptor object is using the
@@ -377,23 +377,23 @@ method of the <a class="reference internal" href="monitoring-client.html#google.
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.monitoring.client.Client</span></code></a>) &#8211; A client for operating on the metric descriptor.</li>
-<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The metric type including a DNS name prefix. For example:
+<li><strong>client</strong> (<a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.monitoring.client.Client</span></code></a>) – A client for operating on the metric descriptor.</li>
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The metric type including a DNS name prefix. For example:
 <code class="docutils literal"><span class="pre">&quot;compute.googleapis.com/instance/cpu/utilization&quot;</span></code></li>
-<li><strong>metric_kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The kind of measurement. It must be one of
+<li><strong>metric_kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The kind of measurement. It must be one of
 <code class="xref py py-data docutils literal"><span class="pre">MetricKind.GAUGE</span></code>, <code class="xref py py-data docutils literal"><span class="pre">MetricKind.DELTA</span></code>,
 or <code class="xref py py-data docutils literal"><span class="pre">MetricKind.CUMULATIVE</span></code>. See <a class="reference internal" href="#google.cloud.monitoring.metric.MetricKind" title="google.cloud.monitoring.metric.MetricKind"><code class="xref py py-class docutils literal"><span class="pre">MetricKind</span></code></a>.</li>
-<li><strong>value_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The value type of the metric. It must be one of
+<li><strong>value_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The value type of the metric. It must be one of
 <code class="xref py py-data docutils literal"><span class="pre">ValueType.BOOL</span></code>, <code class="xref py py-data docutils literal"><span class="pre">ValueType.INT64</span></code>,
 <code class="xref py py-data docutils literal"><span class="pre">ValueType.DOUBLE</span></code>, <code class="xref py py-data docutils literal"><span class="pre">ValueType.STRING</span></code>,
 or <code class="xref py py-data docutils literal"><span class="pre">ValueType.DISTRIBUTION</span></code>.
 See <a class="reference internal" href="#google.cloud.monitoring.metric.ValueType" title="google.cloud.monitoring.metric.ValueType"><code class="xref py py-class docutils literal"><span class="pre">ValueType</span></code></a>.</li>
-<li><strong>labels</strong> (list of <a class="reference internal" href="monitoring-label.html#google.cloud.monitoring.label.LabelDescriptor" title="google.cloud.monitoring.label.LabelDescriptor"><code class="xref py py-class docutils literal"><span class="pre">LabelDescriptor</span></code></a>) &#8211; A sequence of zero or more label descriptors specifying the labels
+<li><strong>labels</strong> (list of <a class="reference internal" href="monitoring-label.html#google.cloud.monitoring.label.LabelDescriptor" title="google.cloud.monitoring.label.LabelDescriptor"><code class="xref py py-class docutils literal"><span class="pre">LabelDescriptor</span></code></a>) – A sequence of zero or more label descriptors specifying the labels
 used to identify a specific instance of this metric.</li>
-<li><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An optional unit in which the metric value is reported.</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An optional detailed description of the metric.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An optional concise name for the metric.</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The &#8220;resource name&#8221; of the metric descriptor. For example:
+<li><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – An optional unit in which the metric value is reported.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – An optional detailed description of the metric.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – An optional concise name for the metric.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The “resource name” of the metric descriptor. For example:
 <code class="docutils literal"><span class="pre">&quot;projects/&lt;project_id&gt;/metricDescriptors/&lt;type&gt;&quot;</span></code>. As
 retrieved from the service, this will always be specified.
 You can and should omit it when constructing an instance for
@@ -446,7 +446,7 @@ All attributes are overwritten by the values received in the response
 <p>Choices for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind">kind of measurement</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring.metric.MetricKind.METRIC_KIND_UNSPECIFIED">
-<code class="descname">METRIC_KIND_UNSPECIFIED</code><em class="property"> = 'METRIC_KIND_UNSPECIFIED'</em><a class="headerlink" href="#google.cloud.monitoring.metric.MetricKind.METRIC_KIND_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
+<code class="descname">METRIC_KIND_UNSPECIFIED</code><em class="property"> = ‘METRIC_KIND_UNSPECIFIED’</em><a class="headerlink" href="#google.cloud.monitoring.metric.MetricKind.METRIC_KIND_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">An unspecified kind is not allowed in metric descriptors.</p>
@@ -462,7 +462,7 @@ All attributes are overwritten by the values received in the response
 <p>Choices for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#ValueType">metric value type</a>.</p>
 <dl class="attribute">
 <dt id="google.cloud.monitoring.metric.ValueType.VALUE_TYPE_UNSPECIFIED">
-<code class="descname">VALUE_TYPE_UNSPECIFIED</code><em class="property"> = 'VALUE_TYPE_UNSPECIFIED'</em><a class="headerlink" href="#google.cloud.monitoring.metric.ValueType.VALUE_TYPE_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
+<code class="descname">VALUE_TYPE_UNSPECIFIED</code><em class="property"> = ‘VALUE_TYPE_UNSPECIFIED’</em><a class="headerlink" href="#google.cloud.monitoring.metric.ValueType.VALUE_TYPE_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">An unspecified type is not allowed in metric descriptors.</p>
@@ -517,7 +517,7 @@ All attributes are overwritten by the values received in the response
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

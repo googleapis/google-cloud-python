@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Table &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Table &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Column Families" href="bigtable-column-family.html"/>
         <link rel="prev" title="Cluster" href="bigtable-cluster.html"/> 
 
@@ -347,7 +347,7 @@
 <p>Representation of a Google Cloud Bigtable Table.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">We don&#8217;t define any properties on a table other than the name.
+<p class="last">We don’t define any properties on a table other than the name.
 The only other fields are <code class="docutils literal"><span class="pre">column_families</span></code> and <code class="docutils literal"><span class="pre">granularity</span></code>,
 The <code class="docutils literal"><span class="pre">column_families</span></code> are not stored locally and
 <code class="docutils literal"><span class="pre">granularity</span></code> is an enum with only one value.</p>
@@ -364,8 +364,8 @@ The <code class="docutils literal"><span class="pre">column_families</span></cod
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the table.</li>
-<li><strong>instance</strong> (<a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) &#8211; The instance that owns the table.</li>
+<li><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the table.</li>
+<li><strong>instance</strong> (<a class="reference internal" href="bigtable-instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) – The instance that owns the table.</li>
 </ul>
 </td>
 </tr>
@@ -380,9 +380,9 @@ The <code class="docutils literal"><span class="pre">column_families</span></cod
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the column family. Must be of the
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the column family. Must be of the
 form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
-<li><strong>gc_rule</strong> (<a class="reference internal" href="bigtable-column-family.html#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>) &#8211; (Optional) The garbage collection settings for this
+<li><strong>gc_rule</strong> (<a class="reference internal" href="bigtable-column-family.html#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>) – (Optional) The garbage collection settings for this
 column family.</li>
 </ul>
 </td>
@@ -404,7 +404,7 @@ column family.</li>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">A create request returns a
-<code class="xref py py-class docutils literal"><span class="pre">_generated.table_pb2.Table</span></code> but we don&#8217;t use
+<code class="xref py py-class docutils literal"><span class="pre">_generated.table_pb2.Table</span></code> but we don’t use
 this response.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -412,14 +412,14 @@ this response.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>initial_split_keys</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) List of row keys that will be
+<li><strong>initial_split_keys</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) List of row keys that will be
 used to initially split the table into
 several tablets (Tablets are similar to
 HBase regions). Given two split keys,
 <code class="docutils literal"><span class="pre">&quot;s1&quot;</span></code> and <code class="docutils literal"><span class="pre">&quot;s2&quot;</span></code>, three tablets will be
 created, spanning the key ranges:
 <code class="docutils literal"><span class="pre">[,</span> <span class="pre">s1)</span></code>, <code class="docutils literal"><span class="pre">[s1,</span> <span class="pre">s2)</span></code>, <code class="docutils literal"><span class="pre">[s2,</span> <span class="pre">)</span></code>.</li>
-<li><strong>column_families</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) List or other iterable of
+<li><strong>column_families</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) List or other iterable of
 <a class="reference internal" href="bigtable-column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> instances.</li>
 </ul>
 </td>
@@ -489,8 +489,8 @@ return value is not cached.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>row_key</strong> (<em>bytes</em>) &#8211; The key of the row to read from.</li>
-<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) The filter to apply to the contents of the
+<li><strong>row_key</strong> (<em>bytes</em>) – The key of the row to read from.</li>
+<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to apply to the contents of the
 row. If unset, returns the entire row.</li>
 </ul>
 </td>
@@ -519,16 +519,16 @@ chunk is never encountered.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>start_key</strong> (<em>bytes</em>) &#8211; (Optional) The beginning of a range of row keys to
+<li><strong>start_key</strong> (<em>bytes</em>) – (Optional) The beginning of a range of row keys to
 read from. The range will include <code class="docutils literal"><span class="pre">start_key</span></code>. If
 left empty, will be interpreted as the empty string.</li>
-<li><strong>end_key</strong> (<em>bytes</em>) &#8211; (Optional) The end of a range of row keys to read from.
+<li><strong>end_key</strong> (<em>bytes</em>) – (Optional) The end of a range of row keys to read from.
 The range will not include <code class="docutils literal"><span class="pre">end_key</span></code>. If left empty,
 will be interpreted as an infinite string.</li>
-<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The read will terminate after committing to N
-rows&#8217; worth of results. The default (zero) is to return
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) The read will terminate after committing to N
+rows’ worth of results. The default (zero) is to return
 all results.</li>
-<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) The filter to apply to the contents of the
+<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to apply to the contents of the
 specified row(s). If unset, reads every column in
 each row.</li>
 </ul>
@@ -559,10 +559,10 @@ the streamed results.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>row_key</strong> (<em>bytes</em>) &#8211; The key for the row being created.</li>
-<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) Filter to be used for conditional mutations.
+<li><strong>row_key</strong> (<em>bytes</em>) – The key for the row being created.</li>
+<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) Filter to be used for conditional mutations.
 See <a class="reference internal" href="bigtable-row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> for more details.</li>
-<li><strong>append</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Flag to determine if the row should be used
+<li><strong>append</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Flag to determine if the row should be used
 for append mutations.</li>
 </ul>
 </td>
@@ -592,7 +592,7 @@ distributed tasks like mapreduces.</p>
 the properties <code class="docutils literal"><span class="pre">offset_bytes</span></code> and <code class="docutils literal"><span class="pre">row_key</span></code>. They occur in sorted
 order. The table might have contents before the first row key in the
 list and after the last one, but a key containing the empty string
-indicates &#8220;end of table&#8221; and will be the last response given, if
+indicates “end of table” and will be the last response given, if
 present.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -667,7 +667,7 @@ calling <code class="docutils literal"><span class="pre">cancel()</span></code>.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

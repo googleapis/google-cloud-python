@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>DNS Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>DNS Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Managed Zones" href="dns-zone.html"/>
         <link rel="prev" title="Using the API" href="dns-usage.html"/> 
 
@@ -350,14 +350,14 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of. Will be
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the project which the client acts on behalf of. Will be
 passed when creating a zone.  If not passed,
 falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
@@ -371,7 +371,7 @@ change in the future.</li>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.dns.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/ndev.clouddns.readwrite',)</em><a class="headerlink" href="#google.cloud.dns.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = (‘https://www.googleapis.com/auth/ndev.clouddns.readwrite’,)</em><a class="headerlink" href="#google.cloud.dns.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating as a Cloud DNS consumer.</p>
 </dd></dl>
 
@@ -386,9 +386,9 @@ change in the future.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of zones to return, If not
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of zones to return, If not
 passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of zones. If
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of zones. If
 not passed, the API will return the first page of
 zones.</li>
 </ul>
@@ -433,11 +433,11 @@ sub-mapping of the project resource.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the zone.</li>
-<li><strong>dns_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) DNS name of the zone.  If not passed, then calls to
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the zone.</li>
+<li><strong>dns_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) DNS name of the zone.  If not passed, then calls to
 <code class="xref py py-meth docutils literal"><span class="pre">zone.create()</span></code> will fail.</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) the description for the zone.  If not passed, defaults
-to the value of &#8216;dns_name&#8217;.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) the description for the zone.  If not passed, defaults
+to the value of ‘dns_name’.</li>
 </ul>
 </td>
 </tr>
@@ -499,7 +499,7 @@ to the value of &#8216;dns_name&#8217;.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

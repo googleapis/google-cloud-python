@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Entities &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Entities &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Keys" href="datastore-keys.html"/>
         <link rel="prev" title="Datastore Client" href="datastore-client.html"/> 
 
@@ -402,12 +402,12 @@ of <code class="docutils literal"><span class="pre">key</span></code> and <code 
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">When saving an entity to the backend, values which are &#8220;text&#8221;
+<p class="last">When saving an entity to the backend, values which are “text”
 (<code class="docutils literal"><span class="pre">unicode</span></code> in Python2, <code class="docutils literal"><span class="pre">str</span></code> in Python3) will be saved using
-the &#8216;text_value&#8217; field, after being encoded to UTF-8.  When
-retrieved from the back-end, such values will be decoded to &#8220;text&#8221;
-again.  Values which are &#8220;bytes&#8221; (<code class="docutils literal"><span class="pre">str</span></code> in Python2, <code class="docutils literal"><span class="pre">bytes</span></code> in
-Python3), will be saved using the &#8216;blob_value&#8217; field, without
+the ‘text_value’ field, after being encoded to UTF-8.  When
+retrieved from the back-end, such values will be decoded to “text”
+again.  Values which are “bytes” (<code class="docutils literal"><span class="pre">str</span></code> in Python2, <code class="docutils literal"><span class="pre">bytes</span></code> in
+Python3), will be saved using the ‘blob_value’ field, without
 any decoding / encoding step.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -415,8 +415,8 @@ any decoding / encoding step.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; Optional key to be set on entity.</li>
-<li><strong>exclude_from_indexes</strong> (<em>tuple of string</em>) &#8211; Names of fields whose values are not to be
+<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Optional key to be set on entity.</li>
+<li><strong>exclude_from_indexes</strong> (<em>tuple of string</em>) – Names of fields whose values are not to be
 indexed for this entity.</li>
 </ul>
 </td>
@@ -446,7 +446,7 @@ indexed for this entity.</li>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This relies entirely on the <a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
-set on the entity.  That means that we&#8217;re not storing the kind
+set on the entity.  That means that we’re not storing the kind
 of the entity at all, just the properties and a pointer to a
 Key which knows its Kind.</p>
 </div>
@@ -500,7 +500,7 @@ Key which knows its Kind.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

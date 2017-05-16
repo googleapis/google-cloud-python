@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Long-Running Operations &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Long-Running Operations &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="bigquery-usage.html"/>
         <link rel="prev" title="Iterators" href="iterators.html"/> 
 
@@ -354,14 +354,14 @@ API that maps the same underlying data type.)</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The fully-qualified path naming the operation.</li>
-<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to poll for the status of the operation.
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The fully-qualified path naming the operation.</li>
+<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – The client used to poll for the status of the operation.
 If the operation was created via JSON/HTTP, the client
 must own a <code class="xref py py-class docutils literal"><span class="pre">Connection</span></code>
 to send polling requests. If created via protobuf, the
 client must have a gRPC stub in the <code class="docutils literal"><span class="pre">_operations_stub</span></code>
 attribute.</li>
-<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
+<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – caller-assigned metadata about the operation</li>
 </ul>
 </td>
 </tr>
@@ -399,9 +399,9 @@ attribute.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>operation</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Operation as a JSON object.</li>
-<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to poll for the status of the operation.</li>
-<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
+<li><strong>operation</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Operation as a JSON object.</li>
+<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – The client used to poll for the status of the operation.</li>
+<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – caller-assigned metadata about the operation</li>
 </ul>
 </td>
 </tr>
@@ -424,9 +424,9 @@ attribute.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>operation_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">Operation</span></code>) &#8211; Protobuf to be parsed.</li>
-<li><strong>client</strong> (object: must provide <code class="docutils literal"><span class="pre">_operations_stub</span></code> accessor.) &#8211; The client used to poll for the status of the operation.</li>
-<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
+<li><strong>operation_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">Operation</span></code>) – Protobuf to be parsed.</li>
+<li><strong>client</strong> (object: must provide <code class="docutils literal"><span class="pre">_operations_stub</span></code> accessor.) – The client used to poll for the status of the operation.</li>
+<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – caller-assigned metadata about the operation</li>
 </ul>
 </td>
 </tr>
@@ -492,8 +492,8 @@ has already completed.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>klass</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#type" title="(in Python v2.7)"><em>type</em></a>) &#8211; class to be used as a factory for the given type</li>
-<li><strong>type_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) URL naming the type. If not provided,
+<li><strong>klass</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#type" title="(in Python v2.7)"><em>type</em></a>) – class to be used as a factory for the given type</li>
+<li><strong>type_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) URL naming the type. If not provided,
 infers the URL from the type descriptor.</li>
 </ul>
 </td>
@@ -551,7 +551,7 @@ infers the URL from the type descriptor.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

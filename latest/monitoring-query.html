@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Query &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Time Series Query &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Time Series" href="monitoring-timeseries.html"/>
         <link rel="prev" title="Groups" href="monitoring-group.html"/> 
 
@@ -349,7 +349,7 @@
 
 <dl class="class">
 <dt id="google.cloud.monitoring.query.Query">
-<em class="property">class </em><code class="descclassname">google.cloud.monitoring.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>client</em>, <em>metric_type='compute.googleapis.com/instance/cpu/utilization'</em>, <em>end_time=None</em>, <em>days=0</em>, <em>hours=0</em>, <em>minutes=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.query.Query" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>client</em>, <em>metric_type=’compute.googleapis.com/instance/cpu/utilization’</em>, <em>end_time=None</em>, <em>days=0</em>, <em>hours=0</em>, <em>minutes=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.query.Query" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Query object for retrieving metric data.</p>
 <p>The preferred way to construct a query object is using the
@@ -360,13 +360,13 @@ of the <a class="reference internal" href="monitoring-client.html#google.cloud.m
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client</strong> (<a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.monitoring.client.Client</span></code></a>) &#8211; The client to use.</li>
-<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The metric type name. The default value is
+<li><strong>client</strong> (<a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.monitoring.client.Client</span></code></a>) – The client to use.</li>
+<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The metric type name. The default value is
 <code class="xref py py-data docutils literal"><span class="pre">Query.DEFAULT_METRIC_TYPE</span></code>,
 but please note that this default value is provided only for
 demonstration purposes and is subject to change. See the
 <a class="reference external" href="https://cloud.google.com/monitoring/api/metrics">supported metrics</a>.</li>
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; <p>(Optional) The end time (inclusive) of the time interval
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – <p>(Optional) The end time (inclusive) of the time interval
 for which results should be returned, as a datetime object.
 The default is the start of the current minute.</p>
 <p>The start time (exclusive) is determined by combining the
@@ -377,9 +377,9 @@ in which case
 <a class="reference internal" href="#google.cloud.monitoring.query.Query.select_interval" title="google.cloud.monitoring.query.Query.select_interval"><code class="xref py py-meth docutils literal"><span class="pre">select_interval()</span></code></a>
 must be called before the query is executed.</p>
 </li>
-<li><strong>days</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of days in the time interval.</li>
-<li><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of hours in the time interval.</li>
-<li><strong>minutes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of minutes in the time interval.</li>
+<li><strong>days</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of days in the time interval.</li>
+<li><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of hours in the time interval.</li>
+<li><strong>minutes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of minutes in the time interval.</li>
 </ul>
 </td>
 </tr>
@@ -410,13 +410,13 @@ series will contain data points only on the period boundaries.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>per_series_aligner</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The approach to be used to align
+<li><strong>per_series_aligner</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The approach to be used to align
 individual time series. For example: <code class="xref py py-data docutils literal"><span class="pre">Aligner.ALIGN_MEAN</span></code>.
 See <a class="reference internal" href="#google.cloud.monitoring.query.Aligner" title="google.cloud.monitoring.query.Aligner"><code class="xref py py-class docutils literal"><span class="pre">Aligner</span></code></a> and the descriptions of the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Aligner">supported
 aligners</a>.</li>
-<li><strong>seconds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of seconds in the alignment period.</li>
-<li><strong>minutes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of minutes in the alignment period.</li>
-<li><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of hours in the alignment period.</li>
+<li><strong>seconds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of seconds in the alignment period.</li>
+<li><strong>minutes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of minutes in the alignment period.</li>
+<li><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of hours in the alignment period.</li>
 </ul>
 </td>
 </tr>
@@ -462,10 +462,10 @@ aligners</a>.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>label</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The label name to use for the dataframe header.
+<li><strong>label</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The label name to use for the dataframe header.
 This can be the name of a resource label or metric label
 (e.g., <code class="docutils literal"><span class="pre">&quot;instance_name&quot;</span></code>), or the string <code class="docutils literal"><span class="pre">&quot;resource_type&quot;</span></code>.</li>
-<li><strong>labels</strong> (<em>list of strings</em><em>, or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; A list or tuple of label names to use for the dataframe
+<li><strong>labels</strong> (<em>list of strings</em><em>, or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – A list or tuple of label names to use for the dataframe
 header. If more than one label name is provided, the resulting
 dataframe will have a multi-level column header. Providing values
 for both <code class="docutils literal"><span class="pre">label</span></code> and <code class="docutils literal"><span class="pre">labels</span></code> is an error.</li>
@@ -528,8 +528,8 @@ the following are equivalent:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Whether to omit the point data from the time series objects.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Positive number specifying the maximum number of points
+<li><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether to omit the point data from the time series objects.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Positive number specifying the maximum number of points
 to return per page. This can be used to control how far the
 iterator reads ahead.</li>
 </ul>
@@ -566,10 +566,10 @@ combination of project and zone as follows:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cross_series_reducer</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The approach to be used to combine time series. For example:
+<li><strong>cross_series_reducer</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The approach to be used to combine time series. For example:
 <code class="xref py py-data docutils literal"><span class="pre">Reducer.REDUCE_MEAN</span></code>. See <a class="reference internal" href="#google.cloud.monitoring.query.Reducer" title="google.cloud.monitoring.query.Reducer"><code class="xref py py-class docutils literal"><span class="pre">Reducer</span></code></a> and the
 descriptions of the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Reducer">supported reducers</a>.</li>
-<li><strong>group_by_fields</strong> (<em>strs</em>) &#8211; Fields to be preserved by the reduction. For example, specifying
+<li><strong>group_by_fields</strong> (<em>strs</em>) – Fields to be preserved by the reduction. For example, specifying
 just <code class="docutils literal"><span class="pre">&quot;resource.zone&quot;</span></code> will result in one time series per zone.
 The default is to aggregate all of the time series into just one.</li>
 </ul>
@@ -597,7 +597,7 @@ The default is to aggregate all of the time series into just one.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of a group to filter by.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of a group to filter by.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.monitoring.query.Query" title="google.cloud.monitoring.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
 </tr>
@@ -627,9 +627,9 @@ an interval duration when you create the query initially.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The end time (inclusive) of the time interval
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – The end time (inclusive) of the time interval
 for which results should be returned, as a datetime object.</li>
-<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The start time (exclusive) of the time interval
+<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The start time (exclusive) of the time interval
 for which results should be returned, as a datetime object.
 If not specified, the interval is a point in time.</li>
 </ul>
@@ -669,7 +669,7 @@ you can specify a partial match.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">metric</span><span class="o">.</span><span class="n">label</span><span class="o">.&lt;</span><span class="n">label</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">ends_with</span><span class="p">(</span><span class="s2">&quot;&lt;value&gt;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If the label&#8217;s value type is <code class="docutils literal"><span class="pre">INT64</span></code>, a similar notation can be
+<p>If the label’s value type is <code class="docutils literal"><span class="pre">INT64</span></code>, a similar notation can be
 used to express inequalities:</p>
 <p><code class="docutils literal"><span class="pre">&lt;label&gt;_less=&lt;value&gt;</span></code> generates:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">metric</span><span class="o">.</span><span class="n">label</span><span class="o">.&lt;</span><span class="n">label</span><span class="o">&gt;</span> <span class="o">&lt;</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
@@ -692,10 +692,10 @@ used to express inequalities:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Raw filter expression strings to include in the
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – Raw filter expression strings to include in the
 conjunction. If just one is provided and no keyword arguments
 are provided, it can be a disjunction.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Label filters to include in the conjunction as
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Label filters to include in the conjunction as
 described above.</li>
 </ul>
 </td>
@@ -725,7 +725,7 @@ account containing the specified monitored projects.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Project IDs limiting the resources to be included
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – Project IDs limiting the resources to be included
 in the query.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.monitoring.query.Query" title="google.cloud.monitoring.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
@@ -779,10 +779,10 @@ not a resource label. You would filter on it using
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Raw filter expression strings to include in the
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – Raw filter expression strings to include in the
 conjunction. If just one is provided and no keyword arguments
 are provided, it can be a disjunction.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Label filters to include in the conjunction as
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Label filters to include in the conjunction as
 described above.</li>
 </ul>
 </td>
@@ -852,7 +852,7 @@ described above.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

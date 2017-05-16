@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Datastore Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Datastore Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Entities" href="datastore-entities.html"/>
         <link rel="prev" title="Using the API" href="datastore-usage.html"/> 
 
@@ -354,20 +354,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) The project to pass to proxied API methods.</li>
-<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) namespace to pass to proxied API methods.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) The project to pass to proxied API methods.</li>
+<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) namespace to pass to proxied API methods.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
 change in the future.</li>
-<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
+<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Explicitly specifies whether
 to use the gRPC transport (via GAX) or HTTP. If unset,
 falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
 environment variable.
@@ -380,7 +380,7 @@ change in the future.</li>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.datastore.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/datastore',)</em><a class="headerlink" href="#google.cloud.datastore.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = (‘https://www.googleapis.com/auth/datastore’,)</em><a class="headerlink" href="#google.cloud.datastore.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating as a Cloud Datastore consumer.</p>
 </dd></dl>
 
@@ -393,8 +393,8 @@ change in the future.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>incomplete_key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; Partial key to use as base for allocated IDs.</li>
-<li><strong>num_ids</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of IDs to allocate.</li>
+<li><strong>incomplete_key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – Partial key to use as base for allocated IDs.</li>
+<li><strong>num_ids</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of IDs to allocate.</li>
 </ul>
 </td>
 </tr>
@@ -468,7 +468,7 @@ multiple keys in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; The key to be deleted from the datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to be deleted from the datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -482,7 +482,7 @@ multiple keys in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; The keys to be deleted from the Datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The keys to be deleted from the Datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -503,13 +503,13 @@ multiple keys in a lookup request.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; The key to be retrieved from the datastore.</li>
-<li><strong>missing</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) If a list is passed, the key-only entities
-returned by the backend as &#8220;missing&#8221; will be copied
+<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The key to be retrieved from the datastore.</li>
+<li><strong>missing</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) If a list is passed, the key-only entities
+returned by the backend as “missing” will be copied
 into it.</li>
-<li><strong>deferred</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) If a list is passed, the keys returned
-by the backend as &#8220;deferred&#8221; will be copied into it.</li>
-<li><strong>transaction</strong> (<a class="reference internal" href="datastore-transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) &#8211; (Optional) Transaction to use for read consistency.
+<li><strong>deferred</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) If a list is passed, the keys returned
+by the backend as “deferred” will be copied into it.</li>
+<li><strong>transaction</strong> (<a class="reference internal" href="datastore-transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
 If not passed, uses current transaction, if set.</li>
 </ul>
 </td>
@@ -533,14 +533,14 @@ If not passed, uses current transaction, if set.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; The keys to be retrieved from the datastore.</li>
-<li><strong>missing</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) If a list is passed, the key-only entities
-returned by the backend as &#8220;missing&#8221; will be copied
+<li><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – The keys to be retrieved from the datastore.</li>
+<li><strong>missing</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) If a list is passed, the key-only entities
+returned by the backend as “missing” will be copied
 into it. If the list is not empty, an error will occur.</li>
-<li><strong>deferred</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) If a list is passed, the keys returned
-by the backend as &#8220;deferred&#8221; will be copied into it.
+<li><strong>deferred</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) If a list is passed, the keys returned
+by the backend as “deferred” will be copied into it.
 If the list is not empty, an error will occur.</li>
-<li><strong>transaction</strong> (<a class="reference internal" href="datastore-transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) &#8211; (Optional) Transaction to use for read consistency.
+<li><strong>transaction</strong> (<a class="reference internal" href="datastore-transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
 If not passed, uses current transaction, if set.</li>
 </ul>
 </td>
@@ -580,7 +580,7 @@ entity or multiple entities in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) &#8211; The entity to be saved to the datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – The entity to be saved to the datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -594,7 +594,7 @@ entity or multiple entities in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entities</strong> (list of <a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) &#8211; The entities to be saved to the datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entities</strong> (list of <a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – The entities to be saved to the datastore.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">entities</span></code> is a single entity.</td>
 </tr>
@@ -632,7 +632,7 @@ entity or multiple entities in a commit request.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Parameters for initializing and instance of
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Parameters for initializing and instance of
 <a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
@@ -697,7 +697,7 @@ entity or multiple entities in a commit request.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

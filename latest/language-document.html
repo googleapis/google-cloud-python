@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Document &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Document &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Natural Language Response Classes" href="language-responses.html"/>
         <link rel="prev" title="Natural Language Client" href="language-client.html"/> 
 
@@ -351,12 +351,12 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>sentences</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="language-responses.html#google.cloud.language.sentence.Sentence" title="google.cloud.language.sentence.Sentence"><code class="xref py py-class docutils literal"><span class="pre">Sentence</span></code></a> in a document.</li>
-<li><strong>tokens</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="language-responses.html#google.cloud.language.syntax.Token" title="google.cloud.language.syntax.Token"><code class="xref py py-class docutils literal"><span class="pre">Token</span></code></a> from a document.</li>
-<li><strong>sentiment</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sentiment</span></code>) &#8211; The sentiment of a document.</li>
-<li><strong>entities</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="language-responses.html#google.cloud.language.entity.Entity" title="google.cloud.language.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>
+<li><strong>sentences</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – List of <a class="reference internal" href="language-responses.html#google.cloud.language.sentence.Sentence" title="google.cloud.language.sentence.Sentence"><code class="xref py py-class docutils literal"><span class="pre">Sentence</span></code></a> in a document.</li>
+<li><strong>tokens</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – List of <a class="reference internal" href="language-responses.html#google.cloud.language.syntax.Token" title="google.cloud.language.syntax.Token"><code class="xref py py-class docutils literal"><span class="pre">Token</span></code></a> from a document.</li>
+<li><strong>sentiment</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sentiment</span></code>) – The sentiment of a document.</li>
+<li><strong>entities</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – List of <a class="reference internal" href="language-responses.html#google.cloud.language.entity.Entity" title="google.cloud.language.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>
 found in a document.</li>
-<li><strong>language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The language used for the annotation.</li>
+<li><strong>language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The language used for the annotation.</li>
 </ul>
 </td>
 </tr>
@@ -396,7 +396,7 @@ found in a document.</li>
 
 <dl class="class">
 <dt id="google.cloud.language.document.Document">
-<em class="property">class </em><code class="descclassname">google.cloud.language.document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>client</em>, <em>content=None</em>, <em>gcs_url=None</em>, <em>doc_type='PLAIN_TEXT'</em>, <em>language=None</em>, <em>encoding='UTF32'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.document.Document" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.language.document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>client</em>, <em>content=None</em>, <em>gcs_url=None</em>, <em>doc_type=’PLAIN_TEXT’</em>, <em>language=None</em>, <em>encoding=’UTF32’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.document.Document" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Document to send to Google Cloud Natural Language API.</p>
 <p>Represents either plain text or HTML, and the content is either
@@ -407,20 +407,20 @@ object.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client</strong> (<a class="reference internal" href="language-client.html#google.cloud.language.client.Client" title="google.cloud.language.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; A client which holds credentials and other
+<li><strong>client</strong> (<a class="reference internal" href="language-client.html#google.cloud.language.client.Client" title="google.cloud.language.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – A client which holds credentials and other
 configuration.</li>
-<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The document text content (either plain
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The document text content (either plain
 text or HTML).</li>
-<li><strong>gcs_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The URL of the Google Cloud Storage object
+<li><strong>gcs_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The URL of the Google Cloud Storage object
 holding the content. Of the form
 <code class="docutils literal"><span class="pre">gs://{bucket}/{blob-name}</span></code>.</li>
-<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The type of text in the document.
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The type of text in the document.
 Defaults to plain text. Can be one of
 <a class="reference internal" href="#google.cloud.language.document.Document.PLAIN_TEXT" title="google.cloud.language.document.Document.PLAIN_TEXT"><code class="xref py py-attr docutils literal"><span class="pre">PLAIN_TEXT</span></code></a> or
 or <a class="reference internal" href="#google.cloud.language.document.Document.HTML" title="google.cloud.language.document.Document.HTML"><code class="xref py py-attr docutils literal"><span class="pre">HTML</span></code></a>.</li>
-<li><strong>language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the document text.
+<li><strong>language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The language of the document text.
 Defaults to None (auto-detect).</li>
-<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The encoding of the document text.
+<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The encoding of the document text.
 Defaults to UTF-8. Can be one of
 <a class="reference internal" href="#google.cloud.language.document.Encoding.UTF8" title="google.cloud.language.document.Encoding.UTF8"><code class="xref py py-attr docutils literal"><span class="pre">UTF8</span></code></a>, <a class="reference internal" href="#google.cloud.language.document.Encoding.UTF16" title="google.cloud.language.document.Encoding.UTF16"><code class="xref py py-attr docutils literal"><span class="pre">UTF16</span></code></a>
 or <a class="reference internal" href="#google.cloud.language.document.Encoding.UTF32" title="google.cloud.language.document.Encoding.UTF32"><code class="xref py py-attr docutils literal"><span class="pre">UTF32</span></code></a>.</li>
@@ -435,19 +435,19 @@ are specified or if neither are specified.</p>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.language.document.Document.HTML">
-<code class="descname">HTML</code><em class="property"> = 'HTML'</em><a class="headerlink" href="#google.cloud.language.document.Document.HTML" title="Permalink to this definition">#</a></dt>
+<code class="descname">HTML</code><em class="property"> = ‘HTML’</em><a class="headerlink" href="#google.cloud.language.document.Document.HTML" title="Permalink to this definition">#</a></dt>
 <dd><p>HTML document type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.language.document.Document.PLAIN_TEXT">
-<code class="descname">PLAIN_TEXT</code><em class="property"> = 'PLAIN_TEXT'</em><a class="headerlink" href="#google.cloud.language.document.Document.PLAIN_TEXT" title="Permalink to this definition">#</a></dt>
+<code class="descname">PLAIN_TEXT</code><em class="property"> = ‘PLAIN_TEXT’</em><a class="headerlink" href="#google.cloud.language.document.Document.PLAIN_TEXT" title="Permalink to this definition">#</a></dt>
 <dd><p>Plain text document type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.language.document.Document.TYPE_UNSPECIFIED">
-<code class="descname">TYPE_UNSPECIFIED</code><em class="property"> = 'TYPE_UNSPECIFIED'</em><a class="headerlink" href="#google.cloud.language.document.Document.TYPE_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
+<code class="descname">TYPE_UNSPECIFIED</code><em class="property"> = ‘TYPE_UNSPECIFIED’</em><a class="headerlink" href="#google.cloud.language.document.Document.TYPE_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
 <dd><p>Unspecified document type.</p>
 </dd></dl>
 
@@ -544,11 +544,11 @@ learning and need in-depth text features to build upon.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>include_syntax</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Flag to enable syntax analysis
+<li><strong>include_syntax</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Flag to enable syntax analysis
 of the current document.</li>
-<li><strong>include_entities</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Flag to enable entity extraction
+<li><strong>include_entities</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Flag to enable entity extraction
 from the current document.</li>
-<li><strong>include_sentiment</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Flag to enable sentiment
+<li><strong>include_sentiment</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Flag to enable sentiment
 analysis of the current document.</li>
 </ul>
 </td>
@@ -576,25 +576,25 @@ The API provides the beginning offsets for various outputs, such as tokens
 and mentions.</p>
 <dl class="attribute">
 <dt id="google.cloud.language.document.Encoding.NONE">
-<code class="descname">NONE</code><em class="property"> = 'NONE'</em><a class="headerlink" href="#google.cloud.language.document.Encoding.NONE" title="Permalink to this definition">#</a></dt>
+<code class="descname">NONE</code><em class="property"> = ‘NONE’</em><a class="headerlink" href="#google.cloud.language.document.Encoding.NONE" title="Permalink to this definition">#</a></dt>
 <dd><p>Unspecified encoding type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.language.document.Encoding.UTF16">
-<code class="descname">UTF16</code><em class="property"> = 'UTF16'</em><a class="headerlink" href="#google.cloud.language.document.Encoding.UTF16" title="Permalink to this definition">#</a></dt>
+<code class="descname">UTF16</code><em class="property"> = ‘UTF16’</em><a class="headerlink" href="#google.cloud.language.document.Encoding.UTF16" title="Permalink to this definition">#</a></dt>
 <dd><p>UTF-16 encoding type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.language.document.Encoding.UTF32">
-<code class="descname">UTF32</code><em class="property"> = 'UTF32'</em><a class="headerlink" href="#google.cloud.language.document.Encoding.UTF32" title="Permalink to this definition">#</a></dt>
+<code class="descname">UTF32</code><em class="property"> = ‘UTF32’</em><a class="headerlink" href="#google.cloud.language.document.Encoding.UTF32" title="Permalink to this definition">#</a></dt>
 <dd><p>UTF-32 encoding type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.language.document.Encoding.UTF8">
-<code class="descname">UTF8</code><em class="property"> = 'UTF8'</em><a class="headerlink" href="#google.cloud.language.document.Encoding.UTF8" title="Permalink to this definition">#</a></dt>
+<code class="descname">UTF8</code><em class="property"> = ‘UTF8’</em><a class="headerlink" href="#google.cloud.language.document.Encoding.UTF8" title="Permalink to this definition">#</a></dt>
 <dd><p>UTF-8 encoding type.</p>
 </dd></dl>
 
@@ -662,7 +662,7 @@ and mentions.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

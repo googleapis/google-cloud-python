@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Using the API &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Error Reporting Client" href="error-reporting-client.html"/>
         <link rel="prev" title="Speech Alternative" href="speech-alternative.html"/> 
 
@@ -351,7 +351,7 @@
 see <a class="reference internal" href="google-cloud-auth.html"><span class="doc">Authentication</span></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you&#8217;d like
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d like
 to interact with. If you are Google App Engine or Google Compute Engine
 this will be detected automatically.</p>
 </li>
@@ -367,9 +367,9 @@ this will be detected automatically.</p>
 </pre></div>
 </div>
 <p>Error Reporting associates errors with a service, which is an identifier for an executable,
-App Engine service, or job. The default service is &#8220;python&#8221;, but a default can be specified
+App Engine service, or job. The default service is “python”, but a default can be specified
 for the client on construction time. You can also optionally specify a version for that service,
-which defaults to &#8220;default.&#8221;</p>
+which defaults to “default.”</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">error_reporting</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">error_reporting</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span>
@@ -392,8 +392,8 @@ which defaults to &#8220;default.&#8221;</p>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">client</span><span class="o">.</span><span class="n">report_exception</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>By default, the client will report the error using the service specified in the client&#8217;s
-constructor, or the default service of &#8220;python&#8221;.</p>
+<p>By default, the client will report the error using the service specified in the client’s
+constructor, or the default service of “python”.</p>
 <p>The user and HTTP context can also be included in the exception. The HTTP context
 can be constructed using <code class="xref py py-class docutils literal"><span class="pre">google.cloud.error_reporting.HTTPContext</span></code>. This will
 be used by Stackdriver Error Reporting to help group exceptions.</p>
@@ -489,7 +489,7 @@ error was reported.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

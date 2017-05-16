@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Using the API &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="BigQuery Client" href="bigquery-client.html"/>
         <link rel="prev" title="Long-Running Operations" href="operation-api.html"/> 
 
@@ -419,12 +419,12 @@ dataset will have the value as their expiration period.</li>
 </ul>
 <div class="section" id="dataset-operations">
 <h3>Dataset operations<a class="headerlink" href="#dataset-operations" title="Permalink to this headline">#</a></h3>
-<p>List datasets for the client&#8217;s project:</p>
+<p>List datasets for the client’s project:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">():</span>  <span class="c1"># API request(s)</span>
         <span class="n">do_something_with</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Create a new dataset for the client&#8217;s project:</p>
+<p>Create a new dataset for the client’s project:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">DATASET_NAME</span><span class="p">)</span>
     <span class="n">dataset</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
 </pre></div>
@@ -533,12 +533,12 @@ dataset will have the value as their expiration period.</li>
     <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">==</span> <span class="n">NEW_SCHEMA</span>
 </pre></div>
 </div>
-<p>Get rows from a table&#8217;s data:</p>
+<p>Get rows from a table’s data:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">():</span>
         <span class="n">do_something</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Insert rows into a table&#8217;s data:</p>
+<p>Insert rows into a table’s data:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ROWS_TO_INSERT</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Phred Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
         <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Wylma Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span>
@@ -786,7 +786,7 @@ is submitted to the BigQuery back-end.</li>
 </div>
 <div class="section" id="exporting-data-async">
 <h3>Exporting data (async)<a class="headerlink" href="#exporting-data-async" title="Permalink to this headline">#</a></h3>
-<p>Start a job exporting a table&#8217;s data asynchronously to a set of CSV files,
+<p>Start a job exporting a table’s data asynchronously to a set of CSV files,
 located on Google Cloud Storage.  First, create the job locally:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
@@ -933,7 +933,7 @@ is submitted to the BigQuery back-end.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

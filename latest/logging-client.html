@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stackdriver Logging Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Stackdriver Logging Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Logger" href="logging-logger.html"/>
         <link rel="prev" title="Using the API" href="logging-usage.html"/> 
 
@@ -350,21 +350,21 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of.
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the project which the client acts on behalf of.
 If not passed, falls back to the default inferred
 from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
 change in the future.</li>
-<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
+<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Explicitly specifies whether
 to use the gRPC transport (via GAX) or HTTP. If unset,
 falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
 environment variable
@@ -377,7 +377,7 @@ change in the future.</li>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.logging.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/logging.read', 'https://www.googleapis.com/auth/logging.write', 'https://www.googleapis.com/auth/logging.admin', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#google.cloud.logging.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = (‘https://www.googleapis.com/auth/logging.read’, ‘https://www.googleapis.com/auth/logging.write’, ‘https://www.googleapis.com/auth/logging.admin’, ‘https://www.googleapis.com/auth/cloud-platform’)</em><a class="headerlink" href="#google.cloud.logging.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating as a Logging consumer.</p>
 </dd></dl>
 
@@ -408,15 +408,15 @@ change in the future.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>projects</strong> (<em>list of strings</em>) &#8211; project IDs to include. If not passed,
+<li><strong>projects</strong> (<em>list of strings</em>) – project IDs to include. If not passed,
 defaults to the project bound to the client.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; a filter expression. See:
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – a filter expression. See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">https://cloud.google.com/logging/docs/view/advanced_filters</a></li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; One of <code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – One of <code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code>
 or <code class="xref py py-data docutils literal"><span class="pre">DESCENDING</span></code>.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of entries to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of entries to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of entries. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of entries. If not
 passed, the API will return the first page of
 entries.</li>
 </ul>
@@ -444,9 +444,9 @@ accessible to the current client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of metrics to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of metrics to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of metrics. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of metrics. If not
 passed, the API will return the first page of
 metrics.</li>
 </ul>
@@ -474,9 +474,9 @@ accessible to the current client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of sinks to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of sinks to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of sinks. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of sinks. If not
 passed, the API will return the first page of
 sinks.</li>
 </ul>
@@ -502,7 +502,7 @@ accessible to the current client.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the logger to be constructed.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the logger to be constructed.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="logging-logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.logger.Logger</span></code></a></td>
 </tr>
@@ -523,19 +523,19 @@ accessible to the current client.</p>
 
 <dl class="method">
 <dt id="google.cloud.logging.client.Client.metric">
-<code class="descname">metric</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>description=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/client.html#Client.metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.client.Client.metric" title="Permalink to this definition">#</a></dt>
+<code class="descname">metric</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>description=”</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/client.html#Client.metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.client.Client.metric" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a metric bound to the current client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the metric to be constructed.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the advanced logs filter expression defining the
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the metric to be constructed.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the advanced logs filter expression defining the
 entries tracked by the metric.  If not
 passed, the instance should already exist, to be
 refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Metric.reload()</span></code>.</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the description of the metric to be constructed.
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the description of the metric to be constructed.
 If not passed, the instance should already exist,
 to be refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Metric.reload()</span></code>.</li>
 </ul>
@@ -561,7 +561,7 @@ to be refreshed via <code class="xref py py-meth docutils literal"><span class="
 
 <dl class="method">
 <dt id="google.cloud.logging.client.Client.setup_logging">
-<code class="descname">setup_logging</code><span class="sig-paren">(</span><em>log_level=20</em>, <em>excluded_loggers=('google.cloud'</em>, <em>'google.auth'</em>, <em>'google_auth_httplib2')</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/client.html#Client.setup_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.client.Client.setup_logging" title="Permalink to this definition">#</a></dt>
+<code class="descname">setup_logging</code><span class="sig-paren">(</span><em>log_level=20</em>, <em>excluded_loggers=(‘google.cloud’</em>, <em>’google.auth’</em>, <em>’google_auth_httplib2’)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/client.html#Client.setup_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.client.Client.setup_logging" title="Permalink to this definition">#</a></dt>
 <dd><p>Attach default Stackdriver logging handler to the root logger.</p>
 <p>This method uses the default log handler, obtained by
 <a class="reference internal" href="#google.cloud.logging.client.Client.get_default_handler" title="google.cloud.logging.client.Client.get_default_handler"><code class="xref py py-meth docutils literal"><span class="pre">get_default_handler()</span></code></a>, and attaches it to the root Python
@@ -572,9 +572,9 @@ loggers, will report to Stackdriver logging.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>log_level</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Python logging log level. Defaults to
+<li><strong>log_level</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Python logging log level. Defaults to
 <code class="xref py py-const docutils literal"><span class="pre">logging.INFO</span></code>.</li>
-<li><strong>excluded_loggers</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; (Optional) The loggers to not attach the
+<li><strong>excluded_loggers</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) – (Optional) The loggers to not attach the
 handler to. This will always include the
 loggers in the path of the logging client
 itself.</li>
@@ -594,12 +594,12 @@ itself.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the sink to be constructed.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) the advanced logs filter expression
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the sink to be constructed.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) the advanced logs filter expression
 defining the entries exported by the sink.  If not
 passed, the instance should already exist, to be
 refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Sink.reload()</span></code>.</li>
-<li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; destination URI for the entries exported by
+<li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – destination URI for the entries exported by
 the sink.  If not passed, the instance should
 already exist, to be refreshed via
 <code class="xref py py-meth docutils literal"><span class="pre">Sink.reload()</span></code>.</li>
@@ -672,7 +672,7 @@ already exist, to be refreshed via
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

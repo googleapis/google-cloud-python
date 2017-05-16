@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Logger &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Logger &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Entries" href="logging-entries.html"/>
         <link rel="prev" title="Stackdriver Logging Client" href="logging-client.html"/> 
 
@@ -351,14 +351,14 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>logger</strong> (<a class="reference internal" href="#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.logger.Logger</span></code></a>) &#8211; the logger to which entries will be logged.</li>
-<li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) &#8211; The client to use.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; (Optional) Monitored resource of the batch, defaults
+<li><strong>logger</strong> (<a class="reference internal" href="#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.logger.Logger</span></code></a>) – the logger to which entries will be logged.</li>
+<li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – The client to use.</li>
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the batch, defaults
 to None, which requires that every entry should have a
 resource specified. Since the methods used to write
-entries default the entry&#8217;s resource to the global
+entries default the entry’s resource to the global
 resource type, this parameter is only required
-if explicitly set to None. If no entries&#8217; resource are
+if explicitly set to None. If no entries’ resource are
 set to None, this parameter will be ignored on the server.</li>
 </ul>
 </td>
@@ -374,7 +374,7 @@ set to None, this parameter will be ignored on the server.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current batch.</td>
 </tr>
 </tbody>
@@ -383,21 +383,21 @@ set to None, this parameter will be ignored on the server.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_proto">
-<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_proto" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type=’global’</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_proto" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a protobuf entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>message</strong> (<em>protobuf message</em>) &#8211; the protobuf entry</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
-<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
+<li><strong>message</strong> (<em>protobuf message</em>) – the protobuf entry</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) mapping of labels for the entry.</li>
+<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
+<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; (Optional) Monitored resource of the entry. Defaults
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry. Defaults
 to the global resource type. If set to None, the
 resource of the batch is used for this entry. If
 both this resource and the Batch resource are None,
@@ -411,21 +411,21 @@ the API will return an error.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_struct">
-<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_struct" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type=’global’</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_struct" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a struct entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>info</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; the struct entry</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
-<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
+<li><strong>info</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – the struct entry</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) mapping of labels for the entry.</li>
+<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
+<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; (Optional) Monitored resource of the entry. Defaults
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry. Defaults
 to the global resource type. If set to None, the
 resource of the batch is used for this entry. If
 both this resource and the Batch resource are None,
@@ -439,21 +439,21 @@ the API will return an error.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_text">
-<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_text" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type=’global’</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_text" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a text entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the text entry</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
-<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the text entry</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) mapping of labels for the entry.</li>
+<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
+<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; (Optional) Monitored resource of the entry. Defaults
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) – (Optional) Monitored resource of the entry. Defaults
 to the global resource type. If set to None, the
 resource of the batch is used for this entry. If
 both this resource and the Batch resource are None,
@@ -479,10 +479,10 @@ the API will return an error.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the logger</li>
-<li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the logger</li>
+<li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – A client which holds credentials and project configuration
 for the logger (which requires a project).</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of default labels for entries written
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) mapping of default labels for entries written
 via this logger.</li>
 </ul>
 </td>
@@ -498,7 +498,7 @@ via this logger.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.logging.logger.Batch" title="google.cloud.logging.logger.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a></td>
@@ -526,7 +526,7 @@ via this logger.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current logger.</td>
 </tr>
 </tbody>
@@ -550,15 +550,15 @@ via this logger.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>projects</strong> (<em>list of strings</em>) &#8211; project IDs to include. If not passed,
+<li><strong>projects</strong> (<em>list of strings</em>) – project IDs to include. If not passed,
 defaults to the project bound to the client.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; a filter expression. See:
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – a filter expression. See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">https://cloud.google.com/logging/docs/view/advanced_filters</a></li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; One of <code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – One of <code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code>
 or <code class="xref py py-data docutils literal"><span class="pre">DESCENDING</span></code>.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of entries to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of entries to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of entries. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of entries. If not
 passed, the API will return the first page of
 entries.</li>
 </ul>
@@ -577,7 +577,7 @@ accessible to the current logger.</p>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_proto">
-<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_proto" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type=’global’</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_proto" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a protobuf message via a POST request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list</a></p>
@@ -586,18 +586,18 @@ accessible to the current logger.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>message</strong> (<code class="xref py py-class docutils literal"><span class="pre">Message</span></code>) &#8211; The protobuf message to be logged.</li>
+<li><strong>message</strong> (<code class="xref py py-class docutils literal"><span class="pre">Message</span></code>) – The protobuf message to be logged.</li>
 <li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current logger.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
-<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) mapping of labels for the entry.</li>
+<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
+<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; Monitored resource of the entry, defaults
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) – Monitored resource of the entry, defaults
 to the global resource type.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -607,7 +607,7 @@ to the global resource type.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_struct">
-<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_struct" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type=’global’</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_struct" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a structured message via a POST request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</a></p>
@@ -616,18 +616,18 @@ to the global resource type.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>info</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; the log entry information</li>
+<li><strong>info</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – the log entry information</li>
 <li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current logger.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
-<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) mapping of labels for the entry.</li>
+<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
+<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry.</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; Monitored resource of the entry, defaults
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) – Monitored resource of the entry, defaults
 to the global resource type.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -637,7 +637,7 @@ to the global resource type.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_text">
-<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type='global'</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_text" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em>, <em>resource=Resource(type=’global’</em>, <em>labels={})</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_text" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a text message via a POST request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write">https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write</a></p>
@@ -646,18 +646,18 @@ to the global resource type.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the log message.</li>
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the log message.</li>
 <li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current logger.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
-<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) mapping of labels for the entry.</li>
+<li><strong>insert_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) severity of event being logged.</li>
+<li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – (optional) info about HTTP request associated with
 the entry</li>
-<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) &#8211; Monitored resource of the entry, defaults
+<li><strong>resource</strong> (<code class="xref py py-class docutils literal"><span class="pre">Resource</span></code>) – Monitored resource of the entry, defaults
 to the global resource type.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -725,7 +725,7 @@ to the global resource type.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

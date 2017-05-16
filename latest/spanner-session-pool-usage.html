@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Session Pools &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Session Pools &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Batching Modifications" href="spanner-batch-usage.html"/>
         <link rel="prev" title="Implicit Transactions" href="spanner-session-implicit-txn-usage.html"/> 
 
@@ -433,7 +433,7 @@ keeping the sessions fresh.</p>
 <span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Set up a background thread to ping the pool&#8217;s session, keeping them
+<p>Set up a background thread to ping the pool’s session, keeping them
 from becoming stale:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span>
 
@@ -459,7 +459,7 @@ snapshot, and uses the snapshot to execute a query:</p>
 <h2>Lowering latency for mixed read-write operations<a class="headerlink" href="#lowering-latency-for-mixed-read-write-operations" title="Permalink to this headline">#</a></h2>
 <p>Some applications may need to minimize latency for read write operations,
 including particularly the overhead of making an API request to create or
-refresh a session or to begin a session&#8217;s transaction.
+refresh a session or to begin a session’s transaction.
 <a class="reference internal" href="spanner-session-api.html#google.cloud.spanner.pool.TransactionPingingPool" title="google.cloud.spanner.pool.TransactionPingingPool"><code class="xref py py-class docutils literal"><span class="pre">TransactionPingingPool</span></code></a> is designed for
 such applications, which need to configure a background thread to do the work
 of keeping the sessions fresh and starting their transactions after use.</p>
@@ -474,7 +474,7 @@ of keeping the sessions fresh and starting their transactions after use.</p>
 <span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Set up a background thread to ping the pool&#8217;s session, keeping them
+<p>Set up a background thread to ping the pool’s session, keeping them
 from becoming stale, and ensuring that each session has a new transaction
 started before it is used:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">threading</span>
@@ -561,7 +561,7 @@ passed), and does its work using that transaction.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

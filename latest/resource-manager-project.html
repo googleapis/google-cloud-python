@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Projects &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Projects &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="runtimeconfig-usage.html"/>
         <link rel="prev" title="Client" href="resource-manager-client.html"/> 
 
@@ -366,10 +366,10 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The globally unique ID of the project.</li>
-<li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a>) &#8211; The Client used with this project.</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The display name of the project.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A list of labels associated with the project.</li>
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The globally unique ID of the project.</li>
+<li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a>) – The Client used with this project.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The display name of the project.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – A list of labels associated with the project.</li>
 </ul>
 </td>
 </tr>
@@ -386,7 +386,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
-<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) – the client to use.  If not passed, falls back to
 the client stored on the current project.</td>
 </tr>
 </tbody>
@@ -401,7 +401,7 @@ the client stored on the current project.</td>
 <a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete</a></p>
 <p>This actually changes the status (<code class="docutils literal"><span class="pre">lifecycleState</span></code>) from <code class="docutils literal"><span class="pre">ACTIVE</span></code>
 to <code class="docutils literal"><span class="pre">DELETE_REQUESTED</span></code>.
-Later (it&#8217;s not specified when), the project will move into the
+Later (it’s not specified when), the project will move into the
 <code class="docutils literal"><span class="pre">DELETE_IN_PROGRESS</span></code> state, which means the deleting has actually
 begun.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -410,12 +410,12 @@ begun.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
-<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) – the client to use.  If not passed, falls back to
 the client stored on the current project.</li>
-<li><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Whether to reload the project with the latest
+<li><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether to reload the project with the latest
 state. If you want to get the updated status,
-you&#8217;ll want this set to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> as the DELETE
-method doesn&#8217;t send back the updated project.
+you’ll want this set to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> as the DELETE
+method doesn’t send back the updated project.
 Default: <a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
 </ul>
 </td>
@@ -435,7 +435,7 @@ Default: <a class="reference external" href="https://docs.python.org/2/library/c
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
-<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) – the client to use.  If not passed, falls back to
 the client stored on the current project.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
@@ -455,8 +455,8 @@ the client stored on the current project.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; project resource representation returned from the API</li>
-<li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a>) &#8211; The Client used with this project.</li>
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – project resource representation returned from the API</li>
+<li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a>) – The Client used with this project.</li>
 </ul>
 </td>
 </tr>
@@ -486,13 +486,13 @@ the client stored on the current project.</td>
 <dt id="google.cloud.resource_manager.project.Project.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/resource_manager/project.html#Project.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.resource_manager.project.Project.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  reload the project via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
-<p>This method will reload the newest metadata for the project. If you&#8217;ve
+<p>This method will reload the newest metadata for the project. If you’ve
 created a new <a class="reference internal" href="#google.cloud.resource_manager.project.Project" title="google.cloud.resource_manager.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> instance via
 <a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client.new_project" title="google.cloud.resource_manager.client.Client.new_project"><code class="xref py py-meth docutils literal"><span class="pre">Client.new_project()</span></code></a>,
 this method will retrieve project metadata.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">This will overwrite any local changes you&#8217;ve made and not saved
+<p class="last">This will overwrite any local changes you’ve made and not saved
 via <a class="reference internal" href="#google.cloud.resource_manager.project.Project.update" title="google.cloud.resource_manager.project.Project.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a>.</p>
 </div>
 <p>See
@@ -502,7 +502,7 @@ via <a class="reference internal" href="#google.cloud.resource_manager.project.P
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
-<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) – the client to use.  If not passed, falls back to
 the client stored on the current project.</td>
 </tr>
 </tbody>
@@ -531,12 +531,12 @@ this request will fail and the project cannot be restored.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
-<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) – the client to use.  If not passed, falls back to
 the client stored on the current project.</li>
-<li><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Whether to reload the project with the latest
+<li><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Whether to reload the project with the latest
 state. If you want to get the updated status,
-you&#8217;ll want this set to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> as the DELETE
-method doesn&#8217;t send back the updated project.
+you’ll want this set to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> as the DELETE
+method doesn’t send back the updated project.
 Default: <a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
 </ul>
 </td>
@@ -556,7 +556,7 @@ Default: <a class="reference external" href="https://docs.python.org/2/library/c
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#google.cloud.resource_manager.client.Client" title="google.cloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.resource_manager.client.Client</span></code></a> or
-<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) – the client to use.  If not passed, falls back to
 the client stored on the current project.</td>
 </tr>
 </tbody>
@@ -611,7 +611,7 @@ the client stored on the current project.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

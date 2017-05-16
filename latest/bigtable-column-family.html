@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Column Families &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Column Families &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Bigtable Row" href="bigtable-row.html"/>
         <link rel="prev" title="Table" href="bigtable-table.html"/> 
 
@@ -393,10 +393,10 @@ at the lowest level of the nesting:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the column family. Must be of the
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the column family. Must be of the
 form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
-<li><strong>table</strong> (<a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>) &#8211; The table that owns the column family.</li>
-<li><strong>gc_rule</strong> (<a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>) &#8211; (Optional) The garbage collection settings for this
+<li><strong>table</strong> (<a class="reference internal" href="bigtable-table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>) – The table that owns the column family.</li>
+<li><strong>gc_rule</strong> (<a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>) – (Optional) The garbage collection settings for this
 column family.</li>
 </ul>
 </td>
@@ -477,7 +477,7 @@ you will simply be referring to a different column family.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -508,7 +508,7 @@ you will simply be referring to a different column family.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – List of <a class="reference internal" href="#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -545,7 +545,7 @@ deleted during garbage collection.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">A string <code class="docutils literal"><span class="pre">gc_expression</span></code> can also be used with API requests, but
 that value would be superceded by a <code class="docutils literal"><span class="pre">gc_rule</span></code>. As a result, we
-don&#8217;t support that feature and instead support via native classes.</p>
+don’t support that feature and instead support via native classes.</p>
 </div>
 </dd></dl>
 
@@ -558,7 +558,7 @@ don&#8217;t support that feature and instead support via native classes.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_age</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; The maximum age allowed for a cell in the table.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_age</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – The maximum age allowed for a cell in the table.</td>
 </tr>
 </tbody>
 </table>
@@ -589,7 +589,7 @@ don&#8217;t support that feature and instead support via native classes.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_num_versions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The maximum number of versions</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_num_versions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The maximum number of versions</td>
 </tr>
 </tbody>
 </table>
@@ -657,7 +657,7 @@ don&#8217;t support that feature and instead support via native classes.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

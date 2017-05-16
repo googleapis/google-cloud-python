@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Batches &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Batches &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Helpers" href="datastore-helpers.html"/>
         <link rel="prev" title="Transactions" href="datastore-transactions.html"/> 
 
@@ -381,7 +381,7 @@ raising an exception:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) &#8211; The client used to connect to datastore.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – The client used to connect to datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -390,7 +390,7 @@ raising an exception:</p>
 <code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/batch.html#Batch.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.batch.Batch.begin" title="Permalink to this definition">#</a></dt>
 <dd><p>Begins a batch.</p>
 <p>This method is called automatically when entering a with
-statement, however it can be called explicitly if you don&#8217;t want
+statement, however it can be called explicitly if you don’t want
 to use a context manager.</p>
 <p>Overridden by <a class="reference internal" href="datastore-transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -408,7 +408,7 @@ to use a context manager.</p>
 <code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/batch.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.batch.Batch.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commits the batch.</p>
 <p>This is called automatically upon exiting a with statement,
-however it can be called explicitly if you don&#8217;t want to use a
+however it can be called explicitly if you don’t want to use a
 context manager.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -435,10 +435,10 @@ in progress.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; the key to be deleted.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) – the key to be deleted.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the batch is not in
-progress, if key is not complete, or if the key&#8217;s
+progress, if key is not complete, or if the key’s
 <code class="docutils literal"><span class="pre">project</span></code> does not match ours.</td>
 </tr>
 </tbody>
@@ -502,7 +502,7 @@ protobufs to be sent in the commit request.</td>
 <dl class="method">
 <dt id="google.cloud.datastore.batch.Batch.put">
 <code class="descname">put</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/batch.html#Batch.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.batch.Batch.put" title="Permalink to this definition">#</a></dt>
-<dd><p>Remember an entity&#8217;s state to be saved during <a class="reference internal" href="#google.cloud.datastore.batch.Batch.commit" title="google.cloud.datastore.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+<dd><p>Remember an entity’s state to be saved during <a class="reference internal" href="#google.cloud.datastore.batch.Batch.commit" title="google.cloud.datastore.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Any existing properties for the entity will be replaced by those
@@ -512,9 +512,9 @@ the datastore.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Property values which are &#8220;text&#8221; (&#8216;unicode&#8217; in Python2, &#8216;str&#8217; in
-Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
-&#8220;bytes&#8221; (&#8216;str&#8217; in Python2, &#8216;bytes&#8217; in Python3) map to &#8216;blob_value&#8217;.</p>
+<p class="last">Property values which are “text” (‘unicode’ in Python2, ‘str’ in
+Python3) map to ‘string_value’ in the datastore;  values which are
+“bytes” (‘str’ in Python2, ‘bytes’ in Python3) map to ‘blob_value’.</p>
 </div>
 <p>When an entity has a partial key, calling <a class="reference internal" href="#google.cloud.datastore.batch.Batch.commit" title="google.cloud.datastore.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a> sends it as
 an <code class="docutils literal"><span class="pre">insert</span></code> mutation and the key is completed. On return,
@@ -524,10 +524,10 @@ assigned by the server.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) &#8211; the entity to be saved.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) – the entity to be saved.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the batch is not in
-progress, if entity has no key assigned, or if the key&#8217;s
+progress, if entity has no key assigned, or if the key’s
 <code class="docutils literal"><span class="pre">project</span></code> does not match ours.</td>
 </tr>
 </tbody>
@@ -538,7 +538,7 @@ progress, if entity has no key assigned, or if the key&#8217;s
 <dt id="google.cloud.datastore.batch.Batch.rollback">
 <code class="descname">rollback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/batch.html#Batch.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.batch.Batch.rollback" title="Permalink to this definition">#</a></dt>
 <dd><p>Rolls back the current batch.</p>
-<p>Marks the batch as aborted (can&#8217;t be used again).</p>
+<p>Marks the batch as aborted (can’t be used again).</p>
 <p>Overridden by <a class="reference internal" href="datastore-transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -599,7 +599,7 @@ in progress.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

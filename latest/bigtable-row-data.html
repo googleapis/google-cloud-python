@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Row Data &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Row Data &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="datastore-usage.html"/>
         <link rel="prev" title="Bigtable Row Filters" href="bigtable-row-filters.html"/> 
 
@@ -350,9 +350,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>value</strong> (<em>bytes</em>) &#8211; The value stored in the cell.</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The timestamp when the cell was stored.</li>
-<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) List of strings. Labels applied to the cell.</li>
+<li><strong>value</strong> (<em>bytes</em>) – The value stored in the cell.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – The timestamp when the cell was stored.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) List of strings. Labels applied to the cell.</li>
 </ul>
 </td>
 </tr>
@@ -366,7 +366,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cell_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">_generated.data_pb2.Cell</span></code>) &#8211; The protobuf to convert.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cell_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">_generated.data_pb2.Cell</span></code>) – The protobuf to convert.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigtable.row_data.Cell" title="google.cloud.bigtable.row_data.Cell"><code class="xref py py-class docutils literal"><span class="pre">Cell</span></code></a></td>
 </tr>
@@ -394,7 +394,7 @@
 
 <dl class="class">
 <dt id="google.cloud.bigtable.row_data.PartialCellData">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialCellData</code><span class="sig-paren">(</span><em>row_key</em>, <em>family_name</em>, <em>qualifier</em>, <em>timestamp_micros</em>, <em>labels=()</em>, <em>value=b''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigtable/row_data.html#PartialCellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialCellData" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.row_data.</code><code class="descname">PartialCellData</code><span class="sig-paren">(</span><em>row_key</em>, <em>family_name</em>, <em>qualifier</em>, <em>timestamp_micros</em>, <em>labels=()</em>, <em>value=b”</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigtable/row_data.html#PartialCellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialCellData" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of partial cell in a Google Cloud Bigtable Table.</p>
 <p>These are expected to be updated directly from a
@@ -404,13 +404,13 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>row_key</strong> (<em>bytes</em>) &#8211; The key for the row holding the (partial) cell.</li>
-<li><strong>family_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The family name of the (partial) cell.</li>
-<li><strong>qualifier</strong> (<em>bytes</em>) &#8211; The column qualifier of the (partial) cell.</li>
-<li><strong>timestamp_micros</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The timestamp (in microsecods) of the
+<li><strong>row_key</strong> (<em>bytes</em>) – The key for the row holding the (partial) cell.</li>
+<li><strong>family_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The family name of the (partial) cell.</li>
+<li><strong>qualifier</strong> (<em>bytes</em>) – The column qualifier of the (partial) cell.</li>
+<li><strong>timestamp_micros</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The timestamp (in microsecods) of the
 (partial) cell.</li>
-<li><strong>labels</strong> (<em>list of str</em>) &#8211; labels assigned to the (partial) cell</li>
-<li><strong>value</strong> (<em>bytes</em>) &#8211; The (accumulated) value of the (partial) cell.</li>
+<li><strong>labels</strong> (<em>list of str</em>) – labels assigned to the (partial) cell</li>
+<li><strong>value</strong> (<em>bytes</em>) – The (accumulated) value of the (partial) cell.</li>
 </ul>
 </td>
 </tr>
@@ -424,7 +424,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bytes</em>) &#8211; bytes to append</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bytes</em>) – bytes to append</td>
 </tr>
 </tbody>
 </table>
@@ -443,7 +443,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>row_key</strong> (<em>bytes</em>) &#8211; The key for the row holding the (partial) data.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>row_key</strong> (<em>bytes</em>) – The key for the row holding the (partial) data.</td>
 </tr>
 </tbody>
 </table>
@@ -469,14 +469,14 @@ a given column, a list of <a class="reference internal" href="#google.cloud.bigt
 <dl class="attribute">
 <dt id="google.cloud.bigtable.row_data.PartialRowData.row_key">
 <code class="descname">row_key</code><a class="headerlink" href="#google.cloud.bigtable.row_data.PartialRowData.row_key" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for the current (partial) row&#8217;s key.</p>
+<dd><p>Getter for the current (partial) row’s key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current (partial) row&#8217;s key.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current (partial) row’s key.</td>
 </tr>
 </tbody>
 </table>
@@ -511,7 +511,7 @@ column qualiers are combined (with <code class="docutils literal"><span class="p
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_iterator</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.GrpcRendezvous" title="google.cloud.exceptions.GrpcRendezvous"><code class="xref py py-class docutils literal"><span class="pre">GrpcRendezvous</span></code></a>) &#8211; A streaming iterator returned from a
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response_iterator</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.GrpcRendezvous" title="google.cloud.exceptions.GrpcRendezvous"><code class="xref py py-class docutils literal"><span class="pre">GrpcRendezvous</span></code></a>) – A streaming iterator returned from a
 <code class="docutils literal"><span class="pre">ReadRows</span></code> request.</td>
 </tr>
 </tbody>
@@ -532,7 +532,7 @@ more to consume.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_loops</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of times to try to consume
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>max_loops</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of times to try to consume
 an additional <code class="docutils literal"><span class="pre">ReadRowsResponse</span></code>. You can use this
 to avoid long wait times.</td>
 </tr>
@@ -629,7 +629,7 @@ processing.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

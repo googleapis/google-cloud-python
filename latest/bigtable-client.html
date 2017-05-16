@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Instance" href="bigtable-instance.html"/>
         <link rel="prev" title="Data API" href="bigtable-data-api.html"/> 
 
@@ -354,13 +354,13 @@
 </ul>
 <dl class="data">
 <dt id="google.cloud.bigtable.client.ADMIN_SCOPE">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">ADMIN_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.admin'</em><a class="headerlink" href="#google.cloud.bigtable.client.ADMIN_SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">ADMIN_SCOPE</code><em class="property"> = ‘https://www.googleapis.com/auth/bigtable.admin’</em><a class="headerlink" href="#google.cloud.bigtable.client.ADMIN_SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>Scope for interacting with the Cluster Admin and Table Admin APIs.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.bigtable.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>read_only=False</em>, <em>admin=False</em>, <em>user_agent='gcloud-python/0.24.1'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigtable/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>read_only=False</em>, <em>admin=False</em>, <em>user_agent=’gcloud-python/0.24.1’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigtable/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientFactoryMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientProjectMixin</span></code></p>
 <p>Client for interacting with Google Cloud Bigtable API.</p>
 <div class="admonition note">
@@ -373,20 +373,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>) &#8211; (Optional) The ID of the project which owns the
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>) – (Optional) The ID of the project which owns the
 instances, tables and data. If not provided, will
 attempt to determine from the environment.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.1.0)"><code class="xref py py-class docutils literal"><span class="pre">OAuth2Credentials</span></code></a> or
-<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not provided, defaults to the Google
 Application Default Credentials.</li>
-<li><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Boolean indicating if the data scope should be
+<li><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Boolean indicating if the data scope should be
 for reading only (or for writing as well). Defaults to
 <a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
-<li><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Boolean indicating if the client will be used to
+<li><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Boolean indicating if the client will be used to
 interact with the Instance Admin or Table Admin APIs. This
 requires the <a class="reference internal" href="#google.cloud.bigtable.client.ADMIN_SCOPE" title="google.cloud.bigtable.client.ADMIN_SCOPE"><code class="xref py py-const docutils literal"><span class="pre">ADMIN_SCOPE</span></code></a>. Defaults to <a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
-<li><strong>user_agent</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The user agent to be used with API request.
+<li><strong>user_agent</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The user agent to be used with API request.
 Defaults to <code class="xref py py-const docutils literal"><span class="pre">DEFAULT_USER_AGENT</span></code>.</li>
 </ul>
 </td>
@@ -418,7 +418,7 @@ current state of any open connections with the Cloud Bigtable API.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigtable.client.Client.credentials">
 <code class="descname">credentials</code><a class="headerlink" href="#google.cloud.bigtable.client.Client.credentials" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for client&#8217;s credentials.</p>
+<dd><p>Getter for client’s credentials.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -433,23 +433,23 @@ current state of any open connections with the Cloud Bigtable API.</p>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.client.Client.instance">
-<code class="descname">instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>location='see-existing-cluster'</em>, <em>display_name=None</em>, <em>serve_nodes=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigtable/client.html#Client.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.instance" title="Permalink to this definition">#</a></dt>
+<code class="descname">instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>location=’see-existing-cluster’</em>, <em>display_name=None</em>, <em>serve_nodes=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigtable/client.html#Client.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client.instance" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory to create a instance associated with this client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the instance.</li>
-<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; location name, in form
+<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The ID of the instance.</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – location name, in form
 <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/locations/&lt;location&gt;</span></code>; used to
-set up the instance&#8217;s cluster.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The display name for the instance in
+set up the instance’s cluster.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The display name for the instance in
 the Cloud Console UI. (Must be between 4 and 30
 characters.) If this value is not set in the
 constructor, will fall back to the instance ID.</li>
-<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The number of nodes in the instance&#8217;s
-cluster; used to set up the instance&#8217;s cluster.</li>
+<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) The number of nodes in the instance’s
+cluster; used to set up the instance’s cluster.</li>
 </ul>
 </td>
 </tr>
@@ -511,31 +511,31 @@ API RPC service.</td>
 
 <dl class="data">
 <dt id="google.cloud.bigtable.client.DATA_API_HOST">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">DATA_API_HOST</code><em class="property"> = 'bigtable.googleapis.com'</em><a class="headerlink" href="#google.cloud.bigtable.client.DATA_API_HOST" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">DATA_API_HOST</code><em class="property"> = ‘bigtable.googleapis.com’</em><a class="headerlink" href="#google.cloud.bigtable.client.DATA_API_HOST" title="Permalink to this definition">#</a></dt>
 <dd><p>Data API request host.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.bigtable.client.DATA_SCOPE">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">DATA_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.data'</em><a class="headerlink" href="#google.cloud.bigtable.client.DATA_SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">DATA_SCOPE</code><em class="property"> = ‘https://www.googleapis.com/auth/bigtable.data’</em><a class="headerlink" href="#google.cloud.bigtable.client.DATA_SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>Scope for reading and writing table data.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.bigtable.client.INSTANCE_ADMIN_HOST">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">INSTANCE_ADMIN_HOST</code><em class="property"> = 'bigtableadmin.googleapis.com'</em><a class="headerlink" href="#google.cloud.bigtable.client.INSTANCE_ADMIN_HOST" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">INSTANCE_ADMIN_HOST</code><em class="property"> = ‘bigtableadmin.googleapis.com’</em><a class="headerlink" href="#google.cloud.bigtable.client.INSTANCE_ADMIN_HOST" title="Permalink to this definition">#</a></dt>
 <dd><p>Cluster Admin API request host.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.bigtable.client.READ_ONLY_SCOPE">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">READ_ONLY_SCOPE</code><em class="property"> = 'https://www.googleapis.com/auth/bigtable.data.readonly'</em><a class="headerlink" href="#google.cloud.bigtable.client.READ_ONLY_SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">READ_ONLY_SCOPE</code><em class="property"> = ‘https://www.googleapis.com/auth/bigtable.data.readonly’</em><a class="headerlink" href="#google.cloud.bigtable.client.READ_ONLY_SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>Scope for reading table data.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.bigtable.client.TABLE_ADMIN_HOST">
-<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">TABLE_ADMIN_HOST</code><em class="property"> = 'bigtableadmin.googleapis.com'</em><a class="headerlink" href="#google.cloud.bigtable.client.TABLE_ADMIN_HOST" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">TABLE_ADMIN_HOST</code><em class="property"> = ‘bigtableadmin.googleapis.com’</em><a class="headerlink" href="#google.cloud.bigtable.client.TABLE_ADMIN_HOST" title="Permalink to this definition">#</a></dt>
 <dd><p>Table Admin API request host.</p>
 </dd></dl>
 
@@ -585,7 +585,7 @@ API RPC service.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

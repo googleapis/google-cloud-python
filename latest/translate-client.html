@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Translation Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Translation Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Using the Vision API" href="vision-usage.html"/>
         <link rel="prev" title="Using the API" href="translate-usage.html"/> 
 
@@ -342,13 +342,13 @@
 <p>Client for interacting with the Google Cloud Translation API.</p>
 <dl class="data">
 <dt id="google.cloud.translate.client.BASE">
-<code class="descclassname">google.cloud.translate.client.</code><code class="descname">BASE</code><em class="property"> = 'base'</em><a class="headerlink" href="#google.cloud.translate.client.BASE" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.translate.client.</code><code class="descname">BASE</code><em class="property"> = ‘base’</em><a class="headerlink" href="#google.cloud.translate.client.BASE" title="Permalink to this definition">#</a></dt>
 <dd><p>Base translation model.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.translate.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.translate.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>target_language='en'</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/translate/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.translate.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>target_language=’en’</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/translate/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.translate.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.Client</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -356,14 +356,14 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The target language used for
+<li><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The target language used for
 translations and language names. (Defaults to
 <a class="reference internal" href="#google.cloud.translate.client.ENGLISH_ISO_639" title="google.cloud.translate.client.ENGLISH_ISO_639"><code class="xref py py-data docutils literal"><span class="pre">ENGLISH_ISO_639</span></code></a>.)</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
@@ -377,7 +377,7 @@ change in the future.</li>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.translate.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/cloud-platform',)</em><a class="headerlink" href="#google.cloud.translate.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = (‘https://www.googleapis.com/auth/cloud-platform’,)</em><a class="headerlink" href="#google.cloud.translate.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating.</p>
 </dd></dl>
 
@@ -390,7 +390,7 @@ change in the future.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; String or list of strings that will have
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – String or list of strings that will have
 language detected.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
@@ -429,7 +429,7 @@ in it.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language used to localize
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The language used to localize
 returned language names. Defaults to the
 target language on the current client.</td>
 </tr>
@@ -455,18 +455,18 @@ language (localized to the target language).</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; String or list of strings to translate.</li>
-<li><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The language to translate results into. This
+<li><strong>values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – String or list of strings to translate.</li>
+<li><strong>target_language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The language to translate results into. This
 is required by the API and defaults to
 the target language of the current instance.</li>
-<li><strong>format</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) One of <code class="docutils literal"><span class="pre">text</span></code> or <code class="docutils literal"><span class="pre">html</span></code>, to specify
+<li><strong>format</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) One of <code class="docutils literal"><span class="pre">text</span></code> or <code class="docutils literal"><span class="pre">html</span></code>, to specify
 if the input text is plain text or HTML.</li>
-<li><strong>source_language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the text to
+<li><strong>source_language</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The language of the text to
 be translated.</li>
-<li><strong>customization_ids</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) ID or list of customization IDs
+<li><strong>customization_ids</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) ID or list of customization IDs
 for translation. Sets the <code class="docutils literal"><span class="pre">cid</span></code> parameter
 in the query.</li>
-<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The model used to translate the text. The
+<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The model used to translate the text. The
 only accepted values are <a class="reference internal" href="#google.cloud.translate.client.BASE" title="google.cloud.translate.client.BASE"><code class="xref py py-attr docutils literal"><span class="pre">BASE</span></code></a> and <a class="reference internal" href="#google.cloud.translate.client.NMT" title="google.cloud.translate.client.NMT"><code class="xref py py-attr docutils literal"><span class="pre">NMT</span></code></a>.</li>
 </ul>
 </td>
@@ -502,13 +502,13 @@ values and translations differ.</p>
 
 <dl class="data">
 <dt id="google.cloud.translate.client.ENGLISH_ISO_639">
-<code class="descclassname">google.cloud.translate.client.</code><code class="descname">ENGLISH_ISO_639</code><em class="property"> = 'en'</em><a class="headerlink" href="#google.cloud.translate.client.ENGLISH_ISO_639" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.translate.client.</code><code class="descname">ENGLISH_ISO_639</code><em class="property"> = ‘en’</em><a class="headerlink" href="#google.cloud.translate.client.ENGLISH_ISO_639" title="Permalink to this definition">#</a></dt>
 <dd><p>ISO 639-1 language code for English.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.cloud.translate.client.NMT">
-<code class="descclassname">google.cloud.translate.client.</code><code class="descname">NMT</code><em class="property"> = 'nmt'</em><a class="headerlink" href="#google.cloud.translate.client.NMT" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">google.cloud.translate.client.</code><code class="descname">NMT</code><em class="property"> = ‘nmt’</em><a class="headerlink" href="#google.cloud.translate.client.NMT" title="Permalink to this definition">#</a></dt>
 <dd><p>Neural Machine Translation model.</p>
 </dd></dl>
 
@@ -558,7 +558,7 @@ values and translations differ.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

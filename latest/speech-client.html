@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Speech Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Speech Encoding" href="speech-encoding.html"/>
         <link rel="prev" title="Using the API" href="speech-usage.html"/> 
 
@@ -350,18 +350,18 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
 change in the future.</li>
-<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
+<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Explicitly specifies whether
 to use the gRPC transport (via GAX) or HTTP. If unset,
 falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
 environment variable.
@@ -374,7 +374,7 @@ change in the future.</li>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.speech.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/cloud-platform',)</em><a class="headerlink" href="#google.cloud.speech.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = (‘https://www.googleapis.com/auth/cloud-platform’,)</em><a class="headerlink" href="#google.cloud.speech.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating as an API consumer.</p>
 </dd></dl>
 
@@ -387,21 +387,21 @@ change in the future.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>content</strong> (<em>bytes</em>) &#8211; (Optional) Bytes containing audio data.</li>
-<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) URI that points to a file that contains
+<li><strong>content</strong> (<em>bytes</em>) – (Optional) Bytes containing audio data.</li>
+<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) URI that points to a file that contains
 audio data bytes as specified in RecognitionConfig.
 Currently, only Google Cloud Storage URIs are
 supported, which must be specified in the following
 format: <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>.</li>
-<li><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; (Optional) File like object to stream.</li>
-<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; encoding of audio data sent in all RecognitionAudio
+<li><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) – (Optional) File like object to stream.</li>
+<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – encoding of audio data sent in all RecognitionAudio
 messages, can be one of: <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.LINEAR16" title="google.cloud.speech.encoding.Encoding.LINEAR16"><code class="xref py py-attr docutils literal"><span class="pre">LINEAR16</span></code></a>,
 <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.FLAC" title="google.cloud.speech.encoding.Encoding.FLAC"><code class="xref py py-attr docutils literal"><span class="pre">FLAC</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.MULAW" title="google.cloud.speech.encoding.Encoding.MULAW"><code class="xref py py-attr docutils literal"><span class="pre">MULAW</span></code></a>,
 <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR" title="google.cloud.speech.encoding.Encoding.AMR"><code class="xref py py-attr docutils literal"><span class="pre">AMR</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR_WB" title="google.cloud.speech.encoding.Encoding.AMR_WB"><code class="xref py py-attr docutils literal"><span class="pre">AMR_WB</span></code></a></li>
-<li><strong>sample_rate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Sample rate in Hertz of the audio data sent in all
+<li><strong>sample_rate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Sample rate in Hertz of the audio data sent in all
 requests. Valid values are: 8000-48000. For best
 results, set the sampling rate of the audio source
-to 16000 Hz. If that&#8217;s not possible, use the
+to 16000 Hz. If that’s not possible, use the
 native sample rate of the audio source (instead of
 re-sampling).</li>
 </ul>
@@ -471,7 +471,7 @@ re-sampling).</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

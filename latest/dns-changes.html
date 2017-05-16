@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Change Sets &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Change Sets &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="language-usage.html"/>
         <link rel="prev" title="Resource Record Sets" href="dns-resource-record-set.html"/> 
 
@@ -352,19 +352,19 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>zone</strong> (<a class="reference internal" href="dns-zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>) &#8211; A zone which holds one or more record sets.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>zone</strong> (<a class="reference internal" href="dns-zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>) – A zone which holds one or more record sets.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="google.cloud.dns.changes.Changes.add_record_set">
 <code class="descname">add_record_set</code><span class="sig-paren">(</span><em>record_set</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/changes.html#Changes.add_record_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.changes.Changes.add_record_set" title="Permalink to this definition">#</a></dt>
-<dd><p>Append a record set to the &#8216;additions&#8217; for the change set.</p>
+<dd><p>Append a record set to the ‘additions’ for the change set.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>record_set</strong> (<a class="reference internal" href="dns-resource-record-set.html#google.cloud.dns.resource_record_set.ResourceRecordSet" title="google.cloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.resource_record_set.ResourceRecordSet</span></code></a>) &#8211; the record set to append.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>record_set</strong> (<a class="reference internal" href="dns-resource-record-set.html#google.cloud.dns.resource_record_set.ResourceRecordSet" title="google.cloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.resource_record_set.ResourceRecordSet</span></code></a>) – the record set to append.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">record_set</span></code> is not of the required type.</td>
 </tr>
@@ -399,7 +399,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a>) &#8211; (Optional) the client to use.  If not passed, falls back to the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a>) – (Optional) the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
 </tr>
 </tbody>
@@ -409,12 +409,12 @@
 <dl class="method">
 <dt id="google.cloud.dns.changes.Changes.delete_record_set">
 <code class="descname">delete_record_set</code><span class="sig-paren">(</span><em>record_set</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/changes.html#Changes.delete_record_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.changes.Changes.delete_record_set" title="Permalink to this definition">#</a></dt>
-<dd><p>Append a record set to the &#8216;deletions&#8217; for the change set.</p>
+<dd><p>Append a record set to the ‘deletions’ for the change set.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>record_set</strong> (<a class="reference internal" href="dns-resource-record-set.html#google.cloud.dns.resource_record_set.ResourceRecordSet" title="google.cloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.resource_record_set.ResourceRecordSet</span></code></a>) &#8211; the record set to append.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>record_set</strong> (<a class="reference internal" href="dns-resource-record-set.html#google.cloud.dns.resource_record_set.ResourceRecordSet" title="google.cloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.resource_record_set.ResourceRecordSet</span></code></a>) – the record set to append.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">record_set</span></code> is not of the required type.</td>
 </tr>
@@ -449,7 +449,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a>) &#8211; (Optional) the client to use.  If not passed, falls back to the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a>) – (Optional) the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
@@ -469,8 +469,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; change set representation returned from the API.</li>
-<li><strong>zone</strong> (<a class="reference internal" href="dns-zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>) &#8211; A zone which holds zero or more change sets.</li>
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – change set representation returned from the API.</li>
+<li><strong>zone</strong> (<a class="reference internal" href="dns-zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>) – A zone which holds zero or more change sets.</li>
 </ul>
 </td>
 </tr>
@@ -526,7 +526,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a>) &#8211; (Optional) the client to use.  If not passed, falls back to the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a>) – (Optional) the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
 </tr>
 </tbody>
@@ -613,7 +613,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Sample &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Speech Sample &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Speech Alternative" href="speech-alternative.html"/>
         <link rel="prev" title="Speech Result" href="speech-result.html"/> 
 
@@ -350,24 +350,24 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>content</strong> (<em>bytes</em>) &#8211; (Optional) Bytes containing audio data.</li>
-<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) URI that points to a file that contains
+<li><strong>content</strong> (<em>bytes</em>) – (Optional) Bytes containing audio data.</li>
+<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) URI that points to a file that contains
 audio data bytes as specified in RecognitionConfig.
 Currently, only Google Cloud Storage URIs are
 supported, which must be specified in the following
 format: <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>.</li>
-<li><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; (Optional) File like object to stream.</li>
-<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; encoding of audio data sent in all RecognitionAudio
+<li><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) – (Optional) File like object to stream.</li>
+<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – encoding of audio data sent in all RecognitionAudio
 messages, can be one of: <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.LINEAR16" title="google.cloud.speech.encoding.Encoding.LINEAR16"><code class="xref py py-attr docutils literal"><span class="pre">LINEAR16</span></code></a>,
 <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.FLAC" title="google.cloud.speech.encoding.Encoding.FLAC"><code class="xref py py-attr docutils literal"><span class="pre">FLAC</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.MULAW" title="google.cloud.speech.encoding.Encoding.MULAW"><code class="xref py py-attr docutils literal"><span class="pre">MULAW</span></code></a>,
 <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR" title="google.cloud.speech.encoding.Encoding.AMR"><code class="xref py py-attr docutils literal"><span class="pre">AMR</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR_WB" title="google.cloud.speech.encoding.Encoding.AMR_WB"><code class="xref py py-attr docutils literal"><span class="pre">AMR_WB</span></code></a></li>
-<li><strong>sample_rate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Sample rate in Hertz of the audio data sent in all
+<li><strong>sample_rate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Sample rate in Hertz of the audio data sent in all
 requests. Valid values are: 8000-48000. For best
 results, set the sampling rate of the audio source
-to 16000 Hz. If that&#8217;s not possible, use the
+to 16000 Hz. If that’s not possible, use the
 native sample rate of the audio source (instead of
 re-sampling).</li>
-<li><strong>client</strong> (<a class="reference internal" href="speech-client.html#google.cloud.speech.client.Client" title="google.cloud.speech.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client that owns this instance of sample.</li>
+<li><strong>client</strong> (<a class="reference internal" href="speech-client.html#google.cloud.speech.client.Client" title="google.cloud.speech.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client that owns this instance of sample.</li>
 </ul>
 </td>
 </tr>
@@ -383,21 +383,21 @@ re-sampling).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the supplied audio as
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The language of the supplied audio as
 BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-GB'</span></code>.
 If omitted, defaults to <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
-<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of recognition
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of recognition
 hypotheses to be returned. The server may
 return fewer than maxAlternatives.
 Valid values are 0-30. A value of 0 or 1
 will return a maximum of 1. Defaults to 1</li>
-<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the server will attempt to filter
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If True, the server will attempt to filter
 out profanities, replacing all but the
 initial character in each filtered word with
 asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
-omitted, profanities won&#8217;t be filtered out.</li>
-<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of strings (max 50) containing words and
-phrases &#8220;hints&#8221; so that the speech recognition
+omitted, profanities won’t be filtered out.</li>
+<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – A list of strings (max 50) containing words and
+phrases “hints” so that the speech recognition
 is more likely to recognize them. This can be
 used to improve the accuracy for specific words
 and phrases. This can also be used to add new
@@ -449,7 +449,7 @@ words to the vocabulary of the recognizer.</li>
 
 <dl class="attribute">
 <dt id="google.cloud.speech.sample.Sample.default_encoding">
-<code class="descname">default_encoding</code><em class="property"> = 'FLAC'</em><a class="headerlink" href="#google.cloud.speech.sample.Sample.default_encoding" title="Permalink to this definition">#</a></dt>
+<code class="descname">default_encoding</code><em class="property"> = ‘FLAC’</em><a class="headerlink" href="#google.cloud.speech.sample.Sample.default_encoding" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -535,26 +535,26 @@ containing results and metadata from the streaming request.</dd>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the supplied audio as
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The language of the supplied audio as
 BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-GB'</span></code>.
 If omitted, defaults to <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
-<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of recognition
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of recognition
 hypotheses to be returned. The server may
 return fewer than maxAlternatives.
 Valid values are 0-30. A value of 0 or 1
 will return a maximum of 1. Defaults to 1</li>
-<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the server will attempt to filter
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If True, the server will attempt to filter
 out profanities, replacing all but the
 initial character in each filtered word with
 asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
-omitted, profanities won&#8217;t be filtered out.</li>
-<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of strings (max 50) containing words and
-phrases &#8220;hints&#8221; so that the speech recognition
+omitted, profanities won’t be filtered out.</li>
+<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – A list of strings (max 50) containing words and
+phrases “hints” so that the speech recognition
 is more likely to recognize them. This can be
 used to improve the accuracy for specific words
 and phrases. This can also be used to add new
 words to the vocabulary of the recognizer.</li>
-<li><strong>single_utterance</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) If false or omitted, the recognizer
+<li><strong>single_utterance</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) If false or omitted, the recognizer
 will perform continuous recognition
 (continuing to process audio even if the user
 pauses speaking) until the client closes the
@@ -569,7 +569,7 @@ return an END_OF_UTTERANCE event and cease
 recognition. It will return no more than one
 SpeechRecognitionResult with the is_final flag
 set to true.</li>
-<li><strong>interim_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) If true, interim results (tentative
+<li><strong>interim_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) If true, interim results (tentative
 hypotheses) may be returned as they become
 available (these interim results are indicated
 with the <code class="docutils literal"><span class="pre">is_final=False</span></code> flag). If false or
@@ -595,21 +595,21 @@ returned.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the supplied audio as
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The language of the supplied audio as
 BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-GB'</span></code>.
 If omitted, defaults to <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
-<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of recognition
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of recognition
 hypotheses to be returned. The server may
 return fewer than maxAlternatives.
 Valid values are 0-30. A value of 0 or 1
 will return a maximum of 1. Defaults to 1</li>
-<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the server will attempt to filter
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If True, the server will attempt to filter
 out profanities, replacing all but the
 initial character in each filtered word with
 asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
-omitted, profanities won&#8217;t be filtered out.</li>
-<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of strings (max 50) containing words and
-phrases &#8220;hints&#8221; so that the speech recognition
+omitted, profanities won’t be filtered out.</li>
+<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – A list of strings (max 50) containing words and
+phrases “hints” so that the speech recognition
 is more likely to recognize them. This can be
 used to improve the accuracy for specific words
 and phrases. This can also be used to add new
@@ -683,7 +683,7 @@ between 0 and 1.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

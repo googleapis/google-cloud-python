@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pub/Sub Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Pub/Sub Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Topics" href="pubsub-topic.html"/>
         <link rel="prev" title="Using the API" href="pubsub-usage.html"/> 
 
@@ -350,21 +350,21 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of. Will be
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the project which the client acts on behalf of. Will be
 passed when creating a topic.  If not passed,
 falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
 change in the future.</li>
-<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Explicitly specifies whether
+<li><strong>_use_grpc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Explicitly specifies whether
 to use the gRPC transport (via GAX) or HTTP. If unset,
 falls back to the <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code>
 environment variable.
@@ -377,7 +377,7 @@ change in the future.</li>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.pubsub.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/pubsub', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#google.cloud.pubsub.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = (‘https://www.googleapis.com/auth/pubsub’, ‘https://www.googleapis.com/auth/cloud-platform’)</em><a class="headerlink" href="#google.cloud.pubsub.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating as a Cloud Pub/Sub consumer.</p>
 </dd></dl>
 
@@ -398,10 +398,10 @@ change in the future.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; project ID</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of topics to return, If not passed,
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – project ID</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of topics to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of topics. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of topics. If not
 passed, the API will return the first page of
 topics.</li>
 </ul>
@@ -434,9 +434,9 @@ accessible to the current API.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of topics to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of topics to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of topics. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of topics. If not
 passed, the API will return the first page of
 topics.</li>
 </ul>
@@ -470,9 +470,9 @@ accessible to the current client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of topics to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of topics to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of topics. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of topics. If not
 passed, the API will return the first page of
 topics.</li>
 </ul>
@@ -502,11 +502,13 @@ accessible to the current API.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.pubsub.client.Client.topic">
-<code class="descname">topic</code><span class="sig-paren">(</span><em>name</em>, <em>timestamp_messages=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/client.html#Client.topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.client.Client.topic" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a topic bound to the current client.</p>
+<dt id="google.cloud.pubsub.client.Client.subscription">
+<code class="descname">subscription</code><span class="sig-paren">(</span><em>name</em>, <em>ack_deadline=None</em>, <em>push_endpoint=None</em>, <em>retain_acked_messages=None</em>, <em>message_retention_duration=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/client.html#Client.subscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.client.Client.subscription" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a subscription bound to the current client.</p>
 <p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span>
+        <span class="n">SUBSCRIPTION_NAME</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+        <span class="n">retain_acked_messages</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -514,8 +516,46 @@ accessible to the current API.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the topic to be constructed.</li>
-<li><strong>timestamp_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; To be passed to <code class="docutils literal"><span class="pre">Topic</span></code> constructor.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the subscription to be constructed.</li>
+<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) The deadline (in seconds) by which
+messages pulledfrom the back-end must be
+acknowledged.</li>
+<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) URL to which messages will be pushed by the back-end.
+If not set, the application must pull messages.</li>
+<li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription’s backlog for a duration indicated
+by <code class="docutils literal"><span class="pre">message_retention_duration</span></code>.</li>
+<li><strong>message_retention_duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription’s backlog for a duration indicated
+by <code class="docutils literal"><span class="pre">message_retention_duration</span></code>. If unset, defaults to 7 days.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription" title="google.cloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Subscription created with the current client.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.pubsub.client.Client.topic">
+<code class="descname">topic</code><span class="sig-paren">(</span><em>name</em>, <em>timestamp_messages=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/client.html#Client.topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.client.Client.topic" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a topic bound to the current client.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">TOPIC_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the topic to be constructed.</li>
+<li><strong>timestamp_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – To be passed to <code class="docutils literal"><span class="pre">Topic</span></code> constructor.</li>
 </ul>
 </td>
 </tr>
@@ -577,7 +617,7 @@ accessible to the current API.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

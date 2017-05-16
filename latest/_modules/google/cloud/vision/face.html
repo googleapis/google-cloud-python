@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.face &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>google.cloud.vision.face &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -369,8 +369,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pan</span> <span class="o">=</span> <span class="n">pan</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tilt</span> <span class="o">=</span> <span class="n">tilt</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Angles.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+<div class="viewcode-block" id="Angles.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct the angles from an Vision API response.</span>
 
 <span class="sd">        :type angle: dict</span>
@@ -385,8 +385,8 @@
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">roll</span><span class="p">,</span> <span class="n">pan</span><span class="p">,</span> <span class="n">tilt</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Angles.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+<div class="viewcode-block" id="Angles.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Angles.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: convert protobuf Angle object to local Angle object.</span>
 
 <span class="sd">        :type angle: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -443,8 +443,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_surprise_likelihood</span> <span class="o">=</span> <span class="n">surprise_likelihood</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_anger_likelihood</span> <span class="o">=</span> <span class="n">anger_likelihood</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Emotions.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Emotions.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">emotions</span><span class="p">):</span>
+<div class="viewcode-block" id="Emotions.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Emotions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">emotions</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``Emotions`` from Vision API response.</span>
 
 <span class="sd">        :type emotions: dict</span>
@@ -461,8 +461,8 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">joy_likelihood</span><span class="p">,</span> <span class="n">sorrow_likelihood</span><span class="p">,</span> <span class="n">surprise_likelihood</span><span class="p">,</span>
                    <span class="n">anger_likelihood</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Emotions.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Emotions.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">emotions</span><span class="p">):</span>
+<div class="viewcode-block" id="Emotions.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Emotions.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">emotions</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``Emotions`` from Vision API response.</span>
 
 <span class="sd">        :type emotions: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -537,8 +537,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_landmarking_confidence</span> <span class="o">=</span> <span class="n">landmarking_confidence</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_image_properties</span> <span class="o">=</span> <span class="n">image_properties</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Face.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<div class="viewcode-block" id="Face.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Face from an API response</span>
 
 <span class="sd">        :type face: dict</span>
@@ -560,8 +560,8 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">face_data</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Face.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<div class="viewcode-block" id="Face.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Face from an protobuf response</span>
 
 <span class="sd">        :type face: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -717,8 +717,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_blurred_likelihood</span> <span class="o">=</span> <span class="n">blurred_likelihood</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_underexposed_likelihood</span> <span class="o">=</span> <span class="n">underexposed_likelihood</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="FaceImageProperties.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<div class="viewcode-block" id="FaceImageProperties.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct image properties from image.</span>
 
 <span class="sd">        :type face: dict</span>
@@ -732,8 +732,8 @@
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">blurred</span><span class="p">,</span> <span class="n">underexposed</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="FaceImageProperties.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+<div class="viewcode-block" id="FaceImageProperties.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct image properties from image.</span>
 
 <span class="sd">        :type face: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.\</span>
@@ -829,8 +829,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">position</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_landmark_type</span> <span class="o">=</span> <span class="n">landmark_type</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Landmark.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmark</span><span class="p">):</span>
+<div class="viewcode-block" id="Landmark.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmark</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Landmark from a response.</span>
 
 <span class="sd">        :type landmark: dict</span>
@@ -843,8 +843,8 @@
         <span class="n">landmark_type</span> <span class="o">=</span> <span class="n">LandmarkTypes</span><span class="p">[</span><span class="n">landmark</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">landmark_type</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Landmark.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmark</span><span class="p">):</span>
+<div class="viewcode-block" id="Landmark.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmark.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmark</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance of a Landmark from a response.</span>
 
 <span class="sd">        :type landmark: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -887,8 +887,8 @@
         <span class="k">for</span> <span class="n">landmark</span> <span class="ow">in</span> <span class="n">landmarks</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landmark</span><span class="o">.</span><span class="n">landmark_type</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">landmark</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Landmarks.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmarks.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
+<div class="viewcode-block" id="Landmarks.from_api_repr"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmarks.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct facial landmarks from Vision API response.</span>
 
 <span class="sd">        :type landmarks: dict</span>
@@ -900,8 +900,8 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="n">Landmark</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">landmark</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">landmark</span> <span class="ow">in</span> <span class="n">landmarks</span><span class="p">])</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Landmarks.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmarks.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
+<div class="viewcode-block" id="Landmarks.from_pb"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Landmarks.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct facial landmarks from Vision gRPC response.</span>
 
 <span class="sd">        :type landmarks: :class:`~google.protobuf.internal.containers.\</span>
@@ -948,7 +948,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

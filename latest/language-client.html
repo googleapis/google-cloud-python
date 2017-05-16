@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Natural Language Client &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Natural Language Client &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Document" href="language-document.html"/>
         <link rel="prev" title="Using the API" href="language-usage.html"/> 
 
@@ -342,7 +342,7 @@
 <p>Basic client for Google Cloud Natural Language API.</p>
 <dl class="class">
 <dt id="google.cloud.language.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.language.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>api_version='v1'</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.language.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>api_version=’v1’</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.Client</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -350,11 +350,11 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
 <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
@@ -368,26 +368,26 @@ change in the future.</li>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.language.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/cloud-platform',)</em><a class="headerlink" href="#google.cloud.language.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = (‘https://www.googleapis.com/auth/cloud-platform’,)</em><a class="headerlink" href="#google.cloud.language.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating as an API consumer.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.language.client.Client.document_from_gcs_url">
-<code class="descname">document_from_gcs_url</code><span class="sig-paren">(</span><em>gcs_url</em>, <em>doc_type='PLAIN_TEXT'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client.document_from_gcs_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client.document_from_gcs_url" title="Permalink to this definition">#</a></dt>
+<code class="descname">document_from_gcs_url</code><span class="sig-paren">(</span><em>gcs_url</em>, <em>doc_type=’PLAIN_TEXT’</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client.document_from_gcs_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client.document_from_gcs_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a Cloud Storage document bound to this client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>gcs_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The URL of the Google Cloud Storage object
+<li><strong>gcs_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The URL of the Google Cloud Storage object
 holding the content. Of the form
 <code class="docutils literal"><span class="pre">gs://{bucket}/{blob-name}</span></code>.</li>
-<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The type of text in the document.
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The type of text in the document.
 Defaults to plain text. Can also be specified
 as HTML via <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.HTML" title="google.cloud.language.document.Document.HTML"><code class="xref py py-attr docutils literal"><span class="pre">HTML</span></code></a>.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Remaining keyword arguments to be passed along to the
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Remaining keyword arguments to be passed along to the
 <a class="reference internal" href="language-document.html#google.cloud.language.document.Document" title="google.cloud.language.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a>
 constructor.</li>
 </ul>
@@ -412,8 +412,8 @@ constructor.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The document HTML text content.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Remaining keyword arguments to be passed along to the
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The document HTML text content.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Remaining keyword arguments to be passed along to the
 <a class="reference internal" href="language-document.html#google.cloud.language.document.Document" title="google.cloud.language.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a>
 constructor.</li>
 </ul>
@@ -442,8 +442,8 @@ keyword argument.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The document plain text content.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Remaining keyword arguments to be passed along to the
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The document plain text content.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Remaining keyword arguments to be passed along to the
 <a class="reference internal" href="language-document.html#google.cloud.language.document.Document" title="google.cloud.language.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a>
 constructor.</li>
 </ul>
@@ -465,20 +465,20 @@ keyword argument.</p>
 
 <dl class="method">
 <dt id="google.cloud.language.client.Client.document_from_url">
-<code class="descname">document_from_url</code><span class="sig-paren">(</span><em>gcs_url</em>, <em>doc_type='PLAIN_TEXT'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client.document_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client.document_from_url" title="Permalink to this definition">#</a></dt>
+<code class="descname">document_from_url</code><span class="sig-paren">(</span><em>gcs_url</em>, <em>doc_type=’PLAIN_TEXT’</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/client.html#Client.document_from_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.client.Client.document_from_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a Cloud Storage document bound to this client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>gcs_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The URL of the Google Cloud Storage object
+<li><strong>gcs_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The URL of the Google Cloud Storage object
 holding the content. Of the form
 <code class="docutils literal"><span class="pre">gs://{bucket}/{blob-name}</span></code>.</li>
-<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The type of text in the document.
+<li><strong>doc_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) The type of text in the document.
 Defaults to plain text. Can also be specified
 as HTML via <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.HTML" title="google.cloud.language.document.Document.HTML"><code class="xref py py-attr docutils literal"><span class="pre">HTML</span></code></a>.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Remaining keyword arguments to be passed along to the
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Remaining keyword arguments to be passed along to the
 <a class="reference internal" href="language-document.html#google.cloud.language.document.Document" title="google.cloud.language.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a>
 constructor.</li>
 </ul>
@@ -542,7 +542,7 @@ constructor.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

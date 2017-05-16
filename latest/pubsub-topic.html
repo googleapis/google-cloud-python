@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Topics &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Topics &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Subscriptions" href="pubsub-subscription.html"/>
         <link rel="prev" title="Pub/Sub Client" href="pubsub-client.html"/> 
 
@@ -353,10 +353,10 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the topic</li>
-<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the topic</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.client.Client</span></code></a>) – A client which holds credentials and project configuration
 for the topic (which requires a project).</li>
-<li><strong>timestamp_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If true, the topic will add a <code class="docutils literal"><span class="pre">timestamp</span></code> key
+<li><strong>timestamp_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If true, the topic will add a <code class="docutils literal"><span class="pre">timestamp</span></code> key
 to the attributes of each published message:
 the value will be an RFC 3339 timestamp.</li>
 </ul>
@@ -386,17 +386,17 @@ the value will be an RFC 3339 timestamp.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the subscription</li>
-<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the deadline (in seconds) by which messages pulled
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the subscription</li>
+<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – the deadline (in seconds) by which messages pulled
 from the back-end must be acknowledged.</li>
-<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URL to which messages will be pushed by the
+<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – URL to which messages will be pushed by the
 back-end. If not set, the application must pull
 messages.</li>
-<li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Whether to retain acked messages. If set, acked messages
-are retained in the subscription&#8217;s backlog for a duration indicated
+<li><strong>retain_acked_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription’s backlog for a duration indicated
 by <cite>message_retention_duration</cite>.</li>
-<li><strong>message_retention_duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; (Optional) Whether to retain acked messages. If set, acked messages
-are retained in the subscription&#8217;s backlog for a duration indicated
+<li><strong>message_retention_duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – (Optional) Whether to retain acked messages. If set, acked messages
+are retained in the subscription’s backlog for a duration indicated
 by <cite>message_retention_duration</cite>. If unset, defaults to 7 days.</li>
 </ul>
 </td>
@@ -420,8 +420,8 @@ by <cite>message_retention_duration</cite>. If unset, defaults to 7 days.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; topic resource representation returned from the API</li>
-<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.client.Client</span></code></a>) &#8211; Client which holds credentials and project
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – topic resource representation returned from the API</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.client.Client</span></code></a>) – Client which holds credentials and project
 configuration for the topic.</li>
 </ul>
 </td>
@@ -469,7 +469,7 @@ from the client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
 </tr>
 </tbody>
@@ -493,7 +493,7 @@ from the client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
@@ -521,7 +521,7 @@ from the client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
 </tr>
 </tbody>
@@ -547,11 +547,11 @@ from the client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>message</strong> (<em>bytes</em>) &#8211; the message payload</li>
+<li><strong>message</strong> (<em>bytes</em>) – the message payload</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</li>
-<li><strong>attrs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em> (</em><em>string -&gt; string</em><em>)</em>) &#8211; key-value pairs to send as message attributes</li>
+<li><strong>attrs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em> (</em><em>string -&gt; string</em><em>)</em>) – key-value pairs to send as message attributes</li>
 </ul>
 </td>
 </tr>
@@ -587,9 +587,9 @@ raising an exception.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Keyword arguments passed to the
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Keyword arguments passed to the
 <a class="reference internal" href="#google.cloud.pubsub.topic.Batch" title="google.cloud.pubsub.topic.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a> constructor.</li>
 </ul>
 </td>
@@ -620,13 +620,13 @@ raising an exception.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of topics to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – maximum number of topics to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of topics. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – opaque marker for the next “page” of topics. If not
 passed, the API will return the first page of
 topics.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</li>
 </ul>
 </td>
@@ -658,7 +658,7 @@ accessible to the current topic.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current batch.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pubsub-iam.html#google.cloud.pubsub.iam.Policy" title="google.cloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.iam.Policy</span></code></a></td>
@@ -689,10 +689,10 @@ accessible to the current topic.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>policy</strong> (<a class="reference internal" href="pubsub-iam.html#google.cloud.pubsub.iam.Policy" title="google.cloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.iam.Policy</span></code></a>) &#8211; the new policy, typically fetched via
+<li><strong>policy</strong> (<a class="reference internal" href="pubsub-iam.html#google.cloud.pubsub.iam.Policy" title="google.cloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.iam.Policy</span></code></a>) – the new policy, typically fetched via
 <a class="reference internal" href="#google.cloud.pubsub.topic.Topic.get_iam_policy" title="google.cloud.pubsub.topic.Topic.get_iam_policy"><code class="xref py py-meth docutils literal"><span class="pre">get_iam_policy()</span></code></a> and updated in place.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current batch.</li>
 </ul>
 </td>
@@ -726,9 +726,9 @@ accessible to the current topic.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>permissions</strong> (<em>list of string</em>) &#8211; list of permissions to be tested</li>
+<li><strong>permissions</strong> (<em>list of string</em>) – list of permissions to be tested</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current batch.</li>
 </ul>
 </td>
@@ -756,19 +756,19 @@ accessible to the current topic.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>topic</strong> (<a class="reference internal" href="#google.cloud.pubsub.topic.Topic" title="google.cloud.pubsub.topic.Topic"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.topic.Topic</span></code></a>) &#8211; the topic being published</li>
-<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.client.Client</span></code></a>) &#8211; The client to use.</li>
-<li><strong>max_interval</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The maximum interval, in seconds, before the batch
+<li><strong>topic</strong> (<a class="reference internal" href="#google.cloud.pubsub.topic.Topic" title="google.cloud.pubsub.topic.Topic"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.topic.Topic</span></code></a>) – the topic being published</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.pubsub.client.Client</span></code></a>) – The client to use.</li>
+<li><strong>max_interval</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – The maximum interval, in seconds, before the batch
 will automatically commit. Note that this does not
 run a background loop; it just checks when each
 message is published. Therefore, this is intended
 for situations where messages are published at
 reasonably regular intervals. Defaults to infinity
 (off).</li>
-<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The maximum number of messages to hold in the batch
+<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – The maximum number of messages to hold in the batch
 before automatically commiting. Defaults to infinity
 (off).</li>
-<li><strong>max_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The maximum size that the serialized messages can be
+<li><strong>max_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The maximum size that the serialized messages can be
 before automatically commiting. Defaults to 9 MB
 (slightly less than the API limit).</li>
 </ul>
@@ -785,8 +785,8 @@ before automatically commiting. Defaults to 9 MB
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>message</strong> (<em>bytes</em>) &#8211; the message payload</li>
-<li><strong>attrs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em> (</em><em>string -&gt; string</em><em>)</em>) &#8211; key-value pairs to send as message attributes</li>
+<li><strong>message</strong> (<em>bytes</em>) – the message payload</li>
+<li><strong>attrs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em> (</em><em>string -&gt; string</em><em>)</em>) – key-value pairs to send as message attributes</li>
 </ul>
 </td>
 </tr>
@@ -803,7 +803,7 @@ before automatically commiting. Defaults to 9 MB
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current batch.</td>
 </tr>
 </tbody>
@@ -858,7 +858,7 @@ before automatically commiting. Defaults to 9 MB
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

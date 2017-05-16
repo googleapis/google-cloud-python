@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Integration with Python logging module &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Integration with Python logging module &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Python Logging Module Handler" href="logging-handlers.html"/>
         <link rel="prev" title="Sinks" href="logging-sink.html"/> 
 
@@ -342,7 +342,7 @@
             
   <div class="section" id="integration-with-python-logging-module">
 <h1>Integration with Python logging module<a class="headerlink" href="#integration-with-python-logging-module" title="Permalink to this headline">#</a></h1>
-<p>It&#8217;s possible to tie the Python <a class="reference external" href="https://docs.python.org/2/library/logging.html#module-logging" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">logging</span></code></a> module directly into Google Cloud Logging. To use it,
+<p>It’s possible to tie the Python <a class="reference external" href="https://docs.python.org/2/library/logging.html#module-logging" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">logging</span></code></a> module directly into Google Cloud Logging. To use it,
 create a <code class="xref py py-class docutils literal"><span class="pre">CloudLoggingHandler</span></code> instance from your
 Logging client.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
@@ -364,8 +364,8 @@ Logging client.</p>
 options, see the transports section.</dd>
 </dl>
 </div>
-<p>All logs will go to a single custom log, which defaults to &#8220;python&#8221;. The name of the Python
-logger will be included in the structured log entry under the &#8220;python_logger&#8221; field. You can
+<p>All logs will go to a single custom log, which defaults to “python”. The name of the Python
+logger will be included in the structured log entry under the “python_logger” field. You can
 change it by providing a name to the handler:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mycustomlog&quot;</span><span class="p">)</span>
 </pre></div>
@@ -446,7 +446,7 @@ logging statement to write the entry.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

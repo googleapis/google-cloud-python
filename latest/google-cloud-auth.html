@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Authentication &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Authentication &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Iterators" href="iterators.html"/>
         <link rel="prev" title="Configuration" href="google-cloud-config.html"/> 
 
@@ -362,10 +362,10 @@
 <div class="section" id="overview">
 <span id="id1"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first"><strong>If you&#8217;re running in Compute Engine or App Engine</strong>,
-authentication should &#8220;just work&#8221;.</p>
+<li><p class="first"><strong>If you’re running in Compute Engine or App Engine</strong>,
+authentication should “just work”.</p>
 </li>
-<li><p class="first"><strong>If you&#8217;re developing locally</strong>,
+<li><p class="first"><strong>If you’re developing locally</strong>,
 the easiest way to authenticate is using the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ gcloud beta auth application-default login
 </pre></div>
@@ -383,7 +383,7 @@ please update it:</p>
 </li>
 </ul>
 <ul>
-<li><p class="first"><strong>If you&#8217;re running your application elsewhere</strong>,
+<li><p class="first"><strong>If you’re running your application elsewhere</strong>,
 you should download a <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">service account</a> JSON keyfile
 and point to it using an environment variable:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s2">&quot;/path/to/keyfile.json&quot;</span>
@@ -401,7 +401,7 @@ For example:</p>
 <span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Passing no arguments at all will &#8220;just work&#8221; if you&#8217;ve followed the
+<p>Passing no arguments at all will “just work” if you’ve followed the
 instructions in the <a class="reference internal" href="#overview"><span class="std std-ref">Overview</span></a>.
 The credentials are inferred from your local environment by using
 Google <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>.</p>
@@ -416,7 +416,7 @@ precedence outlined by <a class="reference external" href="https://google-auth.r
 <h2>Explicit Credentials<a class="headerlink" href="#explicit-credentials" title="Permalink to this headline">#</a></h2>
 <p>The Application Default Credentials discussed above can be useful
 if your code needs to run in many different environments or
-if you just don&#8217;t want authentication to be a focus in your code.</p>
+if you just don’t want authentication to be a focus in your code.</p>
 <p>However, you may want to be explicit because</p>
 <ul class="simple">
 <li>your code will only run in one place</li>
@@ -473,7 +473,7 @@ generate a new JSON key for the same service account from the console.</p>
 <div class="section" id="user-accounts-3-legged-oauth-2-0-with-a-refresh-token">
 <h3>User Accounts (3-legged OAuth 2.0) with a refresh token<a class="headerlink" href="#user-accounts-3-legged-oauth-2-0-with-a-refresh-token" title="Permalink to this headline">#</a></h3>
 <p>The majority of cases are intended to authenticate machines or
-workers rather than actual user accounts. However, it&#8217;s also
+workers rather than actual user accounts. However, it’s also
 possible to call Google Cloud APIs with a user account via
 <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth 2.0</a>.</p>
 <div class="admonition tip">
@@ -502,7 +502,7 @@ can be serialized with
 <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials.to_json" title="(in oauth2client v4.1.0)"><code class="xref py py-meth docutils literal"><span class="pre">to_json()</span></code></a>
 and stored in a file and then and deserialized with
 <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials.from_json" title="(in oauth2client v4.1.0)"><code class="xref py py-meth docutils literal"><span class="pre">from_json()</span></code></a>. In order
-to use <code class="docutils literal"><span class="pre">oauth2client</span></code>&#8216;s credentials with this library, you&#8217;ll need to
+to use <code class="docutils literal"><span class="pre">oauth2client</span></code>’s credentials with this library, you’ll need to
 <a class="reference external" href="http://google-auth.readthedocs.io/en/stable/user-guide.html#user-credentials">convert them</a>.</p>
 </div>
 </div>
@@ -552,7 +552,7 @@ that your application requires.</p>
 <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authentication/create-new-service-account.png"><img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authentication/create-new-service-account-existing-keys.png"></li>
 </ol>
 <blockquote>
-<div><p>Find the &#8220;Add credentials&#8221; drop down and select &#8220;Service account&#8221; to be
+<div><p>Find the “Add credentials” drop down and select “Service account” to be
 guided through downloading a new JSON keyfile.</p>
 <p>If you want to re-use an existing service account,
 you can easily generate a new keyfile.
@@ -623,7 +623,7 @@ you add the correct scopes for the APIs you want to access:</p>
 support more situations more easily, and use current tooling.</p>
 <p class="last">In order to allow this, this particular mechanism may have to be altered
 in a backwards-compatible way. Therefore, the following section should
-be considered &#8220;private API&#8221; that is subject to change.</p>
+be considered “private API” that is subject to change.</p>
 </div>
 <p>The <code class="docutils literal"><span class="pre">google-cloud-python</span></code> library uses <a class="reference external" href="http://google-auth.readthedocs.io/en/stable/">google-auth</a> to sign
 requests and <code class="docutils literal"><span class="pre">httplib2</span></code> for sending requests.</p>
@@ -696,7 +696,7 @@ some point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

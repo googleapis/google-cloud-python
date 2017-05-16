@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Buckets &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -350,9 +350,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.client.Client</span></code></a>) – A client which holds credentials and project configuration
 for the bucket (which requires a project).</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the bucket. Bucket names must start and end with a
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The name of the bucket. Bucket names must start and end with a
 number or letter.</li>
 </ul>
 </td>
@@ -379,11 +379,11 @@ a blob object owned by this bucket.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>blob_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the blob to be instantiated.</li>
-<li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The size of a chunk of data whenever iterating
+<li><strong>blob_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The name of the blob to be instantiated.</li>
+<li><strong>chunk_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The size of a chunk of data whenever iterating
 (1 MB). This must be a multiple of 256 KB per the
 API specification.</li>
-<li><strong>encryption_key</strong> (<em>bytes</em>) &#8211; Optional 32 byte encryption key for customer-supplied encryption.</li>
+<li><strong>encryption_key</strong> (<em>bytes</em>) – Optional 32 byte encryption key for customer-supplied encryption.</li>
 </ul>
 </td>
 </tr>
@@ -412,10 +412,10 @@ API specification.</li>
 <p class="first admonition-title">Note</p>
 <p class="last">This (apparently) only works
 if your bucket name is a domain name
-(and to do that, you need to get approved somehow...).</p>
+(and to do that, you need to get approved somehow…).</p>
 </div>
 <p>If you want this bucket to host a website, just provide the name
-of an index page and a page to use when a blob isn&#8217;t found:</p>
+of an index page and a page to use when a blob isn’t found:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="s1">&#39;404.html&#39;</span><span class="p">)</span>
@@ -425,18 +425,18 @@ of an index page and a page to use when a blob isn&#8217;t found:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span><span class="o">.</span><span class="n">make_public</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This says: &#8220;Make the bucket public, and all the stuff already in
+<p>This says: “Make the bucket public, and all the stuff already in
 the bucket, and anything else I add to the bucket.  Just make it
-all public.&#8221;</p>
+all public.”</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>main_page_suffix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The page to use as the main page
+<li><strong>main_page_suffix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The page to use as the main page
 of a directory.
 Typically something like index.html.</li>
-<li><strong>not_found_page</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The file to use when a page isn&#8217;t found.</li>
+<li><strong>not_found_page</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The file to use when a page isn’t found.</li>
 </ul>
 </td>
 </tr>
@@ -453,14 +453,14 @@ Typically something like index.html.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>blob</strong> (<a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.blob.Blob</span></code></a>) &#8211; The blob to be copied.</li>
-<li><strong>destination_bucket</strong> (<a class="reference internal" href="#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a>) &#8211; The bucket into which the blob should be
+<li><strong>blob</strong> (<a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.blob.Blob</span></code></a>) – The blob to be copied.</li>
+<li><strong>destination_bucket</strong> (<a class="reference internal" href="#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a>) – The bucket into which the blob should be
 copied.</li>
-<li><strong>new_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) the new name for the copied file.</li>
+<li><strong>new_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (optional) the new name for the copied file.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
-<li><strong>preserve_acl</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Optional. Copies ACL from old blob to new blob.
+<li><strong>preserve_acl</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Optional. Copies ACL from old blob to new blob.
 Default: True.</li>
 </ul>
 </td>
@@ -505,13 +505,13 @@ Default: True.</li>
 <dd><p>Creates current bucket.</p>
 <p>If the bucket already exists, will raise
 <a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.Conflict" title="google.cloud.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Conflict</span></code></a>.</p>
-<p>This implements &#8220;storage.buckets.insert&#8221;.</p>
+<p>This implements “storage.buckets.insert”.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</td>
 </tr>
 </tbody>
@@ -531,7 +531,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <p>The bucket <strong>must</strong> be empty in order to submit a delete request. If
 <code class="docutils literal"><span class="pre">force=True</span></code> is passed, this will first attempt to delete all the
 objects / blobs in the bucket (i.e. try to empty the bucket).</p>
-<p>If the bucket doesn&#8217;t exist, this will raise
+<p>If the bucket doesn’t exist, this will raise
 <a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a>.  If the bucket is not empty
 (and <code class="docutils literal"><span class="pre">force=False</span></code>), will raise
 <a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.Conflict" title="google.cloud.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Conflict</span></code></a>.</p>
@@ -544,9 +544,9 @@ runtime of this method.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>force</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, empties the bucket&#8217;s objects then deletes it.</li>
+<li><strong>force</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If True, empties the bucket’s objects then deletes it.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -563,7 +563,7 @@ contains more than 256 objects / blobs.</p>
 <dt id="google.cloud.storage.bucket.Bucket.delete_blob">
 <code class="descname">delete_blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.delete_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.delete_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a blob from the current bucket.</p>
-<p>If the blob isn&#8217;t found (backend 404), raises a
+<p>If the blob isn’t found (backend 404), raises a
 <a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a>.</p>
 <p>For example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
@@ -584,9 +584,9 @@ contains more than 256 objects / blobs.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>blob_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A blob name to delete.</li>
+<li><strong>blob_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – A blob name to delete.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -613,13 +613,13 @@ the exception, call <code class="docutils literal"><span class="pre">delete_blob
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>blobs</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of <a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a>-s or
+<li><strong>blobs</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – A list of <a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a>-s or
 blob names to delete.</li>
-<li><strong>on_error</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; (Optional) Takes single argument: <code class="docutils literal"><span class="pre">blob</span></code>. Called
+<li><strong>on_error</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) – (Optional) Takes single argument: <code class="docutils literal"><span class="pre">blob</span></code>. Called
 called once for each blob raising
 <a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">NotFound</span></code></a>;
 otherwise, the exception is propagated.</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -649,7 +649,7 @@ attributes to <code class="docutils literal"><span class="pre">None</span></code
 
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.enable_logging">
-<code class="descname">enable_logging</code><span class="sig-paren">(</span><em>bucket_name</em>, <em>object_prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.enable_logging" title="Permalink to this definition">#</a></dt>
+<code class="descname">enable_logging</code><span class="sig-paren">(</span><em>bucket_name</em>, <em>object_prefix=”</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.enable_logging" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable access logging for this bucket.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/access-logs">https://cloud.google.com/storage/docs/access-logs</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -657,8 +657,8 @@ attributes to <code class="docutils literal"><span class="pre">None</span></code
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bucket_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of bucket in which to store access logs</li>
-<li><strong>object_prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; prefix for access log filenames</li>
+<li><strong>bucket_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – name of bucket in which to store access logs</li>
+<li><strong>object_prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – prefix for access log filenames</li>
 </ul>
 </td>
 </tr>
@@ -696,7 +696,7 @@ set locally.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
@@ -748,11 +748,11 @@ Google Cloud Storage without giving them direct write access.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#module-datetime" title="(in Python v2.7)"><em>datetime</em></a>) &#8211; Optional expiration in UTC. If not specified, the
+<li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#module-datetime" title="(in Python v2.7)"><em>datetime</em></a>) – Optional expiration in UTC. If not specified, the
 policy will expire in 1 hour.</li>
-<li><strong>conditions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of conditions as described in the
+<li><strong>conditions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – A list of conditions as described in the
 <a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/post-object#policydocument">policy documents</a> documentation.</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; Optional. The client to use.  If not passed, falls back
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -773,7 +773,7 @@ to attach the signature.</p>
 <dt id="google.cloud.storage.bucket.Bucket.get_blob">
 <code class="descname">get_blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.get_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.get_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a blob object by name.</p>
-<p>This will return None if the blob doesn&#8217;t exist:</p>
+<p>This will return None if the blob doesn’t exist:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
     <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s1">&#39;/path/to/blob.txt&#39;</span><span class="p">),</span> <span class="n">Blob</span><span class="p">)</span>
@@ -787,9 +787,9 @@ to attach the signature.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>blob_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the blob to retrieve.</li>
+<li><strong>blob_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The name of the blob to retrieve.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -815,7 +815,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google-cloud-api.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></td>
@@ -885,31 +885,31 @@ set locally.</td>
 
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.list_blobs">
-<code class="descname">list_blobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>versions=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.list_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.list_blobs" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_blobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>versions=None</em>, <em>projection=’noAcl’</em>, <em>fields=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.list_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.list_blobs" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an iterator used to find blobs in the bucket.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of blobs to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Opaque marker for the next &#8220;page&#8221; of
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of blobs to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) Opaque marker for the next “page” of
 blobs. If not passed, will return the first page
 of blobs.</li>
-<li><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) prefix used to filter blobs.</li>
-<li><strong>delimiter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Delimiter, used with <code class="docutils literal"><span class="pre">prefix</span></code> to
+<li><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) prefix used to filter blobs.</li>
+<li><strong>delimiter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) Delimiter, used with <code class="docutils literal"><span class="pre">prefix</span></code> to
 emulate hierarchy.</li>
-<li><strong>versions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Whether object versions should be returned
+<li><strong>versions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) Whether object versions should be returned
 as separate blobs.</li>
-<li><strong>projection</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) If used, must be &#8216;full&#8217; or &#8216;noAcl&#8217;.
+<li><strong>projection</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) If used, must be ‘full’ or ‘noAcl’.
 Defaults to <code class="docutils literal"><span class="pre">'noAcl'</span></code>. Specifies the set of
 properties to return.</li>
-<li><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Selector specifying which fields to include
+<li><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) Selector specifying which fields to include
 in a partial response. Must be a list of fields. For
 example to get a partial response with just the next
 page token and the language of each blob returned:
 <code class="docutils literal"><span class="pre">'items/contentLanguage,nextPageToken'</span></code>.</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -954,12 +954,12 @@ This is to prevent extremely long runtime of this method.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>recursive</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, this will make all blobs inside the bucket
+<li><strong>recursive</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If True, this will make all blobs inside the bucket
 public as well.</li>
-<li><strong>future</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, this will make all objects created in the
+<li><strong>future</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If True, this will make all objects created in the
 future public as well.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -997,7 +997,7 @@ is not set locally.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mapping of owner&#8217;s role/ID. If the property is not set
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mapping of owner’s role/ID. If the property is not set
 locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</td>
 </tr>
 </tbody>
@@ -1014,7 +1014,7 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current object.</td>
 </tr>
 </tbody>
@@ -1035,7 +1035,7 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The bucket name in the path.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The bucket name in the path.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
 </tr>
@@ -1072,7 +1072,7 @@ property is not set locally.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current object.</td>
 </tr>
 </tbody>
@@ -1096,10 +1096,10 @@ could be a very (temporarily) costly or a very slow operation.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>blob</strong> (<a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.blob.Blob</span></code></a>) &#8211; The blob to be renamed.</li>
-<li><strong>new_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The new name for this blob.</li>
+<li><strong>blob</strong> (<a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.blob.Blob</span></code></a>) – The blob to be renamed.</li>
+<li><strong>new_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The new name for this blob.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -1143,9 +1143,9 @@ not set locally.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>policy</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a>) &#8211; policy instance used to update bucket&#8217;s IAM policy.</li>
+<li><strong>policy</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a>) – policy instance used to update bucket’s IAM policy.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -1172,9 +1172,9 @@ the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> 
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If set, one of &#8220;MULTI_REGIONAL&#8221;, &#8220;REGIONAL&#8221;,
-&#8220;NEARLINE&#8221;, &#8220;COLDLINE&#8221;, &#8220;STANDARD&#8221;, or
-&#8220;DURABLE_REDUCED_AVAILABILITY&#8221;, else <code class="docutils literal"><span class="pre">None</span></code>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If set, one of “MULTI_REGIONAL”, “REGIONAL”,
+“NEARLINE”, “COLDLINE”, “STANDARD”, or
+“DURABLE_REDUCED_AVAILABILITY”, else <code class="docutils literal"><span class="pre">None</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -1191,9 +1191,9 @@ the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> 
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>permissions</strong> (<em>list of string</em>) &#8211; the permissions to check</li>
+<li><strong>permissions</strong> (<em>list of string</em>) – the permissions to check</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
@@ -1293,7 +1293,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.color &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>google.cloud.vision.color &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -364,8 +364,8 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span> <span class="o">=</span> <span class="n">colors</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="ImagePropertiesAnnotation.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">image_properties</span><span class="p">):</span>
+<div class="viewcode-block" id="ImagePropertiesAnnotation.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">image_properties</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``ImagePropertiesAnnotation`` from a response.</span>
 
 <span class="sd">        :type image_properties: dict</span>
@@ -380,8 +380,8 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="n">ColorInformation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">])</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="ImagePropertiesAnnotation.from_pb"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">image_properties</span><span class="p">):</span>
+<div class="viewcode-block" id="ImagePropertiesAnnotation.from_pb"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">image_properties</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``ImagePropertiesAnnotation`` from a response.</span>
 
 <span class="sd">        :type image_properties: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -432,8 +432,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_blue</span> <span class="o">=</span> <span class="n">blue</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_alpha</span> <span class="o">=</span> <span class="n">alpha</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Color.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.Color.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<div class="viewcode-block" id="Color.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.Color.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a ``Color`` from a Vision API response.</span>
 
 <span class="sd">        :type response: dict</span>
@@ -449,8 +449,8 @@
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Color.from_pb"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.Color.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+<div class="viewcode-block" id="Color.from_pb"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.Color.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct a ``Color`` from a protobuf response.</span>
 
 <span class="sd">        :type color: :module: `google.type.color_pb2`</span>
@@ -516,8 +516,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pixel_fraction</span> <span class="o">=</span> <span class="n">pixel_fraction</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="ColorInformation.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ColorInformation.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">color_information</span><span class="p">):</span>
+<div class="viewcode-block" id="ColorInformation.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ColorInformation.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">color_information</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``ColorInformation`` for a color.</span>
 
 <span class="sd">        :type color_information: dict</span>
@@ -531,8 +531,8 @@
         <span class="n">pixel_fraction</span> <span class="o">=</span> <span class="n">color_information</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pixelFraction&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">pixel_fraction</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="ColorInformation.from_pb"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ColorInformation.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">color_information</span><span class="p">):</span>
+<div class="viewcode-block" id="ColorInformation.from_pb"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ColorInformation.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">color_information</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct ``ColorInformation`` for a color.</span>
 
 <span class="sd">        :type color_information: :class:`~google.cloud.proto.vision.v1.\</span>
@@ -609,7 +609,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

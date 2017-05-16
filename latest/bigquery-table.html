@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tables &mdash; google-cloud 5bc1e38 documentation</title>
+  <title>Tables &mdash; google-cloud 00e8bff documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5bc1e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
         <link rel="next" title="Query" href="bigquery-query.html"/>
         <link rel="prev" title="Jobs" href="bigquery-job.html"/> 
 
@@ -352,9 +352,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the table</li>
-<li><strong>dataset</strong> (<a class="reference internal" href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dataset.Dataset</span></code></a>) &#8211; The dataset which contains the table.</li>
-<li><strong>schema</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code>) &#8211; The table&#8217;s schema</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the table</li>
+<li><strong>dataset</strong> (<a class="reference internal" href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dataset.Dataset</span></code></a>) – The dataset which contains the table.</li>
+<li><strong>schema</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code>) – The table’s schema</li>
 </ul>
 </td>
 </tr>
@@ -371,7 +371,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
 </tbody>
@@ -421,7 +421,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
 </tbody>
@@ -471,7 +471,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
@@ -506,7 +506,7 @@
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list</a></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This method assumes that its instance&#8217;s <code class="docutils literal"><span class="pre">schema</span></code> attribute is
+<p class="last">This method assumes that its instance’s <code class="docutils literal"><span class="pre">schema</span></code> attribute is
 up-to-date with the schema as defined on the back-end:  if the
 two schemas are not identical, the values returned may be
 incomplete.  To ensure that the local copy of the schema is
@@ -517,10 +517,10 @@ up-to-date, call <a class="reference internal" href="#google.cloud.bigquery.tabl
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of rows to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Token representing a cursor into the
-table&#8217;s rows.</li>
-<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) Maximum number of rows to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) Token representing a cursor into the
+table’s rows.</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls
 back to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</li>
 </ul>
 </td>
@@ -564,8 +564,8 @@ current page: <code class="docutils literal"><span class="pre">iterator.page.num
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; table resource representation returned from the API</li>
-<li><strong>dataset</strong> (<a class="reference internal" href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dataset.Dataset</span></code></a>) &#8211; The dataset containing the table.</li>
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – table resource representation returned from the API</li>
+<li><strong>dataset</strong> (<a class="reference internal" href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dataset.Dataset</span></code></a>) – The dataset containing the table.</li>
 </ul>
 </td>
 </tr>
@@ -590,19 +590,19 @@ current page: <code class="docutils literal"><span class="pre">iterator.page.num
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>rows</strong> (<em>list of tuples</em>) &#8211; Row data to be inserted. Each tuple should contain data
+<li><strong>rows</strong> (<em>list of tuples</em>) – Row data to be inserted. Each tuple should contain data
 for each schema field on the current table and in the
 same order as the schema fields.</li>
-<li><strong>row_ids</strong> (<em>list of string</em>) &#8211; Unique ids, one per row being inserted.  If not
+<li><strong>row_ids</strong> (<em>list of string</em>) – Unique ids, one per row being inserted.  If not
 passed, no de-duplication occurs.</li>
-<li><strong>skip_invalid_rows</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) skip rows w/ invalid data?</li>
-<li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) ignore columns beyond schema?</li>
-<li><strong>template_suffix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) treat <code class="docutils literal"><span class="pre">name</span></code> as a template table and provide a suffix.
+<li><strong>skip_invalid_rows</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) skip rows w/ invalid data?</li>
+<li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – (Optional) ignore columns beyond schema?</li>
+<li><strong>template_suffix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) treat <code class="docutils literal"><span class="pre">name</span></code> as a template table and provide a suffix.
 BigQuery will create the table <code class="docutils literal"><span class="pre">&lt;name&gt;</span> <span class="pre">+</span> <span class="pre">&lt;template_suffix&gt;</span></code> based
 on the schema of the template table. See:
 <a class="reference external" href="https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a></li>
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</li>
 </ul>
 </td>
@@ -610,13 +610,13 @@ on the schema of the template table. See:
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of mappings</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">One mapping per row with insert errors:  the &#8220;index&#8221; key
-identifies the row, and the &#8220;errors&#8221; key contains a list
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">One mapping per row with insert errors:  the “index” key
+identifies the row, and the “errors” key contains a list
 of the mappings describing one or more problems with the
 row.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if table&#8217;s schema is not set</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if table’s schema is not set</p>
 </td>
 </tr>
 </tbody>
@@ -632,7 +632,7 @@ row.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
@@ -735,14 +735,14 @@ row.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</li>
-<li><strong>friendly_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) a descriptive name for this table.</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) a description of this table.</li>
-<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) the geographic location where the table resides.</li>
-<li><strong>expires</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) point in time at which the table expires.</li>
-<li><strong>view_query</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; SQL query defining the table as a view</li>
-<li><strong>schema</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code>) &#8211; fields describing the schema</li>
+<li><strong>friendly_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) a descriptive name for this table.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) a description of this table.</li>
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – (Optional) the geographic location where the table resides.</li>
+<li><strong>expires</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (Optional) point in time at which the table expires.</li>
+<li><strong>view_query</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – SQL query defining the table as a view</li>
+<li><strong>schema</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code>) – fields describing the schema</li>
 </ul>
 </td>
 </tr>
@@ -756,7 +756,7 @@ row.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.table.Table.path">
 <code class="descname">path</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.path" title="Permalink to this definition">#</a></dt>
-<dd><p>URL path for the table&#8217;s APIs.</p>
+<dd><p>URL path for the table’s APIs.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -796,7 +796,7 @@ row.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
 </tbody>
@@ -806,7 +806,7 @@ row.</p>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.table.Table.schema">
 <code class="descname">schema</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.schema" title="Permalink to this definition">#</a></dt>
-<dd><p>Table&#8217;s schema.</p>
+<dd><p>Table’s schema.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -855,7 +855,7 @@ row.</p>
 <dt id="google.cloud.bigquery.table.Table.table_type">
 <code class="descname">table_type</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.table_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of the table.</p>
-<p>Possible values are &#8220;TABLE&#8221; or &#8220;VIEW&#8221;.</p>
+<p>Possible values are “TABLE” or “VIEW”.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -879,7 +879,7 @@ row.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
 </tbody>
@@ -898,39 +898,39 @@ row.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle opened in binary mode for reading.</li>
-<li><strong>source_format</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; one of &#8216;CSV&#8217; or &#8216;NEWLINE_DELIMITED_JSON&#8217;.
+<li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) – A file handle opened in binary mode for reading.</li>
+<li><strong>source_format</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – one of ‘CSV’ or ‘NEWLINE_DELIMITED_JSON’.
 job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code></li>
-<li><strong>rewind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, seek to the beginning of the file handle before
+<li><strong>rewind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – If True, seek to the beginning of the file handle before
 writing the file to Cloud Storage.</li>
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of bytes to read from the file handle.
-If not provided, we&#8217;ll try to guess the size using
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of bytes to read from the file handle.
+If not provided, we’ll try to guess the size using
 <a class="reference external" href="https://docs.python.org/2/library/os.html#os.fstat" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></a>. (If the file handle is not from the
-filesystem this won&#8217;t be possible.)</li>
-<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of upload retries. Defaults to 6.</li>
-<li><strong>allow_jagged_rows</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; job configuration option;  see
+filesystem this won’t be possible.)</li>
+<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Number of upload retries. Defaults to 6.</li>
+<li><strong>allow_jagged_rows</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – job configuration option;  see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>allow_quoted_newlines</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; job configuration option; see
+<li><strong>allow_quoted_newlines</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>create_disposition</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; job configuration option; see
+<li><strong>create_disposition</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; job configuration option; see
+<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>field_delimiter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; job configuration option; see
+<li><strong>field_delimiter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; job configuration option; see
+<li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>max_bad_records</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; job configuration option; see
+<li><strong>max_bad_records</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>quote_character</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; job configuration option; see
+<li><strong>quote_character</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>skip_leading_rows</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; job configuration option; see
+<li><strong>skip_leading_rows</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>write_disposition</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; job configuration option; see
+<li><strong>write_disposition</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</li>
 </ul>
 </td>
@@ -1016,7 +1016,7 @@ a file opened in text mode.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5bc1e38',
+            VERSION:'00e8bff',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
