@@ -475,7 +475,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsInstance(subscription.topic, Topic)
         self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
         self.assertIs(subscription._client, client)
-        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertEqual(subscription.project, self.PROJECT)
         self.assertIsNone(subscription.ack_deadline)
         self.assertEqual(subscription.push_endpoint, self.PUSH_ENDPOINT)
 
@@ -523,7 +523,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsInstance(subscription.topic, Topic)
         self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
         self.assertIs(subscription._client, client)
-        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertEqual(subscription.project, self.PROJECT)
         self.assertIsNone(subscription.ack_deadline)
         self.assertEqual(subscription.push_endpoint, self.PUSH_ENDPOINT)
 
@@ -560,7 +560,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_create_optional_params(self):
         import datetime
-        
+
         from google.cloud.proto.pubsub.v1.pubsub_pb2 import Subscription
 
         sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH)
@@ -1009,7 +1009,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsInstance(snapshot.topic, Topic)
         self.assertEqual(snapshot.topic.name, self.TOPIC_NAME)
         self.assertIs(snapshot._client, client)
-        self.assertEqual(snapshot._project, self.PROJECT)
+        self.assertEqual(snapshot.project, self.PROJECT)
 
     def test_list_snapshots_with_paging(self):
         from google.cloud.proto.pubsub.v1.pubsub_pb2 import (
@@ -1047,7 +1047,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsInstance(snapshot.topic, Topic)
         self.assertEqual(snapshot.topic.name, self.TOPIC_NAME)
         self.assertIs(snapshot._client, client)
-        self.assertEqual(snapshot._project, self.PROJECT)
+        self.assertEqual(snapshot.project, self.PROJECT)
 
     def test_subscription_seek_hit(self):
         gax_api = _GAXSubscriberAPI(_seek_ok=True)
@@ -1548,7 +1548,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
             raise GaxError('error')
         if not self._delete_snapshot_ok:
             raise GaxError('miss', self._make_grpc_not_found())
-        
+
     def seek(self, subscription, time=None, snapshot=None, options=None):
         from google.gax.errors import GaxError
 

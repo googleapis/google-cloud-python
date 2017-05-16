@@ -259,6 +259,29 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
         self.assertEqual(api._subscription_got, self.SUB_PATH)
 
+    def test_reload_sets_topic(self):
+        from google.cloud.pubsub.topic import Topic
+
+        response = {
+            'name': self.SUB_PATH,
+            'topic': self.TOPIC_PATH,
+            'ackDeadlineSeconds': self.DEADLINE,
+            'pushConfig': {'pushEndpoint': self.ENDPOINT},
+        }
+        client = _Client(project=self.PROJECT)
+        api = client.subscriber_api = _FauxSubscribererAPI()
+        api._subscription_get_response = response
+        subscription = self._make_one(self.SUB_NAME, client=client)
+
+        self.assertIsNone(subscription.topic)
+        subscription.reload()
+
+        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
+        self.assertEqual(api._subscription_got, self.SUB_PATH)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+
     def test_reload_w_alternate_client(self):
         RESPONSE = {
             'name': self.SUB_PATH,
@@ -506,7 +529,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_seek_time_w_bound_client(self):
         import datetime
-        
+
         from google.cloud import _helpers
 
         time = datetime.time()

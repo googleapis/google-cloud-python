@@ -86,7 +86,6 @@ class Subscription(object):
         self.name = name
         self.topic = topic
         self._client = client or topic._client
-        self._project = self._client.project
         self.ack_deadline = ack_deadline
         self.push_endpoint = push_endpoint
         self.retain_acked_messages = retain_acked_messages
@@ -274,6 +273,9 @@ class Subscription(object):
         self.ack_deadline = data.get('ackDeadlineSeconds')
         push_config = data.get('pushConfig', {})
         self.push_endpoint = push_config.get('pushEndpoint')
+        if self.topic is None and 'topic' in data:
+            topic_name = topic_name_from_path(data['topic'], client.project)
+            self.topic = client.topic(topic_name)
 
     def delete(self, client=None):
         """API call:  delete the subscription via a DELETE request.

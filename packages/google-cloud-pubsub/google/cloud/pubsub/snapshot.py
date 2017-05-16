@@ -35,7 +35,6 @@ class Snapshot(object):
         self._subscription = subscription
         self._client = client or getattr(
             subscription, '_client', None) or topic._client
-        self._project = self._client.project
 
     @classmethod
     def from_api_repr(cls, resource, client, topics=None):
