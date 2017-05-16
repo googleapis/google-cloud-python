@@ -52,8 +52,7 @@ class TestPolicy(unittest.TestCase):
 
     def test___getitem___miss(self):
         policy = self._make_one()
-        with self.assertRaises(KeyError):
-            policy['nonesuch']
+        self.assertEqual(policy['nonesuch'], set())
 
     def test___setitem__(self):
         USER = 'user:phred@example.com'
