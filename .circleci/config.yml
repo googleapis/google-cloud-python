@@ -136,10 +136,10 @@ jobs:
       - run:
           name: Make sure google-cloud setup.py is valid
           command: |
-            nox -e lint_setup_py
+            nox -s lint_setup_py
       - deploy:
           name: Update the docs
-          command: nox -e docs
+          command: nox -s docs
       - deploy:
           name: Push to PyPI (if this is a release tag).
           command: test_utils/scripts/circleci/twine_upload.sh
