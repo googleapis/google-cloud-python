@@ -280,7 +280,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(subscription.topic, Topic)
         self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
         self.assertIs(subscription._client, client)
-        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertEqual(subscription.project, self.PROJECT)
         self.assertIsNone(subscription.ack_deadline)
         self.assertIsNone(subscription.push_endpoint)
 
@@ -334,7 +334,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(subscription.topic, Topic)
         self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
         self.assertIs(subscription._client, client)
-        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertEqual(subscription.project, self.PROJECT)
         self.assertEqual(subscription.ack_deadline, ACK_DEADLINE)
         self.assertEqual(subscription.push_endpoint, PUSH_ENDPOINT)
 
@@ -408,7 +408,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(new_subscription.name, sub_name)
         self.assertIsNone(new_subscription.topic)
         self.assertIs(new_subscription._client, client_obj)
-        self.assertEqual(new_subscription._project, project)
+        self.assertEqual(new_subscription.project, project)
         self.assertEqual(new_subscription.ack_deadline, ack_deadline)
         self.assertEqual(new_subscription.push_endpoint, push_endpoint)
         self.assertTrue(new_subscription.retain_acked_messages)
