@@ -426,6 +426,8 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(job.output_rows, len(ROWS))
 
+        # Reload table to get the schema before fetching the rows.
+        table.reload()
         rows = self._fetch_single_page(table)
         by_wavelength = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_wavelength),
