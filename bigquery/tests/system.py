@@ -390,6 +390,47 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
 
+    def test_load_table_from_local_avro_file_then_dump_table(self):
+        TABLE_NAME = 'test_table_avro'
+        ROWS = [
+            ("violet", 400),
+            ("indigo", 445),
+            ("blue", 475),
+            ("green", 510),
+            ("yellow", 570),
+            ("orange", 590),
+            ("red", 650)]
+
+        dataset = Config.CLIENT.dataset(
+            _make_dataset_name('load_local_then_dump'))
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        table = dataset.table(TABLE_NAME)
+        self.to_delete.insert(0, table)
+
+        with open(os.path.join(WHERE, 'data', 'colors.avro'), 'rb') as avrof:
+            job = table.upload_from_file(
+                avrof,
+                source_format='AVRO',
+                write_disposition='WRITE_TRUNCATE'
+            )
+
+        def _job_done(instance):
+            return instance.state.lower() == 'done'
+
+        # Retry until done.
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
+
+        self.assertEqual(job.output_rows, len(ROWS))
+
+        rows = self._fetch_single_page(table)
+        by_wavelength = operator.itemgetter(1)
+        self.assertEqual(sorted(rows, key=by_wavelength),
+                         sorted(ROWS, key=by_wavelength))
+
     def test_load_table_from_storage_then_dump_table(self):
         import csv
         from google.cloud._testing import _NamedTemporaryFile
