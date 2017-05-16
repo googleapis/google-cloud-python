@@ -212,7 +212,7 @@ class _Worker(object):
         :type message: str
         :param message: The message from the ``LogRecord`` after being
                         formatted by the associated log formatters.
-        
+
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry
         """
@@ -268,8 +268,7 @@ class BackgroundThreadTransport(Transport):
                         formatted by the associated log formatters.
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: Monitored resource of the entry, defaults
-                         to the global resource type.
+        :param resource: (Optional) Monitored resource of the entry.
         """
         self.worker.enqueue(record, message, resource=resource)
 

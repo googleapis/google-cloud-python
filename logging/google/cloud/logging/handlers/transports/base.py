@@ -33,8 +33,7 @@ class Transport(object):
                         formatted by the associated log formatters.
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
-        :param resource: Monitored resource of the entry, defaults
-                         to the global resource type.
+        :param resource: (Optional) Monitored resource of the entry.
         """
         raise NotImplementedError
 
