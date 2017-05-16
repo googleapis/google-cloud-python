@@ -14,7 +14,16 @@
 
 # pylint: disable=too-many-lines
 
-"""Create / interact with Google Cloud Storage blobs."""
+"""Create / interact with Google Cloud Storage blobs.
+
+.. _API reference docs: https://cloud.google.com/storage/docs/\
+                        json_api/v1/objects
+.. _customer-supplied: https://cloud.google.com/storage/docs/\
+                       encryption#customer-supplied
+.. _google-resumable-media: https://googlecloudplatform.github.io/\
+                            google-resumable-media-python/latest/\
+                            google.resumable_media.requests.html
+"""
 
 import base64
 import copy
@@ -427,18 +436,20 @@ class Blob(_PropertyMixin):
            If the server-set property, :attr:`media_link`, is not yet
            initialized, makes an additional API request to load it.
 
-         Downloading a file that has been encrypted with a `customer-supplied`_
-         encryption key:
+        Downloading a file that has been encrypted with a `customer-supplied`_
+        encryption key:
 
          .. literalinclude:: storage_snippets.py
             :start-after: [START download_to_file]
             :end-before: [END download_to_file]
+            :dedent: 4
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
 
-        .. _customer-supplied: https://cloud.google.com/storage/docs/\
-                               encryption#customer-supplied
+        For more fine-grained over the download process, check out
+        `google-resumable-media`_. For example, this library allows
+        downloading **parts** of a blob rather than the whole thing.
 
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
@@ -531,8 +542,8 @@ class Blob(_PropertyMixin):
 
         This is intended to be used when creating a new object / blob.
 
-        See the `API reference`_ for more information, the fields marked as
-        writable are:
+        See the `API reference docs`_ for more information, the fields
+        marked as writable are:
 
         * ``acl``
         * ``cacheControl``
@@ -548,9 +559,6 @@ class Blob(_PropertyMixin):
 
         For now, we don't support ``acl``, access control lists should be
         managed directly through :class:`ObjectACL` methods.
-
-        .. _API reference: https://cloud.google.com/storage/\
-                           docs/json_api/v1/objects
         """
         # NOTE: This assumes `self.name` is unicode.
         object_metadata = {'name': self.name}
@@ -828,22 +836,21 @@ class Blob(_PropertyMixin):
            bucket.  In the absence of those policies, upload will
            overwrite any existing contents.
 
-           See the `object versioning
-           <https://cloud.google.com/storage/docs/object-versioning>`_ and
-           `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
-           API documents for details.
+           See the `object versioning`_ and `lifecycle`_ API documents
+           for details.
 
         Uploading a file with a `customer-supplied`_ encryption key:
 
         .. literalinclude:: storage_snippets.py
             :start-after: [START upload_from_file]
             :end-before: [END upload_from_file]
+            :dedent: 4
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
 
-        .. _customer-supplied: https://cloud.google.com/storage/docs/\
-                               encryption#customer-supplied
+        For more fine-grained over the upload process, check out
+        `google-resumable-media`_.
 
         :type file_obj: file
         :param file_obj: A file handle open for reading.
@@ -870,6 +877,10 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
+
+        .. _object versioning: https://cloud.google.com/storage/\
+                               docs/object-versioning
+        .. _lifecycle: https://cloud.google.com/storage/docs/lifecycle
         """
         if num_retries is not None:
             warnings.warn(_NUM_RETRIES_MESSAGE, DeprecationWarning)
@@ -972,8 +983,9 @@ class Blob(_PropertyMixin):
         access-controlled bucket. For more details, see the
         `documentation on signed URLs`_.
 
-        .. _documentation on signed URLs: https://cloud.google.com/storage\
-                /docs/access-control/signed-urls#signing-resumable
+        .. _documentation on signed URLs:
+            https://cloud.google.com/storage/\
+            docs/access-control/signed-urls#signing-resumable
 
         The content type of the upload will be determined in order
         of precedence:
@@ -993,10 +1005,8 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
-        If :attr:`encryption_key` is set, the blob will be `encrypted`_.
-
-        .. _encrypted: https://cloud.google.com/storage/docs/\
-                               encryption#customer-supplied
+        If :attr:`encryption_key` is set, the blob will be encrypted with
+        a `customer-supplied`_ encryption key.
 
         :type size: int
         :param size: (Optional). The maximum number of bytes that can be
@@ -1236,67 +1246,73 @@ class Blob(_PropertyMixin):
     cache_control = _scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.
 
-    See: https://tools.ietf.org/html/rfc7234#section-5.2 and
-         https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: `RFC 7234`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
+    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
+
+    .. _RFC 7234: https://tools.ietf.org/html/rfc7234#section-5.2
     """
 
     content_disposition = _scalar_property('contentDisposition')
     """HTTP 'Content-Disposition' header for this object.
 
-    See: https://tools.ietf.org/html/rfc6266 and
-         https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: `RFC 6266`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
+    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
+
+    .. _RFC 6266: https://tools.ietf.org/html/rfc7234#section-5.2
     """
 
     content_encoding = _scalar_property('contentEncoding')
     """HTTP 'Content-Encoding' header for this object.
 
-    See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
-         https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: `RFC 7231`_ and `API reference docs`_.
 
     If the property is not set locally, returns ``None``.
 
     :rtype: str or ``NoneType``
+
+    .. _RFC 7231: https://tools.ietf.org/html/rfc7231#section-3.1.2.2
     """
 
     content_language = _scalar_property('contentLanguage')
     """HTTP 'Content-Language' header for this object.
 
-    See: https://tools.ietf.org/html/bcp47 and
-         https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: `BCP47`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
+    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
+
+    .. _BCP47: https://tools.ietf.org/html/bcp47
     """
 
     content_type = _scalar_property(_CONTENT_TYPE_FIELD)
     """HTTP 'Content-Type' header for this object.
 
-    See: https://tools.ietf.org/html/rfc2616#section-14.17 and
-         https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: `RFC 2616`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
+    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
+
+    .. _RFC 2616: https://tools.ietf.org/html/rfc2616#section-14.17
     """
 
     crc32c = _scalar_property('crc32c')
     """CRC32C checksum for this object.
 
-    See: https://tools.ietf.org/html/rfc4960#appendix-B and
-         https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: `RFC 4960`_ and `API reference docs`_.
 
-    If the property is not set locally, returns ``None``.
+    If the property is not set locally, returns :data:`None`.
 
     :rtype: str or ``NoneType``
+
+    .. _RFC 4960: https://tools.ietf.org/html/rfc4960#appendix-B
     """
 
     @property
@@ -1318,11 +1334,12 @@ class Blob(_PropertyMixin):
     def etag(self):
         """Retrieve the ETag for the object.
 
-        See: https://tools.ietf.org/html/rfc2616#section-3.11 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
+        See: `RFC 2616 (etags)`_ and `API reference docs`_.
 
         :rtype: str or ``NoneType``
         :returns: The blob etag or ``None`` if the property is not set locally.
+
+        .. _RFC 2616 (etags): https://tools.ietf.org/html/rfc2616#section-3.11
         """
         return self._properties.get('etag')
 
@@ -1355,12 +1372,13 @@ class Blob(_PropertyMixin):
     md5_hash = _scalar_property('md5Hash')
     """MD5 hash for this object.
 
-    See: https://tools.ietf.org/html/rfc4960#appendix-B and
-         https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: `RFC 1321`_ and `API reference docs`_.
 
     If the property is not set locally, returns ``None``.
 
     :rtype: str or ``NoneType``
+
+    .. _RFC 1321: https://tools.ietf.org/html/rfc1321
     """
 
     @property
