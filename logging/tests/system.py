@@ -29,6 +29,7 @@ import google.cloud.logging.handlers.handlers
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import SyncTransport
 from google.cloud.logging import client
+from google.cloud.logging.resource import Resource
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryResult
@@ -171,6 +172,29 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(entries[0].payload, text_payload)
         self.assertEqual(entries[0].timestamp, now.replace(tzinfo=UTC))
 
+    def test_log_text_with_resource(self):
+        text_payload = 'System test: test_log_text_with_timestamp'
+
+        logger = Config.CLIENT.logger(self._logger_name())
+        now = datetime.datetime.utcnow()
+        resource = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test'
+            }
+        )
+
+        self.to_delete.append(logger)
+
+        logger.log_text(text_payload, timestamp=now, resource=resource)
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, text_payload)
+        # project_id is output only so we don't want it in assertion
+        del entries[0].resource.labels['project_id']
+        self.assertEqual(entries[0].resource, resource)
+
     def test_log_text_w_metadata(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
         INSERT_ID = 'INSERTID'
@@ -223,6 +247,7 @@ class TestLogging(unittest.TestCase):
         cloud_logger = logging.getLogger(handler.name)
         cloud_logger.addHandler(handler)
         cloud_logger.warn(LOG_MESSAGE)
+        handler.flush()
         entries = _list_entries(logger)
         expected_payload = {
             'message': LOG_MESSAGE,
@@ -389,7 +414,9 @@ class TestLogging(unittest.TestCase):
         self.assertTrue(sink.exists())
 
     def test_create_sink_pubsub_topic(self):
+        from google.cloud.iam import OWNER_ROLE
         from google.cloud.pubsub import client as pubsub_client
+
         SINK_NAME = 'test-create-sink-topic%s' % (_RESOURCE_ID,)
         TOPIC_NAME = 'logging-test-sink%s' % (_RESOURCE_ID,)
 
@@ -400,7 +427,9 @@ class TestLogging(unittest.TestCase):
         topic.create()
         self.to_delete.append(topic)
         policy = topic.get_iam_policy()
-        policy.owners.add(policy.group('cloud-logs@google.com'))
+        new_owners = set([policy.group('cloud-logs@google.com')])
+        new_owners.update(policy.owners)
+        policy[OWNER_ROLE] = new_owners
         topic.set_iam_policy(policy)
 
         TOPIC_URI = 'pubsub.googleapis.com/%s' % (topic.full_name,)

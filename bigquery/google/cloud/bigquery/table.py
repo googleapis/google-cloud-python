@@ -469,12 +469,11 @@ class Table(object):
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
-        elif self._schema:
+
+        if self._schema:
             resource['schema'] = {
                 'fields': _build_schema_resource(self._schema)
             }
-        else:
-            raise ValueError("Set either 'view_query' or 'schema'.")
 
         return resource
 

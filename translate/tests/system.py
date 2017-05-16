@@ -66,8 +66,10 @@ class TestTranslate(unittest.TestCase):
 
         self.assertEqual(
             translations[1]['detectedSourceLanguage'], 'eo')
-        self.assertEqual(
-            translations[1]['translatedText'], 'dank')
+        # For some reason this is translated as both "dank" and "danke"
+        # in a seemingly non-deterministic way.
+        self.assertIn(
+            translations[1]['translatedText'], ('dank', 'danke'))
 
         self.assertEqual(
             translations[2]['detectedSourceLanguage'], 'es')

@@ -12,7 +12,7 @@ Client
 
 :class:`~google.cloud.speech.client.Client` objects provide a
 means to configure your application. Each instance holds
-an authenticated connection to the Natural Language service.
+an authenticated connection to the Cloud Speech Service.
 
 For an overview of authentication in ``google-cloud-python``, see
 :doc:`google-cloud-auth`.
@@ -134,7 +134,7 @@ words to the vocabulary of the recognizer.
     >>> results = sample.recognize(
     ...     language_code='en-US',
     ...     max_alternatives=2,
-    ...     speech_context=hints,
+    ...     speech_contexts=hints,
     ... )
     >>> for result in results:
     ...     for alternative in result.alternatives:
