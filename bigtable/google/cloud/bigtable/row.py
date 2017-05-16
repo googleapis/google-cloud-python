@@ -73,7 +73,6 @@ class Row(object):
         """
         return self._table
 
-
 class _SetDeleteRow(Row):
     """Row helper for setting or deleting cell values.
 
