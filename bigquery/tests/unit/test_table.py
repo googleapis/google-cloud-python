@@ -1355,7 +1355,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             if isinstance(row[2], datetime.datetime):
                 joined = _microseconds_from_datetime(joined) * 1e-6
             return {'full_name': row[0],
-                    'age': row[1],
+                    'age': str(row[1]),
                     'joined': joined}
 
         SENT = {
@@ -1404,7 +1404,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         ]
 
         def _row_data(row):
-            return {'full_name': row[0], 'age': row[1], 'voter': row[2]}
+            return {
+                'full_name': row[0],
+                'age': str(row[1]),
+                'voter': row[2] and 'true' or 'false',
+            }
 
         SENT = {
             'skipInvalidRows': True,

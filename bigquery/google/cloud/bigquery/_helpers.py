@@ -241,8 +241,8 @@ _SCALAR_VALUE_TO_JSON_ROW = {
 
 
 # Converters used for scalar values marshalled as query parameters.
-_SCALAR_VALUE_TO_JSON_PARM = _SCALAR_VALUE_TO_JSON_ROW.copy()
-_SCALAR_VALUE_TO_JSON_PARM['TIMESTAMP'] = _timestamp_to_json_parameter
+_SCALAR_VALUE_TO_JSON_PARAM = _SCALAR_VALUE_TO_JSON_ROW.copy()
+_SCALAR_VALUE_TO_JSON_PARAM['TIMESTAMP'] = _timestamp_to_json_parameter
 
 
 class _ConfigurationProperty(object):
@@ -440,7 +440,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
         :returns: JSON mapping
         """
         value = self.value
-        converter = _SCALAR_VALUE_TO_JSON_PARM.get(self.type_)
+        converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.type_)
         if converter is not None:
             value = converter(value)
         resource = {
@@ -526,7 +526,7 @@ class ArrayQueryParameter(AbstractQueryParameter):
             a_values = [repr_['parameterValue'] for repr_ in reprs]
         else:
             a_type = {'type': self.array_type}
-            converter = _SCALAR_VALUE_TO_JSON_PARM.get(self.array_type)
+            converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.array_type)
             if converter is not None:
                 values = [converter(value) for value in values]
             a_values = [{'value': value} for value in values]
@@ -620,7 +620,7 @@ class StructQueryParameter(AbstractQueryParameter):
                 values[name] = repr_['parameterValue']
             else:
                 s_types[name] = {'name': name, 'type': {'type': type_}}
-                converter = _SCALAR_VALUE_TO_JSON_PARM.get(type_)
+                converter = _SCALAR_VALUE_TO_JSON_PARAM.get(type_)
                 if converter is not None:
                     value = converter(value)
                 values[name] = {'value': value}
