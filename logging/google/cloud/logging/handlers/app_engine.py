@@ -57,7 +57,7 @@ class AppEngineHandler(CloudLoggingHandler):
                      to the global resource type.
     """
 
-    DEFAULT_LOGGER_NAME = 'projects/{}/logs/app'.format(os.environ.get(_GAE_PROJECT_ENV))
+    DEFAULT_LOGGER_NAME = 'app'
 
     def __init__(self, client,
                  transport=BackgroundThreadTransport):
