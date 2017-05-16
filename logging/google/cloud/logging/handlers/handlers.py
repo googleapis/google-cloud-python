@@ -20,7 +20,11 @@ from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 
 DEFAULT_LOGGER_NAME = 'python'
 
-EXCLUDED_LOGGER_DEFAULTS = ('google.cloud', 'oauth2client')
+EXCLUDED_LOGGER_DEFAULTS = (
+    'google.cloud',
+    'google.auth',
+    'google_auth_httplib2',
+)
 
 
 class CloudLoggingHandler(logging.StreamHandler):

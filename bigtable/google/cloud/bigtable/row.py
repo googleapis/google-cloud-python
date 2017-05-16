@@ -57,11 +57,22 @@ class Row(object):
 
     @property
     def row_key(self):
+        """Row key.
+
+        :rtype: bytes
+        :returns: The key for the current row.
+        """
         return self._row_key
 
     @property
     def table(self):
+        """Row table.
+
+        :rtype: table: :class:`Table <google.cloud.bigtable.table.Table>`
+        :returns: table: The table that owns the row.
+        """
         return self._table
+
 
 class _SetDeleteRow(Row):
     """Row helper for setting or deleting cell values.
