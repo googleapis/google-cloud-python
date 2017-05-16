@@ -1832,7 +1832,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
         RESOURCE['schema']['fields'].append(
             {'name': 'phone',
              'type': 'RECORD',
-             'mode': 'REPEATABLE',
+             'mode': 'REPEATED',
              'fields': [{'name': 'type',
                          'type': 'STRING',
                          'mode': 'REQUIRED'},
@@ -1900,7 +1900,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         ph_type = SchemaField('type', 'STRING', 'REQUIRED')
         ph_num = SchemaField('number', 'STRING', 'REQUIRED')
-        phone = SchemaField('phone', 'RECORD', mode='REPEATABLE',
+        phone = SchemaField('phone', 'RECORD', mode='REPEATED',
                             fields=[ph_type, ph_num])
         resource = self._call_fut([full_name, phone])
         self.assertEqual(len(resource), 2)
@@ -1911,7 +1911,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         self.assertEqual(resource[1],
                          {'name': 'phone',
                           'type': 'RECORD',
-                          'mode': 'REPEATABLE',
+                          'mode': 'REPEATED',
                           'fields': [{'name': 'type',
                                       'type': 'STRING',
                                       'mode': 'REQUIRED'},
