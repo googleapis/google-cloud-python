@@ -94,3 +94,43 @@ class TestSingleImageHelper(unittest.TestCase):
         file_ = io.BytesIO(b'bogus==')
 
         # Perform the single image request.
+        self.client.annotate_image({'image': file_})
+
+        # Evaluate the argument sent to batch_annotate_images.
+        assert batch_annotate.call_count == 1
+        _, args, kwargs = batch_annotate.mock_calls[0]
+
+        # Only a single request object should be sent.
+        assert len(args[0]) == 1
+
+        # Evalute the request object to ensure it looks correct.
+        request_sent = args[0][0]
+        assert request_sent['image']['content'] == b'bogus=='
+
+    @mock.patch.object(ImageAnnotatorClient, 'batch_annotate_images')
+    @mock.patch.object(io, 'open')
+    def test_image_filename(self, io_open, batch_annotate):
+        # Make io.open send back a mock with a read method.
+        file_ = mock.MagicMock(spec=io.BytesIO)
+        io_open.return_value = file_
+        file_.__enter__.return_value = file_
+        file_.read.return_value = b'imagefile=='
+
+        # Perform the single image request using a filename.
+        self.client.annotate_image(
+            {'image': {'source': {'filename': 'image.jpeg'}}},
+        )
+
+        # Establish that my file was opened.
+        io_open.assert_called_once_with('image.jpeg', 'rb')
+
+        # Evalute the argument sent to batch_annotate_images.
+        assert batch_annotate.call_count == 1
+        _, args, kwargs = batch_annotate.mock_calls[0]
+
+        # Only a single request object should be sent.
+        assert len(args[0]) == 1
+
+        # Evalute the request object to ensure it looks correct.
+        request_sent = args[0][0]
+        assert request_sent['image']['content'] == b'imagefile=='
