@@ -65,11 +65,11 @@ class Request(transport.Request):
     This class can be useful if you want to manually refresh a
     :class:`~google.auth.credentials.Credentials` instance::
 
-        import google.auth.transport.httplib2
+        import google_auth_httplib2
         import httplib2
 
         http = httplib2.Http()
-        request = google.auth.transport.httplib2.Request(http)
+        request = google_auth_httplib2.Request(http)
 
         credentials.refresh(request)
 
