@@ -102,6 +102,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     """
     _instance_admin_api = None
     _database_admin_api = None
+    _SET_PROJECT = True  # Used by from_service_account_json()
 
     def __init__(self, project=None, credentials=None,
                  user_agent=DEFAULT_USER_AGENT):
