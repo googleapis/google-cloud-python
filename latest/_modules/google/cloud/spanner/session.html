@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.spanner.session &mdash; google-cloud 00e8bff documentation</title>
+  <title>google.cloud.spanner.session &mdash; google-cloud f6dab41 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 00e8bff documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f6dab41 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -650,7 +650,9 @@
                 <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">txn</span><span class="o">.</span><span class="n">committed</span></div></div>
+                <span class="n">committed</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">committed</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
+                <span class="k">return</span> <span class="n">committed</span></div></div>
 
 
 <span class="c1"># pylint: disable=misplaced-bare-raise</span>
@@ -738,7 +740,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'00e8bff',
+            VERSION:'f6dab41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

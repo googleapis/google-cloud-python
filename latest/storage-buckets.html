@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 00e8bff documentation</title>
+  <title>Buckets &mdash; google-cloud f6dab41 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f6dab41 documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -613,7 +613,7 @@ the exception, call <code class="docutils literal"><span class="pre">delete_blob
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>blobs</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – A list of <a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a>-s or
+<li><strong>blobs</strong> (<em>list</em>) – A list of <a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a>-s or
 blob names to delete.</li>
 <li><strong>on_error</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) – (Optional) Takes single argument: <code class="docutils literal"><span class="pre">blob</span></code>. Called
 called once for each blob raising
@@ -750,7 +750,7 @@ Google Cloud Storage without giving them direct write access.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#module-datetime" title="(in Python v2.7)"><em>datetime</em></a>) – Optional expiration in UTC. If not specified, the
 policy will expire in 1 hour.</li>
-<li><strong>conditions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – A list of conditions as described in the
+<li><strong>conditions</strong> (<em>list</em>) – A list of conditions as described in the
 <a class="reference external" href="https://cloud.google.com/storage/docs/xml-api/post-object#policydocument">policy documents</a> documentation.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
@@ -875,7 +875,7 @@ set locally.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a>(<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a>)</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a>)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A sequence of mappings describing each lifecycle rule.</td>
 </tr>
@@ -1293,7 +1293,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'00e8bff',
+            VERSION:'f6dab41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

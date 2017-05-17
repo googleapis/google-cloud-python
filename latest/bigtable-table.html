@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Table &mdash; google-cloud 00e8bff documentation</title>
+  <title>Table &mdash; google-cloud f6dab41 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f6dab41 documentation" href="index.html"/>
         <link rel="next" title="Column Families" href="bigtable-column-family.html"/>
         <link rel="prev" title="Cluster" href="bigtable-cluster.html"/> 
 
@@ -412,14 +412,14 @@ this response.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>initial_split_keys</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) List of row keys that will be
+<li><strong>initial_split_keys</strong> (<em>list</em>) – (Optional) List of row keys that will be
 used to initially split the table into
 several tablets (Tablets are similar to
 HBase regions). Given two split keys,
 <code class="docutils literal"><span class="pre">&quot;s1&quot;</span></code> and <code class="docutils literal"><span class="pre">&quot;s2&quot;</span></code>, three tablets will be
 created, spanning the key ranges:
 <code class="docutils literal"><span class="pre">[,</span> <span class="pre">s1)</span></code>, <code class="docutils literal"><span class="pre">[s1,</span> <span class="pre">s2)</span></code>, <code class="docutils literal"><span class="pre">[s2,</span> <span class="pre">)</span></code>.</li>
-<li><strong>column_families</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) List or other iterable of
+<li><strong>column_families</strong> (<em>list</em>) – (Optional) List or other iterable of
 <a class="reference internal" href="bigtable-column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> instances.</li>
 </ul>
 </td>
@@ -612,7 +612,7 @@ samples would require space roughly equal to the difference in their
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.GrpcRendezvous" title="google.cloud.exceptions.GrpcRendezvous"><code class="xref py py-class docutils literal"><span class="pre">GrpcRendezvous</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A cancel-able iterator. Can be consumed by calling <code class="docutils literal"><span class="pre">next()</span></code>
-or by casting to a <a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> and can be cancelled by
+or by casting to a <code class="xref py py-class docutils literal"><span class="pre">list</span></code> and can be cancelled by
 calling <code class="docutils literal"><span class="pre">cancel()</span></code>.</td>
 </tr>
 </tbody>
@@ -667,7 +667,7 @@ calling <code class="docutils literal"><span class="pre">cancel()</span></code>.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'00e8bff',
+            VERSION:'f6dab41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

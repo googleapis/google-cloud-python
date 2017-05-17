@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Image &mdash; google-cloud 00e8bff documentation</title>
+  <title>Vision Image &mdash; google-cloud f6dab41 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f6dab41 documentation" href="index.html"/>
         <link rel="next" title="Vision Safe Search" href="vision-safe-search.html"/>
         <link rel="prev" title="Vision Face" href="vision-face.html"/> 
 
@@ -409,7 +409,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>features</strong> (list of <a class="reference internal" href="vision-feature.html#google.cloud.vision.feature.Feature" title="google.cloud.vision.feature.Feature"><code class="xref py py-class docutils literal"><span class="pre">Feature</span></code></a>) – List of the <code class="docutils literal"><span class="pre">Feature</span></code> indication the type of
 annotation to perform.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
 <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
@@ -427,13 +427,13 @@ annotation to perform.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>aspect_ratios</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) List of floats i.e. 4/3 == 1.33333. A
+<li><strong>aspect_ratios</strong> (<em>list</em>) – (Optional) List of floats i.e. 4/3 == 1.33333. A
 maximum of 16 aspect ratios can be given.</li>
 <li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) The number of crop hints to detect.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of <code class="xref py py-class docutils literal"><span class="pre">CropHints</span></code>.</p>
@@ -453,7 +453,7 @@ maximum of 16 aspect ratios can be given.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of faces to try and detect.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of <a class="reference internal" href="vision-face.html#google.cloud.vision.face.Face" title="google.cloud.vision.face.Face"><code class="xref py py-class docutils literal"><span class="pre">Face</span></code></a>.</td>
 </tr>
@@ -470,13 +470,13 @@ maximum of 16 aspect ratios can be given.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>language_hints</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) – (Optional) A list of BCP-47 language codes. See:
+<li><strong>language_hints</strong> (<em>list</em>) – (Optional) A list of BCP-47 language codes. See:
 <a class="reference external" href="https://cloud.google.com/vision/docs/languages">https://cloud.google.com/vision/docs/languages</a></li>
 <li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – (Optional) The number of documents to detect.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of <a class="reference internal" href="vision-text.html#google.cloud.vision.text.TextAnnotation" title="google.cloud.vision.text.TextAnnotation"><code class="xref py py-class docutils literal"><span class="pre">TextAnnotation</span></code></a>.</p>
@@ -496,7 +496,7 @@ maximum of 16 aspect ratios can be given.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The maximum number of labels to try and detect.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a></td>
 </tr>
@@ -514,7 +514,7 @@ maximum of 16 aspect ratios can be given.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The maximum number of landmarks to find.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
 <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
@@ -533,7 +533,7 @@ maximum of 16 aspect ratios can be given.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The maximum number of logos to find.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
 <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
@@ -552,7 +552,7 @@ maximum of 16 aspect ratios can be given.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The maximum number of image properties to find.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
 <a class="reference internal" href="vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation" title="google.cloud.vision.color.ImagePropertiesAnnotation"><code class="xref py py-class docutils literal"><span class="pre">ImagePropertiesAnnotation</span></code></a>.</td>
@@ -571,7 +571,7 @@ maximum of 16 aspect ratios can be given.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The number of faces to try and detect.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
 <code class="xref py py-class docutils literal"><span class="pre">SafeSearchAnnotation</span></code>.</td>
@@ -590,7 +590,7 @@ maximum of 16 aspect ratios can be given.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The maximum instances of text to find.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
 <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
@@ -609,7 +609,7 @@ maximum of 16 aspect ratios can be given.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The maximum instances of text to find.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
 <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
@@ -1057,7 +1057,7 @@ longitude.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'00e8bff',
+            VERSION:'f6dab41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

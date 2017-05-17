@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ACL &mdash; google-cloud 00e8bff documentation</title>
+  <title>ACL &mdash; google-cloud f6dab41 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f6dab41 documentation" href="index.html"/>
         <link rel="next" title="Batches" href="storage-batch.html"/>
         <link rel="prev" title="Buckets" href="storage-buckets.html"/> 
 
@@ -377,12 +377,6 @@ be <code class="xref py py-class docutils literal"><span class="pre">_ACLEntity<
     <span class="n">acl</span><span class="o">.</span><span class="n">all_authenticated</span><span class="p">()</span><span class="o">.</span><span class="n">grant_write</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>You can also chain these <code class="docutils literal"><span class="pre">grant_*</span></code> and <code class="docutils literal"><span class="pre">revoke_*</span></code> methods together
-for brevity:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
-    <span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">revoke_write</span><span class="p">()</span>
-</pre></div>
-</div>
 <p>After that, you can save any changes you make with the
 <a class="reference internal" href="#google.cloud.storage.acl.ACL.save" title="google.cloud.storage.acl.ACL.save"><code class="xref py py-func docutils literal"><span class="pre">google.cloud.storage.acl.ACL.save()</span></code></a> method:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
@@ -409,7 +403,7 @@ when sending metadata for ACLs to the API.</p>
 <p>Container class representing a list of access controls.</p>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS">
-<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({‘authenticatedRead’, ‘bucketOwnerFullControl’, ‘publicRead’, ‘publicReadWrite’, ‘private’, ‘projectPrivate’, ‘bucketOwnerRead’})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
+<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({‘publicReadWrite’, ‘authenticatedRead’, ‘private’, ‘bucketOwnerFullControl’, ‘projectPrivate’, ‘publicRead’, ‘bucketOwnerRead’})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
 <dd><p>See:
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control/lists#predefined-acl">https://cloud.google.com/storage/docs/access-control/lists#predefined-acl</a></p>
 </dd></dl>
@@ -839,7 +833,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'00e8bff',
+            VERSION:'f6dab41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

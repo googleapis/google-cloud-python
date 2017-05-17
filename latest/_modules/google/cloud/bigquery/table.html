@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.table &mdash; google-cloud 00e8bff documentation</title>
+  <title>google.cloud.bigquery.table &mdash; google-cloud f6dab41 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 00e8bff documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f6dab41 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -1256,9 +1256,6 @@
             <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;load&#39;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s1">&#39;sourceFormat&#39;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">,</span>
-                    <span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">),</span>
-                    <span class="p">},</span>
                     <span class="s1">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
                         <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
@@ -1267,6 +1264,12 @@
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">load_config</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="s1">&#39;load&#39;</span><span class="p">]</span>
+            <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
+            <span class="p">}</span>
 
         <span class="n">_configure_job_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">allow_jagged_rows</span><span class="p">,</span>
                                 <span class="n">allow_quoted_newlines</span><span class="p">,</span> <span class="n">create_disposition</span><span class="p">,</span>
@@ -1510,7 +1513,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'00e8bff',
+            VERSION:'f6dab41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 00e8bff documentation</title>
+  <title>Using the API &mdash; google-cloud f6dab41 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 00e8bff documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f6dab41 documentation" href="index.html"/>
         <link rel="next" title="Natural Language Client" href="language-client.html"/>
         <link rel="prev" title="Change Sets" href="dns-changes.html"/> 
 
@@ -471,7 +471,7 @@ to content stored in <a class="reference external" href="https://cloud.google.co
 <h2>Analyze Entities<a class="headerlink" href="#analyze-entities" title="Permalink to this headline">#</a></h2>
 <p>The <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.analyze_entities" title="google.cloud.language.document.Document.analyze_entities"><code class="xref py py-meth docutils literal"><span class="pre">analyze_entities()</span></code></a> method
 finds named entities (i.e. proper names) in the text and returns them
-as a <a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference internal" href="language-responses.html#google.cloud.language.entity.Entity" title="google.cloud.language.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a> objects.
+as a <code class="xref py py-class docutils literal"><span class="pre">list</span></code> of <a class="reference internal" href="language-responses.html#google.cloud.language.entity.Entity" title="google.cloud.language.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a> objects.
 Each entity has a corresponding type, salience (prominence), associated
 metadata and other properties.</p>
 <blockquote>
@@ -530,13 +530,13 @@ analyzes a document and is intended for users who are familiar with
 machine learning and need in-depth text features to build upon.</p>
 <p>The method returns a named tuple with four entries:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">sentences</span></code>: A <a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of sentences in the text</li>
-<li><code class="docutils literal"><span class="pre">tokens</span></code>: A <a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference internal" href="language-responses.html#google.cloud.language.syntax.Token" title="google.cloud.language.syntax.Token"><code class="xref py py-class docutils literal"><span class="pre">Token</span></code></a>
+<li><code class="docutils literal"><span class="pre">sentences</span></code>: A <code class="xref py py-class docutils literal"><span class="pre">list</span></code> of sentences in the text</li>
+<li><code class="docutils literal"><span class="pre">tokens</span></code>: A <code class="xref py py-class docutils literal"><span class="pre">list</span></code> of <a class="reference internal" href="language-responses.html#google.cloud.language.syntax.Token" title="google.cloud.language.syntax.Token"><code class="xref py py-class docutils literal"><span class="pre">Token</span></code></a>
 object (e.g. words, punctuation)</li>
 <li><code class="docutils literal"><span class="pre">sentiment</span></code>: The <a class="reference internal" href="language-responses.html#google.cloud.language.sentiment.Sentiment" title="google.cloud.language.sentiment.Sentiment"><code class="xref py py-class docutils literal"><span class="pre">Sentiment</span></code></a> of
 the text (as returned by
 <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.analyze_sentiment" title="google.cloud.language.document.Document.analyze_sentiment"><code class="xref py py-meth docutils literal"><span class="pre">analyze_sentiment()</span></code></a>)</li>
-<li><code class="docutils literal"><span class="pre">entities</span></code>: <a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference internal" href="language-responses.html#google.cloud.language.entity.Entity" title="google.cloud.language.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>
+<li><code class="docutils literal"><span class="pre">entities</span></code>: <code class="xref py py-class docutils literal"><span class="pre">list</span></code> of <a class="reference internal" href="language-responses.html#google.cloud.language.entity.Entity" title="google.cloud.language.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>
 objects extracted from the text (as returned by
 <a class="reference internal" href="language-document.html#google.cloud.language.document.Document.analyze_entities" title="google.cloud.language.document.Document.analyze_entities"><code class="xref py py-meth docutils literal"><span class="pre">analyze_entities()</span></code></a>)</li>
 </ul>
@@ -634,7 +634,7 @@ the response is <a class="reference external" href="https://docs.python.org/2/li
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'00e8bff',
+            VERSION:'f6dab41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
