@@ -54,7 +54,8 @@ class CloudLoggingHandler(logging.StreamHandler):
                       option is :class:`.SyncTransport`.
 
     :type resource: :class:`~google.cloud.logging.resource.Resource`
-    :param resource: (Optional) Monitored resource of the entry
+    :param resource: (Optional) Monitored resource of the entry, defaults
+                     to the global resource type.
 
     Example:
 

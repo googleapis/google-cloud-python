@@ -50,19 +50,22 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         client = mock.Mock(project=self.PROJECT, spec=['project'])
         handler = self._make_one(client, transport=_Transport)
         gae_resource = handler.get_gae_resource()
-        logname = 'loggername'
+        logname = 'app'
         message = 'hello world'
         record = logging.LogRecord(logname, logging, None, None, message,
                                    None, None)
         handler.emit(record)
 
+        self.assertIs(handler.transport.client, client)
+        self.assertEqual(handler.transport.name, logname)
         self.assertEqual(handler.transport.send_called_with, (record, message, gae_resource))
 
 
 class _Transport(object):
 
     def __init__(self, client, name):
-        pass
+        self.client = client
+        self.name = name
 
     def send(self, record, message, resource):
         self.send_called_with = (record, message, resource)

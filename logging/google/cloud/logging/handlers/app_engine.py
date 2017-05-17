@@ -58,7 +58,6 @@ class AppEngineHandler(CloudLoggingHandler):
         :rtype: :class:`~google.cloud.logging.resource.Resource`
         :returns: Monitored resource for GAE.
         """
-
         gae_resource = Resource(
             type='gae_app',
             labels={

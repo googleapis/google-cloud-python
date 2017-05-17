@@ -281,14 +281,18 @@ class _Thread(object):
 
 
 class _Batch(object):
-    from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
     def __init__(self):
         self.entries = []
         self.commit_called = False
         self.commit_count = None
 
-    def log_struct(self, info, severity=logging.INFO, resource=_GLOBAL_RESOURCE):
+    def log_struct(self, info, severity=logging.INFO, resource=None):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
+        if resource is None:
+            resource = _GLOBAL_RESOURCE
+
         self.log_struct_called_with = (info, severity, resource)
         self.entries.append(info)
 
