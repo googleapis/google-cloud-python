@@ -323,6 +323,23 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         rows = list(self._db.execute_sql(self.SQL))
         self._check_row_data(rows)
 
+    def test_db_run_in_transaction_twice(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        def _unit_of_work(transaction, test):
+            transaction.insert_or_update(
+                test.TABLE, test.COLUMNS, test.ROW_DATA)
+
+        self._db.run_in_transaction(_unit_of_work, test=self)
+        self._db.run_in_transaction(_unit_of_work, test=self)
+
+        rows = list(self._db.execute_sql(self.SQL))
+        self._check_row_data(rows)
+
 
 class TestSessionAPI(unittest.TestCase, _TestData):
     ALL_TYPES_TABLE = 'all_types'

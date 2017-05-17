@@ -503,6 +503,7 @@ class TestSession(unittest.TestCase):
             unit_of_work, 'abc', some_arg='def')
 
         self.assertEqual(committed, now)
+        self.assertIsNone(session._transaction)
         self.assertEqual(len(called_with), 1)
         txn, args, kw = called_with[0]
         self.assertIsInstance(txn, Transaction)

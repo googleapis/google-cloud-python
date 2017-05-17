@@ -311,7 +311,9 @@ class Session(object):
                 _delay_until_retry(exc, deadline)
                 del self._transaction
             else:
-                return txn.committed
+                committed = txn.committed
+                del self._transaction
+                return committed
 
 
 # pylint: disable=misplaced-bare-raise
