@@ -126,6 +126,8 @@ _CELLDATA_FROM_JSON = {
 def _row_from_json(row, schema):
     """Convert JSON row data to row with appropriate types.
 
+    Note:  ``row['f']`` and ``schema`` are presumed to be of the same length.
+
     :type row: dict
     :param row: A JSON response row to be converted.
 

@@ -673,6 +673,9 @@ class Table(object):
                   (this is distinct from the total number of rows in the
                   current page: ``iterator.page.num_items``).
         """
+        if len(self._schema) == 0:
+            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+
         client = self._require_client(client)
         path = '%s/data' % (self.path,)
         iterator = HTTPIterator(client=client, path=path,
@@ -742,7 +745,7 @@ class Table(object):
 
             for field, value in zip(self._schema, row):
                 converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
-                if converter is not None:
+                if converter is not None:  # STRING doesn't need converting
                     value = converter(value)
                 row_info[field.name] = value
 

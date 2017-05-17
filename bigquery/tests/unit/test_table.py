@@ -1043,6 +1043,24 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_fetch_data_wo_schema(self):
+        from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
+
+        client = _Client(project=self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
+        ROWS = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ]
+
+        with self.assertRaises(ValueError) as exc:
+            table.fetch_data()
+
+        self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
+
     def test_fetch_data_w_bound_client(self):
         import datetime
         import six
