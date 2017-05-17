@@ -324,7 +324,6 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self._check_row_data(rows)
 
     def test_db_run_in_transaction_twice(self):
-        # See issue #3434.
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
