@@ -560,23 +560,23 @@ class TestClient(unittest.TestCase):
         })
 
     def test_get_default_handler_app_engine(self):
+        import httplib2
         import os
         from google.cloud._testing import _Monkey
-        from google.cloud._testing import _tempdir
         from google.cloud.logging.client import _APPENGINE_FLEXIBLE_ENV_VM
-        from google.cloud.logging.handlers import app_engine as _MUT
         from google.cloud.logging.handlers import AppEngineHandler
 
-        client = self._make_one(project=self.PROJECT,
-                                credentials=_make_credentials(),
-                                _use_grpc=False)
+        http_mock = mock.Mock(spec=httplib2.Http)
+        credentials = _make_credentials()
+        deepcopy = mock.Mock(return_value=http_mock)
 
-        with _tempdir() as tempdir:
-            temp_log_path = os.path.join(tempdir, '{pid}')
-            with _Monkey(_MUT, _LOG_PATH_TEMPLATE=temp_log_path):
-                with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
-                    handler = client.get_default_handler()
-                    handler.close()  # allow tempdir cleanup on Windows
+        with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
+            with mock.patch('copy.deepcopy', new=deepcopy):
+                client = self._make_one(project=self.PROJECT,
+                                        credentials=credentials,
+                                        _use_grpc=False)
+                handler = client.get_default_handler()
+                deepcopy.assert_called_once_with(client._http)
 
         self.assertIsInstance(handler, AppEngineHandler)
 
