@@ -47,6 +47,8 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         self.assertEqual(logger.name, name)
 
     def test_send(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
         client = _Client(self.PROJECT)
         name = 'python_logger'
 
@@ -54,13 +56,14 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
         python_logger_name = 'mylogger'
         message = 'hello world'
+
         record = logging.LogRecord(
             python_logger_name, logging.INFO,
             None, None, message, None, None)
 
-        transport.send(record, message)
+        transport.send(record, message, _GLOBAL_RESOURCE)
 
-        transport.worker.enqueue.assert_called_once_with(record, message)
+        transport.worker.enqueue.assert_called_once_with(record, message, _GLOBAL_RESOURCE)
 
     def test_flush(self):
         client = _Client(self.PROJECT)
@@ -284,8 +287,13 @@ class _Batch(object):
         self.commit_called = False
         self.commit_count = None
 
-    def log_struct(self, info, severity=logging.INFO):
-        self.log_struct_called_with = (info, severity)
+    def log_struct(self, info, severity=logging.INFO, resource=None):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
+        if resource is None:
+            resource = _GLOBAL_RESOURCE
+
+        self.log_struct_called_with = (info, severity, resource)
         self.entries.append(info)
 
     def commit(self):

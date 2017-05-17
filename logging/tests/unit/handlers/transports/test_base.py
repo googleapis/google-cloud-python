@@ -31,7 +31,7 @@ class TestBaseHandler(unittest.TestCase):
     def test_send_is_abstract(self):
         target = self._make_one()
         with self.assertRaises(NotImplementedError):
-            target.send(None, None)
+            target.send(None, None, None)
 
     def test_flush_is_abstract_and_optional(self):
         target = self._make_one()
