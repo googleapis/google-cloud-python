@@ -22,10 +22,10 @@ import httplib2
 import six
 
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import make_exception
+from google.cloud.iterator import HTTPIterator
 from google.cloud.streaming.exceptions import HttpError
 from google.cloud.streaming.http_wrapper import Request
 from google.cloud.streaming.http_wrapper import make_api_request
@@ -33,7 +33,7 @@ from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
 from google.cloud.streaming.transfer import Upload
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery._helpers import _row_from_json
-from google.cloud.iterator import HTTPIterator
+from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'table.reload()'"
@@ -673,6 +673,9 @@ class Table(object):
                   (this is distinct from the total number of rows in the
                   current page: ``iterator.page.num_items``).
         """
+        if len(self._schema) == 0:
+            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+
         client = self._require_client(client)
         path = '%s/data' % (self.path,)
         iterator = HTTPIterator(client=client, path=path,
@@ -741,11 +744,9 @@ class Table(object):
             row_info = {}
 
             for field, value in zip(self._schema, row):
-                if field.field_type == 'TIMESTAMP':
-                    # BigQuery stores TIMESTAMP data internally as a
-                    # UNIX timestamp with microsecond precision.
-                    # Specifies the number of seconds since the epoch.
-                    value = _convert_timestamp(value)
+                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
+                if converter is not None:  # STRING doesn't need converting
+                    value = converter(value)
                 row_info[field.name] = value
 
             info = {'json': row_info}
@@ -1131,10 +1132,3 @@ class _UrlBuilder(object):
     def __init__(self):
         self.query_params = {}
         self._relative_path = ''
-
-
-def _convert_timestamp(value):
-    """Helper for :meth:`Table.insert_data`."""
-    if isinstance(value, datetime.datetime):
-        value = _microseconds_from_datetime(value) * 1e-6
-    return value
