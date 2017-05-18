@@ -1,25 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ast import parse
-import os
 from setuptools import setup, find_packages
+import versioneer
 
 
 NAME = 'pandas-gbq'
 
 
 # versioning
-import versioneer
 cmdclass = versioneer.get_cmdclass()
+
 
 def readme():
     with open('README.rst') as f:
         return f.read()
 
+
 INSTALL_REQUIRES = (
     ['pandas', 'httplib2', 'google-api-python-client', 'oauth2client']
 )
+
 
 setup(
     name=NAME,
@@ -40,7 +41,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Topic :: Scientific/Engineering',

@@ -4,9 +4,9 @@ language: python
 
 env:
   - PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='false'
-  - PYTHON=3.4 PANDAS=0.18.1 COVERAGE='false' LINT='false'
-  - PYTHON=3.5 PANDAS=0.19.2 COVERAGE='true' LINT='false'
-  - PYTHON=3.6 PANDAS=0.19.2 COVERAGE='false' LINT='true'
+  - PYTHON=3.5 PANDAS=0.18.1 COVERAGE='true' LINT='false'
+  - PYTHON=3.6 PANDAS=0.20.1 COVERAGE='false' LINT='true'
+  - PYTHON=3.6 PANDAS=MASTER COVERAGE='false' LINT='false'
 
 before_install:
   - echo "before_install"
@@ -23,9 +23,15 @@ install:
   - conda info -a
   - conda create -n test-environment python=$PYTHON
   - source activate test-environment
-  - conda install pandas=$PANDAS
+  - if [[ "$PANDAS" == "MASTER" ]]; then
+      conda install numpy pytz python-dateutil;
+      PRE_WHEELS="https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com";
+      pip install --pre --upgrade --timeout=60 -f $PRE_WHEELS pandas;
+    else
+      conda install pandas=$PANDAS;
+    fi
   - pip install coverage pytest pytest-cov flake8 codecov
-  - REQ="ci/requirements-${PYTHON}.pip"
+  - REQ="ci/requirements-${PYTHON}-${PANDAS}.pip"
   - pip install -r $REQ
   - conda list
   - python setup.py install

@@ -1,10 +1,11 @@
 Changelog
 =========
 
-0.1.7 / 2017-??-??
+0.2.0 / 2017-??-??
 ------------------
 
-- Resolve issue where the optional ``--noauth_local_webserver`` command line argument would not be propagated during the authentication process.
+- Resolve issue where the optional ``--noauth_local_webserver`` command line argument would not be propagated during the authentication process. (:issue:`35`)
+- Drop support for Python 3.4 (:issue:`40`)
 
 0.1.6 / 2017-05-03
 ------------------
@@ -14,12 +15,12 @@ Changelog
 0.1.4 / 2017-03-17
 ------------------
 
-- ``InvalidIndexColumn`` will be raised instead of ``InvalidColumnOrder`` in ``read_gbq`` when the index column specified does not exist in the BigQuery schema. :issue:`6`
+- ``InvalidIndexColumn`` will be raised instead of ``InvalidColumnOrder`` in ``read_gbq`` when the index column specified does not exist in the BigQuery schema. (:issue:`6`)
 
 0.1.3 / 2017-03-04
 ------------------
 
-- Bug with appending to a BigQuery table where fields have modes (NULLABLE,REQUIRED,REPEATED) specified. These modes were compared versus the remote schema and writing a table via ``to_gbq`` would previously raise. :issue:`13`
+- Bug with appending to a BigQuery table where fields have modes (NULLABLE,REQUIRED,REPEATED) specified. These modes were compared versus the remote schema and writing a table via ``to_gbq`` would previously raise. (:issue:`13`)
 
 0.1.2 / 2017-02-23
 ------------------
