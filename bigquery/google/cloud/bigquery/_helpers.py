@@ -21,6 +21,7 @@ import datetime
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _time_from_iso8601_time_naive
 from google.cloud._helpers import _to_bytes
@@ -122,81 +123,10 @@ _CELLDATA_FROM_JSON = {
 }
 
 
-def _int_to_json(value):
-    """Coerce 'value' to an JSON-compatible representation."""
-    if isinstance(value, int):
-        value = str(value)
-    return value
-
-
-def _float_to_json(value):
-    """Coerce 'value' to an JSON-compatible representation."""
-    return value
-
-
-def _bool_to_json(value):
-    """Coerce 'value' to an JSON-compatible representation."""
-    if isinstance(value, bool):
-        value = 'true' if value else 'false'
-    return value
-
-
-def _bytes_to_json(value):
-    """Coerce 'value' to an JSON-compatible representation."""
-    if isinstance(value, bytes):
-        value = base64.standard_b64encode(value).decode('ascii')
-    return value
-
-
-def _timestamp_to_json(value):
-    """Coerce 'value' to an JSON-compatible representation."""
-    if isinstance(value, datetime.datetime):
-        if value.tzinfo not in (None, UTC):
-            # Convert to UTC and remove the time zone info.
-            value = value.replace(tzinfo=None) - value.utcoffset()
-        value = '%s %s+00:00' % (
-            value.date().isoformat(), value.time().isoformat())
-    return value
-
-
-def _datetime_to_json(value):
-    """Coerce 'value' to an JSON-compatible representation."""
-    if isinstance(value, datetime.datetime):
-        value = value.strftime(_RFC3339_MICROS_NO_ZULU)
-    return value
-
-
-def _date_to_json(value):
-    """Coerce 'value' to an JSON-compatible representation."""
-    if isinstance(value, datetime.date):
-        value = value.isoformat()
-    return value
-
-
-def _time_to_json(value):
-    """Coerce 'value' to an JSON-compatible representation."""
-    if isinstance(value, datetime.time):
-        value = value.isoformat()
-    return value
-
-
-_SCALAR_VALUE_TO_JSON = {
-    'INTEGER': _int_to_json,
-    'INT64': _int_to_json,
-    'FLOAT': _float_to_json,
-    'FLOAT64': _float_to_json,
-    'BOOLEAN': _bool_to_json,
-    'BOOL': _bool_to_json,
-    'BYTES': _bytes_to_json,
-    'TIMESTAMP': _timestamp_to_json,
-    'DATETIME': _datetime_to_json,
-    'DATE': _date_to_json,
-    'TIME': _time_to_json,
-}
-
-
 def _row_from_json(row, schema):
     """Convert JSON row data to row with appropriate types.
+
+    Note:  ``row['f']`` and ``schema`` are presumed to be of the same length.
 
     :type row: dict
     :param row: A JSON response row to be converted.
@@ -223,6 +153,98 @@ def _row_from_json(row, schema):
 def _rows_from_json(rows, schema):
     """Convert JSON row data to rows with appropriate types."""
     return [_row_from_json(row, schema) for row in rows]
+
+
+def _int_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, int):
+        value = str(value)
+    return value
+
+
+def _float_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    return value
+
+
+def _bool_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, bool):
+        value = 'true' if value else 'false'
+    return value
+
+
+def _bytes_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, bytes):
+        value = base64.standard_b64encode(value).decode('ascii')
+    return value
+
+
+def _timestamp_to_json_parameter(value):
+    """Coerce 'value' to an JSON-compatible representation.
+
+    This version returns the string representation used in query parameters.
+    """
+    if isinstance(value, datetime.datetime):
+        if value.tzinfo not in (None, UTC):
+            # Convert to UTC and remove the time zone info.
+            value = value.replace(tzinfo=None) - value.utcoffset()
+        value = '%s %s+00:00' % (
+            value.date().isoformat(), value.time().isoformat())
+    return value
+
+
+def _timestamp_to_json_row(value):
+    """Coerce 'value' to an JSON-compatible representation.
+
+    This version returns floating-point seconds value used in row data.
+    """
+    if isinstance(value, datetime.datetime):
+        value = _microseconds_from_datetime(value) * 1e-6
+    return value
+
+
+def _datetime_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.datetime):
+        value = value.strftime(_RFC3339_MICROS_NO_ZULU)
+    return value
+
+
+def _date_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.date):
+        value = value.isoformat()
+    return value
+
+
+def _time_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.time):
+        value = value.isoformat()
+    return value
+
+
+# Converters used for scalar values marshalled as row data.
+_SCALAR_VALUE_TO_JSON_ROW = {
+    'INTEGER': _int_to_json,
+    'INT64': _int_to_json,
+    'FLOAT': _float_to_json,
+    'FLOAT64': _float_to_json,
+    'BOOLEAN': _bool_to_json,
+    'BOOL': _bool_to_json,
+    'BYTES': _bytes_to_json,
+    'TIMESTAMP': _timestamp_to_json_row,
+    'DATETIME': _datetime_to_json,
+    'DATE': _date_to_json,
+    'TIME': _time_to_json,
+}
+
+
+# Converters used for scalar values marshalled as query parameters.
+_SCALAR_VALUE_TO_JSON_PARAM = _SCALAR_VALUE_TO_JSON_ROW.copy()
+_SCALAR_VALUE_TO_JSON_PARAM['TIMESTAMP'] = _timestamp_to_json_parameter
 
 
 class _ConfigurationProperty(object):
@@ -420,7 +442,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
         :returns: JSON mapping
         """
         value = self.value
-        converter = _SCALAR_VALUE_TO_JSON.get(self.type_)
+        converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.type_)
         if converter is not None:
             value = converter(value)
         resource = {
@@ -506,7 +528,7 @@ class ArrayQueryParameter(AbstractQueryParameter):
             a_values = [repr_['parameterValue'] for repr_ in reprs]
         else:
             a_type = {'type': self.array_type}
-            converter = _SCALAR_VALUE_TO_JSON.get(self.array_type)
+            converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.array_type)
             if converter is not None:
                 values = [converter(value) for value in values]
             a_values = [{'value': value} for value in values]
@@ -600,7 +622,7 @@ class StructQueryParameter(AbstractQueryParameter):
                 values[name] = repr_['parameterValue']
             else:
                 s_types[name] = {'name': name, 'type': {'type': type_}}
-                converter = _SCALAR_VALUE_TO_JSON.get(type_)
+                converter = _SCALAR_VALUE_TO_JSON_PARAM.get(type_)
                 if converter is not None:
                     value = converter(value)
                 values[name] = {'value': value}
