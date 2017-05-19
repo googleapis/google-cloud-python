@@ -14,8 +14,6 @@
 
 import unittest
 
-from google.cloud.exceptions import _HAVE_GRPC
-
 
 class Test_GoogleCloudError(unittest.TestCase):
 
@@ -147,7 +145,6 @@ class Test_make_exception(unittest.TestCase):
         self.assertEqual(list(exception.errors), [])
 
 
-@unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
 class Test__catch_remap_gax_error(unittest.TestCase):
 
     def _call_fut(self):

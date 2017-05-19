@@ -27,16 +27,10 @@ import sys
 
 import six
 
-try:
-    from google.gax.errors import GaxError
-    from google.gax.grpc import exc_to_code
-    from grpc import StatusCode
-    from grpc._channel import _Rendezvous
-except ImportError:  # pragma: NO COVER
-    _HAVE_GRPC = False
-    _Rendezvous = None
-else:
-    _HAVE_GRPC = True
+from google.gax.errors import GaxError
+from google.gax.grpc import exc_to_code
+from grpc import StatusCode
+from grpc._channel import _Rendezvous
 
 from google.cloud._helpers import _to_bytes
 
@@ -259,6 +253,7 @@ for _eklass in _walk_subclasses(GoogleCloudError):
     code = getattr(_eklass, 'code', None)
     if code is not None:
         _HTTP_CODE_TO_EXCEPTION[code] = _eklass
+
 
 _GRPC_ERROR_MAPPING = {
     StatusCode.UNKNOWN: InternalServerError,
