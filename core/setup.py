@@ -56,6 +56,7 @@ REQUIREMENTS = [
     'protobuf >= 3.0.0',
     'google-auth >= 0.4.0, < 2.0.0dev',
     'google-auth-httplib2',
+    'google-gax>=0.15.7, <0.16dev',
     'six',
 ]
 

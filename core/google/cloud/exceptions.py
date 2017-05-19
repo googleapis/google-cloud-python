@@ -20,18 +20,27 @@ See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
 # Avoid the grpc and google.cloud.grpc collision.
 from __future__ import absolute_import
 
+import contextlib
 import copy
 import json
+import sys
+
 import six
+
+try:
+    from google.gax.errors import GaxError
+    from google.gax.grpc import exc_to_code
+    from grpc import StatusCode
+    from grpc._channel import _Rendezvous
+except ImportError:  # pragma: NO COVER
+    _HAVE_GRPC = False
+    _Rendezvous = None
+else:
+    _HAVE_GRPC = True
 
 from google.cloud._helpers import _to_bytes
 
 _HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
-
-try:
-    from grpc._channel import _Rendezvous
-except ImportError:  # pragma: NO COVER
-    _Rendezvous = None
 
 
 # pylint: disable=invalid-name
@@ -250,3 +259,44 @@ for _eklass in _walk_subclasses(GoogleCloudError):
     code = getattr(_eklass, 'code', None)
     if code is not None:
         _HTTP_CODE_TO_EXCEPTION[code] = _eklass
+
+_GRPC_ERROR_MAPPING = {
+    StatusCode.UNKNOWN: InternalServerError,
+    StatusCode.INVALID_ARGUMENT: BadRequest,
+    StatusCode.DEADLINE_EXCEEDED: GatewayTimeout,
+    StatusCode.NOT_FOUND: NotFound,
+    StatusCode.ALREADY_EXISTS: Conflict,
+    StatusCode.PERMISSION_DENIED: Forbidden,
+    StatusCode.UNAUTHENTICATED: Unauthorized,
+    StatusCode.RESOURCE_EXHAUSTED: TooManyRequests,
+    StatusCode.FAILED_PRECONDITION: PreconditionFailed,
+    StatusCode.ABORTED: Conflict,
+    StatusCode.OUT_OF_RANGE: BadRequest,
+    StatusCode.UNIMPLEMENTED: MethodNotImplemented,
+    StatusCode.INTERNAL: InternalServerError,
+    StatusCode.UNAVAILABLE: ServiceUnavailable,
+    StatusCode.DATA_LOSS: InternalServerError,
+}
+
+
+@contextlib.contextmanager
+def _catch_remap_gax_error():
+    """Remap GAX exceptions that happen in context.
+
+    .. _code.proto: https://github.com/googleapis/googleapis/blob/\
+                    master/google/rpc/code.proto
+
+    Remaps gRPC exceptions to the classes defined in
+    :mod:`~google.cloud.exceptions` (according to the description
+    in `code.proto`_).
+    """
+    try:
+        yield
+    except GaxError as exc:
+        error_code = exc_to_code(exc.cause)
+        error_class = _GRPC_ERROR_MAPPING.get(error_code)
+        if error_class is None:
+            raise
+        else:
+            new_exc = error_class(exc.cause.details())
+            six.reraise(error_class, new_exc, sys.exc_info()[2])

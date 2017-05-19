@@ -14,21 +14,14 @@
 
 """Helpers for making API requests via GAX / gRPC."""
 
-
-import contextlib
-import sys
-
 from google.cloud.gapic.datastore.v1 import datastore_client
-from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
 from google.gax.utils import metrics
 from grpc import insecure_channel
-from grpc import StatusCode
 import six
 
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
-from google.cloud import exceptions
+from google.cloud.exceptions import _catch_remap_gax_error
 
 from google.cloud.datastore import __version__
 
@@ -40,46 +33,6 @@ _HEADER_STR = metrics.stringify(metrics.fill(_METRICS_HEADERS))
 _GRPC_EXTRA_OPTIONS = (
     ('x-goog-api-client', _HEADER_STR),
 )
-_GRPC_ERROR_MAPPING = {
-    StatusCode.UNKNOWN: exceptions.InternalServerError,
-    StatusCode.INVALID_ARGUMENT: exceptions.BadRequest,
-    StatusCode.DEADLINE_EXCEEDED: exceptions.GatewayTimeout,
-    StatusCode.NOT_FOUND: exceptions.NotFound,
-    StatusCode.ALREADY_EXISTS: exceptions.Conflict,
-    StatusCode.PERMISSION_DENIED: exceptions.Forbidden,
-    StatusCode.UNAUTHENTICATED: exceptions.Unauthorized,
-    StatusCode.RESOURCE_EXHAUSTED: exceptions.TooManyRequests,
-    StatusCode.FAILED_PRECONDITION: exceptions.PreconditionFailed,
-    StatusCode.ABORTED: exceptions.Conflict,
-    StatusCode.OUT_OF_RANGE: exceptions.BadRequest,
-    StatusCode.UNIMPLEMENTED: exceptions.MethodNotImplemented,
-    StatusCode.INTERNAL: exceptions.InternalServerError,
-    StatusCode.UNAVAILABLE: exceptions.ServiceUnavailable,
-    StatusCode.DATA_LOSS: exceptions.InternalServerError,
-}
-
-
-@contextlib.contextmanager
-def _catch_remap_gax_error():
-    """Remap GAX exceptions that happen in context.
-
-    .. _code.proto: https://github.com/googleapis/googleapis/blob/\
-                    master/google/rpc/code.proto
-
-    Remaps gRPC exceptions to the classes defined in
-    :mod:`~google.cloud.exceptions` (according to the description
-    in `code.proto`_).
-    """
-    try:
-        yield
-    except GaxError as exc:
-        error_code = exc_to_code(exc.cause)
-        error_class = _GRPC_ERROR_MAPPING.get(error_code)
-        if error_class is None:
-            raise
-        else:
-            new_exc = error_class(exc.cause.details())
-            six.reraise(error_class, new_exc, sys.exc_info()[2])
 
 
 class GAPICDatastoreAPI(datastore_client.DatastoreClient):
