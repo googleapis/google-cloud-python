@@ -290,8 +290,8 @@ class _Batch(object):
     def log_struct(self, info, severity=logging.INFO, resource=None):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
-        if resource is None:
-            resource = _GLOBAL_RESOURCE
+        assert resource is None
+        resource = _GLOBAL_RESOURCE
 
         self.log_struct_called_with = (info, severity, resource)
         self.entries.append(info)
