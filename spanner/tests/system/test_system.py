@@ -323,6 +323,23 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         rows = list(self._db.execute_sql(self.SQL))
         self._check_row_data(rows)
 
+    def test_db_run_in_transaction_twice(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        def _unit_of_work(transaction, test):
+            transaction.insert_or_update(
+                test.TABLE, test.COLUMNS, test.ROW_DATA)
+
+        self._db.run_in_transaction(_unit_of_work, test=self)
+        self._db.run_in_transaction(_unit_of_work, test=self)
+
+        rows = list(self._db.execute_sql(self.SQL))
+        self._check_row_data(rows)
+
 
 class TestSessionAPI(unittest.TestCase, _TestData):
     ALL_TYPES_TABLE = 'all_types'
@@ -724,6 +741,59 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             param_types={'my_list': array_type},
             expected=[(u'dog',), (u'cat',)],
         )
+
+
+class TestStreamingChunking(unittest.TestCase, _TestData):
+
+    @classmethod
+    def setUpClass(cls):
+        from tests.system.utils.streaming_utils import INSTANCE_NAME
+        from tests.system.utils.streaming_utils import DATABASE_NAME
+
+        instance = Config.CLIENT.instance(INSTANCE_NAME)
+        if not instance.exists():
+            raise unittest.SkipTest(
+                "Run 'tests/system/utils/populate_streaming.py' to enable.")
+
+        database = instance.database(DATABASE_NAME)
+        if not instance.exists():
+            raise unittest.SkipTest(
+                "Run 'tests/system/utils/populate_streaming.py' to enable.")
+
+        cls._db = database
+
+    def _verify_one_column(self, table_desc):
+        sql = 'SELECT chunk_me FROM {}'.format(table_desc.table)
+        rows = list(self._db.execute_sql(sql))
+        self.assertEqual(len(rows), table_desc.row_count)
+        expected = table_desc.value()
+        for row in rows:
+            self.assertEqual(row[0], expected)
+
+    def _verify_two_columns(self, table_desc):
+        sql = 'SELECT chunk_me, chunk_me_2 FROM {}'.format(table_desc.table)
+        rows = list(self._db.execute_sql(sql))
+        self.assertEqual(len(rows), table_desc.row_count)
+        expected = table_desc.value()
+        for row in rows:
+            self.assertEqual(row[0], expected)
+            self.assertEqual(row[1], expected)
+
+    def test_four_kay(self):
+        from tests.system.utils.streaming_utils import FOUR_KAY
+        self._verify_one_column(FOUR_KAY)
+
+    def test_forty_kay(self):
+        from tests.system.utils.streaming_utils import FOUR_KAY
+        self._verify_one_column(FOUR_KAY)
+
+    def test_four_hundred_kay(self):
+        from tests.system.utils.streaming_utils import FOUR_HUNDRED_KAY
+        self._verify_one_column(FOUR_HUNDRED_KAY)
+
+    def test_four_meg(self):
+        from tests.system.utils.streaming_utils import FOUR_MEG
+        self._verify_two_columns(FOUR_MEG)
 
 
 class _DatabaseDropper(object):

@@ -521,7 +521,7 @@ class Test_SubscriberAPI(_Base):
         self.assertIsInstance(subscription.topic, Topic)
         self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
         self.assertIs(subscription._client, client)
-        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertEqual(subscription.project, self.PROJECT)
         self.assertIsNone(subscription.ack_deadline)
         self.assertIsNone(subscription.push_endpoint)
 
@@ -566,7 +566,7 @@ class Test_SubscriberAPI(_Base):
         self.assertIsInstance(subscription.topic, Topic)
         self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
         self.assertIs(subscription._client, client)
-        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertEqual(subscription.project, self.PROJECT)
         self.assertIsNone(subscription.ack_deadline)
         self.assertIsNone(subscription.push_endpoint)
 
@@ -612,7 +612,7 @@ class Test_SubscriberAPI(_Base):
 
     def test_subscription_create_retain_messages(self):
         import datetime
-        
+
         RESOURCE = {'topic': self.TOPIC_PATH,
                     'retainAckedMessages': True,
                     'messageRetentionDuration': {
@@ -637,7 +637,7 @@ class Test_SubscriberAPI(_Base):
         path = '/%s' % (self.SUB_PATH,)
         self.assertEqual(connection._called_with['path'], path)
         self.assertEqual(connection._called_with['data'], RESOURCE)
-        
+
     def test_subscription_create_explicit(self):
         ACK_DEADLINE = 90
         PUSH_ENDPOINT = 'https://api.example.com/push'
