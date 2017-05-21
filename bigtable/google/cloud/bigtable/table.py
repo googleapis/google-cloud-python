@@ -29,11 +29,14 @@ from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 
 
-class TableMismatchError(Exception):
+# Maximum number of mutations in bulk
+_MAX_BULK_MUTATIONS = 100000
+
+class TableMismatchError(ValueError):
     """Row from another table."""
 
 
-class TooManyMutationsError(Exception):
+class TooManyMutationsError(ValueError):
     """The number of mutations for bulk request is too big."""
 
 
@@ -286,6 +289,11 @@ class Table(object):
 
     def mutate_rows(self, rows):
         """Mutates multiple rows in bulk.
+        
+        The method tries to update all specified rows. 
+        If some of the rows weren't updated, it would not remove mutations. They
+        can be applied to the row separately.
+        If row mutations finished successfully, they would be cleaned up.
     
         :type rows: list
         :param rows: List or other iterable of :class:`.DirectRow` instances.
@@ -294,15 +302,13 @@ class Table(object):
         :returns: A list of tuples (``MutateRowsResponse.Entry`` protobuf 
                   corresponding to the errors, :class:`.DirectRow`) 
         """
-        _check_rows_table_name_and_types(self.name, rows)
         mutate_rows_request = _mutate_rows_request(self.name, rows)
-
         unsuccessfully_mutated_rows = []
         client = self._instance._client
         responses = client._data_stub.MutateRows(mutate_rows_request)
         for response in responses:
             for entry in response.entries:
-                if not entry.status.code:
+                if entry.status.code == 0:
                     rows[entry.index].clear()
                 else:
                     unsuccessfully_mutated_rows.append(
@@ -419,36 +425,52 @@ def _mutate_rows_request(table_name, rows):
     
     :rtype: :class:`data_messages_v2_pb2.MutateRowsRequest`
     :returns: The ``MutateRowsRequest`` protobuf corresponding to the inputs.
-    :raises: :class:`TooManyMutationsError <exceptions.TooManyMutationsError>` 
-             if the number of mutations is grater than 100.000
+    :raises: :exc:`~.table.TooManyMutationsError` if the number of mutations is
+             grater than 100,000
     """
     request_pb = data_messages_v2_pb2.MutateRowsRequest(table_name=table_name)
     mutations_count = 0
     for row in rows:
+        _check_row_table_name(table_name, row)
+        _check_row_type(row)
         entry = request_pb.entries.add()
         entry.row_key = row.row_key
         for mutation in row._get_mutations(None):
             mutations_count += 1
             entry.mutations.add().CopyFrom(mutation)
-    if mutations_count > 100000:
-        raise TooManyMutationsError('Maximum number of mutations is 100000')
+    if mutations_count > _MAX_BULK_MUTATIONS:
+        raise TooManyMutationsError('Maximum number of mutations is %s' %
+                                    _MAX_BULK_MUTATIONS)
     return request_pb
 
 
-def _check_rows_table_name_and_types(table_name, rows):
-    """Checks that all rows belong to the table.
+def _check_row_table_name(table_name, row):
+    """Checks that a row belong to the table.
 
     :type table_name: str
-    :param table_name: The name of the table to read from.
+    :param table_name: The name of the table.
 
-    :type rows: list
-    :param rows: List or other iterable of :class:`.DirectRow` instances.
+    :type row: :class:`.Row`
+    :param row: An instance of :class:`.Row` subclasses.
+    
+    :raises: :exc:`~.table.TableMismatchError` if the row does not belong to the
+             table.
     """
-    for row in rows:
-        if not isinstance(row, DirectRow):
-            raise TypeError('Bulk processing can not be applied for '
-                            'conditional or append mutations.')
-        if row.table.name != table_name:
-            raise TableMismatchError(
-                'Row %s is a part of %s table. Current table: %s' %
-                (row.row_key, row.table.name, table_name))
+    if row.table.name != table_name:
+        raise TableMismatchError(
+            'Row %s is a part of %s table. Current table: %s' %
+            (row.row_key, row.table.name, table_name))
+
+
+def _check_row_type(row):
+    """Checks that a row is an instance of :class:`.DirectRow`.
+ 
+    :type row: :class:`.Row`
+    :param row: An instance of :class:`.Row` subclasses.
+       
+    :raises: :class:`TypeError <exceptions.TypeError>` if the row is not an 
+             instance of DirectRow. 
+    """
+    if not isinstance(row, DirectRow):
+        raise TypeError('Bulk processing can not be applied for '
+                        'conditional or append mutations.')
