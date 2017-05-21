@@ -20,7 +20,7 @@ from google.gax.utils.messages import get_messages
 
 
 names = []
-for name, message in get_messages(video_intelligence_pb2):
+for name, message in get_messages(video_intelligence_pb2).items():
     setattr(sys.modules[__name__], name, message)
     names.append(name)
 
