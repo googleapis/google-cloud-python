@@ -32,6 +32,7 @@ from google.cloud.bigtable.row_data import PartialRowsData
 # Maximum number of mutations in bulk
 _MAX_BULK_MUTATIONS = 100000
 
+
 class TableMismatchError(ValueError):
     """Row from another table."""
 
@@ -291,8 +292,8 @@ class Table(object):
         """Mutates multiple rows in bulk.
 
         The method tries to update all specified rows.
-        If some of the rows weren't updated, it would not remove mutations. They
-        can be applied to the row separately.
+        If some of the rows weren't updated, it would not remove mutations.
+        They can be applied to the row separately.
         If row mutations finished successfully, they would be cleaned up.
 
         :type rows: list
@@ -453,8 +454,8 @@ def _check_row_table_name(table_name, row):
     :type row: :class:`.Row`
     :param row: An instance of :class:`.Row` subclasses.
 
-    :raises: :exc:`~.table.TableMismatchError` if the row does not belong to the
-             table.
+    :raises: :exc:`~.table.TableMismatchError` if the row does not belong to
+             the table.
     """
     if row.table.name != table_name:
         raise TableMismatchError(
