@@ -42,7 +42,7 @@ class Test___mutate_rows_request(unittest.TestCase):
             self._call_fut('table', rows)
 
 
-class Test__check_row_table(unittest.TestCase):
+class Test__check_row_table_name(unittest.TestCase):
 
     def _call_fut(self, table_name, row):
         from google.cloud.bigtable.table import _check_row_table_name
@@ -429,10 +429,10 @@ class TestTable(unittest.TestCase):
         entry_2.status.code = 1
 
         # Patch the stub used by the API method.
-        client._data_stub = stub = _FakeStub([response])
+        client._data_stub = _FakeStub([response])
         result = table.mutate_rows([row_1, row_2])
 
-        self.assertIs(row_1, result[0][1])
+        self.assertIs(result[0][1], row_1)
         self.assertTrue(len(result))
         self.assertFalse(row_1._get_mutations(None))
         self.assertTrue(row_2._get_mutations(None))
