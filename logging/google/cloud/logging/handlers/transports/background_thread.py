@@ -203,7 +203,7 @@ class _Worker(object):
         else:
             print('Failed to send %d pending logs.' % (self._queue.qsize(),))
 
-    def enqueue(self, record, message, resource=None):
+    def enqueue(self, record, message, resource=None, labels=None):
         """Queues a log entry to be written by the background thread.
 
         :type record: :class:`logging.LogRecord`
@@ -215,6 +215,9 @@ class _Worker(object):
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry
+
+        :type labels: dict
+        :param labels: (Optional) Mapping of labels for the entry.
         """
         self._queue.put_nowait({
             'info': {
@@ -223,6 +226,7 @@ class _Worker(object):
             },
             'severity': record.levelname,
             'resource': resource,
+            'labels': labels,
         })
 
     def flush(self):
@@ -257,7 +261,7 @@ class BackgroundThreadTransport(Transport):
         self.worker = _Worker(logger)
         self.worker.start()
 
-    def send(self, record, message, resource=None):
+    def send(self, record, message, resource=None, labels=None):
         """Overrides Transport.send().
 
         :type record: :class:`logging.LogRecord`
@@ -269,8 +273,11 @@ class BackgroundThreadTransport(Transport):
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry.
+
+        :type labels: dict
+        :param labels: (Optional) Mapping of labels for the entry.
         """
-        self.worker.enqueue(record, message, resource=resource)
+        self.worker.enqueue(record, message, resource=resource, labels=labels)
 
     def flush(self):
         """Submit any pending log records."""
