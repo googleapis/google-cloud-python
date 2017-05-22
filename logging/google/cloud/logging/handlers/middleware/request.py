@@ -28,6 +28,7 @@ def get_request():
     """
     return getattr(_thread_locals, 'request', None)
 
+
 class RequestMiddleware(object):
     """Saves the request in thread local"""
 
