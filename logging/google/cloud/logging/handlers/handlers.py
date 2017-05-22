@@ -57,6 +57,9 @@ class CloudLoggingHandler(logging.StreamHandler):
     :param resource: (Optional) Monitored resource of the entry, defaults
                      to the global resource type.
 
+    :type labels: dict
+    :param labels: (Optional) Mapping of labels for the entry.
+
     Example:
 
     .. code-block:: python
@@ -79,12 +82,14 @@ class CloudLoggingHandler(logging.StreamHandler):
     def __init__(self, client,
                  name=DEFAULT_LOGGER_NAME,
                  transport=BackgroundThreadTransport,
-                 resource=_GLOBAL_RESOURCE):
+                 resource=_GLOBAL_RESOURCE,
+                 labels=None):
         super(CloudLoggingHandler, self).__init__()
         self.name = name
         self.client = client
         self.transport = transport(client, name)
         self.resource = resource
+        self.labels = labels
 
     def emit(self, record):
         """Actually log the specified logging record.
@@ -97,7 +102,10 @@ class CloudLoggingHandler(logging.StreamHandler):
         :param record: The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(record, message, resource=self.resource)
+        self.transport.send(record,
+                            message,
+                            resource=self.resource,
+                            labels=self.labels)
 
 
 def setup_logging(handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,

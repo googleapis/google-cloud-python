@@ -17,6 +17,23 @@
 import math
 import json
 
+try:
+    import django
+except ImportError:
+    _USE_DJANGO = False
+else:
+    _USE_DJANGO = True
+
+try:
+    import flask
+except ImportError:
+    _USE_FLASK = False
+    flask = None
+else:
+    _USE_FLASK = True
+
+from google.cloud.logging.handlers.middleware.request import get_request
+
 
 def format_stackdriver_json(record, message):
     """Helper to format a LogRecord in in Stackdriver fluentd format.
@@ -37,3 +54,25 @@ def format_stackdriver_json(record, message):
     }
 
     return json.dumps(payload)
+
+
+def get_trace_id_from_request_header():
+    """Helper to get trace_id from web application request header.
+
+    :rtype: str
+    :returns: Trace_id in HTTP request headers.
+    """
+    if _USE_FLASK:
+        try:
+            trace_id = flask.request.headers['X_CLOUD_TRACE_CONTEXT'].split('/')[0]
+        except Exception:
+            trace_id = None
+    elif _USE_DJANGO:
+        try:
+            request = get_request()
+            trace_id = request.META['HTTP_X_CLOUD_TRACE_CONTEXT'].split('/')[0]
+        except Exception:
+            trace_id = None
+    else:
+        trace_id = None
+    return trace_id

@@ -29,7 +29,7 @@ class SyncTransport(Transport):
     def __init__(self, client, name):
         self.logger = client.logger(name)
 
-    def send(self, record, message, resource=None):
+    def send(self, record, message, resource=None, labels=None):
         """Overrides transport.send().
 
         :type record: :class:`logging.LogRecord`
@@ -38,8 +38,15 @@ class SyncTransport(Transport):
         :type message: str
         :param message: The message from the ``LogRecord`` after being
                         formatted by the associated log formatters.
+
+        :type resource: :class:`~google.cloud.logging.resource.Resource`
+        :param resource: (Optional) Monitored resource of the entry.
+
+        :type labels: dict
+        :param labels: (Optional) Mapping of labels for the entry.
         """
         info = {'message': message, 'python_logger': record.name}
         self.logger.log_struct(info,
                                severity=record.levelname,
-                               resource=resource)
+                               resource=resource,
+                               labels=labels)
