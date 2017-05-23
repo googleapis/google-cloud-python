@@ -25,9 +25,6 @@ except ImportError:
 
 from google.cloud.logging.handlers.middleware.request import get_request
 
-_USE_FLASK = False
-_USE_DJANGO = False
-
 
 def format_stackdriver_json(record, message):
     """Helper to format a LogRecord in in Stackdriver fluentd format.
@@ -56,19 +53,24 @@ def detect_web_framework():
     Detect which web framework is used by looking at the sys.modules.
     If multiple or no supported web frameworks detected in the modules, then
     print a warning message.
-    Set _USE_FLASK or _USE_DJANGO to True if one of them are detected.
+    Return the name of web framework detected if flask or django is found.
+    Return unknown if cannot determine.
+
+    :rtype: str
+    :returns: Web framework detected in this environment.
     """
     modules = sys.modules
-    global _USE_FLASK, _USE_DJANGO
+    web_framework = 'unknown'
 
     if 'flask' in modules and 'django' in modules:
         print('Cannot determine, found multiple web frameworks.')
     elif 'flask' in modules:
-        _USE_FLASK = True
+        web_framework = 'flask'
     elif 'django' in modules:
-        _USE_DJANGO = True
+        web_framework = 'django'
     else:
         print('No supported web framework found in the modules.')
+    return web_framework
 
 
 def get_trace_id_from_request_header():
@@ -77,14 +79,14 @@ def get_trace_id_from_request_header():
     :rtype: str
     :returns: Trace_id in HTTP request headers.
     """
-    detect_web_framework()
+    web_framework = detect_web_framework()
 
-    if _USE_FLASK:
+    if web_framework is 'flask':
         try:
             trace_id = flask.request.headers['X_CLOUD_TRACE_CONTEXT'].split('/')[0]
         except Exception:
             trace_id = None
-    elif _USE_DJANGO:
+    elif web_framework is 'django':
         try:
             request = get_request()
             trace_id = request.META['HTTP_X_CLOUD_TRACE_CONTEXT'].split('/')[0]
