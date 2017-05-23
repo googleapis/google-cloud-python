@@ -17,10 +17,15 @@
 import logging
 
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
+from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
 DEFAULT_LOGGER_NAME = 'python'
 
-EXCLUDED_LOGGER_DEFAULTS = ('google.cloud', 'oauth2client')
+EXCLUDED_LOGGER_DEFAULTS = (
+    'google.cloud',
+    'google.auth',
+    'google_auth_httplib2',
+)
 
 
 class CloudLoggingHandler(logging.StreamHandler):
@@ -48,6 +53,10 @@ class CloudLoggingHandler(logging.StreamHandler):
                       :class:`.BackgroundThreadTransport`. The other
                       option is :class:`.SyncTransport`.
 
+    :type resource: :class:`~google.cloud.logging.resource.Resource`
+    :param resource: (Optional) Monitored resource of the entry, defaults
+                     to the global resource type.
+
     Example:
 
     .. code-block:: python
@@ -69,11 +78,13 @@ class CloudLoggingHandler(logging.StreamHandler):
 
     def __init__(self, client,
                  name=DEFAULT_LOGGER_NAME,
-                 transport=BackgroundThreadTransport):
+                 transport=BackgroundThreadTransport,
+                 resource=_GLOBAL_RESOURCE):
         super(CloudLoggingHandler, self).__init__()
         self.name = name
         self.client = client
         self.transport = transport(client, name)
+        self.resource = resource
 
     def emit(self, record):
         """Actually log the specified logging record.
@@ -86,7 +97,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         :param record: The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(record, message)
+        self.transport.send(record, message, resource=self.resource)
 
 
 def setup_logging(handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,

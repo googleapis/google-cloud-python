@@ -22,6 +22,7 @@ from google.cloud.pubsub._http import Connection
 from google.cloud.pubsub._http import _PublisherAPI as JSONPublisherAPI
 from google.cloud.pubsub._http import _SubscriberAPI as JSONSubscriberAPI
 from google.cloud.pubsub._http import _IAMPolicyAPI
+from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
 
 try:
@@ -236,3 +237,47 @@ class Client(ClientWithProject):
         :returns: Topic created with the current client.
         """
         return Topic(name, client=self, timestamp_messages=timestamp_messages)
+
+    def subscription(self, name, ack_deadline=None, push_endpoint=None,
+                     retain_acked_messages=None,
+                     message_retention_duration=None):
+        """Creates a subscription bound to the current client.
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START client_subscription]
+           :end-before: [END client_subscription]
+
+        :type name: str
+        :param name: the name of the subscription to be constructed.
+
+        :type ack_deadline: int
+        :param ack_deadline: (Optional) The deadline (in seconds) by which
+                             messages pulledfrom the back-end must be
+                             acknowledged.
+
+        :type push_endpoint: str
+        :param push_endpoint:
+            (Optional) URL to which messages will be pushed by the back-end.
+            If not set, the application must pull messages.
+
+        :type retain_acked_messages: bool
+        :param retain_acked_messages:
+            (Optional) Whether to retain acked messages. If set, acked messages
+            are retained in the subscription's backlog for a duration indicated
+            by ``message_retention_duration``.
+
+        :type message_retention_duration: :class:`datetime.timedelta`
+        :param message_retention_duration:
+            (Optional) Whether to retain acked messages. If set, acked messages
+            are retained in the subscription's backlog for a duration indicated
+            by ``message_retention_duration``. If unset, defaults to 7 days.
+
+        :rtype: :class:`~google.cloud.pubsub.subscription.Subscription`
+        :returns: Subscription created with the current client.
+        """
+        return Subscription(
+            name, ack_deadline=ack_deadline, push_endpoint=push_endpoint,
+            retain_acked_messages=retain_acked_messages,
+            message_retention_duration=message_retention_duration, client=self)

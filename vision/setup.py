@@ -24,6 +24,13 @@ PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
     readme = readme_file.read()
 
+REQUIREMENTS = [
+    'google-cloud-core >= 0.24.0, < 0.25dev',
+    'gapic-google-cloud-vision-v1 >= 0.90.3, < 0.91dev',
+]
+EXTRAS_REQUIRE = {
+    ':python_version<"3.4"': ['enum34'],
+}
 
 setup(
     author='Google Cloud Platform',
@@ -41,11 +48,8 @@ setup(
         'google.cloud.proto.vision',
     ],
     packages=find_packages(exclude=('tests*',)),
-    install_requires=[
-        'googleapis-common-protos >= 1.5.2, < 2.0dev',
-        'google-gax >= 0.15.13, < 0.16dev',
-        'six >= 1.10.0',
-    ],
+    install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIRE,
     url='https://github.com/GoogleCloudPlatform/google-cloud-python',
     license='Apache 2.0',
     platforms='Posix; MacOS X; Windows',

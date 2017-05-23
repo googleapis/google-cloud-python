@@ -561,12 +561,12 @@ class Test_bytes_to_json(unittest.TestCase):
         self.assertEqual(converted, expected)
 
 
-class Test_timestamp_to_json(unittest.TestCase):
+class Test_timestamp_to_json_parameter(unittest.TestCase):
 
     def _call_fut(self, value):
-        from google.cloud.bigquery._helpers import _timestamp_to_json
+        from google.cloud.bigquery._helpers import _timestamp_to_json_parameter
 
-        return _timestamp_to_json(value)
+        return _timestamp_to_json_parameter(value)
 
     def test_w_float(self):
         self.assertEqual(self._call_fut(1.234567), 1.234567)
@@ -602,6 +602,29 @@ class Test_timestamp_to_json(unittest.TestCase):
         ZULU = '2016-12-20 15:58:27.339328+00:00'
         when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
         self.assertEqual(self._call_fut(when), ZULU)
+
+
+class Test_timestamp_to_json_row(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _timestamp_to_json_row
+
+        return _timestamp_to_json_row(value)
+
+    def test_w_float(self):
+        self.assertEqual(self._call_fut(1.234567), 1.234567)
+
+    def test_w_string(self):
+        ZULU = '2016-12-20 15:58:27.339328+00:00'
+        self.assertEqual(self._call_fut(ZULU), ZULU)
+
+    def test_w_datetime(self):
+        import datetime
+        from google.cloud._helpers import _microseconds_from_datetime
+
+        when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328)
+        self.assertEqual(
+            self._call_fut(when), _microseconds_from_datetime(when) / 1e6)
 
 
 class Test_datetime_to_json(unittest.TestCase):

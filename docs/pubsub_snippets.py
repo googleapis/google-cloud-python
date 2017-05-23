@@ -66,6 +66,28 @@ def client_list_subscriptions(client,
 
 
 @snippet
+def client_topic(client, to_delete):  # pylint: disable=unused-argument
+    """Topic factory."""
+    TOPIC_NAME = 'topic_factory-%d' % (_millis(),)
+
+    # [START client_topic]
+    topic = client.topic(TOPIC_NAME)
+    # [END client_topic]
+
+
+@snippet
+def client_subscription(client, to_delete):  # pylint: disable=unused-argument
+    """Subscription factory."""
+    SUBSCRIPTION_NAME = 'subscription_factory-%d' % (_millis(),)
+
+    # [START client_subscription]
+    subscription = client.subscription(
+        SUBSCRIPTION_NAME, ack_deadline=60,
+        retain_acked_messages=True)
+    # [END client_subscription]
+
+
+@snippet
 def topic_create(client, to_delete):
     """Create a topic."""
     TOPIC_NAME = 'topic_create-%d' % (_millis(),)

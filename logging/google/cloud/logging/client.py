@@ -303,7 +303,7 @@ class Client(ClientWithProject):
         """
         if (_APPENGINE_FLEXIBLE_ENV_VM in os.environ or
                 _APPENGINE_FLEXIBLE_ENV_FLEX in os.environ):
-            return AppEngineHandler()
+            return AppEngineHandler(self)
         elif _CONTAINER_ENGINE_ENV in os.environ:
             return ContainerEngineHandler()
         else:
