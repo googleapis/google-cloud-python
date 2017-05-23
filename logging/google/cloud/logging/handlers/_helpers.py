@@ -16,23 +16,17 @@
 
 import math
 import json
-
-try:
-    import django
-except ImportError:
-    _USE_DJANGO = False
-else:
-    _USE_DJANGO = True
+import sys
 
 try:
     import flask
 except ImportError:
-    _USE_FLASK = False
     flask = None
-else:
-    _USE_FLASK = True
 
 from google.cloud.logging.handlers.middleware.request import get_request
+
+_USE_FLASK = False
+_USE_DJANGO = False
 
 
 def format_stackdriver_json(record, message):
@@ -56,12 +50,35 @@ def format_stackdriver_json(record, message):
     return json.dumps(payload)
 
 
+def detect_web_framework():
+    """Detect web framework used in this environment.
+
+    Detect which web framework is used by looking at the sys.modules.
+    If multiple or no supported web frameworks detected in the modules, then
+    print a warning message.
+    Set _USE_FLASK or _USE_DJANGO to True if one of them are detected.
+    """
+    modules = sys.modules
+    global _USE_FLASK, _USE_DJANGO
+
+    if 'flask' in modules and 'django' in modules:
+        print('Cannot determine, found multiple web frameworks.')
+    elif 'flask' in modules:
+        _USE_FLASK = True
+    elif 'django' in modules:
+        _USE_DJANGO = True
+    else:
+        print('No supported web framework found in the modules.')
+
+
 def get_trace_id_from_request_header():
     """Helper to get trace_id from web application request header.
 
     :rtype: str
     :returns: Trace_id in HTTP request headers.
     """
+    detect_web_framework()
+
     if _USE_FLASK:
         try:
             trace_id = flask.request.headers['X_CLOUD_TRACE_CONTEXT'].split('/')[0]
