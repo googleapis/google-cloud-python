@@ -62,10 +62,11 @@ REQUIREMENTS = [
     'google-cloud-pubsub >= 0.25.0, < 0.26dev',
     'google-cloud-resource-manager >= 0.24.0, < 0.25dev',
     'google-cloud-spanner >= 0.24.1, < 0.25dev',
-    'google-cloud-speech >= 0.24.0, < 0.25dev',
+    'google-cloud-speech >= 0.25.0, < 0.26dev',
     'google-cloud-storage >= 1.1.0, < 2.0dev',
     'google-cloud-translate >= 0.24.0, < 0.25dev',
-    'google-cloud-vision >= 0.24.0, < 0.25dev',
+    'google-cloud-videointelligence >= 0.25.0, < 0.26dev',
+    'google-cloud-vision >= 0.25.0, < 0.26dev',
     'google-cloud-runtimeconfig >= 0.24.0, < 0.25dev',
 ]
 
