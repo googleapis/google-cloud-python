@@ -22,7 +22,10 @@ try:
 except ImportError:
     flask = None
 
-from google.cloud.logging.handlers.middleware.request import get_request
+from google.cloud.logging.handlers.middleware.request import RequestMiddleware
+
+_FLASK_TRACE_HEADER = 'X_CLOUD_TRACE_CONTEXT'
+_DJANGO_TRACE_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT'
 
 
 def format_stackdriver_json(record, message):
@@ -52,10 +55,16 @@ def get_trace_id_from_flask():
     :rtype: str
     :return: Trace_id in HTTP request headers.
     """
-    try:
-        trace_id = flask.request.headers['X_CLOUD_TRACE_CONTEXT'].split('/')[0]
-    except Exception:
-        trace_id = None
+    if not flask or not flask.request:
+        return None
+
+    header = flask.request.headers.get(_FLASK_TRACE_HEADER)
+
+    if not header:
+        return None
+
+    trace_id = header.split('/')[0]
+
     return trace_id
 
 
@@ -65,11 +74,19 @@ def get_trace_id_from_django():
     :rtype: str
     :return: Trace_id in HTTP request headers.
     """
+    request_middleware = RequestMiddleware()
+    request = request_middleware.get_request()
+
+    if not request:
+        return None
+
     try:
-        request = get_request()
-        trace_id = request.META['HTTP_X_CLOUD_TRACE_CONTEXT'].split('/')[0]
-    except Exception:
-        trace_id = None
+        header = request.META[_DJANGO_TRACE_HEADER]
+    except KeyError:
+        return None
+
+    trace_id = header.split('/')[0]
+
     return trace_id
 
 
