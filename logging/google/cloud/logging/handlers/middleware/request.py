@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    from threading import local
-except ImportError:
-    from django.utils._threading_local import local
+from threading import local
+
 
 _thread_locals = local()
 

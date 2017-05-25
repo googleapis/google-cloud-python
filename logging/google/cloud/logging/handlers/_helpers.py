@@ -16,7 +16,6 @@
 
 import math
 import json
-import sys
 
 try:
     import flask
@@ -47,51 +46,44 @@ def format_stackdriver_json(record, message):
     return json.dumps(payload)
 
 
-def detect_web_framework():
-    """Detect web framework used in this environment.
-
-    Detect which web framework is used by looking at the sys.modules.
-    If multiple or no supported web frameworks detected in the modules, then
-    print a warning message.
-    Return the name of web framework detected if flask or django is found.
-    Return unknown if cannot determine.
+def get_trace_id_from_flask():
+    """Get trace_id from flask request headers.
 
     :rtype: str
-    :returns: Web framework detected in this environment.
+    :return: Trace_id in HTTP request headers.
     """
-    modules = sys.modules
-    web_framework = 'unknown'
-
-    if 'flask' in modules and 'django' in modules:
-        print('Cannot determine, found multiple web frameworks.')
-    elif 'flask' in modules:
-        web_framework = 'flask'
-    elif 'django' in modules:
-        web_framework = 'django'
-    else:
-        print('No supported web framework found in the modules.')
-    return web_framework
+    try:
+        trace_id = flask.request.headers['X_CLOUD_TRACE_CONTEXT'].split('/')[0]
+    except Exception:
+        trace_id = None
+    return trace_id
 
 
-def get_trace_id_from_request_header():
+def get_trace_id_from_django():
+    """Get trace_id from django request headers.
+
+    :rtype: str
+    :return: Trace_id in HTTP request headers.
+    """
+    try:
+        request = get_request()
+        trace_id = request.META['HTTP_X_CLOUD_TRACE_CONTEXT'].split('/')[0]
+    except Exception:
+        trace_id = None
+    return trace_id
+
+
+def get_trace_id():
     """Helper to get trace_id from web application request header.
 
     :rtype: str
     :returns: Trace_id in HTTP request headers.
     """
-    web_framework = detect_web_framework()
+    checkers = [get_trace_id_from_django, get_trace_id_from_flask]
 
-    if web_framework is 'flask':
-        try:
-            trace_id = flask.request.headers['X_CLOUD_TRACE_CONTEXT'].split('/')[0]
-        except Exception:
-            trace_id = None
-    elif web_framework is 'django':
-        try:
-            request = get_request()
-            trace_id = request.META['HTTP_X_CLOUD_TRACE_CONTEXT'].split('/')[0]
-        except Exception:
-            trace_id = None
-    else:
-        trace_id = None
+    for checker in checkers:
+        trace_id = checker()
+        if trace_id is not None:
+            return trace_id
+
     return trace_id

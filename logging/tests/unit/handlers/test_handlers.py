@@ -45,7 +45,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
                                    None, None)
         handler.emit(record)
 
-        self.assertEqual(handler.transport.send_called_with, (record, message, _GLOBAL_RESOURCE))
+        self.assertEqual(handler.transport.send_called_with, (record, message, _GLOBAL_RESOURCE, None))
 
 
 class TestSetupLogging(unittest.TestCase):
@@ -110,5 +110,5 @@ class _Transport(object):
     def __init__(self, client, name):
         pass
 
-    def send(self, record, message, resource):
-        self.send_called_with = (record, message, resource)
+    def send(self, record, message, resource, labels=None):
+        self.send_called_with = (record, message, resource, labels)

@@ -20,7 +20,7 @@ and labels for App Engine logs.
 
 import os
 
-from google.cloud.logging.handlers._helpers import get_trace_id_from_request_header
+from google.cloud.logging.handlers._helpers import get_trace_id
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging.resource import Resource
@@ -76,7 +76,7 @@ class AppEngineHandler(CloudLoggingHandler):
         :rtype: dict
         :returns: Labels for GAE app.
         """
-        trace_id = get_trace_id_from_request_header()
+        trace_id = get_trace_id()
         if trace_id is None:
             trace_id = 'unknown'
         gae_labels = {
