@@ -15,10 +15,13 @@
 from __future__ import absolute_import
 
 import collections
+import queue
 import time
 
+from google.cloud.pubsub_v1.publisher import future
 
-Message = collections.namedtuple('Message', ['data', 'attrs'])
+
+Message = collections.namedtuple('Message', ['data', 'attrs', '_client_id'])
 
 
 class Batch(object):
@@ -49,12 +52,32 @@ class Batch(object):
     def __init__(self, client, settings):
         self._client = client
         self._settings = settings
-        self._messages = self._client._queue_class()
+        self._messages = queue.Queue()
         self._status = 'accepting messages'
 
         # Continually monitor the thread until it is time to commit the
         # batch, or the batch is explicitly committed.
         self._client.thread_class(self.monitor)
+
+    @property
+    def client(self):
+        """Return the client that created this batch.
+
+        Returns:
+            :class:~`pubsub_v1.client.Client`: The client that created this
+                batch.
+        """
+        return self._client
+
+    @property
+    def status(self):
+        """Return the status of this batch.
+
+        Returns:
+            str: The status of this batch. All statuses are human-readable,
+                all-lowercase strings.
+        """
+        return self._status
 
     def commit(self):
         """Actually publish all of the messages on the active batch.
@@ -67,9 +90,7 @@ class Batch(object):
         if self._client._batch is self:
             self._client._batch = None
 
-        # Add this to the set of in-flight batches, to ensure we are holding
-        # a reference.
-        self._client._in_flight_batches.add(self)
+        # Begin the request to publish these messages.
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -141,4 +162,12 @@ class Batch(object):
                             'be sent as text strings.')
 
         # Add the message to the batch.
-        self._messages.put(Message(data=data, attrs=attrs))
+        #
+        # We add an internal ID (note: a client-side ID, *not* the Pub/Sub
+        # ID) so we can track the message later.
+        _id = six.text_type(uuid.uuid4())
+        self._messages.put(Message(data=data, attrs=attrs, client_id=_id))
+
+        # Return a Future. That future needs to be aware of the status
+        # of this batch.
+        return future.Future(self)

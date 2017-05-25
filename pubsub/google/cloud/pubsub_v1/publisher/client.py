@@ -42,9 +42,6 @@ class PublisherClient(object):
         thread_class (class): Any class that is duck-type compatible with
             :class:`threading.Thread`.
             The default is :class:`multiprocessing.Process`
-        queue_class (class): Any class that is duck-type compatible with
-            :class:`queue.Queue`.
-            The default is :class:`multiprocessing.Queue`.
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
             :class:`~gapic.pubsub.v1.publisher_client.PublisherClient`.
@@ -60,9 +57,8 @@ class PublisherClient(object):
         self.api = publisher_client.PublisherClient(*args, **kwargs)
         self.batching = types.Batching(batching)
 
-        # Set the thread and queue classes.
+        # Set the thread class.
         self._thread_class = thread_class
-        self._queue_class = queue_class
 
         # The batch on the publisher client is responsible for holding
         # messages.
@@ -70,7 +66,6 @@ class PublisherClient(object):
         # We set this to None for now; the first message that is published
         # will create it (in order to ensure that the start time is correct).
         self._batch = None
-        self._in_flight_batches = set()
 
     @property
     def batch(self):
@@ -84,15 +79,6 @@ class PublisherClient(object):
         if self._batch is None:
             self_batch = Batch(client=self, settings=self.batching)
         return self._batch
-
-    @property
-    def queue_class(self):
-        """Return the queue class provided at instantiation.
-
-        Returns:
-            class: A class duck-type compatible with :class:`queue.Queue`.
-        """
-        return self._queue_class
 
     @property
     def thread_class(self):
