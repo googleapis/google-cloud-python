@@ -16,7 +16,7 @@ Quick Start
 
 .. code-block:: console
 
-    $ pip install --upgrade google-cloud-video-intelligence
+    $ pip install --upgrade google-cloud-videointelligence
 
 Authentication
 --------------
