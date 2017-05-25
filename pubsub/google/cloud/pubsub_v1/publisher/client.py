@@ -60,25 +60,9 @@ class PublisherClient(object):
         # Set the thread class.
         self._thread_class = thread_class
 
-        # The batch on the publisher client is responsible for holding
-        # messages.
-        #
-        # We set this to None for now; the first message that is published
-        # will create it (in order to ensure that the start time is correct).
-        self._batch = None
-
-    @property
-    def batch(self):
-        """Return the current batch.
-
-        This will create a new batch if no batch currently exists.
-
-        Returns:
-            :class:~`pubsub_v1.batch.Batch` The batch object.
-        """
-        if self._batch is None:
-            self_batch = Batch(client=self, settings=self.batching)
-        return self._batch
+        # The batches on the publisher client are responsible for holding
+        # messages. One batch exists for each topic.
+        self._batches = {}
 
     @property
     def thread_class(self):
@@ -89,6 +73,62 @@ class PublisherClient(object):
         """
         return self._thread_class
 
-    @functools.wraps(Batch.publish)
-    def publish(self, data, **attrs):
-        return self.batch.publish(data, *attrs)
+    def batch(self, topic):
+        """Return the current batch.
+
+        This will create a new batch if no batch currently exists.
+
+        Returns:
+            :class:~`pubsub_v1.batch.Batch` The batch object.
+        """
+        if topic not in self._batch:
+            self._batch[topic] = Batch(
+                client=self,
+                settings=self.batching,
+                topic=topic,
+            )
+        return self._batch[topic]
+
+    def publish(self, topic, data, **attrs):
+        """Publish a single message.
+
+        .. note::
+            Messages in Pub/Sub are blobs of bytes. They are *binary* data,
+            not text. You must send data as a bytestring
+            (``bytes`` in Python 3; ``str`` in Python 2), and this library
+            will raise an exception if you send a text string.
+
+            The reason that this is so important (and why we do not try to
+            coerce for you) is because Pub/Sub is also platform independent
+            and there is no way to know how to decode messages properly on
+            the other side; therefore, encoding and decoding is a required
+            exercise for the developer.
+
+        Add the given message to this object; this will cause it to be
+        published once the batch either has enough messages or a sufficient
+        period of time has elapsed.
+
+        Example:
+            >>> from google.cloud.pubsub_v1 import publisher_client
+            >>> client = publisher_client.PublisherClient()
+            >>> topic = client.topic_path('[PROJECT]', '[TOPIC]')
+            >>> data = b'The rain in Wales falls mainly on the snails.'
+            >>> response = client.publish(topic, data, username='guido')
+
+        Args:
+            topic (:class:~`pubsub_v1.types.Topic`): The topic to publish
+                messages to.
+            data (bytes): A bytestring representing the message body. This
+                must be a bytestring (a text string will raise TypeError).
+            attrs (Mapping[str, str]): A dictionary of attributes to be
+                sent as metadata. (These may be text strings or byte strings.)
+
+        Raises:
+            :exc:`TypeError`: If the ``data`` sent is not a bytestring, or
+                if the ``attrs`` are not either a ``str`` or ``bytes``.
+
+        Returns:
+            :class:~`pubsub_v1.publisher.futures.Future`: An object conforming
+                to the ``concurrent.futures.Future`` interface.
+        """
+        return self.batch(topic).publish(data, *attrs)

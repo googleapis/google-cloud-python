@@ -29,9 +29,11 @@ class Future(object):
     Args:
         batch (:class:~`pubsub_v1.batch.Batch`): The batch object that
             is committing this message.
+        client_id (str): The client ID of the message.
     """
-    def __init__(self, batch):
+    def __init__(self, batch, client_id):
         self._batch = batch
+        self._client_id = client_id
         self._callbacks = queue.Queue()
 
     def cancel(self):
@@ -61,7 +63,7 @@ class Future(object):
         This still returns True in failure cases; checking `result` or
         `exception` is the canonical way to assess success or failure.
         """
-        return self.batch.status in ('done', 'error')
+        return self.batch.status in ('success', 'error')
 
     def result(self, timeout=None):
         """Return the message ID, or raise an exception.
@@ -78,8 +80,15 @@ class Future(object):
             :class:~`Exception`: For undefined exceptions in the underlying
                 call execution.
         """
+        # Attempt to get the exception if there is one.
+        # If there is not one, then we know everything worked, and we can
+        # return an appropriate value.
+        err = self.exception(timeout=timeout)
+        if err is None:
+            return self.batch.get_message_id(self._client_id)
+        raise err
 
-    def exception(self, timeout=None):
+    def exception(self, timeout=None, _wait=1):
         """Return the exception raised by the call, if any.
 
         This blocks until the message has successfully been published, and
@@ -95,6 +104,25 @@ class Future(object):
         Returns:
             :class:`Exception`: The exception raised by the call, if any.
         """
+        # If the batch completed successfully, this should return None.
+        if self.batch.status == 'success':
+            return None
+
+        # If this batch had an error, this should return it.
+        if self.batch.status == 'error':
+            return self.batch._error
+
+        # If the timeout has been exceeded, raise TimeoutError.
+        if timeout < 0:
+            raise TimeoutError('Timed out waiting for an exception.')
+
+        # Wait a little while and try again.
+        time.sleep(_wait)
+        return self.exception(
+            timeout=timeout - _wait,
+            _wait=min(_wait * 2, 60),
+        )
+
 
     def add_done_callback(self, fn):
         """Attach the provided callable to the future.
