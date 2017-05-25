@@ -18,10 +18,10 @@ import collections
 import queue
 import time
 
+from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import future
 
-
-Message = collections.namedtuple('Message', ['data', 'attrs', '_client_id'])
+QueueItem = collections.namedtuple('QueueItem', ['message', 'future'])
 
 
 class Batch(object):
@@ -49,11 +49,14 @@ class Batch(object):
             settings for batch publishing. These should be considered
             immutable once the batch has been opened.
     """
-    def __init__(self, client, settings):
+    def __init__(self, client, topic, settings):
         self._client = client
+        self._topic = topic
         self._settings = settings
         self._messages = queue.Queue()
+        self._futures = queue.Queue()
         self._status = 'accepting messages'
+        self._message_ids = {}
 
         # Continually monitor the thread until it is time to commit the
         # batch, or the batch is explicitly committed.
@@ -90,7 +93,49 @@ class Batch(object):
         if self._client._batch is self:
             self._client._batch = None
 
+        # Update the status.
+        self._status = 'in-flight'
+
         # Begin the request to publish these messages.
+        response = self._client.api.publish(self._topic, self.flush())
+
+        # FIXME (lukesneeringer): How do I check for errors on this?
+        self._status = 'success'
+
+        # Iterate over the futures on the queue and return the response IDs.
+        # We are trusting that there is a 1:1 mapping, and raise an exception
+        # if not.
+        try:
+            for message_id in response.message_ids:
+                future_ = self._futures.get(block=False)
+                self._message_ids[future_] = message_id
+                future_._trigger())
+        except queue.Empty:
+            raise ValueError('More message IDs came back than messages '
+                             'were published.')
+
+        # If the queue of futures is not empty, we did not get enough IDs
+        # back.
+        if self._futures.empty():
+            raise ValueError('Fewer message IDs came back than messages '
+                             'were published.')
+
+
+    def flush(self):
+        """Flush the messages off of this queue, one at a time.
+
+        This method is called when the batch is committed. Calling it outside
+        of the context of committing will effectively remove messages
+        from the batch.
+
+        Yields:
+            :class:~`pubsub_v1.types.PubSubMessage`: A Pub/Sub Message.
+        """
+        try:
+            while True:
+                yield self._messages.get(block=False)
+        except queue.Empty:
+            raise StopIteration
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -161,13 +206,11 @@ class Batch(object):
             raise TypeError('All attributes being published to Pub/Sub must '
                             'be sent as text strings.')
 
-        # Add the message to the batch.
-        #
-        # We add an internal ID (note: a client-side ID, *not* the Pub/Sub
-        # ID) so we can track the message later.
-        _id = six.text_type(uuid.uuid4())
-        self._messages.put(Message(data=data, attrs=attrs, client_id=_id))
+        # Store the actual message in the batch's message queue.
+        self._messages.put(PubSubMessage(data=data, attributes=attrs))
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
-        return future.Future(self)
+        f = future.Future(self)
+        self._futures.put(f)
+        return f
