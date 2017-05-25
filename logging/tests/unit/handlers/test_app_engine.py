@@ -34,6 +34,7 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         from google.cloud.logging.handlers.app_engine import _GAE_VERSION_ENV
 
         client = mock.Mock(project=self.PROJECT, spec=['project'])
+
         with mock.patch('os.environ', new={_GAE_PROJECT_ENV: 'test_project',
                                            _GAE_SERVICE_ENV: 'test_service',
                                            _GAE_VERSION_ENV: 'test_version'}):
@@ -43,6 +44,7 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         self.assertEqual(handler.resource.labels['project_id'], 'test_project')
         self.assertEqual(handler.resource.labels['module_id'], 'test_service')
         self.assertEqual(handler.resource.labels['version_id'], 'test_version')
+        self.assertEqual(handler.labels['appengine.googleapis.com/trace_id'], 'unknown')
 
     def test_emit(self):
         import mock
@@ -50,6 +52,7 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         client = mock.Mock(project=self.PROJECT, spec=['project'])
         handler = self._make_one(client, transport=_Transport)
         gae_resource = handler.get_gae_resource()
+        gae_labels = handler.get_gae_labels()
         logname = 'app'
         message = 'hello world'
         record = logging.LogRecord(logname, logging, None, None, message,
@@ -58,7 +61,9 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
 
         self.assertIs(handler.transport.client, client)
         self.assertEqual(handler.transport.name, logname)
-        self.assertEqual(handler.transport.send_called_with, (record, message, gae_resource))
+        self.assertEqual(
+            handler.transport.send_called_with,
+            (record, message, gae_resource, gae_labels))
 
 
 class _Transport(object):
@@ -67,5 +72,5 @@ class _Transport(object):
         self.client = client
         self.name = name
 
-    def send(self, record, message, resource):
-        self.send_called_with = (record, message, resource)
+    def send(self, record, message, resource, labels):
+        self.send_called_with = (record, message, resource, labels)

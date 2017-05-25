@@ -102,10 +102,11 @@ class CloudLoggingHandler(logging.StreamHandler):
         :param record: The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(record,
-                            message,
-                            resource=self.resource,
-                            labels=self.labels)
+        self.transport.send(
+            record,
+            message,
+            resource=self.resource,
+            labels=self.labels)
 
 
 def setup_logging(handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,

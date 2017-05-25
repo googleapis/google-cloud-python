@@ -61,9 +61,9 @@ class TestBackgroundThreadHandler(unittest.TestCase):
             python_logger_name, logging.INFO,
             None, None, message, None, None)
 
-        transport.send(record, message, _GLOBAL_RESOURCE)
+        transport.send(record, message, _GLOBAL_RESOURCE, None)
 
-        transport.worker.enqueue.assert_called_once_with(record, message, _GLOBAL_RESOURCE)
+        transport.worker.enqueue.assert_called_once_with(record, message, _GLOBAL_RESOURCE, None)
 
     def test_flush(self):
         client = _Client(self.PROJECT)
@@ -287,13 +287,13 @@ class _Batch(object):
         self.commit_called = False
         self.commit_count = None
 
-    def log_struct(self, info, severity=logging.INFO, resource=None):
+    def log_struct(self, info, severity=logging.INFO, resource=None, labels=None):
         from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         assert resource is None
         resource = _GLOBAL_RESOURCE
 
-        self.log_struct_called_with = (info, severity, resource)
+        self.log_struct_called_with = (info, severity, resource, labels)
         self.entries.append(info)
 
     def commit(self):
