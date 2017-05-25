@@ -77,8 +77,6 @@ class AppEngineHandler(CloudLoggingHandler):
         :returns: Labels for GAE app.
         """
         trace_id = get_trace_id()
-        if trace_id is None:
-            trace_id = 'unknown'
         gae_labels = {
             'appengine.googleapis.com/trace_id': trace_id,
         }

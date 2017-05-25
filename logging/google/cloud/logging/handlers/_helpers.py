@@ -27,6 +27,8 @@ from google.cloud.logging.handlers.middleware.request import RequestMiddleware
 _FLASK_TRACE_HEADER = 'X_CLOUD_TRACE_CONTEXT'
 _DJANGO_TRACE_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT'
 
+_EMPTY_TRACE_ID = 'None'
+
 
 def format_stackdriver_json(record, message):
     """Helper to format a LogRecord in in Stackdriver fluentd format.
@@ -56,12 +58,12 @@ def get_trace_id_from_flask():
     :return: Trace_id in HTTP request headers.
     """
     if not flask or not flask.request:
-        return None
+        return _EMPTY_TRACE_ID
 
     header = flask.request.headers.get(_FLASK_TRACE_HEADER)
 
     if not header:
-        return None
+        return _EMPTY_TRACE_ID
 
     trace_id = header.split('/')[0]
 
@@ -78,12 +80,12 @@ def get_trace_id_from_django():
     request = request_middleware.get_request()
 
     if not request:
-        return None
+        return _EMPTY_TRACE_ID
 
     try:
         header = request.META[_DJANGO_TRACE_HEADER]
     except KeyError:
-        return None
+        return _EMPTY_TRACE_ID
 
     trace_id = header.split('/')[0]
 
@@ -100,7 +102,7 @@ def get_trace_id():
 
     for checker in checkers:
         trace_id = checker()
-        if trace_id is not None:
+        if trace_id is not _EMPTY_TRACE_ID:
             return trace_id
 
     return trace_id
