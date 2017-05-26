@@ -31,6 +31,8 @@ _GAE_PROJECT_ENV = 'GCLOUD_PROJECT'
 _GAE_SERVICE_ENV = 'GAE_SERVICE'
 _GAE_VERSION_ENV = 'GAE_VERSION'
 
+_TRACE_ID_LABEL = 'appengine.googleapis.com/trace_id'
+
 
 class AppEngineHandler(CloudLoggingHandler):
     """A logging handler that sends App Engine-formatted logs to Stackdriver.
@@ -76,8 +78,10 @@ class AppEngineHandler(CloudLoggingHandler):
         :rtype: dict
         :returns: Labels for GAE app.
         """
+        gae_labels = {}
+
         trace_id = get_trace_id()
-        gae_labels = {
-            'appengine.googleapis.com/trace_id': trace_id,
-        }
+        if trace_id is not None:
+            gae_labels[_TRACE_ID_LABEL] = trace_id
+
         return gae_labels

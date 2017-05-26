@@ -32,9 +32,7 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         from google.cloud.logging.handlers.app_engine import _GAE_PROJECT_ENV
         from google.cloud.logging.handlers.app_engine import _GAE_SERVICE_ENV
         from google.cloud.logging.handlers.app_engine import _GAE_VERSION_ENV
-        from google.cloud.logging.handlers._helpers import _EMPTY_TRACE_ID
-
-        TRACE_ID_LABEL = 'appengine.googleapis.com/trace_id'
+        from google.cloud.logging.handlers.app_engine import _TRACE_ID_LABEL
 
         client = mock.Mock(project=self.PROJECT, spec=['project'])
 
@@ -47,7 +45,7 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         self.assertEqual(handler.resource.labels['project_id'], 'test_project')
         self.assertEqual(handler.resource.labels['module_id'], 'test_service')
         self.assertEqual(handler.resource.labels['version_id'], 'test_version')
-        self.assertEqual(handler.labels[TRACE_ID_LABEL], _EMPTY_TRACE_ID)
+        self.assertEqual(handler.labels, {})
 
     def test_emit(self):
         import mock
