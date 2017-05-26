@@ -41,7 +41,6 @@ class TestRequestMiddleware(unittest.TestCase):
         self.middleware.process_request(self.request)
         self.assertEqual(self.middleware.get_request(), self.request)
 
-
     def tearDown(self):
         from django.test.utils import teardown_test_environment
 
