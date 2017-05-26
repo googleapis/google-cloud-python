@@ -25,15 +25,24 @@ class TestRequestMiddleware(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_get_request(self):
+    def setUp(self):
         from django.conf import settings
         from django.test.utils import setup_test_environment
-        from django.test import RequestFactory
 
-        settings.configure()
+        if not settings.configured:
+            settings.configure()
         setup_test_environment()
+
+    def test_get_request(self):
+        from django.test import RequestFactory
 
         self.middleware = self._make_one()
         self.request = RequestFactory().get('/')
         self.middleware.process_request(self.request)
         self.assertEqual(self.middleware.get_request(), self.request)
+
+
+    def tearDown(self):
+        from django.test.utils import teardown_test_environment
+
+        teardown_test_environment()
