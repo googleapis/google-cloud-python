@@ -424,18 +424,19 @@ class TestTable(unittest.TestCase):
 
         response = MutateRowsResponse()
         entry_1 = response.entries.add()
+        entry_1.index = 0
         entry_1.status.code = 0
         entry_2 = response.entries.add()
+        entry_2.index = 1
         entry_2.status.code = 1
 
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
-        result = table.mutate_rows([row_1, row_2])
+        statuses = table.mutate_rows([row_1, row_2])
+        result = [status.code for status in statuses]
+        expected_result = [0, 1]
 
-        self.assertIs(result[0][1], row_1)
-        self.assertTrue(len(result))
-        self.assertFalse(row_1._get_mutations(None))
-        self.assertTrue(row_2._get_mutations(None))
+        self.assertEqual(result, expected_result)
 
 
     def test_read_rows(self):

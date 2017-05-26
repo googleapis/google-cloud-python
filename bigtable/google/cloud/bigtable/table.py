@@ -300,21 +300,19 @@ class Table(object):
         :param rows: List or other iterable of :class:`.DirectRow` instances.
 
         :rtype: list
-        :returns: A list of tuples (``MutateRowsResponse.Entry`` protobuf
-                  corresponding to the errors, :class:`.DirectRow`)
+        :returns: A list of corresponding to each row statuses.
         """
         mutate_rows_request = _mutate_rows_request(self.name, rows)
-        unsuccessfully_mutated_rows = []
         client = self._instance._client
         responses = client._data_stub.MutateRows(mutate_rows_request)
+
+        responses_statuses = [None for _ in range(len(rows))]
         for response in responses:
             for entry in response.entries:
+                responses_statuses[entry.index] = entry.status
                 if entry.status.code == 0:
                     rows[entry.index].clear()
-                else:
-                    unsuccessfully_mutated_rows.append(
-                        (entry, rows[entry.index]))
-        return unsuccessfully_mutated_rows
+        return responses_statuses
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -427,7 +425,7 @@ def _mutate_rows_request(table_name, rows):
     :rtype: :class:`data_messages_v2_pb2.MutateRowsRequest`
     :returns: The ``MutateRowsRequest`` protobuf corresponding to the inputs.
     :raises: :exc:`~.table.TooManyMutationsError` if the number of mutations is
-             grater than 100,000
+             greater than 100,000
     """
     request_pb = data_messages_v2_pb2.MutateRowsRequest(table_name=table_name)
     mutations_count = 0

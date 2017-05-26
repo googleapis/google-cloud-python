@@ -369,8 +369,10 @@ class TestDataAPI(unittest.TestCase):
         # Change the contents
         row_1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL3)
         row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL4)
-        result = self._table.mutate_rows(rows)
-        self.assertFalse(result)
+        statuses = self._table.mutate_rows(rows)
+        result = [status.code for status in statuses]
+        expected_result = [0, 0]
+        self.assertEqual(result, expected_result)
 
         # Check the contents
         row_1_data = self._table.read_row(ROW_KEY)
