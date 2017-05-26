@@ -18,6 +18,15 @@ from threading import local
 _thread_locals = local()
 
 
+def _get_request():
+    """Get Django request from thread local.
+
+    :rtype: str
+    :returns: Django request.
+    """
+    return getattr(_thread_locals, 'request', None)
+
+
 class RequestMiddleware(object):
     """Saves the request in thread local"""
 
@@ -28,11 +37,3 @@ class RequestMiddleware(object):
         :param request: Django http request.
         """
         _thread_locals.request = request
-
-    def get_request(self):
-        """Get Django request from thread local.
-
-        :rtype: str
-        :returns: Django request.
-        """
-        return getattr(_thread_locals, 'request', None)

@@ -33,15 +33,16 @@ class TestRequestMiddleware(unittest.TestCase):
             settings.configure()
         setup_test_environment()
 
-    def test_get_request(self):
-        from django.test import RequestFactory
-
-        self.middleware = self._make_one()
-        self.request = RequestFactory().get('/')
-        self.middleware.process_request(self.request)
-        self.assertEqual(self.middleware.get_request(), self.request)
-
     def tearDown(self):
         from django.test.utils import teardown_test_environment
 
         teardown_test_environment()
+
+    def test_get_request(self):
+        from django.test import RequestFactory
+        from google.cloud.logging.handlers.middleware.request import _get_request
+
+        self.middleware = self._make_one()
+        self.request = RequestFactory().get('/')
+        self.middleware.process_request(self.request)
+        self.assertEqual(_get_request(), self.request)
