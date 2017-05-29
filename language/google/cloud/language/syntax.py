@@ -148,23 +148,22 @@ class PartOfSpeech(object):
                             voice=payload['voice'],
                             gender=payload['gender'])
 
+    @classmethod
+    def reverse(cls, tag):
+        """Reverses the API's enum name for the one on this class.
 
-@classmethod
-def reverse(cls, tag):
-    """Reverses the API's enum name for the one on this class.
+        For example::
 
-    For example::
+            >>> PartOfSpeech.OTHER
+            'X'
+            >>> PartOfSpeech.reverse('X')
+            'OTHER'
 
-        >>> PartOfSpeech.OTHER
-        'X'
-        >>> PartOfSpeech.reverse('X')
-        'OTHER'
-
-    :rtype: str
-    :returns: The attribute name corresponding to the API part of
-              speech enum.
-    """
-    return cls._REVERSE_MAP[tag]
+        :rtype: str
+        :returns: The attribute name corresponding to the API part of
+                  speech enum.
+        """
+        return cls._REVERSE_MAP[tag]
 
 
 class Token(object):
