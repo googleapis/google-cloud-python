@@ -20,7 +20,45 @@ breaks a document down into tokens and sentences.
 
 
 class PartOfSpeech(object):
-    """Part of speech of a :class:`Token`."""
+    """A Google Cloud Natural Language API Part of speech object. Rich data about
+    the Part of Speech of a token returned by the API
+
+    :type aspect: str
+    :param aspect: Aspect
+
+    :type reciprocity: str
+    :param reciprocity: Reciprocity
+
+    :type case: str
+    :param case: Case
+
+    :type mood: str
+    :param mood: Mood
+
+    :type tag: str
+    :param tag: Tag
+
+    :type person: str
+    :param person: Person
+
+    :type number: str
+    :param number: Number
+
+    :type tense: str
+    :param tense: Tense
+
+    :type form: str
+    :param form: Form
+
+    :type proper: str
+    :param proper: Proper
+
+    :type voice: str
+    :param voice: Voice
+
+    :type gender: str
+    :param gender: Gender
+    """
 
     UNKNOWN = 'UNKNOWN'
     """Unknown part of speech."""
@@ -81,22 +119,52 @@ class PartOfSpeech(object):
         'AFFIX': 'AFFIX',
     }
 
+    def __init__(self, aspect, reciprocity, case, mood, tag, person, number, tense, form, proper, voice, gender):
+        self.aspect = aspect
+        self.reciprocity = reciprocity
+        self.case = case
+        self.mood = mood
+        self.tag = tag
+        self.person = person
+        self.number = number
+        self.tense = tense
+        self.form = form
+        self.proper = proper
+        self.voice = voice
+        self.gender = gender
+
     @classmethod
-    def reverse(cls, tag):
-        """Reverses the API's enum name for the one on this class.
+    def from_api_repr(cls, payload):
+        return PartOfSpeech(aspect=payload['aspect'],
+                            reciprocity=payload['reciprocity'],
+                            case=payload['case'],
+                            mood=payload['mood'],
+                            tag=payload['tag'],
+                            person=payload['person'],
+                            number=payload['number'],
+                            tense=payload['tense'],
+                            form=payload['form'],
+                            proper=payload['proper'],
+                            voice=payload['voice'],
+                            gender=payload['gender'])
 
-        For example::
 
-            >>> PartOfSpeech.OTHER
-            'X'
-            >>> PartOfSpeech.reverse('X')
-            'OTHER'
+@classmethod
+def reverse(cls, tag):
+    """Reverses the API's enum name for the one on this class.
 
-        :rtype: str
-        :returns: The attribute name corresponding to the API part of
-                  speech enum.
-        """
-        return cls._REVERSE_MAP[tag]
+    For example::
+
+        >>> PartOfSpeech.OTHER
+        'X'
+        >>> PartOfSpeech.reverse('X')
+        'OTHER'
+
+    :rtype: str
+    :returns: The attribute name corresponding to the API part of
+              speech enum.
+    """
+    return cls._REVERSE_MAP[tag]
 
 
 class Token(object):
@@ -118,9 +186,9 @@ class Token(object):
                        document according to the encoding type specified
                        in the API request.
 
-    :type part_of_speech: str
-    :param part_of_speech: The part of speech of the token. See
-                           :class:`PartOfSpeech` for possible values.
+    :type part_of_speech: PartOfSpeech
+    :param part_of_speech: An object representing the Part of Speech of the token
+                           with it's properties.
 
     :type edge_index: int
     :param edge_index: The head of this token in the dependency tree. This is
@@ -159,7 +227,7 @@ class Token(object):
         text_span = payload['text']
         text_content = text_span['content']
         text_begin = text_span['beginOffset']
-        part_of_speech = payload['partOfSpeech']['tag']
+        part_of_speech = PartOfSpeech.from_api_repr(payload['partOfSpeech'])
         edge = payload['dependencyEdge']
         edge_index = edge['headTokenIndex']
         edge_label = edge['label']
