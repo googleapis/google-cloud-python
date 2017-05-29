@@ -162,8 +162,6 @@ class TestToken(unittest.TestCase):
         self.assertEqual(token.lemma, lemma)
 
     def test_from_api_repr(self):
-        from google.cloud.language.syntax import PartOfSpeech
-
         klass = self._get_target_class()
         text_content = 'pretty'
         text_begin = -1
