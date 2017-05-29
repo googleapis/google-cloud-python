@@ -16,7 +16,6 @@ import unittest
 
 
 class TestPartOfSpeech(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.language.syntax import PartOfSpeech
@@ -34,9 +33,83 @@ class TestPartOfSpeech(unittest.TestCase):
             result = klass.reverse(value)
             self.assertEqual(result, attr)
 
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_constructor(self):
+
+        aspect = 'ASPECT_UNKNOWN'
+        reciprocity = 'RECIPROCITY_UNKNOWN'
+        case = 'NOMINATIVE'
+        mood = 'MOOD_UNKNOWN'
+        tag = 'PRON'
+        person = 'FIRST'
+        number = 'SINGULAR'
+        tense = 'TENSE_UNKNOWN'
+        form = 'FORM_UNKNOWN'
+        proper = 'PROPER_UNKNOWN'
+        voice = 'VOICE_UNKNOWN'
+        gender = 'GENDER_UNKNOWN'
+
+        pos = self._make_one(aspect, reciprocity, case, mood, tag, person,
+                             number, tense, form, proper, voice, gender)
+        self.assertEqual(pos.aspect, aspect)
+        self.assertEqual(pos.reciprocity, reciprocity)
+        self.assertEqual(pos.case, case)
+        self.assertEqual(pos.mood, mood)
+        self.assertEqual(pos.tag, tag)
+        self.assertEqual(pos.person, person)
+        self.assertEqual(pos.number, number)
+        self.assertEqual(pos.tense, tense)
+        self.assertEqual(pos.form, form)
+        self.assertEqual(pos.proper, proper)
+        self.assertEqual(pos.voice, voice)
+        self.assertEqual(pos.gender, gender)
+
+    def test_from_api_repr(self):
+        klass = self._get_target_class()
+        aspect = 'ASPECT_UNKNOWN'
+        reciprocity = 'RECIPROCITY_UNKNOWN'
+        case = 'NOMINATIVE'
+        mood = 'MOOD_UNKNOWN'
+        tag = 'PRON'
+        person = 'FIRST'
+        number = 'SINGULAR'
+        tense = 'TENSE_UNKNOWN'
+        form = 'FORM_UNKNOWN'
+        proper = 'PROPER_UNKNOWN'
+        voice = 'VOICE_UNKNOWN'
+        gender = 'GENDER_UNKNOWN'
+        payload = {
+            'aspect': aspect,
+            'reciprocity': reciprocity,
+            'case': case,
+            'mood': mood,
+            'tag': tag,
+            'person': person,
+            'number': number,
+            'tense': tense,
+            'form': form,
+            'proper': proper,
+            'voice': voice,
+            'gender': gender
+        }
+        pos = klass.from_api_repr(payload)
+        self.assertEqual(pos.aspect, aspect)
+        self.assertEqual(pos.reciprocity, reciprocity)
+        self.assertEqual(pos.case, case)
+        self.assertEqual(pos.mood, mood)
+        self.assertEqual(pos.tag, tag)
+        self.assertEqual(pos.person, person)
+        self.assertEqual(pos.number, number)
+        self.assertEqual(pos.tense, tense)
+        self.assertEqual(pos.form, form)
+        self.assertEqual(pos.proper, proper)
+        self.assertEqual(pos.voice, voice)
+        self.assertEqual(pos.gender, gender)
+
 
 class TestToken(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.language.syntax import Token
