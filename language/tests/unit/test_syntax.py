@@ -124,7 +124,20 @@ class TestToken(unittest.TestCase):
 
         text_content = 'All'
         text_begin = -1
-        part_of_speech = PartOfSpeech.DETERMINER
+        aspect = 'ASPECT_UNKNOWN'
+        reciprocity = 'RECIPROCITY_UNKNOWN'
+        case = 'NOMINATIVE'
+        mood = 'MOOD_UNKNOWN'
+        tag = 'PRON'
+        person = 'FIRST'
+        number = 'SINGULAR'
+        tense = 'TENSE_UNKNOWN'
+        form = 'FORM_UNKNOWN'
+        proper = 'PROPER_UNKNOWN'
+        voice = 'VOICE_UNKNOWN'
+        gender = 'GENDER_UNKNOWN'
+        part_of_speech = PartOfSpeech(aspect, reciprocity, case, mood, tag, person,
+                                      number, tense, form, proper, voice, gender)
         edge_index = 3
         edge_label = 'PREDET'
         lemma = text_content
@@ -132,7 +145,18 @@ class TestToken(unittest.TestCase):
                                edge_index, edge_label, lemma)
         self.assertEqual(token.text_content, text_content)
         self.assertEqual(token.text_begin, text_begin)
-        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.part_of_speech.aspect, part_of_speech.aspect)
+        self.assertEqual(token.part_of_speech.reciprocity, part_of_speech.reciprocity)
+        self.assertEqual(token.part_of_speech.case, part_of_speech.case)
+        self.assertEqual(token.part_of_speech.mood, part_of_speech.mood)
+        self.assertEqual(token.part_of_speech.tag, part_of_speech.tag)
+        self.assertEqual(token.part_of_speech.person, part_of_speech.person)
+        self.assertEqual(token.part_of_speech.number, part_of_speech.number)
+        self.assertEqual(token.part_of_speech.tense, part_of_speech.tense)
+        self.assertEqual(token.part_of_speech.form, part_of_speech.form)
+        self.assertEqual(token.part_of_speech.proper, part_of_speech.proper)
+        self.assertEqual(token.part_of_speech.voice, part_of_speech.voice)
+        self.assertEqual(token.part_of_speech.gender, part_of_speech.gender)
         self.assertEqual(token.edge_index, edge_index)
         self.assertEqual(token.edge_label, edge_label)
         self.assertEqual(token.lemma, lemma)
@@ -143,7 +167,32 @@ class TestToken(unittest.TestCase):
         klass = self._get_target_class()
         text_content = 'pretty'
         text_begin = -1
-        part_of_speech = PartOfSpeech.ADJECTIVE
+        aspect = 'ASPECT_UNKNOWN'
+        reciprocity = 'RECIPROCITY_UNKNOWN'
+        case = 'NOMINATIVE'
+        mood = 'MOOD_UNKNOWN'
+        tag = 'PRON'
+        person = 'FIRST'
+        number = 'SINGULAR'
+        tense = 'TENSE_UNKNOWN'
+        form = 'FORM_UNKNOWN'
+        proper = 'PROPER_UNKNOWN'
+        voice = 'VOICE_UNKNOWN'
+        gender = 'GENDER_UNKNOWN'
+        part_of_speech = {
+            'aspect': aspect,
+            'reciprocity': reciprocity,
+            'case': case,
+            'mood': mood,
+            'tag': tag,
+            'person': person,
+            'number': number,
+            'tense': tense,
+            'form': form,
+            'proper': proper,
+            'voice': voice,
+            'gender': gender
+        }
         edge_index = 3
         edge_label = 'AMOD'
         lemma = text_content
@@ -152,9 +201,7 @@ class TestToken(unittest.TestCase):
                 'content': text_content,
                 'beginOffset': text_begin,
             },
-            'partOfSpeech': {
-                'tag': part_of_speech,
-            },
+            'partOfSpeech': part_of_speech,
             'dependencyEdge': {
                 'headTokenIndex': edge_index,
                 'label': edge_label,
@@ -164,7 +211,18 @@ class TestToken(unittest.TestCase):
         token = klass.from_api_repr(payload)
         self.assertEqual(token.text_content, text_content)
         self.assertEqual(token.text_begin, text_begin)
-        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.part_of_speech.aspect, part_of_speech['aspect'])
+        self.assertEqual(token.part_of_speech.reciprocity, part_of_speech['reciprocity'])
+        self.assertEqual(token.part_of_speech.case, part_of_speech['case'])
+        self.assertEqual(token.part_of_speech.mood, part_of_speech['mood'])
+        self.assertEqual(token.part_of_speech.tag, part_of_speech['tag'])
+        self.assertEqual(token.part_of_speech.person, part_of_speech['person'])
+        self.assertEqual(token.part_of_speech.number, part_of_speech['number'])
+        self.assertEqual(token.part_of_speech.tense, part_of_speech['tense'])
+        self.assertEqual(token.part_of_speech.form, part_of_speech['form'])
+        self.assertEqual(token.part_of_speech.proper, part_of_speech['proper'])
+        self.assertEqual(token.part_of_speech.voice, part_of_speech['voice'])
+        self.assertEqual(token.part_of_speech.gender, part_of_speech['gender'])
         self.assertEqual(token.edge_index, edge_index)
         self.assertEqual(token.edge_label, edge_label)
         self.assertEqual(token.lemma, lemma)
