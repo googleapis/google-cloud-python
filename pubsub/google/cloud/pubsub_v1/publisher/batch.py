@@ -15,8 +15,11 @@
 from __future__ import absolute_import
 
 import collections
+import copy
 import queue
 import time
+
+import six
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import future
@@ -60,7 +63,8 @@ class Batch(object):
 
         # Continually monitor the thread until it is time to commit the
         # batch, or the batch is explicitly committed.
-        self._client.thread_class(self.monitor)
+        self._process = self._client.thread_class(target=self.monitor)
+        self._process.start()
 
     @property
     def client(self):
@@ -90,8 +94,7 @@ class Batch(object):
         completion.
         """
         # If this is the active batch on the cleint right now, remove it.
-        if self._client._batch is self:
-            self._client._batch = None
+        self._client.batch(self._topic, pop=self)
 
         # Update the status.
         self._status = 'in-flight'
@@ -109,7 +112,7 @@ class Batch(object):
             for message_id in response.message_ids:
                 future_ = self._futures.get(block=False)
                 self._message_ids[future_] = message_id
-                future_._trigger())
+                future_._trigger()
         except queue.Empty:
             raise ValueError('More message IDs came back than messages '
                              'were published.')
@@ -129,7 +132,7 @@ class Batch(object):
         from the batch.
 
         Yields:
-            :class:~`pubsub_v1.types.PubSubMessage`: A Pub/Sub Message.
+            :class:~`pubsub_v1.types.PubsubMessage`: A Pub/Sub Message.
         """
         try:
             while True:
@@ -197,7 +200,7 @@ class Batch(object):
                             'as a bytestring.')
 
         # Coerce all attributes to text strings.
-        for k, v in copy(attrs).items():
+        for k, v in copy.copy(attrs).items():
             if isinstance(data, six.text_type):
                 continue
             if isinstance(data, six.binary_type):
@@ -207,7 +210,7 @@ class Batch(object):
                             'be sent as text strings.')
 
         # Store the actual message in the batch's message queue.
-        self._messages.put(PubSubMessage(data=data, attributes=attrs))
+        self._messages.put(types.PubsubMessage(data=data, attributes=attrs))
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.

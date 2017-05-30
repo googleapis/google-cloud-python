@@ -24,6 +24,7 @@ from google.cloud.gapic.pubsub.v1 import publisher_client
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.publisher.batch import Batch
 
 
 __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -75,21 +76,39 @@ class PublisherClient(object):
         """
         return self._thread_class
 
-    def batch(self, topic):
+    def batch(self, topic, create=True, pop=None):
         """Return the current batch.
 
-        This will create a new batch if no batch currently exists.
+        This will create a new batch only if no batch currently exists.
+
+        Args:
+            topic (str): A string representing the topic.
+            create (bool): Whether to create a new batch if no batch is
+                found. Defaults to True.
+            pop (:class:~`pubsub_v1.batch.Batch`): Pop the batch off
+                if it is found *and* is the batch that was sent. Defaults
+                to None (never pop).
 
         Returns:
             :class:~`pubsub_v1.batch.Batch` The batch object.
         """
-        if topic not in self._batch:
-            self._batch[topic] = Batch(
+        # If there is no matching batch yet, then potentially create one
+        # and place it on the batches dictionary.
+        if topic not in self._batches:
+            if not create:
+                return None
+            self._batches[topic] = Batch(
                 client=self,
                 settings=self.batching,
                 topic=topic,
             )
-        return self._batch[topic]
+
+        # If we are supposed to remove the batch, pop it off and return it.
+        if pop and self._batches[topic] == pop:
+            return self._batches.pop(topic)
+
+        # Simply return the appropriate batch.
+        return self._batches[topic]
 
     def publish(self, topic, data, **attrs):
         """Publish a single message.

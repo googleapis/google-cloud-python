@@ -14,7 +14,7 @@
 
 from __future__ import absolute_import
 
-from functools import wraps
+import functools
 
 
 def add_methods(SourceClass, blacklist=()):
@@ -24,16 +24,17 @@ def add_methods(SourceClass, blacklist=()):
     Additionally, any methods explicitly defined on the wrapped class are
     not added.
     """
-    def wrap(wrapped):
+    def wrap(wrapped_fx):
         """Wrap a GAPIC method; preserve its name and docstring."""
         # If this is a static or class method, then we need to *not*
         # send self as the first argument.
         #
         # Similarly, for instance methods, we need to send self.api rather
         # than self, since that is where the actual methods were declared.
-        instance_method = hasattr(wrapped_fx, '__self__')
-        if issubclass(type(wrapped_fx.__self__), type):
-            instance_method = Flase
+        instance_method = True
+        self = getattr(wrapped_fx, '__self__', None)
+        if issubclass(type(self), type):
+            instance_method = False
 
         # Okay, we have figured out what kind of method this is; send
         # down the correct wrapper function.

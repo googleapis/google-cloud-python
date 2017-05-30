@@ -30,9 +30,8 @@ class Future(object):
     Args:
         batch (:class:~`pubsub_v1.batch.Batch`): The batch object that
             is committing this message.
-        client_id (str): The client ID of the message.
     """
-    def __init__(self, batch, client_id):
+    def __init__(self, batch):
         self._batch = batch
         self._hash = hash(uuid.uuid4())
         self._callbacks = queue.Queue()
