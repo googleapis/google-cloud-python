@@ -87,13 +87,18 @@ However, you may want to be explicit because
   from different projects
 
 In these situations, you can create an explicit
-:class:`~google.auth.credentials.Credentials` object suited to your
-environment. After creation, you can pass it directly to a
-:class:`Client <google.cloud.client.Client>`:
+:class:`~google.auth.credentials.Credentials` object suited to your environment.
+After creation, you can pass it directly to a :class:`Client <google.cloud.client.Client>`:
 
 .. code:: python
 
     client = Client(credentials=credentials)
+
+.. tip::
+    To create a credentials object, follow the `google-auth-guide`_.
+
+.. _google-auth-guide: https://google-auth.readthedocs.io/en/latest/user-guide.html#service-account-private-key-files
+
 
 Google App Engine Environment
 -----------------------------
