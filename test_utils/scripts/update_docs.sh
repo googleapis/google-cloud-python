@@ -23,8 +23,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Function to build the docs.
 function build_docs {
-    rm -rf docs/_build/
-    sphinx-build -W -b html -d docs/_build/doctrees docs/ docs/_build/html/
+    #rm -rf docs/_build/
+    #sphinx-build -W -b html -d docs/_build/doctrees docs/ docs/_build/html/
+    sphinx-build -b html -d docs/_build/doctrees docs/ docs/_build/html/
     return $?
 }
 
