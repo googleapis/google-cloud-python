@@ -440,7 +440,7 @@ class TestDocument(unittest.TestCase):
 
         self.assertIsInstance(token, Token)
         self.assertEqual(token.text_content, text_content)
-        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.part_of_speech['tag'], part_of_speech)
         self.assertEqual(token.lemma, lemma)
 
     def test_analyze_syntax(self):
@@ -468,7 +468,18 @@ class TestDocument(unittest.TestCase):
                         'beginOffset': -1,
                     },
                     'partOfSpeech': {
-                        'tag': 'NOUN',
+                        'aspect' : 'ASPECT_UNKNOWN',
+                        'reciprocity' : 'RECIPROCITY_UNKNOWN',
+                        'case' : 'CASE_UNKNOWN',
+                        'mood' : 'MOOD_UNKNOWN',
+                        'tag' : 'NOUN',
+                        'person' : 'PERSON_UNKNOWN',
+                        'number' : 'SINGULAR',
+                        'tense' : 'TENSE_UNKNOWN',
+                        'form' : 'FORM_UNKNOWN',
+                        'proper' : 'PROPER',
+                        'voice' : 'VOICE_UNKNOWN',
+                        'gender' : 'GENDER_UNKNOWN'
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 0,
@@ -482,7 +493,18 @@ class TestDocument(unittest.TestCase):
                         'beginOffset': -1,
                     },
                     'partOfSpeech': {
-                        'tag': 'ADP',
+                        'aspect' : 'ASPECT_UNKNOWN',
+                        'reciprocity' : 'RECIPROCITY_UNKNOWN',
+                        'case' : 'CASE_UNKNOWN',
+                        'mood' : 'MOOD_UNKNOWN',
+                        'tag' : 'ADP',
+                        'person' : 'PERSON_UNKNOWN',
+                        'number' : 'NUMBER_UNKNOWN',
+                        'tense' : 'TENSE_UNKNOWN',
+                        'form' : 'FORM_UNKNOWN',
+                        'proper' : 'PROPER_UNKNOWN',
+                        'voice' : 'VOICE_UNKNOWN',
+                        'gender' : 'GENDER_UNKNOWN'
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 0,
@@ -496,7 +518,18 @@ class TestDocument(unittest.TestCase):
                         'beginOffset': -1,
                     },
                     'partOfSpeech': {
-                        'tag': 'DET',
+                        'aspect' : 'ASPECT_UNKNOWN',
+                        'reciprocity' : 'RECIPROCITY_UNKNOWN',
+                        'case' : 'CASE_UNKNOWN',
+                        'mood' : 'MOOD_UNKNOWN',
+                        'tag' : 'DET',
+                        'person' : 'PERSON_UNKNOWN',
+                        'number' : 'NUMBER_UNKNOWN',
+                        'tense' : 'TENSE_UNKNOWN',
+                        'form' : 'FORM_UNKNOWN',
+                        'proper' : 'PROPER_UNKNOWN',
+                        'voice' : 'VOICE_UNKNOWN',
+                        'gender' : 'GENDER_UNKNOWN'
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 3,
@@ -510,7 +543,18 @@ class TestDocument(unittest.TestCase):
                         'beginOffset': -1,
                     },
                     'partOfSpeech': {
-                        'tag': 'NOUN',
+                        'aspect' : 'ASPECT_UNKNOWN',
+                        'reciprocity' : 'RECIPROCITY_UNKNOWN',
+                        'case' : 'CASE_UNKNOWN',
+                        'mood' : 'MOOD_UNKNOWN',
+                        'tag' : 'NOUN',
+                        'person' : 'PERSON_UNKNOWN',
+                        'number' : 'SINGULAR',
+                        'tense' : 'TENSE_UNKNOWN',
+                        'form' : 'FORM_UNKNOWN',
+                        'proper' : 'PROPER',
+                        'voice' : 'VOICE_UNKNOWN',
+                        'gender' : 'GENDER_UNKNOWN'
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 1,
