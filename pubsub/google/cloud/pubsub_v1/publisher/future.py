@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import queue
+import uuid
 
 
 class Future(object):
@@ -33,8 +34,11 @@ class Future(object):
     """
     def __init__(self, batch, client_id):
         self._batch = batch
-        self._client_id = client_id
+        self._hash = hash(uuid.uuid4())
         self._callbacks = queue.Queue()
+
+    def __hash__(self):
+        return self._hash
 
     def cancel(self):
         """Publishes in Pub/Sub currently may not be canceled.
@@ -123,7 +127,6 @@ class Future(object):
             _wait=min(_wait * 2, 60),
         )
 
-
     def add_done_callback(self, fn):
         """Attach the provided callable to the future.
 
@@ -139,6 +142,9 @@ class Future(object):
 
         This method is called internally by the batch once the batch
         completes.
+
+        Args:
+            message_id (str): The message ID, as a string.
         """
         try:
             while True:
