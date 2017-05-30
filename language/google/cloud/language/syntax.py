@@ -20,8 +20,8 @@ breaks a document down into tokens and sentences.
 
 
 class PartOfSpeech(object):
-    """A Google Cloud Natural Language API Part of speech object. Rich data about
-    the Part of Speech of a token returned by the API
+    """A Google Cloud Natural Language API Part of speech object.
+    Rich data about the Part of Speech of a token returned by the API
 
     :type aspect: str
     :param aspect: Aspect
@@ -119,7 +119,8 @@ class PartOfSpeech(object):
         'AFFIX': 'AFFIX',
     }
 
-    def __init__(self, aspect, reciprocity, case, mood, tag, person, number, tense, form, proper, voice, gender):
+    def __init__(self, aspect, reciprocity, case, mood, tag, person,
+                 number, tense, form, proper, voice, gender):
         self.aspect = aspect
         self.reciprocity = reciprocity
         self.case = case
@@ -186,8 +187,8 @@ class Token(object):
                        in the API request.
 
     :type part_of_speech: PartOfSpeech
-    :param part_of_speech: An object representing the Part of Speech of the token
-                           with it's properties.
+    :param part_of_speech: An object representing the Part of Speech of the
+                           token with it's properties.
 
     :type edge_index: int
     :param edge_index: The head of this token in the dependency tree. This is
