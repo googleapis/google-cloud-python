@@ -48,11 +48,16 @@ class Batch(object):
         client (:class:`google.cloud.pubsub_v1.PublisherClient`): The
             publisher client used to create this batch. Batch settings are
             inferred from this.
+        topic (str): The topic. The format for this is
+            ``projects/{project}/topics/{topic}``.
         settings (:class:`google.cloud.pubsub_v1.types.Batching`): The
             settings for batch publishing. These should be considered
             immutable once the batch has been opened.
+        autocommit (bool): Whether to autocommit the batch when the time
+            has elapsed. Defaults to True unless ``settings.max_latency`` is
+            inf.
     """
-    def __init__(self, client, topic, settings):
+    def __init__(self, client, topic, settings, autocommit=True):
         self._client = client
         self._topic = topic
         self._settings = settings
@@ -63,8 +68,9 @@ class Batch(object):
 
         # Continually monitor the thread until it is time to commit the
         # batch, or the batch is explicitly committed.
-        self._process = self._client.thread_class(target=self.monitor)
-        self._process.start()
+        if autocommit and self._settings.max_latency < float('inf'):
+            self._process = self._client.thread_class(target=self.monitor)
+            self._process.start()
 
     @property
     def client(self):
@@ -100,7 +106,7 @@ class Batch(object):
         self._status = 'in-flight'
 
         # Begin the request to publish these messages.
-        response = self._client.api.publish(self._topic, self.flush())
+        response = self._client.api.publish(self._topic, list(self.flush()))
 
         # FIXME (lukesneeringer): How do I check for errors on this?
         self._status = 'success'
