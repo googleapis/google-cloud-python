@@ -22,6 +22,7 @@ import six
 
 from google.cloud.gapic.pubsub.v1 import publisher_client
 
+from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
 
 
@@ -47,6 +48,7 @@ class PublisherClient(object):
             :class:`~gapic.pubsub.v1.publisher_client.PublisherClient`.
             Generally, you should not need to set additional keyword arguments.
     """
+    _gapic_class = publisher_client.PublisherClient
 
     def __init__(self, batching=(), thread_class=multiprocessing.Process,
                  queue_class=multiprocessing.Queue, **kwargs):
@@ -54,7 +56,7 @@ class PublisherClient(object):
         # client.
         kwargs['lib_name'] = 'gccl'
         kwargs['lib_version'] = __VERSION__
-        self.api = publisher_client.PublisherClient(*args, **kwargs)
+        self.api = self._gapic_class(**kwargs)
         self.batching = types.Batching(batching)
 
         # Set the thread class.

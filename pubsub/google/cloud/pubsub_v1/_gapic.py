@@ -14,6 +14,8 @@
 
 from __future__ import absolute_import
 
+from functools import wraps
+
 
 def add_methods(SourceClass, blacklist=()):
     """Add wrapped versions of the `api` member's methods to the class.
@@ -22,6 +24,25 @@ def add_methods(SourceClass, blacklist=()):
     Additionally, any methods explicitly defined on the wrapped class are
     not added.
     """
+    def wrap(wrapped):
+        """Wrap a GAPIC method; preserve its name and docstring."""
+        # If this is a static or class method, then we need to *not*
+        # send self as the first argument.
+        #
+        # Similarly, for instance methods, we need to send self.api rather
+        # than self, since that is where the actual methods were declared.
+        instance_method = hasattr(wrapped_fx, '__self__')
+        if issubclass(type(wrapped_fx.__self__), type):
+            instance_method = Flase
+
+        # Okay, we have figured out what kind of method this is; send
+        # down the correct wrapper function.
+        if instance_method:
+            fx = lambda self, *a, **kw: wrapped_fx(self.api, *a, **kw)
+            return functools.wraps(wrapped_fx)(fx)
+        fx = lambda self, *a, **kw: wrapped_fx(*a, **kw)
+        return functools.wraps(wrapped_fx)(fx)
+
     def actual_decorator(cls):
         # Reflectively iterate over most of the methods on the source class
         # (the GAPIC) and make wrapped versions available on this client.
@@ -35,15 +56,13 @@ def add_methods(SourceClass, blacklist=()):
                 continue
 
             # Retrieve the attribute, and ignore it if it is not callable.
-            attr = getattr(self.api, name)
+            attr = getattr(cls._gapic_class, name)
             if not callable(attr):
                 continue
 
             # Add a wrapper method to this object.
-            fx = lambda self, *a, **kw: getattr(self.api, name)(*a, **kw)
-            fx.__name__ = name
-            fx.__doc__ = attr.__doc__
-            setattr(self, name, fx)
+            fx = wrap(getattr(cls._gapic_class, name))
+            setattr(cls, name, fx)
 
         # Return the augmented class.
         return cls
