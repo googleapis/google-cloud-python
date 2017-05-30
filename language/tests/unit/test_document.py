@@ -14,7 +14,6 @@
 
 import unittest
 
-
 ANNOTATE_NAME = 'Moon'
 ANNOTATE_CONTENT = 'A cow jumped over the %s.' % (ANNOTATE_NAME,)
 ANNOTATE_SCORE = 1
@@ -29,7 +28,20 @@ def _make_token_json(name, part_of_speech, head, edge_label):
             'content': name,
             'beginOffset': -1,
         },
-        'partOfSpeech': {'tag': part_of_speech},
+        'partOfSpeech': {
+            'aspect': 'ASPECT_UNKNOWN',
+            'reciprocity': 'RECIPROCITY_UNKNOWN',
+            'case': 'NOMINATIVE',
+            'mood': 'MOOD_UNKNOWN',
+            'tag': part_of_speech,
+            'person': 'FIRST',
+            'number': 'SINGULAR',
+            'tense': 'TENSE_UNKNOWN',
+            'form': 'FORM_UNKNOWN',
+            'proper': 'PROPER_UNKNOWN',
+            'voice': 'VOICE_UNKNOWN',
+            'gender': 'GENDER_UNKNOWN',
+        },
         'dependencyEdge': {
             'headTokenIndex': head,
             'label': edge_label,
@@ -120,7 +132,6 @@ class TestEncoding(unittest.TestCase):
 
 
 class TestDocument(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.language.document import Document
