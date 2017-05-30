@@ -80,10 +80,12 @@ def get_trace_id_from_django():
         return None
 
     try:
-        header = request.META[_DJANGO_TRACE_HEADER]
+        header = request.META.get(_DJANGO_TRACE_HEADER)
     except KeyError:
         return None
 
+    if not header:
+        return None
     trace_id = header.split('/')[0]
 
     return trace_id
@@ -102,4 +104,4 @@ def get_trace_id():
         if trace_id is not None:
             return trace_id
 
-    return trace_id
+    return None
