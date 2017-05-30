@@ -435,12 +435,12 @@ class TestDocument(unittest.TestCase):
         client._connection.api_request.assert_called_once_with(
             path='analyzeSentiment', method='POST', data=expected)
 
-    def _verify_token(self, token, text_content, part_of_speech, lemma):
+    def _verify_token(self, token, text_content, part_of_speech_tag, lemma):
         from google.cloud.language.syntax import Token
 
         self.assertIsInstance(token, Token)
         self.assertEqual(token.text_content, text_content)
-        self.assertEqual(token.part_of_speech['tag'], part_of_speech)
+        self.assertEqual(token.part_of_speech.tag, part_of_speech_tag)
         self.assertEqual(token.lemma, lemma)
 
     def test_analyze_syntax(self):
