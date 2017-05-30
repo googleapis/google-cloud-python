@@ -88,22 +88,17 @@ However, you may want to be explicit because
 
 In these situations, you can create an explicit
 :class:`~google.auth.credentials.Credentials` object suited to your environment.
-
-.. code:: python
-   
-   import google.auth.credentials
-   from google.oauth2 import service_account
-   #scopes available on: https://developers.google.com/identity/protocols/googlescopes
-   scopes = ['https://www.googleapis.com/your_scope']
-   creds = service_account.Credentials.from_service_account_file('your-service-account.json')
-   credentials = google.auth.credentials.with_scopes_if_required(creds, scopes)
-
-After creation, you can pass it directly to a
-:class:`Client <google.cloud.client.Client>`:
+After creation, you can pass it directly to a :class:`Client <google.cloud.client.Client>`:
 
 .. code:: python
 
     client = Client(credentials=credentials)
+
+.. tip::
+    To create a credentials object, follow the `google-auth-guide`_.
+
+.. _google-auth-guide: https://google-auth.readthedocs.io/en/latest/user-guide.html#service-account-private-key-files
+
 
 Google App Engine Environment
 -----------------------------
