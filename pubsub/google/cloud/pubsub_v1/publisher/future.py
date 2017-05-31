@@ -34,7 +34,7 @@ class Future(object):
     def __init__(self, batch_info):
         self._batch_info = batch_info
         self._hash = hash(uuid.uuid4())
-        self._callbacks = queue.Queue()
+        self._callbacks = []
 
     def __hash__(self):
         return self._hash
@@ -134,7 +134,7 @@ class Future(object):
         """
         if self.done():
             fn(self)
-        self._callbacks.put(fn)
+        self._callbacks.append(fn)
 
     def _trigger(self):
         """Trigger all callbacks registered to this Future.
@@ -145,9 +145,5 @@ class Future(object):
         Args:
             message_id (str): The message ID, as a string.
         """
-        try:
-            while True:
-                callback = self._callbacks.get(block=False)
-                callback(self)
-        except queue.Empty:
-            return None
+        for callback in self._callbacks:
+            callback(self)

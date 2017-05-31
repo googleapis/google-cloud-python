@@ -138,24 +138,8 @@ class Batch(object):
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
         for mid, fut in zip(response.message_ids, self._.futures):
-            self._message_ids[fut] = mid
+            self._.message_ids[fut] = mid
             fut._trigger()
-
-    def get_message_id(self, publish_future):
-        """Return the message ID corresponding to the given future.
-
-        Args:
-            publish_future (:class:~`future.Future`): The future returned
-                from a ``publish`` call.
-
-        Returns:
-            str: The message ID.
-
-        Raises:
-            KeyError: If the future is not yet done or there is no message
-                ID corresponding to it.
-        """
-        return self._message_ids[publish_future]
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
