@@ -156,7 +156,7 @@ class Client(ClientWithProject):
 
         For example:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START get_bucket]
             :end-before: [END get_bucket]
 
@@ -179,7 +179,7 @@ class Client(ClientWithProject):
         You can use this if you would rather check for a None value
         than catching an exception:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START lookup_bucket]
             :end-before: [END lookup_bucket]
 
@@ -199,7 +199,7 @@ class Client(ClientWithProject):
 
         For example:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START create_bucket]
             :end-before: [END create_bucket]
 
@@ -225,7 +225,7 @@ class Client(ClientWithProject):
         This will not populate the list of blobs available in each
         bucket.
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START list_buckets]
             :end-before: [END list_buckets]
 
