@@ -233,7 +233,7 @@ class Bucket(_PropertyMixin):
 
         This will return None if the blob doesn't exist:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
           :start-after: [START get_blob]
           :end-before: [END get_blob]
 
@@ -392,7 +392,7 @@ class Bucket(_PropertyMixin):
 
         For example:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
           :start-after: [START delete_blob]
           :end-before: [END delete_blob]
 
@@ -408,7 +408,7 @@ class Bucket(_PropertyMixin):
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START delete_blobs]
             :end-before: [END delete_blobs]
 
@@ -768,13 +768,13 @@ class Bucket(_PropertyMixin):
         If you want this bucket to host a website, just provide the name
         of an index page and a page to use when a blob isn't found:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
           :start-after: [START configure_website]
           :end-before: [END configure_website]
 
         You probably should also make the whole bucket public:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START make_public]
             :end-before: [END make_public]
 
@@ -939,7 +939,7 @@ class Bucket(_PropertyMixin):
 
         For example:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START policy_document]
             :end-before: [END policy_document]
 

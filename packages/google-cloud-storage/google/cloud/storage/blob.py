@@ -439,7 +439,7 @@ class Blob(_PropertyMixin):
         Downloading a file that has been encrypted with a `customer-supplied`_
         encryption key:
 
-         .. literalinclude:: storage_snippets.py
+         .. literalinclude:: snippets.py
             :start-after: [START download_to_file]
             :end-before: [END download_to_file]
 
@@ -840,7 +840,7 @@ class Blob(_PropertyMixin):
 
         Uploading a file with a `customer-supplied`_ encryption key:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START upload_from_file]
             :end-before: [END upload_from_file]
 
