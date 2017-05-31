@@ -70,6 +70,7 @@ class TestQueryResults(unittest.TestCase):
             ]
             resource['pageToken'] = self.TOKEN
             resource['totalBytesProcessed'] = 100000
+            resource['numDmlAffectedRows'] = 123
             resource['cacheHit'] = False
 
         return resource
@@ -124,10 +125,12 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(query.complete, resource.get('jobComplete'))
         self.assertEqual(query.errors, resource.get('errors'))
         self.assertEqual(query.page_token, resource.get('pageToken'))
+
         if 'totalRows' in resource:
             self.assertEqual(query.total_rows, int(resource['totalRows']))
         else:
             self.assertIsNone(query.total_rows)
+
         if 'totalBytesProcessed' in resource:
             self.assertEqual(query.total_bytes_processed,
                              int(resource['totalBytesProcessed']))
@@ -138,6 +141,12 @@ class TestQueryResults(unittest.TestCase):
             self.assertEqual(query.name, resource['jobReference']['jobId'])
         else:
             self.assertIsNone(query.name)
+
+        if 'numDmlAffectedRows' in resource:
+            self.assertEqual(query.num_dml_affected_rows,
+                             int(resource['numDmlAffectedRows']))
+        else:
+            self.assertIsNone(query.num_dml_affected_rows)
 
         self._verify_udf_resources(query, resource)
         self._verifyQueryParameters(query, resource)
@@ -370,6 +379,27 @@ class TestQueryResults(unittest.TestCase):
         resource = {'totalBytesProcessed': str(TOTAL_BYTES_PROCESSED)}
         query._set_properties(resource)
         self.assertEqual(query.total_bytes_processed, TOTAL_BYTES_PROCESSED)
+
+    def test_num_dml_affected_rows_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.num_dml_affected_rows)
+
+    def test_num_dml_affected_rows_present_integer(self):
+        DML_AFFECTED_ROWS = 123456
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'numDmlAffectedRows': DML_AFFECTED_ROWS}
+        query._set_properties(resource)
+        self.assertEqual(query.num_dml_affected_rows, DML_AFFECTED_ROWS)
+
+    def test_num_dml_affected_rows_present_string(self):
+        DML_AFFECTED_ROWS = 123456
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'numDmlAffectedRows': str(DML_AFFECTED_ROWS)}
+        query._set_properties(resource)
+        self.assertEqual(query.num_dml_affected_rows, DML_AFFECTED_ROWS)
 
     def test_schema(self):
         client = _Client(self.PROJECT)
