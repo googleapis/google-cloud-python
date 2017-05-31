@@ -59,19 +59,19 @@ class Topic(object):
 
         Example:  pull-mode subcription, default parameter values
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_subscription_defaults]
            :end-before: [END topic_subscription_defaults]
 
         Example:  pull-mode subcription, override ``ack_deadline`` default
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_subscription_ack90]
            :end-before: [END topic_subscription_ack90]
 
         Example:  push-mode subcription
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_subscription_push]
            :end-before: [END topic_subscription_push]
 
@@ -160,7 +160,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_create]
            :end-before: [END topic_create]
 
@@ -181,7 +181,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_exists]
            :end-before: [END topic_exists]
 
@@ -211,7 +211,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_delete]
            :end-before: [END topic_delete]
 
@@ -242,13 +242,13 @@ class Topic(object):
 
         Example without message attributes:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_publish_simple_message]
            :end-before: [END topic_publish_simple_message]
 
         With message attributes:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_publish_message_with_attrs]
            :end-before: [END topic_publish_message_with_attrs]
 
@@ -279,7 +279,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_batch]
            :end-before: [END topic_batch]
 
@@ -312,7 +312,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_list_subscriptions]
            :end-before: [END topic_list_subscriptions]
 
@@ -347,7 +347,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_get_iam_policy]
            :end-before: [END topic_get_iam_policy]
 
@@ -373,7 +373,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_set_iam_policy]
            :end-before: [END topic_set_iam_policy]
 
@@ -404,7 +404,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_check_iam_permissions]
            :end-before: [END topic_check_iam_permissions]
 

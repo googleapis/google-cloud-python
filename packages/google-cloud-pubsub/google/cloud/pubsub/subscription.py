@@ -200,7 +200,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_create]
            :end-before: [END subscription_create]
 
@@ -225,7 +225,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_exists]
            :end-before: [END subscription_exists]
 
@@ -258,7 +258,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_reload]
            :end-before: [END subscription_reload]
 
@@ -285,7 +285,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_delete]
            :end-before: [END subscription_delete]
 
@@ -306,11 +306,11 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_push_pull]
            :end-before: [END subscription_push_pull]
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_pull_push]
            :end-before: [END subscription_pull_push]
 
@@ -337,7 +337,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_pull]
            :end-before: [END subscription_pull]
 
@@ -376,7 +376,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_acknowledge]
            :end-before: [END subscription_acknowledge]
 
@@ -460,7 +460,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_get_iam_policy]
            :end-before: [END subscription_get_iam_policy]
 
@@ -486,7 +486,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_set_iam_policy]
            :end-before: [END subscription_set_iam_policy]
 
@@ -517,7 +517,7 @@ class Subscription(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START subscription_check_iam_permissions]
            :end-before: [END subscription_check_iam_permissions]
 
