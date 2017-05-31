@@ -124,6 +124,9 @@ class Batch(object):
             raise Exception('Empty queue')
         response = self._client.api.publish(self._.topic, self._.messages)
 
+        # We got a response from Pub/Sub; denote that we are processing.
+        self._status = 'processing results'
+
         # Sanity check: If the number of message IDs is not equal to the
         # number of futures I have, then something went wrong.
         if len(response.message_ids) != len(self._.futures):
@@ -131,15 +134,15 @@ class Batch(object):
                 'Some messages were not successfully published.',
             )
 
-        # FIXME (lukesneeringer): How do I check for errors on this?
-        self._.status = 'success'
-
         # Iterate over the futures on the queue and return the response IDs.
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
-        for mid, fut in zip(response.message_ids, self._.futures):
-            self._.message_ids[fut] = mid
-            fut._trigger()
+        for message_id, fut in zip(response.message_ids, self._.futures):
+            fut._resolve(result=message_id)
+
+        # We were successful; denote this.
+        self._.status = 'success'
+
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.

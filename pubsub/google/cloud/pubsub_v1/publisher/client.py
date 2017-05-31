@@ -91,7 +91,7 @@ class PublisherClient(object):
         """
         return self._thread_class
 
-    def batch(self, topic, create=True):
+    def batch(self, topic, create=True, autocommit=True):
         """Return the current batch.
 
         This will create a new batch only if no batch currently exists.
@@ -100,6 +100,8 @@ class PublisherClient(object):
             topic (str): A string representing the topic.
             create (bool): Whether to create a new batch if no batch is
                 found. Defaults to True.
+            autocommit (bool): Whether to autocommit this batch.
+                This is primarily useful for debugging.
 
         Returns:
             :class:~`pubsub_v1.batch.Batch` The batch object.
@@ -110,6 +112,7 @@ class PublisherClient(object):
             if not create:
                 return None
             self._batches[topic] = Batch(
+                autocommit=autocommit,
                 client=self,
                 settings=self.batching,
                 topic=topic,
