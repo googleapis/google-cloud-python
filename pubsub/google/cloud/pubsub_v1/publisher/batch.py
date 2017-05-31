@@ -137,12 +137,9 @@ class Batch(object):
         # Iterate over the futures on the queue and return the response IDs.
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
-        for message_id, fut in zip(response.message_ids, self._.futures):
-            fut._resolve(result=message_id)
-
-        # We were successful; denote this.
         self._.status = 'success'
-
+        for message_id, fut in zip(response.message_ids, self._.futures):
+            fut._trigger(result=message_id)
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.

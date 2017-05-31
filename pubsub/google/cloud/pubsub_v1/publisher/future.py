@@ -33,9 +33,11 @@ class Future(object):
     """
     def __init__(self, batch_info):
         self._batch_info = batch_info
-        self._result = None
-        self._error = None
+        self._hash = hash(uuid.uuid4())
         self._callbacks = []
+
+    def __hash__(self):
+        return self._hash
 
     def cancel(self):
         """Publishes in Pub/Sub currently may not be canceled.
@@ -86,7 +88,7 @@ class Future(object):
         # return an appropriate value.
         err = self.exception(timeout=timeout)
         if err is None:
-            return self._result
+            return self._batch_info.message_ids[hash(self)]
         raise err
 
     def exception(self, timeout=None, _wait=1):
@@ -105,13 +107,13 @@ class Future(object):
         Returns:
             :class:`Exception`: The exception raised by the call, if any.
         """
-        # If this batch had an error, this should return it.
-        if self._batch_info.status == 'error':
-            return self._error
-
         # If the batch completed successfully, this should return None.
-        if self._batch_info.status == 'success':
+        if self.batch_info.status == 'success':
             return None
+
+        # If this batch had an error, this should return it.
+        if self.batch_info.status == 'error':
+            return self.batch_info.error
 
         # If the timeout has been exceeded, raise TimeoutError.
         if timeout and timeout < 0:
@@ -134,7 +136,7 @@ class Future(object):
             fn(self)
         self._callbacks.append(fn)
 
-    def _resolve(self, result):
+    def _trigger(self):
         """Trigger all callbacks registered to this Future.
 
         This method is called internally by the batch once the batch
@@ -143,6 +145,5 @@ class Future(object):
         Args:
             message_id (str): The message ID, as a string.
         """
-        self._result = result
         for callback in self._callbacks:
             callback(self)
