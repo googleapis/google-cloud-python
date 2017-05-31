@@ -136,12 +136,12 @@ def entity_from_protobuf(pb):
         if is_list:
             exclude_values = set(value_pb.exclude_from_indexes
                                  for value_pb in value_pb.array_value.values)
-            if len(exclude_values) != 1:
+            if len(exclude_values) > 1:
                 raise ValueError('For an array_value, subvalues must either '
                                  'all be indexed or all excluded from '
                                  'indexes.')
 
-            if exclude_values.pop():
+            if len(exclude_values) > 0 and exclude_values.pop():
                 exclude_from_indexes.append(prop_name)
         else:
             if value_pb.exclude_from_indexes:
