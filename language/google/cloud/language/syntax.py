@@ -21,43 +21,60 @@ breaks a document down into tokens and sentences.
 
 class PartOfSpeech(object):
     """A Google Cloud Natural Language API Part of speech object.
-    Rich data about the Part of Speech of a token returned by the API
+
+    These are the grammatical categories of the matched token in
+    the sentence. https://cloud.google.com/natural-language/docs\
+    /reference/rest/v1/Token#PartOfSpeech
 
     :type aspect: str
-    :param aspect: Aspect
+    :param aspect: The grammatical aspect. https://cloud.google\
+                   .com/natural-language/docs/reference/rest/v1/\
+                   Token#Aspect
 
     :type reciprocity: str
-    :param reciprocity: Reciprocity
+    :param reciprocity: The grammatical reciprocity. https://\
+                        cloud.google.com/natural-language/docs/reference\
+                        /rest/v1/Token#Reciprocity
 
     :type case: str
-    :param case: Case
+    :param case: The grammatical case. https://cloud.google.com/\
+                 natural-language/docs/reference/rest/v1/Token#Case
 
     :type mood: str
-    :param mood: Mood
+    :param mood: The grammatical mood. https://cloud.google.com/\
+                 natural-language/docs/reference/rest/v1/Token#Mood
 
     :type tag: str
-    :param tag: Tag
+    :param tag: The part of speech tag. https://cloud.google.com/natural\
+                -language/docs/reference/rest/v1/Token#Tag
 
     :type person: str
-    :param person: Person
+    :param person: The grammatical person. https://cloud.google.com/\
+                   natural-language/docs/reference/rest/v1/Token#Person
 
     :type number: str
-    :param number: Number
+    :param number: The grammatical number. https://cloud.google.com/natural\
+                   -language/docs/reference/rest/v1/Token#Number
 
     :type tense: str
-    :param tense: Tense
+    :param tense: The grammatical tense. https://cloud.google.com/natural\
+                  -language/docs/reference/rest/v1/Token#Tense
 
     :type form: str
-    :param form: Form
+    :param form: The grammatical form. https://cloud.google.com/natural\
+                 -language/docs/reference/rest/v1/Token#Form
 
     :type proper: str
-    :param proper: Proper
+    :param proper: The grammatical properness. https://cloud.google.com/\
+                   natural-language/docs/reference/rest/v1/Token#Proper
 
     :type voice: str
-    :param voice: Voice
+    :param voice: The grammatical voice. https://cloud.google.com/\
+                  natural-language/docs/reference/rest/v1/Token#Voice
 
     :type gender: str
-    :param gender: Gender
+    :param gender: The grammatical gender. https://cloud.google.com/\
+                   natural-language/docs/reference/rest/v1/Token#Gender
     """
 
     UNKNOWN = 'UNKNOWN'
