@@ -33,7 +33,7 @@ Batching = collections.namedtuple('Batching',
 )
 Batching.__new__.__defaults__ = (
     1024 * 1024 * 5,  # max_bytes: 5 MB
-    0.001,            # max_latency: 1 millisecond
+    0.25,             # max_latency: 0.25 seconds
     1000,             # max_messages: 1,000
 )
 

@@ -22,9 +22,8 @@ import time
 import six
 
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import future
-
-QueueItem = collections.namedtuple('QueueItem', ['message', 'future'])
 
 
 class Batch(object):
@@ -59,16 +58,24 @@ class Batch(object):
     """
     def __init__(self, client, topic, settings, autocommit=True):
         self._client = client
-        self._topic = topic
-        self._settings = settings
-        self._messages = queue.Queue()
-        self._futures = queue.Queue()
-        self._status = 'accepting messages'
-        self._message_ids = {}
+
+        # Create a namespace that is owned by the client manager; this
+        # is necessary to be able to have these values be communicable between
+        # processes.
+        self._ = self.manager.Namespace()
+        self._.futures = self.manager.list()
+        self._.messages = self.manager.list()
+        self._.message_ids = self.manager.dict()
+        self._.settings = settings
+        self._.status = 'accepting messages'
+        self._.topic = topic
+
+        # This is purely internal tracking.
+        self._process = None
 
         # Continually monitor the thread until it is time to commit the
         # batch, or the batch is explicitly committed.
-        if autocommit and self._settings.max_latency < float('inf'):
+        if autocommit and self._.settings.max_latency < float('inf'):
             self._process = self._client.thread_class(target=self.monitor)
             self._process.start()
 
@@ -83,6 +90,16 @@ class Batch(object):
         return self._client
 
     @property
+    def manager(self):
+        """Return the client's manager.
+
+        Returns:
+            :class:`multiprocessing.Manager`: The manager responsible for
+                handling shared memory objects.
+        """
+        return self._client.manager
+
+    @property
     def status(self):
         """Return the status of this batch.
 
@@ -90,7 +107,7 @@ class Batch(object):
             str: The status of this batch. All statuses are human-readable,
                 all-lowercase strings.
         """
-        return self._status
+        return self._.status
 
     def commit(self):
         """Actually publish all of the messages on the active batch.
@@ -99,52 +116,46 @@ class Batch(object):
         batch on the publisher, and then the batch is discarded upon
         completion.
         """
-        # If this is the active batch on the cleint right now, remove it.
-        self._client.batch(self._topic, pop=self)
-
         # Update the status.
-        self._status = 'in-flight'
+        self._.status = 'in-flight'
 
         # Begin the request to publish these messages.
-        response = self._client.api.publish(self._topic, list(self.flush()))
+        if len(self._.messages) == 0:
+            raise Exception('Empty queue')
+        response = self._client.api.publish(self._.topic, self._.messages)
+
+        # Sanity check: If the number of message IDs is not equal to the
+        # number of futures I have, then something went wrong.
+        if len(response.message_ids) != len(self._.futures):
+            raise exceptions.PublishError(
+                'Some messages were not successfully published.',
+            )
 
         # FIXME (lukesneeringer): How do I check for errors on this?
-        self._status = 'success'
+        self._.status = 'success'
 
         # Iterate over the futures on the queue and return the response IDs.
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
-        try:
-            for message_id in response.message_ids:
-                future_ = self._futures.get(block=False)
-                self._message_ids[future_] = message_id
-                future_._trigger()
-        except queue.Empty:
-            raise ValueError('More message IDs came back than messages '
-                             'were published.')
+        for mid, fut in zip(response.message_ids, self._.futures):
+            self._message_ids[fut] = mid
+            fut._trigger()
 
-        # If the queue of futures is not empty, we did not get enough IDs
-        # back.
-        if self._futures.empty():
-            raise ValueError('Fewer message IDs came back than messages '
-                             'were published.')
+    def get_message_id(self, publish_future):
+        """Return the message ID corresponding to the given future.
 
+        Args:
+            publish_future (:class:~`future.Future`): The future returned
+                from a ``publish`` call.
 
-    def flush(self):
-        """Flush the messages off of this queue, one at a time.
+        Returns:
+            str: The message ID.
 
-        This method is called when the batch is committed. Calling it outside
-        of the context of committing will effectively remove messages
-        from the batch.
-
-        Yields:
-            :class:~`pubsub_v1.types.PubsubMessage`: A Pub/Sub Message.
+        Raises:
+            KeyError: If the future is not yet done or there is no message
+                ID corresponding to it.
         """
-        try:
-            while True:
-                yield self._messages.get(block=False)
-        except queue.Empty:
-            raise StopIteration
+        return self._message_ids[publish_future]
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -156,11 +167,11 @@ class Batch(object):
         # in a separate thread.
         #
         # Sleep for however long we should be waiting.
-        time.sleep(self._settings.max_latency)
+        time.sleep(self._.settings.max_latency)
 
         # If, in the intervening period, the batch started to be committed,
         # then no-op at this point.
-        if self._status != 'accepting messages':
+        if self._.status != 'accepting messages':
             return
 
         # Commit.
@@ -216,10 +227,18 @@ class Batch(object):
                             'be sent as text strings.')
 
         # Store the actual message in the batch's message queue.
-        self._messages.put(types.PubsubMessage(data=data, attributes=attrs))
+        self._.messages.append(
+            types.PubsubMessage(data=data, attributes=attrs),
+        )
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
-        f = future.Future(self)
-        self._futures.put(f)
+        f = future.Future(self._)
+        self._.futures.append(f)
         return f
+
+
+# Make a fake batch. This is used by the client to do single-op checks
+# for batch existence.
+FakeBatch = collections.namedtuple('FakeBatch', ['status'])
+FAKE = FakeBatch(status='fake')

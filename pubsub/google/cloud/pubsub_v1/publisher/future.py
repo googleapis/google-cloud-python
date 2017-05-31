@@ -28,11 +28,11 @@ class Future(object):
     methods in this library.
 
     Args:
-        batch (:class:~`pubsub_v1.batch.Batch`): The batch object that
-            is committing this message.
+        batch (:class:`multiprocessing.Namespace`): Information about the
+            batch object that is committing this message.
     """
-    def __init__(self, batch):
-        self._batch = batch
+    def __init__(self, batch_info):
+        self._batch_info = batch_info
         self._hash = hash(uuid.uuid4())
         self._callbacks = queue.Queue()
 
@@ -66,7 +66,7 @@ class Future(object):
         This still returns True in failure cases; checking `result` or
         `exception` is the canonical way to assess success or failure.
         """
-        return self.batch.status in ('success', 'error')
+        return self._batch_info.status in ('success', 'error')
 
     def result(self, timeout=None):
         """Return the message ID, or raise an exception.
@@ -88,7 +88,7 @@ class Future(object):
         # return an appropriate value.
         err = self.exception(timeout=timeout)
         if err is None:
-            return self.batch.get_message_id(self._client_id)
+            return self._batch_info.message_ids[self]
         raise err
 
     def exception(self, timeout=None, _wait=1):
@@ -102,18 +102,18 @@ class Future(object):
                 times out and raises TimeoutError.
 
         Raises:
-            :class:~`pubsub_v1.TimeoutError`: If the request times out.
+            :exc:`TimeoutError`: If the request times out.
 
         Returns:
             :class:`Exception`: The exception raised by the call, if any.
         """
         # If the batch completed successfully, this should return None.
-        if self.batch.status == 'success':
+        if self.batch_info.status == 'success':
             return None
 
         # If this batch had an error, this should return it.
-        if self.batch.status == 'error':
-            return self.batch._error
+        if self.batch_info.status == 'error':
+            return self.batch_info.error
 
         # If the timeout has been exceeded, raise TimeoutError.
         if timeout < 0:
@@ -151,12 +151,3 @@ class Future(object):
                 callback(self)
         except queue.Empty:
             return None
-
-
-class TimeoutError(object):
-    """Exception subclass for timeout-related errors.
-
-    This exception is only returned by the :class:~`pubsub_v1.future.Future`
-    class.
-    """
-    pass

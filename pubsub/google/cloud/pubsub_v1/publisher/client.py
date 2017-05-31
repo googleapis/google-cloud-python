@@ -25,6 +25,7 @@ from google.cloud.gapic.pubsub.v1 import publisher_client
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher.batch import Batch
+from google.cloud.pubsub_v1.publisher.batch import FAKE
 
 
 __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -58,7 +59,11 @@ class PublisherClient(object):
         kwargs['lib_name'] = 'gccl'
         kwargs['lib_version'] = __VERSION__
         self.api = self._gapic_class(**kwargs)
-        self.batching = types.Batching(batching)
+        self.batching = types.Batching(*batching)
+
+        # Set the manager, which is responsible for granting shared memory
+        # objects.
+        self._manager = multiprocessing.Manager()
 
         # Set the thread class.
         self._thread_class = thread_class
@@ -66,6 +71,16 @@ class PublisherClient(object):
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batches = {}
+
+    @property
+    def manager(self):
+        """Return the manager.
+
+        Returns:
+            :class:`multiprocessing.Manager`: The manager responsible for
+                handling shared memory objects.
+        """
+        return self._manager
 
     @property
     def thread_class(self):
@@ -76,7 +91,7 @@ class PublisherClient(object):
         """
         return self._thread_class
 
-    def batch(self, topic, create=True, pop=None):
+    def batch(self, topic, create=True):
         """Return the current batch.
 
         This will create a new batch only if no batch currently exists.
@@ -85,16 +100,13 @@ class PublisherClient(object):
             topic (str): A string representing the topic.
             create (bool): Whether to create a new batch if no batch is
                 found. Defaults to True.
-            pop (:class:~`pubsub_v1.batch.Batch`): Pop the batch off
-                if it is found *and* is the batch that was sent. Defaults
-                to None (never pop).
 
         Returns:
             :class:~`pubsub_v1.batch.Batch` The batch object.
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
-        if topic not in self._batches:
+        if self._batches.get(topic, FAKE).status != 'accepting messages':
             if not create:
                 return None
             self._batches[topic] = Batch(
@@ -102,10 +114,6 @@ class PublisherClient(object):
                 settings=self.batching,
                 topic=topic,
             )
-
-        # If we are supposed to remove the batch, pop it off and return it.
-        if pop and self._batches[topic] == pop:
-            return self._batches.pop(topic)
 
         # Simply return the appropriate batch.
         return self._batches[topic]
