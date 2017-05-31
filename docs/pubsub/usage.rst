@@ -1,5 +1,5 @@
-Pub/Sub
-=======
+Pub / Sub
+=========
 
 
 .. toctree::
