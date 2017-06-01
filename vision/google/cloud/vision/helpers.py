@@ -41,12 +41,12 @@ class VisionHelpers(object):
             >>> response = client.annotate_image(request)
 
         Args:
-            request (:class:`~vision_v1.image_annotator.AnnotateImageRequest`)
+            request (:class:`~.vision_v1.types.AnnotateImageRequest`)
             options (:class:`google.gax.CallOptions`): Overrides the default
                 settings for this call, e.g, timeout, retries, etc.
 
         Returns:
-            :class:`~vision_v1.image_annotator.AnnotateImageResponse`
+            :class:`~.vision_v1.types.AnnotateImageResponse` The API response.
         """
         # If the image is a file handler, set the content.
         image = protobuf.get(request, 'image')

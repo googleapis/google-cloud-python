@@ -530,15 +530,8 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     DESCRIPTOR = _TEXTANNOTATION_DETECTEDLANGUAGE,
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
     ,
-    __doc__ = """Confidence of detected language. Range [0, 1].
+    __doc__ = """Detected language for a structural component.
     
-    Attributes:
-        language_code:
-            The BCP-47 language code, such as "en-US" or "sr-Latn". For
-            more  information, see  http://www.unicode.org/reports/tr35/#U
-            nicode_locale_identifier.
-        confidence:
-            Confidence of detected language. Range [0, 1].
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedLanguage)
     ))
@@ -548,11 +541,8 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     DESCRIPTOR = _TEXTANNOTATION_DETECTEDBREAK,
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
     ,
-    __doc__ = """True if break prepends the element.
+    __doc__ = """Detected start or end of a structural component.
     
-    Attributes:
-        is_prefix:
-            True if break prepends the element.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedBreak)
     ))
@@ -562,13 +552,8 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     DESCRIPTOR = _TEXTANNOTATION_TEXTPROPERTY,
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
     ,
-    __doc__ = """Detected start or end of a text segment.
+    __doc__ = """Additional information detected on the structural component.
     
-    Attributes:
-        detected_languages:
-            A list of detected languages together with confidence.
-        detected_break:
-            Detected start or end of a text segment.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.TextProperty)
     ))
@@ -576,9 +561,29 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
   DESCRIPTOR = _TEXTANNOTATION,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
   ,
-  __doc__ = """UTF-8 text detected on the pages.
+  __doc__ = """TextAnnotation contains a structured representation of OCR extracted text.
+  The hierarchy of an OCR extracted text structure is like this:
+      TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol
+  Each structural component, starting from Page, may further have their own
+  properties. Properties describe detected languages, breaks etc.. Please
+  refer to the [google.cloud.vision.v1.TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty] message
+  definition below for more detail.
+  
+  
   
   Attributes:
+      language_code:
+          The BCP-47 language code, such as "en-US" or "sr-Latn". For
+          more information, see http://www.unicode.org/reports/tr35/#Uni
+          code_locale_identifier.
+      confidence:
+          Confidence of detected language. Range [0, 1].
+      is_prefix:
+          True if break prepends the element.
+      detected_languages:
+          A list of detected languages together with confidence.
+      detected_break:
+          Detected start or end of a text segment.
       pages:
           List of pages detected by OCR.
       text:
@@ -595,7 +600,9 @@ Page = _reflection.GeneratedProtocolMessageType('Page', (_message.Message,), dic
   DESCRIPTOR = _PAGE,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
   ,
-  __doc__ = """List of blocks of text, images etc on this page.
+  __doc__ = """Detected page from OCR.
+  
+  
   
   Attributes:
       property:
@@ -615,21 +622,23 @@ Block = _reflection.GeneratedProtocolMessageType('Block', (_message.Message,), d
   DESCRIPTOR = _BLOCK,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
   ,
-  __doc__ = """Detected block type (text, image etc) for this block.
+  __doc__ = """Logical element on the page.
+  
+  
   
   Attributes:
       property:
           Additional information detected for the block.
       bounding_box:
-          The bounding box for the block.  The vertices are in the order
-          of top-left, top-right, bottom-right,  bottom-left. When a
-          rotation of the bounding box is detected the rotation  is
+          The bounding box for the block. The vertices are in the order
+          of top-left, top-right, bottom-right, bottom-left. When a
+          rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is  read in the 'natural' orientation.  For example:    *
-          when the text is horizontal it might look like:       0----1
-          |    |       3----2    * when it's rotated 180 degrees around
-          the top-left corner it becomes:       2----3       |    |
-          1----0    and the vertice order will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example:   *
+          when the text is horizontal it might look like:      0----1
+          |    |      3----2   * when it's rotated 180 degrees around
+          the top-left corner it becomes:      2----3      |    |      1
+          ----0   and the vertice order will still be (0, 1, 2, 3).
       paragraphs:
           List of paragraphs in this block (if this blocks is of type
           text).
@@ -644,21 +653,23 @@ Paragraph = _reflection.GeneratedProtocolMessageType('Paragraph', (_message.Mess
   DESCRIPTOR = _PARAGRAPH,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
   ,
-  __doc__ = """List of words in this paragraph.
+  __doc__ = """Structural unit of text representing a number of words in certain order.
+  
+  
   
   Attributes:
       property:
           Additional information detected for the paragraph.
       bounding_box:
-          The bounding box for the paragraph.  The vertices are in the
-          order of top-left, top-right, bottom-right,  bottom-left. When
-          a rotation of the bounding box is detected the rotation  is
+          The bounding box for the paragraph. The vertices are in the
+          order of top-left, top-right, bottom-right, bottom-left. When
+          a rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is  read in the 'natural' orientation.  For example:    *
-          when the text is horizontal it might look like:       0----1
-          |    |       3----2    * when it's rotated 180 degrees around
-          the top-left corner it becomes:       2----3       |    |
-          1----0    and the vertice order will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example:   *
+          when the text is horizontal it might look like:      0----1
+          |    |      3----2   * when it's rotated 180 degrees around
+          the top-left corner it becomes:      2----3      |    |      1
+          ----0   and the vertice order will still be (0, 1, 2, 3).
       words:
           List of words in this paragraph.
   """,
@@ -670,24 +681,25 @@ Word = _reflection.GeneratedProtocolMessageType('Word', (_message.Message,), dic
   DESCRIPTOR = _WORD,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
   ,
-  __doc__ = """List of symbols in the word.
-   The order of the symbols follows the natural reading order.
+  __doc__ = """A word representation.
+  
+  
   
   Attributes:
       property:
           Additional information detected for the word.
       bounding_box:
-          The bounding box for the word.  The vertices are in the order
-          of top-left, top-right, bottom-right,  bottom-left. When a
-          rotation of the bounding box is detected the rotation  is
+          The bounding box for the word. The vertices are in the order
+          of top-left, top-right, bottom-right, bottom-left. When a
+          rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is  read in the 'natural' orientation.  For example:    *
-          when the text is horizontal it might look like:       0----1
-          |    |       3----2    * when it's rotated 180 degrees around
-          the top-left corner it becomes:       2----3       |    |
-          1----0    and the vertice order will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example:   *
+          when the text is horizontal it might look like:      0----1
+          |    |      3----2   * when it's rotated 180 degrees around
+          the top-left corner it becomes:      2----3      |    |      1
+          ----0   and the vertice order will still be (0, 1, 2, 3).
       symbols:
-          List of symbols in the word.  The order of the symbols follows
+          List of symbols in the word. The order of the symbols follows
           the natural reading order.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Word)
@@ -698,21 +710,23 @@ Symbol = _reflection.GeneratedProtocolMessageType('Symbol', (_message.Message,),
   DESCRIPTOR = _SYMBOL,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
   ,
-  __doc__ = """The actual UTF-8 representation of the symbol.
+  __doc__ = """A single symbol representation.
+  
+  
   
   Attributes:
       property:
           Additional information detected for the symbol.
       bounding_box:
-          The bounding box for the symbol.  The vertices are in the
-          order of top-left, top-right, bottom-right,  bottom-left. When
-          a rotation of the bounding box is detected the rotation  is
+          The bounding box for the symbol. The vertices are in the order
+          of top-left, top-right, bottom-right, bottom-left. When a
+          rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is  read in the 'natural' orientation.  For example:    *
-          when the text is horizontal it might look like:       0----1
-          |    |       3----2    * when it's rotated 180 degrees around
-          the top-left corner it becomes:       2----3       |    |
-          1----0    and the vertice order will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example:   *
+          when the text is horizontal it might look like:      0----1
+          |    |      3----2   * when it's rotated 180 degrees around
+          the top-left corner it becomes:      2----3      |    |      1
+          ----0   and the vertice order will still be (0, 1, 2, 3).
       text:
           The actual UTF-8 representation of the symbol.
   """,

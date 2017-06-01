@@ -49,7 +49,7 @@ def add_single_feature_methods(cls):
             name=detect.__name__,
         )
         detect.__doc__ = detect.__doc__.format(
-            module=cls.__module__ + '.image_annotator',
+            module=cls.__module__,
         )
 
         # Place the function on the class being created.
@@ -84,12 +84,12 @@ def _create_single_feature_method(feature, enum):
     fx_doc += """
 
     Args:
-        image (:class:`~{module}.Image`): The image to analyze.
+        image (:class:`~.{module}.types.Image`): The image to analyze.
         options (:class:`google.gax.CallOptions`): Overrides the
             default settings for this call, e.g, timeout, retries, etc.
 
     Returns:
-        :class:`~{module}.AnnotateImageResponse`: The API response.
+        :class:`~.{module}.types.AnnotateImageResponse`: The API response.
     """
 
     # Get the actual feature value to send.

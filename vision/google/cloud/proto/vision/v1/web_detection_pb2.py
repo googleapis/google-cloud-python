@@ -212,16 +212,8 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     DESCRIPTOR = _WEBDETECTION_WEBENTITY,
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
     ,
-    __doc__ = """Canonical description of the entity, in English.
+    __doc__ = """Entity deduced from similar images on the Internet.
     
-    Attributes:
-        entity_id:
-            Opaque entity ID.
-        score:
-            Overall relevancy score for the entity.  Not normalized and
-            not comparable across different image queries.
-        description:
-            Canonical description of the entity, in English.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebEntity)
     ))
@@ -231,15 +223,8 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     DESCRIPTOR = _WEBDETECTION_WEBIMAGE,
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
     ,
-    __doc__ = """Overall relevancy score for the image.
-     Not normalized and not comparable across different image queries.
+    __doc__ = """Metadata for online images.
     
-    Attributes:
-        url:
-            The result image URL.
-        score:
-            Overall relevancy score for the image.  Not normalized and not
-            comparable across different image queries.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebImage)
     ))
@@ -249,15 +234,8 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     DESCRIPTOR = _WEBDETECTION_WEBPAGE,
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
     ,
-    __doc__ = """Overall relevancy score for the web page.
-     Not normalized and not comparable across different image queries.
+    __doc__ = """Metadata for web pages.
     
-    Attributes:
-        url:
-            The result web page URL.
-        score:
-            Overall relevancy score for the web page.  Not normalized and
-            not comparable across different image queries.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebPage)
     ))
@@ -265,18 +243,29 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
   DESCRIPTOR = _WEBDETECTION,
   __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
   ,
-  __doc__ = """Web pages containing the matching images from the Internet.
+  __doc__ = """Relevant information for the image from the Internet.
+  
+  
   
   Attributes:
+      entity_id:
+          Opaque entity ID.
+      score:
+          Overall relevancy score for the web page. Not normalized and
+          not comparable across different image queries.
+      description:
+          Canonical description of the entity, in English.
+      url:
+          The result web page URL.
       web_entities:
           Deduced entities from similar images on the Internet.
       full_matching_images:
-          Fully matching images from the Internet.  They're definite
-          neardups and most often a copy of the query image with  merely
+          Fully matching images from the Internet. They're definite
+          neardups and most often a copy of the query image with merely
           a size change.
       partial_matching_images:
-          Partial matching images from the Internet.  Those images are
-          similar enough to share some key-point features. For  example
+          Partial matching images from the Internet. Those images are
+          similar enough to share some key-point features. For example
           an original image will likely have partial matching for its
           crops.
       pages_with_matching_images:

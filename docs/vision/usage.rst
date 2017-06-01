@@ -1,12 +1,6 @@
-######
-Vision
-######
-
-.. toctree::
-  :maxdepth: 2
-  :hidden:
-
-  api
+####################
+Using the Vision API
+####################
 
 ********************************
 Authentication and Configuration

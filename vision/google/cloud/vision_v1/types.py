@@ -27,6 +27,7 @@ names = []
 for module in (geometry_pb2, image_annotator_pb2,
                text_annotation_pb2, web_detection_pb2):
     for name, message in get_messages(module).items():
+        message.__module__ = 'google.cloud.vision_v1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
