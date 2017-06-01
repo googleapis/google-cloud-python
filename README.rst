@@ -123,7 +123,7 @@ Check out the `Authentication section`_ in our documentation to learn more.
 You may also find the `authentication document`_ shared by all the
 ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Contributing
