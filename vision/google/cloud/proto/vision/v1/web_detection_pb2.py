@@ -211,6 +211,18 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
   WebEntity = _reflection.GeneratedProtocolMessageType('WebEntity', (_message.Message,), dict(
     DESCRIPTOR = _WEBDETECTION_WEBENTITY,
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
+    ,
+    __doc__ = """Canonical description of the entity, in English.
+    
+    Attributes:
+        entity_id:
+            Opaque entity ID.
+        score:
+            Overall relevancy score for the entity.  Not normalized and
+            not comparable across different image queries.
+        description:
+            Canonical description of the entity, in English.
+    """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebEntity)
     ))
   ,
@@ -218,6 +230,17 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
   WebImage = _reflection.GeneratedProtocolMessageType('WebImage', (_message.Message,), dict(
     DESCRIPTOR = _WEBDETECTION_WEBIMAGE,
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
+    ,
+    __doc__ = """Overall relevancy score for the image.
+     Not normalized and not comparable across different image queries.
+    
+    Attributes:
+        url:
+            The result image URL.
+        score:
+            Overall relevancy score for the image.  Not normalized and not
+            comparable across different image queries.
+    """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebImage)
     ))
   ,
@@ -225,11 +248,40 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
   WebPage = _reflection.GeneratedProtocolMessageType('WebPage', (_message.Message,), dict(
     DESCRIPTOR = _WEBDETECTION_WEBPAGE,
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
+    ,
+    __doc__ = """Overall relevancy score for the web page.
+     Not normalized and not comparable across different image queries.
+    
+    Attributes:
+        url:
+            The result web page URL.
+        score:
+            Overall relevancy score for the web page.  Not normalized and
+            not comparable across different image queries.
+    """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebPage)
     ))
   ,
   DESCRIPTOR = _WEBDETECTION,
   __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
+  ,
+  __doc__ = """Web pages containing the matching images from the Internet.
+  
+  Attributes:
+      web_entities:
+          Deduced entities from similar images on the Internet.
+      full_matching_images:
+          Fully matching images from the Internet.  They're definite
+          neardups and most often a copy of the query image with  merely
+          a size change.
+      partial_matching_images:
+          Partial matching images from the Internet.  Those images are
+          similar enough to share some key-point features. For  example
+          an original image will likely have partial matching for its
+          crops.
+      pages_with_matching_images:
+          Web pages containing the matching images from the Internet.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection)
   ))
 _sym_db.RegisterMessage(WebDetection)
@@ -244,10 +296,10 @@ try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
   import grpc
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
   from grpc.beta import implementations as beta_implementations
   from grpc.beta import interfaces as beta_interfaces
+  from grpc.framework.common import cardinality
+  from grpc.framework.interfaces.face import utilities as face_utilities
 except ImportError:
   pass
 # @@protoc_insertion_point(module_scope)

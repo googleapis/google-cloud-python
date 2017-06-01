@@ -147,6 +147,13 @@ DESCRIPTOR.message_types_by_name['Position'] = _POSITION
 Vertex = _reflection.GeneratedProtocolMessageType('Vertex', (_message.Message,), dict(
   DESCRIPTOR = _VERTEX,
   __module__ = 'google.cloud.proto.vision.v1.geometry_pb2'
+  ,
+  __doc__ = """Y coordinate.
+  
+  Attributes:
+      y:
+          Y coordinate.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Vertex)
   ))
 _sym_db.RegisterMessage(Vertex)
@@ -154,6 +161,13 @@ _sym_db.RegisterMessage(Vertex)
 BoundingPoly = _reflection.GeneratedProtocolMessageType('BoundingPoly', (_message.Message,), dict(
   DESCRIPTOR = _BOUNDINGPOLY,
   __module__ = 'google.cloud.proto.vision.v1.geometry_pb2'
+  ,
+  __doc__ = """The bounding polygon vertices.
+  
+  Attributes:
+      vertices:
+          The bounding polygon vertices.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.BoundingPoly)
   ))
 _sym_db.RegisterMessage(BoundingPoly)
@@ -161,6 +175,17 @@ _sym_db.RegisterMessage(BoundingPoly)
 Position = _reflection.GeneratedProtocolMessageType('Position', (_message.Message,), dict(
   DESCRIPTOR = _POSITION,
   __module__ = 'google.cloud.proto.vision.v1.geometry_pb2'
+  ,
+  __doc__ = """Z coordinate (or depth).
+  
+  Attributes:
+      x:
+          X coordinate.
+      y:
+          Y coordinate.
+      z:
+          Z coordinate (or depth).
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Position)
   ))
 _sym_db.RegisterMessage(Position)
@@ -172,10 +197,10 @@ try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
   import grpc
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
   from grpc.beta import implementations as beta_implementations
   from grpc.beta import interfaces as beta_interfaces
+  from grpc.framework.common import cardinality
+  from grpc.framework.interfaces.face import utilities as face_utilities
 except ImportError:
   pass
 # @@protoc_insertion_point(module_scope)

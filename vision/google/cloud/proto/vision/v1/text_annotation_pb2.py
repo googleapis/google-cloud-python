@@ -529,6 +529,17 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
   DetectedLanguage = _reflection.GeneratedProtocolMessageType('DetectedLanguage', (_message.Message,), dict(
     DESCRIPTOR = _TEXTANNOTATION_DETECTEDLANGUAGE,
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+    ,
+    __doc__ = """Confidence of detected language. Range [0, 1].
+    
+    Attributes:
+        language_code:
+            The BCP-47 language code, such as "en-US" or "sr-Latn". For
+            more  information, see  http://www.unicode.org/reports/tr35/#U
+            nicode_locale_identifier.
+        confidence:
+            Confidence of detected language. Range [0, 1].
+    """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedLanguage)
     ))
   ,
@@ -536,6 +547,13 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
   DetectedBreak = _reflection.GeneratedProtocolMessageType('DetectedBreak', (_message.Message,), dict(
     DESCRIPTOR = _TEXTANNOTATION_DETECTEDBREAK,
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+    ,
+    __doc__ = """True if break prepends the element.
+    
+    Attributes:
+        is_prefix:
+            True if break prepends the element.
+    """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedBreak)
     ))
   ,
@@ -543,11 +561,29 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
   TextProperty = _reflection.GeneratedProtocolMessageType('TextProperty', (_message.Message,), dict(
     DESCRIPTOR = _TEXTANNOTATION_TEXTPROPERTY,
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+    ,
+    __doc__ = """Detected start or end of a text segment.
+    
+    Attributes:
+        detected_languages:
+            A list of detected languages together with confidence.
+        detected_break:
+            Detected start or end of a text segment.
+    """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.TextProperty)
     ))
   ,
   DESCRIPTOR = _TEXTANNOTATION,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+  ,
+  __doc__ = """UTF-8 text detected on the pages.
+  
+  Attributes:
+      pages:
+          List of pages detected by OCR.
+      text:
+          UTF-8 text detected on the pages.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation)
   ))
 _sym_db.RegisterMessage(TextAnnotation)
@@ -558,6 +594,19 @@ _sym_db.RegisterMessage(TextAnnotation.TextProperty)
 Page = _reflection.GeneratedProtocolMessageType('Page', (_message.Message,), dict(
   DESCRIPTOR = _PAGE,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+  ,
+  __doc__ = """List of blocks of text, images etc on this page.
+  
+  Attributes:
+      property:
+          Additional information detected on the page.
+      width:
+          Page width in pixels.
+      height:
+          Page height in pixels.
+      blocks:
+          List of blocks of text, images etc on this page.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Page)
   ))
 _sym_db.RegisterMessage(Page)
@@ -565,6 +614,28 @@ _sym_db.RegisterMessage(Page)
 Block = _reflection.GeneratedProtocolMessageType('Block', (_message.Message,), dict(
   DESCRIPTOR = _BLOCK,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+  ,
+  __doc__ = """Detected block type (text, image etc) for this block.
+  
+  Attributes:
+      property:
+          Additional information detected for the block.
+      bounding_box:
+          The bounding box for the block.  The vertices are in the order
+          of top-left, top-right, bottom-right,  bottom-left. When a
+          rotation of the bounding box is detected the rotation  is
+          represented as around the top-left corner as defined when the
+          text is  read in the 'natural' orientation.  For example:    *
+          when the text is horizontal it might look like:       0----1
+          |    |       3----2    * when it's rotated 180 degrees around
+          the top-left corner it becomes:       2----3       |    |
+          1----0    and the vertice order will still be (0, 1, 2, 3).
+      paragraphs:
+          List of paragraphs in this block (if this blocks is of type
+          text).
+      block_type:
+          Detected block type (text, image etc) for this block.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Block)
   ))
 _sym_db.RegisterMessage(Block)
@@ -572,6 +643,25 @@ _sym_db.RegisterMessage(Block)
 Paragraph = _reflection.GeneratedProtocolMessageType('Paragraph', (_message.Message,), dict(
   DESCRIPTOR = _PARAGRAPH,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+  ,
+  __doc__ = """List of words in this paragraph.
+  
+  Attributes:
+      property:
+          Additional information detected for the paragraph.
+      bounding_box:
+          The bounding box for the paragraph.  The vertices are in the
+          order of top-left, top-right, bottom-right,  bottom-left. When
+          a rotation of the bounding box is detected the rotation  is
+          represented as around the top-left corner as defined when the
+          text is  read in the 'natural' orientation.  For example:    *
+          when the text is horizontal it might look like:       0----1
+          |    |       3----2    * when it's rotated 180 degrees around
+          the top-left corner it becomes:       2----3       |    |
+          1----0    and the vertice order will still be (0, 1, 2, 3).
+      words:
+          List of words in this paragraph.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Paragraph)
   ))
 _sym_db.RegisterMessage(Paragraph)
@@ -579,6 +669,27 @@ _sym_db.RegisterMessage(Paragraph)
 Word = _reflection.GeneratedProtocolMessageType('Word', (_message.Message,), dict(
   DESCRIPTOR = _WORD,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+  ,
+  __doc__ = """List of symbols in the word.
+   The order of the symbols follows the natural reading order.
+  
+  Attributes:
+      property:
+          Additional information detected for the word.
+      bounding_box:
+          The bounding box for the word.  The vertices are in the order
+          of top-left, top-right, bottom-right,  bottom-left. When a
+          rotation of the bounding box is detected the rotation  is
+          represented as around the top-left corner as defined when the
+          text is  read in the 'natural' orientation.  For example:    *
+          when the text is horizontal it might look like:       0----1
+          |    |       3----2    * when it's rotated 180 degrees around
+          the top-left corner it becomes:       2----3       |    |
+          1----0    and the vertice order will still be (0, 1, 2, 3).
+      symbols:
+          List of symbols in the word.  The order of the symbols follows
+          the natural reading order.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Word)
   ))
 _sym_db.RegisterMessage(Word)
@@ -586,6 +697,25 @@ _sym_db.RegisterMessage(Word)
 Symbol = _reflection.GeneratedProtocolMessageType('Symbol', (_message.Message,), dict(
   DESCRIPTOR = _SYMBOL,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
+  ,
+  __doc__ = """The actual UTF-8 representation of the symbol.
+  
+  Attributes:
+      property:
+          Additional information detected for the symbol.
+      bounding_box:
+          The bounding box for the symbol.  The vertices are in the
+          order of top-left, top-right, bottom-right,  bottom-left. When
+          a rotation of the bounding box is detected the rotation  is
+          represented as around the top-left corner as defined when the
+          text is  read in the 'natural' orientation.  For example:    *
+          when the text is horizontal it might look like:       0----1
+          |    |       3----2    * when it's rotated 180 degrees around
+          the top-left corner it becomes:       2----3       |    |
+          1----0    and the vertice order will still be (0, 1, 2, 3).
+      text:
+          The actual UTF-8 representation of the symbol.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Symbol)
   ))
 _sym_db.RegisterMessage(Symbol)
@@ -597,10 +727,10 @@ try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
   import grpc
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
   from grpc.beta import implementations as beta_implementations
   from grpc.beta import interfaces as beta_interfaces
+  from grpc.framework.common import cardinality
+  from grpc.framework.interfaces.face import utilities as face_utilities
 except ImportError:
   pass
 # @@protoc_insertion_point(module_scope)
