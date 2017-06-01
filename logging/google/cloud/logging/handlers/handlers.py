@@ -91,7 +91,7 @@ class CloudLoggingHandler(logging.StreamHandler):
 
         Overrides the default emit behavior of ``StreamHandler``.
 
-        See: https://docs.python.org/2/library/logging.html#handler-objects
+        See https://docs.python.org/2/library/logging.html#handler-objects
 
         :type record: :class:`logging.LogRecord`
         :param record: The record to be logged.

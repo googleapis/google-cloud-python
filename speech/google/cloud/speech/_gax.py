@@ -131,7 +131,7 @@ class GAPICSpeechAPI(object):
         .. note::
 
             Streaming recognition requests are limited to 1 minute of audio.
-            See: https://cloud.google.com/speech/limits#content
+            See https://cloud.google.com/speech/limits#content
 
         Yields :class:`~streaming_response.StreamingSpeechResponse` containing
         results and metadata from the streaming request.

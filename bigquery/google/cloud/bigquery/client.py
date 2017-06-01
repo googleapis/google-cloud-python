@@ -86,7 +86,7 @@ class Client(ClientWithProject):
     def list_projects(self, max_results=None, page_token=None):
         """List projects for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list
 
         :type max_results: int
@@ -111,7 +111,7 @@ class Client(ClientWithProject):
                       page_token=None):
         """List datasets for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list
 
         :type include_all: bool
@@ -183,7 +183,7 @@ class Client(ClientWithProject):
                   state_filter=None):
         """List jobs for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/list
 
         :type max_results: int
@@ -227,7 +227,7 @@ class Client(ClientWithProject):
     def load_table_from_storage(self, job_name, destination, *source_uris):
         """Construct a job for loading data into a table from CloudStorage.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load
 
         :type job_name: str
@@ -249,7 +249,7 @@ class Client(ClientWithProject):
     def copy_table(self, job_name, destination, *sources):
         """Construct a job for copying one or more tables into another table.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy
 
         :type job_name: str
@@ -269,7 +269,7 @@ class Client(ClientWithProject):
     def extract_table_to_storage(self, job_name, source, *destination_uris):
         """Construct a job for extracting a table into Cloud Storage files.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
 
         :type job_name: str
@@ -293,7 +293,7 @@ class Client(ClientWithProject):
                         udf_resources=(), query_parameters=()):
         """Construct a job for running a SQL query asynchronously.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
 
         :type job_name: str

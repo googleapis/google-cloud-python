@@ -191,7 +191,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def list_instance_configs(self, page_size=None, page_token=None):
         """List available instance configurations for the client's project.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstanceConfigs
 
         :type page_size: int
@@ -250,11 +250,11 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def list_instances(self, filter_='', page_size=None, page_token=None):
         """List instances for the client's project.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstances
 
         :type filter_: string
-        :param filter_: (Optional) Filter to select instances listed.  See:
+        :param filter_: (Optional) Filter to select instances listed.  See
                         the ``ListInstancesRequest`` docs above for examples.
 
         :type page_size: int

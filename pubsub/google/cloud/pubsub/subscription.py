@@ -27,7 +27,7 @@ from google.cloud.pubsub.message import Message
 class Subscription(object):
     """Subscriptions receive messages published to their topics.
 
-    See:
+    See
     https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions
 
     :type name: str
@@ -69,7 +69,7 @@ class Subscription(object):
     _DELETED_TOPIC_PATH = '_deleted-topic_'
     """Value of ``projects.subscriptions.topic`` when topic has been deleted.
 
-    See:
+    See
     https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic
     """
 
@@ -195,7 +195,7 @@ class Subscription(object):
     def create(self, client=None):
         """API call:  create the subscription via a PUT request
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create
 
         Example:
@@ -280,7 +280,7 @@ class Subscription(object):
     def delete(self, client=None):
         """API call:  delete the subscription via a DELETE request.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete
 
         Example:
@@ -301,7 +301,7 @@ class Subscription(object):
     def modify_push_configuration(self, push_endpoint, client=None):
         """API call:  update the push endpoint for the subscription.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         Example:
@@ -332,7 +332,7 @@ class Subscription(object):
     def pull(self, return_immediately=False, max_messages=1, client=None):
         """API call:  retrieve messages for the subscription.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/pull
 
         Example:
@@ -371,7 +371,7 @@ class Subscription(object):
     def acknowledge(self, ack_ids, client=None):
         """API call:  acknowledge retrieved messages for the subscription.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/acknowledge
 
         Example:
@@ -395,7 +395,7 @@ class Subscription(object):
     def modify_ack_deadline(self, ack_ids, ack_deadline, client=None):
         """API call:  update acknowledgement deadline for a retrieved message.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type ack_ids: list of string
@@ -428,7 +428,7 @@ class Subscription(object):
     def seek_snapshot(self, snapshot, client=None):
         """API call:  seek a subscription to a given snapshot
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek
 
         :type snapshot: :class:`Snapshot`
@@ -441,7 +441,7 @@ class Subscription(object):
     def seek_timestamp(self, timestamp, client=None):
         """API call:  seek a subscription to a given point in time
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek
 
         :type time: :class:`datetime.datetime`
@@ -455,7 +455,7 @@ class Subscription(object):
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the subscription.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/getIamPolicy
 
         Example:
@@ -481,7 +481,7 @@ class Subscription(object):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the subscription.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy
 
         Example:
@@ -512,7 +512,7 @@ class Subscription(object):
     def check_iam_permissions(self, permissions, client=None):
         """Verify permissions allowed for the current user.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/testIamPermissions
 
         Example:

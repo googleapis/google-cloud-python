@@ -149,7 +149,7 @@ class Client(ClientWithProject):
     def report_errors_api(self):
         """Helper for logging-related API calls.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
 

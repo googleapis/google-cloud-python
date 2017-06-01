@@ -136,7 +136,7 @@ class Client(ClientWithProject):
     def list_topics(self, page_size=None, page_token=None):
         """List topics for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         Example:
@@ -165,7 +165,7 @@ class Client(ClientWithProject):
     def list_subscriptions(self, page_size=None, page_token=None):
         """List subscriptions for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         Example:
@@ -195,7 +195,7 @@ class Client(ClientWithProject):
     def list_snapshots(self, page_size=None, page_token=None):
         """List snapshots for the project associated with this API.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/list
 
         :type project: str

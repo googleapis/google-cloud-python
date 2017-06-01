@@ -96,7 +96,7 @@ PUBSUB_SUBSCRIPTIONS_UPDATE = 'pubsub.subscriptions.update'
 class Policy(_BasePolicy):
     """IAM Policy / Bindings.
 
-    See:
+    See
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Binding
     """

@@ -86,7 +86,7 @@ class Session(object):
     def create(self):
         """Create this session, bound to its database.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.CreateSession
 
         :raises: :exc:`ValueError` if :attr:`session_id` is already set.
@@ -101,7 +101,7 @@ class Session(object):
     def exists(self):
         """Test for the existence of this session.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession
 
         :rtype: bool
@@ -123,7 +123,7 @@ class Session(object):
     def delete(self):
         """Delete this session.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession
 
         :raises: :exc:`ValueError` if :attr:`session_id` is not already set.
@@ -143,7 +143,7 @@ class Session(object):
                  max_staleness=None, exact_staleness=None):
         """Create a snapshot to perform a set of reads with shared staleness.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
         If no options are passed, reads will use the ``strong`` model, reading
@@ -225,7 +225,7 @@ class Session(object):
 
         :type query_mode:
             :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See:
+        :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
         :type resume_token: bytes
