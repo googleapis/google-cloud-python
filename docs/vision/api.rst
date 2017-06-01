@@ -1,7 +1,6 @@
-Vision Client
-=============
+Vision Client API
+=================
 
 .. automodule:: google.cloud.vision_v1
   :members:
-  :undoc-members:
-  :show-inheritance:
+  :inherited-members:

@@ -6,18 +6,7 @@ Vision
   :maxdepth: 2
   :hidden:
 
-  annotations
-  batch
-  client
-  color
-  crop-hint
-  entity
-  feature
-  face
-  image
-  safe-search
-  text
-  web
+  api
 
 ********************************
 Authentication and Configuration
@@ -54,13 +43,7 @@ or pass in ``credentials`` and ``project`` explicitly.
 Annotate an Image
 *****************
 
-
-
-****************
-Manual Detection
-****************
-
-You can call the detection method manually.
+You can call the :meth:`annotate_image` method directly:
 
 .. code-block:: python
 
