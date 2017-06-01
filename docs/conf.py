@@ -245,6 +245,12 @@ latex_documents = [
 #latex_domain_indices = True
 
 
+# -- Options for warnings ------------------------------------------------------
+
+
+suppress_warnings = []
+
+
 # -- Options for manual page output --------------------------------------------
 
 # One entry per manual page. List of tuples

@@ -33,7 +33,7 @@ def docs(session):
         'resource_manager/', 'runtimeconfig/', 'spanner/', 'speech/',
         'storage/', 'translate/', 'vision/',
     )
-    session.install('.')
+    session.install('-e', '.')
 
     # Build the docs!
     session.run('bash', './test_utils/scripts/update_docs.sh')
