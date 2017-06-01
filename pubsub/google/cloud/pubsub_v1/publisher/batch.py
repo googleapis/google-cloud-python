@@ -124,6 +124,8 @@ class Batch(object):
             raise Exception('Empty queue')
         response = self._client.api.publish(self._.topic, self._.messages)
 
+        # FIXME (lukesneeringer): Check for failures; retry.
+
         # We got a response from Pub/Sub; denote that we are processing.
         self._status = 'processing results'
 
@@ -139,7 +141,8 @@ class Batch(object):
         # if not.
         self._.status = 'success'
         for message_id, fut in zip(response.message_ids, self._.futures):
-            fut._trigger(result=message_id)
+            self._.message_ids[hash(fut)] = message_id
+            fut._trigger()
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.

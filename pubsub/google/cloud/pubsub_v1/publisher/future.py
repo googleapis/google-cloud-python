@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 import queue
 import uuid
+import time
 
 
 class Future(object):
@@ -108,12 +109,12 @@ class Future(object):
             :class:`Exception`: The exception raised by the call, if any.
         """
         # If the batch completed successfully, this should return None.
-        if self.batch_info.status == 'success':
+        if self._batch_info.status == 'success':
             return None
 
         # If this batch had an error, this should return it.
-        if self.batch_info.status == 'error':
-            return self.batch_info.error
+        if self._batch_info.status == 'error':
+            return self._batch_info.error
 
         # If the timeout has been exceeded, raise TimeoutError.
         if timeout and timeout < 0:
