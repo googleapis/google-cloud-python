@@ -1,229 +1,27 @@
 .. toctree::
-  :maxdepth: 0
+  :maxdepth: 2
   :hidden:
-  :caption: google-cloud
 
-  google-cloud-api
-  google-cloud-config
-  google-cloud-auth
-  iterators
-  operation-api
+  core/index
+  bigquery/usage
+  bigtable/usage
+  datastore/usage
+  dns/usage
+  language/usage
+  pubsub/usage
+  resource-manager/api
+  runtimeconfig/usage
+  spanner/usage
+  speech/usage
+  error-reporting/usage
+  monitoring/usage
+  logging/usage
+  storage/client
+  translate/usage
+  vision/usage
 
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: BigQuery
-
-  bigquery-usage
-  Client <bigquery-client>
-  bigquery-dataset
-  bigquery-job
-  bigquery-table
-  bigquery-query
-  bigquery-schema
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: BigTable
-
-  bigtable-usage
-  bigtable-client-intro
-  bigtable-instance-api
-  bigtable-table-api
-  bigtable-data-api
-  Client <bigtable-client>
-  bigtable-instance
-  bigtable-cluster
-  bigtable-table
-  bigtable-column-family
-  bigtable-row
-  bigtable-row-filters
-  bigtable-row-data
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Datastore
-
-  datastore-usage
-  Client <datastore-client>
-  datastore-entities
-  datastore-keys
-  datastore-queries
-  datastore-transactions
-  datastore-batches
-  datastore-helpers
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: DNS
-
-  dns-usage
-  Client <dns-client>
-  dns-zone
-  dns-resource-record-set
-  dns-changes
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Natural Language
-
-  language-usage
-  Client <language-client>
-  language-document
-  language-responses
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Pub/Sub
-
-  pubsub-usage
-  Client <pubsub-client>
-  pubsub-topic
-  pubsub-subscription
-  pubsub-message
-  pubsub-iam
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Resource Manager
-
-  Overview <resource-manager-api>
-  resource-manager-client
-  resource-manager-project
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Runtime Configuration
-
-  runtimeconfig-usage
-  Client <runtimeconfig-client>
-  runtimeconfig-config
-  runtimeconfig-variable
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Spanner
-
-  spanner-usage
-  spanner-client-usage
-  spanner-instance-usage
-  spanner-database-usage
-  spanner-session-crud-usage
-  spanner-session-implicit-txn-usage
-  spanner-session-pool-usage
-  spanner-batch-usage
-  spanner-snapshot-usage
-  spanner-transaction-usage
-
-  spanner-client-api
-  spanner-instance-api
-  spanner-database-api
-  spanner-session-api
-  spanner-keyset-api
-  spanner-snapshot-api
-  spanner-batch-api
-  spanner-transaction-api
-  spanner-streamed-api
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Speech
-
-  speech-usage
-  Client <speech-client>
-  speech-encoding
-  speech-operation
-  speech-result
-  speech-sample
-  speech-alternative
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Stackdriver Error Reporting
-
-  error-reporting-usage
-  Client <error-reporting-client>
-  error-reporting-util
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Stackdriver Logging
-
-  logging-usage
-  Client <logging-client>
-  logging-logger
-  logging-entries
-  logging-metric
-  logging-sink
-  logging-stdlib-usage
-  logging-handlers
-  logging-handlers-app-engine
-  logging-handlers-container-engine
-  logging-transports-sync
-  logging-transports-thread
-  logging-transports-base
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Stackdriver Monitoring
-
-  monitoring-usage
-  Client <monitoring-client>
-  monitoring-metric
-  monitoring-resource
-  monitoring-group
-  monitoring-query
-  monitoring-timeseries
-  monitoring-label
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Storage
-
-  Client <storage-client>
-  storage-blobs
-  storage-buckets
-  storage-acl
-  storage-batch
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Translate
-
-  translate-usage
-  Client <translate-client>
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: Vision
-
-  vision-usage
-  vision-api
-
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-  :caption: External Links
-
-  GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>
-  Issues <https://github.com/GoogleCloudPlatform/google-cloud-python/issues>
-  Stack Overflow <http://stackoverflow.com/questions/tagged/google-cloud-python>
-  PyPI <https://pypi.python.org/pypi/google-cloud>
+Google Cloud Client Library for Python
+======================================
 
 Getting started
 ---------------
@@ -233,8 +31,6 @@ The ``google-cloud`` library is ``pip`` install-able:
 .. code-block:: console
 
     $ pip install google-cloud
-
-----
 
 Cloud Datastore
 ~~~~~~~~~~~~~~~
@@ -270,3 +66,11 @@ Cloud Storage
   bucket = client.get_bucket('<your-bucket-name>')
   blob = bucket.blob('my-test-file.txt')
   blob.upload_from_string('this is test content!')
+
+Resources
+~~~~~~~~~
+
+* `GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>`__
+* `Issues <https://github.com/GoogleCloudPlatform/google-cloud-python/issues>`__
+* `Stack Overflow <http://stackoverflow.com/questions/tagged/google-cloud-python>`__
+* `PyPI <https://pypi.python.org/pypi/google-cloud>`__
