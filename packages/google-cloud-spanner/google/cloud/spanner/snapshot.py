@@ -101,7 +101,7 @@ class _SnapshotBase(_SessionWrapper):
 
         :type query_mode:
             :class:`google.cloud.proto.spanner.v1.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See:
+        :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
         :type resume_token: bytes
@@ -134,7 +134,7 @@ class _SnapshotBase(_SessionWrapper):
 class Snapshot(_SnapshotBase):
     """Allow a set of reads / SQL statements with shared staleness.
 
-    See:
+    See
     https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
     If no options are passed, reads will use the ``strong`` model, reading

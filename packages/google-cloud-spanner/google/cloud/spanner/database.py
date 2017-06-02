@@ -150,7 +150,7 @@ class Database(object):
     def ddl_statements(self):
         """DDL Statements used to define database schema.
 
-        See:
+        See
         cloud.google.com/spanner/docs/data-definition-language
 
         :rtype: sequence of string
@@ -180,7 +180,7 @@ class Database(object):
 
         Inclues any configured schema assigned to :attr:`ddl_statements`.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase
         """
         api = self._instance._client.database_admin_api
@@ -211,7 +211,7 @@ class Database(object):
     def exists(self):
         """Test whether this database exists.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
         """
         api = self._instance._client.database_admin_api
@@ -230,7 +230,7 @@ class Database(object):
 
         Refresh any configured schema into :attr:`ddl_statements`.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
         """
         api = self._instance._client.database_admin_api
@@ -249,7 +249,7 @@ class Database(object):
 
         Apply any configured schema from :attr:`ddl_statements`.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
 
         :rtype: :class:`google.cloud.operation.Operation`
@@ -273,7 +273,7 @@ class Database(object):
     def drop(self):
         """Drop this database.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase
         """
         api = self._instance._client.database_admin_api
@@ -343,7 +343,7 @@ class Database(object):
 
         :type query_mode:
             :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See:
+        :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
         :type resume_token: bytes
@@ -396,7 +396,7 @@ class Database(object):
         The wrapper *must* be used as a context manager, with the snapshot
         as the value returned by the wrapper.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
         If no options are passed, reads will use the ``strong`` model, reading
@@ -519,7 +519,7 @@ class SnapshotCheckout(object):
 def _check_ddl_statements(value):
     """Validate DDL Statements used to define database schema.
 
-    See:
+    See
     https://cloud.google.com/spanner/docs/data-definition-language
 
     :type value: list of string

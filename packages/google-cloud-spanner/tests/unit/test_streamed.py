@@ -982,7 +982,7 @@ def _normalize_results(rows_data, fields):
 def _parse_streaming_read_acceptance_tests(filename):
     """Parse acceptance tests from JSON
 
-    See: streaming-read-acceptance-test.json
+    See streaming-read-acceptance-test.json
     """
     import json
 
