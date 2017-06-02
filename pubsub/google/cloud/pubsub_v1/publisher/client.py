@@ -24,8 +24,8 @@ from google.cloud.gapic.pubsub.v1 import publisher_client
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher.batch import Batch
-from google.cloud.pubsub_v1.publisher.batch import FAKE
+from google.cloud.pubsub_v1.publisher.batch import base
+from google.cloud.pubsub_v1.publisher.batch import mp
 
 
 __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -40,54 +40,41 @@ class PublisherClient(object):
     get sensible defaults.
 
     Args:
-        batching (:class:`google.cloud.pubsub_v1.types.Batching`): The
-            settings for batch publishing.
-        thread_class (class): Any class that is duck-type compatible with
-            :class:`threading.Thread`.
-            The default is :class:`multiprocessing.Process`
+        batch_settings (~.pubsub_v1.types.BatchSettings): The settings
+            for batch publishing.
+        batch_class (class): A class that describes how to handle
+            batches. You may subclass the
+            :class:`.pubsub_v1.publisher.batch.base.BaseBatch` class in
+            order to define your own batcher. This is primarily provided to
+            allow use of different concurrency models; the default
+            is based on :class:`multiprocessing.Process`.
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
             :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
             Generally, you should not need to set additional keyword arguments.
     """
-    def __init__(self, batching=(), thread_class=multiprocessing.Process,
-                 queue_class=multiprocessing.Queue, **kwargs):
+    def __init__(self, batch_settings=(), batch_class=mp.Batch, **kwargs):
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         kwargs['lib_name'] = 'gccl'
         kwargs['lib_version'] = __VERSION__
         self.api = publisher_client.PublisherClient(**kwargs)
-        self.batching = types.Batching(*batching)
-
-        # Set the manager, which is responsible for granting shared memory
-        # objects.
-        self._manager = multiprocessing.Manager()
-
-        # Set the thread class.
-        self._thread_class = thread_class
+        self.batch_settings = types.BatchSettings(*batch_settings)
 
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
+        self._batch_class = batch_class
         self._batches = {}
 
     @property
-    def manager(self):
-        """Return the manager.
+    def concurrency(self):
+        """Return the concurrency strategy instance.
 
         Returns:
-            :class:`multiprocessing.Manager`: The manager responsible for
-                handling shared memory objects.
+            ~.pubsub_v1.concurrency.base.PublishStrategy: The class responsible
+                for handling publishing concurrency.
         """
-        return self._manager
-
-    @property
-    def thread_class(self):
-        """Return the thread class provided at instantiation.
-
-        Returns:
-            class: A class duck-type compatible with :class:`threading.Thread`.
-        """
-        return self._thread_class
+        return self._concurrency
 
     def batch(self, topic, create=True, autocommit=True):
         """Return the current batch.
@@ -106,13 +93,14 @@ class PublisherClient(object):
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
-        if self._batches.get(topic, FAKE).status != 'accepting messages':
+        accepting = base.BaseBatch.Status.ACCEPTING_MESSAGES
+        if self._batches.get(topic, base.FAKE).status != accepting:
             if not create:
                 return None
-            self._batches[topic] = Batch(
+            self._batches[topic] = self._batch_class(
                 autocommit=autocommit,
                 client=self,
-                settings=self.batching,
+                settings=self.batch_settings,
                 topic=topic,
             )
 
@@ -149,16 +137,29 @@ class PublisherClient(object):
             topic (~.pubsub_v1.types.Topic): The topic to publish
                 messages to.
             data (bytes): A bytestring representing the message body. This
-                must be a bytestring (a text string will raise TypeError).
+                must be a bytestring.
             attrs (Mapping[str, str]): A dictionary of attributes to be
                 sent as metadata. (These may be text strings or byte strings.)
-
-        Raises:
-            :exc:`TypeError`: If the ``data`` sent is not a bytestring, or
-                if the ``attrs`` are not either a ``str`` or ``bytes``.
 
         Returns:
             :class:`~.pubsub_v1.publisher.futures.Future`: An object conforming
                 to the ``concurrent.futures.Future`` interface.
         """
+        # Sanity check: Is the data being sent as a bytestring?
+        # If it is literally anything else, complain loudly about it.
+        if not isinstance(data, six.binary_type):
+            raise TypeError('Data being published to Pub/Sub must be sent '
+                            'as a bytestring.')
+
+        # Coerce all attributes to text strings.
+        for k, v in copy.copy(attrs).items():
+            if isinstance(data, six.text_type):
+                continue
+            if isinstance(data, six.binary_type):
+                attrs[k] = v.decode('utf-8')
+                continue
+            raise TypeError('All attributes being published to Pub/Sub must '
+                            'be sent as text strings.')
+
+        # Delegate the publishing to the batch.
         return self.batch(topic).publish(data, *attrs)

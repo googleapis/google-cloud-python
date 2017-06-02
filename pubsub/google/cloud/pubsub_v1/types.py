@@ -28,10 +28,10 @@ from google.gax.utils.messages import get_messages
 # This class is used when creating a publisher or subscriber client, and
 # these settings can be altered to tweak Pub/Sub behavior.
 # The defaults should be fine for most use cases.
-Batching = collections.namedtuple('Batching',
+BatchSettings = collections.namedtuple('BatchSettings',
     ['max_bytes', 'max_latency', 'max_messages'],
 )
-Batching.__new__.__defaults__ = (
+BatchSettings.__new__.__defaults__ = (
     1024 * 1024 * 5,  # max_bytes: 5 MB
     0.25,             # max_latency: 0.25 seconds
     1000,             # max_messages: 1,000
@@ -51,7 +51,7 @@ FlowControl.__new__.__defaults__ = (
 )
 
 
-names = ['Batching', 'FlowControl']
+names = ['BatchSettings', 'FlowControl']
 for name, message in get_messages(pubsub_pb2).items():
     setattr(sys.modules[__name__], name, message)
     names.append(name)

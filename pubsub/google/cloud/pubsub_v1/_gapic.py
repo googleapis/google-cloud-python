@@ -17,7 +17,7 @@ from __future__ import absolute_import
 import functools
 
 
-def add_methods(SourceClass, blacklist=()):
+def add_methods(source_class, blacklist=()):
     """Add wrapped versions of the `api` member's methods to the class.
 
     Any methods passed in `blacklist` are not added.
@@ -47,7 +47,7 @@ def add_methods(SourceClass, blacklist=()):
     def actual_decorator(cls):
         # Reflectively iterate over most of the methods on the source class
         # (the GAPIC) and make wrapped versions available on this client.
-        for name in dir(SourceClass):
+        for name in dir(source_class):
             # Ignore all private and magic methods.
             if name.startswith('_'):
                 continue
@@ -57,12 +57,12 @@ def add_methods(SourceClass, blacklist=()):
                 continue
 
             # Retrieve the attribute, and ignore it if it is not callable.
-            attr = getattr(cls._gapic_class, name)
+            attr = getattr(source_class, name)
             if not callable(attr):
                 continue
 
             # Add a wrapper method to this object.
-            fx = wrap(getattr(cls._gapic_class, name))
+            fx = wrap(getattr(source_class, name))
             setattr(cls, name, fx)
 
         # Return the augmented class.
