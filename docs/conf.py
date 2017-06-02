@@ -292,9 +292,11 @@ autoclass_content = 'both'
 # Refer to the Python standard library and the oauth2client and
 # httplib2 libraries.
 intersphinx_mapping = {
+    'google-auth': ('https://google-auth.readthedocs.io/en/stable', None),
+    'google-gax': ('https://gax-python.readthedocs.io/en/latest/', None),
+    'grpc': ('http://www.grpc.io/grpc/python/', None),
     'httplib2': ('http://httplib2.readthedocs.io/en/latest/', None),
-    'oauth2client': ('http://oauth2client.readthedocs.io/en/latest', None),
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None),
     'python': ('https://docs.python.org/3', None),
-    'google-auth': ('https://google-auth.readthedocs.io/en/stable', None),
+    'oauth2client': ('http://oauth2client.readthedocs.io/en/latest', None),
 }
