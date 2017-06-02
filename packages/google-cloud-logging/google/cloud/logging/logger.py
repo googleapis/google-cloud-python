@@ -25,7 +25,7 @@ _GLOBAL_RESOURCE = Resource(type='global', labels={})
 class Logger(object):
     """Loggers represent named targets for log entries.
 
-    See:
+    See
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
 
     :type name: str
@@ -179,7 +179,7 @@ class Logger(object):
                  resource=_GLOBAL_RESOURCE):
         """API call:  log a text message via a POST request
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
 
         :type text: str
@@ -221,7 +221,7 @@ class Logger(object):
                    resource=_GLOBAL_RESOURCE):
         """API call:  log a structured message via a POST request
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
 
         :type info: dict
@@ -263,7 +263,7 @@ class Logger(object):
                   resource=_GLOBAL_RESOURCE):
         """API call:  log a protobuf message via a POST request
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
 
         :type message: :class:`~google.protobuf.message.Message`
@@ -304,7 +304,7 @@ class Logger(object):
     def delete(self, client=None):
         """API call:  delete all entries in a logger via a DELETE request
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs/delete
 
         :type client: :class:`~google.cloud.logging.client.Client` or
@@ -319,7 +319,7 @@ class Logger(object):
                      page_size=None, page_token=None):
         """Return a page of log entries.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
 
         :type projects: list of strings
@@ -328,7 +328,7 @@ class Logger(object):
 
         :type filter_: str
         :param filter_:
-            a filter expression. See:
+            a filter expression. See
             https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
