@@ -130,7 +130,7 @@ class Blob(_PropertyMixin):
     )
     """Allowed values for :attr:`storage_class`.
 
-    See:
+    See
     https://cloud.google.com/storage/docs/json_api/v1/objects#storageClass
     https://cloud.google.com/storage/docs/per-object-storage-class
 
@@ -1054,7 +1054,7 @@ class Blob(_PropertyMixin):
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -1076,7 +1076,7 @@ class Blob(_PropertyMixin):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
 
         :type policy: :class:`google.cloud.iam.Policy`
@@ -1104,7 +1104,7 @@ class Blob(_PropertyMixin):
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
 
         :type permissions: list of string
@@ -1217,7 +1217,7 @@ class Blob(_PropertyMixin):
     def update_storage_class(self, new_class, client=None):
         """Update blob's storage class via a rewrite-in-place.
 
-        See:
+        See
         https://cloud.google.com/storage/docs/per-object-storage-class
 
         :type new_class: str
@@ -1244,7 +1244,7 @@ class Blob(_PropertyMixin):
     cache_control = _scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.
 
-    See: `RFC 7234`_ and `API reference docs`_.
+    See `RFC 7234`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1256,7 +1256,7 @@ class Blob(_PropertyMixin):
     content_disposition = _scalar_property('contentDisposition')
     """HTTP 'Content-Disposition' header for this object.
 
-    See: `RFC 6266`_ and `API reference docs`_.
+    See `RFC 6266`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1268,7 +1268,7 @@ class Blob(_PropertyMixin):
     content_encoding = _scalar_property('contentEncoding')
     """HTTP 'Content-Encoding' header for this object.
 
-    See: `RFC 7231`_ and `API reference docs`_.
+    See `RFC 7231`_ and `API reference docs`_.
 
     If the property is not set locally, returns ``None``.
 
@@ -1280,7 +1280,7 @@ class Blob(_PropertyMixin):
     content_language = _scalar_property('contentLanguage')
     """HTTP 'Content-Language' header for this object.
 
-    See: `BCP47`_ and `API reference docs`_.
+    See `BCP47`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1292,7 +1292,7 @@ class Blob(_PropertyMixin):
     content_type = _scalar_property(_CONTENT_TYPE_FIELD)
     """HTTP 'Content-Type' header for this object.
 
-    See: `RFC 2616`_ and `API reference docs`_.
+    See `RFC 2616`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1304,7 +1304,7 @@ class Blob(_PropertyMixin):
     crc32c = _scalar_property('crc32c')
     """CRC32C checksum for this object.
 
-    See: `RFC 4960`_ and `API reference docs`_.
+    See `RFC 4960`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1317,7 +1317,7 @@ class Blob(_PropertyMixin):
     def component_count(self):
         """Number of underlying components that make up this object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
         :returns: The component count (in case of a composed object) or
@@ -1332,7 +1332,7 @@ class Blob(_PropertyMixin):
     def etag(self):
         """Retrieve the ETag for the object.
 
-        See: `RFC 2616 (etags)`_ and `API reference docs`_.
+        See `RFC 2616 (etags)`_ and `API reference docs`_.
 
         :rtype: str or ``NoneType``
         :returns: The blob etag or ``None`` if the property is not set locally.
@@ -1345,7 +1345,7 @@ class Blob(_PropertyMixin):
     def generation(self):
         """Retrieve the generation for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
         :returns: The generation of the blob or ``None`` if the property
@@ -1359,7 +1359,7 @@ class Blob(_PropertyMixin):
     def id(self):
         """Retrieve the ID for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
         :returns: The ID of the blob or ``None`` if the property is not
@@ -1370,7 +1370,7 @@ class Blob(_PropertyMixin):
     md5_hash = _scalar_property('md5Hash')
     """MD5 hash for this object.
 
-    See: `RFC 1321`_ and `API reference docs`_.
+    See `RFC 1321`_ and `API reference docs`_.
 
     If the property is not set locally, returns ``None``.
 
@@ -1383,7 +1383,7 @@ class Blob(_PropertyMixin):
     def media_link(self):
         """Retrieve the media download URI for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
         :returns: The media link for the blob or ``None`` if the property is
@@ -1395,7 +1395,7 @@ class Blob(_PropertyMixin):
     def metadata(self):
         """Retrieve arbitrary/application specific metadata for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: dict or ``NoneType``
         :returns: The metadata associated with the blob or ``None`` if the
@@ -1407,7 +1407,7 @@ class Blob(_PropertyMixin):
     def metadata(self, value):
         """Update arbitrary/application specific metadata for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :type value: dict
         :param value: (Optional) The blob metadata to set.
@@ -1418,7 +1418,7 @@ class Blob(_PropertyMixin):
     def metageneration(self):
         """Retrieve the metageneration for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
         :returns: The metageneration of the blob or ``None`` if the property
@@ -1432,7 +1432,7 @@ class Blob(_PropertyMixin):
     def owner(self):
         """Retrieve info about the owner of the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: dict or ``NoneType``
         :returns: Mapping of owner's role/ID. If the property is not set
@@ -1444,7 +1444,7 @@ class Blob(_PropertyMixin):
     def self_link(self):
         """Retrieve the URI for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
         :returns: The self link for the blob or ``None`` if the property is
@@ -1456,7 +1456,7 @@ class Blob(_PropertyMixin):
     def size(self):
         """Size of the object, in bytes.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
         :returns: The size of the blob or ``None`` if the property
@@ -1474,7 +1474,7 @@ class Blob(_PropertyMixin):
     exists in a bucket, call :meth:`update_storage_class` (which uses
     the "storage.objects.rewrite" method).
 
-    See: https://cloud.google.com/storage/docs/storage-classes
+    See https://cloud.google.com/storage/docs/storage-classes
 
     :rtype: str or ``NoneType``
     :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
@@ -1486,7 +1486,7 @@ class Blob(_PropertyMixin):
     def time_deleted(self):
         """Retrieve the timestamp at which the object was deleted.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
@@ -1501,7 +1501,7 @@ class Blob(_PropertyMixin):
     def time_created(self):
         """Retrieve the timestamp at which the object was created.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
@@ -1515,7 +1515,7 @@ class Blob(_PropertyMixin):
     def updated(self):
         """Retrieve the timestamp at which the object was updated.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or

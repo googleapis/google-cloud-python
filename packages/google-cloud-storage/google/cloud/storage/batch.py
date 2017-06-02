@@ -13,7 +13,7 @@
 # limitations under the License.
 """Batch updates / deletes of storage buckets / blobs.
 
-See: https://cloud.google.com/storage/docs/json_api/v1/how-tos/batch
+See https://cloud.google.com/storage/docs/json_api/v1/how-tos/batch
 """
 from email.encoders import encode_noop
 from email.generator import Generator
