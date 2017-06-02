@@ -125,7 +125,7 @@ class Client(BaseClient):
             >>> for project in client.list_projects(env_filter):
             ...     print(project.project_id)
 
-        See:
+        See
         https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/list
 
         Complete filtering example::

@@ -32,7 +32,7 @@ class Topic(object):
 
     Subscribers then receive those messages.
 
-    See:
+    See
     https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics
 
     :type name: str
@@ -155,7 +155,7 @@ class Topic(object):
     def create(self, client=None):
         """API call:  create the topic via a PUT request
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
         Example:
@@ -206,7 +206,7 @@ class Topic(object):
     def delete(self, client=None):
         """API call:  delete the topic via a DELETE request
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete
 
         Example:
@@ -237,7 +237,7 @@ class Topic(object):
     def publish(self, message, client=None, **attrs):
         """API call:  publish a message to a topic via a POST request
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish
 
         Example without message attributes:
@@ -307,7 +307,7 @@ class Topic(object):
     def list_subscriptions(self, page_size=None, page_token=None, client=None):
         """List subscriptions for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
         Example:
@@ -342,7 +342,7 @@ class Topic(object):
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the topic.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/getIamPolicy
 
         Example:
@@ -368,7 +368,7 @@ class Topic(object):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the topic.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/setIamPolicy
 
         Example:
@@ -399,7 +399,7 @@ class Topic(object):
     def check_iam_permissions(self, permissions, client=None):
         """Verify permissions allowed for the current user.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/testIamPermissions
 
         Example:

@@ -20,7 +20,7 @@ from google.cloud._helpers import _rfc3339_to_datetime
 class Message(object):
     """Messages can be published to a topic and received by subscribers.
 
-    See:
+    See
     https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage
 
     :type data: bytes

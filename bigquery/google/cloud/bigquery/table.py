@@ -43,7 +43,7 @@ _MARKER = object()
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
 
-    See:
+    See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
     :type name: str
@@ -480,7 +480,7 @@ class Table(object):
     def create(self, client=None):
         """API call:  create the dataset via a PUT request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -630,7 +630,7 @@ class Table(object):
     def delete(self, client=None):
         """API call:  delete the table via a DELETE request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -644,7 +644,7 @@ class Table(object):
     def fetch_data(self, max_results=None, page_token=None, client=None):
         """API call:  fetch the table data via a GET request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list
 
         .. note::
@@ -696,7 +696,7 @@ class Table(object):
                     client=None):
         """API call:  insert table data via a POST request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
         :type rows: list of tuples
@@ -718,7 +718,7 @@ class Table(object):
         :param template_suffix:
             (Optional) treat ``name`` as a template table and provide a suffix.
             BigQuery will create the table ``<name> + <template_suffix>`` based
-            on the schema of the template table. See:
+            on the schema of the template table. See
             https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or

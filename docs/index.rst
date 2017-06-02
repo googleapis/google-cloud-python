@@ -18,7 +18,7 @@
   logging/usage
   storage/client
   translate/usage
-  vision/usage
+  vision/index
 
 Google Cloud Client Library for Python
 ======================================

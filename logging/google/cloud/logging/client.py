@@ -115,7 +115,7 @@ class Client(ClientWithProject):
     def logging_api(self):
         """Helper for logging-related API calls.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
         """
@@ -130,7 +130,7 @@ class Client(ClientWithProject):
     def sinks_api(self):
         """Helper for log sink-related API calls.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks
         """
         if self._sinks_api is None:
@@ -144,7 +144,7 @@ class Client(ClientWithProject):
     def metrics_api(self):
         """Helper for log metric-related API calls.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics
         """
         if self._metrics_api is None:
@@ -169,7 +169,7 @@ class Client(ClientWithProject):
                      page_size=None, page_token=None):
         """Return a page of log entries.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
 
         :type projects: list of strings
@@ -178,7 +178,7 @@ class Client(ClientWithProject):
 
         :type filter_: str
         :param filter_:
-            a filter expression. See:
+            a filter expression. See
             https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
@@ -231,7 +231,7 @@ class Client(ClientWithProject):
     def list_sinks(self, page_size=None, page_token=None):
         """List sinks for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/list
 
         :type page_size: int
@@ -276,7 +276,7 @@ class Client(ClientWithProject):
     def list_metrics(self, page_size=None, page_token=None):
         """List metrics for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/list
 
         :type page_size: int

@@ -336,7 +336,7 @@ def table_update(client, to_delete):
 
 
 def _warm_up_inserted_table_data(table):
-    # Allow for 90 seconds of "warm up" before rows visible.  See:
+    # Allow for 90 seconds of "warm up" before rows visible.  See
     # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
     rows = ()
     counter = 18
