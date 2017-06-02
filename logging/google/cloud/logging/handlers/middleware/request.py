@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from threading import local
+import threading
 
 
-_thread_locals = local()
+_thread_locals = threading.local()
 
 
-def _get_request():
+def _get_django_request():
     """Get Django request from thread local.
 
     :rtype: str
