@@ -15,6 +15,7 @@
 """Client for interacting with the Google Cloud Vision API."""
 
 import os
+import warnings
 
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
@@ -67,6 +68,14 @@ class Client(ClientWithProject):
 
     def __init__(self, project=None, credentials=None, _http=None,
                  _use_grpc=None):
+        warnings.warn(
+            'This client class and objects that derive from it have been '
+            'deprecated. Use `google.cloud.vision.ImageAnnotatorClient` '
+            '(provided by this package) instead. This client will be removed '
+            'in a future release.',
+            DeprecationWarning,
+        )
+
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         if _use_grpc is None:
