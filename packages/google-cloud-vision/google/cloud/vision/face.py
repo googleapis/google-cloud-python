@@ -433,7 +433,7 @@ class FaceImageProperties(object):
 class LandmarkTypes(Enum):
     """A representation of the face detection landmark types.
 
-    See:
+    See
     https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#type_1
     """
     UNKNOWN_LANDMARK = 0
