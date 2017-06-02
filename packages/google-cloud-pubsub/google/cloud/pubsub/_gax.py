@@ -60,7 +60,7 @@ class _PublisherAPI(object):
     def list_topics(self, project, page_size=0, page_token=None):
         """List topics for the project associated with this API.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         :type project: str
@@ -90,7 +90,7 @@ class _PublisherAPI(object):
     def topic_create(self, topic_path):
         """API call:  create a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
         :type topic_path: str
@@ -113,7 +113,7 @@ class _PublisherAPI(object):
     def topic_get(self, topic_path):
         """API call:  retrieve a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get
 
         :type topic_path: str
@@ -136,7 +136,7 @@ class _PublisherAPI(object):
     def topic_delete(self, topic_path):
         """API call:  delete a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete
 
         :type topic_path: str
@@ -153,7 +153,7 @@ class _PublisherAPI(object):
     def topic_publish(self, topic_path, messages, timeout=30):
         """API call:  publish one or more messages to a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish
 
         :type topic_path: str
@@ -186,7 +186,7 @@ class _PublisherAPI(object):
     def topic_list_subscriptions(self, topic, page_size=0, page_token=None):
         """API call:  list subscriptions bound to a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
         :type topic: :class:`~google.cloud.pubsub.topic.Topic`
@@ -242,7 +242,7 @@ class _SubscriberAPI(object):
     def list_subscriptions(self, project, page_size=0, page_token=None):
         """List subscriptions for the project associated with this API.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/list
 
         :type project: str
@@ -283,7 +283,7 @@ class _SubscriberAPI(object):
                             message_retention_duration=None):
         """API call:  create a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create
 
         :type subscription_path: str
@@ -345,7 +345,7 @@ class _SubscriberAPI(object):
     def subscription_get(self, subscription_path):
         """API call:  retrieve a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
         :type subscription_path: str
@@ -367,7 +367,7 @@ class _SubscriberAPI(object):
     def subscription_delete(self, subscription_path):
         """API call:  delete a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete
 
         :type subscription_path: str
@@ -386,7 +386,7 @@ class _SubscriberAPI(object):
                                         push_endpoint):
         """API call:  update push config of a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: str
@@ -411,7 +411,7 @@ class _SubscriberAPI(object):
                           max_messages=1):
         """API call:  retrieve messages for a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: str
@@ -452,7 +452,7 @@ class _SubscriberAPI(object):
     def subscription_acknowledge(self, subscription_path, ack_ids):
         """API call:  acknowledge retrieved messages
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: str
@@ -474,7 +474,7 @@ class _SubscriberAPI(object):
                                          ack_deadline):
         """API call:  update ack deadline for retrieved messages
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type subscription_path: str
@@ -500,7 +500,7 @@ class _SubscriberAPI(object):
     def subscription_seek(self, subscription_path, time=None, snapshot=None):
         """API call:  seek a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek
 
         :type subscription_path: str
@@ -524,7 +524,7 @@ class _SubscriberAPI(object):
     def list_snapshots(self, project, page_size=0, page_token=None):
         """List snapshots for the project associated with this API.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/list
 
         :type project: str
@@ -561,7 +561,7 @@ class _SubscriberAPI(object):
     def snapshot_create(self, snapshot_path, subscription_path):
         """API call:  create a snapshot
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/create
 
         :type snapshot_path: str
@@ -594,7 +594,7 @@ class _SubscriberAPI(object):
     def snapshot_delete(self, snapshot_path):
         """API call:  delete a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/delete
 
         :type snapshot_path: str

@@ -108,7 +108,7 @@ class Snapshot(object):
     def create(self, client=None):
         """API call:  create the snapshot
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/create
 
         :type client: :class:`~google.cloud.pubsub.client.Client` or
@@ -127,7 +127,7 @@ class Snapshot(object):
     def delete(self, client=None):
         """API call:  delete the snapshot
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/delete
 
         :type client: :class:`~google.cloud.pubsub.client.Client` or
