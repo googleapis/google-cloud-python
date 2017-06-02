@@ -14,16 +14,10 @@
 
 import unittest
 
+import mock
 
-class TestRequestMiddleware(unittest.TestCase):
 
-    def _get_target_class(self):
-        from google.cloud.logging.handlers.middleware.request import RequestMiddleware
-
-        return RequestMiddleware
-
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
+class DjangoBase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -40,11 +34,53 @@ class TestRequestMiddleware(unittest.TestCase):
 
         teardown_test_environment()
 
-    def test_get_django_request(self):
+
+class TestRequestMiddleware(DjangoBase):
+
+    def _get_target_class(self):
+        from google.cloud.logging.handlers.middleware import request
+
+        return request.RequestMiddleware
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_process_request(self):
         from django.test import RequestFactory
-        from google.cloud.logging.handlers.middleware.request import _get_django_request
+        from google.cloud.logging.handlers.middleware import request
 
         middleware = self._make_one()
-        request = RequestFactory().get('/')
-        middleware.process_request(request)
-        self.assertEqual(_get_django_request(), request)
+        mock_request = RequestFactory().get('/')
+        middleware.process_request(mock_request)
+
+        django_request = request._get_django_request()
+        self.assertEqual(django_request, mock_request)
+
+
+class Test__get_django_request(DjangoBase):
+
+    @staticmethod
+    def _call_fut():
+        from google.cloud.logging.handlers.middleware import request
+
+        return request._get_django_request()
+
+    @staticmethod
+    def _make_patch(new_locals):
+        return mock.patch(
+            'google.cloud.logging.handlers.middleware.request._thread_locals',
+            new=new_locals)
+
+    def test_with_request(self):
+        thread_locals = mock.Mock(spec=['request'])
+        with self._make_patch(thread_locals):
+            django_request = self._call_fut()
+
+        self.assertIs(django_request, thread_locals.request)
+
+    def test_without_request(self):
+        thread_locals = mock.Mock(spec=[])
+        with self._make_patch(thread_locals):
+            django_request = self._call_fut()
+
+        self.assertIsNone(django_request)

@@ -15,8 +15,10 @@
 import logging
 import unittest
 
+import mock
 
-class TestAppEngineHandlerHandler(unittest.TestCase):
+
+class TestAppEngineHandler(unittest.TestCase):
     PROJECT = 'PROJECT'
 
     def _get_target_class(self):
@@ -28,7 +30,6 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
-        import mock
         from google.cloud.logging.handlers.app_engine import _GAE_PROJECT_ENV
         from google.cloud.logging.handlers.app_engine import _GAE_SERVICE_ENV
         from google.cloud.logging.handlers.app_engine import _GAE_VERSION_ENV
@@ -48,8 +49,6 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         self.assertEqual(handler.labels, {})
 
     def test_emit(self):
-        import mock
-
         client = mock.Mock(project=self.PROJECT, spec=['project'])
         handler = self._make_one(client, transport=_Transport)
         gae_resource = handler.get_gae_resource()
@@ -65,6 +64,35 @@ class TestAppEngineHandlerHandler(unittest.TestCase):
         self.assertEqual(
             handler.transport.send_called_with,
             (record, message, gae_resource, gae_labels))
+
+    def _get_gae_labels_helper(self, trace_id):
+        get_trace_patch = mock.patch(
+            'google.cloud.logging.handlers.app_engine.get_trace_id',
+            return_value=trace_id)
+
+        client = mock.Mock(project=self.PROJECT, spec=['project'])
+        # The handler actually calls ``get_gae_labels()``.
+        with get_trace_patch as mock_get_trace:
+            handler = self._make_one(client, transport=_Transport)
+            mock_get_trace.assert_called_once_with()
+
+            gae_labels = handler.get_gae_labels()
+            self.assertEqual(mock_get_trace.mock_calls,
+                             [mock.call(), mock.call()])
+
+        return gae_labels
+
+    def test_get_gae_labels_with_label(self):
+        from google.cloud.logging.handlers import app_engine
+
+        trace_id = 'test-gae-trace-id'
+        gae_labels = self._get_gae_labels_helper(trace_id)
+        expected_labels = {app_engine._TRACE_ID_LABEL: trace_id}
+        self.assertEqual(gae_labels, expected_labels)
+
+    def test_get_gae_labels_without_label(self):
+        gae_labels = self._get_gae_labels_helper(None)
+        self.assertEqual(gae_labels, {})
 
 
 class _Transport(object):

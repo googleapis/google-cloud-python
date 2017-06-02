@@ -141,7 +141,7 @@ class Client(ClientWithProject):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START client_list_topics]
            :end-before: [END client_list_topics]
 
@@ -170,7 +170,7 @@ class Client(ClientWithProject):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START client_list_subscriptions]
            :end-before: [END client_list_subscriptions]
 
@@ -223,7 +223,7 @@ class Client(ClientWithProject):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START client_topic]
            :end-before: [END client_topic]
 
@@ -245,7 +245,7 @@ class Client(ClientWithProject):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START client_subscription]
            :end-before: [END client_subscription]
 

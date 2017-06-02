@@ -14,8 +14,16 @@
 
 import unittest
 
+import mock
+
 
 class Test_get_trace_id_from_flask(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut():
+        from google.cloud.logging.handlers import _helpers
+
+        return _helpers.get_trace_id_from_flask()
 
     @staticmethod
     def create_app():
@@ -25,29 +33,22 @@ class Test_get_trace_id_from_flask(unittest.TestCase):
 
         @app.route('/')
         def index():
-            return 'test flask trace'
+            return 'test flask trace'  # pragma: NO COVER
 
         return app
 
     def setUp(self):
-        self.app = Test_get_trace_id_from_flask.create_app()
+        self.app = self.create_app()
 
-    def test_trace_id_no_context_header(self):
-        from google.cloud.logging.handlers import _helpers
-
+    def test_no_context_header(self):
         with self.app.test_request_context(
                 path='/',
                 headers={}):
-            trace_id = _helpers.get_trace_id_from_flask()
-            trace_id_returned = _helpers.get_trace_id()
+            trace_id = self._call_fut()
 
         self.assertIsNone(trace_id)
-        self.assertIsNone(trace_id_returned)
 
-    def test_trace_id_valid_context_header(self):
-        from google.cloud.logging.handlers._helpers import get_trace_id_from_flask
-        from google.cloud.logging.handlers._helpers import get_trace_id
-
+    def test_valid_context_header(self):
         flask_trace_header = 'X_CLOUD_TRACE_CONTEXT'
         expected_trace_id = 'testtraceidflask'
         flask_trace_id = expected_trace_id + '/testspanid'
@@ -57,14 +58,18 @@ class Test_get_trace_id_from_flask(unittest.TestCase):
             headers={flask_trace_header: flask_trace_id})
 
         with context:
-            trace_id = get_trace_id_from_flask()
-            trace_id_returned = get_trace_id()
+            trace_id = self._call_fut()
 
         self.assertEqual(trace_id, expected_trace_id)
-        self.assertEqual(trace_id, trace_id_returned)
 
 
 class Test_get_trace_id_from_django(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut():
+        from google.cloud.logging.handlers import _helpers
+
+        return _helpers.get_trace_id_from_django()
 
     def setUp(self):
         from django.conf import settings
@@ -76,47 +81,91 @@ class Test_get_trace_id_from_django(unittest.TestCase):
 
     def tearDown(self):
         from django.test.utils import teardown_test_environment
+        from google.cloud.logging.handlers.middleware import request
 
         teardown_test_environment()
+        request._thread_locals.__dict__.clear()
 
-    def test_trace_id_no_context_header(self):
+    def test_no_context_header(self):
         from django.test import RequestFactory
-        from google.cloud.logging.handlers import _helpers
         from google.cloud.logging.handlers.middleware import request
 
         django_request = RequestFactory().get('/')
 
         middleware = request.RequestMiddleware()
         middleware.process_request(django_request)
-        trace_id = _helpers.get_trace_id_from_django()
-        trace_id_returned = _helpers.get_trace_id()
-
+        trace_id = self._call_fut()
         self.assertIsNone(trace_id)
-        self.assertIsNone(trace_id_returned)
 
-        request._thread_locals.__dict__.clear()
-
-    def test_trace_id_valid_context_header(self):
+    def test_valid_context_header(self):
         from django.test import RequestFactory
-        from google.cloud.logging.handlers._helpers import get_trace_id_from_django
-        from google.cloud.logging.handlers._helpers import get_trace_id
-        from google.cloud.logging.handlers.middleware.request import RequestMiddleware
-        from google.cloud.logging.handlers.middleware.request import _thread_locals
+        from google.cloud.logging.handlers.middleware import request
 
         django_trace_header = 'HTTP_X_CLOUD_TRACE_CONTEXT'
         expected_trace_id = 'testtraceiddjango'
         django_trace_id = expected_trace_id + '/testspanid'
 
-        request = RequestFactory().get(
+        django_request = RequestFactory().get(
             '/',
             **{django_trace_header: django_trace_id})
 
-        middleware = RequestMiddleware()
-        middleware.process_request(request)
-        trace_id = get_trace_id_from_django()
-        trace_id_returned = get_trace_id()
+        middleware = request.RequestMiddleware()
+        middleware.process_request(django_request)
+        trace_id = self._call_fut()
 
         self.assertEqual(trace_id, expected_trace_id)
-        self.assertEqual(trace_id, trace_id_returned)
 
-        _thread_locals.__dict__.clear()
+
+class Test_get_trace_id(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut():
+        from google.cloud.logging.handlers import _helpers
+
+        return _helpers.get_trace_id()
+
+    def _helper(self, django_return, flask_return):
+        django_patch = mock.patch(
+            'google.cloud.logging.handlers._helpers.get_trace_id_from_django',
+            return_value=django_return)
+        flask_patch = mock.patch(
+            'google.cloud.logging.handlers._helpers.get_trace_id_from_flask',
+            return_value=flask_return)
+
+        with django_patch as django_mock:
+            with flask_patch as flask_mock:
+                trace_id = self._call_fut()
+
+        return django_mock, flask_mock, trace_id
+
+    def test_from_django(self):
+        django_mock, flask_mock, trace_id = self._helper(
+            'test-django-trace-id', None)
+        self.assertEqual(trace_id, django_mock.return_value)
+
+        django_mock.assert_called_once_with()
+        flask_mock.assert_not_called()
+
+    def test_from_flask(self):
+        django_mock, flask_mock, trace_id = self._helper(
+            None, 'test-flask-trace-id')
+        self.assertEqual(trace_id, flask_mock.return_value)
+
+        django_mock.assert_called_once_with()
+        flask_mock.assert_called_once_with()
+
+    def test_from_django_and_flask(self):
+        django_mock, flask_mock, trace_id = self._helper(
+            'test-django-trace-id', 'test-flask-trace-id')
+        # Django wins.
+        self.assertEqual(trace_id, django_mock.return_value)
+
+        django_mock.assert_called_once_with()
+        flask_mock.assert_not_called()
+
+    def test_missing(self):
+        django_mock, flask_mock, trace_id = self._helper(None, None)
+        self.assertIsNone(trace_id)
+
+        django_mock.assert_called_once_with()
+        flask_mock.assert_called_once_with()

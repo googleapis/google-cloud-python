@@ -227,6 +227,20 @@ class QueryResults(object):
             return int(total_bytes_processed)
 
     @property
+    def num_dml_affected_rows(self):
+        """Total number of rows affected by a DML query.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#numDmlAffectedRows
+
+        :rtype: int, or ``NoneType``
+        :returns: Count generated on the server (None until set by the server).
+        """
+        num_dml_affected_rows = self._properties.get('numDmlAffectedRows')
+        if num_dml_affected_rows is not None:
+            return int(num_dml_affected_rows)
+
+    @property
     def rows(self):
         """Query results.
 

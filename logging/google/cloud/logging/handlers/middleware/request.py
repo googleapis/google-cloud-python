@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Django middleware helper to capture a request.
+
+The request is stored on a thread-local so that it can be
+inspected by other helpers.
+"""
+
 import threading
 
 

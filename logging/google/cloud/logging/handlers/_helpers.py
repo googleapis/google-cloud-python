@@ -19,10 +19,11 @@ import json
 
 try:
     import flask
-except ImportError:
+except ImportError:  # pragma: NO COVER
     flask = None
 
-from google.cloud.logging.handlers.middleware.request import _get_django_request
+from google.cloud.logging.handlers.middleware.request import (
+    _get_django_request)
 
 _FLASK_TRACE_HEADER = 'X_CLOUD_TRACE_CONTEXT'
 _DJANGO_TRACE_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT'
@@ -63,7 +64,7 @@ def get_trace_id_from_flask():
     if header is None:
         return None
 
-    trace_id = header.split('/')[0]
+    trace_id = header.split('/', 1)[0]
 
     return trace_id
 
@@ -79,14 +80,11 @@ def get_trace_id_from_django():
     if request is None:
         return None
 
-    try:
-        header = request.META.get(_DJANGO_TRACE_HEADER)
-    except KeyError:
-        return None
-
+    header = request.META.get(_DJANGO_TRACE_HEADER)
     if header is None:
         return None
-    trace_id = header.split('/')[0]
+
+    trace_id = header.split('/', 1)[0]
 
     return trace_id
 
