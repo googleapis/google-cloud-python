@@ -38,7 +38,7 @@ class AppEngineHandler(CloudLoggingHandler):
     :param client: The authenticated Google Cloud Logging client for this
                    handler to use.
 
-    :type transport: type
+    :type transport: :class:`type`
     :param transport: The transport class. It should be a subclass
                       of :class:`.Transport`. If unspecified,
                       :class:`.BackgroundThreadTransport` will be used.

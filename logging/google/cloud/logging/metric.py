@@ -20,7 +20,7 @@ from google.cloud.exceptions import NotFound
 class Metric(object):
     """Metrics represent named filters for log entries.
 
-    See:
+    See
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics
 
     :type name: str
@@ -102,7 +102,7 @@ class Metric(object):
     def create(self, client=None):
         """API call:  create the metric via a PUT request
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/create
 
         :type client: :class:`~google.cloud.logging.client.Client` or

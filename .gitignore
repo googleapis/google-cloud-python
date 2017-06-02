@@ -28,6 +28,7 @@ pip-log.txt
 .nox
 .tox
 .cache
+htmlcov
 
 # Translations
 *.mo

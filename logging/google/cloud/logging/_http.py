@@ -52,7 +52,7 @@ class Connection(_http.JSONConnection):
 class _LoggingAPI(object):
     """Helper mapping logging-related APIs.
 
-    See:
+    See
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
 
@@ -68,7 +68,7 @@ class _LoggingAPI(object):
                      page_size=None, page_token=None):
         """Return a page of log entry resources.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
 
         :type projects: list of strings
@@ -77,7 +77,7 @@ class _LoggingAPI(object):
 
         :type filter_: str
         :param filter_:
-            a filter expression. See:
+            a filter expression. See
             https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
@@ -127,7 +127,7 @@ class _LoggingAPI(object):
                       labels=None):
         """API call:  log an entry resource via a POST request
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
 
         :type entries: sequence of mapping
@@ -161,7 +161,7 @@ class _LoggingAPI(object):
     def logger_delete(self, project, logger_name):
         """API call:  delete all entries in a logger via a DELETE request
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs/delete
 
         :type project: str
@@ -177,7 +177,7 @@ class _LoggingAPI(object):
 class _SinksAPI(object):
     """Helper mapping sink-related APIs.
 
-    See:
+    See
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks
 
     :type client: :class:`~google.cloud.logging.client.Client`
@@ -190,7 +190,7 @@ class _SinksAPI(object):
     def list_sinks(self, project, page_size=None, page_token=None):
         """List sinks for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/list
 
         :type project: str
@@ -224,7 +224,7 @@ class _SinksAPI(object):
     def sink_create(self, project, sink_name, filter_, destination):
         """API call:  create a sink resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create
 
         :type project: str
@@ -252,7 +252,7 @@ class _SinksAPI(object):
     def sink_get(self, project, sink_name):
         """API call:  retrieve a sink resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/get
 
         :type project: str
@@ -270,7 +270,7 @@ class _SinksAPI(object):
     def sink_update(self, project, sink_name, filter_, destination):
         """API call:  update a sink resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/update
 
         :type project: str
@@ -301,7 +301,7 @@ class _SinksAPI(object):
     def sink_delete(self, project, sink_name):
         """API call:  delete a sink resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/delete
 
         :type project: str
@@ -317,7 +317,7 @@ class _SinksAPI(object):
 class _MetricsAPI(object):
     """Helper mapping sink-related APIs.
 
-    See:
+    See
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics
 
     :type client: :class:`~google.cloud.logging.client.Client`
@@ -330,7 +330,7 @@ class _MetricsAPI(object):
     def list_metrics(self, project, page_size=None, page_token=None):
         """List metrics for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/list
 
         :type project: str
@@ -364,7 +364,7 @@ class _MetricsAPI(object):
     def metric_create(self, project, metric_name, filter_, description=None):
         """API call:  create a metric resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/create
 
         :type project: str
@@ -391,7 +391,7 @@ class _MetricsAPI(object):
     def metric_get(self, project, metric_name):
         """API call:  retrieve a metric resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/get
 
         :type project: str
@@ -409,7 +409,7 @@ class _MetricsAPI(object):
     def metric_update(self, project, metric_name, filter_, description):
         """API call:  update a metric resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/update
 
         :type project: str
@@ -439,7 +439,7 @@ class _MetricsAPI(object):
     def metric_delete(self, project, metric_name):
         """API call:  delete a metric resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/delete
 
         :type project: str

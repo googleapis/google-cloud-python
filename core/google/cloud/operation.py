@@ -43,7 +43,7 @@ def _compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
 def register_type(klass, type_url=None):
     """Register a klass as the factory for a given type URL.
 
-    :type klass: type
+    :type klass: :class:`type`
     :param klass: class to be used as a factory for the given type
 
     :type type_url: str
