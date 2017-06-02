@@ -47,18 +47,16 @@ class PublisherClient(object):
             The default is :class:`multiprocessing.Process`
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
-            :class:`~gapic.pubsub.v1.publisher_client.PublisherClient`.
+            :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
             Generally, you should not need to set additional keyword arguments.
     """
-    _gapic_class = publisher_client.PublisherClient
-
     def __init__(self, batching=(), thread_class=multiprocessing.Process,
                  queue_class=multiprocessing.Queue, **kwargs):
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         kwargs['lib_name'] = 'gccl'
         kwargs['lib_version'] = __VERSION__
-        self.api = self._gapic_class(**kwargs)
+        self.api = publisher_client.PublisherClient(**kwargs)
         self.batching = types.Batching(*batching)
 
         # Set the manager, which is responsible for granting shared memory
@@ -160,7 +158,7 @@ class PublisherClient(object):
                 if the ``attrs`` are not either a ``str`` or ``bytes``.
 
         Returns:
-            :class:~`pubsub_v1.publisher.futures.Future`: An object conforming
+            :class:`~.pubsub_v1.publisher.futures.Future`: An object conforming
                 to the ``concurrent.futures.Future`` interface.
         """
         return self.batch(topic).publish(data, *attrs)
