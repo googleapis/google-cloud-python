@@ -15,8 +15,8 @@
 from __future__ import absolute_import
 
 import queue
-import uuid
 import time
+import uuid
 
 
 class Future(object):
