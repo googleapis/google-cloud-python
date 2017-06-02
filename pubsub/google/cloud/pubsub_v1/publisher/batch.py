@@ -36,22 +36,22 @@ class Batch(object):
     message to be published is received; subsequent messages are added to
     that batch until the process of actual publishing _starts_.
 
-    Once this occurs, any new messages sent to ``publish`` open a new batch.
+    Once this occurs, any new messages sent to :meth:`publish` open a new
+    batch.
 
     If you are using this library, you most likely do not need to instantiate
     batch objects directly; they will be created for you. If you want to
     change the actual batching settings, see the ``batching`` argument on
-    :class:`google.cloud.pubsub_v1.PublisherClient`.
+    :class:`~.pubsub_v1.PublisherClient`.
 
     Args:
-        client (:class:`google.cloud.pubsub_v1.PublisherClient`): The
-            publisher client used to create this batch. Batch settings are
-            inferred from this.
+        client (~.pubsub_v1.PublisherClient): The publisher client used to
+            create this batch.
         topic (str): The topic. The format for this is
             ``projects/{project}/topics/{topic}``.
-        settings (:class:`google.cloud.pubsub_v1.types.Batching`): The
-            settings for batch publishing. These should be considered
-            immutable once the batch has been opened.
+        settings (~.pubsub_v1.types.Batching): The settings for batch
+            publishing. These should be considered immutable once the batch
+            has been opened.
         autocommit (bool): Whether to autocommit the batch when the time
             has elapsed. Defaults to True unless ``settings.max_latency`` is
             inf.
@@ -62,20 +62,20 @@ class Batch(object):
         # Create a namespace that is owned by the client manager; this
         # is necessary to be able to have these values be communicable between
         # processes.
-        self._ = self.manager.Namespace()
-        self._.futures = self.manager.list()
-        self._.messages = self.manager.list()
-        self._.message_ids = self.manager.dict()
-        self._.settings = settings
-        self._.status = 'accepting messages'
-        self._.topic = topic
+        self._shared = self.manager.Namespace()
+        self._shared.futures = self.manager.list()
+        self._shared.messages = self.manager.list()
+        self._shared.message_ids = self.manager.dict()
+        self._shared.settings = settings
+        self._shared.status = 'accepting messages'
+        self._shared.topic = topic
 
         # This is purely internal tracking.
         self._process = None
 
         # Continually monitor the thread until it is time to commit the
         # batch, or the batch is explicitly committed.
-        if autocommit and self._.settings.max_latency < float('inf'):
+        if autocommit and self._shared.settings.max_latency < float('inf'):
             self._process = self._client.thread_class(target=self.monitor)
             self._process.start()
 
@@ -84,10 +84,9 @@ class Batch(object):
         """Return the client that created this batch.
 
         Returns:
-            :class:~`pubsub_v1.client.Client`: The client that created this
-                batch.
+            ~.pubsub_v1.client.Client: The client that created this batch.
         """
-        return self._client
+        return self._sharedclient
 
     @property
     def manager(self):
@@ -107,7 +106,7 @@ class Batch(object):
             str: The status of this batch. All statuses are human-readable,
                 all-lowercase strings.
         """
-        return self._.status
+        return self._shared.status
 
     def commit(self):
         """Actually publish all of the messages on the active batch.
@@ -117,12 +116,15 @@ class Batch(object):
         completion.
         """
         # Update the status.
-        self._.status = 'in-flight'
+        self._shared.status = 'in-flight'
 
         # Begin the request to publish these messages.
-        if len(self._.messages) == 0:
+        if len(self._shared.messages) == 0:
             raise Exception('Empty queue')
-        response = self._client.api.publish(self._.topic, self._.messages)
+        response = self._client.api.publish(
+            self._shared.topic,
+            self._shared.messages,
+        )
 
         # FIXME (lukesneeringer): Check for failures; retry.
 
@@ -131,7 +133,7 @@ class Batch(object):
 
         # Sanity check: If the number of message IDs is not equal to the
         # number of futures I have, then something went wrong.
-        if len(response.message_ids) != len(self._.futures):
+        if len(response.message_ids) != len(self._shared.futures):
             raise exceptions.PublishError(
                 'Some messages were not successfully published.',
             )
@@ -139,9 +141,9 @@ class Batch(object):
         # Iterate over the futures on the queue and return the response IDs.
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
-        self._.status = 'success'
-        for message_id, fut in zip(response.message_ids, self._.futures):
-            self._.message_ids[hash(fut)] = message_id
+        self._shared.status = 'success'
+        for message_id, fut in zip(response.message_ids, self._shared.futures):
+            self._shared.message_ids[hash(fut)] = message_id
             fut._trigger()
 
     def monitor(self):
@@ -154,11 +156,11 @@ class Batch(object):
         # in a separate thread.
         #
         # Sleep for however long we should be waiting.
-        time.sleep(self._.settings.max_latency)
+        time.sleep(self._shared.settings.max_latency)
 
         # If, in the intervening period, the batch started to be committed,
         # then no-op at this point.
-        if self._.status != 'accepting messages':
+        if self._shared.status != 'accepting messages':
             return
 
         # Commit.
@@ -194,8 +196,8 @@ class Batch(object):
                 ``attrs`` are not either a ``str`` or ``bytes``.
 
         Returns:
-            Future: An object conforming to the ``concurrent.futures.Future``
-                interface.
+            ~.pubsub_v1.publisher.future.Future: An object conforming to the
+                :class:`concurrent.futures.Future` interface.
         """
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
@@ -214,14 +216,14 @@ class Batch(object):
                             'be sent as text strings.')
 
         # Store the actual message in the batch's message queue.
-        self._.messages.append(
+        self._shared.messages.append(
             types.PubsubMessage(data=data, attributes=attrs),
         )
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
         f = future.Future(self._)
-        self._.futures.append(f)
+        self._shared.futures.append(f)
         return f
 
 

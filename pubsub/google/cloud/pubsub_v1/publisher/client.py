@@ -148,7 +148,7 @@ class PublisherClient(object):
             >>> response = client.publish(topic, data, username='guido')
 
         Args:
-            topic (:class:~`pubsub_v1.types.Topic`): The topic to publish
+            topic (~.pubsub_v1.types.Topic): The topic to publish
                 messages to.
             data (bytes): A bytestring representing the message body. This
                 must be a bytestring (a text string will raise TypeError).
