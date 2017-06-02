@@ -63,7 +63,8 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
         transport.send(record, message, _GLOBAL_RESOURCE, None)
 
-        transport.worker.enqueue.assert_called_once_with(record, message, _GLOBAL_RESOURCE, None)
+        transport.worker.enqueue.assert_called_once_with(
+            record, message, _GLOBAL_RESOURCE, None)
 
     def test_flush(self):
         client = _Client(self.PROJECT)

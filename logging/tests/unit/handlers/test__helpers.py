@@ -15,9 +15,10 @@
 import unittest
 
 
-class TestFlaskTrace(unittest.TestCase):
+class Test_get_trace_id_from_flask(unittest.TestCase):
 
-    def create_app(self):
+    @staticmethod
+    def create_app():
         import flask
 
         app = flask.Flask(__name__)
@@ -29,40 +30,41 @@ class TestFlaskTrace(unittest.TestCase):
         return app
 
     def setUp(self):
-        self.app = self.create_app()
+        self.app = Test_get_trace_id_from_flask.create_app()
 
     def test_trace_id_no_context_header(self):
-        from google.cloud.logging.handlers._helpers import get_trace_id_from_flask
-        from google.cloud.logging.handlers._helpers import get_trace_id
+        from google.cloud.logging.handlers import _helpers
 
         with self.app.test_request_context(
                 path='/',
                 headers={}):
-            trace_id = get_trace_id_from_flask()
-            trace_id_returned = get_trace_id()
+            trace_id = _helpers.get_trace_id_from_flask()
+            trace_id_returned = _helpers.get_trace_id()
 
-        self.assertEqual(trace_id, None)
-        self.assertEqual(trace_id_returned, None)
+        self.assertIsNone(trace_id)
+        self.assertIsNone(trace_id_returned)
 
     def test_trace_id_valid_context_header(self):
         from google.cloud.logging.handlers._helpers import get_trace_id_from_flask
         from google.cloud.logging.handlers._helpers import get_trace_id
 
         flask_trace_header = 'X_CLOUD_TRACE_CONTEXT'
-        flask_trace_id = 'testtraceidflask/testspanid'
+        expected_trace_id = 'testtraceidflask'
+        flask_trace_id = expected_trace_id + '/testspanid'
 
-        with self.app.test_request_context(
-                path='/',
-                headers={flask_trace_header:flask_trace_id}):
+        context = self.app.test_request_context(
+            path='/',
+            headers={flask_trace_header: flask_trace_id})
+
+        with context:
             trace_id = get_trace_id_from_flask()
             trace_id_returned = get_trace_id()
 
-        expected_trace_id = 'testtraceidflask'
         self.assertEqual(trace_id, expected_trace_id)
         self.assertEqual(trace_id, trace_id_returned)
 
 
-class TestDjangoTrace(unittest.TestCase):
+class Test_get_trace_id_from_django(unittest.TestCase):
 
     def setUp(self):
         from django.conf import settings
@@ -79,22 +81,20 @@ class TestDjangoTrace(unittest.TestCase):
 
     def test_trace_id_no_context_header(self):
         from django.test import RequestFactory
-        from google.cloud.logging.handlers._helpers import get_trace_id_from_django
-        from google.cloud.logging.handlers._helpers import get_trace_id
-        from google.cloud.logging.handlers.middleware.request import RequestMiddleware
-        from google.cloud.logging.handlers.middleware.request import _thread_locals
+        from google.cloud.logging.handlers import _helpers
+        from google.cloud.logging.handlers.middleware import request
 
-        request = RequestFactory().get('/')
+        django_request = RequestFactory().get('/')
 
-        middleware = RequestMiddleware()
-        middleware.process_request(request)
-        trace_id = get_trace_id_from_django()
-        trace_id_returned = get_trace_id()
+        middleware = request.RequestMiddleware()
+        middleware.process_request(django_request)
+        trace_id = _helpers.get_trace_id_from_django()
+        trace_id_returned = _helpers.get_trace_id()
 
-        self.assertEqual(trace_id, None)
-        self.assertEqual(trace_id_returned, None)
+        self.assertIsNone(trace_id)
+        self.assertIsNone(trace_id_returned)
 
-        _thread_locals.__dict__.clear()
+        request._thread_locals.__dict__.clear()
 
     def test_trace_id_valid_context_header(self):
         from django.test import RequestFactory
@@ -108,7 +108,7 @@ class TestDjangoTrace(unittest.TestCase):
 
         request = RequestFactory().get(
             '/',
-            **{django_trace_header:django_trace_id})
+            **{django_trace_header: django_trace_id})
 
         middleware = RequestMiddleware()
         middleware.process_request(request)

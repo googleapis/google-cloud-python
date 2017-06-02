@@ -22,7 +22,7 @@ try:
 except ImportError:
     flask = None
 
-from google.cloud.logging.handlers.middleware.request import _get_request
+from google.cloud.logging.handlers.middleware.request import _get_django_request
 
 _FLASK_TRACE_HEADER = 'X_CLOUD_TRACE_CONTEXT'
 _DJANGO_TRACE_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT'
@@ -55,12 +55,12 @@ def get_trace_id_from_flask():
     :rtype: str
     :return: Trace_id in HTTP request headers.
     """
-    if not flask or not flask.request:
+    if flask is None or not flask.request:
         return None
 
     header = flask.request.headers.get(_FLASK_TRACE_HEADER)
 
-    if not header:
+    if header is None:
         return None
 
     trace_id = header.split('/')[0]
@@ -74,9 +74,9 @@ def get_trace_id_from_django():
     :rtype: str
     :return: Trace_id in HTTP request headers.
     """
-    request = _get_request()
+    request = _get_django_request()
 
-    if not request:
+    if request is None:
         return None
 
     try:
@@ -84,7 +84,7 @@ def get_trace_id_from_django():
     except KeyError:
         return None
 
-    if not header:
+    if header is None:
         return None
     trace_id = header.split('/')[0]
 
@@ -97,7 +97,7 @@ def get_trace_id():
     :rtype: str
     :returns: Trace_id in HTTP request headers.
     """
-    checkers = [get_trace_id_from_django, get_trace_id_from_flask]
+    checkers = (get_trace_id_from_django, get_trace_id_from_flask)
 
     for checker in checkers:
         trace_id = checker()

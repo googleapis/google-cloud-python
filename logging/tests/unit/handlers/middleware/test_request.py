@@ -25,7 +25,8 @@ class TestRequestMiddleware(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         from django.conf import settings
         from django.test.utils import setup_test_environment
 
@@ -33,16 +34,17 @@ class TestRequestMiddleware(unittest.TestCase):
             settings.configure()
         setup_test_environment()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
         from django.test.utils import teardown_test_environment
 
         teardown_test_environment()
 
-    def test_get_request(self):
+    def test_get_django_request(self):
         from django.test import RequestFactory
-        from google.cloud.logging.handlers.middleware.request import _get_request
+        from google.cloud.logging.handlers.middleware.request import _get_django_request
 
-        self.middleware = self._make_one()
-        self.request = RequestFactory().get('/')
-        self.middleware.process_request(self.request)
-        self.assertEqual(_get_request(), self.request)
+        middleware = self._make_one()
+        request = RequestFactory().get('/')
+        middleware.process_request(request)
+        self.assertEqual(_get_django_request(), request)
