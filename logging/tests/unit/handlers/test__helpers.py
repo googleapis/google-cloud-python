@@ -104,7 +104,8 @@ class Test_get_trace_id_from_django(unittest.TestCase):
         from google.cloud.logging.handlers.middleware.request import _thread_locals
 
         django_trace_header = 'HTTP_X_CLOUD_TRACE_CONTEXT'
-        django_trace_id = 'testtraceiddjango/testspanid'
+        expected_trace_id = 'testtraceiddjango'
+        django_trace_id = expected_trace_id + '/testspanid'
 
         request = RequestFactory().get(
             '/',
@@ -115,7 +116,6 @@ class Test_get_trace_id_from_django(unittest.TestCase):
         trace_id = get_trace_id_from_django()
         trace_id_returned = get_trace_id()
 
-        expected_trace_id = 'testtraceiddjango'
         self.assertEqual(trace_id, expected_trace_id)
         self.assertEqual(trace_id, trace_id_returned)
 
