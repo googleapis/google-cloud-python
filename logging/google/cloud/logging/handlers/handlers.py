@@ -46,7 +46,7 @@ class CloudLoggingHandler(logging.StreamHandler):
                  to 'python'. The name of the Python logger will be represented
                  in the ``python_logger`` field.
 
-    :type transport: type
+    :type transport: :class:`type`
     :param transport: Class for creating new transport objects. It should
                       extend from the base :class:`.Transport` type and
                       implement :meth`.Transport.send`. Defaults to

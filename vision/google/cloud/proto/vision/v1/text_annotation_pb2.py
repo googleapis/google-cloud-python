@@ -531,7 +531,6 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
     ,
     __doc__ = """Detected language for a structural component.
-    
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedLanguage)
     ))
@@ -542,7 +541,6 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
     ,
     __doc__ = """Detected start or end of a structural component.
-    
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedBreak)
     ))
@@ -553,7 +551,6 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
     ,
     __doc__ = """Additional information detected on the structural component.
-    
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.TextProperty)
     ))
@@ -561,21 +558,21 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
   DESCRIPTOR = _TEXTANNOTATION,
   __module__ = 'google.cloud.proto.vision.v1.text_annotation_pb2'
   ,
-  __doc__ = """TextAnnotation contains a structured representation of OCR extracted text.
-  The hierarchy of an OCR extracted text structure is like this:
-      TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol
-  Each structural component, starting from Page, may further have their own
+  __doc__ = """TextAnnotation contains a structured representation of OCR extracted
+  text. The hierarchy of an OCR extracted text structure is like this:
+  TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol Each
+  structural component, starting from Page, may further have their own
   properties. Properties describe detected languages, breaks etc.. Please
-  refer to the [google.cloud.vision.v1.TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty] message
-  definition below for more detail.
-  
+  refer to the
+  [google.cloud.vision.v1.TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty]
+  message definition below for more detail.
   
   
   Attributes:
       language_code:
           The BCP-47 language code, such as "en-US" or "sr-Latn". For
           more information, see http://www.unicode.org/reports/tr35/#Uni
-          code_locale_identifier.
+          code\_locale\_identifier.
       confidence:
           Confidence of detected language. Range [0, 1].
       is_prefix:
@@ -603,7 +600,6 @@ Page = _reflection.GeneratedProtocolMessageType('Page', (_message.Message,), dic
   __doc__ = """Detected page from OCR.
   
   
-  
   Attributes:
       property:
           Additional information detected on the page.
@@ -625,7 +621,6 @@ Block = _reflection.GeneratedProtocolMessageType('Block', (_message.Message,), d
   __doc__ = """Logical element on the page.
   
   
-  
   Attributes:
       property:
           Additional information detected for the block.
@@ -634,11 +629,11 @@ Block = _reflection.GeneratedProtocolMessageType('Block', (_message.Message,), d
           of top-left, top-right, bottom-right, bottom-left. When a
           rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is read in the 'natural' orientation. For example:   *
-          when the text is horizontal it might look like:      0----1
-          |    |      3----2   * when it's rotated 180 degrees around
-          the top-left corner it becomes:      2----3      |    |      1
-          ----0   and the vertice order will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example: \*
+          when the text is horizontal it might look like: 0----1 \| \| 3
+          ----2 \* when it's rotated 180 degrees around the top-left
+          corner it becomes: 2----3 \| \| 1----0 and the vertice order
+          will still be (0, 1, 2, 3).
       paragraphs:
           List of paragraphs in this block (if this blocks is of type
           text).
@@ -656,7 +651,6 @@ Paragraph = _reflection.GeneratedProtocolMessageType('Paragraph', (_message.Mess
   __doc__ = """Structural unit of text representing a number of words in certain order.
   
   
-  
   Attributes:
       property:
           Additional information detected for the paragraph.
@@ -665,11 +659,11 @@ Paragraph = _reflection.GeneratedProtocolMessageType('Paragraph', (_message.Mess
           order of top-left, top-right, bottom-right, bottom-left. When
           a rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is read in the 'natural' orientation. For example:   *
-          when the text is horizontal it might look like:      0----1
-          |    |      3----2   * when it's rotated 180 degrees around
-          the top-left corner it becomes:      2----3      |    |      1
-          ----0   and the vertice order will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example: \*
+          when the text is horizontal it might look like: 0----1 \| \| 3
+          ----2 \* when it's rotated 180 degrees around the top-left
+          corner it becomes: 2----3 \| \| 1----0 and the vertice order
+          will still be (0, 1, 2, 3).
       words:
           List of words in this paragraph.
   """,
@@ -684,7 +678,6 @@ Word = _reflection.GeneratedProtocolMessageType('Word', (_message.Message,), dic
   __doc__ = """A word representation.
   
   
-  
   Attributes:
       property:
           Additional information detected for the word.
@@ -693,11 +686,11 @@ Word = _reflection.GeneratedProtocolMessageType('Word', (_message.Message,), dic
           of top-left, top-right, bottom-right, bottom-left. When a
           rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is read in the 'natural' orientation. For example:   *
-          when the text is horizontal it might look like:      0----1
-          |    |      3----2   * when it's rotated 180 degrees around
-          the top-left corner it becomes:      2----3      |    |      1
-          ----0   and the vertice order will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example: \*
+          when the text is horizontal it might look like: 0----1 \| \| 3
+          ----2 \* when it's rotated 180 degrees around the top-left
+          corner it becomes: 2----3 \| \| 1----0 and the vertice order
+          will still be (0, 1, 2, 3).
       symbols:
           List of symbols in the word. The order of the symbols follows
           the natural reading order.
@@ -713,7 +706,6 @@ Symbol = _reflection.GeneratedProtocolMessageType('Symbol', (_message.Message,),
   __doc__ = """A single symbol representation.
   
   
-  
   Attributes:
       property:
           Additional information detected for the symbol.
@@ -722,11 +714,11 @@ Symbol = _reflection.GeneratedProtocolMessageType('Symbol', (_message.Message,),
           of top-left, top-right, bottom-right, bottom-left. When a
           rotation of the bounding box is detected the rotation is
           represented as around the top-left corner as defined when the
-          text is read in the 'natural' orientation. For example:   *
-          when the text is horizontal it might look like:      0----1
-          |    |      3----2   * when it's rotated 180 degrees around
-          the top-left corner it becomes:      2----3      |    |      1
-          ----0   and the vertice order will still be (0, 1, 2, 3).
+          text is read in the 'natural' orientation. For example: \*
+          when the text is horizontal it might look like: 0----1 \| \| 3
+          ----2 \* when it's rotated 180 degrees around the top-left
+          corner it becomes: 2----3 \| \| 1----0 and the vertice order
+          will still be (0, 1, 2, 3).
       text:
           The actual UTF-8 representation of the symbol.
   """,

@@ -213,7 +213,6 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
     ,
     __doc__ = """Entity deduced from similar images on the Internet.
-    
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebEntity)
     ))
@@ -224,7 +223,6 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
     ,
     __doc__ = """Metadata for online images.
-    
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebImage)
     ))
@@ -235,7 +233,6 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
     ,
     __doc__ = """Metadata for web pages.
-    
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebPage)
     ))
@@ -244,7 +241,6 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
   __module__ = 'google.cloud.proto.vision.v1.web_detection_pb2'
   ,
   __doc__ = """Relevant information for the image from the Internet.
-  
   
   
   Attributes:

@@ -1363,10 +1363,9 @@ Feature = _reflection.GeneratedProtocolMessageType('Feature', (_message.Message,
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
   __doc__ = """Users describe the type of Google Cloud Vision API tasks to perform over
-  images by using *Feature*s. Each Feature indicates a type of image
-  detection task to perform. Features encode the Cloud Vision API
-  vertical to operate on and the number of top-scoring results to return.
-  
+  images by using *Feature*\ s. Each Feature indicates a type of image
+  detection task to perform. Features encode the Cloud Vision API vertical
+  to operate on and the number of top-scoring results to return.
   
   
   Attributes:
@@ -1386,26 +1385,25 @@ ImageSource = _reflection.GeneratedProtocolMessageType('ImageSource', (_message.
   __doc__ = """External image source (Google Cloud Storage image location).
   
   
-  
   Attributes:
       gcs_image_uri:
-          NOTE: For new code `image_uri` below is preferred. Google
+          NOTE: For new code ``image_uri`` below is preferred. Google
           Cloud Storage image URI, which must be in the following form:
-          `gs://bucket_name/object_name` (for details, see [Google Cloud
-          Storage Request
-          URIs](https://cloud.google.com/storage/docs/reference-uris)).
+          ``gs://bucket_name/object_name`` (for details, see `Google
+          Cloud Storage Request URIs
+          <https://cloud.google.com/storage/docs/reference-uris>`__).
           NOTE: Cloud Storage object versioning is not supported.
       image_uri:
           Image URI which supports: 1) Google Cloud Storage image URI,
           which must be in the following form:
-          `gs://bucket_name/object_name` (for details, see [Google Cloud
-          Storage Request
-          URIs](https://cloud.google.com/storage/docs/reference-uris)).
+          ``gs://bucket_name/object_name`` (for details, see `Google
+          Cloud Storage Request URIs
+          <https://cloud.google.com/storage/docs/reference-uris>`__).
           NOTE: Cloud Storage object versioning is not supported. 2)
           Publicly accessible image HTTP/HTTPS URL. This is preferred
-          over the legacy `gcs_image_uri` above. When both
-          `gcs_image_uri` and `image_uri` are specified, `image_uri`
-          takes precedence.
+          over the legacy ``gcs_image_uri`` above. When both
+          ``gcs_image_uri`` and ``image_uri`` are specified,
+          ``image_uri`` takes precedence.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.ImageSource)
   ))
@@ -1418,16 +1416,16 @@ Image = _reflection.GeneratedProtocolMessageType('Image', (_message.Message,), d
   __doc__ = """Client image to perform Google Cloud Vision API tasks over.
   
   
-  
   Attributes:
       content:
           Image content, represented as a stream of bytes. Note: as with
-          all `bytes` fields, protobuffers use a pure binary
+          all ``bytes`` fields, protobuffers use a pure binary
           representation, whereas JSON representations use base64.
       source:
-          Google Cloud Storage image location. If both `content` and
-          `source` are provided for an image, `content` takes precedence
-          and is used to perform the image annotation request.
+          Google Cloud Storage image location. If both ``content`` and
+          ``source`` are provided for an image, ``content`` takes
+          precedence and is used to perform the image annotation
+          request.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.Image)
   ))
@@ -1439,12 +1437,10 @@ FaceAnnotation = _reflection.GeneratedProtocolMessageType('FaceAnnotation', (_me
     DESCRIPTOR = _FACEANNOTATION_LANDMARK,
     __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
     ,
-    __doc__ = """A face-specific landmark (for example, a face feature).
-    Landmark positions may fall outside the bounds of the image
-    if the face is near one or more edges of the image.
-    Therefore it is NOT guaranteed that `0 <= x < width` or
-    `0 <= y < height`.
-    
+    __doc__ = """A face-specific landmark (for example, a face feature). Landmark
+    positions may fall outside the bounds of the image if the face is near
+    one or more edges of the image. Therefore it is NOT guaranteed that
+    ``0 <= x < width`` or ``0 <= y < height``.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.FaceAnnotation.Landmark)
     ))
@@ -1455,7 +1451,6 @@ FaceAnnotation = _reflection.GeneratedProtocolMessageType('FaceAnnotation', (_me
   __doc__ = """A face annotation object contains the results of face detection.
   
   
-  
   Attributes:
       type:
           Face landmark type.
@@ -1464,20 +1459,19 @@ FaceAnnotation = _reflection.GeneratedProtocolMessageType('FaceAnnotation', (_me
       bounding_poly:
           The bounding polygon around the face. The coordinates of the
           bounding box are in the original image's scale, as returned in
-          `ImageParams`. The bounding box is computed to "frame" the
+          ``ImageParams``. The bounding box is computed to "frame" the
           face in accordance with human expectations. It is based on the
           landmarker results. Note that one or more x and/or y
-          coordinates may not be generated in the `BoundingPoly` (the
+          coordinates may not be generated in the ``BoundingPoly`` (the
           polygon will be unbounded) if only a partial face appears in
           the image to be annotated.
       fd_bounding_poly:
-          The `fd_bounding_poly` bounding polygon is tighter than the
-          `boundingPoly`, and encloses only the skin part of the face.
+          The ``fd_bounding_poly`` bounding polygon is tighter than the
+          ``boundingPoly``, and encloses only the skin part of the face.
           Typically, it is used to eliminate the face from any image
           analysis that detects the "amount of skin" visible in an
           image. It is not based on the landmarker results, only on the
-          initial face detection, hence the <code>fd</code> (face
-          detection) prefix.
+          initial face detection, hence the fd (face detection) prefix.
       landmarks:
           Detected face landmarks.
       roll_angle:
@@ -1523,7 +1517,6 @@ LocationInfo = _reflection.GeneratedProtocolMessageType('LocationInfo', (_messag
   __doc__ = """Detected entity location information.
   
   
-  
   Attributes:
       lat_lng:
           lat/long location coordinates.
@@ -1536,8 +1529,7 @@ Property = _reflection.GeneratedProtocolMessageType('Property', (_message.Messag
   DESCRIPTOR = _PROPERTY,
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
-  __doc__ = """A `Property` consists of a user-supplied name/value pair.
-  
+  __doc__ = """A ``Property`` consists of a user-supplied name/value pair.
   
   
   Attributes:
@@ -1557,17 +1549,16 @@ EntityAnnotation = _reflection.GeneratedProtocolMessageType('EntityAnnotation', 
   __doc__ = """Set of detected entity features.
   
   
-  
   Attributes:
       mid:
-          Opaque entity ID. Some IDs may be available in [Google
-          Knowledge Graph Search
-          API](https://developers.google.com/knowledge-graph/).
+          Opaque entity ID. Some IDs may be available in `Google
+          Knowledge Graph Search API
+          <https://developers.google.com/knowledge-graph/>`__.
       locale:
           The language code for the locale in which the entity textual
-          `description` is expressed.
+          ``description`` is expressed.
       description:
-          Entity textual description, expressed in its `locale`
+          Entity textual description, expressed in its ``locale``
           language.
       score:
           Overall score of the result. Range [0, 1].
@@ -1585,19 +1576,19 @@ EntityAnnotation = _reflection.GeneratedProtocolMessageType('EntityAnnotation', 
           may be the same. Range [0, 1].
       bounding_poly:
           Image region to which this entity belongs. Currently not
-          produced for `LABEL_DETECTION` features. For `TEXT_DETECTION`
-          (OCR), `boundingPoly`s are produced for the entire text
-          detected in an image region, followed by `boundingPoly`s for
-          each word within the detected text.
+          produced for ``LABEL_DETECTION`` features. For
+          ``TEXT_DETECTION`` (OCR), ``boundingPoly``\ s are produced for
+          the entire text detected in an image region, followed by
+          ``boundingPoly``\ s for each word within the detected text.
       locations:
           The location information for the detected entity. Multiple
-          `LocationInfo` elements can be present because one location
+          ``LocationInfo`` elements can be present because one location
           may indicate the location of the scene in the image, and
           another location may indicate the location of the place where
           the image was taken. Location information is usually present
           for landmarks.
       properties:
-          Some entities may have optional user-supplied `Property`
+          Some entities may have optional user-supplied ``Property``
           (name/value) fields, such a score or string that qualifies the
           entity.
   """,
@@ -1612,7 +1603,6 @@ SafeSearchAnnotation = _reflection.GeneratedProtocolMessageType('SafeSearchAnnot
   __doc__ = """Set of features pertaining to the image, computed by computer vision
   methods over safe-search verticals (for example, adult, spoof, medical,
   violence).
-  
   
   
   Attributes:
@@ -1635,8 +1625,7 @@ LatLongRect = _reflection.GeneratedProtocolMessageType('LatLongRect', (_message.
   DESCRIPTOR = _LATLONGRECT,
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
-  __doc__ = """Rectangle determined by min and max `LatLng` pairs.
-  
+  __doc__ = """Rectangle determined by min and max ``LatLng`` pairs.
   
   
   Attributes:
@@ -1655,7 +1644,6 @@ ColorInfo = _reflection.GeneratedProtocolMessageType('ColorInfo', (_message.Mess
   ,
   __doc__ = """Color information consists of RGB channels, score, and the fraction of
   the image that the color occupies in the image.
-  
   
   
   Attributes:
@@ -1678,7 +1666,6 @@ DominantColorsAnnotation = _reflection.GeneratedProtocolMessageType('DominantCol
   __doc__ = """Set of dominant colors and their corresponding scores.
   
   
-  
   Attributes:
       colors:
           RGB color values with their score and pixel fraction.
@@ -1694,7 +1681,6 @@ ImageProperties = _reflection.GeneratedProtocolMessageType('ImageProperties', (_
   __doc__ = """Stores image properties, such as dominant colors.
   
   
-  
   Attributes:
       dominant_colors:
           If present, dominant colors completed successfully.
@@ -1707,17 +1693,17 @@ CropHint = _reflection.GeneratedProtocolMessageType('CropHint', (_message.Messag
   DESCRIPTOR = _CROPHINT,
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
-  __doc__ = """Single crop hint that is used to generate a new crop when serving an image.
-  
+  __doc__ = """Single crop hint that is used to generate a new crop when serving an
+  image.
   
   
   Attributes:
       bounding_poly:
           The bounding polygon for the crop region. The coordinates of
           the bounding box are in the original image's scale, as
-          returned in `ImageParams`.
+          returned in ``ImageParams``.
       confidence:
-          Confidence of this being a salient region.  Range [0, 1].
+          Confidence of this being a salient region. Range [0, 1].
       importance_fraction:
           Fraction of importance of this salient region with respect to
           the original image.
@@ -1730,8 +1716,8 @@ CropHintsAnnotation = _reflection.GeneratedProtocolMessageType('CropHintsAnnotat
   DESCRIPTOR = _CROPHINTSANNOTATION,
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
-  __doc__ = """Set of crop hints that are used to generate new crops when serving images.
-  
+  __doc__ = """Set of crop hints that are used to generate new crops when serving
+  images.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.CropHintsAnnotation)
   ))
@@ -1742,7 +1728,6 @@ CropHintsParams = _reflection.GeneratedProtocolMessageType('CropHintsParams', (_
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
   __doc__ = """Parameters for crop hints annotation request.
-  
   
   
   Attributes:
@@ -1765,20 +1750,20 @@ ImageContext = _reflection.GeneratedProtocolMessageType('ImageContext', (_messag
   __doc__ = """Image context and/or feature-specific parameters.
   
   
-  
   Attributes:
       lat_long_rect:
           lat/long rectangle that specifies the location of the image.
       language_hints:
-          List of languages to use for TEXT_DETECTION. In most cases, an
-          empty value yields the best results since it enables automatic
-          language detection. For languages based on the Latin alphabet,
-          setting `language_hints` is not needed. In rare cases, when
-          the language of the text in the image is known, setting a hint
-          will help get better results (although it will be a
-          significant hindrance if the hint is wrong). Text detection
-          returns an error if one or more of the specified languages is
-          not one of the [supported languages](/vision/docs/languages).
+          List of languages to use for TEXT\_DETECTION. In most cases,
+          an empty value yields the best results since it enables
+          automatic language detection. For languages based on the Latin
+          alphabet, setting ``language_hints`` is not needed. In rare
+          cases, when the language of the text in the image is known,
+          setting a hint will help get better results (although it will
+          be a significant hindrance if the hint is wrong). Text
+          detection returns an error if one or more of the specified
+          languages is not one of the `supported languages
+          </vision/docs/languages>`__.
       crop_hints_params:
           Parameters for crop hints annotation request.
   """,
@@ -1790,9 +1775,8 @@ AnnotateImageRequest = _reflection.GeneratedProtocolMessageType('AnnotateImageRe
   DESCRIPTOR = _ANNOTATEIMAGEREQUEST,
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
-  __doc__ = """Request for performing Google Cloud Vision API tasks over a user-provided
-  image, with user-requested features.
-  
+  __doc__ = """Request for performing Google Cloud Vision API tasks over a
+  user-provided image, with user-requested features.
   
   
   Attributes:
@@ -1812,7 +1796,6 @@ AnnotateImageResponse = _reflection.GeneratedProtocolMessageType('AnnotateImageR
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
   __doc__ = """Response to an image annotation request.
-  
   
   
   Attributes:
@@ -1842,7 +1825,7 @@ AnnotateImageResponse = _reflection.GeneratedProtocolMessageType('AnnotateImageR
       error:
           If set, represents the error message for the operation. Note
           that filled-in image annotations are guaranteed to be correct,
-          even when `error` is set.
+          even when ``error`` is set.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.AnnotateImageResponse)
   ))
@@ -1852,8 +1835,8 @@ BatchAnnotateImagesRequest = _reflection.GeneratedProtocolMessageType('BatchAnno
   DESCRIPTOR = _BATCHANNOTATEIMAGESREQUEST,
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
-  __doc__ = """Multiple image annotation requests are batched into a single service call.
-  
+  __doc__ = """Multiple image annotation requests are batched into a single service
+  call.
   
   
   Attributes:
@@ -1869,7 +1852,6 @@ BatchAnnotateImagesResponse = _reflection.GeneratedProtocolMessageType('BatchAnn
   __module__ = 'google.cloud.proto.vision.v1.image_annotator_pb2'
   ,
   __doc__ = """Response to a batch image annotation request.
-  
   
   
   Attributes:

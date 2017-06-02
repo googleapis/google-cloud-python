@@ -151,7 +151,6 @@ Vertex = _reflection.GeneratedProtocolMessageType('Vertex', (_message.Message,),
   __doc__ = """X coordinate.
   
   
-  
   Attributes:
       y:
           Y coordinate.
@@ -167,7 +166,6 @@ BoundingPoly = _reflection.GeneratedProtocolMessageType('BoundingPoly', (_messag
   __doc__ = """A bounding polygon for the detected image annotation.
   
   
-  
   Attributes:
       vertices:
           The bounding polygon vertices.
@@ -181,9 +179,8 @@ Position = _reflection.GeneratedProtocolMessageType('Position', (_message.Messag
   __module__ = 'google.cloud.proto.vision.v1.geometry_pb2'
   ,
   __doc__ = """A 3D position in the image, used primarily for Face detection landmarks.
-  A valid Position must have both x and y coordinates.
-  The position coordinates are in the same scale as the original image.
-  
+  A valid Position must have both x and y coordinates. The position
+  coordinates are in the same scale as the original image.
   
   
   Attributes:
