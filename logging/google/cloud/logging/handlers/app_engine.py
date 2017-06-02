@@ -73,7 +73,10 @@ class AppEngineHandler(CloudLoggingHandler):
         return gae_resource
 
     def get_gae_labels(self):
-        """Return the labels for GAE app which includes trace_id.
+        """Return the labels for GAE app.
+
+        If the trace ID can be detected, it will be included as a label.
+        Currently, no other labels are included.
 
         :rtype: dict
         :returns: Labels for GAE app.
