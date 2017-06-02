@@ -57,7 +57,7 @@ class Client(ClientWithProject):
     def quotas(self):
         """Return DNS quotas for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/dns/api/v1/projects/get
 
         :rtype: mapping
@@ -74,7 +74,7 @@ class Client(ClientWithProject):
     def list_zones(self, max_results=None, page_token=None):
         """List zones for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/dns/api/v1/managedZones/list
 
         :type max_results: int

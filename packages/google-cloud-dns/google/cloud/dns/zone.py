@@ -26,7 +26,7 @@ from google.cloud.iterator import HTTPIterator
 class ManagedZone(object):
     """ManagedZones are containers for DNS resource records.
 
-    See:
+    See
     https://cloud.google.com/dns/api/v1/managedZones
 
     :type name: str
@@ -152,7 +152,7 @@ class ManagedZone(object):
 
         Most users will leave this blank.
 
-        See:
+        See
         https://cloud.google.com/dns/api/v1/managedZones#nameServerSet
 
         :rtype: str, or ``NoneType``
@@ -250,7 +250,7 @@ class ManagedZone(object):
     def create(self, client=None):
         """API call:  create the zone via a PUT request
 
-        See:
+        See
         https://cloud.google.com/dns/api/v1/managedZones/create
 
         :type client: :class:`google.cloud.dns.client.Client`
@@ -308,7 +308,7 @@ class ManagedZone(object):
     def delete(self, client=None):
         """API call:  delete the zone via a DELETE request
 
-        See:
+        See
         https://cloud.google.com/dns/api/v1/managedZones/delete
 
         :type client: :class:`google.cloud.dns.client.Client`
@@ -323,7 +323,7 @@ class ManagedZone(object):
                                   client=None):
         """List resource record sets for this zone.
 
-        See:
+        See
         https://cloud.google.com/dns/api/v1/resourceRecordSets/list
 
         :type max_results: int
@@ -357,7 +357,7 @@ class ManagedZone(object):
     def list_changes(self, max_results=None, page_token=None, client=None):
         """List change sets for this zone.
 
-        See:
+        See
         https://cloud.google.com/dns/api/v1/resourceRecordSets/list
 
         :type max_results: int
