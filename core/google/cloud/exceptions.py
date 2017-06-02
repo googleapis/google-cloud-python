@@ -14,7 +14,7 @@
 
 """Custom exceptions for :mod:`google.cloud` package.
 
-See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
+See https://cloud.google.com/storage/docs/json_api/v1/status-codes
 """
 
 # Avoid the grpc and google.cloud.grpc collision.
@@ -48,7 +48,7 @@ class GoogleCloudError(Exception):
     code = None
     """HTTP status code.  Concrete subclasses *must* define.
 
-    See: http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+    See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
     """
 
     def __init__(self, message, errors=()):

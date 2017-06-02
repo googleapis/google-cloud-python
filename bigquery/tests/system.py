@@ -59,7 +59,7 @@ def _rate_limit_exceeded(forbidden):
 # We need to wait to stay within the rate limits.
 # The alternative outcome is a 403 Forbidden response from upstream, which
 # they return instead of the more appropriate 429.
-# See: https://cloud.google.com/bigquery/quota-policy
+# See https://cloud.google.com/bigquery/quota-policy
 retry_403 = RetryErrors(Forbidden, error_predicate=_rate_limit_exceeded)
 
 
@@ -326,7 +326,7 @@ class TestBigQuery(unittest.TestCase):
 
         rows = ()
 
-        # Allow for "warm up" before rows visible.  See:
+        # Allow for "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryResult(_has_rows, max_tries=8)
@@ -495,7 +495,7 @@ class TestBigQuery(unittest.TestCase):
         def _job_done(instance):
             return instance.state in ('DONE', 'done')
 
-        # Allow for 90 seconds of "warm up" before rows visible.  See:
+        # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryInstanceState(_job_done, max_tries=8)
@@ -826,6 +826,8 @@ class TestBigQuery(unittest.TestCase):
 
         dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
         table = dataset.table(TABLE_NAME)
+        # Reload table to get the schema before fetching the rows.
+        table.reload()
         self._fetch_single_page(table)
 
     def test_insert_nested_nested(self):

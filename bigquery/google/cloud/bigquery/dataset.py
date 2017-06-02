@@ -89,7 +89,7 @@ class AccessGrant(object):
 class Dataset(object):
     """Datasets are containers for tables.
 
-    See:
+    See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
     :type name: str
@@ -417,7 +417,7 @@ class Dataset(object):
     def create(self, client=None):
         """API call:  create the dataset via a PUT request.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -530,7 +530,7 @@ class Dataset(object):
     def delete(self, client=None):
         """API call:  delete the dataset via a DELETE request.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -544,7 +544,7 @@ class Dataset(object):
     def list_tables(self, max_results=None, page_token=None):
         """List tables for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
 
         :type max_results: int

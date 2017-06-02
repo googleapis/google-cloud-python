@@ -38,7 +38,7 @@ Assigning to '{}' is deprecated.  Replace with 'policy[{}] = members."""
 class Policy(collections.MutableMapping):
     """IAM Policy
 
-    See:
+    See
     https://cloud.google.com/iam/reference/rest/v1/Policy
 
     :type etag: str
