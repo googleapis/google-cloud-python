@@ -826,6 +826,8 @@ class TestBigQuery(unittest.TestCase):
 
         dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
         table = dataset.table(TABLE_NAME)
+        # Reload table to get the schema before fetching the rows.
+        table.reload()
         self._fetch_single_page(table)
 
     def test_insert_nested_nested(self):
