@@ -63,7 +63,8 @@ class _Logger(object):
     def __init__(self, name):
         self.name = name
 
-    def log_struct(self, message, severity=None, resource=_GLOBAL_RESOURCE, labels=None):
+    def log_struct(self, message, severity=None,
+                   resource=_GLOBAL_RESOURCE, labels=None):
         self.log_struct_called_with = (message, severity, resource, labels)
 
 
