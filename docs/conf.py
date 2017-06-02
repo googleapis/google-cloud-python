@@ -295,6 +295,6 @@ intersphinx_mapping = {
     'httplib2': ('http://httplib2.readthedocs.io/en/latest/', None),
     'oauth2client': ('http://oauth2client.readthedocs.io/en/latest', None),
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None),
-    'python': ('https://docs.python.org/2', None),
+    'python': ('https://docs.python.org/3', None),
     'google-auth': ('https://google-auth.readthedocs.io/en/stable', None),
 }

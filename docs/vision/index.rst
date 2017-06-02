@@ -127,5 +127,5 @@ API Reference
 .. toctree::
   :maxdepth: 2
 
-  api
-  types
+  gapic/api
+  gapic/types
