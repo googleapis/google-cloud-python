@@ -63,3 +63,31 @@ class SubscriberClient(object):
         # The subcription class is responsible to retrieving and dispatching
         # messages.
         self._subscription_class = subscription_class
+
+    def subscribe(self, topic, name, callback=None, flow_control=()):
+        """Return a representation of an individual subscription.
+
+        This method creates and returns a ``Subscription`` object (that is, a
+        :class:`~.pubsub_v1.subscriber.subscription.base.BaseSubscription`)
+        subclass) bound to the topic. It does `not` create the subcription
+        on the backend (or do any API call at all); it simply returns an
+        object capable of doing these things.
+
+        If the ``callback`` argument is provided, then the :meth:`open` method
+        is automatically called on the returned object. If ``callback`` is
+        not provided, the subscription is returned unopened.
+
+        .. note::
+            It only makes sense to provide ``callback`` here if you have
+            already created the subscription manually in the API.
+
+        Args:
+            topic (str): The topic being subscribed to.
+            name (str): The name of the subscription.
+            callback (function): The callback function. This function receives
+                the :class:`~.pubsub_v1.types.PubsubMessage` as its only
+                argument.
+            flow_control (~.pubsub_v1.types.FlowControl): The flow control
+                settings. Use this to prevent situations where you are
+                inundated with too many messages at once.
+        """
