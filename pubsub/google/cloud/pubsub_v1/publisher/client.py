@@ -15,7 +15,6 @@
 from __future__ import absolute_import
 
 import functools
-import multiprocessing
 import pkg_resources
 
 import six
@@ -33,7 +32,7 @@ __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 @_gapic.add_methods(publisher_client.PublisherClient, blacklist=('publish',))
 class PublisherClient(object):
-    """A publisher client for Cloud Pub/Sub.
+    """A publisher client for Google Cloud Pub/Sub.
 
     This creates an object that is capable of publishing messages.
     Generally, you can instantiate this client with no arguments, and you

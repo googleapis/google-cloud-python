@@ -45,6 +45,10 @@ class Batch(base.BaseBatch):
     change the actual batching settings, see the ``batching`` argument on
     :class:`~.pubsub_v1.PublisherClient`.
 
+    Any properties or methods on this class which are not defined in
+    :class:`~.pubsub_v1.publisher.batch.BaseBatch` should be considered
+    implementation details.
+
     Args:
         client (~.pubsub_v1.PublisherClient): The publisher client used to
             create this batch.
