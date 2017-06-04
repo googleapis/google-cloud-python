@@ -23,6 +23,7 @@ from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.subscriber.consumer import mp
 
 
 __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -40,10 +41,10 @@ class SubscriberClient(object):
     Args:
         flow_control (~.pubsub_v1.types.FlowControl): The flow control
             settings to be used on individual subscriptions.
-        subscription_class (class): A class that describes how to handle
+        consumer_class (class): A class that describes how to handle
             subscriptions. You may subclass the
-            :class:`.pubsub_v1.subscriber.subscription.base.BaseSubscription`
-            class in order to define your own subscriber. This is primarily
+            :class:`.pubsub_v1.subscriber.consumer.base.BaseConsumer`
+            class in order to define your own consumer. This is primarily
             provided to allow use of different concurrency models; the default
             is based on :class:`multiprocessing.Process`.
         **kwargs (dict): Any additional arguments provided are sent as keyword
@@ -52,7 +53,7 @@ class SubscriberClient(object):
             Generally, you should not need to set additional keyword
             arguments.
     """
-    def __init__(self, flow_control=(), subscription_class=mp.Subscription,
+    def __init__(self, flow_control=(), consumer_class=mp.Consumer,
                  **kwargs):
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
@@ -62,13 +63,13 @@ class SubscriberClient(object):
 
         # The subcription class is responsible to retrieving and dispatching
         # messages.
-        self._subscription_class = subscription_class
+        self._consumer_class = consumer_class
 
     def subscribe(self, topic, name, callback=None, flow_control=()):
         """Return a representation of an individual subscription.
 
-        This method creates and returns a ``Subscription`` object (that is, a
-        :class:`~.pubsub_v1.subscriber.subscription.base.BaseSubscription`)
+        This method creates and returns a ``Consumer`` object (that is, a
+        :class:`~.pubsub_v1.subscriber.consumer.base.BaseConsumer`)
         subclass) bound to the topic. It does `not` create the subcription
         on the backend (or do any API call at all); it simply returns an
         object capable of doing these things.
