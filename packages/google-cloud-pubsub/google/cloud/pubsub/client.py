@@ -226,6 +226,7 @@ class Client(ClientWithProject):
         .. literalinclude:: snippets.py
            :start-after: [START client_topic]
            :end-before: [END client_topic]
+           :dedent: 4
 
         :type name: str
         :param name: the name of the topic to be constructed.
@@ -248,6 +249,7 @@ class Client(ClientWithProject):
         .. literalinclude:: snippets.py
            :start-after: [START client_subscription]
            :end-before: [END client_subscription]
+           :dedent: 4
 
         :type name: str
         :param name: the name of the subscription to be constructed.
