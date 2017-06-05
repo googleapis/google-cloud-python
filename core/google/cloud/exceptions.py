@@ -248,6 +248,29 @@ def _walk_subclasses(klass):
             yield subsub
 
 
+@contextlib.contextmanager
+def _catch_remap_gax_error():
+    """Remap GAX exceptions that happen in context.
+
+    .. _code.proto: https://github.com/googleapis/googleapis/blob/\
+                    master/google/rpc/code.proto
+
+    Remaps gRPC exceptions to the classes defined in
+    :mod:`~google.cloud.exceptions` (according to the description
+    in `code.proto`_).
+    """
+    try:
+        yield
+    except GaxError as exc:
+        error_code = exc_to_code(exc.cause)
+        error_class = _GRPC_ERROR_MAPPING.get(error_code)
+        if error_class is None:
+            raise
+        else:
+            new_exc = error_class(exc.cause.details())
+            six.reraise(error_class, new_exc, sys.exc_info()[2])
+
+
 # Build the code->exception class mapping.
 for _eklass in _walk_subclasses(GoogleCloudError):
     code = getattr(_eklass, 'code', None)
@@ -272,26 +295,3 @@ _GRPC_ERROR_MAPPING = {
     StatusCode.UNAVAILABLE: ServiceUnavailable,
     StatusCode.DATA_LOSS: InternalServerError,
 }
-
-
-@contextlib.contextmanager
-def _catch_remap_gax_error():
-    """Remap GAX exceptions that happen in context.
-
-    .. _code.proto: https://github.com/googleapis/googleapis/blob/\
-                    master/google/rpc/code.proto
-
-    Remaps gRPC exceptions to the classes defined in
-    :mod:`~google.cloud.exceptions` (according to the description
-    in `code.proto`_).
-    """
-    try:
-        yield
-    except GaxError as exc:
-        error_code = exc_to_code(exc.cause)
-        error_class = _GRPC_ERROR_MAPPING.get(error_code)
-        if error_class is None:
-            raise
-        else:
-            new_exc = error_class(exc.cause.details())
-            six.reraise(error_class, new_exc, sys.exc_info()[2])
