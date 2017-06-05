@@ -40,7 +40,8 @@ class SubscriberClient(object):
 
     Args:
         flow_control (~.pubsub_v1.types.FlowControl): The flow control
-            settings to be used on individual subscriptions.
+            settings. Use this to prevent situations where you are
+            inundated with too many messages at once.
         consumer_class (class): A class that describes how to handle
             subscriptions. You may subclass the
             :class:`.pubsub_v1.subscriber.consumer.base.BaseConsumer`
@@ -65,7 +66,7 @@ class SubscriberClient(object):
         # messages.
         self._consumer_class = consumer_class
 
-    def subscribe(self, topic, name, callback=None, flow_control=()):
+    def subscribe(self, subscription, callback=None):
         """Return a representation of an individual subscription.
 
         This method creates and returns a ``Consumer`` object (that is, a
@@ -83,12 +84,21 @@ class SubscriberClient(object):
             already created the subscription manually in the API.
 
         Args:
-            topic (str): The topic being subscribed to.
-            name (str): The name of the subscription.
+            subscription (str): The name of the subscription. The
+                subscription should have already been created (for example,
+                by using :meth:`create_subscription`).
             callback (function): The callback function. This function receives
                 the :class:`~.pubsub_v1.types.PubsubMessage` as its only
                 argument.
             flow_control (~.pubsub_v1.types.FlowControl): The flow control
                 settings. Use this to prevent situations where you are
                 inundated with too many messages at once.
+
+        Returns:
+            ~.pubsub_v1.subscriber.consumer.base.BaseConsumer: An instance
+                of the defined ``consumer_class`` on the client.
         """
+        subscr = self._consumer_class(self, subscription)
+        if callable(callback):
+            subscr.open(callback)
+        return subscr

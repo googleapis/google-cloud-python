@@ -34,12 +34,30 @@ class BaseConsumer(object):
     subclasses may be passed as the ``consumer_class`` argument to
     :class:`~.pubsub_v1.client.SubscriberClient`.
     """
-    def __init__(self, client, subscription):
+    def __init__(self, client, subscription, histogram_data=None):
+        """Instantiate the consumer.
+
+        Args:
+            client (~.pubsub_v1.subscriber.client): The subscriber client used
+                to create this instance.
+            subscription (str): The name of the subscription. The canonical format
+                for this is ``projects/{project}/subscriptions/{subscription}``.
+            histogram_data (dict): Optional: A structure to store the histogram
+                data for predicting appropriate ack times. If set, this should
+                be a dictionary-like object.
+
+                .. note::
+                    Additionally, the histogram relies on the assumption
+                    that the dictionary will properly sort keys provided
+                    that all keys are positive integers. If you are sending
+                    your own dictionary class, ensure this assumption holds
+                    or you will get strange behavior.
+        """
         self._client = client
         self._subscription = subscription
         self._ack_deadline = 10
         self._last_histogram_size = 0
-        self.histogram = histogram.Histogram()
+        self.histogram = histogram.Histogram(data=histogram_data)
 
     @property
     def ack_deadline(self):

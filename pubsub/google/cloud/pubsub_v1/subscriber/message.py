@@ -54,6 +54,7 @@ class Message(object):
         """
         self._consumer = consumer
         self._ack_id = ack_id
+        self._message = message
         self.message_id = message.message_id
         self.data = message.data
         self.attributes = message.attributes
@@ -76,17 +77,45 @@ class Message(object):
         answer += '    attributes: {0!r}\n'.format(self.attributes)
         answer += '}'
 
+    @property
+    def attributes(self):
+        """Return the attributes of the underlying Pub/Sub Message.
+
+        Returns:
+            dict: The message's attributes.
+        """
+        return self._message.attributes
+
+    @property
+    def data(self):
+        """Return the data for the underlying Pub/Sub Message.
+
+        Returns:
+            bytes: The message data. This is always a bytestring; if you
+                want a text string, call :meth:`bytes.decode`.
+        """
+        return self._message.data
+
+    @property
+    def publish_time(self):
+        """Return the time that the message was originally published.
+
+        Returns:
+            datetime: The date and time that the message was published.
+        """
+        return self._message.publish_time
+
     def ack(self):
         """Acknowledge the given message.
 
-        .. note::
-            Acknowledging a message in Pub/Sub means that you are done
-            with it, and it will not be delivered to this subscription again.
-            You should avoid acknowledging messages until you have
-            *finished* processing them, so that in the event of a failure,
-            you receive the message again.
+        Acknowledging a message in Pub/Sub means that you are done
+        with it, and it will not be delivered to this subscription again.
+        You should avoid acknowledging messages until you have
+        *finished* processing them, so that in the event of a failure,
+        you receive the message again.
 
-            Additionally, acks in Pub/Sub are best effort. You should always
+        .. warning::
+            Acks in Pub/Sub are best effort. You should always
             ensure that your processing code is idempotent, as you may
             receive any given message more than once.
         """
@@ -97,14 +126,20 @@ class Message(object):
     def modify_ack_deadline(self, seconds):
         """Set the deadline for acknowledgement to the given value.
 
-        This is not an extension; it *sets* the deadline to the given number
-        of seconds from right now. It is even possible to use this method to
-        make a deadline shorter.
-
         The default implementation handles this for you; you should not need
         to manually deal with setting ack deadlines. The exception case is
         if you are implementing your own custom subclass of
         :class:`~.pubsub_v1.subcriber.consumer.BaseConsumer`.
+
+        .. note::
+            This is not an extension; it *sets* the deadline to the given
+            number of seconds from right now. It is even possible to use this
+            method to make a deadline shorter.
+
+        Args:
+            seconds (int): The number of seconds to set the lease deadline
+                to. This should be between 0 and 600. Due to network latency,
+                values below 10 are advised against.
         """
         self._consumer.modify_ack_deadline(self._ack_id, seconds)
 

@@ -30,7 +30,16 @@ class Histogram(object):
     values outside the range of ``10 <= x <= 600`` are stored as ``10`` or
     ``600``, since these are the boundaries of leases in the actual API.
     """
-    def __init__(self):
+    def __init__(self, data=None):
+        """Instantiate the histogram.
+
+        Args:
+            data (dict): The data strucure to be used to store the
+                underlying data. The default is an empty dictionary.
+                This can be set to a dictionary-like object if required
+                (for example, if a special object is needed for
+                concurrency reasons).
+        """
         # The data is stored as a dictionary, with the keys being the
         # value being added and the values being the number of times that
         # value was added to the dictionary.
@@ -40,7 +49,9 @@ class Histogram(object):
         # value. Because ``hash(int i) -> i`` and all of our keys are
         # positive integers (negatives would be a problem because the sort
         # is bitwise), we can rely on this.
-        self._data = {}
+        if data is None:
+            data = {}
+        self._data = data
         self._len = 0
 
     def __len__(self):
