@@ -39,19 +39,18 @@ class Consumer(object):
 
         # Call the superclass constructor.
         super(Consumer, self).__init__(client, subscription,
-                                       self._shared.histogram_data)
+            histogram_data=self._shared.histogram_data,
+        )
 
         # Keep track of the GRPC connection.
-        self._connection = None
+        self._process = None
 
-    @abc.abstractmethod
     def ack(self, ack_id):
         """Acknowledge the message corresponding to the given ack_id."""
         self._shared.outgoing_requests.append(types.StreamingPullRequest(
             ack_ids=[ack_id],
         ))
 
-    @abc.abstractmethod
     def modify_ack_deadline(self, ack_id, seconds):
         """Modify the ack deadline for the given ack_id."""
         self._shared.outgoing_requests.append(types.StreamingPullRequest(
@@ -59,7 +58,6 @@ class Consumer(object):
             modify_deadline_seconds=[seconds],
         ))
 
-    @abc.abstractmethod
     def open(self, callback):
         """Open a streaming pull connection and begin receiving messages.
 
@@ -78,3 +76,10 @@ class Consumer(object):
             stream_ack_deadline_seconds=self.ack_deadline,
             subscription=self._subscription,
         ))
+
+        # Open the request.
+        self._process = multiprocessing.Process(self.stream)
+        self._process.start()
+
+    def stream(self):
+        """Stream data to and from the Cloud Pub/Sub service."""
