@@ -115,6 +115,18 @@ class TestSentimentResponse(unittest.TestCase):
 
 class TestSyntaxResponse(unittest.TestCase):
     SENTENCE_DICT = copy(TestSentimentResponse.SENTENCE_DICT)
+    aspect = 'ASPECT_UNKNOWN'
+    reciprocity = 'RECIPROCITY_UNKNOWN'
+    case = 'NOMINATIVE'
+    mood = 'MOOD_UNKNOWN'
+    tag = 'PRON'
+    person = 'FIRST'
+    number = 'SINGULAR'
+    tense = 'TENSE_UNKNOWN'
+    form = 'FORM_UNKNOWN'
+    proper = 'PROPER_UNKNOWN'
+    voice = 'VOICE_UNKNOWN'
+    gender = 'GENDER_UNKNOWN'
     TOKEN_DICT = {
         'dependencyEdge': {
             'headTokenIndex': 0,
@@ -122,7 +134,18 @@ class TestSyntaxResponse(unittest.TestCase):
         },
         'lemma': 'it',
         'partOfSpeech': {
-            'tag': 'PRON',
+            'aspect': aspect,
+            'reciprocity': reciprocity,
+            'case': case,
+            'mood': mood,
+            'tag': tag,
+            'person': person,
+            'number': number,
+            'tense': tense,
+            'form': form,
+            'proper': proper,
+            'voice': voice,
+            'gender': gender
         },
         'text': {
             'beginOffset': 0,
@@ -156,7 +179,6 @@ class TestSyntaxResponse(unittest.TestCase):
 
     def _verify_syntax_response(self, syntax_response):
         from google.cloud.language.sentiment import Sentiment
-        from google.cloud.language.syntax import PartOfSpeech
 
         self.assertEqual(syntax_response.language, 'en')
 
@@ -169,7 +191,18 @@ class TestSyntaxResponse(unittest.TestCase):
         token = syntax_response.tokens[0]
         self.assertEqual(token.text_content, 'It')
         self.assertEqual(token.text_begin, 0)
-        self.assertEqual(token.part_of_speech, PartOfSpeech.PRONOUN)
+        self.assertEqual(token.part_of_speech.aspect, 'ASPECT_UNKNOWN')
+        self.assertEqual(token.part_of_speech.reciprocity, 'RECIPROCITY_UNKNOWN')
+        self.assertEqual(token.part_of_speech.case, 'NOMINATIVE')
+        self.assertEqual(token.part_of_speech.mood, 'MOOD_UNKNOWN')
+        self.assertEqual(token.part_of_speech.tag, 'PRON')
+        self.assertEqual(token.part_of_speech.person, 'FIRST')
+        self.assertEqual(token.part_of_speech.number, 'SINGULAR')
+        self.assertEqual(token.part_of_speech.tense, 'TENSE_UNKNOWN')
+        self.assertEqual(token.part_of_speech.form, 'FORM_UNKNOWN')
+        self.assertEqual(token.part_of_speech.proper, 'PROPER_UNKNOWN')
+        self.assertEqual(token.part_of_speech.voice, 'VOICE_UNKNOWN')
+        self.assertEqual(token.part_of_speech.gender, 'GENDER_UNKNOWN')
         self.assertEqual(token.edge_index, 0)
         self.assertEqual(token.edge_label, 'NSUBJ')
         self.assertEqual(token.lemma, 'it')
