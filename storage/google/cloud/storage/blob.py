@@ -442,6 +442,7 @@ class Blob(_PropertyMixin):
          .. literalinclude:: snippets.py
             :start-after: [START download_to_file]
             :end-before: [END download_to_file]
+            :dedent: 4
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
@@ -843,6 +844,7 @@ class Blob(_PropertyMixin):
         .. literalinclude:: snippets.py
             :start-after: [START upload_from_file]
             :end-before: [END upload_from_file]
+            :dedent: 4
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
