@@ -167,6 +167,7 @@ class Test_Bucket(unittest.TestCase):
             "condition": {"age": 365}
         }]
         LOCATION = 'eu'
+        LABELS = {'color': 'red', 'flavor': 'cherry'}
         STORAGE_CLASS = 'NEARLINE'
         DATA = {
             'name': BUCKET_NAME,
@@ -175,6 +176,7 @@ class Test_Bucket(unittest.TestCase):
             'location': LOCATION,
             'storageClass': STORAGE_CLASS,
             'versioning': {'enabled': True},
+            'labels': LABELS,
         }
         connection = _Connection(DATA)
         client = _Client(connection, project=PROJECT)
@@ -184,6 +186,7 @@ class Test_Bucket(unittest.TestCase):
         bucket.location = LOCATION
         bucket.storage_class = STORAGE_CLASS
         bucket.versioning_enabled = True
+        bucket.labels = LABELS
         bucket.create()
 
         kw, = connection._requested
@@ -662,6 +665,27 @@ class Test_Bucket(unittest.TestCase):
         bucket.cors = [CORS_ENTRY]
         self.assertEqual(bucket.cors, [CORS_ENTRY])
         self.assertTrue('cors' in bucket._changes)
+
+    def test_labels_getter(self):
+        NAME = 'name'
+        LABELS = {'color': 'red', 'flavor': 'cherry'}
+        properties = {'labels': LABELS}
+        bucket = self._make_one(name=NAME, properties=properties)
+        labels = bucket.labels
+        self.assertEqual(labels, LABELS)
+        # Make sure it was a copy, not the same object.
+        self.assertIsNot(labels, LABELS)
+
+    def test_labels_setter(self):
+        NAME = 'name'
+        LABELS = {'color': 'red', 'flavor': 'cherry'}
+        bucket = self._make_one(name=NAME)
+
+        self.assertEqual(bucket.labels, {})
+        bucket.labels = LABELS
+        self.assertEqual(bucket.labels, LABELS)
+        self.assertIsNot(bucket._properties['labels'], LABELS)
+        self.assertIn('labels', bucket._changes)
 
     def test_get_logging_w_prefix(self):
         NAME = 'name'
