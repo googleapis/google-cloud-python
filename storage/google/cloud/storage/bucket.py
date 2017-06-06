@@ -552,6 +552,36 @@ class Bucket(_PropertyMixin):
         self._patch_property('cors', entries)
 
     @property
+    def labels(self):
+        """Retrieve or set CORS policies configured for this bucket.
+
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/buckets#labels
+
+        :setter: Set labels for this bucket.
+        :getter: Gets the labels for this bucket.
+
+        :rtype: :class:`dict`
+        :returns: Name-value pairs (string->string) labelling the bucket.
+        """
+        labels = self._properties.get('labels')
+        if labels is None:
+            return {}
+        return copy.deepcopy(labels)
+
+    @labels.setter
+    def labels(self, mapping):
+        """Set CORS policies configured for this bucket.
+
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/buckets#labels
+
+        :type mapping: :class:`dict`
+        :param mapping: Name-value pairs (string->string) labelling the bucket.
+        """
+        self._patch_property('labels', copy.deepcopy(mapping))
+
+    @property
     def etag(self):
         """Retrieve the ETag for the bucket.
 
