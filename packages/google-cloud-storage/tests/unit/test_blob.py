@@ -19,6 +19,7 @@ import os
 import unittest
 
 import mock
+import six
 from six.moves import http_client
 
 
@@ -55,7 +56,8 @@ class Test_Blob(unittest.TestCase):
         blob_name = b'wet \xe2\x9b\xb5'
         blob = self._make_one(blob_name, bucket=None)
         unicode_name = u'wet \N{sailboat}'
-        self.assertNotEqual(blob.name, blob_name)
+        self.assertNotIsInstance(blob.name, bytes)
+        self.assertIsInstance(blob.name, six.text_type)
         self.assertEqual(blob.name, unicode_name)
 
     def test_ctor_w_encryption_key(self):
