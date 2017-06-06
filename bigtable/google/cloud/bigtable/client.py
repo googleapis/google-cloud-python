@@ -207,6 +207,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     _instance_stub_internal = None
     _operations_stub_internal = None
     _table_stub_internal = None
+    _SET_PROJECT = True  # Used by from_service_account_json()
 
     def __init__(self, project=None, credentials=None,
                  read_only=False, admin=False, user_agent=DEFAULT_USER_AGENT):
