@@ -179,12 +179,10 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
                     instances, tables and data. If not provided, will
                     attempt to determine from the environment.
 
-    :type credentials:
-        :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>` or
-        :data:`NoneType <types.NoneType>`
+    :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not provided, defaults to the Google
-                        Application Default Credentials.
+                        client. If not passed, falls back to the default
+                        inferred from the environment.
 
     :type read_only: bool
     :param read_only: (Optional) Boolean indicating if the data scope should be
