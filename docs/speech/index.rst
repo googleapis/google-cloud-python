@@ -1,16 +1,6 @@
+######
 Speech
-======
-
-.. toctree::
-  :maxdepth: 2
-  :hidden:
-
-  client
-  encoding
-  operation
-  result
-  sample
-  alternative
+######
 
 The `Google Speech`_ API enables developers to convert audio to text.
 The API recognizes over 80 languages and variants, to support your global user
@@ -21,7 +11,7 @@ base.
 Client
 ------
 
-:class:`~google.cloud.speech.client.Client` objects provide a
+:class:`~google.cloud.speech_v1.SpeechClient` objects provide a
 means to configure your application. Each instance holds
 an authenticated connection to the Cloud Speech Service.
 
@@ -29,21 +19,22 @@ For an overview of authentication in ``google-cloud-python``, see
 :doc:`/core/auth`.
 
 Assuming your environment is set up as described in that document,
-create an instance of :class:`~google.cloud.speech.client.Client`.
+create an instance of :class:`~.google.cloud.speech.SpeechClient`.
 
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> client = speech.Client()
+    >>> client = speech.SpeechClient()
 
 
 Asynchronous Recognition
 ------------------------
 
-The :meth:`~google.cloud.speech.Client.long_running_recognize` sends audio
-data to the Speech API and initiates a Long Running Operation. Using this
-operation, you can periodically poll for recognition results. Use asynchronous
-requests for audio data of any duration up to 80 minutes.
+The :meth:`~.google.cloud.speech.SpeechClient.long_running_recognize` method
+sends audio data to the Speech API and initiates a Long Running Operation.
+
+Using this operation, you can periodically poll for recognition results.
+Use asynchronous requests for audio data of any duration up to 80 minutes.
 
 See: `Speech Asynchronous Recognize`_
 
@@ -52,13 +43,16 @@ See: `Speech Asynchronous Recognize`_
 
     >>> import time
     >>> from google.cloud import speech
-    >>> client = speech.Client()
-    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=speech.Encoding.LINEAR16,
-    ...                        sample_rate_hertz=44100)
-    >>> operation = sample.long_running_recognize(
-    ...     language_code='en-US',
-    ...     max_alternatives=2,
+    >>> client = speech.SpeechClient()
+    >>> operation = client.long_running_recognize(
+    ...     audio=speech.types.RecognitionAudio(
+    ...         uri='gs://my-bucket/recording.flac',
+    ...     ),
+    ...     config=speech.types.RecognitionConfig(
+    ...         encoding='LINEAR16',
+    ...         language_code='en-US',
+    ...         sample_rate_hertz=44100,
+    ...     ),
     ... )
     >>> retry_count = 100
     >>> while retry_count > 0 and not operation.complete:
@@ -89,12 +83,17 @@ Great Britain.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> client = speech.Client()
-    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=speech.Encoding.FLAC,
-    ...                        sample_rate_hertz=44100)
-    >>> results = sample.recognize(
-    ...     language_code='en-GB', max_alternatives=2)
+    >>> client = speech.SpeechClient()
+    >>> result = client.recognize(
+    ...     audio=speech.types.RecognitionAudio(
+    ...         uri='gs://my-bucket/recording.flac',
+    ...     ),
+    ...     config=speech.types.RecognitionConfig(
+    ...         encoding='LINEAR16',
+    ...         language_code='en-US',
+    ...         sample_rate_hertz=44100,
+    ...     ),
+    ... )
     >>> for result in results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
@@ -112,14 +111,17 @@ Example of using the profanity filter.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> client = speech.Client()
-    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=speech.Encoding.FLAC,
-    ...                        sample_rate_hertz=44100)
-    >>> results = sample.recognize(
-    ...     language_code='en-US',
-    ...     max_alternatives=1,
-    ...     profanity_filter=True,
+    >>> client = speech.SpeechClient()
+    >>> result = client.recognize(
+    ...     audio=speech.types.RecognitionAudio(
+    ...         uri='gs://my-bucket/recording.flac',
+    ...     ),
+    ...     config=speech.types.RecognitionConfig(
+    ...         encoding='LINEAR16',
+    ...         language_code='en-US',
+    ...         profanity_filter=True,
+    ...         sample_rate_hertz=44100,
+    ...     ),
     ... )
     >>> for result in results:
     ...     for alternative in result.alternatives:
@@ -137,15 +139,20 @@ words to the vocabulary of the recognizer.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> client = speech.Client()
-    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=speech.Encoding.FLAC,
-    ...                        sample_rate_hertz=44100)
-    >>> hints = ['hi', 'good afternoon']
-    >>> results = sample.recognize(
-    ...     language_code='en-US',
-    ...     max_alternatives=2,
-    ...     speech_contexts=hints,
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> result = client.recognize(
+    ...     audio=speech.types.RecognitionAudio(
+    ...         uri='gs://my-bucket/recording.flac',
+    ...     ),
+    ...     config=speech.types.RecognitionConfig(
+    ...         encoding='LINEAR16',
+    ...         language_code='en-US',
+    ...         sample_rate_hertz=44100,
+    ...         speech_contexts=[speech.types.SpeechContext(
+    ...             phrases=['hi', 'good afternoon'],
+    ...         )],
+    ...     ),
     ... )
     >>> for result in results:
     ...     for alternative in result.alternatives:
@@ -170,18 +177,27 @@ speech data to possible text alternatives on the fly.
 
 .. code-block:: python
 
+    >>> import io
     >>> from google.cloud import speech
-    >>> client = speech.Client()
-    >>> with open('./hello.wav', 'rb') as stream:
-    ...     sample = client.sample(stream=stream,
-    ...                            encoding=speech.Encoding.LINEAR16,
-    ...                            sample_rate_hertz=16000)
-    ...     results = sample.streaming_recognize(language_code='en-US')
-    ...     for result in results:
-    ...         for alternative in result.alternatives:
-    ...             print('=' * 20)
-    ...             print('transcript: ' + alternative.transcript)
-    ...             print('confidence: ' + str(alternative.confidence))
+    >>> client = speech.SpeechClient()
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding='LINEAR16',
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100,
+    ... )
+    >>> with io.open('./hello.wav', 'rb') as stream:
+    ...     requests = [speech.types.StreamingRecognizeRequest(
+    ...         audio_content=stream.read(),
+    ...     )]
+    >>> results = sample.streaming_recognize(
+    ...     config=speech.types.StreamingRecognitionConfig(config=config),
+    ...     requests,
+    ... )
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + str(alternative.confidence))
     ====================
     transcript: hello thank you for using Google Cloud platform
     confidence: 0.927983105183
@@ -199,14 +215,30 @@ See: `Single Utterance`_
 
 .. code-block:: python
 
-    >>> with open('./hello_pause_goodbye.wav', 'rb') as stream:
-    ...     sample = client.sample(stream=stream,
-    ...                            encoding=speech.Encoding.LINEAR16,
-    ...                            sample_rate_hertz=16000)
-    ...     results = sample.streaming_recognize(
-    ...         language_code='en-US',
-    ...         single_utterance=True,
-    ...     )
+    >>> import io
+    >>> from google.cloud import speech
+    >>> client = speech.SpeechClient()
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding='LINEAR16',
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100,
+    ... )
+    >>> with io.open('./hello-pause-goodbye.wav', 'rb') as stream:
+    ...     requests = [speech.types.StreamingRecognizeRequest(
+    ...         audio_content=stream.read(),
+    ...     )]
+    >>> results = sample.streaming_recognize(
+    ...     config=speech.types.StreamingRecognitionConfig(
+    ...         config=config,
+    ...         single_utterance=False,
+    ...     ),
+    ...     requests,
+    ... )
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + str(alternative.confidence))
     ...     for result in results:
     ...         for alternative in result.alternatives:
     ...             print('=' * 20)
@@ -221,22 +253,31 @@ If ``interim_results`` is set to :data:`True`, interim results
 
 .. code-block:: python
 
+    >>> import io
     >>> from google.cloud import speech
-    >>> client = speech.Client()
-    >>> with open('./hello.wav', 'rb') as stream:
-    ...     sample = client.sample(stream=stream,
-    ...                            encoding=speech.Encoding.LINEAR16,
-    ...                            sample_rate=16000)
-    ...     results = sample.streaming_recognize(
-    ...         interim_results=True,
-    ...         language_code='en-US',
-    ...     )
-    ...     for result in results:
-    ...         for alternative in result.alternatives:
-    ...             print('=' * 20)
-    ...             print('transcript: ' + alternative.transcript)
-    ...             print('confidence: ' + str(alternative.confidence))
-    ...             print('is_final:' + str(result.is_final))
+    >>> client = speech.SpeechClient()
+    >>> config = speech.types.RecognitionConfig(
+    ...     encoding='LINEAR16',
+    ...     language_code='en-US',
+    ...     sample_rate_hertz=44100,
+    ... )
+    >>> with io.open('./hello.wav', 'rb') as stream:
+    ...     requests = [speech.types.StreamingRecognizeRequest(
+    ...         audio_content=stream.read(),
+    ...     )]
+    >>> results = sample.streaming_recognize(
+    ...     config=speech.types.StreamingRecognitionConfig(
+    ...         config=config,
+    ...         iterim_results=True,
+    ...     ),
+    ...     requests,
+    ... )
+    >>> for result in results:
+    ...     for alternative in result.alternatives:
+    ...         print('=' * 20)
+    ...         print('transcript: ' + alternative.transcript)
+    ...         print('confidence: ' + str(alternative.confidence))
+    ...         print('is_final:' + str(result.is_final))
     ====================
     'he'
     None
@@ -254,3 +295,13 @@ If ``interim_results`` is set to :data:`True`, interim results
 .. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
 .. _Speech Asynchronous Recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize
+
+*************
+API Reference
+*************
+
+.. toctree::
+  :maxdepth: 2
+
+  gapic/api
+  gapic/types

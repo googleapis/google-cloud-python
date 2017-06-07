@@ -50,16 +50,15 @@ class SpeechHelpers(object):
           ...     pass
 
         Args:
-          config (~.speech_v1.types.StreamingRecognitionConfig): The
+          config (:class:`~.types.StreamingRecognitionConfig`): The
             configuration to use for the stream.
-          requests (Iterable[~.speech_v1.types.StreamingRecognizeRequest]):
+          requests (Iterable[:class:`~.types.StreamingRecognizeRequest`]):
             The input objects.
           options (:class:`google.gax.CallOptions`): Overrides the default
             settings for this call, e.g, timeout, retries etc.
 
         Returns:
-          Iterable[~.speech_v1.types.StreamingRecognizeResponse]: The API
-            response.
+          Iterable[:class:`~.types.StreamingRecognizeResponse`]
 
         Raises:
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
