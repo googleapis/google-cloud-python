@@ -830,6 +830,23 @@ class TestBigQuery(unittest.TestCase):
         table.reload()
         self._fetch_single_page(table)
 
+    def test_large_query_w_public_data(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_NAME = 'samples'
+        TABLE_NAME = 'natality'
+        LIMIT = 1000
+        SQL = 'SELECT * from `{}.{}.{}` LIMIT {}'.format(
+            PUBLIC, DATASET_NAME, TABLE_NAME, LIMIT)
+
+        dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
+        query = Config.CLIENT.run_sync_query(SQL)
+        query.use_legacy_sql = False
+        query.run()
+
+        iterator = query.fetch_data()
+        rows = list(iterator)
+        self.assertEqual(len(rows), LIMIT)
+
     def test_insert_nested_nested(self):
         # See #2951
         SF = bigquery.SchemaField

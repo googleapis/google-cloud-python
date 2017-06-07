@@ -32,7 +32,8 @@ from google.cloud.streaming.http_wrapper import make_api_request
 from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
 from google.cloud.streaming.transfer import Upload
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery._helpers import _row_from_json
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
@@ -1074,47 +1075,6 @@ def _build_schema_resource(fields):
             info['fields'] = _build_schema_resource(field.fields)
         infos.append(info)
     return infos
-
-
-def _item_to_row(iterator, resource):
-    """Convert a JSON row to the native object.
-
-    .. note::
-
-        This assumes that the ``schema`` attribute has been
-        added to the iterator after being created, which
-        should be done by the caller.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: tuple
-    :returns: The next row in the page.
-    """
-    return _row_from_json(resource, iterator.schema)
-
-
-# pylint: disable=unused-argument
-def _rows_page_start(iterator, page, response):
-    """Grab total rows after a :class:`~google.cloud.iterator.Page` started.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.cloud.iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
-    """
-    total_rows = response.get('totalRows')
-    if total_rows is not None:
-        total_rows = int(total_rows)
-    iterator.total_rows = total_rows
-# pylint: enable=unused-argument
 
 
 class _UploadConfig(object):
