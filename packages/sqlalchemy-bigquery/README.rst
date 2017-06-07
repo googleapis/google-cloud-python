@@ -23,7 +23,7 @@ SQLAlchemy
     from sqlalchemy.schema import *
     engine = create_engine('bigquery://project')
     logs = Table('dataset.table', MetaData(bind=engine), autoload=True)
-    print select([func.count('*')], from_obj=logs).scalar()
+    print(select([func.count('*')], from_obj=logs).scalar())
 
 Requirements
 ============
