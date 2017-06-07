@@ -34,6 +34,7 @@ class Consumer(object):
         # Create a manager for keeping track of shared state.
         self._manager = multiprocessing.Manager()
         self._shared = self._manager.Namespace()
+        self._shared.subscription = subscription
         self._shared.outgoing_requests = self._manager.list()
         self._shared.histogram_data = self._manager.dict()
 
@@ -45,11 +46,25 @@ class Consumer(object):
         # Keep track of the GRPC connection.
         self._process = None
 
+    @property
+    def subscription(self):
+        """Return the subscription.
+
+        Returns:
+            str: The subscription
+        """
+        return self._shared.subscription
+
     def ack(self, ack_id):
         """Acknowledge the message corresponding to the given ack_id."""
         self._shared.outgoing_requests.append(types.StreamingPullRequest(
             ack_ids=[ack_id],
         ))
+
+    def close(self):
+        """Close the existing connection."""
+        self._process.terminate()
+        self._process = None
 
     def modify_ack_deadline(self, ack_id, seconds):
         """Modify the ack deadline for the given ack_id."""
@@ -64,10 +79,21 @@ class Consumer(object):
         For each message received, the ``callback`` function is fired with
         a :class:`~.pubsub_v1.subscriber.message.Message` as its only
         argument.
+
+        Args:
+            callback (function): The callback function.
         """
         # Sanity check: If the connection is already open, fail.
-        if self._connection is not None:
+        if self._process is not None:
             raise exceptions.AlreadyOpen(self._subscription)
+
+        # Open the request.
+        self._process = multiprocessing.Process(self.stream)
+        self._process.daemon = True
+        self._process.start()
+
+    def stream(self):
+        """Stream data to and from the Cloud Pub/Sub service."""
 
         # The streaming connection expects a series of StreamingPullRequest
         # objects. The first one must specify the subscription and the
@@ -77,9 +103,9 @@ class Consumer(object):
             subscription=self._subscription,
         ))
 
-        # Open the request.
-        self._process = multiprocessing.Process(self.stream)
-        self._process.start()
-
-    def stream(self):
-        """Stream data to and from the Cloud Pub/Sub service."""
+        import sys
+        try:
+            for r in self.api.streaming_pull(self._shared.outgoing_requests):
+                print(r, file=sys.stderr)
+        except GaxError:
+            return self.stream()

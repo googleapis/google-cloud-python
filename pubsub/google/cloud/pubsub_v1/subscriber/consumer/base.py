@@ -74,6 +74,15 @@ class BaseConsumer(object):
             self._ack_deadline = self.histogram.percentile(percent=99)
         return self._ack_deadline
 
+    @property
+    def subscription(self):
+        """Return the subscription.
+
+        Returns:
+            str: The subscription
+        """
+        return self._subscription
+
     @abc.abstractmethod
     def ack(self, ack_id):
         """Acknowledge the message corresponding to the given ack_id."""
