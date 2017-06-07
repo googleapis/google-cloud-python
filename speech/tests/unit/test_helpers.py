@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+import collections
 import unittest
 
 import mock
@@ -41,4 +42,17 @@ class HelperTests(unittest.TestCase):
             ), None)
 
     def test_streaming(self):
-        pass
+        config = types.StreamingRecognitionConfig()
+        requests = [types.StreamingRecognizeRequest(audio_content=b'...')]
+        with mock.patch.object(self.client, '_streaming_recognize') as sr:
+            self.client.streaming_recognize(config, requests)
+
+            # Assert that we called streaming recognize with an iterable
+            # that evalutes to the correct format.
+            _, args, _ = sr.mock_calls[0]
+            api_requests = args[0]
+            assert isinstance(api_requests, collections.Generator)
+            assert list(api_requests) == [
+                types.StreamingRecognizeRequest(streaming_config=config),
+                requests[0],
+            ]
