@@ -22,6 +22,8 @@ also provides integration with several HTTP libraries.
   :mod:`urllib3 <google.auth.transport.urllib3>`, and
   :mod:`gRPC <google.auth.transport.grpc>`.
 
+.. note:: ``oauth2client`` was recently deprecated in favor of this library. For more details on the deprecation, see :doc:`oauth2client-deprecation`.
+
 Installing
 ----------
 
