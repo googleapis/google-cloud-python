@@ -95,6 +95,10 @@ class _GAXBaseAPI(object):
         from grpc import StatusCode
         return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
 
+    def _make_grpc_already_exists(self):
+        from grpc import StatusCode
+        return self._make_grpc_error(StatusCode.ALREADY_EXISTS)
+
     def _make_grpc_deadline_exceeded(self):
         from grpc import StatusCode
         return self._make_grpc_error(StatusCode.DEADLINE_EXCEEDED)
