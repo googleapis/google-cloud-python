@@ -14,7 +14,10 @@
 
 """Basic client for Google Cloud Speech API."""
 
+from __future__ import absolute_import
+
 import os
+import warnings
 
 from google.cloud.client import Client as BaseClient
 from google.cloud.environment_vars import DISABLE_GRPC
@@ -60,6 +63,14 @@ class Client(BaseClient):
     _speech_api = None
 
     def __init__(self, credentials=None, _http=None, _use_grpc=None):
+        warnings.warn(
+            'This client class and objects that derive from it have been '
+            'deprecated. Use `google.cloud.speech.SpeechClient` '
+            '(provided by this package) instead. This client will be removed '
+            'in a future release.',
+            DeprecationWarning,
+        )
+
         super(Client, self).__init__(credentials=credentials, _http=_http)
         # Save on the actual client class whether we use GAX or not.
         if _use_grpc is None:

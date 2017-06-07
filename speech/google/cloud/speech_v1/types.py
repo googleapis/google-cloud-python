@@ -13,22 +13,18 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+import sys
 
-from google.cloud.gapic.speech.v1 import speech_client
-from google.cloud.gapic.speech.v1 import enums
+from google.cloud.proto.speech.v1 import cloud_speech_pb2
 
-from google.cloud.speech.helpers import SpeechHelpers
-from google.cloud.speech_v1 import types
-
-
-class SpeechClient(SpeechHelpers, speech_client.SpeechClient):
-    __doc__ = speech_client.SpeechClient.__doc__
-    enums = enums
-    types = types
+from google.gax.utils.messages import get_messages
 
 
-__all__ = (
-    'enums',
-    'SpeechClient',
-    'types',
-)
+names = []
+for name, message in get_messages(cloud_speech_pb2).items():
+    message.__module__ = 'google.cloud.speech_v1.types'
+    setattr(sys.modules[__name__], name, message)
+    names.append(name)
+
+
+__all__ = tuple(sorted(names))
