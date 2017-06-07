@@ -600,7 +600,7 @@ class Bucket(_PropertyMixin):
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :type entries: list of dictionaries
-        :param entries: A sequence of mappings describing each CORS policy.
+        :param entries: A sequence of mappings describing each lifecycle rule.
         """
         self._patch_property('lifecycle', {'rule': rules})
 
