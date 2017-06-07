@@ -1,0 +1,7 @@
+.DS_Store
+*.egg
+/.env/
+/.vscode/
+*.pyc
+.cache/
+*.iml
