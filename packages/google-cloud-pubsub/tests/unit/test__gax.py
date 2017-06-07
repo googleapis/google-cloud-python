@@ -141,10 +141,24 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertIsNone(options)
 
+    def test_topic_create_failed_precondition(self):
+        from google.cloud.exceptions import Conflict
+
+        gax_api = _GAXPublisherAPI(_create_topic_failed_precondition=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(Conflict):
+            api.topic_create(self.TOPIC_PATH)
+
+        topic_path, options = gax_api._create_topic_called_with
+        self.assertEqual(topic_path, self.TOPIC_PATH)
+        self.assertIsNone(options)
+
     def test_topic_create_already_exists(self):
         from google.cloud.exceptions import Conflict
 
-        gax_api = _GAXPublisherAPI(_create_topic_conflict=True)
+        gax_api = _GAXPublisherAPI(_create_topic_already_exists=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
 
@@ -597,11 +611,35 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
                          expected_message_retention_duration.total_seconds())
         self.assertIsNone(options)
 
+    def test_subscription_create_failed_precondition(self):
+        from google.cloud.exceptions import Conflict
+
+        DEADLINE = 600
+        gax_api = _GAXSubscriberAPI(
+            _create_subscription_failed_precondition=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(Conflict):
+            api.subscription_create(
+                self.SUB_PATH, self.TOPIC_PATH, DEADLINE, self.PUSH_ENDPOINT)
+
+        (name, topic, push_config, ack_deadline, retain_acked_messages,
+         message_retention_duration, options) = (
+            gax_api._create_subscription_called_with)
+        self.assertEqual(name, self.SUB_PATH)
+        self.assertEqual(topic, self.TOPIC_PATH)
+        self.assertEqual(push_config.push_endpoint, self.PUSH_ENDPOINT)
+        self.assertEqual(ack_deadline, DEADLINE)
+        self.assertIsNone(retain_acked_messages)
+        self.assertIsNone(message_retention_duration)
+        self.assertIsNone(options)
+
     def test_subscription_create_already_exists(self):
         from google.cloud.exceptions import Conflict
 
         DEADLINE = 600
-        gax_api = _GAXSubscriberAPI(_create_subscription_conflict=True)
+        gax_api = _GAXSubscriberAPI(_create_subscription_already_exists=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
 
@@ -1121,10 +1159,26 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(subscription, self.SUB_PATH)
         self.assertIsNone(options)
 
+    def test_snapshot_create_failed_precondition(self):
+        from google.cloud.exceptions import Conflict
+
+        gax_api = _GAXSubscriberAPI(_create_snapshot_failed_precondition=True)
+        client = _Client(self.PROJECT)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(Conflict):
+            api.snapshot_create(self.SNAPSHOT_PATH, self.SUB_PATH)
+
+        name, subscription, options = (
+            gax_api._create_snapshot_called_with)
+        self.assertEqual(name, self.SNAPSHOT_PATH)
+        self.assertEqual(subscription, self.SUB_PATH)
+        self.assertIsNone(options)
+
     def test_snapshot_create_already_exists(self):
         from google.cloud.exceptions import Conflict
 
-        gax_api = _GAXSubscriberAPI(_create_snapshot_conflict=True)
+        gax_api = _GAXSubscriberAPI(_create_snapshot_already_exists=True)
         client = _Client(self.PROJECT)
         api = self._make_one(gax_api, client)
 
@@ -1371,7 +1425,8 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
 class _GAXPublisherAPI(_GAXBaseAPI):
 
-    _create_topic_conflict = False
+    _create_topic_failed_precondition = False
+    _create_topic_already_exists = False
 
     def list_topics(self, name, page_size, options):
         self._list_topics_called_with = name, page_size, options
@@ -1383,8 +1438,10 @@ class _GAXPublisherAPI(_GAXBaseAPI):
         self._create_topic_called_with = name, options
         if self._random_gax_error:
             raise GaxError('error')
-        if self._create_topic_conflict:
+        if self._create_topic_failed_precondition:
             raise GaxError('conflict', self._make_grpc_failed_precondition())
+        if self._create_topic_already_exists:
+            raise GaxError('conflict', self._make_grpc_already_exists())
         return self._create_topic_response
 
     def get_topic(self, name, options=None):
@@ -1432,8 +1489,10 @@ class _GAXPublisherAPI(_GAXBaseAPI):
 
 class _GAXSubscriberAPI(_GAXBaseAPI):
 
-    _create_snapshot_conflict = False
-    _create_subscription_conflict = False
+    _create_snapshot_already_exists = False
+    _create_snapshot_failed_precondition = False
+    _create_subscription_already_exists = False
+    _create_subscription_failed_precondition = False
     _modify_push_config_ok = False
     _acknowledge_ok = False
     _modify_ack_deadline_ok = False
@@ -1456,8 +1515,10 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
             retain_acked_messages, message_retention_duration, options)
         if self._random_gax_error:
             raise GaxError('error')
-        if self._create_subscription_conflict:
+        if self._create_subscription_failed_precondition:
             raise GaxError('conflict', self._make_grpc_failed_precondition())
+        if self._create_subscription_already_exists:
+            raise GaxError('conflict', self._make_grpc_already_exists())
         return self._create_subscription_response
 
     def get_subscription(self, name, options=None):
@@ -1533,7 +1594,9 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
         self._create_snapshot_called_with = (name, subscription, options)
         if self._random_gax_error:
             raise GaxError('error')
-        if self._create_snapshot_conflict:
+        if self._create_snapshot_already_exists:
+            raise GaxError('conflict', self._make_grpc_already_exists())
+        if self._create_snapshot_failed_precondition:
             raise GaxError('conflict', self._make_grpc_failed_precondition())
         if self._snapshot_create_subscription_miss:
             raise GaxError('miss', self._make_grpc_not_found())
