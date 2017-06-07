@@ -26,7 +26,6 @@ with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.24.0, < 0.25dev',
-    'gapic-google-cloud-vision-v1 >= 0.90.3, < 0.91dev',
 ]
 EXTRAS_REQUIRE = {
     ':python_version<"3.4"': ['enum34'],
