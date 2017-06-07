@@ -296,9 +296,9 @@ If ``interim_results`` is set to :data:`True`, interim results
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
 .. _Speech Asynchronous Recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize
 
-*************
+
 API Reference
-*************
+-------------
 
 .. toctree::
   :maxdepth: 2
