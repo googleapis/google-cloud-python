@@ -42,6 +42,9 @@ from google.cloud.pubsub.snapshot import Snapshot
 from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
 
+_CONFLICT_ERROR_CODES = (
+    StatusCode.FAILED_PRECONDITION, StatusCode.ALREADY_EXISTS)
+
 
 class _PublisherAPI(object):
     """Helper mapping publisher-related APIs.
@@ -105,7 +108,7 @@ class _PublisherAPI(object):
         try:
             topic_pb = self._gax_api.create_topic(topic_path)
         except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+            if exc_to_code(exc.cause) in _CONFLICT_ERROR_CODES:
                 raise Conflict(topic_path)
             raise
         return {'name': topic_pb.name}
@@ -337,7 +340,7 @@ class _SubscriberAPI(object):
                 retain_acked_messages=retain_acked_messages,
                 message_retention_duration=message_retention_duration)
         except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+            if exc_to_code(exc.cause) in _CONFLICT_ERROR_CODES:
                 raise Conflict(topic_path)
             raise
         return MessageToDict(sub_pb)
@@ -584,7 +587,7 @@ class _SubscriberAPI(object):
             snapshot_pb = self._gax_api.create_snapshot(
                 snapshot_path, subscription_path)
         except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+            if exc_to_code(exc.cause) in _CONFLICT_ERROR_CODES:
                 raise Conflict(snapshot_path)
             elif exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
