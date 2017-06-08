@@ -223,6 +223,14 @@ class Blob(_PropertyMixin):
         return self.bucket.client
 
     @property
+    def user_project(self):
+        """Project ID used for API requests made via this blob.
+
+        Derived from bucket's value.
+        """
+        return self.bucket.user_project
+
+    @property
     def public_url(self):
         """The public URL for this blob's object.
 
