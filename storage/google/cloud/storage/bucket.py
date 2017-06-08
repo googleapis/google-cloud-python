@@ -204,6 +204,9 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         """
+        if self.user_project is not None:
+            raise ValueError("Cannot create bucket with 'user_project' set.")
+
         client = self._require_client(client)
         query_params = {'project': client.project}
         properties = {key: self._properties[key] for key in self._changes}

@@ -38,11 +38,16 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.bucket import Bucket
         return Bucket
 
-    def _make_one(self, client=None, name=None, properties=None):
+    def _make_one(
+            self, client=None, name=None, properties=None, user_project=None):
         if client is None:
             connection = _Connection()
             client = _Client(connection)
-        bucket = self._get_target_class()(client, name=name)
+        if user_project is None:
+            bucket = self._get_target_class()(client, name=name)
+        else:
+            bucket = self._get_target_class()(
+                client, name=name, user_project=user_project)
         bucket._properties = properties or {}
         return bucket
 
@@ -63,8 +68,7 @@ class Test_Bucket(unittest.TestCase):
         USER_PROJECT = 'user-project-123'
         connection = _Connection()
         client = _Client(connection)
-        klass = self._get_target_class()
-        bucket = klass(client, name=NAME, user_project=USER_PROJECT)
+        bucket = self._make_one(client, name=NAME, user_project=USER_PROJECT)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, {})
         self.assertEqual(bucket.user_project, USER_PROJECT)
@@ -163,11 +167,22 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
+    def test_create_w_user_project(self):
+        PROJECT = 'PROJECT'
+        BUCKET_NAME = 'bucket-name'
+        USER_PROJECT = 'user-project-123'
+        connection = _Connection()
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client, BUCKET_NAME, user_project=USER_PROJECT)
+
+        with self.assertRaises(ValueError):
+            bucket.create()
+
     def test_create_hit(self):
+        PROJECT = 'PROJECT'
         BUCKET_NAME = 'bucket-name'
         DATA = {'name': BUCKET_NAME}
         connection = _Connection(DATA)
-        PROJECT = 'PROJECT'
         client = _Client(connection, project=PROJECT)
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.create()
