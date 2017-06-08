@@ -67,6 +67,11 @@ class _PropertyMixin(object):
         """Abstract getter for the object client."""
         raise NotImplementedError
 
+    @property
+    def user_project(self):
+        """Abstract getter for the object user_project."""
+        raise NotImplementedError
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 
