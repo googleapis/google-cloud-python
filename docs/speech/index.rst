@@ -8,8 +8,9 @@ base.
 
 .. _Google Speech: https://cloud.google.com/speech/docs/getting-started
 
-Client
-------
+
+Authentication and Configuration
+--------------------------------
 
 :class:`~google.cloud.speech_v1.SpeechClient` objects provide a
 means to configure your application. Each instance holds
