@@ -40,11 +40,18 @@ class Test_PropertyMixin(unittest.TestCase):
 
     def test_path_is_abstract(self):
         mixin = self._make_one()
-        self.assertRaises(NotImplementedError, lambda: mixin.path)
+        with self.assertRaises(NotImplementedError):
+            mixin.path
 
     def test_client_is_abstract(self):
         mixin = self._make_one()
-        self.assertRaises(NotImplementedError, lambda: mixin.client)
+        with self.assertRaises(NotImplementedError):
+            mixin.client
+
+    def test_user_project_is_abstract(self):
+        mixin = self._make_one()
+        with self.assertRaises(NotImplementedError):
+            mixin.user_project
 
     def test_reload(self):
         connection = _Connection({'foo': 'Foo'})
