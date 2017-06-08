@@ -210,7 +210,7 @@ until the client closes the output stream or until the maximum time limit has
 been reached.
 
 If you only want to recognize a single utterance you can set
- ``single_utterance`` to :data:`True` and only one result will be returned.
+``single_utterance`` to :data:`True` and only one result will be returned.
 
 See: `Single Utterance`_
 
