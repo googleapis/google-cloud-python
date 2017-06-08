@@ -99,6 +99,16 @@ class TestStorageBuckets(unittest.TestCase):
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
+    @unittest.skipIf(True, "requesterPays needs whitelisting?")
+    def test_create_bucket_with_requester_pays(self):
+        new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
+        bucket = Config.CLIENT.bucket(new_bucket_name)
+        bucket.requester_pays = True
+        bucket.create()
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(bucket.name, new_bucket_name)
+        self.assertTrue(bucket.requester_pays)
+
     def test_list_buckets(self):
         buckets_to_create = [
             'new' + unique_resource_id(),
