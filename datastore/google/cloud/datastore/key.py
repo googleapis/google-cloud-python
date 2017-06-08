@@ -301,24 +301,30 @@ class Key(object):
     def to_legacy_urlsafe(self):
         """Convert to a base64 encode urlsafe string for App Engine.
 
-        This is intended to work with the "legacy" representation of a datastore
-        "Key" used within Google App Engine (a so-called "Reference"). This is
-        intended as a drop in for the value returned when using
-        ``ndb.Key(...).urlsafe()``.
+        This is intended to work with the "legacy" representation of a
+        datastore "Key" used within Google App Engine (a so-called
+        "Reference"). This is intended as a drop in for the value returned when
+        using ``ndb.Key(...).urlsafe()``.
 
         :rtype: bytes
         :returns: ASCII bytes contain the key encoded as URL-safe base64.
         """
-        pass
+        reference = _onestore_v3_pb2.Reference(
+            app=self.project,
+            path=_to_legacy_path(self._path),  # Avoid the copy.
+            name_space=self.namespace,
+        )
+        raw_bytes = reference.SerializeToString()
+        return _urlsafe_b64encode(raw_bytes)
 
     @classmethod
     def from_legacy_urlsafe(cls, urlsafe):
         """Convert urlsafe string to :class:`~google.cloud.datastore.key.Key`.
 
-        This is intended to work with the "legacy" representation of a datastore
-        "Key" used within Google App Engine (a so-called "Reference"). This
-        assumes that ``urlsafe`` was created within an App Engine app via
-        something like ``ndb.Key(...).urlsafe()``.
+        This is intended to work with the "legacy" representation of a
+        datastore "Key" used within Google App Engine (a so-called
+        "Reference"). This assumes that ``urlsafe`` was created within an App
+        Engine app via something like ``ndb.Key(...).urlsafe()``.
 
         :type urlsafe: bytes or unicode
         :param urlsafe: The base64 encoded (ASCII) string corresponding to a
@@ -635,3 +641,33 @@ def _get_flat_path(path_pb):
         _add_id_or_name(result, element, index == last_index)
 
     return tuple(result)
+
+
+def _to_legacy_path(dict_path):
+    """Convert a tuple of ints and strings in a legacy "Path".
+
+    .. note:
+
+        This assumes, but does not verify, that each entry in
+        ``dict_path`` is valid (i.e. doesn't have more than one
+        key out of "name" / "id").
+
+    :type dict_path: lsit
+    :param dict_path: The "structured" path for a key, i.e. it
+                      is a list of dictionaries, each of which has
+                      "kind" and one of "name" / "id" as keys.
+
+    :rtype: :class:`._onestore_v3_pb2.Path`
+    :returns: The legacy path corresponding to ``dict_path``.
+    """
+    elements = []
+    for part in dict_path:
+        element_kwargs = {'type': part['kind']}
+        if 'id' in part:
+            element_kwargs['id'] = part['id']
+        elif 'name' in part:
+            element_kwargs['name'] = part['name']
+        element = _onestore_v3_pb2.Path.Element(**element_kwargs)
+        elements.append(element)
+
+    return _onestore_v3_pb2.Path(element=elements)

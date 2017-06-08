@@ -18,6 +18,20 @@ import unittest
 class TestKey(unittest.TestCase):
 
     _DEFAULT_PROJECT = 'PROJECT'
+    # NOTE: This comes directly from a running (in the dev appserver)
+    #       App Engine app. Created via:
+    #
+    #           from google.appengine.ext import ndb
+    #           key = ndb.Key(
+    #               'Parent', 59, 'Child', 'Feather',
+    #               namespace='space', app='s~sample-app')
+    #           urlsafe = key.urlsafe()
+    _URLSAFE_EXAMPLE = (
+        b'agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZ'
+        b'WF0aGVyDKIBBXNwYWNl')
+    _URLSAFE_APP = 's~sample-app'
+    _URLSAFE_NAMESPACE = 'space'
+    _URLSAFE_FLAT_PATH = ('Parent', 59, 'Child', 'Feather')
 
     @staticmethod
     def _get_target_class():
@@ -372,23 +386,22 @@ class TestKey(unittest.TestCase):
         # Unset values are False-y.
         self.assertEqual(pb.path[0].kind, '')
 
+    def test_to_legacy_urlsafe(self):
+        key = self._make_one(
+            *self._URLSAFE_FLAT_PATH,
+            project=self._URLSAFE_APP,
+            namespace=self._URLSAFE_NAMESPACE)
+        # NOTE: ``key.project`` is somewhat "invalid" but that is OK.
+        urlsafe = key.to_legacy_urlsafe()
+        self.assertEqual(urlsafe, self._URLSAFE_EXAMPLE)
+
     def test_from_legacy_urlsafe(self):
         klass = self._get_target_class()
-        # NOTE: This comes directly from a running (in the dev appserver)
-        #       App Engine app. Created via:
-        #
-        #           from google.appengine.ext import ndb
-        #           key = ndb.Key(
-        #               'Parent', 59, 'Child', 'Feather',
-        #               namespace='space', app='s~sample-app')
-        #           urlsafe = key.urlsafe()
-        urlsafe = (
-            b'agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZ'
-            b'WF0aGVyDKIBBXNwYWNl')
-        key = klass.from_legacy_urlsafe(urlsafe)
-        self.assertEqual(key.project, 'sample-app')
-        self.assertEqual(key.namespace, 'space')
-        self.assertEqual(key.flat_path, ('Parent', 59, 'Child', 'Feather'))
+        key = klass.from_legacy_urlsafe(self._URLSAFE_EXAMPLE)
+
+        self.assertEqual('s~' + key.project, self._URLSAFE_APP)
+        self.assertEqual(key.namespace, self._URLSAFE_NAMESPACE)
+        self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH)
         # Also make sure we didn't accidentally set the parent.
         self.assertIsNone(key._parent)
         self.assertIsNotNone(key.parent)
