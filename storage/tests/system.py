@@ -30,6 +30,8 @@ from test_utils.system import unique_resource_id
 
 HTTP = httplib2.Http()
 
+REQUESTER_PAYS_ENABLED = False  # query from environment?
+
 
 def _bad_copy(bad_request):
     """Predicate: pass only exceptions for a failed copyTo."""
@@ -99,7 +101,7 @@ class TestStorageBuckets(unittest.TestCase):
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
-    @unittest.skipIf(True, "requesterPays needs whitelisting?")
+    @unittest.skipUnless(REQUESTER_PAYS_ENABLED, "requesterPays not enabled")
     def test_create_bucket_with_requester_pays(self):
         new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
         created = Config.CLIENT.create_bucket(
