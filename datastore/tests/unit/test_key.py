@@ -468,19 +468,243 @@ class TestKey(unittest.TestCase):
         self.assertIs(parent, new_parent)
 
 
-class Test__urlsafe_b64decode(unittest.TestCase):
+class Test__clean_app(unittest.TestCase):
+
+    PROJECT = 'my-prahjekt'
 
     @staticmethod
-    def _call_fut(urlsafe):
-        from google.cloud.datastore.key import _urlsafe_b64decode
+    def _call_fut(app_str):
+        from google.cloud.datastore.key import _clean_app
 
-        return _urlsafe_b64decode(urlsafe)
+        return _clean_app(app_str)
+
+    def test_already_clean(self):
+        app_str = self.PROJECT
+        self.assertEqual(self._call_fut(app_str), self.PROJECT)
+
+    def test_standard(self):
+        app_str = 's~' + self.PROJECT
+        self.assertEqual(self._call_fut(app_str), self.PROJECT)
+
+    def test_european(self):
+        app_str = 'e~' + self.PROJECT
+        self.assertEqual(self._call_fut(app_str), self.PROJECT)
+
+    def test_dev_server(self):
+        app_str = 'dev~' + self.PROJECT
+        self.assertEqual(self._call_fut(app_str), self.PROJECT)
 
 
-class Test__urlsafe_b64encode(unittest.TestCase):
+class Test__get_empty(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(value):
-        from google.cloud.datastore.key import _urlsafe_b64encode
+    def _call_fut(value, empty_value):
+        from google.cloud.datastore.key import _get_empty
 
-        return _urlsafe_b64encode(value)
+        return _get_empty(value, empty_value)
+
+    def test_unset(self):
+        for empty_value in (u'', 0, 0.0, []):
+            ret_val = self._call_fut(empty_value, empty_value)
+            self.assertIsNone(ret_val)
+
+    def test_actually_set(self):
+        value_pairs = (
+            (u'hello', u''),
+            (10, 0),
+            (3.14, 0.0),
+            (['stuff', 'here'], []),
+        )
+        for value, empty_value in value_pairs:
+            ret_val = self._call_fut(value, empty_value)
+            self.assertIs(ret_val, value)
+
+
+class Test__check_database_id(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(database_id):
+        from google.cloud.datastore.key import _check_database_id
+
+        return _check_database_id(database_id)
+
+    def test_empty_value(self):
+        ret_val = self._call_fut(u'')
+        # Really we are just happy there was no exception.
+        self.assertIsNone(ret_val)
+
+    def test_failure(self):
+        with self.assertRaises(ValueError):
+            self._call_fut(u'some-database-id')
+
+
+class Test__add_id_or_name(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(flat_path, element_pb, empty_allowed):
+        from google.cloud.datastore.key import _add_id_or_name
+
+        return _add_id_or_name(flat_path, element_pb, empty_allowed)
+
+    def test_add_id(self):
+        flat_path = []
+        id_ = 123
+        element_pb = _make_element_pb(id=id_)
+
+        ret_val = self._call_fut(flat_path, element_pb, False)
+        self.assertIsNone(ret_val)
+        self.assertEqual(flat_path, [id_])
+        ret_val = self._call_fut(flat_path, element_pb, True)
+        self.assertIsNone(ret_val)
+        self.assertEqual(flat_path, [id_, id_])
+
+    def test_add_name(self):
+        flat_path = []
+        name = 'moon-shadow'
+        element_pb = _make_element_pb(name=name)
+
+        ret_val = self._call_fut(flat_path, element_pb, False)
+        self.assertIsNone(ret_val)
+        self.assertEqual(flat_path, [name])
+        ret_val = self._call_fut(flat_path, element_pb, True)
+        self.assertIsNone(ret_val)
+        self.assertEqual(flat_path, [name, name])
+
+    def test_both_present(self):
+        element_pb = _make_element_pb(id=17, name='seventeen')
+        flat_path = []
+        with self.assertRaises(ValueError):
+            self._call_fut(flat_path, element_pb, False)
+        with self.assertRaises(ValueError):
+            self._call_fut(flat_path, element_pb, True)
+
+        self.assertEqual(flat_path, [])
+
+    def test_both_empty_failure(self):
+        element_pb = _make_element_pb()
+        flat_path = []
+        with self.assertRaises(ValueError):
+            self._call_fut(flat_path, element_pb, False)
+
+        self.assertEqual(flat_path, [])
+
+    def test_both_empty_allowed(self):
+        element_pb = _make_element_pb()
+        flat_path = []
+        ret_val = self._call_fut(flat_path, element_pb, True)
+        self.assertIsNone(ret_val)
+        self.assertEqual(flat_path, [])
+
+
+class Test__get_flat_path(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(path_pb):
+        from google.cloud.datastore.key import _get_flat_path
+
+        return _get_flat_path(path_pb)
+
+    def test_one_pair(self):
+        kind = 'Widget'
+        name = 'Scooter'
+        element_pb = _make_element_pb(type=kind, name=name)
+        path_pb = _make_path_pb(element_pb)
+        flat_path = self._call_fut(path_pb)
+        self.assertEqual(flat_path, (kind, name))
+
+    def test_two_pairs(self):
+        kind1 = 'parent'
+        id1 = 59
+        element_pb1 = _make_element_pb(type=kind1, id=id1)
+
+        kind2 = 'child'
+        name2 = 'naem'
+        element_pb2 = _make_element_pb(type=kind2, name=name2)
+
+        path_pb = _make_path_pb(element_pb1, element_pb2)
+        flat_path = self._call_fut(path_pb)
+        self.assertEqual(flat_path, (kind1, id1, kind2, name2))
+
+    def test_partial_key(self):
+        kind1 = 'grandparent'
+        name1 = 'cats'
+        element_pb1 = _make_element_pb(type=kind1, name=name1)
+
+        kind2 = 'parent'
+        id2 = 1337
+        element_pb2 = _make_element_pb(type=kind2, id=id2)
+
+        kind3 = 'child'
+        element_pb3 = _make_element_pb(type=kind3)
+
+        path_pb = _make_path_pb(element_pb1, element_pb2, element_pb3)
+        flat_path = self._call_fut(path_pb)
+        self.assertEqual(flat_path, (kind1, name1, kind2, id2, kind3))
+
+
+class Test__to_legacy_path(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(dict_path):
+        from google.cloud.datastore.key import _to_legacy_path
+
+        return _to_legacy_path(dict_path)
+
+    def test_one_pair(self):
+        kind = 'Widget'
+        name = 'Scooter'
+        dict_path = [{'kind': kind, 'name': name}]
+        path_pb = self._call_fut(dict_path)
+
+        element_pb = _make_element_pb(type=kind, name=name)
+        expected_pb = _make_path_pb(element_pb)
+        self.assertEqual(path_pb, expected_pb)
+
+    def test_two_pairs(self):
+        kind1 = 'parent'
+        id1 = 59
+
+        kind2 = 'child'
+        name2 = 'naem'
+
+        dict_path = [{'kind': kind1, 'id': id1}, {'kind': kind2, 'name': name2}]
+        path_pb = self._call_fut(dict_path)
+
+        element_pb1 = _make_element_pb(type=kind1, id=id1)
+        element_pb2 = _make_element_pb(type=kind2, name=name2)
+        expected_pb = _make_path_pb(element_pb1, element_pb2)
+        self.assertEqual(path_pb, expected_pb)
+
+    def test_partial_key(self):
+        kind1 = 'grandparent'
+        name1 = 'cats'
+
+        kind2 = 'parent'
+        id2 = 1337
+
+        kind3 = 'child'
+
+        dict_path = [
+            {'kind': kind1, 'name': name1},
+            {'kind': kind2, 'id': id2},
+            {'kind': kind3},
+        ]
+        path_pb = self._call_fut(dict_path)
+
+        element_pb1 = _make_element_pb(type=kind1, name=name1)
+        element_pb2 = _make_element_pb(type=kind2, id=id2)
+        element_pb3 = _make_element_pb(type=kind3)
+        expected_pb = _make_path_pb(element_pb1, element_pb2, element_pb3)
+        self.assertEqual(path_pb, expected_pb)
+
+
+def _make_element_pb(**kwargs):
+    from google.cloud.datastore import _onestore_v3_pb2
+
+    return _onestore_v3_pb2.Path.Element(**kwargs)
+
+
+def _make_path_pb(*element_pbs):
+    from google.cloud.datastore import _onestore_v3_pb2
+
+    return _onestore_v3_pb2.Path(element=element_pbs)
