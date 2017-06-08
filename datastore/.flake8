@@ -2,7 +2,7 @@
 exclude =
   # Datastore includes generated code in the manual layer;
   # do not lint this.
-  google/cloud/datastore/_onestore_v3_pb2.py,
+  google/cloud/datastore/_app_engine_key_pb2.py,
 
   # Standard linting exemptions.
   __pycache__,

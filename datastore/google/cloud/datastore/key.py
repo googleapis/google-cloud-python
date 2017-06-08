@@ -21,7 +21,7 @@ import six
 from google.cloud.proto.datastore.v1 import entity_pb2 as _entity_pb2
 
 from google.cloud._helpers import _to_bytes
-from google.cloud.datastore import _onestore_v3_pb2
+from google.cloud.datastore import _app_engine_key_pb2
 
 
 _DATABASE_ID_TEMPLATE = (
@@ -309,7 +309,7 @@ class Key(object):
         :rtype: bytes
         :returns: A bytestring containing the key encoded as URL-safe base64.
         """
-        reference = _onestore_v3_pb2.Reference(
+        reference = _app_engine_key_pb2.Reference(
             app=self.project,
             path=_to_legacy_path(self._path),  # Avoid the copy.
             name_space=self.namespace,
@@ -336,7 +336,7 @@ class Key(object):
         urlsafe = _to_bytes(urlsafe, encoding='ascii')
         raw_bytes = base64.urlsafe_b64decode(urlsafe)
 
-        reference = _onestore_v3_pb2.Reference()
+        reference = _app_engine_key_pb2.Reference()
         reference.ParseFromString(raw_bytes)
 
         project = _clean_app(reference.app)
@@ -541,7 +541,7 @@ def _add_id_or_name(flat_path, element_pb, empty_allowed):
     :type flat_path: list
     :param flat_path: List of accumulated path parts.
 
-    :type element_pb: :class:`._onestore_v3_pb2.Path.Element`
+    :type element_pb: :class:`._app_engine_key_pb2.Path.Element`
     :param element_pb: The element containing ID or name.
 
     :type empty_allowed: bool
@@ -585,7 +585,7 @@ def _get_flat_path(path_pb):
 
     would convert to ``('parent', 59, 'child', 'naem')``.
 
-    :type path_pb: :class:`._onestore_v3_pb2.Path`
+    :type path_pb: :class:`._app_engine_key_pb2.Path`
     :param path_pb: Legacy protobuf "Path" object (from a "Reference").
 
     :rtype: tuple
@@ -616,7 +616,7 @@ def _to_legacy_path(dict_path):
                       is a list of dictionaries, each of which has
                       "kind" and one of "name" / "id" as keys.
 
-    :rtype: :class:`._onestore_v3_pb2.Path`
+    :rtype: :class:`._app_engine_key_pb2.Path`
     :returns: The legacy path corresponding to ``dict_path``.
     """
     elements = []
@@ -626,7 +626,7 @@ def _to_legacy_path(dict_path):
             element_kwargs['id'] = part['id']
         elif 'name' in part:
             element_kwargs['name'] = part['name']
-        element = _onestore_v3_pb2.Path.Element(**element_kwargs)
+        element = _app_engine_key_pb2.Path.Element(**element_kwargs)
         elements.append(element)
 
-    return _onestore_v3_pb2.Path(element=elements)
+    return _app_engine_key_pb2.Path(element=elements)

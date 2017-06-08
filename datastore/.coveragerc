@@ -3,7 +3,7 @@ branch = True
 
 [report]
 omit =
-    _onestore_v3_pb2.py
+    _app_engine_key_pb2.py
 fail_under = 100
 show_missing = True
 exclude_lines =

@@ -699,12 +699,12 @@ class Test__to_legacy_path(unittest.TestCase):
 
 
 def _make_element_pb(**kwargs):
-    from google.cloud.datastore import _onestore_v3_pb2
+    from google.cloud.datastore import _app_engine_key_pb2
 
-    return _onestore_v3_pb2.Path.Element(**kwargs)
+    return _app_engine_key_pb2.Path.Element(**kwargs)
 
 
 def _make_path_pb(*element_pbs):
-    from google.cloud.datastore import _onestore_v3_pb2
+    from google.cloud.datastore import _app_engine_key_pb2
 
-    return _onestore_v3_pb2.Path(element=element_pbs)
+    return _app_engine_key_pb2.Path(element=element_pbs)
