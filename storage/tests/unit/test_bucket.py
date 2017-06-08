@@ -33,13 +33,16 @@ def _create_signing_credentials():
 
 class Test_Bucket(unittest.TestCase):
 
-    def _make_one(self, client=None, name=None, properties=None):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.bucket import Bucket
+        return Bucket
 
+    def _make_one(self, client=None, name=None, properties=None):
         if client is None:
             connection = _Connection()
             client = _Client(connection)
-        bucket = Bucket(client, name=name)
+        bucket = self._get_target_class()(client, name=name)
         bucket._properties = properties or {}
         return bucket
 
@@ -49,6 +52,21 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(name=NAME, properties=properties)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
+        self.assertFalse(bucket._acl.loaded)
+        self.assertIs(bucket._acl.bucket, bucket)
+        self.assertFalse(bucket._default_object_acl.loaded)
+        self.assertIs(bucket._default_object_acl.bucket, bucket)
+
+    def test_ctor_w_user_project(self):
+        NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        connection = _Connection()
+        client = _Client(connection)
+        klass = self._get_target_class()
+        bucket = klass(client, name=NAME, user_project=USER_PROJECT)
+        self.assertEqual(bucket.name, NAME)
+        self.assertEqual(bucket._properties, {})
+        self.assertEqual(bucket.user_project, USER_PROJECT)
         self.assertFalse(bucket._acl.loaded)
         self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
