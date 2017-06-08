@@ -14,10 +14,27 @@
 
 """Create / interact with Google Cloud Datastore keys."""
 
+import base64
 import copy
 import six
 
 from google.cloud.proto.datastore.v1 import entity_pb2 as _entity_pb2
+
+from google.cloud._helpers import _to_bytes
+from google.cloud.datastore import _onestore_v3_pb2
+
+
+_DATABASE_ID_TEMPLATE = (
+    'Received non-empty database ID: {!r}.\n'
+    'urlsafe strings are not expected to encode a Reference that '
+    'contains a database ID.')
+_BAD_ELEMENT_TEMPLATE = (
+    'At most one of ID and name can be set on an element. Received '
+    'id = {!r} and name = {!r}.')
+_EMPTY_ELEMENT = (
+    'Exactly one of ID and name must be set on an element. '
+    'Encountered an element with neither set that was not the last '
+    'element of a path.')
 
 
 class Key(object):
@@ -79,7 +96,7 @@ class Key(object):
 
     * namespace (string): A namespace identifier for the key.
     * project (string): The project associated with the key.
-    * parent (:class:`google.cloud.datastore.key.Key`): The parent of the key.
+    * parent (:class:`~google.cloud.datastore.key.Key`): The parent of the key.
 
     The project argument is required unless it has been set implicitly.
     """
@@ -281,6 +298,47 @@ class Key(object):
 
         return key
 
+    def to_legacy_urlsafe(self):
+        """Convert to a base64 encode urlsafe string for App Engine.
+
+        This is intended to work with the "legacy" representation of a datastore
+        "Key" used within Google App Engine (a so-called "Reference"). This is
+        intended as a drop in for the value returned when using
+        ``ndb.Key(...).urlsafe()``.
+
+        :rtype: bytes
+        :returns: ASCII bytes contain the key encoded as URL-safe base64.
+        """
+        pass
+
+    @classmethod
+    def from_legacy_urlsafe(cls, urlsafe):
+        """Convert urlsafe string to :class:`~google.cloud.datastore.key.Key`.
+
+        This is intended to work with the "legacy" representation of a datastore
+        "Key" used within Google App Engine (a so-called "Reference"). This
+        assumes that ``urlsafe`` was created within an App Engine app via
+        something like ``ndb.Key(...).urlsafe()``.
+
+        :type urlsafe: bytes or unicode
+        :param urlsafe: The base64 encoded (ASCII) string corresponding to a
+                        datastore "Key" / "Reference".
+
+        :rtype: :class:`~google.cloud.datastore.key.Key`.
+        :returns: The key corresponding to ``urlsafe``.
+        """
+        urlsafe = _to_bytes(urlsafe, encoding='ascii')
+        raw_bytes = _urlsafe_b64decode(urlsafe)
+
+        reference = _onestore_v3_pb2.Reference()
+        reference.ParseFromString(raw_bytes)
+
+        project = _clean_app(reference.app)
+        namespace = _get_empty(reference.name_space, u'')
+        _check_database_id(reference.database_id)
+        flat_path = _get_flat_path(reference.path)
+        return cls(*flat_path, project=project, namespace=namespace)
+
     @property
     def is_partial(self):
         """Boolean indicating if the key has an ID (or name).
@@ -427,3 +485,153 @@ def _validate_project(project, parent):
             raise ValueError("A Key must have a project set.")
 
     return project
+
+
+def _urlsafe_b64decode(urlsafe):
+    """Replacement for base64.urlsafe_b64decode.
+
+    Borrowed from ``ndb.key._DecodeUrlSafe``, noting their comment:
+
+        This is 3-4x faster than urlsafe_b64decode()
+
+    :type urlsafe: bytes
+    :param urlsafe: The encoded ASCII string to be decoded
+
+    :rtype: bytes
+    :returns: The value that was decoded.
+    """
+    # This is 3-4x faster than urlsafe_b64decode()
+    return base64.b64decode(
+        urlsafe.replace(b'-', b'+').replace(b'_', b'/'))
+
+
+def _urlsafe_b64encode(value):
+    """Replacement for ``base64.urlsafe_b64encode``.
+
+    Borrowed from ``ndb.key.Key.urlsafe``, noting their comment:
+
+        This is 3-4x faster than urlsafe_b64decode()
+
+    (They meant "encode".)
+
+    :type value: bytes
+    :param value: The value to be encoded.
+
+    :rtype: bytes
+    :returns: The encoded ASCII string.
+    """
+    urlsafe = base64.b64encode(value)
+    return urlsafe.rstrip(b'=').replace(b'+', b'-').replace(b'/', b'_')
+
+
+def _clean_app(app_str):
+    """Clean a legacy (i.e. from App Engine) app string.
+
+    :type app_str: str
+    :param app_str: The ``app`` value stored in a "Reference" pb.
+
+    :rtype: str
+    :returns: The cleaned value.
+    """
+    if app_str.startswith('s~') or app_str.startswith('e~'):
+        return app_str[2:]
+    elif app_str.startswith('dev~'):
+        return app_str[4:]
+    else:
+        return app_str
+
+
+def _get_empty(value, empty_value):
+    """Check if a protobuf field is "empty".
+
+    :type value: object
+    :param value: A basic field from a protobuf.
+
+    :type empty_value: object
+    :param empty_value: The "empty" value for the same type as
+                        ``value``.
+    """
+    if value == empty_value:
+        return None
+    else:
+        return value
+
+
+def _check_database_id(database_id):
+    """Make sure a "Reference" database ID is empty.
+
+    :type database_id: unicode
+    :param database_id: The ``database_id`` field from a "Reference" protobuf.
+
+    :raises: :exc:`ValueError` if the ``database_id`` is not empty.
+    """
+    if database_id != u'':
+        msg = _DATABASE_ID_TEMPLATE.format(database_id)
+        raise ValueError(msg)
+
+
+def _add_id_or_name(flat_path, element_pb, empty_allowed):
+    """Add the ID or name from an element to a list.
+
+    :type flat_path: list
+    :param flat_path: List of accumulated path parts.
+
+    :type element_pb: :class:`._onestore_v3_pb2.Path.Element`
+    :param element_pb: The element containing ID or name.
+
+    :type empty_allowed: bool
+    :param empty_allowed: Indicates if neither ID or name need be set. If
+                          :data:`False`, then **exactly** one of them must be.
+
+    :raises: :exc:`ValueError` if 0 or 2 of ID/name are set (unless
+             ``empty_allowed=True`` and 0 are set).
+    """
+    id_ = element_pb.id
+    name = element_pb.name
+    # NOTE: Below 0 and the empty string are the "null" values for their
+    #       respective types, indicating that the value is unset.
+    if id_ == 0:
+        if name == u'':
+            if not empty_allowed:
+                raise ValueError(_EMPTY_ELEMENT)
+        else:
+            flat_path.append(name)
+    else:
+        if name == u'':
+            flat_path.append(id_)
+        else:
+            msg = _BAD_ELEMENT_TEMPLATE.format(id_, name)
+            raise ValueError(msg)
+
+
+def _get_flat_path(path_pb):
+    """Convert a legacy "Path" protobuf to a flat path.
+
+    For example
+
+        Element {
+          type: "parent"
+          id: 59
+        }
+        Element {
+          type: "child"
+          name: "naem"
+        }
+
+    would convert to ``('parent', 59, 'child', 'naem')``.
+
+    :type path_pb: :class:`._onestore_v3_pb2.Path`
+    :param path_pb: Legacy protobuf "Path" object (from a "Reference").
+
+    :rtype: tuple
+    :returns: The path parts from ``path_pb``.
+    """
+    num_elts = len(path_pb.element)
+    last_index = num_elts - 1
+
+    result = []
+    for index, element in enumerate(path_pb.element):
+        result.append(element.type)
+        _add_id_or_name(result, element, index == last_index)
+
+    return tuple(result)

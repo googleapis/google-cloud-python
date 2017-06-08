@@ -372,6 +372,28 @@ class TestKey(unittest.TestCase):
         # Unset values are False-y.
         self.assertEqual(pb.path[0].kind, '')
 
+    def test_from_legacy_urlsafe(self):
+        klass = self._get_target_class()
+        # NOTE: This comes directly from a running (in the dev appserver)
+        #       App Engine app. Created via:
+        #
+        #           from google.appengine.ext import ndb
+        #           key = ndb.Key(
+        #               'Parent', 59, 'Child', 'Feather',
+        #               namespace='space', app='s~sample-app')
+        #           urlsafe = key.urlsafe()
+        urlsafe = (
+            b'agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZ'
+            b'WF0aGVyDKIBBXNwYWNl')
+        key = klass.from_legacy_urlsafe(urlsafe)
+        self.assertEqual(key.project, 'sample-app')
+        self.assertEqual(key.namespace, 'space')
+        self.assertEqual(key.flat_path, ('Parent', 59, 'Child', 'Feather'))
+        # Also make sure we didn't accidentally set the parent.
+        self.assertIsNone(key._parent)
+        self.assertIsNotNone(key.parent)
+        self.assertIs(key._parent, key.parent)
+
     def test_is_partial_no_name_or_id(self):
         key = self._make_one('KIND', project=self._DEFAULT_PROJECT)
         self.assertTrue(key.is_partial)
@@ -431,3 +453,21 @@ class TestKey(unittest.TestCase):
         self.assertEqual(parent.path, _PARENT_PATH)
         new_parent = key.parent
         self.assertIs(parent, new_parent)
+
+
+class Test__urlsafe_b64decode(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(urlsafe):
+        from google.cloud.datastore.key import _urlsafe_b64decode
+
+        return _urlsafe_b64decode(urlsafe)
+
+
+class Test__urlsafe_b64encode(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(value):
+        from google.cloud.datastore.key import _urlsafe_b64encode
+
+        return _urlsafe_b64encode(value)
