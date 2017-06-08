@@ -19,11 +19,6 @@ customer conversations happening in a call center or a messaging
 app. You can analyze text uploaded in your request or integrate
 with your document storage on Google Cloud Storage.
 
-.. warning::
-
-   This is a Beta release of Google Cloud Natural Language API. This
-   API is not intended for real-time usage in critical applications.
-
 .. _Google Natural Language: https://cloud.google.com/natural-language/docs/getting-started
 
 Client
