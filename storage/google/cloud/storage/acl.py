@@ -126,41 +126,49 @@ class _ACLEntity(object):
 
         :type role: str
         :param role: The role to add to the entity.
+
+        :rtype: ~`google.cloud.storage.acl._ACLEntity`
+        :returns: self
         """
         self.roles.add(role)
+        return self
 
     def revoke(self, role):
         """Remove a role from the entity.
 
         :type role: str
         :param role: The role to remove from the entity.
+
+        :rtype: ~`google.cloud.storage.acl._ACLEntity`
+        :returns: self
         """
         if role in self.roles:
             self.roles.remove(role)
+        return self
 
     def grant_read(self):
         """Grant read access to the current entity."""
-        self.grant(_ACLEntity.READER_ROLE)
+        return self.grant(_ACLEntity.READER_ROLE)
 
     def grant_write(self):
         """Grant write access to the current entity."""
-        self.grant(_ACLEntity.WRITER_ROLE)
+        return self.grant(_ACLEntity.WRITER_ROLE)
 
     def grant_owner(self):
         """Grant owner access to the current entity."""
-        self.grant(_ACLEntity.OWNER_ROLE)
+        return self.grant(_ACLEntity.OWNER_ROLE)
 
     def revoke_read(self):
         """Revoke read access from the current entity."""
-        self.revoke(_ACLEntity.READER_ROLE)
+        return self.revoke(_ACLEntity.READER_ROLE)
 
     def revoke_write(self):
         """Revoke write access from the current entity."""
-        self.revoke(_ACLEntity.WRITER_ROLE)
+        return self.revoke(_ACLEntity.WRITER_ROLE)
 
     def revoke_owner(self):
         """Revoke owner access from the current entity."""
-        self.revoke(_ACLEntity.OWNER_ROLE)
+        return self.revoke(_ACLEntity.OWNER_ROLE)
 
 
 class ACL(object):
