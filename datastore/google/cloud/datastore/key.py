@@ -303,11 +303,11 @@ class Key(object):
 
         This is intended to work with the "legacy" representation of a
         datastore "Key" used within Google App Engine (a so-called
-        "Reference"). This is intended as a drop in for the value returned when
-        using ``ndb.Key(...).urlsafe()``.
+        "Reference"). The returned string can be used as the ``urlsafe``
+        argument to ``ndb.Key(urlsafe=...)``.
 
         :rtype: bytes
-        :returns: ASCII bytes contain the key encoded as URL-safe base64.
+        :returns: A bytestring containing the key encoded as URL-safe base64.
         """
         reference = _onestore_v3_pb2.Reference(
             app=self.project,
@@ -315,7 +315,7 @@ class Key(object):
             name_space=self.namespace,
         )
         raw_bytes = reference.SerializeToString()
-        return _urlsafe_b64encode(raw_bytes)
+        return base64.urlsafe_b64encode(raw_bytes)
 
     @classmethod
     def from_legacy_urlsafe(cls, urlsafe):
@@ -334,7 +334,7 @@ class Key(object):
         :returns: The key corresponding to ``urlsafe``.
         """
         urlsafe = _to_bytes(urlsafe, encoding='ascii')
-        raw_bytes = _urlsafe_b64decode(urlsafe)
+        raw_bytes = base64.urlsafe_b64decode(urlsafe)
 
         reference = _onestore_v3_pb2.Reference()
         reference.ParseFromString(raw_bytes)
@@ -493,43 +493,6 @@ def _validate_project(project, parent):
     return project
 
 
-def _urlsafe_b64decode(urlsafe):
-    """Replacement for base64.urlsafe_b64decode.
-
-    Borrowed from ``ndb.key._DecodeUrlSafe``, noting their comment:
-
-        This is 3-4x faster than urlsafe_b64decode()
-
-    :type urlsafe: bytes
-    :param urlsafe: The encoded ASCII string to be decoded
-
-    :rtype: bytes
-    :returns: The value that was decoded.
-    """
-    # This is 3-4x faster than urlsafe_b64decode()
-    return base64.b64decode(
-        urlsafe.replace(b'-', b'+').replace(b'_', b'/'))
-
-
-def _urlsafe_b64encode(value):
-    """Replacement for ``base64.urlsafe_b64encode``.
-
-    Borrowed from ``ndb.key.Key.urlsafe``, noting their comment:
-
-        This is 3-4x faster than urlsafe_b64decode()
-
-    (They meant "encode".)
-
-    :type value: bytes
-    :param value: The value to be encoded.
-
-    :rtype: bytes
-    :returns: The encoded ASCII string.
-    """
-    urlsafe = base64.b64encode(value)
-    return urlsafe.rstrip(b'=').replace(b'+', b'-').replace(b'/', b'_')
-
-
 def _clean_app(app_str):
     """Clean a legacy (i.e. from App Engine) app string.
 
@@ -539,12 +502,8 @@ def _clean_app(app_str):
     :rtype: str
     :returns: The cleaned value.
     """
-    if app_str.startswith('s~') or app_str.startswith('e~'):
-        return app_str[2:]
-    elif app_str.startswith('dev~'):
-        return app_str[4:]
-    else:
-        return app_str
+    parts = app_str.split('~', 1)
+    return parts[-1]
 
 
 def _get_empty(value, empty_value):
