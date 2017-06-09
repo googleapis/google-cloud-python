@@ -155,22 +155,22 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         URI = '/'.join([
             client._connection.API_BASE_URL,
             'storage',
             client._connection.API_VERSION,
             'b',
-            '%s?projection=noAcl' % (BLOB_NAME,),
+            '%s?projection=noAcl' % (BUCKET_NAME,),
         ])
         http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
+            '{{"name": "{0}"}}'.format(BUCKET_NAME).encode('utf-8'),
         )
 
-        bucket = client.get_bucket(BLOB_NAME)
+        bucket = client.get_bucket(BUCKET_NAME)
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(bucket.name, BUCKET_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
@@ -203,33 +203,34 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         URI = '/'.join([
             client._connection.API_BASE_URL,
             'storage',
             client._connection.API_VERSION,
             'b',
-            '%s?projection=noAcl' % (BLOB_NAME,),
+            '%s?projection=noAcl' % (BUCKET_NAME,),
         ])
         http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
+            '{{"name": "{0}"}}'.format(BUCKET_NAME).encode('utf-8'),
         )
 
-        bucket = client.lookup_bucket(BLOB_NAME)
+        bucket = client.lookup_bucket(BUCKET_NAME)
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(bucket.name, BUCKET_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_create_bucket_conflict(self):
+        import json
         from google.cloud.exceptions import Conflict
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         URI = '/'.join([
             client._connection.API_BASE_URL,
             'storage',
@@ -241,18 +242,21 @@ class TestClient(unittest.TestCase):
             '{"error": {"message": "Conflict"}}',
         )
 
-        self.assertRaises(Conflict, client.create_bucket, BLOB_NAME)
+        self.assertRaises(Conflict, client.create_bucket, BUCKET_NAME)
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
+        body = json.loads(http._called_with['body'])
+        self.assertEqual(body, {'name': BUCKET_NAME})
 
     def test_create_bucket_success(self):
+        import json
         from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         URI = '/'.join([
             client._connection.API_BASE_URL,
             'storage',
@@ -261,14 +265,17 @@ class TestClient(unittest.TestCase):
         ])
         http = client._http_internal = _Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
+            '{{"name": "{0}"}}'.format(BUCKET_NAME).encode('utf-8'),
         )
 
-        bucket = client.create_bucket(BLOB_NAME)
+        bucket = client.create_bucket(BUCKET_NAME, requester_pays=True)
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(bucket.name, BUCKET_NAME)
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
+        body = json.loads(http._called_with['body'])
+        self.assertEqual(
+            body, {'name': BUCKET_NAME, 'billing': {'requesterPays': True}})
 
     def test_list_buckets_empty(self):
         from six.moves.urllib.parse import parse_qs
@@ -400,7 +407,7 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
 
-        blob_name = 'blob-name'
+        blob_name = 'bucket-name'
         response = {'items': [{'name': blob_name}]}
 
         def dummy_response():

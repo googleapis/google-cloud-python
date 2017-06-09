@@ -176,6 +176,7 @@ class Test_Bucket(unittest.TestCase):
             'location': LOCATION,
             'storageClass': STORAGE_CLASS,
             'versioning': {'enabled': True},
+            'billing': {'requesterPays': True},
             'labels': LABELS,
         }
         connection = _Connection(DATA)
@@ -186,6 +187,7 @@ class Test_Bucket(unittest.TestCase):
         bucket.location = LOCATION
         bucket.storage_class = STORAGE_CLASS
         bucket.versioning_enabled = True
+        bucket.requester_pays = True
         bucket.labels = LABELS
         bucket.create()
 
@@ -865,6 +867,24 @@ class Test_Bucket(unittest.TestCase):
         self.assertFalse(bucket.versioning_enabled)
         bucket.versioning_enabled = True
         self.assertTrue(bucket.versioning_enabled)
+
+    def test_requester_pays_getter_missing(self):
+        NAME = 'name'
+        bucket = self._make_one(name=NAME)
+        self.assertEqual(bucket.requester_pays, False)
+
+    def test_requester_pays_getter(self):
+        NAME = 'name'
+        before = {'billing': {'requesterPays': True}}
+        bucket = self._make_one(name=NAME, properties=before)
+        self.assertEqual(bucket.requester_pays, True)
+
+    def test_requester_pays_setter(self):
+        NAME = 'name'
+        bucket = self._make_one(name=NAME)
+        self.assertFalse(bucket.requester_pays)
+        bucket.requester_pays = True
+        self.assertTrue(bucket.requester_pays)
 
     def test_configure_website_defaults(self):
         NAME = 'name'

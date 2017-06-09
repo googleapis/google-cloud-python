@@ -798,9 +798,39 @@ class Bucket(_PropertyMixin):
         details.
 
         :type value: convertible to boolean
-        :param value: should versioning be anabled for the bucket?
+        :param value: should versioning be enabled for the bucket?
         """
         self._patch_property('versioning', {'enabled': bool(value)})
+
+    @property
+    def requester_pays(self):
+        """Does the requester pay for API requests for this bucket?
+
+        .. note::
+
+           No public docs exist yet for the "requester pays" feature.
+
+        :setter: Update whether requester pays for this bucket.
+        :getter: Query whether requester pays for this bucket.
+
+        :rtype: bool
+        :returns: True if requester pays for API requests for the bucket,
+                  else False.
+        """
+        versioning = self._properties.get('billing', {})
+        return versioning.get('requesterPays', False)
+
+    @requester_pays.setter
+    def requester_pays(self, value):
+        """Update whether requester pays for API requests for this bucket.
+
+        See  https://cloud.google.com/storage/docs/<DOCS-MISSING> for
+        details.
+
+        :type value: convertible to boolean
+        :param value: should requester pay for API requests for the bucket?
+        """
+        self._patch_property('billing', {'requesterPays': bool(value)})
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
