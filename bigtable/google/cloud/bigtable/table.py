@@ -304,8 +304,8 @@ class Table(object):
 
         :rtype: list
         :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
-                  corresponding to success or failure of each row mutation sent.
-                  These will be in the same order as the `rows`.
+                  corresponding to success or failure of each row mutation
+                  sent. These will be in the same order as the `rows`.
         """
         mutate_rows_request = _mutate_rows_request(self.name, rows)
         client = self._instance._client
@@ -440,8 +440,8 @@ def _mutate_rows_request(table_name, rows):
         _check_row_type(row)
         entry = request_pb.entries.add()
         entry.row_key = row.row_key
-        # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`, the
-        #       mutations have no state.
+        # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`,
+        #  the mutations have no state.
         for mutation in row._get_mutations(None):
             mutations_count += 1
             entry.mutations.add().CopyFrom(mutation)
