@@ -529,14 +529,26 @@ class Bucket(_PropertyMixin):
         :returns: The new Blob.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         if new_name is None:
             new_name = blob.name
+
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
         copy_result = client._connection.api_request(
-            method='POST', path=api_path, _target_object=new_blob)
+            method='POST',
+            path=api_path,
+            query_params=query_params,
+            _target_object=new_blob,
+            )
+
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)
+
         new_blob._set_properties(copy_result)
         return new_blob
 

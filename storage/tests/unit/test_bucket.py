@@ -566,6 +566,7 @@ class Test_Bucket(unittest.TestCase):
                                                      DEST, BLOB_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {})
 
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
@@ -597,14 +598,17 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'POST')
         self.assertEqual(kw[0]['path'], COPY_PATH)
+        self.assertEqual(kw[0]['query_params'], {})
         self.assertEqual(kw[1]['method'], 'PATCH')
         self.assertEqual(kw[1]['path'], NEW_BLOB_PATH)
+        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
 
-    def test_copy_blobs_w_name(self):
+    def test_copy_blobs_w_name_and_user_project(self):
         SOURCE = 'source'
         DEST = 'dest'
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new_name'
+        USER_PROJECT = 'user-project-123'
 
         class _Blob(object):
             name = BLOB_NAME
@@ -612,7 +616,8 @@ class Test_Bucket(unittest.TestCase):
 
         connection = _Connection({})
         client = _Client(connection)
-        source = self._make_one(client=client, name=SOURCE)
+        source = self._make_one(
+            client=client, name=SOURCE, user_project=USER_PROJECT)
         dest = self._make_one(client=client, name=DEST)
         blob = _Blob()
         new_blob = source.copy_blob(blob, dest, NEW_NAME)
@@ -623,6 +628,7 @@ class Test_Bucket(unittest.TestCase):
                                                      DEST, NEW_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {'userProject': USER_PROJECT})
 
     def test_rename_blob(self):
         BUCKET_NAME = 'BUCKET_NAME'
