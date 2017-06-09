@@ -328,8 +328,8 @@ class TestTableAdminAPI(unittest.TestCase):
         }
 
         test_platform = platform.system()
-        if (test_platform not in MOCK_SERVER_URLS):
-            self.fail("Retry server not available for platform " + test_platform)
+        if test_platform not in MOCK_SERVER_URLS:
+            self.skip('Retry server not available for platform {0}.'.format(test_platform))
 
         mock_server_download = urlopen(MOCK_SERVER_URLS[test_platform]).read()
         mock_server_file = open(SERVER_ZIP, 'wb')
@@ -338,10 +338,11 @@ class TestTableAdminAPI(unittest.TestCase):
         # Unzip server
         subprocess.call(['tar', 'zxvf', SERVER_ZIP, '-C', '.'])
 
-        # Connect to server 
+        # Connect to server
         server = subprocess.Popen(
             ['./' + SERVER_NAME, '--script=' + TEST_SCRIPT],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
 
         (endpoint, port) = server.stdout.readline().rstrip("\n").split(":")
@@ -356,13 +357,20 @@ class TestTableAdminAPI(unittest.TestCase):
             if line.startswith("CLIENT:"):
                 chunks = line.split(" ")
                 op = chunks[1]
-                if (op != "SCAN"):
-                    self.fail("Script contained " + op + " operation.  Only \'SCAN\' is supported.")
-                else:
-                    process_scan(table, chunks[2], chunks[3])
+                process_scan(table, chunks[2], chunks[3])
+
+        # Check that the test passed
+        server.kill()
+        server_stdout_lines = []
+        while True:
+            line = server.stdout.readline()
+            if line != '':
+                server_stdout_lines.append(line)
+            else:
+                break
+        self.assertEqual(server_stdout_lines[-1], "PASS\n")
 
         # Clean up
-        server.kill()
         os.remove(SERVER_ZIP)
         os.remove(SERVER_NAME)
 
