@@ -3,7 +3,7 @@ sudo: false
 language: python
 
 env:
-  - PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='false'
+  - PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='true'
   - PYTHON=3.5 PANDAS=0.18.1 COVERAGE='true' LINT='false'
   - PYTHON=3.6 PANDAS=0.20.1 COVERAGE='false' LINT='true'
   - PYTHON=3.6 PANDAS=MASTER COVERAGE='false' LINT='false'
