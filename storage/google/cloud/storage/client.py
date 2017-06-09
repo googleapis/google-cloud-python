@@ -212,8 +212,9 @@ class Client(ClientWithProject):
         :param bucket_name: The bucket name to create.
 
         :type requester_pays: bool
-        :param requester_pays: (Optional) Whether requester pays for
-            API requests for this bucket and its blobs.
+        :param requester_pays:
+            (Optional) Whether requester pays for API requests for this
+            bucket and its blobs.
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
