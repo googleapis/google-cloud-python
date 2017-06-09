@@ -271,10 +271,18 @@ class Bucket(_PropertyMixin):
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         blob = Blob(bucket=self, name=blob_name)
         try:
             response = client._connection.api_request(
-                method='GET', path=blob.path, _target_object=blob)
+                method='GET',
+                path=blob.path,
+                query_params=query_params,
+                _target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when

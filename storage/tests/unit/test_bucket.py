@@ -277,18 +277,20 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
-    def test_get_blob_hit(self):
+    def test_get_blob_hit_w_user_project(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
         connection = _Connection({'name': BLOB_NAME})
         client = _Client(connection)
-        bucket = self._make_one(name=NAME)
+        bucket = self._make_one(name=NAME, user_project=USER_PROJECT)
         blob = bucket.get_blob(BLOB_NAME, client=client)
         self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+        self.assertEqual(kw['query_params'], {'userProject': USER_PROJECT})
 
     def test_list_blobs_defaults(self):
         NAME = 'name'
