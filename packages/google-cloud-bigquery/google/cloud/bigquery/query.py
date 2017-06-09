@@ -16,6 +16,7 @@
 
 import six
 
+from google.cloud.iterator import HTTPIterator
 from google.cloud.bigquery._helpers import _TypedProperty
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.dataset import Dataset
@@ -23,6 +24,8 @@ from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import UDFResourcesProperty
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
 
 
 class _SyncQueryConfiguration(object):
@@ -426,12 +429,6 @@ class QueryResults(object):
         client = self._require_client(client)
         params = {}
 
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
         if start_index is not None:
             params['startIndex'] = start_index
 
@@ -439,15 +436,37 @@ class QueryResults(object):
             params['timeoutMs'] = timeout_ms
 
         path = '/projects/%s/queries/%s' % (self.project, self.name)
-        response = client._connection.api_request(method='GET',
-                                                  path=path,
-                                                  query_params=params)
-        self._set_properties(response)
+        iterator = HTTPIterator(client=client, path=path,
+                                item_to_value=_item_to_row,
+                                items_key='rows',
+                                page_token=page_token,
+                                max_results=max_results,
+                                page_start=_rows_page_start_query,
+                                extra_params=params)
+        iterator.query_result = self
+        # Over-ride the key used to retrieve the next page token.
+        iterator._NEXT_TOKEN = 'pageToken'
+        return iterator
 
-        total_rows = response.get('totalRows')
-        if total_rows is not None:
-            total_rows = int(total_rows)
-        page_token = response.get('pageToken')
-        rows_data = _rows_from_json(response.get('rows', ()), self.schema)
 
-        return rows_data, total_rows, page_token
+def _rows_page_start_query(iterator, page, response):
+    """Update query response when :class:`~google.cloud.iterator.Page` starts.
+
+    .. note::
+
+        This assumes that the ``query_response`` attribute has been
+        added to the iterator after being created, which
+        should be done by the caller.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type page: :class:`~google.cloud.iterator.Page`
+    :param page: The page that was just created.
+
+    :type response: dict
+    :param response: The JSON API response for a page of rows in a table.
+    """
+    iterator.query_result._set_properties(response)
+    iterator.schema = iterator.query_result.schema
+    _rows_page_start(iterator, page, response)
