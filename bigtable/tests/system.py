@@ -357,30 +357,31 @@ class TestDataAPI(unittest.TestCase):
         return cell1, cell2, cell3, cell4
 
     def test_mutate_rows(self):
-        row_1 = self._table.row(ROW_KEY)
-        row_1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
-        row_1.commit()
-        row_2 = self._table.row(ROW_KEY_ALT)
-        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL2)
-        row_2.commit()
-        rows = [row_1, row_2]
-        self.rows_to_delete.extend(rows)
+        row1 = self._table.row(ROW_KEY)
+        row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+        row1.commit()
+        self.rows_to_delete.append(row1)
+        row2 = self._table.row(ROW_KEY_ALT)
+        row2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL2)
+        row2.commit()
+        self.rows_to_delete.append(row2)
 
         # Change the contents
-        row_1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL3)
-        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL4)
+        row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL3)
+        row2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL4)
+        rows = [row1, row2]
         statuses = self._table.mutate_rows(rows)
         result = [status.code for status in statuses]
         expected_result = [0, 0]
         self.assertEqual(result, expected_result)
 
         # Check the contents
-        row_1_data = self._table.read_row(ROW_KEY)
+        row1_data = self._table.read_row(ROW_KEY)
         self.assertEqual(
-            row_1_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL3)
-        row_2_data = self._table.read_row(ROW_KEY_ALT)
+            row1_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL3)
+        row2_data = self._table.read_row(ROW_KEY_ALT)
         self.assertEqual(
-            row_2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL4)
+            row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL4)
 
     def test_read_large_cell_limit(self):
         row = self._table.row(ROW_KEY)

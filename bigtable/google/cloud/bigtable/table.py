@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User friendly container for Google Cloud Bigtable Table."""
+"""User-friendly container for Google Cloud Bigtable Table."""
+
+
+import six
 
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
@@ -300,13 +303,16 @@ class Table(object):
         :param rows: List or other iterable of :class:`.DirectRow` instances.
 
         :rtype: list
-        :returns: A list of corresponding to each row statuses.
+        :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
+                  corresponding to success or failure of each row mutation sent.
+                  These will be in the same order as the `rows`.
         """
         mutate_rows_request = _mutate_rows_request(self.name, rows)
         client = self._instance._client
         responses = client._data_stub.MutateRows(mutate_rows_request)
 
-        responses_statuses = [None for _ in range(len(rows))]
+        responses_statuses = [
+            None for _ in six.moves.xrange(len(mutate_rows_request.entries))]
         for response in responses:
             for entry in response.entries:
                 responses_statuses[entry.index] = entry.status
@@ -434,17 +440,19 @@ def _mutate_rows_request(table_name, rows):
         _check_row_type(row)
         entry = request_pb.entries.add()
         entry.row_key = row.row_key
+        # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`, the
+        #       mutations have no state.
         for mutation in row._get_mutations(None):
             mutations_count += 1
             entry.mutations.add().CopyFrom(mutation)
     if mutations_count > _MAX_BULK_MUTATIONS:
         raise TooManyMutationsError('Maximum number of mutations is %s' %
-                                    _MAX_BULK_MUTATIONS)
+                                    (_MAX_BULK_MUTATIONS,))
     return request_pb
 
 
 def _check_row_table_name(table_name, row):
-    """Checks that a row belong to the table.
+    """Checks that a row belongs to a table.
 
     :type table_name: str
     :param table_name: The name of the table.

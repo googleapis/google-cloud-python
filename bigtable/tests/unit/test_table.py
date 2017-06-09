@@ -15,6 +15,8 @@
 
 import unittest
 
+import mock
+
 
 class Test___mutate_rows_request(unittest.TestCase):
 
@@ -23,23 +25,50 @@ class Test___mutate_rows_request(unittest.TestCase):
 
         return _mutate_rows_request(table_name, rows)
 
+    @mock.patch('google.cloud.bigtable.table._MAX_BULK_MUTATIONS', new=3)
     def test__mutate_rows_too_many_mutations(self):
-        from collections import namedtuple
-        from google.cloud.bigtable._generated.data_pb2 import Mutation
         from google.cloud.bigtable.row import DirectRow
-        import google.cloud.bigtable.table as table_module
         from google.cloud.bigtable.table import TooManyMutationsError
 
-        table = namedtuple('Table', ['name'])
+        table = mock.Mock(name='table', spec=['name'])
         table.name = 'table'
-        table_module._MAX_BULK_MUTATIONS = 3
-        mutation = Mutation()
         rows = [DirectRow(row_key=b'row_key', table=table),
                 DirectRow(row_key=b'row_key_2', table=table)]
-        rows[0]._pb_mutations = [mutation, mutation]
-        rows[1]._pb_mutations = [mutation, mutation]
+        rows[0].set_cell('cf1', b'c1', 1)
+        rows[0].set_cell('cf1', b'c1', 2)
+        rows[1].set_cell('cf1', b'c1', 3)
+        rows[1].set_cell('cf1', b'c1', 4)
         with self.assertRaises(TooManyMutationsError):
             self._call_fut('table', rows)
+
+    def test__mutate_rows_request(self):
+        from google.cloud.bigtable.row import DirectRow
+
+        table = mock.Mock(name='table', spec=['name'])
+        table.name = 'table'
+        rows = [DirectRow(row_key=b'row_key', table=table),
+                DirectRow(row_key=b'row_key_2', table=table)]
+        rows[0].set_cell('cf1', b'c1', b'1')
+        rows[1].set_cell('cf1', b'c1', b'2')
+        result = self._call_fut('table', rows)
+
+        expected_result = _mutate_rows_request_pb(table_name='table')
+        entry1 = expected_result.entries.add()
+        entry1.row_key = b'row_key'
+        mutations1 = entry1.mutations.add()
+        mutations1.set_cell.family_name = 'cf1'
+        mutations1.set_cell.column_qualifier = b'c1'
+        mutations1.set_cell.timestamp_micros = -1
+        mutations1.set_cell.value = b'1'
+        entry2 = expected_result.entries.add()
+        entry2.row_key = b'row_key_2'
+        mutations2 = entry2.mutations.add()
+        mutations2.set_cell.family_name = 'cf1'
+        mutations2.set_cell.column_qualifier = b'c1'
+        mutations2.set_cell.timestamp_micros = -1
+        mutations2.set_cell.value = b'2'
+
+        self.assertEqual(result, expected_result)
 
 
 class Test__check_row_table_name(unittest.TestCase):
@@ -49,30 +78,45 @@ class Test__check_row_table_name(unittest.TestCase):
 
         return _check_row_table_name(table_name, row)
 
-    def test__check_rows_wrong_table_name(self):
-        from collections import namedtuple
+    def test_wrong_table_name(self):
         from google.cloud.bigtable.table import TableMismatchError
         from google.cloud.bigtable.row import DirectRow
 
-        table = namedtuple('Table', ['name'])
+        table = mock.Mock(name='table', spec=['name'])
         table.name = 'table'
         row = DirectRow(row_key=b'row_key', table=table)
         with self.assertRaises(TableMismatchError):
             self._call_fut('other_table', row)
 
+    def test_right_table_name(self):
+        from google.cloud.bigtable.row import DirectRow
+
+        table = mock.Mock(name='table', spec=['name'])
+        table.name = 'table'
+        row = DirectRow(row_key=b'row_key', table=table)
+        result = self._call_fut('table', row)
+        self.assertFalse(result)
+
 
 class Test__check_row_type(unittest.TestCase):
-    def _call_fut(self, table_name, row):
+    def _call_fut(self, row):
         from google.cloud.bigtable.table import _check_row_type
 
-        return _check_row_type(table_name, row)
+        return _check_row_type(row)
 
-    def test__check_rows_wrong_row_type(self):
+    def test_test_wrong_row_type(self):
         from google.cloud.bigtable.row import ConditionalRow
 
         row = ConditionalRow(row_key=b'row_key', table='table', filter_=None)
         with self.assertRaises(TypeError):
-            self._call_fut('table', row)
+            self._call_fut(row)
+
+    def test_right_row_type(self):
+        from google.cloud.bigtable.row import DirectRow
+
+        row = DirectRow(row_key=b'row_key', table='table')
+        result = self._call_fut(row)
+        self.assertFalse(result)
 
 
 class TestTable(unittest.TestCase):
@@ -411,6 +455,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
+        from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
         client = _Client()
@@ -422,13 +467,18 @@ class TestTable(unittest.TestCase):
         row_2 = DirectRow(row_key=b'row_key_2', table=table)
         row_2.set_cell('cf', b'col', b'value2')
 
-        response = MutateRowsResponse()
-        entry_1 = response.entries.add()
-        entry_1.index = 0
-        entry_1.status.code = 0
-        entry_2 = response.entries.add()
-        entry_2.index = 1
-        entry_2.status.code = 1
+        response = MutateRowsResponse(
+            entries=[
+                MutateRowsResponse.Entry(
+                    index=0,
+                    status=Status(code=0),
+                ),
+                MutateRowsResponse.Entry(
+                    index=1,
+                    status=Status(code=1),
+                ),
+            ],
+        )
 
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
@@ -666,6 +716,7 @@ def _mutate_rows_request_pb(*args, **kw):
         bigtable_pb2 as data_messages_v2_pb2)
 
     return data_messages_v2_pb2.MutateRowsRequest(*args, **kw)
+
 
 def _TablePB(*args, **kw):
     from google.cloud.bigtable._generated import (
