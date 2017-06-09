@@ -336,7 +336,7 @@ class Bucket(_PropertyMixin):
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
-        extra_params = {}
+        extra_params = {'projection': projection}
 
         if prefix is not None:
             extra_params['prefix'] = prefix
@@ -347,10 +347,11 @@ class Bucket(_PropertyMixin):
         if versions is not None:
             extra_params['versions'] = versions
 
-        extra_params['projection'] = projection
-
         if fields is not None:
             extra_params['fields'] = fields
+
+        if self.user_project is not None:
+            extra_params['userProject'] = self.user_project
 
         client = self._require_client(client)
         path = self.path + '/o'

@@ -305,8 +305,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
-    def test_list_blobs_w_all_arguments(self):
+    def test_list_blobs_w_all_arguments_and_user_project(self):
         NAME = 'name'
+        USER_PROJECT = 'user-project-123'
         MAX_RESULTS = 10
         PAGE_TOKEN = 'ABCD'
         PREFIX = 'subfolder'
@@ -322,10 +323,11 @@ class Test_Bucket(unittest.TestCase):
             'versions': VERSIONS,
             'projection': PROJECTION,
             'fields': FIELDS,
+            'userProject': USER_PROJECT,
         }
         connection = _Connection({'items': []})
         client = _Client(connection)
-        bucket = self._make_one(name=NAME)
+        bucket = self._make_one(name=NAME, user_project=USER_PROJECT)
         iterator = bucket.list_blobs(
             max_results=MAX_RESULTS,
             page_token=PAGE_TOKEN,
