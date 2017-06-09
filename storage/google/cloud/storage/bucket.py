@@ -806,8 +806,9 @@ class Bucket(_PropertyMixin):
     def requester_pays(self):
         """Does the requester pay for API requests for this bucket?
 
-        See  https://cloud.google.com/storage/docs/<DOCS-MISSING> for
-        details.
+        .. note::
+
+           No public docs exist yet for the "requester pays" feature.
 
         :setter: Update whether requester pays for this bucket.
         :getter: Query whether requester pays for this bucket.
