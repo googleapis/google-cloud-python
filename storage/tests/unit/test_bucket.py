@@ -1199,6 +1199,38 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]['path'], '%s/iam/testPermissions' % (PATH,))
         self.assertEqual(kw[0]['query_params'], {'permissions': PERMISSIONS})
 
+    def test_test_iam_permissions_w_user_project(self):
+        from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
+        from google.cloud.storage.iam import STORAGE_BUCKETS_GET
+        from google.cloud.storage.iam import STORAGE_BUCKETS_UPDATE
+
+        NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        PATH = '/b/%s' % (NAME,)
+        PERMISSIONS = [
+            STORAGE_OBJECTS_LIST,
+            STORAGE_BUCKETS_GET,
+            STORAGE_BUCKETS_UPDATE,
+        ]
+        ALLOWED = PERMISSIONS[1:]
+        RETURNED = {'permissions': ALLOWED}
+        connection = _Connection(RETURNED)
+        client = _Client(connection, None)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
+
+        allowed = bucket.test_iam_permissions(PERMISSIONS)
+
+        self.assertEqual(allowed, ALLOWED)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '%s/iam/testPermissions' % (PATH,))
+        self.assertEqual(
+            kw[0]['query_params'],
+            {'permissions': PERMISSIONS, 'userProject': USER_PROJECT})
+
     def test_make_public_defaults(self):
         from google.cloud.storage.acl import _ACLEntity
 

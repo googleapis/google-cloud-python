@@ -1021,12 +1021,16 @@ class Bucket(_PropertyMixin):
                   request.
         """
         client = self._require_client(client)
-        query = {'permissions': permissions}
+        query_params = {'permissions': permissions}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = '%s/iam/testPermissions' % (self.path,)
         resp = client._connection.api_request(
             method='GET',
             path=path,
-            query_params=query)
+            query_params=query_params)
         return resp.get('permissions', [])
 
     def make_public(self, recursive=False, future=False, client=None):
