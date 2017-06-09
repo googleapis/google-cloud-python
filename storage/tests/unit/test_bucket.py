@@ -1020,6 +1020,40 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {})
+
+    def test_get_iam_policy_w_user_project(self):
+        from google.cloud.iam import Policy
+
+        NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        PATH = '/b/%s' % (NAME,)
+        ETAG = 'DEADBEEF'
+        VERSION = 17
+        RETURNED = {
+            'resourceId': PATH,
+            'etag': ETAG,
+            'version': VERSION,
+            'bindings': [],
+        }
+        EXPECTED = {}
+        connection = _Connection(RETURNED)
+        client = _Client(connection, None)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
+
+        policy = bucket.get_iam_policy()
+
+        self.assertIsInstance(policy, Policy)
+        self.assertEqual(policy.etag, RETURNED['etag'])
+        self.assertEqual(policy.version, RETURNED['version'])
+        self.assertEqual(dict(policy), EXPECTED)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
 
     def test_set_iam_policy(self):
         import operator
