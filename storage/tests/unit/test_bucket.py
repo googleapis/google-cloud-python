@@ -369,23 +369,27 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
+            'query_params': {},
             '_target_object': None,
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
-    def test_delete_hit(self):
+    def test_delete_hit_with_user_project(self):
         NAME = 'name'
+        USER_PROJECT = 'user-project-123'
         GET_BLOBS_RESP = {'items': []}
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
         client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
         result = bucket.delete(force=True)
         self.assertIsNone(result)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
             '_target_object': None,
+            'query_params': {'userProject': USER_PROJECT},
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
@@ -410,6 +414,7 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
+            'query_params': {},
             '_target_object': None,
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -428,6 +433,7 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
+            'query_params': {},
             '_target_object': None,
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)

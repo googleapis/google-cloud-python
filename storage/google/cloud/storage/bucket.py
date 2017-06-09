@@ -392,6 +392,11 @@ class Bucket(_PropertyMixin):
                  contains more than 256 objects / blobs.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         if force:
             blobs = list(self.list_blobs(
                 max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
@@ -413,7 +418,10 @@ class Bucket(_PropertyMixin):
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE', path=self.path, _target_object=None)
+            method='DELETE',
+            path=self.path,
+            query_params=query_params,
+            _target_object=None)
 
     def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
