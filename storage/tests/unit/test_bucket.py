@@ -141,7 +141,9 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
-    def test_exists_hit(self):
+    def test_exists_hit_w_user_project(self):
+        USER_PROJECT = 'user-project-123'
+
         class _FakeConnection(object):
 
             _called_with = []
@@ -153,7 +155,7 @@ class Test_Bucket(unittest.TestCase):
                 return object()
 
         BUCKET_NAME = 'bucket-name'
-        bucket = self._make_one(name=BUCKET_NAME)
+        bucket = self._make_one(name=BUCKET_NAME, user_project=USER_PROJECT)
         client = _Client(_FakeConnection)
         self.assertTrue(bucket.exists(client=client))
         expected_called_kwargs = {
@@ -161,6 +163,7 @@ class Test_Bucket(unittest.TestCase):
             'path': bucket.path,
             'query_params': {
                 'fields': 'name',
+                'userProject': USER_PROJECT,
             },
             '_target_object': None,
         }
