@@ -274,8 +274,7 @@ class PartialRowsData(object):
 
             self._validate_chunk(chunk)
 
-            if ("ReadRowsIterator" in
-                    self._response_iterator.__class__.__name__):
+            if hasattr(self._response_iterator, 'set_start_key'):
                 self._response_iterator.set_start_key(chunk.row_key)
 
             if chunk.reset_row:

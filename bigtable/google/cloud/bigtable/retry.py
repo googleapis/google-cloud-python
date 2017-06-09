@@ -2,6 +2,7 @@
 import random
 import time
 import six
+import sys
 
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
@@ -13,7 +14,7 @@ from grpc import RpcError
 _MILLIS_PER_SECOND = 1000
 
 
-class ReadRowsIterator():
+class ReadRowsIterator(object):
     """Creates an iterator equivalent to a_iter, but that retries on certain
     exceptions.
     """
@@ -97,7 +98,7 @@ class ReadRowsIterator():
                     deadline - now)
                 self.set_stream()
 
-        six.reraise(errors.RetryError, exc)
+        six.reraise(errors.RetryError, exc, sys.exc_info()[2])
 
     def __next__(self, *args, **kwargs):
         return self.next(*args, **kwargs)

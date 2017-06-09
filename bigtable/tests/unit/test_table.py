@@ -474,7 +474,7 @@ class TestTable(unittest.TestCase):
                 return StatusCode.DEADLINE_EXCEEDED
 
         def _wait_then_raise():
-            time.sleep(0.5)
+            time.sleep(0.1)
             raise MockTimeoutError()
 
         # Patch the stub used by the API method.  The stub should create a new
@@ -486,7 +486,7 @@ class TestTable(unittest.TestCase):
         # Set to timeout before RPC completes
         test_backoff_settings = BackoffSettings(
             initial_retry_delay_millis=10,
-            retry_delay_multiplier=1.3,
+            retry_delay_multiplier=0.3,
             max_retry_delay_millis=30000,
             initial_rpc_timeout_millis=1000,
             rpc_timeout_multiplier=1.0,

@@ -352,12 +352,12 @@ class TestTableAdminAPI(unittest.TestCase):
         table = instance.table("table")
 
         # Run test, line by line
-        script = open(TEST_SCRIPT, 'r')
-        for line in script.readlines():
-            if line.startswith("CLIENT:"):
-                chunks = line.split(" ")
-                op = chunks[1]
-                process_scan(table, chunks[2], chunks[3])
+        with open(TEST_SCRIPT, 'r') as script:
+            for line in script.readlines():
+                if line.startswith("CLIENT:"):
+                    chunks = line.split(" ")
+                    op = chunks[1]
+                    process_scan(table, chunks[2], chunks[3])
 
         # Check that the test passed
         server.kill()
