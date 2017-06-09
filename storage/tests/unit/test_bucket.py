@@ -464,18 +464,22 @@ class Test_Bucket(unittest.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
+        self.assertEqual(kw['query_params'], {})
 
-    def test_delete_blob_hit(self):
+    def test_delete_blob_hit_with_user_project(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
         connection = _Connection({})
         client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
         result = bucket.delete_blob(BLOB_NAME)
         self.assertIsNone(result)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+        self.assertEqual(kw['query_params'], {'userProject': USER_PROJECT})
 
     def test_delete_blobs_empty(self):
         NAME = 'name'
@@ -485,17 +489,20 @@ class Test_Bucket(unittest.TestCase):
         bucket.delete_blobs([])
         self.assertEqual(connection._requested, [])
 
-    def test_delete_blobs_hit(self):
+    def test_delete_blobs_hit_w_user_project(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
         connection = _Connection({})
         client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
         bucket.delete_blobs([BLOB_NAME])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'DELETE')
         self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
 
     def test_delete_blobs_miss_no_on_error(self):
         from google.cloud.exceptions import NotFound
