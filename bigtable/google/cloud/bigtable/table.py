@@ -32,7 +32,8 @@ from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
 
 
-# Maximum number of mutations in bulk
+# Maximum number of mutations in bulk (MutateRowsRequest message):
+# https://cloud.google.com/bigtable/docs/reference/data/rpc/google.bigtable.v2
 _MAX_BULK_MUTATIONS = 100000
 
 
