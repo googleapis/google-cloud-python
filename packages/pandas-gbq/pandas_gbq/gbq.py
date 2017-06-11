@@ -1055,6 +1055,9 @@ class _Dataset(GbqConnector):
                 dataset_response = list_dataset_response.get('datasets')
                 next_page_token = list_dataset_response.get('nextPageToken')
 
+                if dataset_response is None:
+                    dataset_response = []
+
                 for row_num, raw_row in enumerate(dataset_response):
                     dataset_list.append(
                         raw_row['datasetReference']['datasetId'])

@@ -375,7 +375,7 @@ class GBQUnitTests(object):
                         "using google-api-python-client==1.2")
 
         if compat.PY2:
-            with tm.assertRaises(ImportError):
+            with pytest.raises(ImportError):
                 from googleapiclient.discovery import build  # noqa
                 from googleapiclient.errors import HttpError  # noqa
             from apiclient.discovery import build  # noqa
@@ -386,34 +386,34 @@ class GBQUnitTests(object):
 
     def test_should_return_bigquery_integers_as_python_ints(self):
         result = gbq._parse_entry(1, 'INTEGER')
-        tm.assert_equal(result, int(1))
+        assert result == int(1)
 
     def test_should_return_bigquery_floats_as_python_floats(self):
         result = gbq._parse_entry(1, 'FLOAT')
-        tm.assert_equal(result, float(1))
+        assert result == float(1)
 
     def test_should_return_bigquery_timestamps_as_numpy_datetime(self):
         result = gbq._parse_entry('0e9', 'TIMESTAMP')
-        tm.assert_equal(result, np_datetime64_compat('1970-01-01T00:00:00Z'))
+        assert result == np_datetime64_compat('1970-01-01T00:00:00Z')
 
     def test_should_return_bigquery_booleans_as_python_booleans(self):
         result = gbq._parse_entry('false', 'BOOLEAN')
-        tm.assert_equal(result, False)
+        assert not result
 
     def test_should_return_bigquery_strings_as_python_strings(self):
         result = gbq._parse_entry('STRING', 'STRING')
-        tm.assert_equal(result, 'STRING')
+        assert result == 'STRING'
 
     def test_to_gbq_should_fail_if_invalid_table_name_passed(self):
-        with tm.assertRaises(gbq.NotFoundException):
+        with pytest.raises(gbq.NotFoundException):
             gbq.to_gbq(DataFrame(), 'invalid_table_name', project_id="1234")
 
     def test_to_gbq_with_no_project_id_given_should_fail(self):
-        with tm.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             gbq.to_gbq(DataFrame(), 'dataset.tablename')
 
     def test_read_gbq_with_no_project_id_given_should_fail(self):
-        with tm.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             gbq.read_gbq('SELECT 1')
 
     def test_that_parse_data_works_properly(self):
@@ -426,29 +426,29 @@ class GBQUnitTests(object):
         tm.assert_frame_equal(test_output, correct_output)
 
     def test_read_gbq_with_invalid_private_key_json_should_fail(self):
-        with tm.assertRaises(gbq.InvalidPrivateKeyFormat):
+        with pytest.raises(gbq.InvalidPrivateKeyFormat):
             gbq.read_gbq('SELECT 1', project_id='x', private_key='y')
 
     def test_read_gbq_with_empty_private_key_json_should_fail(self):
-        with tm.assertRaises(gbq.InvalidPrivateKeyFormat):
+        with pytest.raises(gbq.InvalidPrivateKeyFormat):
             gbq.read_gbq('SELECT 1', project_id='x', private_key='{}')
 
     def test_read_gbq_with_private_key_json_wrong_types_should_fail(self):
-        with tm.assertRaises(gbq.InvalidPrivateKeyFormat):
+        with pytest.raises(gbq.InvalidPrivateKeyFormat):
             gbq.read_gbq(
                 'SELECT 1', project_id='x',
                 private_key='{ "client_email" : 1, "private_key" : True }')
 
     def test_read_gbq_with_empty_private_key_file_should_fail(self):
         with tm.ensure_clean() as empty_file_path:
-            with tm.assertRaises(gbq.InvalidPrivateKeyFormat):
+            with pytest.raises(gbq.InvalidPrivateKeyFormat):
                 gbq.read_gbq('SELECT 1', project_id='x',
                              private_key=empty_file_path)
 
     def test_read_gbq_with_corrupted_private_key_json_should_fail(self):
         _skip_if_no_private_key_contents()
 
-        with tm.assertRaises(gbq.InvalidPrivateKeyFormat):
+        with pytest.raises(gbq.InvalidPrivateKeyFormat):
             gbq.read_gbq(
                 'SELECT 1', project_id='x',
                 private_key=re.sub('[a-z]', '9', _get_private_key_contents()))
@@ -708,7 +708,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                                     private_key=_get_private_key_path())
         correct_frame = DataFrame(
             {'string_1': ['a'], 'string_2': ['b']}).set_index("string_1")
-        tm.assert_equal(result_frame.index.name, correct_frame.index.name)
+        assert result_frame.index.name == correct_frame.index.name
 
     def test_column_order(self):
         query = "SELECT 'a' AS string_1, 'b' AS string_2, 'c' AS string_3"
@@ -725,7 +725,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         col_order = ['string_aaa', 'string_1', 'string_2']
 
         # Column string_aaa does not exist. Should raise InvalidColumnOrder
-        with tm.assertRaises(gbq.InvalidColumnOrder):
+        with pytest.raises(gbq.InvalidColumnOrder):
             gbq.read_gbq(query, project_id=_get_project_id(),
                          col_order=col_order,
                          private_key=_get_private_key_path())
@@ -747,24 +747,24 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         col_order = ['string_3', 'string_2']
 
         # Column string_bbb does not exist. Should raise InvalidIndexColumn
-        with tm.assertRaises(gbq.InvalidIndexColumn):
+        with pytest.raises(gbq.InvalidIndexColumn):
             gbq.read_gbq(query, project_id=_get_project_id(),
                          index_col='string_bbb', col_order=col_order,
                          private_key=_get_private_key_path())
 
     def test_malformed_query(self):
-        with tm.assertRaises(gbq.GenericGBQException):
+        with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq("SELCET * FORM [publicdata:samples.shakespeare]",
                          project_id=_get_project_id(),
                          private_key=_get_private_key_path())
 
     def test_bad_project_id(self):
-        with tm.assertRaises(gbq.GenericGBQException):
+        with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq("SELECT 1", project_id='001',
                          private_key=_get_private_key_path())
 
     def test_bad_table_name(self):
-        with tm.assertRaises(gbq.GenericGBQException):
+        with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq("SELECT * FROM [publicdata:samples.nope]",
                          project_id=_get_project_id(),
                          private_key=_get_private_key_path())
@@ -800,7 +800,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
 
         # Test that a legacy sql statement fails when
         # setting dialect='standard'
-        with tm.assertRaises(gbq.GenericGBQException):
+        with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq(legacy_sql, project_id=_get_project_id(),
                          dialect='standard',
                          private_key=_get_private_key_path())
@@ -818,7 +818,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
 
         # Test that a standard sql statement fails when using
         # the legacy SQL dialect (default value)
-        with tm.assertRaises(gbq.GenericGBQException):
+        with pytest.raises(gbq.GenericGBQException):
             gbq.read_gbq(standard_sql, project_id=_get_project_id(),
                          private_key=_get_private_key_path())
 
@@ -834,7 +834,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                         "`publicdata.samples.wikipedia` LIMIT 10"
 
         # Test that an invalid option for `dialect` raises ValueError
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
                          dialect='invalid',
                          private_key=_get_private_key_path())
@@ -874,7 +874,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         }
         # Test that a query that relies on parameters fails
         # when parameters are not supplied via configuration
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
                          private_key=_get_private_key_path())
 
@@ -896,7 +896,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         }
         # Test that it can't pass query both
         # inside config and as parameter
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             gbq.read_gbq(query_no_use, project_id=_get_project_id(),
                          private_key=_get_private_key_path(),
                          configuration=config)
@@ -924,7 +924,7 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         }
         # Test that only 'query' configurations are supported
         # nor 'copy','load','extract'
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             gbq.read_gbq(sql_statement, project_id=_get_project_id(),
                          private_key=_get_private_key_path(),
                          configuration=config)
@@ -1034,12 +1034,12 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         self.table.create(TABLE_ID + test_id, gbq._generate_bq_schema(df))
 
         # Test the default value of if_exists is 'fail'
-        with tm.assertRaises(gbq.TableCreationError):
+        with pytest.raises(gbq.TableCreationError):
             gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
                        private_key=_get_private_key_path())
 
         # Test the if_exists parameter with value 'fail'
-        with tm.assertRaises(gbq.TableCreationError):
+        with pytest.raises(gbq.TableCreationError):
             gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
                        if_exists='fail', private_key=_get_private_key_path())
 
@@ -1066,7 +1066,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         assert result['num_rows'][0] == test_size * 2
 
         # Try inserting with a different schema, confirm failure
-        with tm.assertRaises(gbq.InvalidSchema):
+        with pytest.raises(gbq.InvalidSchema):
             gbq.to_gbq(df_different_schema, self.destination_table + test_id,
                        _get_project_id(), if_exists='append',
                        private_key=_get_private_key_path())
@@ -1100,7 +1100,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         df = make_mixed_dataframe_v2(test_size)
 
         # Test invalid value for if_exists parameter raises value error
-        with tm.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
                        if_exists='xxxxx', private_key=_get_private_key_path())
 
@@ -1114,7 +1114,7 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
                             'times': [test_timestamp, test_timestamp]},
                            index=range(2))
 
-        with tm.assertRaises(gbq.StreamingInsertError):
+        with pytest.raises(gbq.StreamingInsertError):
             gbq.to_gbq(bad_df, self.destination_table + test_id,
                        _get_project_id(), private_key=_get_private_key_path())
 
