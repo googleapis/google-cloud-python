@@ -67,9 +67,12 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '/path',
+            'query_params': {'projection': 'noAcl'},
+            '_target_object': derived,
+        })
         # Make sure changes get reset by reload.
         self.assertEqual(derived._changes, set())
 
@@ -84,11 +87,15 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(
-            kw[0]['query_params'],
-            {'projection': 'noAcl', 'userProject': user_project})
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '/path',
+            'query_params': {
+                'projection': 'noAcl',
+                'userProject': user_project,
+            },
+            '_target_object': derived,
+        })
         # Make sure changes get reset by reload.
         self.assertEqual(derived._changes, set())
 
@@ -117,11 +124,14 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-        # Since changes does not include `baz`, we don't see it sent.
-        self.assertEqual(kw[0]['data'], {'bar': BAR})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/path',
+            'query_params': {'projection': 'full'},
+            # Since changes does not include `baz`, we don't see it sent.
+            'data': {'bar': BAR},
+            '_target_object': derived,
+        })
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
@@ -139,13 +149,17 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(
-            kw[0]['query_params'],
-            {'projection': 'full', 'userProject': user_project})
-        # Since changes does not include `baz`, we don't see it sent.
-        self.assertEqual(kw[0]['data'], {'bar': BAR})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/path',
+            'query_params': {
+                'projection': 'full',
+                'userProject': user_project,
+            },
+            # Since changes does not include `baz`, we don't see it sent.
+            'data': {'bar': BAR},
+            '_target_object': derived,
+        })
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
