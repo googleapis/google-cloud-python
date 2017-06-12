@@ -1392,8 +1392,49 @@ class Test_Blob(unittest.TestCase):
 
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '%s/iam' % (PATH,),
+            'query_params': {},
+            '_target_object': None,
+        })
+
+    def test_get_iam_policy_w_user_project(self):
+        from google.cloud.iam import Policy
+
+        BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
+        PATH = '/b/name/o/%s' % (BLOB_NAME,)
+        ETAG = 'DEADBEEF'
+        VERSION = 17
+        RETURNED = {
+            'resourceId': PATH,
+            'etag': ETAG,
+            'version': VERSION,
+            'bindings': [],
+        }
+        after = ({'status': http_client.OK}, RETURNED)
+        EXPECTED = {}
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client, user_project=USER_PROJECT)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        policy = blob.get_iam_policy()
+
+        self.assertIsInstance(policy, Policy)
+        self.assertEqual(policy.etag, RETURNED['etag'])
+        self.assertEqual(policy.version, RETURNED['version'])
+        self.assertEqual(dict(policy), EXPECTED)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '%s/iam' % (PATH,),
+            'query_params': {'userProject': USER_PROJECT},
+            '_target_object': None,
+        })
 
     def test_set_iam_policy(self):
         import operator

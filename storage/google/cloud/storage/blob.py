@@ -1083,9 +1083,15 @@ class Blob(_PropertyMixin):
                   the ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
+
+        query_params = {}
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         info = client._connection.api_request(
             method='GET',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             _target_object=None)
         return Policy.from_api_repr(info)
 
