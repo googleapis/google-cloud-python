@@ -56,6 +56,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertIs(bucket._default_object_acl.bucket, bucket)
+        self.assertIsNone(bucket.user_project)
 
     def test_ctor_w_user_project(self):
         NAME = 'name'
