@@ -1190,13 +1190,22 @@ class Blob(_PropertyMixin):
         """
         if self.content_type is None:
             raise ValueError("Destination 'content_type' not set.")
+
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         request = {
             'sourceObjects': [{'name': source.name} for source in sources],
             'destination': self._properties.copy(),
         }
         api_response = client._connection.api_request(
-            method='POST', path=self.path + '/compose', data=request,
+            method='POST',
+            path=self.path + '/compose',
+            query_params=query_params,
+            data=request,
             _target_object=self)
         self._set_properties(api_response)
 

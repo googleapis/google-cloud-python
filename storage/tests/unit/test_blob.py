@@ -1627,17 +1627,18 @@ class Test_Blob(unittest.TestCase):
         with self.assertRaises(ValueError):
             destination.compose(sources=[source_1, source_2])
 
-    def test_compose_minimal(self):
+    def test_compose_minimal_w_user_project(self):
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
         DESTINATION = 'destinaton'
         RESOURCE = {
             'etag': 'DEADBEEF'
         }
+        USER_PROJECT = 'user-project-123'
         after = ({'status': http_client.OK}, RESOURCE)
         connection = _Connection(after)
         client = _Client(connection)
-        bucket = _Bucket(client=client)
+        bucket = _Bucket(client=client, user_project=USER_PROJECT)
         source_1 = self._make_one(SOURCE_1, bucket=bucket)
         source_2 = self._make_one(SOURCE_2, bucket=bucket)
         destination = self._make_one(DESTINATION, bucket=bucket)
@@ -1647,20 +1648,23 @@ class Test_Blob(unittest.TestCase):
 
         self.assertEqual(destination.etag, 'DEADBEEF')
 
-        SENT = {
-            'sourceObjects': [
-                {'name': source_1.name},
-                {'name': source_2.name},
-            ],
-            'destination': {
-                'contentType': 'text/plain',
-            },
-        }
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'POST')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s/compose' % DESTINATION)
-        self.assertEqual(kw[0]['data'], SENT)
+        self.assertEqual(kw[0], {
+            'method': 'POST',
+            'path': '/b/name/o/%s/compose' % DESTINATION,
+            'query_params': {'userProject': USER_PROJECT},
+            'data':  {
+                'sourceObjects': [
+                    {'name': source_1.name},
+                    {'name': source_2.name},
+                ],
+                'destination': {
+                    'contentType': 'text/plain',
+                },
+            },
+            '_target_object': destination,
+        })
 
     def test_compose_w_additional_property_changes(self):
         SOURCE_1 = 'source-1'
@@ -1684,24 +1688,27 @@ class Test_Blob(unittest.TestCase):
 
         self.assertEqual(destination.etag, 'DEADBEEF')
 
-        SENT = {
-            'sourceObjects': [
-                {'name': source_1.name},
-                {'name': source_2.name},
-            ],
-            'destination': {
-                'contentType': 'text/plain',
-                'contentLanguage': 'en-US',
-                'metadata': {
-                    'my-key': 'my-value',
-                }
-            },
-        }
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'POST')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s/compose' % DESTINATION)
-        self.assertEqual(kw[0]['data'], SENT)
+        self.assertEqual(kw[0], {
+            'method': 'POST',
+            'path': '/b/name/o/%s/compose' % DESTINATION,
+            'query_params': {},
+            'data':  {
+                'sourceObjects': [
+                    {'name': source_1.name},
+                    {'name': source_2.name},
+                ],
+                'destination': {
+                    'contentType': 'text/plain',
+                    'contentLanguage': 'en-US',
+                    'metadata': {
+                        'my-key': 'my-value',
+                    }
+                },
+            },
+            '_target_object': destination,
+        })
 
     def test_rewrite_response_without_resource(self):
         SOURCE_BLOB = 'source'
