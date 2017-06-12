@@ -61,7 +61,8 @@ class Test_PropertyMixin(unittest.TestCase):
         connection = _Connection({'foo': 'Foo'})
         client = _Client(connection)
         derived = self._derivedClass('/path')()
-        # Make sure changes is not a set, so we can observe a change.
+        # Make sure changes is not a set instance before calling reload
+        # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
         derived.reload(client=client)
         self.assertEqual(derived._properties, {'foo': 'Foo'})
@@ -73,7 +74,6 @@ class Test_PropertyMixin(unittest.TestCase):
             'query_params': {'projection': 'noAcl'},
             '_target_object': derived,
         })
-        # Make sure changes get reset by reload.
         self.assertEqual(derived._changes, set())
 
     def test_reload_w_user_project(self):
@@ -81,7 +81,8 @@ class Test_PropertyMixin(unittest.TestCase):
         connection = _Connection({'foo': 'Foo'})
         client = _Client(connection)
         derived = self._derivedClass('/path', user_project)()
-        # Make sure changes is not a set, so we can observe a change.
+        # Make sure changes is not a set instance before calling reload
+        # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
         derived.reload(client=client)
         self.assertEqual(derived._properties, {'foo': 'Foo'})
@@ -96,7 +97,6 @@ class Test_PropertyMixin(unittest.TestCase):
             },
             '_target_object': derived,
         })
-        # Make sure changes get reset by reload.
         self.assertEqual(derived._changes, set())
 
     def test__set_properties(self):
