@@ -1483,6 +1483,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PUT')
         self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {})
         sent = kw[0]['data']
         self.assertEqual(sent['resourceId'], PATH)
         self.assertEqual(len(sent['bindings']), len(BINDINGS))
@@ -1493,6 +1494,41 @@ class Test_Blob(unittest.TestCase):
             self.assertEqual(found['role'], expected['role'])
             self.assertEqual(
                 sorted(found['members']), sorted(expected['members']))
+
+    def test_set_iam_policy_w_user_project(self):
+        from google.cloud.iam import Policy
+
+        BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
+        PATH = '/b/name/o/%s' % (BLOB_NAME,)
+        ETAG = 'DEADBEEF'
+        VERSION = 17
+        BINDINGS = []
+        RETURNED = {
+            'etag': ETAG,
+            'version': VERSION,
+            'bindings': BINDINGS,
+        }
+        after = ({'status': http_client.OK}, RETURNED)
+        policy = Policy()
+
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client, user_project=USER_PROJECT)
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        returned = blob.set_iam_policy(policy)
+
+        self.assertEqual(returned.etag, ETAG)
+        self.assertEqual(returned.version, VERSION)
+        self.assertEqual(dict(returned), dict(policy))
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PUT')
+        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
+        self.assertEqual(kw[0]['data'], {'resourceId': PATH})
 
     def test_test_iam_permissions(self):
         from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
