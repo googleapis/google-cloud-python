@@ -892,11 +892,12 @@ class Test_Blob(unittest.TestCase):
             'was specified but the file-like object only had', exc_contents)
         self.assertEqual(stream.tell(), len(data))
 
-    def _initiate_resumable_helper(self, size=None, extra_headers=None,
-                                   chunk_size=None, num_retries=None):
+    def _initiate_resumable_helper(
+            self, size=None, extra_headers=None, chunk_size=None,
+            num_retries=None, user_project=None):
         from google.resumable_media.requests import ResumableUpload
 
-        bucket = mock.Mock(path='/b/whammy', spec=[u'path'])
+        bucket = _Bucket(name='whammy', user_project=user_project)
         blob = self._make_one(u'blob-name', bucket=bucket)
         blob.metadata = {'rook': 'takes knight'}
         blob.chunk_size = 3 * blob._CHUNK_SIZE_MULTIPLE
@@ -930,6 +931,8 @@ class Test_Blob(unittest.TestCase):
             'https://www.googleapis.com/upload/storage/v1' +
             bucket.path +
             '/o?uploadType=resumable')
+        if user_project is not None:
+            upload_url += '&userProject={}'.format(user_project)
         self.assertEqual(upload.upload_url, upload_url)
         if extra_headers is None:
             self.assertEqual(upload._headers, {})
@@ -981,6 +984,10 @@ class Test_Blob(unittest.TestCase):
 
     def test__initiate_resumable_upload_with_size(self):
         self._initiate_resumable_helper(size=10000)
+
+    def test__initiate_resumable_upload_with_user_project(self):
+        user_project = 'user-project-123'
+        self._initiate_resumable_helper(user_project=user_project)
 
     def test__initiate_resumable_upload_with_chunk_size(self):
         one_mb = 1048576
@@ -1061,7 +1068,7 @@ class Test_Blob(unittest.TestCase):
             'PUT', resumable_url, data=payload, headers=expected_headers)
 
     def _do_resumable_helper(self, use_size=False, num_retries=None):
-        bucket = mock.Mock(path='/b/yesterday', spec=[u'path'])
+        bucket = _Bucket(name='yesterday')
         blob = self._make_one(u'blob-name', bucket=bucket)
         blob.chunk_size = blob._CHUNK_SIZE_MULTIPLE
         self.assertIsNotNone(blob.chunk_size)
@@ -1304,7 +1311,7 @@ class Test_Blob(unittest.TestCase):
 
     def _create_resumable_upload_session_helper(self, origin=None,
                                                 side_effect=None):
-        bucket = mock.Mock(path='/b/alex-trebek', spec=[u'path'])
+        bucket = _Bucket(name='alex-trebek')
         blob = self._make_one('blob-name', bucket=bucket)
         chunk_size = 99 * blob._CHUNK_SIZE_MULTIPLE
         blob.chunk_size = chunk_size
