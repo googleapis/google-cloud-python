@@ -227,6 +227,8 @@ class Blob(_PropertyMixin):
         """Project ID used for API requests made via this blob.
 
         Derived from bucket's value.
+
+        :rtype: str
         """
         return self.bucket.user_project
 

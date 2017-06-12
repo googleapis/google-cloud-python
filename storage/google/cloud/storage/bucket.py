@@ -88,7 +88,7 @@ class Bucket(_PropertyMixin):
 
     :type user_project: str
     :param user_project: (Optional) the project ID to be billed for API
-        requests made via this instance.
+                         requests made via this instance.
     """
 
     _MAX_OBJECTS_FOR_ITERATION = 256
@@ -133,6 +133,8 @@ class Bucket(_PropertyMixin):
         """Project ID to be billed for API requests made via this bucket.
 
         If unset, API requests are billed to the bucket owner.
+
+        :rtype: str
         """
         return self._user_project
 
