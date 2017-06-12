@@ -16,7 +16,7 @@ from __future__ import absolute_import
 
 
 class SpeechHelpers(object):
-    """A set of convenience methods to make the Speech GAPIC easier to use.
+    """A set of convenience methods to make the Speech client easier to use.
 
     This class should be considered abstract; it is used as a superclass
     in a multiple-inheritance construction alongside the applicable GAPIC.
@@ -84,5 +84,5 @@ class SpeechHelpers(object):
                 :meth:`~.speech_v1.SpeechClient.streaming_recognize`.
         """
         yield self.types.StreamingRecognizeRequest(streaming_config=config)
-        for r in requests:
-            yield r
+        for request in requests:
+            yield request
