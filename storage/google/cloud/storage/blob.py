@@ -407,6 +407,8 @@ class Blob(_PropertyMixin):
             download_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
             if self.generation is not None:
                 download_url += u'&generation={:d}'.format(self.generation)
+            if self.user_project is not None:
+                download_url += u'&userProject={}'.format(self.user_project)
             return download_url
         else:
             return self.media_link

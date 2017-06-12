@@ -377,7 +377,7 @@ class Test_Blob(unittest.TestCase):
 
     def test__get_download_url_on_the_fly(self):
         blob_name = 'bzzz-fly.txt'
-        bucket = mock.Mock(path='/b/buhkit', spec=['path'])
+        bucket = _Bucket(name='buhkit')
         blob = self._make_one(blob_name, bucket=bucket)
 
         self.assertIsNone(blob.media_link)
@@ -389,7 +389,7 @@ class Test_Blob(unittest.TestCase):
 
     def test__get_download_url_on_the_fly_with_generation(self):
         blob_name = 'pretend.txt'
-        bucket = mock.Mock(path='/b/fictional', spec=['path'])
+        bucket = _Bucket(name='fictional')
         blob = self._make_one(blob_name, bucket=bucket)
         generation = 1493058489532987
         # Set the media link on the blob
@@ -400,6 +400,20 @@ class Test_Blob(unittest.TestCase):
         expected_url = (
             'https://www.googleapis.com/download/storage/v1/b/'
             'fictional/o/pretend.txt?alt=media&generation=1493058489532987')
+        self.assertEqual(download_url, expected_url)
+
+    def test__get_download_url_on_the_fly_with_user_project(self):
+        blob_name = 'pretend.txt'
+        user_project = 'user-project-123'
+        bucket = _Bucket(name='fictional', user_project=user_project)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        self.assertIsNone(blob.media_link)
+        download_url = blob._get_download_url()
+        expected_url = (
+            'https://www.googleapis.com/download/storage/v1/b/'
+            'fictional/o/pretend.txt?alt=media&userProject={}'.format(
+                user_project))
         self.assertEqual(download_url, expected_url)
 
     @staticmethod
