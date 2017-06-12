@@ -1918,7 +1918,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'POST')
         PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
         self.assertEqual(kw[0]['path'], PATH)
-        self.assertNotIn('query_params', kw[0])
+        self.assertEqual(kw[0]['query_params'], {})
         SENT = {'storageClass': STORAGE_CLASS}
         self.assertEqual(kw[0]['data'], SENT)
 
@@ -1932,7 +1932,7 @@ class Test_Blob(unittest.TestCase):
         self.assertNotIn('X-Goog-Encryption-Key', headers)
         self.assertNotIn('X-Goog-Encryption-Key-Sha256', headers)
 
-    def test_update_storage_class_w_encryption_key(self):
+    def test_update_storage_class_w_encryption_key_w_user_project(self):
         import base64
         import hashlib
 
@@ -1943,13 +1943,14 @@ class Test_Blob(unittest.TestCase):
         BLOB_KEY_HASH_B64 = base64.b64encode(
             BLOB_KEY_HASH).rstrip().decode('ascii')
         STORAGE_CLASS = u'NEARLINE'
+        USER_PROJECT = 'user-project-123'
         RESPONSE = {
             'resource': {'storageClass': STORAGE_CLASS},
         }
         response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
-        bucket = _Bucket(client=client)
+        bucket = _Bucket(client=client, user_project=USER_PROJECT)
         blob = self._make_one(
             BLOB_NAME, bucket=bucket, encryption_key=BLOB_KEY)
 
@@ -1962,7 +1963,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'POST')
         PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
         self.assertEqual(kw[0]['path'], PATH)
-        self.assertNotIn('query_params', kw[0])
+        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
         SENT = {'storageClass': STORAGE_CLASS}
         self.assertEqual(kw[0]['data'], SENT)
 

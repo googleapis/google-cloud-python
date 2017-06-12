@@ -1281,13 +1281,22 @@ class Blob(_PropertyMixin):
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
         client = self._require_client(client)
+
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         headers = _get_encryption_headers(self._encryption_key)
         headers.update(_get_encryption_headers(
             self._encryption_key, source=True))
 
         api_response = client._connection.api_request(
-            method='POST', path=self.path + '/rewriteTo' + self.path,
-            data={'storageClass': new_class}, headers=headers,
+            method='POST',
+            path=self.path + '/rewriteTo' + self.path,
+            query_params=query_params,
+            data={'storageClass': new_class},
+            headers=headers,
             _target_object=self)
         self._set_properties(api_response['resource'])
 
