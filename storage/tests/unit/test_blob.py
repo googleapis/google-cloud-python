@@ -317,16 +317,31 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket(client)
         blob = self._make_one(NONESUCH, bucket=bucket)
         self.assertFalse(blob.exists())
+        self.assertEqual(len(connection._requested), 1)
+        self.assertEqual(connection._requested[0], {
+            'method': 'GET',
+            'path': '/b/name/o/{}'.format(NONESUCH),
+            'query_params': {'fields': 'name'},
+            '_target_object': None,
+        })
 
-    def test_exists_hit(self):
+    def test_exists_hit_w_user_project(self):
         BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
         found_response = ({'status': http_client.OK}, b'')
         connection = _Connection(found_response)
         client = _Client(connection)
-        bucket = _Bucket(client)
+        bucket = _Bucket(client, user_project=USER_PROJECT)
         blob = self._make_one(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         self.assertTrue(blob.exists())
+        self.assertEqual(len(connection._requested), 1)
+        self.assertEqual(connection._requested[0], {
+            'method': 'GET',
+            'path': '/b/name/o/{}'.format(BLOB_NAME),
+            'query_params': {'fields': 'name', 'userProject': USER_PROJECT},
+            '_target_object': None,
+        })
 
     def test_delete(self):
         BLOB_NAME = 'blob-name'
