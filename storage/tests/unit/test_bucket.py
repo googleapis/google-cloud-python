@@ -92,9 +92,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob._encryption_key, KEY)
 
     def test_bucket_name_value(self):
-        bucket_name = 'testing123'
-        mixin = self._make_one(name=bucket_name)
-        self.assertEqual(mixin.name, bucket_name)
+        BUCKET_NAME = 'bucket-name'
+        bucket = self._make_one(name=BUCKET_NAME)
 
         bad_start_bucket_name = '/testing123'
         with self.assertRaises(ValueError):
@@ -103,6 +102,13 @@ class Test_Bucket(unittest.TestCase):
         bad_end_bucket_name = 'testing123/'
         with self.assertRaises(ValueError):
             self._make_one(name=bad_end_bucket_name)
+
+    def test_user_project(self):
+        BUCKET_NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        bucket = self._make_one(name=BUCKET_NAME)
+        bucket._user_project = USER_PROJECT
+        self.assertEqual(bucket.user_project, USER_PROJECT)
 
     def test_exists_miss(self):
         from google.cloud.exceptions import NotFound
