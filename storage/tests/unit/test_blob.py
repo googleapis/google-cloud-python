@@ -807,8 +807,8 @@ class Test_Blob(unittest.TestCase):
         return fake_transport
 
     def _do_multipart_success(self, mock_get_boundary, size=None,
-                              num_retries=None):
-        bucket = mock.Mock(path='/b/w00t', spec=[u'path'])
+                              num_retries=None, user_project=None):
+        bucket = _Bucket(name='w00t', user_project=user_project)
         blob = self._make_one(u'blob-name', bucket=bucket)
         self.assertIsNone(blob.chunk_size)
 
@@ -840,6 +840,8 @@ class Test_Blob(unittest.TestCase):
             'https://www.googleapis.com/upload/storage/v1' +
             bucket.path +
             '/o?uploadType=multipart')
+        if user_project is not None:
+            upload_url += '&userProject={}'.format(user_project)
         payload = (
             b'--==0==\r\n' +
             b'content-type: application/json; charset=UTF-8\r\n\r\n' +
@@ -861,6 +863,13 @@ class Test_Blob(unittest.TestCase):
                 return_value=b'==0==')
     def test__do_multipart_upload_with_size(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, size=10)
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload_with_user_project(self, mock_get_boundary):
+        user_project = 'user-project-123'
+        self._do_multipart_success(
+            mock_get_boundary, user_project=user_project)
 
     @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==0==')

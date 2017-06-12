@@ -660,6 +660,10 @@ class Blob(_PropertyMixin):
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
+
+        if self.user_project is not None:
+            upload_url += '&userProject={}'.format(self.user_project)
+
         upload = MultipartUpload(upload_url, headers=headers)
 
         if num_retries is not None:
