@@ -1780,7 +1780,7 @@ class Test_Blob(unittest.TestCase):
         self.assertNotIn('X-Goog-Encryption-Key', headers)
         self.assertNotIn('X-Goog-Encryption-Key-Sha256', headers)
 
-    def test_rewrite_same_name_no_old_key_new_key_done(self):
+    def test_rewrite_same_name_no_old_key_new_key_done_w_user_project(self):
         import base64
         import hashlib
 
@@ -1789,6 +1789,7 @@ class Test_Blob(unittest.TestCase):
         KEY_HASH = hashlib.sha256(KEY).digest()
         KEY_HASH_B64 = base64.b64encode(KEY_HASH).rstrip().decode('ascii')
         BLOB_NAME = 'blob'
+        USER_PROJECT = 'user-project-123'
         RESPONSE = {
             'totalBytesRewritten': 42,
             'objectSize': 42,
@@ -1798,7 +1799,7 @@ class Test_Blob(unittest.TestCase):
         response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
-        bucket = _Bucket(client=client)
+        bucket = _Bucket(client=client, user_project=USER_PROJECT)
         plain = self._make_one(BLOB_NAME, bucket=bucket)
         encrypted = self._make_one(BLOB_NAME, bucket=bucket,
                                    encryption_key=KEY)
@@ -1814,7 +1815,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'POST')
         PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
         self.assertEqual(kw[0]['path'], PATH)
-        self.assertEqual(kw[0]['query_params'], {})
+        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
         SENT = {}
         self.assertEqual(kw[0]['data'], SENT)
 

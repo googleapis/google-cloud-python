@@ -1237,14 +1237,20 @@ class Blob(_PropertyMixin):
         headers.update(_get_encryption_headers(
             source._encryption_key, source=True))
 
+        query_params = {}
+
         if token:
-            query_params = {'rewriteToken': token}
-        else:
-            query_params = {}
+            query_params['rewriteToken'] = token
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
 
         api_response = client._connection.api_request(
-            method='POST', path=source.path + '/rewriteTo' + self.path,
-            query_params=query_params, data=self._properties, headers=headers,
+            method='POST',
+            path=source.path + '/rewriteTo' + self.path,
+            query_params=query_params,
+            data=self._properties,
+            headers=headers,
             _target_object=self)
         rewritten = int(api_response['totalBytesRewritten'])
         size = int(api_response['objectSize'])
