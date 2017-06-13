@@ -338,10 +338,14 @@ class Blob(_PropertyMixin):
         :returns: True if the blob exists in Cloud Storage.
         """
         client = self._require_client(client)
+        # We only need the status code (200 or not) so we seek to
+        # minimize the returned payload.
+        query_params = {'fields': 'name'}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         try:
-            # We only need the status code (200 or not) so we seek to
-            # minimize the returned payload.
-            query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client._connection.api_request(
@@ -399,6 +403,8 @@ class Blob(_PropertyMixin):
             download_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
             if self.generation is not None:
                 download_url += u'&generation={:d}'.format(self.generation)
+            if self.user_project is not None:
+                download_url += u'&userProject={}'.format(self.user_project)
             return download_url
         else:
             return self.media_link
@@ -649,6 +655,10 @@ class Blob(_PropertyMixin):
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
+
+        if self.user_project is not None:
+            upload_url += '&userProject={}'.format(self.user_project)
+
         upload = MultipartUpload(upload_url, headers=headers)
 
         if num_retries is not None:
@@ -721,6 +731,10 @@ class Blob(_PropertyMixin):
 
         upload_url = _RESUMABLE_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
+
+        if self.user_project is not None:
+            upload_url += '&userProject={}'.format(self.user_project)
+
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
 
         if num_retries is not None:
@@ -1074,9 +1088,16 @@ class Blob(_PropertyMixin):
                   the ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
+
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         info = client._connection.api_request(
             method='GET',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             _target_object=None)
         return Policy.from_api_repr(info)
 
@@ -1099,11 +1120,18 @@ class Blob(_PropertyMixin):
                   the ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
+
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         resource = policy.to_api_repr()
         resource['resourceId'] = self.path
         info = client._connection.api_request(
             method='PUT',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             data=resource,
             _target_object=None)
         return Policy.from_api_repr(info)
@@ -1127,12 +1155,17 @@ class Blob(_PropertyMixin):
                   request.
         """
         client = self._require_client(client)
-        query = {'permissions': permissions}
+        query_params = {'permissions': permissions}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = '%s/iam/testPermissions' % (self.path,)
         resp = client._connection.api_request(
             method='GET',
             path=path,
-            query_params=query)
+            query_params=query_params)
+
         return resp.get('permissions', [])
 
     def make_public(self, client=None):
@@ -1162,13 +1195,22 @@ class Blob(_PropertyMixin):
         """
         if self.content_type is None:
             raise ValueError("Destination 'content_type' not set.")
+
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         request = {
             'sourceObjects': [{'name': source.name} for source in sources],
             'destination': self._properties.copy(),
         }
         api_response = client._connection.api_request(
-            method='POST', path=self.path + '/compose', data=request,
+            method='POST',
+            path=self.path + '/compose',
+            query_params=query_params,
+            data=request,
             _target_object=self)
         self._set_properties(api_response)
 
@@ -1200,14 +1242,20 @@ class Blob(_PropertyMixin):
         headers.update(_get_encryption_headers(
             source._encryption_key, source=True))
 
+        query_params = {}
+
         if token:
-            query_params = {'rewriteToken': token}
-        else:
-            query_params = {}
+            query_params['rewriteToken'] = token
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
 
         api_response = client._connection.api_request(
-            method='POST', path=source.path + '/rewriteTo' + self.path,
-            query_params=query_params, data=self._properties, headers=headers,
+            method='POST',
+            path=source.path + '/rewriteTo' + self.path,
+            query_params=query_params,
+            data=self._properties,
+            headers=headers,
             _target_object=self)
         rewritten = int(api_response['totalBytesRewritten'])
         size = int(api_response['objectSize'])
@@ -1238,13 +1286,22 @@ class Blob(_PropertyMixin):
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
         client = self._require_client(client)
+
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         headers = _get_encryption_headers(self._encryption_key)
         headers.update(_get_encryption_headers(
             self._encryption_key, source=True))
 
         api_response = client._connection.api_request(
-            method='POST', path=self.path + '/rewriteTo' + self.path,
-            data={'storageClass': new_class}, headers=headers,
+            method='POST',
+            path=self.path + '/rewriteTo' + self.path,
+            query_params=query_params,
+            data={'storageClass': new_class},
+            headers=headers,
             _target_object=self)
         self._set_properties(api_response['resource'])
 
