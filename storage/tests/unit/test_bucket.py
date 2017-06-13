@@ -33,13 +33,16 @@ def _create_signing_credentials():
 
 class Test_Bucket(unittest.TestCase):
 
-    def _make_one(self, client=None, name=None, properties=None):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.bucket import Bucket
+        return Bucket
 
+    def _make_one(self, client=None, name=None, properties=None):
         if client is None:
             connection = _Connection()
             client = _Client(connection)
-        bucket = Bucket(client, name=name)
+        bucket = self._get_target_class()(client, name=name)
         bucket._properties = properties or {}
         return bucket
 
@@ -49,6 +52,22 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(name=NAME, properties=properties)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
+        self.assertFalse(bucket._acl.loaded)
+        self.assertIs(bucket._acl.bucket, bucket)
+        self.assertFalse(bucket._default_object_acl.loaded)
+        self.assertIs(bucket._default_object_acl.bucket, bucket)
+        self.assertIsNone(bucket.user_project)
+
+    def test_ctor_w_user_project(self):
+        NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        connection = _Connection()
+        client = _Client(connection)
+        klass = self._get_target_class()
+        bucket = klass(client, name=NAME, user_project=USER_PROJECT)
+        self.assertEqual(bucket.name, NAME)
+        self.assertEqual(bucket._properties, {})
+        self.assertEqual(bucket.user_project, USER_PROJECT)
         self.assertFalse(bucket._acl.loaded)
         self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
@@ -131,9 +150,8 @@ class Test_Bucket(unittest.TestCase):
             notification.payload_format, JSON_API_V1_PAYLOAD_FORMAT)
 
     def test_bucket_name_value(self):
-        bucket_name = 'testing123'
-        mixin = self._make_one(name=bucket_name)
-        self.assertEqual(mixin.name, bucket_name)
+        BUCKET_NAME = 'bucket-name'
+        bucket = self._make_one(name=BUCKET_NAME)
 
         bad_start_bucket_name = '/testing123'
         with self.assertRaises(ValueError):
@@ -142,6 +160,13 @@ class Test_Bucket(unittest.TestCase):
         bad_end_bucket_name = 'testing123/'
         with self.assertRaises(ValueError):
             self._make_one(name=bad_end_bucket_name)
+
+    def test_user_project(self):
+        BUCKET_NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        bucket = self._make_one(name=BUCKET_NAME)
+        bucket._user_project = USER_PROJECT
+        self.assertEqual(bucket.user_project, USER_PROJECT)
 
     def test_exists_miss(self):
         from google.cloud.exceptions import NotFound
