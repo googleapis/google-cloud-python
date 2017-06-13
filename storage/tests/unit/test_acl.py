@@ -621,30 +621,43 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/testing')
-        self.assertEqual(kw[0]['data'], {'acl': AFTER})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/testing',
+            'query_params': {'projection': 'full'},
+            'data': {'acl': AFTER},
+        })
 
-    def test_save_w_acl(self):
+    def test_save_w_acl_w_user_project(self):
         ROLE1 = 'role1'
         ROLE2 = 'role2'
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
+        USER_PROJECT = 'user-project-123'
         new_acl = [{'entity': 'allUsers', 'role': ROLE1}]
         connection = _Connection({'acl': [STICKY] + new_acl})
         client = _Client(connection)
         acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
+        acl.user_project = USER_PROJECT
+
         acl.save(new_acl, client=client)
+
         entries = list(acl)
         self.assertEqual(len(entries), 2)
         self.assertTrue(STICKY in entries)
         self.assertTrue(new_acl[0] in entries)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/testing')
-        self.assertEqual(kw[0]['data'], {'acl': new_acl})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/testing',
+            'query_params': {
+                'projection': 'full',
+                'userProject': USER_PROJECT,
+            },
+            'data': {'acl': new_acl},
+        })
 
     def test_save_prefefined_invalid(self):
         connection = _Connection()
@@ -667,11 +680,15 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(len(entries), 0)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/testing')
-        self.assertEqual(kw[0]['data'], {'acl': []})
-        self.assertEqual(kw[0]['query_params'],
-                         {'projection': 'full', 'predefinedAcl': PREDEFINED})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/testing',
+            'query_params': {
+                'projection': 'full',
+                'predefinedAcl': PREDEFINED,
+            },
+            'data': {'acl': []},
+        })
 
     def test_save_predefined_w_XML_alias(self):
         PREDEFINED_XML = 'project-private'
@@ -686,12 +703,15 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(len(entries), 0)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/testing')
-        self.assertEqual(kw[0]['data'], {'acl': []})
-        self.assertEqual(kw[0]['query_params'],
-                         {'projection': 'full',
-                          'predefinedAcl': PREDEFINED_JSON})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/testing',
+            'query_params': {
+                'projection': 'full',
+                'predefinedAcl': PREDEFINED_JSON,
+            },
+            'data': {'acl': []},
+        })
 
     def test_save_predefined_valid_w_alternate_query_param(self):
         # Cover case where subclass overrides _PREDEFINED_QUERY_PARAM
@@ -707,11 +727,15 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(len(entries), 0)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/testing')
-        self.assertEqual(kw[0]['data'], {'acl': []})
-        self.assertEqual(kw[0]['query_params'],
-                         {'projection': 'full', 'alternate': PREDEFINED})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/testing',
+            'query_params': {
+                'projection': 'full',
+                'alternate': PREDEFINED,
+            },
+            'data': {'acl': []},
+        })
 
     def test_clear(self):
         ROLE1 = 'role1'
@@ -727,10 +751,12 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(list(acl), [STICKY])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/testing')
-        self.assertEqual(kw[0]['data'], {'acl': []})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/testing',
+            'query_params': {'projection': 'full'},
+            'data': {'acl': []},
+        })
 
 
 class Test_BucketACL(unittest.TestCase):

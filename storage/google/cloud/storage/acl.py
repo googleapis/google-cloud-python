@@ -444,8 +444,12 @@ class ACL(object):
             acl = []
             query_params[self._PREDEFINED_QUERY_PARAM] = predefined
 
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = self.save_path
         client = self._require_client(client)
+
         result = client._connection.api_request(
             method='PATCH',
             path=path,
