@@ -739,6 +739,15 @@ class Test_BucketACL(unittest.TestCase):
         self.assertEqual(acl.reload_path, '/b/%s/acl' % NAME)
         self.assertEqual(acl.save_path, '/b/%s' % NAME)
 
+    def test_user_project(self):
+        NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        bucket = _Bucket(NAME)
+        acl = self._make_one(bucket)
+        self.assertIsNone(acl.user_project)
+        bucket.user_project = USER_PROJECT
+        self.assertEqual(acl.user_project, USER_PROJECT)
+
 
 class Test_DefaultObjectACL(unittest.TestCase):
 
@@ -785,8 +794,21 @@ class Test_ObjectACL(unittest.TestCase):
         self.assertEqual(acl.reload_path, '/b/%s/o/%s/acl' % (NAME, BLOB_NAME))
         self.assertEqual(acl.save_path, '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
+    def test_user_project(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
+        bucket = _Bucket(NAME)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._make_one(blob)
+        self.assertIsNone(acl.user_project)
+        blob.user_project = USER_PROJECT
+        self.assertEqual(acl.user_project, USER_PROJECT)
+
 
 class _Blob(object):
+
+    user_project = None
 
     def __init__(self, bucket, blob):
         self.bucket = bucket
@@ -798,6 +820,8 @@ class _Blob(object):
 
 
 class _Bucket(object):
+
+    user_project = None
 
     def __init__(self, name):
         self.name = name
