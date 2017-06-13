@@ -35,7 +35,11 @@ import time
 import warnings
 
 import httplib2
+from six.moves.urllib.parse import parse_qsl
 from six.moves.urllib.parse import quote
+from six.moves.urllib.parse import urlencode
+from six.moves.urllib.parse import urlsplit
+from six.moves.urllib.parse import urlunsplit
 
 import google.auth.transport.requests
 from google import resumable_media
@@ -404,14 +408,22 @@ class Blob(_PropertyMixin):
         :returns: The download URL for the current blob.
         """
         if self.media_link is None:
-            download_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
+            base_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
+            scheme, netloc, path, query, frag = urlsplit(base_url)
+            query = parse_qsl(query)
+            # Only add `generation' for synthesized URLs: 'mediaLink' from
+            # server presumably already encodes it.
             if self.generation is not None:
-                download_url += u'&generation={:d}'.format(self.generation)
-            if self.user_project is not None:
-                download_url += u'&userProject={}'.format(self.user_project)
-            return download_url
+                query.append(('generation', '{:d}'.format(self.generation)))
         else:
-            return self.media_link
+            scheme, netloc, path, query, frag = urlsplit(self.media_link)
+            query = parse_qsl(query)
+
+        if self.user_project is not None:
+            query.append(('userProject', self.user_project))
+
+        query = urlencode(query)
+        return urlunsplit((scheme, netloc, path, query, frag))
 
     def _do_download(self, transport, file_obj, download_url, headers):
         """Perform a download without any error handling.

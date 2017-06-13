@@ -366,7 +366,7 @@ class Test_Blob(unittest.TestCase):
 
     def test__get_download_url_with_media_link(self):
         blob_name = 'something.txt'
-        bucket = mock.Mock(spec=[])
+        bucket = _Bucket(name='IRRELEVANT')
         blob = self._make_one(blob_name, bucket=bucket)
         media_link = 'http://test.invalid'
         # Set the media link on the blob
@@ -374,6 +374,19 @@ class Test_Blob(unittest.TestCase):
 
         download_url = blob._get_download_url()
         self.assertEqual(download_url, media_link)
+
+    def test__get_download_url_with_media_link_w_user_project(self):
+        blob_name = 'something.txt'
+        user_project = 'user-project-123'
+        bucket = _Bucket(name='IRRELEVANT', user_project=user_project)
+        blob = self._make_one(blob_name, bucket=bucket)
+        media_link = 'http://test.invalid'
+        # Set the media link on the blob
+        blob._properties['mediaLink'] = media_link
+
+        download_url = blob._get_download_url()
+        self.assertEqual(
+            download_url, '{}?userProject={}'.format(media_link, user_project))
 
     def test__get_download_url_on_the_fly(self):
         blob_name = 'bzzz-fly.txt'
