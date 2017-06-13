@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,37 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+from __future__ import absolute_import
 
 import nox
 
 
 @nox.session
-def docs(session):
-    """Build the docs."""
+@nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
+def unit_tests(session, python_version):
+    """Run the unit test suite."""
 
-    # Build docs against the latest version of Python, because we can.
-    session.interpreter = 'python3.6'
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(python_version)
 
-    # Install Sphinx and also all of the google-cloud-* packages.
-    session.chdir(os.path.realpath(os.path.dirname(__file__)))
-    session.install('Sphinx >= 1.6.2', 'sphinx_rtd_theme')
-    session.install(
-        'core/', 'bigquery/', 'bigtable/', 'datastore/', 'dns/', 'language/',
-        'logging/', 'error_reporting/', 'monitoring/', 'pubsub/',
-        'resource_manager/', 'runtimeconfig/', 'spanner/', 'speech/',
-        'storage/', 'trace/', 'translate/', 'videointelligence/', 'vision/',
-    )
+    # Install all test dependencies, then install this package in-place.
+    session.install('mock', 'pytest', 'pytest-cov')
     session.install('-e', '.')
 
-    # Build the docs!
-    session.run('bash', './test_utils/scripts/update_docs.sh')
-
+    # Run py.test against the unit tests.
+    session.run('py.test', '--quiet', 'tests/')
 
 @nox.session
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
-    session.install('docutils', 'Pygments')
+    session.install('docutils', 'pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
