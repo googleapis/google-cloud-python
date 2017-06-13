@@ -1071,6 +1071,31 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
                        _get_project_id(), if_exists='append',
                        private_key=_get_private_key_path())
 
+    def test_upload_subset_columns_if_table_exists_append(self):
+        # Issue 24: Upload is succesful if dataframe has columns
+        # which are a subset of the current schema
+        test_id = "16"
+        test_size = 10
+        df = make_mixed_dataframe_v2(test_size)
+        df_subset_cols = df.iloc[:, :2]
+
+        # Initialize table with sample data
+        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
+                   chunksize=10000, private_key=_get_private_key_path())
+
+        # Test the if_exists parameter with value 'append'
+        gbq.to_gbq(df_subset_cols,
+                   self.destination_table + test_id, _get_project_id(),
+                   if_exists='append', private_key=_get_private_key_path())
+
+        sleep(30)  # <- Curses Google!!!
+
+        result = gbq.read_gbq("SELECT COUNT(*) AS num_rows FROM {0}"
+                              .format(self.destination_table + test_id),
+                              project_id=_get_project_id(),
+                              private_key=_get_private_key_path())
+        assert result['num_rows'][0] == test_size * 2
+
     def test_upload_data_if_table_exists_replace(self):
         test_id = "4"
         test_size = 10
@@ -1257,6 +1282,66 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
         self.table.create(TABLE_ID + test_id, test_schema_1)
         assert self.sut.verify_schema(
             self.dataset_prefix + "1", TABLE_ID + test_id, test_schema_2)
+
+    def test_retrieve_schema(self):
+        # Issue #24 schema function returns the schema in biquery
+        test_id = "15"
+        test_schema = {'fields': [{'name': 'A', 'type': 'FLOAT'},
+                                  {'name': 'B', 'type': 'FLOAT'},
+                                  {'name': 'C', 'type': 'STRING'},
+                                  {'name': 'D', 'type': 'TIMESTAMP'}]}
+
+        self.table.create(TABLE_ID + test_id, test_schema)
+        actual = self.sut.schema(self.dataset_prefix + "1", TABLE_ID + test_id)
+        expected = test_schema['fields']
+        assert expected == actual, 'Expected schema used to create table'
+
+    def test_schema_is_subset_passes_if_subset(self):
+        # Issue #24 schema_is_subset indicates whether the schema of the
+        # dataframe is a subset of the schema of the bigquery table
+        test_id = '16'
+
+        table_name = TABLE_ID + test_id
+        dataset = self.dataset_prefix + '1'
+
+        table_schema = {'fields': [{'name': 'A',
+                                    'type': 'FLOAT'},
+                                   {'name': 'B',
+                                    'type': 'FLOAT'},
+                                   {'name': 'C',
+                                    'type': 'STRING'}]}
+        tested_schema = {'fields': [{'name': 'A',
+                                     'type': 'FLOAT'},
+                                    {'name': 'B',
+                                     'type': 'FLOAT'}]}
+
+        self.table.create(table_name, table_schema)
+
+        assert self.sut.schema_is_subset(
+            dataset, table_name, tested_schema) is True
+
+    def test_schema_is_subset_fails_if_not_subset(self):
+        # For pull request #24
+        test_id = '17'
+
+        table_name = TABLE_ID + test_id
+        dataset = self.dataset_prefix + '1'
+
+        table_schema = {'fields': [{'name': 'A',
+                                    'type': 'FLOAT'},
+                                   {'name': 'B',
+                                    'type': 'FLOAT'},
+                                   {'name': 'C',
+                                    'type': 'STRING'}]}
+        tested_schema = {'fields': [{'name': 'A',
+                                     'type': 'FLOAT'},
+                                    {'name': 'C',
+                                     'type': 'FLOAT'}]}
+
+        self.table.create(table_name, table_schema)
+
+        assert self.sut.schema_is_subset(
+            dataset, table_name, tested_schema) is False
 
     def test_list_dataset(self):
         dataset_id = self.dataset_prefix + "1"

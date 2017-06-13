@@ -40,7 +40,7 @@ a ``TableCreationError`` if the destination table already exists.
 
    If the ``if_exists`` argument is set to ``'append'``, the destination dataframe will
    be written to the table using the defined table schema and column types. The
-   dataframe must match the destination table in structure and data types.
+   dataframe must contain fields (matching name and type) currently in the destination table.
    If the ``if_exists`` argument is set to ``'replace'``, and the existing table has a
    different schema, a delay of 2 minutes will be forced to ensure that the new schema
    has propagated in the Google environment. See
