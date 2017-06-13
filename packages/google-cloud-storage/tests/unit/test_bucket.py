@@ -38,11 +38,16 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.bucket import Bucket
         return Bucket
 
-    def _make_one(self, client=None, name=None, properties=None):
+    def _make_one(
+            self, client=None, name=None, properties=None, user_project=None):
         if client is None:
             connection = _Connection()
             client = _Client(connection)
-        bucket = self._get_target_class()(client, name=name)
+        if user_project is None:
+            bucket = self._get_target_class()(client, name=name)
+        else:
+            bucket = self._get_target_class()(
+                client, name=name, user_project=user_project)
         bucket._properties = properties or {}
         return bucket
 
@@ -63,8 +68,7 @@ class Test_Bucket(unittest.TestCase):
         USER_PROJECT = 'user-project-123'
         connection = _Connection()
         client = _Client(connection)
-        klass = self._get_target_class()
-        bucket = klass(client, name=NAME, user_project=USER_PROJECT)
+        bucket = self._make_one(client, name=NAME, user_project=USER_PROJECT)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, {})
         self.assertEqual(bucket.user_project, USER_PROJECT)
@@ -137,7 +141,9 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
-    def test_exists_hit(self):
+    def test_exists_hit_w_user_project(self):
+        USER_PROJECT = 'user-project-123'
+
         class _FakeConnection(object):
 
             _called_with = []
@@ -149,7 +155,7 @@ class Test_Bucket(unittest.TestCase):
                 return object()
 
         BUCKET_NAME = 'bucket-name'
-        bucket = self._make_one(name=BUCKET_NAME)
+        bucket = self._make_one(name=BUCKET_NAME, user_project=USER_PROJECT)
         client = _Client(_FakeConnection)
         self.assertTrue(bucket.exists(client=client))
         expected_called_kwargs = {
@@ -157,17 +163,29 @@ class Test_Bucket(unittest.TestCase):
             'path': bucket.path,
             'query_params': {
                 'fields': 'name',
+                'userProject': USER_PROJECT,
             },
             '_target_object': None,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
+    def test_create_w_user_project(self):
+        PROJECT = 'PROJECT'
+        BUCKET_NAME = 'bucket-name'
+        USER_PROJECT = 'user-project-123'
+        connection = _Connection()
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client, BUCKET_NAME, user_project=USER_PROJECT)
+
+        with self.assertRaises(ValueError):
+            bucket.create()
+
     def test_create_hit(self):
+        PROJECT = 'PROJECT'
         BUCKET_NAME = 'bucket-name'
         DATA = {'name': BUCKET_NAME}
         connection = _Connection(DATA)
-        PROJECT = 'PROJECT'
         client = _Client(connection, project=PROJECT)
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket.create()
@@ -259,18 +277,20 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
-    def test_get_blob_hit(self):
+    def test_get_blob_hit_w_user_project(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
         connection = _Connection({'name': BLOB_NAME})
         client = _Client(connection)
-        bucket = self._make_one(name=NAME)
+        bucket = self._make_one(name=NAME, user_project=USER_PROJECT)
         blob = bucket.get_blob(BLOB_NAME, client=client)
         self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+        self.assertEqual(kw['query_params'], {'userProject': USER_PROJECT})
 
     def test_list_blobs_defaults(self):
         NAME = 'name'
@@ -285,8 +305,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
-    def test_list_blobs_w_all_arguments(self):
+    def test_list_blobs_w_all_arguments_and_user_project(self):
         NAME = 'name'
+        USER_PROJECT = 'user-project-123'
         MAX_RESULTS = 10
         PAGE_TOKEN = 'ABCD'
         PREFIX = 'subfolder'
@@ -302,10 +323,11 @@ class Test_Bucket(unittest.TestCase):
             'versions': VERSIONS,
             'projection': PROJECTION,
             'fields': FIELDS,
+            'userProject': USER_PROJECT,
         }
         connection = _Connection({'items': []})
         client = _Client(connection)
-        bucket = self._make_one(name=NAME)
+        bucket = self._make_one(name=NAME, user_project=USER_PROJECT)
         iterator = bucket.list_blobs(
             max_results=MAX_RESULTS,
             page_token=PAGE_TOKEN,
@@ -347,23 +369,27 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
+            'query_params': {},
             '_target_object': None,
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
-    def test_delete_hit(self):
+    def test_delete_hit_with_user_project(self):
         NAME = 'name'
+        USER_PROJECT = 'user-project-123'
         GET_BLOBS_RESP = {'items': []}
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
         client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
         result = bucket.delete(force=True)
         self.assertIsNone(result)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
             '_target_object': None,
+            'query_params': {'userProject': USER_PROJECT},
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
@@ -388,6 +414,7 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
+            'query_params': {},
             '_target_object': None,
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -406,6 +433,7 @@ class Test_Bucket(unittest.TestCase):
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
+            'query_params': {},
             '_target_object': None,
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -442,18 +470,22 @@ class Test_Bucket(unittest.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
+        self.assertEqual(kw['query_params'], {})
 
-    def test_delete_blob_hit(self):
+    def test_delete_blob_hit_with_user_project(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
         connection = _Connection({})
         client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
         result = bucket.delete_blob(BLOB_NAME)
         self.assertIsNone(result)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+        self.assertEqual(kw['query_params'], {'userProject': USER_PROJECT})
 
     def test_delete_blobs_empty(self):
         NAME = 'name'
@@ -463,17 +495,20 @@ class Test_Bucket(unittest.TestCase):
         bucket.delete_blobs([])
         self.assertEqual(connection._requested, [])
 
-    def test_delete_blobs_hit(self):
+    def test_delete_blobs_hit_w_user_project(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
+        USER_PROJECT = 'user-project-123'
         connection = _Connection({})
         client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
         bucket.delete_blobs([BLOB_NAME])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'DELETE')
         self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
 
     def test_delete_blobs_miss_no_on_error(self):
         from google.cloud.exceptions import NotFound
@@ -531,6 +566,7 @@ class Test_Bucket(unittest.TestCase):
                                                      DEST, BLOB_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {})
 
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
@@ -562,14 +598,17 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'POST')
         self.assertEqual(kw[0]['path'], COPY_PATH)
+        self.assertEqual(kw[0]['query_params'], {})
         self.assertEqual(kw[1]['method'], 'PATCH')
         self.assertEqual(kw[1]['path'], NEW_BLOB_PATH)
+        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
 
-    def test_copy_blobs_w_name(self):
+    def test_copy_blobs_w_name_and_user_project(self):
         SOURCE = 'source'
         DEST = 'dest'
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new_name'
+        USER_PROJECT = 'user-project-123'
 
         class _Blob(object):
             name = BLOB_NAME
@@ -577,7 +616,8 @@ class Test_Bucket(unittest.TestCase):
 
         connection = _Connection({})
         client = _Client(connection)
-        source = self._make_one(client=client, name=SOURCE)
+        source = self._make_one(
+            client=client, name=SOURCE, user_project=USER_PROJECT)
         dest = self._make_one(client=client, name=DEST)
         blob = _Blob()
         new_blob = source.copy_blob(blob, dest, NEW_NAME)
@@ -588,6 +628,7 @@ class Test_Bucket(unittest.TestCase):
                                                      DEST, NEW_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
+        self.assertEqual(kw['query_params'], {'userProject': USER_PROJECT})
 
     def test_rename_blob(self):
         BUCKET_NAME = 'BUCKET_NAME'
@@ -979,6 +1020,40 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {})
+
+    def test_get_iam_policy_w_user_project(self):
+        from google.cloud.iam import Policy
+
+        NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        PATH = '/b/%s' % (NAME,)
+        ETAG = 'DEADBEEF'
+        VERSION = 17
+        RETURNED = {
+            'resourceId': PATH,
+            'etag': ETAG,
+            'version': VERSION,
+            'bindings': [],
+        }
+        EXPECTED = {}
+        connection = _Connection(RETURNED)
+        client = _Client(connection, None)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
+
+        policy = bucket.get_iam_policy()
+
+        self.assertIsInstance(policy, Policy)
+        self.assertEqual(policy.etag, RETURNED['etag'])
+        self.assertEqual(policy.version, RETURNED['version'])
+        self.assertEqual(dict(policy), EXPECTED)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
 
     def test_set_iam_policy(self):
         import operator
@@ -1025,6 +1100,66 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PUT')
         self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {})
+        sent = kw[0]['data']
+        self.assertEqual(sent['resourceId'], PATH)
+        self.assertEqual(len(sent['bindings']), len(BINDINGS))
+        key = operator.itemgetter('role')
+        for found, expected in zip(
+            sorted(sent['bindings'], key=key),
+            sorted(BINDINGS, key=key)):
+            self.assertEqual(found['role'], expected['role'])
+            self.assertEqual(
+                sorted(found['members']), sorted(expected['members']))
+
+    def test_set_iam_policy_w_user_project(self):
+        import operator
+        from google.cloud.storage.iam import STORAGE_OWNER_ROLE
+        from google.cloud.storage.iam import STORAGE_EDITOR_ROLE
+        from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
+        from google.cloud.iam import Policy
+
+        NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        PATH = '/b/%s' % (NAME,)
+        ETAG = 'DEADBEEF'
+        VERSION = 17
+        OWNER1 = 'user:phred@example.com'
+        OWNER2 = 'group:cloud-logs@google.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
+        BINDINGS = [
+            {'role': STORAGE_OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+            {'role': STORAGE_EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+            {'role': STORAGE_VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+        ]
+        RETURNED = {
+            'etag': ETAG,
+            'version': VERSION,
+            'bindings': BINDINGS,
+        }
+        policy = Policy()
+        for binding in BINDINGS:
+            policy[binding['role']] = binding['members']
+
+        connection = _Connection(RETURNED)
+        client = _Client(connection, None)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
+
+        returned = bucket.set_iam_policy(policy)
+
+        self.assertEqual(returned.etag, ETAG)
+        self.assertEqual(returned.version, VERSION)
+        self.assertEqual(dict(returned), dict(policy))
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PUT')
+        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
+        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
         sent = kw[0]['data']
         self.assertEqual(sent['resourceId'], PATH)
         self.assertEqual(len(sent['bindings']), len(BINDINGS))
@@ -1063,6 +1198,38 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '%s/iam/testPermissions' % (PATH,))
         self.assertEqual(kw[0]['query_params'], {'permissions': PERMISSIONS})
+
+    def test_test_iam_permissions_w_user_project(self):
+        from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
+        from google.cloud.storage.iam import STORAGE_BUCKETS_GET
+        from google.cloud.storage.iam import STORAGE_BUCKETS_UPDATE
+
+        NAME = 'name'
+        USER_PROJECT = 'user-project-123'
+        PATH = '/b/%s' % (NAME,)
+        PERMISSIONS = [
+            STORAGE_OBJECTS_LIST,
+            STORAGE_BUCKETS_GET,
+            STORAGE_BUCKETS_UPDATE,
+        ]
+        ALLOWED = PERMISSIONS[1:]
+        RETURNED = {'permissions': ALLOWED}
+        connection = _Connection(RETURNED)
+        client = _Client(connection, None)
+        bucket = self._make_one(
+            client=client, name=NAME, user_project=USER_PROJECT)
+
+        allowed = bucket.test_iam_permissions(PERMISSIONS)
+
+        self.assertEqual(allowed, ALLOWED)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '%s/iam/testPermissions' % (PATH,))
+        self.assertEqual(
+            kw[0]['query_params'],
+            {'permissions': PERMISSIONS, 'userProject': USER_PROJECT})
 
     def test_make_public_defaults(self):
         from google.cloud.storage.acl import _ACLEntity
