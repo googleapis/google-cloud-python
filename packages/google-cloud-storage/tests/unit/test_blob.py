@@ -141,6 +141,19 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
         self.assertEqual(blob.path, '/b/name/o/Caf%C3%A9')
 
+    def test_client(self):
+        blob_name = 'BLOB'
+        bucket = _Bucket()
+        blob = self._make_one(blob_name, bucket=bucket)
+        self.assertIs(blob.client, bucket.client)
+
+    def test_user_project(self):
+        user_project = 'user-project-123'
+        blob_name = 'BLOB'
+        bucket = _Bucket(user_project=user_project)
+        blob = self._make_one(blob_name, bucket=bucket)
+        self.assertEqual(blob.user_project, user_project)
+
     def test_public_url(self):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
@@ -2280,7 +2293,7 @@ class _Connection(object):
 
 class _Bucket(object):
 
-    def __init__(self, client=None, name='name'):
+    def __init__(self, client=None, name='name', user_project=None):
         if client is None:
             connection = _Connection()
             client = _Client(connection)
@@ -2290,6 +2303,7 @@ class _Bucket(object):
         self._deleted = []
         self.name = name
         self.path = '/b/' + name
+        self.user_project = user_project
 
     def delete_blob(self, blob_name, client=None):
         del self._blobs[blob_name]
