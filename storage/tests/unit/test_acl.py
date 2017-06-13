@@ -532,8 +532,11 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/testing/acl')
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '/testing/acl',
+            'query_params': {},
+        })
 
     def test_reload_empty_result_clears_local(self):
         ROLE = 'role'
@@ -543,29 +546,41 @@ class Test_ACL(unittest.TestCase):
         acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
+
         acl.reload(client=client)
+
         self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/testing/acl')
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '/testing/acl',
+            'query_params': {},
+        })
 
-    def test_reload_nonempty_result(self):
+    def test_reload_nonempty_result_w_user_project(self):
         ROLE = 'role'
+        USER_PROJECT = 'user-project-123'
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
         client = _Client(connection)
         acl = self._make_one()
         acl.reload_path = '/testing/acl'
         acl.loaded = True
+        acl.user_project = USER_PROJECT
+
         acl.reload(client=client)
+
         self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/testing/acl')
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '/testing/acl',
+            'query_params': {'userProject': USER_PROJECT},
+        })
 
     def test_save_none_set_none_passed(self):
         connection = _Connection()
