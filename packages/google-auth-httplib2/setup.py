@@ -18,7 +18,8 @@ from setuptools import setup
 
 
 DEPENDENCIES = (
-    'google-auth'
+    'google-auth',
+    'httplib2 >= 0.9.1',
 )
 
 
@@ -31,9 +32,9 @@ setup(
     version='0.0.2',
     author='Google Cloud Platform',
     author_email='jonwayne+google-auth@google.com',
-    description='Google Authentication Library',
+    description='Google Authentication Library: httplib2 transport',
     long_description=long_description,
-    url='https://github.com/GoogleCloudPlatform/google-auth-library-python',
+    url='https://github.com/GoogleCloudPlatform/google-auth-library-python-httplib2',
     py_modules=['google_auth_httplib2'],
     install_requires=DEPENDENCIES,
     license='Apache 2.0',
