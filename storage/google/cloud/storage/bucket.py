@@ -86,6 +86,10 @@ class Bucket(_PropertyMixin):
     :type name: str
     :param name: The name of the bucket. Bucket names must start and end with a
                  number or letter.
+
+    :type user_project: str
+    :param user_project: (Optional) the project ID to be billed for API
+                         requests made via this instance.
     """
 
     _MAX_OBJECTS_FOR_ITERATION = 256
@@ -109,13 +113,14 @@ class Bucket(_PropertyMixin):
     https://cloud.google.com/storage/docs/storage-classes
     """
 
-    def __init__(self, client, name=None):
+    def __init__(self, client, name=None, user_project=None):
         name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
         self._client = client
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
         self._label_removals = set()
+        self._user_project = user_project
 
     def __repr__(self):
         return '<Bucket: %s>' % (self.name,)
@@ -133,6 +138,16 @@ class Bucket(_PropertyMixin):
         """
         self._label_removals.clear()
         return super(Bucket, self)._set_properties(value)
+
+    @property
+    def user_project(self):
+        """Project ID to be billed for API requests made via this bucket.
+
+        If unset, API requests are billed to the bucket owner.
+
+        :rtype: str
+        """
+        return self._user_project
 
     def blob(self, blob_name, chunk_size=None, encryption_key=None):
         """Factory constructor for blob object.
