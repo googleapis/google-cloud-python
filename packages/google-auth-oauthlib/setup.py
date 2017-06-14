@@ -39,7 +39,7 @@ setup(
     author_email='jonwayne+google-auth@google.com',
     description='Google Authentication Library',
     long_description=long_description,
-    url='https://github.com/GoogleCloudPlatform/google-auth-library-python',
+    url='https://github.com/GoogleCloudPlatform/google-auth-library-python-oauthlib',
     packages=find_packages(exclude=('tests*',)),
     install_requires=DEPENDENCIES,
     extras_require={
