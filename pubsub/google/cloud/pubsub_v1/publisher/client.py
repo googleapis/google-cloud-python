@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 
+import copy
 import functools
 import pkg_resources
 

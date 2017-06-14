@@ -19,12 +19,15 @@ import multiprocessing
 
 import six
 
+from google.gax.errors import GaxError
+
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import exceptions
 from google.cloud.pubsub_v1.subscriber import histogram
+from google.cloud.pubsub_v1.subscriber.consumer import base
 
 
-class Consumer(object):
+class Consumer(base.BaseConsumer):
     """A consumer class based on :class:``multiprocessing.Process``.
 
     This consumer handles the connection to the Pub/Sub service and all of
@@ -105,7 +108,10 @@ class Consumer(object):
 
         import sys
         try:
-            for r in self.api.streaming_pull(self._shared.outgoing_requests):
+            outgoing = iter(self._shared.outgoing_requests)
+            import pdb ; pdb.set_trace()
+            for r in self._client.api.streaming_pull(outgoing):
+                import pdb ; pdb.set_trace()
                 print(r, file=sys.stderr)
         except GaxError:
             return self.stream()
