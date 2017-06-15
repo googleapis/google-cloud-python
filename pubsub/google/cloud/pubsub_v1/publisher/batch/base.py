@@ -44,6 +44,19 @@ class BaseBatch(object):
         raise NotImplementedError
 
     @property
+    @abc.abstractmethod
+    def settings(self):
+        """Return the settings for this batch.
+
+        Returns:
+            ~.pubsub_v1.types.Batching: The settings for batch
+                publishing. These should be considered immutable once the batch
+                has been opened.
+        """
+        raise NotImplementedError
+
+    @property
+    @abc.abstractmethod
     def status(self):
         """Return the status of this batch.
 
@@ -54,6 +67,16 @@ class BaseBatch(object):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def commit(self):
+        """Asychronously commit everything in this batch.
+
+        Subclasses must define this as an asychronous method; it may be called
+        from the primary process by :meth:`check_limits`.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def publish(self, data, **attrs):
         """Publish a single message.
 

@@ -78,10 +78,11 @@ class Batch(base.BaseBatch):
 
         # This is purely internal tracking.
         self._process = None
+        self._size = 0
 
         # Continually monitor the thread until it is time to commit the
         # batch, or the batch is explicitly committed.
-        if autocommit and self._shared.settings.max_latency < float('inf'):
+        if autocommit and self.settings.max_latency < float('inf'):
             self._process = multiprocessing.Process(target=self.monitor)
             self._process.start()
 
@@ -105,6 +106,17 @@ class Batch(base.BaseBatch):
         return self._manager
 
     @property
+    def settings(self):
+        """Return the settings for this batch.
+
+        Returns:
+            ~.pubsub_v1.types.Batching: The settings for batch
+                publishing. These should be considered immutable once the batch
+                has been opened.
+        """
+        return self._shared.settings
+
+    @property
     def status(self):
         """Return the status of this batch.
 
@@ -115,6 +127,14 @@ class Batch(base.BaseBatch):
         return self._shared.status
 
     def commit(self):
+        """Asychronously publish all of the messages on the active branch.
+
+        This method may be safely called from the primary process.
+        """
+        process = multiprocessing.Process(self._commit)
+        process.start()
+
+    def _commit(self):
         """Actually publish all of the messages on the active batch.
 
         This moves the batch out from being the active batch to an in-flight
@@ -162,15 +182,15 @@ class Batch(base.BaseBatch):
         # in a separate thread.
         #
         # Sleep for however long we should be waiting.
-        time.sleep(self._shared.settings.max_latency)
+        time.sleep(self.settings.max_latency)
 
         # If, in the intervening period, the batch started to be committed,
         # then no-op at this point.
-        if self._shared.status != self.Status.ACCEPTING_MESSAGES:
+        if self.status != self.Status.ACCEPTING_MESSAGES:
             return
 
         # Commit.
-        return self.commit()
+        return self._commit()
 
     def publish(self, data, **attrs):
         """Publish a single message.
@@ -226,10 +246,24 @@ class Batch(base.BaseBatch):
             types.PubsubMessage(data=data, attributes=attrs),
         )
 
+        # Add the size of the message to our size tracking.
+        self._size += len(data)
+        self._size += sum([len(k) + len(v) for k, v in attrs.items()])
+
         # Return a Future. That future needs to be aware of the status
         # of this batch.
         f = Future(self._shared)
         self._shared.futures.append(f)
+
+        # Check and see if we have hit message limits. If we have,
+        # commit.
+        if len(self._shared.messages) >= self.settings.max_messages:
+            self._shared.status = 'at message cap'
+            self.commit()
+        if self._size >= self.settings.max_bytes:
+            self._shared.status = 'at size cap'
+            self.commit()
+
         return f
 
 
