@@ -76,3 +76,7 @@ Thumbs.db
 
 # caches #
 .cache
+
+# Credentials #
+###############
+bigquery_credentials.dat

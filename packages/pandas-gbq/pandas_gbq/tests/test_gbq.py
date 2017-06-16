@@ -10,7 +10,6 @@ import logging
 
 import numpy as np
 
-from distutils.version import StrictVersion
 from pandas import compat
 
 from pandas.compat import u, range
@@ -21,13 +20,6 @@ from pandas.compat.numpy import np_datetime64_compat
 
 
 TABLE_ID = 'new_test'
-
-
-_IMPORTS = False
-_GOOGLE_API_CLIENT_INSTALLED = False
-_GOOGLE_API_CLIENT_VALID_VERSION = False
-_HTTPLIB2_INSTALLED = False
-_SETUPTOOLS_INSTALLED = False
 
 
 def _skip_if_no_project_id():
@@ -84,98 +76,19 @@ def _get_private_key_contents():
 
 
 def _test_imports():
-    global _GOOGLE_API_CLIENT_INSTALLED, _GOOGLE_API_CLIENT_VALID_VERSION, \
-        _HTTPLIB2_INSTALLED, _SETUPTOOLS_INSTALLED
-
     try:
-        import pkg_resources
-        _SETUPTOOLS_INSTALLED = True
+        import pkg_resources  # noqa
     except ImportError:
-        _SETUPTOOLS_INSTALLED = False
-
-    if compat.PY3:
-        google_api_minimum_version = '1.4.1'
-    else:
-        google_api_minimum_version = '1.2.0'
-
-    if _SETUPTOOLS_INSTALLED:
-        try:
-            try:
-                from googleapiclient.discovery import build  # noqa
-                from googleapiclient.errors import HttpError  # noqa
-            except:
-                from apiclient.discovery import build  # noqa
-                from apiclient.errors import HttpError  # noqa
-
-            from oauth2client.client import OAuth2WebServerFlow  # noqa
-            from oauth2client.client import AccessTokenRefreshError  # noqa
-
-            from oauth2client.file import Storage  # noqa
-            from oauth2client.tools import run_flow  # noqa
-            _GOOGLE_API_CLIENT_INSTALLED = True
-            _GOOGLE_API_CLIENT_VERSION = pkg_resources.get_distribution(
-                'google-api-python-client').version
-
-            if (StrictVersion(_GOOGLE_API_CLIENT_VERSION) >=
-                    StrictVersion(google_api_minimum_version)):
-                _GOOGLE_API_CLIENT_VALID_VERSION = True
-
-        except ImportError:
-            _GOOGLE_API_CLIENT_INSTALLED = False
-
-        try:
-            import httplib2  # noqa
-            _HTTPLIB2_INSTALLED = True
-        except ImportError:
-            _HTTPLIB2_INSTALLED = False
-
-    if not _SETUPTOOLS_INSTALLED:
         raise ImportError('Could not import pkg_resources (setuptools).')
 
-    if not _GOOGLE_API_CLIENT_INSTALLED:
-        raise ImportError('Could not import Google API Client.')
-
-    if not _GOOGLE_API_CLIENT_VALID_VERSION:
-        raise ImportError("pandas requires google-api-python-client >= {0} "
-                          "for Google BigQuery support, "
-                          "current version {1}"
-                          .format(google_api_minimum_version,
-                                  _GOOGLE_API_CLIENT_VERSION))
-
-    if not _HTTPLIB2_INSTALLED:
-        raise ImportError(
-            "pandas requires httplib2 for Google BigQuery support")
-
-    # Bug fix for https://github.com/pandas-dev/pandas/issues/12572
-    # We need to know that a supported version of oauth2client is installed
-    # Test that either of the following is installed:
-    # - SignedJwtAssertionCredentials from oauth2client.client
-    # - ServiceAccountCredentials from oauth2client.service_account
-    # SignedJwtAssertionCredentials is available in oauthclient < 2.0.0
-    # ServiceAccountCredentials is available in oauthclient >= 2.0.0
-    oauth2client_v1 = True
-    oauth2client_v2 = True
-
-    try:
-        from oauth2client.client import SignedJwtAssertionCredentials  # noqa
-    except ImportError:
-        oauth2client_v1 = False
-
-    try:
-        from oauth2client.service_account import ServiceAccountCredentials  # noqa
-    except ImportError:
-        oauth2client_v2 = False
-
-    if not oauth2client_v1 and not oauth2client_v2:
-        raise ImportError("Missing oauth2client required for BigQuery "
-                          "service account support")
+    gbq._test_google_api_imports()
 
 
 def _setup_common():
     try:
         _test_imports()
     except (ImportError, NotImplementedError) as import_exception:
-        pytest.skip(import_exception)
+        pytest.skip(str(import_exception))
 
     if _in_travis_environment():
         logging.getLogger('oauth2client').setLevel(logging.ERROR)
@@ -185,25 +98,17 @@ def _setup_common():
 def _check_if_can_get_correct_default_credentials():
     # Checks if "Application Default Credentials" can be fetched
     # from the environment the tests are running in.
-    # See Issue #13577
+    # See https://github.com/pandas-dev/pandas/issues/13577
 
-    import httplib2
+    import google.auth
+    from google.auth.exceptions import DefaultCredentialsError
+
     try:
-        from googleapiclient.discovery import build
-    except ImportError:
-        from apiclient.discovery import build
-    try:
-        from oauth2client.client import GoogleCredentials
-        credentials = GoogleCredentials.get_application_default()
-        http = httplib2.Http()
-        http = credentials.authorize(http)
-        bigquery_service = build('bigquery', 'v2', http=http)
-        jobs = bigquery_service.jobs()
-        job_data = {'configuration': {'query': {'query': 'SELECT 1'}}}
-        jobs.insert(projectId=_get_project_id(), body=job_data).execute()
-        return True
-    except:
+        credentials, _ = google.auth.default(scopes=[gbq.GbqConnector.scope])
+    except (DefaultCredentialsError, IOError):
         return False
+
+    return gbq._try_credentials(_get_project_id(), credentials) is not None
 
 
 def clean_gbq_environment(dataset_prefix, private_key=None):
@@ -219,17 +124,31 @@ def clean_gbq_environment(dataset_prefix, private_key=None):
                 if dataset_id in all_datasets:
                     table = gbq._Table(_get_project_id(), dataset_id,
                                        private_key=private_key)
+
+                    # Table listing is eventually consistent, so loop until
+                    # all tables no longer appear (max 30 seconds).
+                    table_retry = 30
                     all_tables = dataset.tables(dataset_id)
-                    for table_id in all_tables:
-                        table.delete(table_id)
+                    while all_tables and table_retry > 0:
+                        for table_id in all_tables:
+                            try:
+                                table.delete(table_id)
+                            except gbq.NotFoundException:
+                                pass
+                        sleep(1)
+                        table_retry = table_retry - 1
+                        all_tables = dataset.tables(dataset_id)
 
                     dataset.delete(dataset_id)
             retry = 0
         except gbq.GenericGBQException as ex:
-            # Build in retry logic to work around the following error :
+            # Build in retry logic to work around the following errors :
             # An internal error occurred and the request could not be...
-            if 'An internal error occurred' in ex.message and retry > 0:
-                pass
+            # Dataset ... is still in use
+            error_message = str(ex).lower()
+            if ('an internal error occurred' in error_message or
+                    'still in use' in error_message) and retry > 0:
+                sleep(30)
             else:
                 raise ex
 
@@ -264,14 +183,15 @@ class TestGBQConnectorIntegrationWithLocalUserAccountAuth(object):
         _skip_if_no_project_id()
         _skip_local_auth_if_in_travis_env()
 
-        self.sut = gbq.GbqConnector(_get_project_id())
+        self.sut = gbq.GbqConnector(
+            _get_project_id(), auth_local_webserver=True)
 
     def test_should_be_able_to_make_a_connector(self):
         assert self.sut is not None, 'Could not create a GbqConnector'
 
     def test_should_be_able_to_get_valid_credentials(self):
         credentials = self.sut.get_credentials()
-        assert credentials.invalid != 'Returned credentials invalid'
+        assert credentials.valid
 
     def test_should_be_able_to_get_a_bigquery_service(self):
         bigquery_service = self.sut.get_service()
@@ -287,18 +207,35 @@ class TestGBQConnectorIntegrationWithLocalUserAccountAuth(object):
 
     def test_get_application_default_credentials_does_not_throw_error(self):
         if _check_if_can_get_correct_default_credentials():
-            pytest.skip("Can get default_credentials "
-                        "from the environment!")
-        credentials = self.sut.get_application_default_credentials()
+            # Can get real credentials, so mock it out to fail.
+            import mock
+            from google.auth.exceptions import DefaultCredentialsError
+            with mock.patch('google.auth.default',
+                            side_effect=DefaultCredentialsError()):
+                credentials = self.sut.get_application_default_credentials()
+        else:
+            credentials = self.sut.get_application_default_credentials()
         assert credentials is None
 
     def test_get_application_default_credentials_returns_credentials(self):
         if not _check_if_can_get_correct_default_credentials():
             pytest.skip("Cannot get default_credentials "
                         "from the environment!")
-        from oauth2client.client import GoogleCredentials
+        from google.auth.credentials import Credentials
         credentials = self.sut.get_application_default_credentials()
-        assert isinstance(credentials, GoogleCredentials)
+        assert isinstance(credentials, Credentials)
+
+    def test_get_user_account_credentials_bad_file_returns_credentials(self):
+        import mock
+        from google.auth.credentials import Credentials
+        with mock.patch('__main__.open', side_effect=IOError()):
+            credentials = self.sut.get_user_account_credentials()
+        assert isinstance(credentials, Credentials)
+
+    def test_get_user_account_credentials_returns_credentials(self):
+        from google.auth.credentials import Credentials
+        credentials = self.sut.get_user_account_credentials()
+        assert isinstance(credentials, Credentials)
 
 
 class TestGBQConnectorIntegrationWithServiceAccountKeyPath(object):
@@ -317,7 +254,7 @@ class TestGBQConnectorIntegrationWithServiceAccountKeyPath(object):
 
     def test_should_be_able_to_get_valid_credentials(self):
         credentials = self.sut.get_credentials()
-        assert not credentials.invalid
+        assert credentials.valid
 
     def test_should_be_able_to_get_a_bigquery_service(self):
         bigquery_service = self.sut.get_service()
@@ -348,7 +285,7 @@ class TestGBQConnectorIntegrationWithServiceAccountKeyContents(object):
 
     def test_should_be_able_to_get_valid_credentials(self):
         credentials = self.sut.get_credentials()
-        assert not credentials.invalid
+        assert credentials.valid
 
     def test_should_be_able_to_get_a_bigquery_service(self):
         bigquery_service = self.sut.get_service()

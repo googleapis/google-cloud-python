@@ -21,19 +21,18 @@ def _check_google_client_version():
     except ImportError:
         raise ImportError('Could not import pkg_resources (setuptools).')
 
-    if compat.PY3:
-        google_api_minimum_version = '1.4.1'
-    else:
-        google_api_minimum_version = '1.2.0'
+    # Version 1.6.0 is the first version to support google-auth.
+    # https://github.com/google/google-api-python-client/blob/master/CHANGELOG
+    google_api_minimum_version = '1.6.0'
 
     _GOOGLE_API_CLIENT_VERSION = pkg_resources.get_distribution(
         'google-api-python-client').version
 
     if (StrictVersion(_GOOGLE_API_CLIENT_VERSION) <
             StrictVersion(google_api_minimum_version)):
-        raise ImportError("pandas requires google-api-python-client >= {0} "
-                          "for Google BigQuery support, "
-                          "current version {1}"
+        raise ImportError('pandas requires google-api-python-client >= {0} '
+                          'for Google BigQuery support, '
+                          'current version {1}'
                           .format(google_api_minimum_version,
                                   _GOOGLE_API_CLIENT_VERSION))
 
@@ -42,19 +41,64 @@ def _test_google_api_imports():
 
     try:
         import httplib2  # noqa
-        try:
-            from googleapiclient.discovery import build  # noqa
-            from googleapiclient.errors import HttpError  # noqa
-        except:
-            from apiclient.discovery import build  # noqa
-            from apiclient.errors import HttpError  # noqa
-        from oauth2client.client import AccessTokenRefreshError  # noqa
-        from oauth2client.client import OAuth2WebServerFlow  # noqa
-        from oauth2client.file import Storage  # noqa
-        from oauth2client.tools import run_flow, argparser  # noqa
-    except ImportError as e:
-        raise ImportError("Missing module required for Google BigQuery "
-                          "support: {0}".format(str(e)))
+    except ImportError as ex:
+        raise ImportError(
+            'pandas requires httplib2 for Google BigQuery support: '
+            '{0}'.format(ex))
+
+    try:
+        from google_auth_oauthlib.flow import InstalledAppFlow  # noqa
+    except ImportError as ex:
+        raise ImportError(
+            'pandas requires google-auth-oauthlib for Google BigQuery '
+            'support: {0}'.format(ex))
+
+    try:
+        from google_auth_httplib2 import AuthorizedHttp  # noqa
+        from google_auth_httplib2 import Request  # noqa
+    except ImportError as ex:
+        raise ImportError(
+            'pandas requires google-auth-httplib2 for Google BigQuery '
+            'support: {0}'.format(ex))
+
+    try:
+        from googleapiclient.discovery import build  # noqa
+        from googleapiclient.errors import HttpError  # noqa
+    except ImportError as ex:
+        raise ImportError(
+            "pandas requires google-api-python-client for Google BigQuery "
+            "support: {0}".format(ex))
+
+    try:
+        import google.auth  # noqa
+    except ImportError as ex:
+        raise ImportError(
+            "pandas requires google-auth for Google BigQuery support: "
+            "{0}".format(ex))
+
+    _check_google_client_version()
+
+
+def _try_credentials(project_id, credentials):
+    import httplib2
+    from googleapiclient.discovery import build
+    import googleapiclient.errors
+    from google_auth_httplib2 import AuthorizedHttp
+
+    if credentials is None:
+        return None
+
+    http = httplib2.Http()
+    try:
+        authed_http = AuthorizedHttp(credentials, http=http)
+        bigquery_service = build('bigquery', 'v2', http=authed_http)
+        # Check if the application has rights to the BigQuery project
+        jobs = bigquery_service.jobs()
+        job_data = {'configuration': {'query': {'query': 'SELECT 1'}}}
+        jobs.insert(projectId=project_id, body=job_data).execute()
+        return credentials
+    except googleapiclient.errors.Error:
+        return None
 
 
 class InvalidPrivateKeyFormat(ValueError):
@@ -147,13 +191,13 @@ class GbqConnector(object):
     scope = 'https://www.googleapis.com/auth/bigquery'
 
     def __init__(self, project_id, reauth=False, verbose=False,
-                 private_key=None, dialect='legacy'):
-        _check_google_client_version()
-        _test_google_api_imports()
+                 private_key=None, auth_local_webserver=False,
+                 dialect='legacy'):
         self.project_id = project_id
         self.reauth = reauth
         self.verbose = verbose
         self.private_key = private_key
+        self.auth_local_webserver = auth_local_webserver
         self.dialect = dialect
         self.credentials = self.get_credentials()
         self.service = self.get_service()
@@ -188,78 +232,134 @@ class GbqConnector(object):
             from the environment. Or, the retrieved credentials do not
             have access to the project (self.project_id) on BigQuery.
         """
+        import google.auth
+        from google.auth.exceptions import DefaultCredentialsError
+
+        try:
+            credentials, _ = google.auth.default(scopes=[self.scope])
+        except (DefaultCredentialsError, IOError):
+            return None
+
+        return _try_credentials(self.project_id, credentials)
+
+    def load_user_account_credentials(self):
+        """
+        Loads user account credentials from a local file.
+
+        .. versionadded 0.2.0
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        - GoogleCredentials,
+            If the credentials can loaded. The retrieved credentials should
+            also have access to the project (self.project_id) on BigQuery.
+        - OR None,
+            If credentials can not be loaded from a file. Or, the retrieved
+            credentials do not have access to the project (self.project_id)
+            on BigQuery.
+        """
         import httplib2
-        try:
-            from googleapiclient.discovery import build
-        except ImportError:
-            from apiclient.discovery import build
-        try:
-            from oauth2client.client import GoogleCredentials
-        except ImportError:
-            return None
+        from google_auth_httplib2 import Request
+        from google.oauth2.credentials import Credentials
 
         try:
-            credentials = GoogleCredentials.get_application_default()
-        except:
+            with open('bigquery_credentials.dat') as credentials_file:
+                credentials_json = json.load(credentials_file)
+        except (IOError, ValueError):
             return None
 
+        credentials = Credentials(
+            token=credentials_json.get('access_token'),
+            refresh_token=credentials_json.get('refresh_token'),
+            id_token=credentials_json.get('id_token'),
+            token_uri=credentials_json.get('token_uri'),
+            client_id=credentials_json.get('client_id'),
+            client_secret=credentials_json.get('client_secret'),
+            scopes=credentials_json.get('scopes'))
+
+        # Refresh the token before trying to use it.
         http = httplib2.Http()
+        request = Request(http)
+        credentials.refresh(request)
+
+        return _try_credentials(self.project_id, credentials)
+
+    def save_user_account_credentials(self, credentials):
+        """
+        Saves user account credentials to a local file.
+
+        .. versionadded 0.2.0
+        """
         try:
-            http = credentials.authorize(http)
-            bigquery_service = build('bigquery', 'v2', http=http)
-            # Check if the application has rights to the BigQuery project
-            jobs = bigquery_service.jobs()
-            job_data = {'configuration': {'query': {'query': 'SELECT 1'}}}
-            jobs.insert(projectId=self.project_id, body=job_data).execute()
-            return credentials
-        except:
-            return None
+            with open('bigquery_credentials.dat', 'w') as credentials_file:
+                credentials_json = {
+                    'refresh_token': credentials.refresh_token,
+                    'id_token': credentials.id_token,
+                    'token_uri': credentials.token_uri,
+                    'client_id': credentials.client_id,
+                    'client_secret': credentials.client_secret,
+                    'scopes': credentials.scopes,
+                }
+                json.dump(credentials_json, credentials_file)
+        except IOError:
+            self._print('Unable to save credentials.')
 
     def get_user_account_credentials(self):
-        from oauth2client.client import OAuth2WebServerFlow
-        from oauth2client.file import Storage
-        from oauth2client.tools import run_flow, argparser
+        """Gets user account credentials.
 
-        flow = OAuth2WebServerFlow(
-            client_id=('495642085510-k0tmvj2m941jhre2nbqka17vqpjfddtd'
-                       '.apps.googleusercontent.com'),
-            client_secret='kOc9wMptUtxkcIFbtZCcrEAc',
-            scope=self.scope,
-            redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+        This method authenticates using user credentials, either loading saved
+        credentials from a file or by going through the OAuth flow.
 
-        storage = Storage('bigquery_credentials.dat')
-        credentials = storage.get()
+        Parameters
+        ----------
+        None
 
-        if credentials is None or credentials.invalid or self.reauth:
-            credentials = run_flow(flow, storage, argparser.parse_args())
+        Returns
+        -------
+        GoogleCredentials : credentials
+            Credentials for the user with BigQuery access.
+        """
+        from google_auth_oauthlib.flow import InstalledAppFlow
+        from oauthlib.oauth2.rfc6749.errors import OAuth2Error
+
+        credentials = self.load_user_account_credentials()
+
+        client_config = {
+            'installed': {
+                'client_id': ('495642085510-k0tmvj2m941jhre2nbqka17vqpjfddtd'
+                              '.apps.googleusercontent.com'),
+                'client_secret': 'kOc9wMptUtxkcIFbtZCcrEAc',
+                'redirect_uris': ['urn:ietf:wg:oauth:2.0:oob'],
+                'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
+                'token_uri': 'https://accounts.google.com/o/oauth2/token',
+            }
+        }
+
+        if credentials is None or self.reauth:
+            app_flow = InstalledAppFlow.from_client_config(
+                client_config, scopes=[self.scope])
+
+            try:
+                if self.auth_local_webserver:
+                    credentials = app_flow.run_local_server()
+                else:
+                    credentials = app_flow.run_console()
+            except OAuth2Error as ex:
+                raise AccessDenied(
+                    "Unable to get valid credentials: {0}".format(ex))
+
+            self.save_user_account_credentials(credentials)
 
         return credentials
 
     def get_service_account_credentials(self):
-        # Bug fix for https://github.com/pandas-dev/pandas/issues/12572
-        # We need to know that a supported version of oauth2client is installed
-        # Test that either of the following is installed:
-        # - SignedJwtAssertionCredentials from oauth2client.client
-        # - ServiceAccountCredentials from oauth2client.service_account
-        # SignedJwtAssertionCredentials is available in oauthclient < 2.0.0
-        # ServiceAccountCredentials is available in oauthclient >= 2.0.0
-        oauth2client_v1 = True
-        oauth2client_v2 = True
-
-        try:
-            from oauth2client.client import SignedJwtAssertionCredentials
-        except ImportError:
-            oauth2client_v1 = False
-
-        try:
-            from oauth2client.service_account import ServiceAccountCredentials
-        except ImportError:
-            oauth2client_v2 = False
-
-        if not oauth2client_v1 and not oauth2client_v2:
-            raise ImportError("Missing oauth2client required for BigQuery "
-                              "service account support")
-
+        import httplib2
+        from google_auth_httplib2 import Request
+        from google.oauth2.service_account import Credentials
         from os.path import isfile
 
         try:
@@ -277,16 +377,15 @@ class GbqConnector(object):
                 json_key['private_key'] = bytes(
                     json_key['private_key'], 'UTF-8')
 
-            if oauth2client_v1:
-                return SignedJwtAssertionCredentials(
-                    json_key['client_email'],
-                    json_key['private_key'],
-                    self.scope,
-                )
-            else:
-                return ServiceAccountCredentials.from_json_keyfile_dict(
-                    json_key,
-                    self.scope)
+            credentials = Credentials.from_service_account_info(json_key)
+            credentials = credentials.with_scopes([self.scope])
+
+            # Refresh the token before trying to use it.
+            http = httplib2.Http()
+            request = Request(http)
+            credentials.refresh(request)
+
+            return credentials
         except (KeyError, ValueError, TypeError, AttributeError):
             raise InvalidPrivateKeyFormat(
                 "Private key is missing or invalid. It should be service "
@@ -324,14 +423,13 @@ class GbqConnector(object):
 
     def get_service(self):
         import httplib2
-        try:
-            from googleapiclient.discovery import build
-        except:
-            from apiclient.discovery import build
+        from google_auth_httplib2 import AuthorizedHttp
+        from googleapiclient.discovery import build
 
         http = httplib2.Http()
-        http = self.credentials.authorize(http)
-        bigquery_service = build('bigquery', 'v2', http=http)
+        authed_http = AuthorizedHttp(
+            self.credentials, http=http)
+        bigquery_service = build('bigquery', 'v2', http=authed_http)
 
         return bigquery_service
 
@@ -380,9 +478,7 @@ class GbqConnector(object):
             from googleapiclient.errors import HttpError
         except:
             from apiclient.errors import HttpError
-        from oauth2client.client import AccessTokenRefreshError
-
-        _check_google_client_version()
+        from google.auth.exceptions import RefreshError
 
         job_collection = self.service.jobs()
 
@@ -419,7 +515,7 @@ class GbqConnector(object):
             query_reply = job_collection.insert(
                 projectId=self.project_id, body=job_data).execute()
             self._print('ok.\nQuery running...')
-        except (AccessTokenRefreshError, ValueError):
+        except (RefreshError, ValueError):
             if self.private_key:
                 raise AccessDenied(
                     "The service account credentials are not valid")
@@ -711,8 +807,8 @@ def _parse_entry(field_value, field_type):
 
 
 def read_gbq(query, project_id=None, index_col=None, col_order=None,
-             reauth=False, verbose=True, private_key=None, dialect='legacy',
-             **kwargs):
+             reauth=False, verbose=True, private_key=None,
+             auth_local_webserver=False, dialect='legacy', **kwargs):
     r"""Load data from Google BigQuery.
 
     The main method a user calls to execute a Query in Google BigQuery
@@ -756,6 +852,15 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
         Service account private key in JSON format. Can be file path
         or string contents. This is useful for remote server
         authentication (eg. jupyter iPython notebook on remote host)
+    auth_local_webserver : boolean, default False
+        Use the [local webserver flow] instead of the [console flow] when
+        getting user credentials.
+
+        .. [local webserver flow]
+            http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_local_server
+        .. [console flow]
+            http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_console
+        .. versionadded:: 0.2.0
 
     dialect : {'legacy', 'standard'}, default 'legacy'
         'legacy' : Use BigQuery's legacy SQL dialect.
@@ -780,15 +885,17 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
 
     """
 
+    _test_google_api_imports()
+
     if not project_id:
         raise TypeError("Missing required parameter: project_id")
 
     if dialect not in ('legacy', 'standard'):
         raise ValueError("'{0}' is not valid for dialect".format(dialect))
 
-    connector = GbqConnector(project_id, reauth=reauth, verbose=verbose,
-                             private_key=private_key,
-                             dialect=dialect)
+    connector = GbqConnector(
+        project_id, reauth=reauth, verbose=verbose, private_key=private_key,
+        dialect=dialect, auth_local_webserver=auth_local_webserver)
     schema, pages = connector.run_query(query, **kwargs)
     dataframe_list = []
     while len(pages) > 0:
@@ -838,7 +945,8 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
 
 
 def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
-           verbose=True, reauth=False, if_exists='fail', private_key=None):
+           verbose=True, reauth=False, if_exists='fail', private_key=None,
+           auth_local_webserver=False):
     """Write a DataFrame to a Google BigQuery table.
 
     The main method a user calls to export pandas DataFrame contents to
@@ -887,7 +995,18 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
         Service account private key in JSON format. Can be file path
         or string contents. This is useful for remote server
         authentication (eg. jupyter iPython notebook on remote host)
+    auth_local_webserver : boolean, default False
+        Use the [local webserver flow] instead of the [console flow] when
+        getting user credentials.
+
+        .. [local webserver flow]
+            http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_local_server
+        .. [console flow]
+            http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_console
+        .. versionadded:: 0.2.0
     """
+
+    _test_google_api_imports()
 
     if if_exists not in ('fail', 'replace', 'append'):
         raise ValueError("'{0}' is not valid for if_exists".format(if_exists))
@@ -896,8 +1015,9 @@ def to_gbq(dataframe, destination_table, project_id, chunksize=10000,
         raise NotFoundException(
             "Invalid Table Name. Should be of the form 'datasetId.tableId' ")
 
-    connector = GbqConnector(project_id, reauth=reauth, verbose=verbose,
-                             private_key=private_key)
+    connector = GbqConnector(
+        project_id, reauth=reauth, verbose=verbose, private_key=private_key,
+        auth_local_webserver=auth_local_webserver)
     dataset_id, table_id = destination_table.rsplit('.', 1)
 
     table = _Table(project_id, dataset_id, reauth=reauth,
@@ -1127,6 +1247,9 @@ class _Dataset(GbqConnector):
                     pageToken=next_page_token).execute()
 
                 dataset_response = list_dataset_response.get('datasets')
+                if dataset_response is None:
+                    dataset_response = []
+
                 next_page_token = list_dataset_response.get('nextPageToken')
 
                 if dataset_response is None:
