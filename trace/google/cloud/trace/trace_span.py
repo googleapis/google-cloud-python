@@ -14,29 +14,10 @@
 
 """TraceSpan for sending traces to the Stackdriver Trace API."""
 
+from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
 from google.protobuf.timestamp_pb2 import Timestamp
 
 import random
-
-
-class SpanKind(object):
-    """Type of span. Can be used to specify additional relationships between spans
-    in addition to a parent/child relationship.
-
-    :type SPAN_KIND_UNSPECIFIED: int
-    :param SPAN_KIND_UNSPECIFIED: Unspecified.
-
-    :type RPC_SERVER: int
-    :param RPC_SERVER: Indicates that the span covers server-side handling of an RPC or other
-                       remote network request.
-
-    :type RPC_CLIENT: int
-    :param RPC_CLIENT: Indicates that the span covers the client-side wrapper around an RPC or
-                       other remote request.
-    """
-    SPAN_KIND_UNSPECIFIED = 0
-    RPC_SERVER = 1
-    RPC_CLIENT = 2
 
 
 class TraceSpan(object):
@@ -75,7 +56,7 @@ class TraceSpan(object):
     def __init__(
             self,
             name,
-            kind=SpanKind.SPAN_KIND_UNSPECIFIED,
+            kind=Enum.SpanKind.SPAN_KIND_UNSPECIFIED,
             parent_span_id=None,
             labels=None,
             span_id=None):

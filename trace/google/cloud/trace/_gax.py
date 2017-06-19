@@ -115,20 +115,6 @@ class _TraceAPI(object):
         
         :type order_by: str
         :param order_by: (Optional) Field used to sort the returned traces.
-            Can be one of the following:
-
-            *   ``trace_id``
-            *   ``name`` (``name`` field of root span in the trace)
-            *   ``duration`` (difference between ``end_time`` and ``start_time`` fields of
-            ::
-
-                 the root span)
-            *   ``start`` (``start_time`` field of the root span)
-
-            Descending order can be specified by appending ``desc`` to the sort field
-            (for example, ``name desc``).
-
-            Only one sort field is permitted.
 
         :type options: :class:`google.gax.CallOptions`
         :param options: Overrides the default settings for this call.

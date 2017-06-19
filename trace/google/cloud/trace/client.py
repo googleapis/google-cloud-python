@@ -19,36 +19,8 @@ from google.cloud.trace.trace import Trace
 from google.cloud.client import ClientWithProject
 from google.protobuf.timestamp_pb2 import Timestamp
 
+from datetime import datetime
 import math
-
-
-class ViewType(object):
-    """Type of data returned for traces in the list.
-    
-    See
-    https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
-    cloudtrace.v1#google.devtools.cloudtrace.v1.ListTracesRequest.ViewType
-
-    :type VIEW_TYPE_UNSPECIFIED: int
-    :param VIEW_TYPE_UNSPECIFIED: Default is MINIMAL if unspecified.
-
-    :type MINIMAL: int
-    :param MINIMAL: Minimal view of the trace record that contains only the
-                    project and trace IDs.
-
-    :type ROOTSPAN: int
-    :param ROOTSPAN: Root span view of the trace record that returns the root spans
-                     along with the minimal trace data.
-
-    :type COMPLETE: int
-    :param COMPLETE: Complete view of the trace record that contains the actual
-                     trace data. This is equivalent to calling the REST get or RPC
-                     GetTrace method using the ID of each listed trace.
-    """
-    VIEW_TYPE_UNSPECIFIED = 0
-    MINIMAL = 1
-    ROOTSPAN = 2
-    COMPLETE = 3
 
 
 class Client(ClientWithProject):
@@ -180,20 +152,6 @@ class Client(ClientWithProject):
         
         :type order_by: str
         :param order_by: (Optional) Field used to sort the returned traces.
-            Can be one of the following:
-
-            *   ``trace_id``
-            *   ``name`` (``name`` field of root span in the trace)
-            *   ``duration`` (difference between ``end_time`` and ``start_time`` fields of
-            ::
-
-                 the root span)
-            *   ``start`` (``start_time`` field of the root span)
-
-            Descending order can be specified by appending ``desc`` to the sort field
-            (for example, ``name desc``).
-
-            Only one sort field is permitted.
 
         :type options: :class:`google.gax.CallOptions`
         :param options: Overrides the default settings for this call.
