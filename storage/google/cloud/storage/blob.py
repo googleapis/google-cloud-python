@@ -407,23 +407,19 @@ class Blob(_PropertyMixin):
         :rtype: str
         :returns: The download URL for the current blob.
         """
+        name_value_pairs = []
         if self.media_link is None:
             base_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
-            scheme, netloc, path, query, frag = urlsplit(base_url)
-            query = parse_qsl(query)
-            # Only add `generation' for synthesized URLs: 'mediaLink' from
-            # server presumably already encodes it.
             if self.generation is not None:
-                query.append(('generation', '{:d}'.format(self.generation)))
+                name_value_pairs.append(
+                    ('generation', '{:d}'.format(self.generation)))
         else:
-            scheme, netloc, path, query, frag = urlsplit(self.media_link)
-            query = parse_qsl(query)
+            base_url = self.media_link
 
         if self.user_project is not None:
-            query.append(('userProject', self.user_project))
+            name_value_pairs.append(('userProject', self.user_project))
 
-        query = urlencode(query)
-        return urlunsplit((scheme, netloc, path, query, frag))
+        return _add_query_parameters(base_url, name_value_pairs)
 
     def _do_download(self, transport, file_obj, download_url, headers):
         """Perform a download without any error handling.
@@ -670,12 +666,14 @@ class Blob(_PropertyMixin):
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
 
-        upload_url = _MULTIPART_URL_TEMPLATE.format(
+        base_url = _MULTIPART_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
+        name_value_pairs = []
 
         if self.user_project is not None:
-            upload_url += '&userProject={}'.format(self.user_project)
+            name_value_pairs.append(('userProject', self.user_project))
 
+        upload_url = _add_query_parameters(base_url, name_value_pairs)
         upload = MultipartUpload(upload_url, headers=headers)
 
         if num_retries is not None:
@@ -746,12 +744,14 @@ class Blob(_PropertyMixin):
         if extra_headers is not None:
             headers.update(extra_headers)
 
-        upload_url = _RESUMABLE_URL_TEMPLATE.format(
+        base_url = _RESUMABLE_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
+        name_value_pairs = []
 
         if self.user_project is not None:
-            upload_url += '&userProject={}'.format(self.user_project)
+            name_value_pairs.append(('userProject', self.user_project))
 
+        upload_url = _add_query_parameters(base_url, name_value_pairs)
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
 
         if num_retries is not None:
@@ -1688,3 +1688,24 @@ def _raise_from_invalid_response(error, error_info=None):
     faux_response = httplib2.Response({'status': response.status_code})
     raise make_exception(faux_response, response.content,
                          error_info=error_info, use_json=False)
+
+
+def _add_query_parameters(base_url, name_value_pairs):
+    """Add one query parameter to a base URL.
+
+    :type base_url: string
+    :param base_url: Base URL (may already contain query parameters)
+
+    :type name_value_pairs: list of (string, string) tuples.
+    :param name_value_pairs: Names and values of the query parameters to add
+
+    :rtype: string
+    :returns: URL with additional query strings appended.
+    """
+    if len(name_value_pairs) == 0:
+        return base_url
+
+    scheme, netloc, path, query, frag = urlsplit(base_url)
+    query = parse_qsl(query)
+    query.extend(name_value_pairs)
+    return urlunsplit((scheme, netloc, path, urlencode(query), frag))

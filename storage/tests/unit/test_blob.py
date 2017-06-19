@@ -2443,6 +2443,37 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         self.assertEqual(exc_info.exception.errors, [])
 
 
+class Test__add_query_parameters(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage.blob import _add_query_parameters
+
+        return _add_query_parameters(*args, **kwargs)
+
+    def test_w_empty_list(self):
+        BASE_URL = 'https://test.example.com/base'
+        self.assertEqual(self._call_fut(BASE_URL, []), BASE_URL)
+
+    def test_wo_existing_qs(self):
+        BASE_URL = 'https://test.example.com/base'
+        NV_LIST = [('one', 'One'), ('two', 'Two')]
+        expected = '&'.join([
+            '{}={}'.format(name, value) for name, value in NV_LIST])
+        self.assertEqual(
+            self._call_fut(BASE_URL, NV_LIST),
+            '{}?{}'.format(BASE_URL, expected))
+
+    def test_w_existing_qs(self):
+        BASE_URL = 'https://test.example.com/base?one=Three'
+        NV_LIST = [('one', 'One'), ('two', 'Two')]
+        expected = '&'.join([
+            '{}={}'.format(name, value) for name, value in NV_LIST])
+        self.assertEqual(
+            self._call_fut(BASE_URL, NV_LIST),
+            '{}&{}'.format(BASE_URL, expected))
+
+
 class _Connection(object):
 
     API_BASE_URL = 'http://example.com'
