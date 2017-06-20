@@ -14,8 +14,6 @@
 
 from __future__ import absolute_import
 
-import os
-
 import nox
 
 
@@ -43,15 +41,21 @@ def unit_tests(session, python_version):
 
 @nox.session
 def lint(session):
-    """Run flake8.
+    """Run linters.
 
-    Returns a failure if flake8 finds linting errors or sufficiently
+    Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8')
+    session.install('flake8', 'pylint', 'gcp-devrel-py-tools')
     session.install('.')
     session.run('flake8', 'google/cloud/core')
+    session.run(
+        'gcp-devrel-py-tools', 'run-pylint',
+        '--library-filesets', 'google',
+        '--test-filesets', 'tests',
+        # Temporarily allow this to fail.
+        success_codes=range(0, 100))
 
 
 @nox.session
