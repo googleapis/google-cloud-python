@@ -22,6 +22,8 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from datetime import datetime
 import math
 
+_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
+
 
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
@@ -190,9 +192,14 @@ def _datetime_to_timestamp_protobuf(datetime_str):
                      e.g. datetime.now().isoformat()
 
     :rtype: :class:`~google.protobuf.timestamp_pb2.Timestamp`
-    :return: A Timestamp protobuf instance.
+    :returns: A Timestamp protobuf instance.
     """
-    datetime_parsed = datetime.strptime(datetime_str, '%Y-%m-%dT%H:%M:%S.%f')
+    try:
+        datetime_parsed = datetime.strptime(datetime_str, _DATETIME_FORMAT)
+    except ValueError:
+        return 'Time data {} does not match the format {}.'\
+            .format(datetime_str, _DATETIME_FORMAT)
+
     timestamp = datetime_parsed.timestamp()
     parts = divmod(timestamp, 1)
     seconds = int(parts[0])

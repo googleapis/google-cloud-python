@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pkg_resources import get_distribution
-__version__ = get_distribution('google-cloud-trace').version
+from google.cloud.trace._gax import _TraceAPI
+from google.cloud.trace.client import Client
+from google.cloud.trace.trace import Trace
+from google.cloud.trace.trace_span import TraceSpan
 
-ASCENDING = 'timestamp asc'
-"""Query string to order by ascending timestamps."""
-DESCENDING = 'timestamp desc'
-"""Query string to order by decending timestamps."""
 
-__all__ = ['__version__', 'ASCENDING', 'Client', 'DESCENDING']
+__all__ = ['_TraceAPI', 'Client', 'Trace', 'TraceSpan']

@@ -18,6 +18,8 @@ from google.cloud.trace.trace_span import TraceSpan
 from google.cloud.trace.trace_span import format_span_json
 from subprocess import check_output
 
+_GENERATE_TRACE_ID_COMMAND = 'uuidgen | sed s/-//g'
+
 
 class Trace(object):
     """A trace describes how long it takes for an application to perform
@@ -30,7 +32,7 @@ class Trace(object):
     
     :type client: :class:`~google.cloud.trace.client.Client`
     :param client: A client which holds the credentials and project configuration
-                  for the trace.
+                   for the trace.
     
     :type project_id: str
     :param project_id: (Optional) The project_id for the trace.
@@ -74,7 +76,7 @@ class Trace(object):
         :type name: str
         :param name: The name of the span.
         
-        :rtype: :class: `~google.cloud.trace.trace_span.TraceSpan`
+        :rtype: :class:`~google.cloud.trace.trace_span.TraceSpan`
         :returns: A TraceSpan to be added to the current Trace.
         """
         span = TraceSpan(name)
@@ -88,15 +90,18 @@ class Trace(object):
         https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
         cloudtrace.v1#google.devtools.cloudtrace.v1.TraceService.PatchTraces
         """
-        spans = [format_span_json(span) for span in self.spans]
+        spans_list = []
+        for root_span in self.spans:
+            span_tree = traverse_span_tree(root_span)
+            spans_list.extend(span_tree)
 
-        if len(spans) == 0:
+        if len(spans_list) == 0:
             return
 
         trace = {
             'projectId': self.project_id,
             'traceId': self.trace_id,
-            'spans': spans,
+            'spans': spans_list,
         }
 
         traces = {
@@ -109,13 +114,40 @@ class Trace(object):
             options=None)
 
 
+def traverse_span_tree(root_span):
+    """Helper to traverse the span tree in level order.
+
+    :rtype: :class:`~google.cloud.trace.trace_span.TraceSpan`
+    :param root_span: The root span in a span tree.
+
+    :rtype: list
+    :returns: A list of all the spans in a span tree.
+    """
+    span_list = []
+
+    if root_span is None:
+        return span_list
+
+    span_queue = []
+    span_queue.append(root_span)
+
+    while span_queue:
+        cur_span = span_queue.pop(0)
+        span_list.append(format_span_json(cur_span))
+
+        for child_span in cur_span.child_spans:
+            span_queue.append(child_span)
+
+    return span_list
+
+
 def generate_trace_id():
     """Generate a trace_id randomly.
 
     :rtype: str
-    :return: 32 digits randomly generated trace ID.
+    :returns: 32 digits randomly generated trace ID.
     """
-    trace_id = check_output('uuidgen | sed s/-//g', shell=True)\
+    trace_id = check_output(_GENERATE_TRACE_ID_COMMAND, shell=True)\
         .decode('utf-8')\
         .rstrip('\n')
     return trace_id

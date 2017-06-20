@@ -49,6 +49,14 @@ class TraceSpan(object):
                    Label keys must be less than 128 bytes.
                    Label values must be less than 16 kilobytes.
 
+    :type start_time: :class:`~datetime.datetime`
+    :param start_time: (Optional) Start of the time interval (inclusive) during which
+                       the trace data was collected from the application.
+
+    :type end_time: :class:`~datetime.datetime`
+    :param end_time: (Optional) End of the time interval (inclusive) during which
+                     the trace data was collected from the application.
+
     :type span_id: str
     :param span_id: Identifier for the span, unique within a trace.
     """
@@ -59,14 +67,33 @@ class TraceSpan(object):
             kind=Enum.SpanKind.SPAN_KIND_UNSPECIFIED,
             parent_span_id=None,
             labels=None,
+            start_time=None,
+            end_time=None,
             span_id=None):
         self.name = name
         self.kind = kind
         self.parent_span_id = parent_span_id
         self.labels = labels
+        self.start_time = start_time
+        self.end_time = end_time
 
         if span_id is None:
             self.span_id = self.generate_span_id()
+
+        self.child_spans = []
+
+    def span(self, name='child_span'):
+        """Create a child span for the current span and append it to the child spans list.
+
+        :type name: str
+        :param name: (Optional) The name of the child span.
+
+        :rtype: :class: `~google.cloud.trace.trace_span.TraceSpan`
+        :returns: A child TraceSpan to be added to the current span.
+        """
+        child_span = TraceSpan(name, parent_span_id=self.span_id)
+        self.child_spans.append(child_span)
+        return child_span
 
     def set_start_time(self):
         """Set the start time for a span."""
@@ -111,7 +138,7 @@ def format_span_json(span):
     :param span: A TraceSpan to be transferred to JSON format.
     
     :rtype: dict
-    :return: Formatted TraceSpan.
+    :returns: Formatted TraceSpan.
     """
     span_json = {
         'name': span.name,
