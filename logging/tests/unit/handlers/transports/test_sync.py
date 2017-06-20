@@ -36,6 +36,8 @@ class TestSyncHandler(unittest.TestCase):
         self.assertEqual(transport.logger.name, 'python_logger')
 
     def test_send(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
         client = _Client(self.PROJECT)
 
         stackdriver_logger_name = 'python'
@@ -45,23 +47,25 @@ class TestSyncHandler(unittest.TestCase):
         record = logging.LogRecord(python_logger_name, logging.INFO,
                                    None, None, message, None, None)
 
-        transport.send(record, message)
+        transport.send(record, message, _GLOBAL_RESOURCE)
         EXPECTED_STRUCT = {
             'message': message,
             'python_logger': python_logger_name,
         }
-        EXPECTED_SENT = (EXPECTED_STRUCT, 'INFO')
+        EXPECTED_SENT = (EXPECTED_STRUCT, 'INFO', _GLOBAL_RESOURCE, None)
         self.assertEqual(
             transport.logger.log_struct_called_with, EXPECTED_SENT)
 
 
 class _Logger(object):
+    from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
     def __init__(self, name):
         self.name = name
 
-    def log_struct(self, message, severity=None):
-        self.log_struct_called_with = (message, severity)
+    def log_struct(self, message, severity=None,
+                   resource=_GLOBAL_RESOURCE, labels=None):
+        self.log_struct_called_with = (message, severity, resource, labels)
 
 
 class _Client(object):

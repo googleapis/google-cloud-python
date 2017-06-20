@@ -18,7 +18,7 @@
 an ACL object under the hood, and you can interact with that using
 :func:`google.cloud.storage.bucket.Bucket.acl`:
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
     :start-after: [START client_bucket_acl]
     :end-before: [END client_bucket_acl]
 
@@ -49,21 +49,14 @@ And you are able to ``grant`` and ``revoke`` the following roles:
 You can use any of these like any other factory method (these happen to
 be :class:`_ACLEntity` factories):
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
    :start-after: [START acl_user_settings]
    :end-before: [END acl_user_settings]
-
-You can also chain these ``grant_*`` and ``revoke_*`` methods together
-for brevity:
-
-.. literalinclude:: storage_snippets.py
-   :start-after: [START acl_revoke_write]
-   :end-before: [END acl_revoke_write]
 
 After that, you can save any changes you make with the
 :func:`google.cloud.storage.acl.ACL.save` method:
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
    :start-after: [START acl_save]
    :end-before: [END acl_save]
 
@@ -71,14 +64,14 @@ You can alternatively save any existing :class:`google.cloud.storage.acl.ACL`
 object (whether it was created by a factory method or not) from a
 :class:`google.cloud.storage.bucket.Bucket`:
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
    :start-after: [START acl_save_bucket]
    :end-before: [END acl_save_bucket]
 
 To get the list of ``entity`` and ``role`` for each unique pair, the
 :class:`ACL` class is iterable:
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
    :start-after: [START acl_print]
    :end-before: [END acl_print]
 
@@ -195,7 +188,7 @@ class ACL(object):
         'bucketOwnerRead',
         'bucketOwnerFullControl',
     ])
-    """See:
+    """See
     https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
     """
 
@@ -205,6 +198,7 @@ class ACL(object):
     # as properties).
     reload_path = None
     save_path = None
+    user_project = None
 
     def __init__(self):
         self.entities = {}
@@ -412,10 +406,18 @@ class ACL(object):
         """
         path = self.reload_path
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
 
         self.entities.clear()
 
-        found = client._connection.api_request(method='GET', path=path)
+        found = client._connection.api_request(
+            method='GET',
+            path=path,
+            query_params=query_params,
+        )
         self.loaded = True
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
@@ -442,8 +444,12 @@ class ACL(object):
             acl = []
             query_params[self._PREDEFINED_QUERY_PARAM] = predefined
 
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = self.save_path
         client = self._require_client(client)
+
         result = client._connection.api_request(
             method='PATCH',
             path=path,
@@ -539,6 +545,11 @@ class BucketACL(ACL):
         """Compute the path for PATCH API requests for this ACL."""
         return self.bucket.path
 
+    @property
+    def user_project(self):
+        """Compute the user project charged for API requests for this ACL."""
+        return self.bucket.user_project
+
 
 class DefaultObjectACL(BucketACL):
     """A class representing the default object ACL for a bucket."""
@@ -572,3 +583,8 @@ class ObjectACL(ACL):
     def save_path(self):
         """Compute the path for PATCH API requests for this ACL."""
         return self.blob.path
+
+    @property
+    def user_project(self):
+        """Compute the user project charged for API requests for this ACL."""
+        return self.blob.user_project

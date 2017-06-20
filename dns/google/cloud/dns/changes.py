@@ -26,7 +26,7 @@ class Changes(object):
 
     Changes are owned by a :class:`google.cloud.dns.zone.ManagedZone` instance.
 
-    See:
+    See
     https://cloud.google.com/dns/api/v1/changes
 
     :type zone: :class:`google.cloud.dns.zone.ManagedZone`
@@ -205,7 +205,7 @@ class Changes(object):
     def create(self, client=None):
         """API call:  create the change set via a POST request.
 
-        See:
+        See
         https://cloud.google.com/dns/api/v1/changes/create
 
         :type client: :class:`google.cloud.dns.client.Client`

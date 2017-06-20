@@ -85,6 +85,10 @@ class Bucket(_PropertyMixin):
     :type name: str
     :param name: The name of the bucket. Bucket names must start and end with a
                  number or letter.
+
+    :type user_project: str
+    :param user_project: (Optional) the project ID to be billed for API
+                         requests made via this instance.
     """
 
     _MAX_OBJECTS_FOR_ITERATION = 256
@@ -103,17 +107,18 @@ class Bucket(_PropertyMixin):
     )
     """Allowed values for :attr:`storage_class`.
 
-    See:
+    See
     https://cloud.google.com/storage/docs/json_api/v1/buckets#storageClass
     https://cloud.google.com/storage/docs/storage-classes
     """
 
-    def __init__(self, client, name=None):
+    def __init__(self, client, name=None, user_project=None):
         name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
         self._client = client
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
+        self._user_project = user_project
 
     def __repr__(self):
         return '<Bucket: %s>' % (self.name,)
@@ -122,6 +127,16 @@ class Bucket(_PropertyMixin):
     def client(self):
         """The client bound to this bucket."""
         return self._client
+
+    @property
+    def user_project(self):
+        """Project ID to be billed for API requests made via this bucket.
+
+        If unset, API requests are billed to the bucket owner.
+
+        :rtype: str
+        """
+        return self._user_project
 
     def blob(self, blob_name, chunk_size=None, encryption_key=None):
         """Factory constructor for blob object.
@@ -160,10 +175,14 @@ class Bucket(_PropertyMixin):
         :returns: True if the bucket exists in Cloud Storage.
         """
         client = self._require_client(client)
+        # We only need the status code (200 or not) so we seek to
+        # minimize the returned payload.
+        query_params = {'fields': 'name'}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         try:
-            # We only need the status code (200 or not) so we seek to
-            # minimize the returned payload.
-            query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client._connection.api_request(
@@ -189,6 +208,9 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         """
+        if self.user_project is not None:
+            raise ValueError("Cannot create bucket with 'user_project' set.")
+
         client = self._require_client(client)
         query_params = {'project': client.project}
         properties = {key: self._properties[key] for key in self._changes}
@@ -233,7 +255,7 @@ class Bucket(_PropertyMixin):
 
         This will return None if the blob doesn't exist:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
           :start-after: [START get_blob]
           :end-before: [END get_blob]
 
@@ -249,10 +271,18 @@ class Bucket(_PropertyMixin):
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         blob = Blob(bucket=self, name=blob_name)
         try:
             response = client._connection.api_request(
-                method='GET', path=blob.path, _target_object=blob)
+                method='GET',
+                path=blob.path,
+                query_params=query_params,
+                _target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
@@ -306,7 +336,7 @@ class Bucket(_PropertyMixin):
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
-        extra_params = {}
+        extra_params = {'projection': projection}
 
         if prefix is not None:
             extra_params['prefix'] = prefix
@@ -317,10 +347,11 @@ class Bucket(_PropertyMixin):
         if versions is not None:
             extra_params['versions'] = versions
 
-        extra_params['projection'] = projection
-
         if fields is not None:
             extra_params['fields'] = fields
+
+        if self.user_project is not None:
+            extra_params['userProject'] = self.user_project
 
         client = self._require_client(client)
         path = self.path + '/o'
@@ -361,6 +392,11 @@ class Bucket(_PropertyMixin):
                  contains more than 256 objects / blobs.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         if force:
             blobs = list(self.list_blobs(
                 max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
@@ -382,7 +418,10 @@ class Bucket(_PropertyMixin):
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE', path=self.path, _target_object=None)
+            method='DELETE',
+            path=self.path,
+            query_params=query_params,
+            _target_object=None)
 
     def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
@@ -392,7 +431,7 @@ class Bucket(_PropertyMixin):
 
         For example:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
           :start-after: [START delete_blob]
           :end-before: [END delete_blob]
 
@@ -408,18 +447,26 @@ class Bucket(_PropertyMixin):
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START delete_blobs]
             :end-before: [END delete_blobs]
 
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE', path=blob_path, _target_object=None)
+            method='DELETE',
+            path=blob_path,
+            query_params=query_params,
+            _target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
@@ -482,14 +529,26 @@ class Bucket(_PropertyMixin):
         :returns: The new Blob.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         if new_name is None:
             new_name = blob.name
+
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
         copy_result = client._connection.api_request(
-            method='POST', path=api_path, _target_object=new_blob)
+            method='POST',
+            path=api_path,
+            query_params=query_params,
+            _target_object=new_blob,
+            )
+
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)
+
         new_blob._set_properties(copy_result)
         return new_blob
 
@@ -527,7 +586,7 @@ class Bucket(_PropertyMixin):
     def cors(self):
         """Retrieve or set CORS policies configured for this bucket.
 
-        See: http://www.w3.org/TR/cors/ and
+        See http://www.w3.org/TR/cors/ and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :setter: Set CORS policies for this bucket.
@@ -543,7 +602,7 @@ class Bucket(_PropertyMixin):
     def cors(self, entries):
         """Set CORS policies configured for this bucket.
 
-        See: http://www.w3.org/TR/cors/ and
+        See http://www.w3.org/TR/cors/ and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :type entries: list of dictionaries
@@ -552,10 +611,40 @@ class Bucket(_PropertyMixin):
         self._patch_property('cors', entries)
 
     @property
+    def labels(self):
+        """Retrieve or set CORS policies configured for this bucket.
+
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/buckets#labels
+
+        :setter: Set labels for this bucket.
+        :getter: Gets the labels for this bucket.
+
+        :rtype: :class:`dict`
+        :returns: Name-value pairs (string->string) labelling the bucket.
+        """
+        labels = self._properties.get('labels')
+        if labels is None:
+            return {}
+        return copy.deepcopy(labels)
+
+    @labels.setter
+    def labels(self, mapping):
+        """Set CORS policies configured for this bucket.
+
+        See
+        https://cloud.google.com/storage/docs/json_api/v1/buckets#labels
+
+        :type mapping: :class:`dict`
+        :param mapping: Name-value pairs (string->string) labelling the bucket.
+        """
+        self._patch_property('labels', copy.deepcopy(mapping))
+
+    @property
     def etag(self):
         """Retrieve the ETag for the bucket.
 
-        See: https://tools.ietf.org/html/rfc2616#section-3.11 and
+        See https://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
@@ -568,7 +657,7 @@ class Bucket(_PropertyMixin):
     def id(self):
         """Retrieve the ID for the bucket.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
         :returns: The ID of the bucket or ``None`` if the property is not
@@ -578,10 +667,13 @@ class Bucket(_PropertyMixin):
 
     @property
     def lifecycle_rules(self):
-        """Lifecycle rules configured for this bucket.
+        """Retrieve or set lifecycle rules configured for this bucket.
 
-        See: https://cloud.google.com/storage/docs/lifecycle and
+        See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :setter: Set lifestyle rules for this bucket.
+        :getter: Gets the lifestyle rules for this bucket.
 
         :rtype: list(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
@@ -591,12 +683,20 @@ class Bucket(_PropertyMixin):
 
     @lifecycle_rules.setter
     def lifecycle_rules(self, rules):
+        """Set lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :type entries: list of dictionaries
+        :param entries: A sequence of mappings describing each lifecycle rule.
+        """
         self._patch_property('lifecycle', {'rule': rules})
 
     location = _scalar_property('location')
     """Retrieve location configured for this bucket.
 
-    See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+    See https://cloud.google.com/storage/docs/json_api/v1/buckets and
     https://cloud.google.com/storage/docs/bucket-locations
 
     If the property is not set locally, returns ``None``.
@@ -607,7 +707,7 @@ class Bucket(_PropertyMixin):
     def get_logging(self):
         """Return info about access logging for this bucket.
 
-        See: https://cloud.google.com/storage/docs/access-logs#status
+        See https://cloud.google.com/storage/docs/access-logs#status
 
         :rtype: dict or None
         :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``
@@ -619,7 +719,7 @@ class Bucket(_PropertyMixin):
     def enable_logging(self, bucket_name, object_prefix=''):
         """Enable access logging for this bucket.
 
-        See: https://cloud.google.com/storage/docs/access-logs
+        See https://cloud.google.com/storage/docs/access-logs
 
         :type bucket_name: str
         :param bucket_name: name of bucket in which to store access logs
@@ -633,7 +733,7 @@ class Bucket(_PropertyMixin):
     def disable_logging(self):
         """Disable access logging for this bucket.
 
-        See: https://cloud.google.com/storage/docs/access-logs#disabling
+        See https://cloud.google.com/storage/docs/access-logs#disabling
         """
         self._patch_property('logging', None)
 
@@ -641,7 +741,7 @@ class Bucket(_PropertyMixin):
     def metageneration(self):
         """Retrieve the metageneration for the bucket.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: int or ``NoneType``
         :returns: The metageneration of the bucket or ``None`` if the property
@@ -655,7 +755,7 @@ class Bucket(_PropertyMixin):
     def owner(self):
         """Retrieve info about the owner of the bucket.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: dict or ``NoneType``
         :returns: Mapping of owner's role/ID. If the property is not set
@@ -667,7 +767,7 @@ class Bucket(_PropertyMixin):
     def project_number(self):
         """Retrieve the number of the project to which the bucket is assigned.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: int or ``NoneType``
         :returns: The project number that owns the bucket or ``None`` if the
@@ -681,7 +781,7 @@ class Bucket(_PropertyMixin):
     def self_link(self):
         """Retrieve the URI for the bucket.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: str or ``NoneType``
         :returns: The self link for the bucket or ``None`` if the property is
@@ -691,9 +791,12 @@ class Bucket(_PropertyMixin):
 
     @property
     def storage_class(self):
-        """Retrieve the storage class for the bucket.
+        """Retrieve or set the storage class for the bucket.
 
-        See: https://cloud.google.com/storage/docs/storage-classes
+        See https://cloud.google.com/storage/docs/storage-classes
+
+        :setter: Set the storage class for this bucket.
+        :getter: Gets the the storage class for this bucket.
 
         :rtype: str or ``NoneType``
         :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
@@ -706,7 +809,7 @@ class Bucket(_PropertyMixin):
     def storage_class(self, value):
         """Set the storage class for the bucket.
 
-        See: https://cloud.google.com/storage/docs/storage-classes
+        See https://cloud.google.com/storage/docs/storage-classes
 
         :type value: str
         :param value: one of "MULTI_REGIONAL", "REGIONAL", "NEARLINE",
@@ -720,7 +823,7 @@ class Bucket(_PropertyMixin):
     def time_created(self):
         """Retrieve the timestamp at which the bucket was created.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
@@ -734,8 +837,11 @@ class Bucket(_PropertyMixin):
     def versioning_enabled(self):
         """Is versioning enabled for this bucket?
 
-        See:  https://cloud.google.com/storage/docs/object-versioning for
+        See  https://cloud.google.com/storage/docs/object-versioning for
         details.
+
+        :setter: Update whether versioning is enabled for this bucket.
+        :getter: Query whether versioning is enabled for this bucket.
 
         :rtype: bool
         :returns: True if enabled, else False.
@@ -747,18 +853,48 @@ class Bucket(_PropertyMixin):
     def versioning_enabled(self, value):
         """Enable versioning for this bucket.
 
-        See:  https://cloud.google.com/storage/docs/object-versioning for
+        See  https://cloud.google.com/storage/docs/object-versioning for
         details.
 
         :type value: convertible to boolean
-        :param value: should versioning be anabled for the bucket?
+        :param value: should versioning be enabled for the bucket?
         """
         self._patch_property('versioning', {'enabled': bool(value)})
+
+    @property
+    def requester_pays(self):
+        """Does the requester pay for API requests for this bucket?
+
+        .. note::
+
+           No public docs exist yet for the "requester pays" feature.
+
+        :setter: Update whether requester pays for this bucket.
+        :getter: Query whether requester pays for this bucket.
+
+        :rtype: bool
+        :returns: True if requester pays for API requests for the bucket,
+                  else False.
+        """
+        versioning = self._properties.get('billing', {})
+        return versioning.get('requesterPays', False)
+
+    @requester_pays.setter
+    def requester_pays(self, value):
+        """Update whether requester pays for API requests for this bucket.
+
+        See  https://cloud.google.com/storage/docs/<DOCS-MISSING> for
+        details.
+
+        :type value: convertible to boolean
+        :param value: should requester pay for API requests for the bucket?
+        """
+        self._patch_property('billing', {'requesterPays': bool(value)})
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
 
-        See: https://cloud.google.com/storage/docs/hosting-static-website
+        See https://cloud.google.com/storage/docs/hosting-static-website
 
         .. note::
           This (apparently) only works
@@ -768,13 +904,13 @@ class Bucket(_PropertyMixin):
         If you want this bucket to host a website, just provide the name
         of an index page and a page to use when a blob isn't found:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
           :start-after: [START configure_website]
           :end-before: [END configure_website]
 
         You probably should also make the whole bucket public:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START make_public]
             :end-before: [END make_public]
 
@@ -807,7 +943,7 @@ class Bucket(_PropertyMixin):
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the bucket.
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -820,16 +956,22 @@ class Bucket(_PropertyMixin):
                   the ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         info = client._connection.api_request(
             method='GET',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             _target_object=None)
         return Policy.from_api_repr(info)
 
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy
 
         :type policy: :class:`google.cloud.iam.Policy`
@@ -845,11 +987,17 @@ class Bucket(_PropertyMixin):
                   the ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         resource = policy.to_api_repr()
         resource['resourceId'] = self.path
         info = client._connection.api_request(
             method='PUT',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             data=resource,
             _target_object=None)
         return Policy.from_api_repr(info)
@@ -857,7 +1005,7 @@ class Bucket(_PropertyMixin):
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/testIamPermissions
 
         :type permissions: list of string
@@ -873,12 +1021,16 @@ class Bucket(_PropertyMixin):
                   request.
         """
         client = self._require_client(client)
-        query = {'permissions': permissions}
+        query_params = {'permissions': permissions}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = '%s/iam/testPermissions' % (self.path,)
         resp = client._connection.api_request(
             method='GET',
             path=path,
-            query_params=query)
+            query_params=query_params)
         return resp.get('permissions', [])
 
     def make_public(self, recursive=False, future=False, client=None):
@@ -939,7 +1091,7 @@ class Bucket(_PropertyMixin):
 
         For example:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START policy_document]
             :end-before: [END policy_document]
 

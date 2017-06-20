@@ -17,6 +17,17 @@
 import math
 import json
 
+try:
+    import flask
+except ImportError:  # pragma: NO COVER
+    flask = None
+
+from google.cloud.logging.handlers.middleware.request import (
+    _get_django_request)
+
+_FLASK_TRACE_HEADER = 'X_CLOUD_TRACE_CONTEXT'
+_DJANGO_TRACE_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT'
+
 
 def format_stackdriver_json(record, message):
     """Helper to format a LogRecord in in Stackdriver fluentd format.
@@ -37,3 +48,58 @@ def format_stackdriver_json(record, message):
     }
 
     return json.dumps(payload)
+
+
+def get_trace_id_from_flask():
+    """Get trace_id from flask request headers.
+
+    :rtype: str
+    :return: Trace_id in HTTP request headers.
+    """
+    if flask is None or not flask.request:
+        return None
+
+    header = flask.request.headers.get(_FLASK_TRACE_HEADER)
+
+    if header is None:
+        return None
+
+    trace_id = header.split('/', 1)[0]
+
+    return trace_id
+
+
+def get_trace_id_from_django():
+    """Get trace_id from django request headers.
+
+    :rtype: str
+    :return: Trace_id in HTTP request headers.
+    """
+    request = _get_django_request()
+
+    if request is None:
+        return None
+
+    header = request.META.get(_DJANGO_TRACE_HEADER)
+    if header is None:
+        return None
+
+    trace_id = header.split('/', 1)[0]
+
+    return trace_id
+
+
+def get_trace_id():
+    """Helper to get trace_id from web application request header.
+
+    :rtype: str
+    :returns: Trace_id in HTTP request headers.
+    """
+    checkers = (get_trace_id_from_django, get_trace_id_from_flask)
+
+    for checker in checkers:
+        trace_id = checker()
+        if trace_id is not None:
+            return trace_id
+
+    return None

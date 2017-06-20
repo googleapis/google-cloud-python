@@ -32,7 +32,7 @@ class Topic(object):
 
     Subscribers then receive those messages.
 
-    See:
+    See
     https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics
 
     :type name: str
@@ -57,21 +57,21 @@ class Topic(object):
                      message_retention_duration=None):
         """Creates a subscription bound to the current topic.
 
-        Example:  pull-mode subcription, default paramter values
+        Example:  pull-mode subcription, default parameter values
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_subscription_defaults]
            :end-before: [END topic_subscription_defaults]
 
         Example:  pull-mode subcription, override ``ack_deadline`` default
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_subscription_ack90]
            :end-before: [END topic_subscription_ack90]
 
         Example:  push-mode subcription
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_subscription_push]
            :end-before: [END topic_subscription_push]
 
@@ -155,12 +155,12 @@ class Topic(object):
     def create(self, client=None):
         """API call:  create the topic via a PUT request
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_create]
            :end-before: [END topic_create]
 
@@ -181,7 +181,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_exists]
            :end-before: [END topic_exists]
 
@@ -206,12 +206,12 @@ class Topic(object):
     def delete(self, client=None):
         """API call:  delete the topic via a DELETE request
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_delete]
            :end-before: [END topic_delete]
 
@@ -237,18 +237,18 @@ class Topic(object):
     def publish(self, message, client=None, **attrs):
         """API call:  publish a message to a topic via a POST request
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish
 
         Example without message attributes:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_publish_simple_message]
            :end-before: [END topic_publish_simple_message]
 
         With message attributes:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_publish_message_with_attrs]
            :end-before: [END topic_publish_message_with_attrs]
 
@@ -279,7 +279,7 @@ class Topic(object):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_batch]
            :end-before: [END topic_batch]
 
@@ -307,12 +307,12 @@ class Topic(object):
     def list_subscriptions(self, page_size=None, page_token=None, client=None):
         """List subscriptions for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_list_subscriptions]
            :end-before: [END topic_list_subscriptions]
 
@@ -342,12 +342,12 @@ class Topic(object):
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the topic.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/getIamPolicy
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_get_iam_policy]
            :end-before: [END topic_get_iam_policy]
 
@@ -368,12 +368,12 @@ class Topic(object):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the topic.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/setIamPolicy
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_set_iam_policy]
            :end-before: [END topic_set_iam_policy]
 
@@ -399,12 +399,12 @@ class Topic(object):
     def check_iam_permissions(self, permissions, client=None):
         """Verify permissions allowed for the current user.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/testIamPermissions
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START topic_check_iam_permissions]
            :end-before: [END topic_check_iam_permissions]
 

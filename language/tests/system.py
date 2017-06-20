@@ -130,7 +130,7 @@ class TestLanguage(unittest.TestCase):
 
         self.assertIsInstance(token, Token)
         self.assertEqual(token.text_content, text_content)
-        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.part_of_speech.tag, part_of_speech)
         self.assertEqual(token.lemma, lemma)
 
     def _check_analyze_syntax_result(self, tokens):

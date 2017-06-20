@@ -71,7 +71,7 @@ class Client(BaseClient):
 
         Response
 
-        See:
+        See
         https://cloud.google.com/translate/docs/discovering-supported-languages
 
         :type target_language: str
@@ -98,7 +98,7 @@ class Client(BaseClient):
     def detect_language(self, values):
         """Detect the language of a string or list of strings.
 
-        See: https://cloud.google.com/translate/docs/detecting-language
+        See https://cloud.google.com/translate/docs/detecting-language
 
         :type values: str or list
         :param values: String or list of strings that will have
@@ -165,7 +165,7 @@ class Client(BaseClient):
                   model=None):
         """Translate a string or list of strings.
 
-        See: https://cloud.google.com/translate/docs/translating-text
+        See https://cloud.google.com/translate/docs/translating-text
 
         :type values: str or list
         :param values: String or list of strings to translate.

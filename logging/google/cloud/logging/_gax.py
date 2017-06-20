@@ -68,7 +68,7 @@ class _LoggingAPI(object):
 
         :type filter_: str
         :param filter_:
-            a filter expression. See:
+            a filter expression. See
             https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
@@ -193,7 +193,7 @@ class _SinksAPI(object):
     def sink_create(self, project, sink_name, filter_, destination):
         """API call:  create a sink resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create
 
         :type project: str
@@ -346,7 +346,7 @@ class _MetricsAPI(object):
     def metric_create(self, project, metric_name, filter_, description):
         """API call:  create a metric resource.
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/create
 
         :type project: str

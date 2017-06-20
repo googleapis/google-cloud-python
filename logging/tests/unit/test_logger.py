@@ -96,6 +96,7 @@ class TestLogger(unittest.TestCase):
             'textPayload': TEXT,
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -116,6 +117,7 @@ class TestLogger(unittest.TestCase):
             'textPayload': TEXT,
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
             'labels': DEFAULT_LABELS,
         }]
@@ -141,6 +143,7 @@ class TestLogger(unittest.TestCase):
             'timestamp': '2016-12-31T00:01:02.999999Z',
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -172,6 +175,7 @@ class TestLogger(unittest.TestCase):
             'textPayload': TEXT,
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
             'labels': LABELS,
             'insertId': IID,
@@ -198,6 +202,7 @@ class TestLogger(unittest.TestCase):
             'jsonPayload': STRUCT,
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -218,6 +223,7 @@ class TestLogger(unittest.TestCase):
             'jsonPayload': STRUCT,
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
             'labels': DEFAULT_LABELS,
         }]
@@ -251,6 +257,7 @@ class TestLogger(unittest.TestCase):
             'jsonPayload': STRUCT,
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
             'labels': LABELS,
             'insertId': IID,
@@ -282,6 +289,7 @@ class TestLogger(unittest.TestCase):
             'timestamp': '2016-12-31T00:01:02.999999Z',
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -305,6 +313,7 @@ class TestLogger(unittest.TestCase):
             'protoPayload': json.loads(MessageToJson(message)),
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -329,6 +338,7 @@ class TestLogger(unittest.TestCase):
             'protoPayload': json.loads(MessageToJson(message)),
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
             'labels': DEFAULT_LABELS,
         }]
@@ -367,6 +377,7 @@ class TestLogger(unittest.TestCase):
             'protoPayload': json.loads(MessageToJson(message)),
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
             'labels': LABELS,
             'insertId': IID,
@@ -402,6 +413,7 @@ class TestLogger(unittest.TestCase):
             'timestamp': '2016-12-31T00:01:02.999999Z',
             'resource': {
                 'type': 'global',
+                'labels': {},
             },
         }]
         client = _Client(self.PROJECT)
@@ -530,16 +542,19 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(len(batch.entries), 0)
 
     def test_log_text_defaults(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         TEXT = 'This is the entry text'
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT)
         self.assertEqual(batch.entries,
-                         [('text', TEXT, None, None, None, None, None)])
+                         [('text', TEXT, None, None, None, None, None,
+                           _GLOBAL_RESOURCE)])
 
     def test_log_text_explicit(self):
         import datetime
+        from google.cloud.logging.resource import Resource
 
         TEXT = 'This is the entry text'
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -554,16 +569,26 @@ class TestBatch(unittest.TestCase):
             'status': STATUS,
         }
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test',
+        })
+
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT, labels=LABELS, insert_id=IID, severity=SEVERITY,
-                       http_request=REQUEST, timestamp=TIMESTAMP)
+                       http_request=REQUEST, timestamp=TIMESTAMP,
+                       resource=RESOURCE)
         self.assertEqual(
             batch.entries,
-            [('text', TEXT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
+            [('text', TEXT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
+              RESOURCE)])
 
     def test_log_struct_defaults(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
@@ -571,10 +596,12 @@ class TestBatch(unittest.TestCase):
         batch.log_struct(STRUCT)
         self.assertEqual(
             batch.entries,
-            [('struct', STRUCT, None, None, None, None, None)])
+            [('struct', STRUCT, None, None, None, None, None,
+              _GLOBAL_RESOURCE)])
 
     def test_log_struct_explicit(self):
         import datetime
+        from google.cloud.logging.resource import Resource
 
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -589,17 +616,27 @@ class TestBatch(unittest.TestCase):
             'status': STATUS,
         }
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test',
+            }
+        )
+
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT, labels=LABELS, insert_id=IID,
                          severity=SEVERITY, http_request=REQUEST,
-                         timestamp=TIMESTAMP)
+                         timestamp=TIMESTAMP, resource=RESOURCE)
         self.assertEqual(
             batch.entries,
-            [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
+            [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP ,
+              RESOURCE)])
 
     def test_log_proto_defaults(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
@@ -609,10 +646,12 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(logger, client=client)
         batch.log_proto(message)
         self.assertEqual(batch.entries,
-                         [('proto', message, None, None, None, None, None)])
+                         [('proto', message, None, None, None, None, None,
+                           _GLOBAL_RESOURCE)])
 
     def test_log_proto_explicit(self):
         import datetime
+        from google.cloud.logging.resource import Resource
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
@@ -629,23 +668,60 @@ class TestBatch(unittest.TestCase):
             'status': STATUS,
         }
         TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test',
+            }
+        )
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_proto(message, labels=LABELS, insert_id=IID,
                         severity=SEVERITY, http_request=REQUEST,
-                        timestamp=TIMESTAMP)
+                        timestamp=TIMESTAMP, resource=RESOURCE)
         self.assertEqual(
             batch.entries,
-            [('proto', message, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
+            [('proto', message, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP,
+              RESOURCE)])
 
     def test_commit_w_invalid_entry_type(self):
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         batch = self._make_one(logger, client)
-        batch.entries.append(('bogus', 'BOGUS', None, None, None, None, None))
+        batch.entries.append(('bogus', 'BOGUS', None, None, None, None, None,
+                              None))
         with self.assertRaises(ValueError):
             batch.commit()
+
+    def test_commit_w_resource_specified(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging.resource import Resource
+
+        logger = _Logger()
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        api = client.logging_api = _DummyLoggingAPI()
+        RESOURCE = Resource(
+            type='gae_app',
+            labels={
+                'module_id': 'default',
+                'version_id': 'test',
+            }
+        )
+
+        batch = self._make_one(logger, client, resource=RESOURCE)
+        MESSAGE = 'This is the entry text'
+        ENTRIES = [
+            {'textPayload': MESSAGE},
+            {'textPayload': MESSAGE, 'resource': _GLOBAL_RESOURCE._to_dict()},
+        ]
+        batch.log_text(MESSAGE, resource=None)
+        batch.log_text(MESSAGE)
+        batch.commit()
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, logger.full_name,
+                          RESOURCE._to_dict(), None))
 
     def test_commit_w_bound_client(self):
         import json
@@ -654,6 +730,8 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
         from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
 
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
@@ -664,17 +742,17 @@ class TestBatch(unittest.TestCase):
         TIMESTAMP1 = datetime.datetime(2016, 12, 31, 0, 0, 1, 999999)
         TIMESTAMP2 = datetime.datetime(2016, 12, 31, 0, 0, 2, 999999)
         TIMESTAMP3 = datetime.datetime(2016, 12, 31, 0, 0, 3, 999999)
-        RESOURCE = {
-            'type': 'global',
-        }
         ENTRIES = [
             {'textPayload': TEXT, 'insertId': IID1,
-             'timestamp': _datetime_to_rfc3339(TIMESTAMP1)},
+             'timestamp': _datetime_to_rfc3339(TIMESTAMP1),
+             'resource': _GLOBAL_RESOURCE._to_dict()},
             {'jsonPayload': STRUCT, 'insertId': IID2,
-             'timestamp': _datetime_to_rfc3339(TIMESTAMP2)},
+             'timestamp': _datetime_to_rfc3339(TIMESTAMP2),
+             'resource': _GLOBAL_RESOURCE._to_dict()},
             {'protoPayload': json.loads(MessageToJson(message)),
              'insertId': IID3,
-             'timestamp': _datetime_to_rfc3339(TIMESTAMP3)},
+             'timestamp': _datetime_to_rfc3339(TIMESTAMP3),
+             'resource': _GLOBAL_RESOURCE._to_dict()},
         ]
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
@@ -688,7 +766,7 @@ class TestBatch(unittest.TestCase):
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.full_name, RESOURCE, None))
+                         (ENTRIES, logger.full_name, None, None))
 
     def test_commit_w_alternate_client(self):
         import json
@@ -696,6 +774,7 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
         from google.cloud.logging.logger import Logger
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
@@ -718,12 +797,14 @@ class TestBatch(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
         logger = Logger('logger_name', client1, labels=DEFAULT_LABELS)
-        RESOURCE = {'type': 'global'}
         ENTRIES = [
-            {'textPayload': TEXT, 'labels': LABELS},
-            {'jsonPayload': STRUCT, 'severity': SEVERITY},
+            {'textPayload': TEXT, 'labels': LABELS, 'resource':
+                _GLOBAL_RESOURCE._to_dict()},
+            {'jsonPayload': STRUCT, 'severity': SEVERITY,
+             'resource': _GLOBAL_RESOURCE._to_dict()},
             {'protoPayload': json.loads(MessageToJson(message)),
-             'httpRequest': REQUEST},
+             'httpRequest': REQUEST,
+             'resource': _GLOBAL_RESOURCE._to_dict()},
         ]
         batch = self._make_one(logger, client=client1)
 
@@ -734,7 +815,7 @@ class TestBatch(unittest.TestCase):
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.full_name, RESOURCE, DEFAULT_LABELS))
+                         (ENTRIES, logger.full_name, None, DEFAULT_LABELS))
 
     def test_context_mgr_success(self):
         import json
@@ -742,6 +823,8 @@ class TestBatch(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
         from google.cloud.logging.logger import Logger
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
 
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
@@ -760,13 +843,13 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = Logger('logger_name', client, labels=DEFAULT_LABELS)
-        RESOURCE = {
-            'type': 'global',
-        }
         ENTRIES = [
-            {'textPayload': TEXT, 'httpRequest': REQUEST},
-            {'jsonPayload': STRUCT, 'labels': LABELS},
+            {'textPayload': TEXT, 'httpRequest': REQUEST,
+             'resource': _GLOBAL_RESOURCE._to_dict()},
+            {'jsonPayload': STRUCT, 'labels': LABELS,
+             'resource': _GLOBAL_RESOURCE._to_dict()},
             {'protoPayload': json.loads(MessageToJson(message)),
+             'resource': _GLOBAL_RESOURCE._to_dict(),
              'severity': SEVERITY},
         ]
         batch = self._make_one(logger, client=client)
@@ -778,12 +861,13 @@ class TestBatch(unittest.TestCase):
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.full_name, RESOURCE, DEFAULT_LABELS))
+                         (ENTRIES, logger.full_name, None, DEFAULT_LABELS))
 
     def test_context_mgr_failure(self):
         import datetime
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
 
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
@@ -804,9 +888,12 @@ class TestBatch(unittest.TestCase):
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
         UNSENT = [
-            ('text', TEXT, None, IID, None, None, TIMESTAMP),
-            ('struct', STRUCT, None, None, SEVERITY, None, None),
-            ('proto', message, LABELS, None, None, REQUEST, None),
+            ('text', TEXT, None, IID, None, None, TIMESTAMP,
+             _GLOBAL_RESOURCE),
+            ('struct', STRUCT, None, None, SEVERITY, None, None,
+             _GLOBAL_RESOURCE),
+            ('proto', message, LABELS, None, None, REQUEST, None,
+             _GLOBAL_RESOURCE),
         ]
         batch = self._make_one(logger, client=client)
 

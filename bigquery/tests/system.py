@@ -59,7 +59,7 @@ def _rate_limit_exceeded(forbidden):
 # We need to wait to stay within the rate limits.
 # The alternative outcome is a 403 Forbidden response from upstream, which
 # they return instead of the more appropriate 429.
-# See: https://cloud.google.com/bigquery/quota-policy
+# See https://cloud.google.com/bigquery/quota-policy
 retry_403 = RetryErrors(Forbidden, error_predicate=_rate_limit_exceeded)
 
 
@@ -326,7 +326,7 @@ class TestBigQuery(unittest.TestCase):
 
         rows = ()
 
-        # Allow for "warm up" before rows visible.  See:
+        # Allow for "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryResult(_has_rows, max_tries=8)
@@ -338,7 +338,8 @@ class TestBigQuery(unittest.TestCase):
 
     def test_load_table_from_local_file_then_dump_table(self):
         import csv
-        import tempfile
+        from google.cloud._testing import _NamedTemporaryFile
+
         ROWS = [
             ('Phred Phlyntstone', 32),
             ('Bharney Rhubble', 33),
@@ -360,13 +361,13 @@ class TestBigQuery(unittest.TestCase):
         table.create()
         self.to_delete.insert(0, table)
 
-        with tempfile.NamedTemporaryFile(mode='w+') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow(('Full Name', 'Age'))
-            writer.writerows(ROWS)
-            csv_file.flush()
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(('Full Name', 'Age'))
+                writer.writerows(ROWS)
 
-            with open(csv_file.name, 'rb') as csv_read:
+            with open(temp.name, 'rb') as csv_read:
                 job = table.upload_from_file(
                     csv_read,
                     source_format='CSV',
@@ -389,10 +390,54 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
 
+    def test_load_table_from_local_avro_file_then_dump_table(self):
+        TABLE_NAME = 'test_table_avro'
+        ROWS = [
+            ("violet", 400),
+            ("indigo", 445),
+            ("blue", 475),
+            ("green", 510),
+            ("yellow", 570),
+            ("orange", 590),
+            ("red", 650)]
+
+        dataset = Config.CLIENT.dataset(
+            _make_dataset_name('load_local_then_dump'))
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        table = dataset.table(TABLE_NAME)
+        self.to_delete.insert(0, table)
+
+        with open(os.path.join(WHERE, 'data', 'colors.avro'), 'rb') as avrof:
+            job = table.upload_from_file(
+                avrof,
+                source_format='AVRO',
+                write_disposition='WRITE_TRUNCATE'
+            )
+
+        def _job_done(instance):
+            return instance.state.lower() == 'done'
+
+        # Retry until done.
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
+
+        self.assertEqual(job.output_rows, len(ROWS))
+
+        # Reload table to get the schema before fetching the rows.
+        table.reload()
+        rows = self._fetch_single_page(table)
+        by_wavelength = operator.itemgetter(1)
+        self.assertEqual(sorted(rows, key=by_wavelength),
+                         sorted(ROWS, key=by_wavelength))
+
     def test_load_table_from_storage_then_dump_table(self):
         import csv
-        import tempfile
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.storage import Client as StorageClient
+
         local_id = unique_resource_id()
         BUCKET_NAME = 'bq_load_test' + local_id
         BLOB_NAME = 'person_ages.csv'
@@ -414,12 +459,14 @@ class TestBigQuery(unittest.TestCase):
 
         blob = bucket.blob(BLOB_NAME)
 
-        with tempfile.TemporaryFile(mode='w+') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow(('Full Name', 'Age'))
-            writer.writerows(ROWS)
-            blob.upload_from_file(
-                csv_file, rewind=True, content_type='text/csv')
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(('Full Name', 'Age'))
+                writer.writerows(ROWS)
+
+            with open(temp.name, 'rb') as csv_read:
+                blob.upload_from_file(csv_read, content_type='text/csv')
 
         self.to_delete.insert(0, blob)
 
@@ -448,7 +495,7 @@ class TestBigQuery(unittest.TestCase):
         def _job_done(instance):
             return instance.state in ('DONE', 'done')
 
-        # Allow for 90 seconds of "warm up" before rows visible.  See:
+        # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryInstanceState(_job_done, max_tries=8)
@@ -779,7 +826,26 @@ class TestBigQuery(unittest.TestCase):
 
         dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
         table = dataset.table(TABLE_NAME)
+        # Reload table to get the schema before fetching the rows.
+        table.reload()
         self._fetch_single_page(table)
+
+    def test_large_query_w_public_data(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_NAME = 'samples'
+        TABLE_NAME = 'natality'
+        LIMIT = 1000
+        SQL = 'SELECT * from `{}.{}.{}` LIMIT {}'.format(
+            PUBLIC, DATASET_NAME, TABLE_NAME, LIMIT)
+
+        dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
+        query = Config.CLIENT.run_sync_query(SQL)
+        query.use_legacy_sql = False
+        query.run()
+
+        iterator = query.fetch_data()
+        rows = list(iterator)
+        self.assertEqual(len(rows), LIMIT)
 
     def test_insert_nested_nested(self):
         # See #2951

@@ -19,9 +19,6 @@ import os
 import nox
 
 
-LOCAL_DEPS = ('../core/',)
-
-
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
 def unit_tests(session, python_version):
@@ -31,14 +28,14 @@ def unit_tests(session, python_version):
     session.interpreter = 'python{}'.format(python_version)
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
+    session.install('mock', 'pytest', 'pytest-cov', '../core/')
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet',
-        '--cov=google.cloud.vision', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
+        '--cov=google.cloud.vision', '--cov=google.cloud.vision_v1',
+        '--cov-append', '--cov-config=.coveragerc', '--cov-report=',
+        'tests/',
     )
 
 
@@ -51,17 +48,37 @@ def system_tests(session, python_version):
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
         return
 
-    # Run the system tests against latest Python 2 and Python 3 only.
+    # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
 
-    # Install all test dependencies, then install this package into the
-    # virutalenv's dist-packages.
-    session.install('mock', 'pytest', *LOCAL_DEPS)
-    session.install('../test_utils/', '../storage/')
-    session.install('.')
+    # Install all test dependencies, then install this package in-place.
+    session.install('pytest', '../core/', '../storage/')
+    session.install('../test_utils/')
+    session.install('-e', '.')
 
-    # Run py.test against the system tests.
+    # Run py.test against the unit tests.
     session.run('py.test', '--quiet', 'tests/system.py')
+
+
+@nox.session
+@nox.parametrize('python_version', ['2.7', '3.6'])
+def system_tests_manual_layer(session, python_version):
+    """Run the system test suite for the old manual layer."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        return
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(python_version)
+
+    # Install all test dependencies, then install this package in-place.
+    session.install('pytest', '../core/', '../storage/')
+    session.install('../test_utils/')
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run('py.test', '--quiet', 'tests/system_old.py')
 
 
 @nox.session
@@ -72,16 +89,16 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8', *LOCAL_DEPS)
+    session.install('flake8')
     session.install('.')
-    session.run('flake8', 'google/cloud/vision')
+    session.run('flake8', 'google/cloud/vision.py')
 
 
 @nox.session
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
-    session.install('docutils', 'Pygments')
+    session.install('docutils', 'pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
 
@@ -96,5 +113,5 @@ def cover(session):
     session.interpreter = 'python3.6'
     session.chdir(os.path.dirname(__file__))
     session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
+    session.run('coverage', 'report', '--show-missing')
     session.run('coverage', 'erase')
