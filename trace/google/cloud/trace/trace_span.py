@@ -21,25 +21,26 @@ import random
 
 
 class TraceSpan(object):
-    """A span is an individual timed event which forms a node of the trace tree. 
-    Each span has its name, span id and parent id. The parent id indicates the 
-    causal relationships between the individual spans in a single distributed trace.
-    Span that does not have a parent id is called root span. All spans associated
-    with a specific trace also share a common trace id. Spans do not need to be 
-    continuous, there can be gaps between two spans.
+    """A span is an individual timed event which forms a node of the trace
+    tree. Each span has its name, span id and parent id. The parent id
+    indicates the causal relationships between the individual spans in a
+    single distributed trace. Span that does not have a parent id is called
+    root span. All spans associated with a specific trace also share a common
+    trace id. Spans do not need to be continuous, there can be gaps between
+    two spans.
 
     See
-    https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.cloudtrace.v1
-    #google.devtools.cloudtrace.v1.TraceSpan
+    https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
+    cloudtrace.v1#google.devtools.cloudtrace.v1.TraceSpan
 
     :type name: str
     :param name: The name of the span.
 
     :type kind: :class:`~google.cloud.trace.span.SpanKind`
     :param kind: Distinguishes between spans generated in a particular context.
-                 For example, two spans with the same name may be distinguished using
-                 RPC_CLIENT and RPC_SERVER to identify queueing latency associated
-                 with the span.
+                 For example, two spans with the same name may be
+                 distinguished using RPC_CLIENT and RPC_SERVER to identify
+                 queueing latency associated with the span.
 
     :type parent_span_id: str
     :param parent_span_id: ID of the parent span. Optional.
@@ -50,12 +51,13 @@ class TraceSpan(object):
                    Label values must be less than 16 kilobytes.
 
     :type start_time: :class:`~datetime.datetime`
-    :param start_time: (Optional) Start of the time interval (inclusive) during which
-                       the trace data was collected from the application.
+    :param start_time: (Optional) Start of the time interval (inclusive)
+                       during which the trace data was collected from the
+                       application.
 
     :type end_time: :class:`~datetime.datetime`
-    :param end_time: (Optional) End of the time interval (inclusive) during which
-                     the trace data was collected from the application.
+    :param end_time: (Optional) End of the time interval (inclusive) during
+                     which the trace data was collected from the application.
 
     :type span_id: str
     :param span_id: Identifier for the span, unique within a trace.
@@ -83,7 +85,8 @@ class TraceSpan(object):
         self.child_spans = []
 
     def span(self, name='child_span'):
-        """Create a child span for the current span and append it to the child spans list.
+        """Create a child span for the current span and append it to the child
+        spans list.
 
         :type name: str
         :param name: (Optional) The name of the child span.
@@ -124,8 +127,8 @@ class TraceSpan(object):
         """Return the random generated span ID for a span.
 
         :rtype: int
-        :returns: Identifier for the span. Must be a 64-bit integer other than 0 and
-                  unique within a trace. Converted to string.
+        :returns: Identifier for the span. Must be a 64-bit integer other
+                  than 0 and unique within a trace. Converted to string.
         """
         span_id = str(random.getrandbits(64))
         return int(span_id)
@@ -133,10 +136,10 @@ class TraceSpan(object):
 
 def format_span_json(span):
     """Helper to format a TraceSpan in JSON format.
-    
+
     :type span: :class:`~google.cloud.trace.trace_span.TraceSpan`
     :param span: A TraceSpan to be transferred to JSON format.
-    
+
     :rtype: dict
     :returns: Formatted TraceSpan.
     """

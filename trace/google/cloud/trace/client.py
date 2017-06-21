@@ -27,16 +27,16 @@ _DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
 
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
-    
+
     :type project: str
     :param project: The project which the client acts on behalf of.
                     If not passed, falls back to the default inferred from
                     the environment.
-    
+
     :type credentials: :class:`~google.auth.credentials.Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this client.
-                        If not passed, falls back to the default inferred from
-                        the environment.
+    :param credentials: (Optional) The OAuth2 Credentials to use for this
+                        client. If not passed, falls back to the default
+                        inferred from the environment.
     """
     _trace_api = None
 
@@ -47,7 +47,7 @@ class Client(ClientWithProject):
     @property
     def trace_api(self):
         """Helper for trace-related API calls.
-        
+
         See
         https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
         cloudtrace.v1
@@ -57,9 +57,10 @@ class Client(ClientWithProject):
 
     def trace(self, project_id=None, trace_id=None):
         """Initialize a new trace instance.
-        
+
         :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is stored.
+        :param project_id: ID of the Cloud project where the trace data
+                           is stored.
 
         :type trace_id: str
         :param trace_id: ID of the trace. 32 digits uuid.
@@ -73,16 +74,17 @@ class Client(ClientWithProject):
 
     def patch_traces(self, traces, project_id=None, options=None):
         """Sends new traces to Stackdriver Trace or updates existing traces.
-        
+
         :type traces: dict
         :param traces: The traces to be patched in the API call.
 
         :type project_id: str
-        :param project_id: (Optional) ID of the Cloud project where the trace data is stored.
-        
+        :param project_id: (Optional) ID of the Cloud project where the trace
+                           data is stored.
+
         :type options: :class:`~google.gax.CallOptions`
-        :param options: (Optional) Overrides the default settings for this call,
-                        e.g, timeout, retries etc.
+        :param options: (Optional) Overrides the default settings for this
+                        call, e.g, timeout, retries etc.
         """
         if project_id is None:
             project_id = self.project
@@ -96,15 +98,16 @@ class Client(ClientWithProject):
         """Gets a single trace by its ID.
 
         :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is stored.
+        :param project_id: ID of the Cloud project where the trace data is
+                           stored.
 
         :type trace_id: str
         :param trace_id: ID of the trace to return.
 
         :type options: :class:`~google.gax.CallOptions`
-        :param options: (Optional) Overrides the default settings for this call,
-                        e.g, timeout, retries etc.
-        
+        :param options: (Optional) Overrides the default settings for this
+                        call, e.g, timeout, retries etc.
+
         :rtype: :dict
         :returns: A Trace dict.
         """
@@ -126,32 +129,36 @@ class Client(ClientWithProject):
             filter_=None,
             order_by=None,
             options=None):
-        """Returns of a list of traces that match the specified filter conditions.
-        
-        :type project_id: str
-        :param project_id: (Optional) ID of the Cloud project where the trace data is stored.
+        """Returns of a list of traces that match the filter conditions.
 
-        :type view: :class:`google.cloud.gapic.trace.v1.enums.ListTracesRequest.ViewType`
-        :param view: (Optional) Type of data returned for traces in the list. 
+        :type project_id: str
+        :param project_id: (Optional) ID of the Cloud project where the trace
+                           data is stored.
+
+        :type view: :class:`google.cloud.gapic.trace.v1.enums.
+                            ListTracesRequest.ViewType`
+        :param view: (Optional) Type of data returned for traces in the list.
                      Default is ``MINIMAL``.
-        
+
         :type page_size: int
-        :param page_size: (Optional) Maximum number of traces to return. If not specified
-                          or <= 0, the implementation selects a reasonable value.
-                          The implementation may return fewer traces than the requested
-                          page size.
-        
+        :param page_size: (Optional) Maximum number of traces to return.
+                          If not specified or <= 0, the implementation selects
+                          a reasonable value. The implementation may return
+                          fewer traces than the requested page size.
+
         :type start_time: :class:`~datetime.datetime`
-        :param start_time: (Optional) Start of the time interval (inclusive) during which
-                           the trace data was collected from the application.
-        
+        :param start_time: (Optional) Start of the time interval (inclusive)
+                           during which the trace data was collected from the
+                           application.
+
         :type end_time: :class:`~datetime.datetime`
-        :param end_time: (Optional) End of the time interval (inclusive) during which
-                         the trace data was collected from the application.
-        
+        :param end_time: (Optional) End of the time interval (inclusive) during
+                         which the trace data was collected from the
+                         application.
+
         :type filter: str
         :param filter_: (Optional) An optional filter for the request.
-        
+
         :type order_by: str
         :param order_by: (Optional) Field used to sort the returned traces.
 

@@ -25,15 +25,16 @@ from google.cloud._http import DEFAULT_USER_AGENT
 
 class _TraceAPI(object):
     """Wrapper to help mapping trace-related APIs.
-    
+
     See
     https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
     cloudtrace.v1
-    
+
     :type gax_api:
-        :class:`~google.cloud.gapic.trace.v1.trace_service_client.TraceServiceClient`
+        :class:`~google.cloud.gapic.trace.v1.trace_service_client.
+               TraceServiceClient`
     :param gax_api: API object used to make GAX requests.
-    
+
     :type client: :class:`~google.cloud.trace.client.Client`
     :param client: The client that owns this API object.
     """
@@ -45,14 +46,15 @@ class _TraceAPI(object):
         """Sends new traces to Stackdriver Trace or updates existing traces.
 
         :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is stored.
-        
+        :param project_id: ID of the Cloud project where the trace data is
+                           stored.
+
         :type traces: dict
         :param traces: The traces to be patched in the API call.
-        
+
         :type options: :class:`~google.gax.CallOptions`
-        :param options: (Optional) Overrides the default settings for this call,
-                        e.g, timeout, retries etc.
+        :param options: (Optional) Overrides the default settings for this
+                        call, e.g, timeout, retries etc.
         """
         traces_pb = _trace_mapping_to_pb(traces)
         self._gax_api.patch_traces(project_id, traces_pb, options)
@@ -61,15 +63,16 @@ class _TraceAPI(object):
         """Gets a single trace by its ID.
 
         :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is stored.
+        :param project_id: ID of the Cloud project where the trace data is
+                           stored.
 
         :type trace_id: str
         :param trace_id: ID of the trace to return.
 
         :type options: :class:`~google.gax.CallOptions`
-        :param options: (Optional) Overrides the default settings for this call,
-                        e.g, timeout, retries etc.
-        
+        :param options: (Optional) Overrides the default settings for this
+                        call, e.g, timeout, retries etc.
+
         :rtype: :dict
         :returns: A Trace dict.
         """
@@ -87,32 +90,37 @@ class _TraceAPI(object):
             filter_=None,
             order_by=None,
             options=None):
-        """Returns of a list of traces that match the specified filter conditions.
-        
-        :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is stored.
+        """Returns of a list of traces that match the specified filter
+        conditions.
 
-        :type view: :class:`google.cloud.gapic.trace.v1.enums.ListTracesRequest.ViewType`
-        :param view: (Optional) Type of data returned for traces in the list. 
+        :type project_id: str
+        :param project_id: ID of the Cloud project where the trace data is
+                           stored.
+
+        :type view: :class:`google.cloud.gapic.trace.v1.enums.
+                           ListTracesRequest.ViewType`
+        :param view: (Optional) Type of data returned for traces in the list.
                      Default is ``MINIMAL``.
-        
+
         :type page_size: int
-        :param page_size: (Optional) Maximum number of traces to return. If not specified
-                          or <= 0, the implementation selects a reasonable value.
-                          The implementation may return fewer traces than the requested
-                          page size.
-        
+        :param page_size: (Optional) Maximum number of traces to return.
+                          If not specified or <= 0, the implementation selects
+                          a reasonable value. The implementation may return
+                          fewer traces than the requested page size.
+
         :type start_time: :class:`google.protobuf.timestamp_pb2.Timestamp`
-        :param start_time: (Optional) Start of the time interval (inclusive) during which
-                           the trace data was collected from the application.
-        
+        :param start_time: (Optional) Start of the time interval (inclusive)
+                           during which the trace data was collected from the
+                           application.
+
         :type end_time: :class:`google.protobuf.timestamp_pb2.Timestamp`
-        :param end_time: (Optional) End of the time interval (inclusive) during which
-                         the trace data was collected from the application.
-        
+        :param end_time: (Optional) End of the time interval (inclusive)
+                         during which the trace data was collected from the
+                         application.
+
         :type filter: str
         :param filter_: (Optional) An optional filter for the request.
-        
+
         :type order_by: str
         :param order_by: (Optional) Field used to sort the returned traces.
 
@@ -139,8 +147,9 @@ class _TraceAPI(object):
 
 def _trace_pb_to_mapping(trace_pb):
     """Convert a trace protobuf to dict.
-    
-    :type trace_pb: class:`google.cloud.proto.devtools.cloudtrace.v1.trace_pb2.Trace`
+
+    :type trace_pb: class:`google.cloud.proto.devtools.cloudtrace.v1.
+                          trace_pb2.Trace`
     :param trace_pb: A trace protobuf instance.
 
     :rtype: dict
@@ -187,7 +196,7 @@ def _trace_pb_to_mapping(trace_pb):
 
 def _trace_mapping_to_pb(mapping):
     """Convert a trace dict to protobuf.
-    
+
     :type mapping: dict
     :param mapping: A trace mapping.
 
@@ -217,7 +226,9 @@ def _trace_mapping_to_pb(mapping):
         # Build the protobuf for TraceSpan.
         # Protobuf type attributes cannot be set by setattr.
         for span in trace['spans']:
-            span_pb = TraceSpan(start_time=span['startTime'], end_time=span['endTime'])
+            span_pb = TraceSpan(
+                start_time=span['startTime'],
+                end_time=span['endTime'])
 
             for key, pb_name in span_scalar_keys.items():
 

@@ -25,18 +25,18 @@ class Trace(object):
     """A trace describes how long it takes for an application to perform
     an operation. It consists of a set of spans, each of which represent
     a single timed event within the operation.
-    
+
     See
     https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
     cloudtrace.v1#google.devtools.cloudtrace.v1.Trace
-    
+
     :type client: :class:`~google.cloud.trace.client.Client`
-    :param client: A client which holds the credentials and project configuration
-                   for the trace.
-    
+    :param client: A client which holds the credentials and project
+                   configuration for the trace.
+
     :type project_id: str
     :param project_id: (Optional) The project_id for the trace.
-    
+
     :type trace_id: str
     :param trace_id: (Optional) Trace_id is a 32 digits uuid for the trace.
                      If not given, will generate one automatically.
@@ -72,10 +72,10 @@ class Trace(object):
 
     def span(self, name='span'):
         """Create a new span for the trace and append it to the spans list.
-        
+
         :type name: str
         :param name: The name of the span.
-        
+
         :rtype: :class:`~google.cloud.trace.trace_span.TraceSpan`
         :returns: A TraceSpan to be added to the current Trace.
         """
@@ -85,7 +85,7 @@ class Trace(object):
 
     def send(self):
         """API call: Patch trace to Stackdriver Trace.
-        
+
         See
         https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
         cloudtrace.v1#google.devtools.cloudtrace.v1.TraceService.PatchTraces
