@@ -29,8 +29,8 @@ from google.cloud.credentials import get_credentials
 
 _GOOGLE_AUTH_CREDENTIALS_HELP = (
     'This library only supports credentials from google-auth-library-python. '
-    'See https://google-cloud-python.readthedocs.io/en/latest/'
-    'google-cloud-auth.html for help on authentication with this library.'
+    'See https://google-cloud-python.readthedocs.io/en/latest/core/auth.html '
+    'for help on authentication with this library.'
 )
 
 
