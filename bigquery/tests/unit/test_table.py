@@ -694,7 +694,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         RESOURCE['view'] = {}
         RESOURCE['view']['query'] = QUERY
-#        RESOURCE['view']['useLegacySql'] = True
         RESOURCE['type'] = 'VIEW'
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -705,7 +704,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.friendly_name = TITLE
         table.description = DESCRIPTION
         table.view_query = QUERY
-#        table.view_use_legacy_sql = True
 
         table.create(client=client2)
 
@@ -721,7 +719,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'tableId': self.TABLE_NAME},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
-#            'view': {'query': QUERY, 'useLegacySql': True},
             'view': {'query': QUERY},
         }
         self.assertEqual(req['data'], SENT)
