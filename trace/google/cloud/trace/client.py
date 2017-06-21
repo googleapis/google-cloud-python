@@ -22,8 +22,6 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from datetime import datetime
 import math
 
-_DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
-
 
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
@@ -189,31 +187,16 @@ class Client(ClientWithProject):
             options=options)
 
 
-def _datetime_to_timestamp_protobuf(datetime_str):
+def _datetime_to_timestamp_protobuf(date_time):
     """Helper to convert datetime to Timestamp protobuf.
 
-    :type datetime_str: str
-    :param datetime: Datetime string to be converted.
-                     Format required: %Y-%m-%dT%H:%M:%S.%f
-                     Use datetime.isoformat() to convert to this format.
-                     e.g. datetime.now().isoformat()
+    :type date_time: class:`~datetime.datetime`
+    :param date_time: Datetime to be converted.
 
     :rtype: :class:`~google.protobuf.timestamp_pb2.Timestamp`
     :returns: A Timestamp protobuf instance.
     """
-    try:
-        datetime_parsed = datetime.strptime(datetime_str, _DATETIME_FORMAT)
-    except ValueError:
-        return 'Time data {} does not match the format {}.'\
-            .format(datetime_str, _DATETIME_FORMAT)
-
-    timestamp = datetime_parsed.timestamp()
-    parts = divmod(timestamp, 1)
-    seconds = int(parts[0])
-    nanos = round(parts[1] * math.pow(10, 9))
-
     timestamp_pb = Timestamp()
-    timestamp_pb.seconds = seconds
-    timestamp_pb.nanos = nanos
+    timestamp_pb.FromDatetime(date_time)
 
     return timestamp_pb
