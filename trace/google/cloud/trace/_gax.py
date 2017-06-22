@@ -16,11 +16,13 @@
 
 from google.cloud.gapic.trace.v1.trace_service_client import (
     TraceServiceClient)
-from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
-    TraceSpan, Trace, Traces)
-
+from google.cloud.trace._helper import _traces_mapping_to_pb
+from google.gax import CallOptions
+from google.gax import INITIAL_PAGE
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
+from google.cloud.iterator import GAXIterator
+from google.protobuf.json_format import MessageToDict
 
 
 class _TraceAPI(object):
@@ -56,7 +58,7 @@ class _TraceAPI(object):
         :param options: (Optional) Overrides the default settings for this
                         call, e.g, timeout, retries etc.
         """
-        traces_pb = _trace_mapping_to_pb(traces)
+        traces_pb = _traces_mapping_to_pb(traces)
         self._gax_api.patch_traces(project_id, traces_pb, options)
 
     def get_trace(self, project_id, trace_id, options=None):
@@ -77,7 +79,7 @@ class _TraceAPI(object):
         :returns: A Trace dict.
         """
         trace_pb = self._gax_api.get_trace(project_id, trace_id, options)
-        trace_mapping = _trace_pb_to_mapping(trace_pb)
+        trace_mapping = _parse_trace_pb(trace_pb)
         return trace_mapping
 
     def list_traces(
@@ -89,7 +91,7 @@ class _TraceAPI(object):
             end_time=None,
             filter_=None,
             order_by=None,
-            options=None):
+            page_token=None):
         """Returns of a list of traces that match the specified filter
         conditions.
 
@@ -124,133 +126,58 @@ class _TraceAPI(object):
         :type order_by: str
         :param order_by: (Optional) Field used to sort the returned traces.
 
-        :type options: :class:`google.gax.CallOptions`
-        :param options: Overrides the default settings for this call.
-                        e.g, timeout, retries etc.
+        :type page_token: str
+        :param page_token: opaque marker for the next "page" of entries. If not
+                           passed, the API will return the first page of
+                           entries.
 
         :rtype: dict
         :returns: Traces that match the specified filter conditions.
         """
+        if page_token is None:
+            page_token = INITIAL_PAGE
+        options = CallOptions(page_token=page_token)
         page_iter = self._gax_api.list_traces(
-            project_id,
-            view,
-            page_size,
-            start_time,
-            end_time,
-            filter_,
-            order_by,
-            options)
-        traces = [_trace_pb_to_mapping(trace_pb)
-                  for trace_pb in page_iter]
-        return traces
+            project_id=project_id,
+            view=view,
+            page_size=page_size,
+            start_time=start_time,
+            end_time=end_time,
+            filter_=filter_,
+            order_by=order_by,
+            options=options)
+        item_to_value = _item_to_mapping
+        return GAXIterator(self.client, page_iter, item_to_value)
 
 
-def _trace_pb_to_mapping(trace_pb):
-    """Convert a trace protobuf to dict.
+def _parse_trace_pb(trace_pb):
+    """Parse a ``Trace`` protobuf to a dictionary.
 
-    :type trace_pb: class:`google.cloud.proto.devtools.cloudtrace.v1.
-                          trace_pb2.Trace`
+    :type trace_pb: :class:`google.cloud.proto.devtools.cloudtrace.v1.
+                            trace_pb2.Trace`
     :param trace_pb: A trace protobuf instance.
 
     :rtype: dict
-    :return: The converted trace dict.
+    :returns: The converted trace dict.
     """
-    mapping = {
-        'project_id': trace_pb.project_id,
-        'trace_id': trace_pb.trace_id,
-    }
+    try:
+        return MessageToDict(trace_pb)
+    except TypeError:
+        raise
 
-    spans = []
 
-    for span_pb in trace_pb.spans:
-        span = {
-            'span_id': span_pb.span_id,
-            'kind': span_pb.kind,
-            'name': span_pb.name,
-            'parent_span_id': span_pb.parent_span_id,
-        }
+def _item_to_mapping(iterator, trace_pb):
+    """Helper callable function for the GAXIterator
 
-        # Convert the Timestamp protobuf to dict.
-        time_keys = ['start_time', 'end_time']
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
 
-        for time_key in time_keys:
-            time_pb = getattr(span_pb, time_key)
-            time_mapping = {
-                'seconds': time_pb.seconds,
-                'nanos': time_pb.nanos,
-            }
-            span[time_key] = time_mapping
-
-        labels = {}
-
-        for key, value in span_pb.labels.items():
-            labels[key] = value
-
-        span['labels'] = labels
-        spans.append(span)
-
-    mapping['spans'] = spans
-
+    :type trace_pb: :class:`google.cloud.proto.devtools.cloudtrace.v1.
+                            trace_pb2.Trace`
+    :param trace_pb: A trace protobuf instance.
+    """
+    mapping = _parse_trace_pb(trace_pb)
     return mapping
-
-
-def _trace_mapping_to_pb(mapping):
-    """Convert a trace dict to protobuf.
-
-    :type mapping: dict
-    :param mapping: A trace mapping.
-
-    :rtype: class:`google.cloud.proto.devtools.cloudtrace.v1.trace_pb2.Trace`
-    :return: The converted protobuf type trace.
-    """
-    # Mapping from the key name in dict to key name in protobuf in a span.
-    span_scalar_keys = {
-        'spanId': 'span_id',
-        'kind': 'kind',
-        'name': 'name',
-        'parentSpanId': 'parent_span_id',
-        'labels': 'labels',
-    }
-
-    # Mapping from the key name in dict to key name in protobuf in a trace.
-    trace_scalar_keys = {
-        'traceId': 'trace_id',
-        'projectId': 'project_id',
-    }
-
-    traces = []
-
-    for trace in mapping['traces']:
-        spans = []
-
-        # Build the protobuf for TraceSpan.
-        # Protobuf type attributes cannot be set by setattr.
-        for span in trace['spans']:
-            span_pb = TraceSpan(
-                start_time=span['startTime'],
-                end_time=span['endTime'])
-
-            for key, pb_name in span_scalar_keys.items():
-
-                if key in span:
-                    setattr(span_pb, pb_name, span[key])
-
-            spans.append(span_pb)
-
-        # Build the protobuf for Trace.
-        trace_pb = Trace(spans=spans)
-
-        for key, pb_name in trace_scalar_keys.items():
-
-            if key in trace:
-                setattr(trace_pb, pb_name, trace[key])
-
-        traces.append(trace_pb)
-
-    # Build the protobuf for Traces.
-    traces_pb = Traces(traces=traces)
-
-    return traces_pb
 
 
 def make_gax_trace_api(client):

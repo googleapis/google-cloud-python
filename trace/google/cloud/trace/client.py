@@ -17,10 +17,7 @@
 from google.cloud.trace._gax import make_gax_trace_api
 from google.cloud.trace.trace import Trace
 from google.cloud.client import ClientWithProject
-from google.protobuf.timestamp_pb2 import Timestamp
-
-from datetime import datetime
-import math
+from google.cloud._helpers import _datetime_to_pb_timestamp
 
 
 class Client(ClientWithProject):
@@ -126,7 +123,7 @@ class Client(ClientWithProject):
             end_time=None,
             filter_=None,
             order_by=None,
-            options=None):
+            page_token=None):
         """Returns of a list of traces that match the filter conditions.
 
         :type project_id: str
@@ -160,9 +157,10 @@ class Client(ClientWithProject):
         :type order_by: str
         :param order_by: (Optional) Field used to sort the returned traces.
 
-        :type options: :class:`google.gax.CallOptions`
-        :param options: Overrides the default settings for this call.
-                        e.g, timeout, retries etc.
+        :type page_token: str
+        :param page_token: opaque marker for the next "page" of entries. If not
+                           passed, the API will return the first page of
+                           entries.
 
         :rtype: dict
         :returns: Traces that match the specified filter conditions.
@@ -171,10 +169,10 @@ class Client(ClientWithProject):
             project_id = self.project
 
         if start_time is not None:
-            start_time = _datetime_to_timestamp_protobuf(start_time)
+            start_time = _datetime_to_pb_timestamp(start_time)
 
         if end_time is not None:
-            end_time = _datetime_to_timestamp_protobuf(end_time)
+            end_time = _datetime_to_pb_timestamp(end_time)
 
         return self.trace_api.list_traces(
             project_id=project_id,
@@ -184,19 +182,4 @@ class Client(ClientWithProject):
             end_time=end_time,
             filter_=filter_,
             order_by=order_by,
-            options=options)
-
-
-def _datetime_to_timestamp_protobuf(date_time):
-    """Helper to convert datetime to Timestamp protobuf.
-
-    :type date_time: class:`~datetime.datetime`
-    :param date_time: Datetime to be converted.
-
-    :rtype: :class:`~google.protobuf.timestamp_pb2.Timestamp`
-    :returns: A Timestamp protobuf instance.
-    """
-    timestamp_pb = Timestamp()
-    timestamp_pb.FromDatetime(date_time)
-
-    return timestamp_pb
+            page_token=page_token)

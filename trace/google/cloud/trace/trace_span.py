@@ -14,8 +14,8 @@
 
 """TraceSpan for sending traces to the Stackdriver Trace API."""
 
+from datetime import datetime
 from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
-from google.protobuf.timestamp_pb2 import Timestamp
 
 import random
 
@@ -100,21 +100,11 @@ class TraceSpan(object):
 
     def set_start_time(self):
         """Set the start time for a span."""
-        timestamp = Timestamp()
-        timestamp.GetCurrentTime()
-        self.start_time = {
-            'seconds': timestamp.seconds,
-            'nanos': timestamp.nanos,
-        }
+        self.start_time = datetime.utcnow().isoformat() + 'Z'
 
     def set_end_time(self):
         """Set the end time for a span."""
-        timestamp = Timestamp()
-        timestamp.GetCurrentTime()
-        self.end_time = {
-            'seconds': timestamp.seconds,
-            'nanos': timestamp.nanos,
-        }
+        self.end_time = datetime.utcnow().isoformat() + 'Z'
 
     def __enter__(self):
         self.set_start_time()
