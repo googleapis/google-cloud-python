@@ -52,6 +52,7 @@ def lint(session):
     session.run('flake8', 'google/cloud/core')
     session.run(
         'gcp-devrel-py-tools', 'run-pylint',
+        '--config', 'pylint.config.py',
         '--library-filesets', 'google',
         '--test-filesets', 'tests',
         # Temporarily allow this to fail.
