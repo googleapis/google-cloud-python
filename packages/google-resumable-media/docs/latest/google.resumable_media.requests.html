@@ -275,7 +275,7 @@ having to fit in memory all at once.</p>
 <span class="go">b&#39;The beginning of the chunk...&#39;</span>
 </pre></div>
 </div>
-<p>The download will change it&#8217;s <code class="docutils literal"><span class="pre">finished</span></code> status to <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>
+<p>The download will change it’s <code class="docutils literal"><span class="pre">finished</span></code> status to <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>
 once the final chunk is consumed. In some cases, the final chunk may
 not be the same size as the other chunks:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The state of the download in progress.</span>
@@ -366,7 +366,7 @@ will be raised:</p>
 <h2>Multipart Uploads<a class="headerlink" href="#multipart-uploads" title="Permalink to this headline">¶</a></h2>
 <p>After the simple upload, the <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.MultipartUpload" title="google.resumable_media.requests.upload.MultipartUpload"><code class="xref py py-class docutils literal"><span class="pre">MultipartUpload</span></code></a> can be used to
 achieve essentially the same task. However, a multipart upload allows some
-metadata about the resource to be sent along as well. (This is the &#8220;multi&#8221;:
+metadata about the resource to be sent along as well. (This is the “multi”:
 we send a first part with the metadata and a second part with the actual
 bytes in the resource.)</p>
 <p>Usage is similar to the simple upload, but <a class="reference internal" href="google.resumable_media.requests.upload.html#google.resumable_media.requests.upload.MultipartUpload.transmit" title="google.resumable_media.requests.upload.MultipartUpload.transmit"><code class="xref py py-meth docutils literal"><span class="pre">transmit()</span></code></a>

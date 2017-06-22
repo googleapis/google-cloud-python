@@ -170,8 +170,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>response</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) &#8211; The HTTP response which caused the failure.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) &#8211; The positional arguments typically passed to an
+<li><strong>response</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – The HTTP response which caused the failure.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – The positional arguments typically passed to an
 exception class.</li>
 </ul>
 </td>
@@ -186,13 +186,13 @@ exception class.</li>
 <dl class="attribute">
 <dt id="google.resumable_media.common.InvalidResponse.response">
 <code class="descname">response</code><em class="property"> = None</em><a class="headerlink" href="#google.resumable_media.common.InvalidResponse.response" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>object</em> &#8211; The HTTP response object that caused the failure.</p>
+<dd><p><em>object</em> – The HTTP response object that caused the failure.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.resumable_media.common.InvalidResponse.with_traceback">
 <code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.common.InvalidResponse.with_traceback" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception.with_traceback(tb) &#8211;
+<dd><p>Exception.with_traceback(tb) –
 set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 
@@ -201,7 +201,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="data">
 <dt id="google.resumable_media.common.MAX_CUMULATIVE_RETRY">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">MAX_CUMULATIVE_RETRY</code><em class="property"> = 600.0</em><a class="headerlink" href="#google.resumable_media.common.MAX_CUMULATIVE_RETRY" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; Maximum total sleep time allowed during retry process.</p>
+<dd><p><em>float</em> – Maximum total sleep time allowed during retry process.</p>
 <p>This is provided (10 minutes) as a default. When the cumulative sleep
 exceeds this limit, no more retries will occur.</p>
 </dd></dl>
@@ -209,7 +209,7 @@ exceeds this limit, no more retries will occur.</p>
 <dl class="data">
 <dt id="google.resumable_media.common.MAX_SLEEP">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">MAX_SLEEP</code><em class="property"> = 64.0</em><a class="headerlink" href="#google.resumable_media.common.MAX_SLEEP" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; Maximum amount of time allowed between requests.</p>
+<dd><p><em>float</em> – Maximum amount of time allowed between requests.</p>
 <p>Used during the retry process for sleep after a failed request.
 Chosen since it is the power of two nearest to one minute.</p>
 </dd></dl>
@@ -217,11 +217,11 @@ Chosen since it is the power of two nearest to one minute.</p>
 <dl class="data">
 <dt id="google.resumable_media.common.PERMANENT_REDIRECT">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">PERMANENT_REDIRECT</code><em class="property"> = 308</em><a class="headerlink" href="#google.resumable_media.common.PERMANENT_REDIRECT" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; Permanent redirect status code.</p>
+<dd><p><em>int</em> – Permanent redirect status code.</p>
 <p>It is used by Google services to indicate some (but not all) of
 a resumable upload has been completed.</p>
 <p><code class="docutils literal"><span class="pre">http.client.PERMANENT_REDIRECT</span></code> was added in Python 3.5, so
-can&#8217;t be used in a &#8220;general&#8221; code base.</p>
+can’t be used in a “general” code base.</p>
 <p>For more information, see <a class="reference external" href="https://tools.ietf.org/html/rfc7238">RFC 7238</a>.</p>
 </dd></dl>
 
@@ -239,11 +239,11 @@ neither are specified, then <code class="docutils literal"><span class="pre">max
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>max_sleep</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]) &#8211; The maximum amount of time to sleep after
+<li><strong>max_sleep</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]) – The maximum amount of time to sleep after
 a failed request. Default is <a class="reference internal" href="#google.resumable_media.common.MAX_SLEEP" title="google.resumable_media.common.MAX_SLEEP"><code class="xref py py-attr docutils literal"><span class="pre">MAX_SLEEP</span></code></a>.</li>
-<li><strong>max_cumulative_retry</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]) &#8211; The maximum <strong>total</strong> amount of
+<li><strong>max_cumulative_retry</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]) – The maximum <strong>total</strong> amount of
 time to sleep during retry process.</li>
-<li><strong>max_retries</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]) &#8211; The number of retries to attempt.</li>
+<li><strong>max_retries</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]) – The number of retries to attempt.</li>
 </ul>
 </td>
 </tr>
@@ -252,27 +252,27 @@ time to sleep during retry process.</li>
 <dl class="attribute">
 <dt id="google.resumable_media.common.RetryStrategy.max_sleep">
 <code class="descname">max_sleep</code><a class="headerlink" href="#google.resumable_media.common.RetryStrategy.max_sleep" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>float</em> &#8211; Maximum amount of time allowed between requests.</p>
+<dd><p><em>float</em> – Maximum amount of time allowed between requests.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.common.RetryStrategy.max_cumulative_retry">
 <code class="descname">max_cumulative_retry</code><a class="headerlink" href="#google.resumable_media.common.RetryStrategy.max_cumulative_retry" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]  &#8211; Maximum total sleep time
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">float</span></code></a> ]  – Maximum total sleep time
 allowed during retry process.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.resumable_media.common.RetryStrategy.max_retries">
 <code class="descname">max_retries</code><a class="headerlink" href="#google.resumable_media.common.RetryStrategy.max_retries" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  &#8211; The number retries to attempt.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.6/library/typing.html#typing.Optional" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">Optional</span></code></a> [ <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a> ]  – The number retries to attempt.</p>
 </dd></dl>
 
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> &#8211; If both of <code class="docutils literal"><span class="pre">max_cumulative_retry</span></code> and <code class="docutils literal"><span class="pre">max_retries</span></code>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If both of <code class="docutils literal"><span class="pre">max_cumulative_retry</span></code> and <code class="docutils literal"><span class="pre">max_retries</span></code>
 are passed.</td>
 </tr>
 </tbody>
@@ -286,8 +286,8 @@ are passed.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>total_sleep</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The amount of sleep accumulated by the caller.</li>
-<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The number of retries already attempted by
+<li><strong>total_sleep</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The amount of sleep accumulated by the caller.</li>
+<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The number of retries already attempted by
 the caller.</li>
 </ul>
 </td>
@@ -309,16 +309,16 @@ allowed.</p>
 <dl class="data">
 <dt id="google.resumable_media.common.TOO_MANY_REQUESTS">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">TOO_MANY_REQUESTS</code><em class="property"> = 429</em><a class="headerlink" href="#google.resumable_media.common.TOO_MANY_REQUESTS" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; Status code indicating rate-limiting.</p>
+<dd><p><em>int</em> – Status code indicating rate-limiting.</p>
 <p><code class="docutils literal"><span class="pre">http.client.TOO_MANY_REQUESTS</span></code> was added in Python 3.3, so
-can&#8217;t be used in a &#8220;general&#8221; code base.</p>
+can’t be used in a “general” code base.</p>
 <p>For more information, see <a class="reference external" href="https://tools.ietf.org/html/rfc6585#section-4">RFC 6585</a>.</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="google.resumable_media.common.UPLOAD_CHUNK_SIZE">
 <code class="descclassname">google.resumable_media.common.</code><code class="descname">UPLOAD_CHUNK_SIZE</code><em class="property"> = 262144</em><a class="headerlink" href="#google.resumable_media.common.UPLOAD_CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int</em> &#8211; Chunks in a resumable upload must come in multiples of 256 KB.</p>
+<dd><p><em>int</em> – Chunks in a resumable upload must come in multiples of 256 KB.</p>
 </dd></dl>
 
 </div>
