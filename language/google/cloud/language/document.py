@@ -266,10 +266,10 @@ class Document(object):
             This API is intended for users who are familiar with machine
             learning and need in-depth text features to build upon.
 
-        .. _annotateText: https://cloud.google.com/natural-language/\
+        .. _annotate-text: https://cloud.google.com/natural-language/\
                           reference/rest/v1/documents/annotateText
 
-        See `annotateText`_.
+        See `annotate-text`_.
 
         :type include_syntax: bool
         :param include_syntax: (Optional) Flag to enable syntax analysis

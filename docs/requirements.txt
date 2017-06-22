@@ -15,3 +15,4 @@ storage/
 translate/
 vision/
 spanner/
+sphinx-docstring-typing >= 0.0.2
