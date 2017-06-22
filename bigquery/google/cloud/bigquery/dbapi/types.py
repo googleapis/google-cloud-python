@@ -22,13 +22,15 @@ See `PEP 249`_ for details.
 
 import datetime
 
+import six
+
 
 Date = datetime.date
 Time = datetime.time
 Timestamp = datetime.datetime
 DateFromTicks = datetime.date.fromtimestamp
 TimestampFromTicks = datetime.datetime.fromtimestamp
-Binary = bytes
+Binary = six.binary_type
 
 
 def TimeFromTicks(ticks, tz=None):

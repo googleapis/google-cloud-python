@@ -28,7 +28,7 @@ class TestCursor(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def _mock_client(
-        self, rows=None, schema=None, num_dml_affected_rows=None):
+            self, rows=None, schema=None, num_dml_affected_rows=None):
         from google.cloud.bigquery import client
         mock_client = mock.create_autospec(client.Client)
         mock_client.run_async_query.return_value = self._mock_job(
@@ -37,7 +37,7 @@ class TestCursor(unittest.TestCase):
         return mock_client
 
     def _mock_job(
-        self, rows=None, schema=None, num_dml_affected_rows=None):
+            self, rows=None, schema=None, num_dml_affected_rows=None):
         from google.cloud.bigquery import job
         mock_job = mock.create_autospec(job.QueryJob)
         mock_job.error_result = None
@@ -48,7 +48,7 @@ class TestCursor(unittest.TestCase):
         return mock_job
 
     def _mock_results(
-        self, rows=None, schema=None, num_dml_affected_rows=None):
+            self, rows=None, schema=None, num_dml_affected_rows=None):
         from google.cloud.bigquery import query
         mock_results = mock.create_autospec(query.QueryResults)
         mock_results.schema = schema
@@ -72,7 +72,6 @@ class TestCursor(unittest.TestCase):
 
     def test_close(self):
         from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import Cursor
         connection = connect(self._mock_client())
         cursor = connection.cursor()
         # close() is a no-op, there is nothing to test.
@@ -173,7 +172,6 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_w_dml(self):
         from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import Cursor
         connection = connect(
             self._mock_client(rows=[], num_dml_affected_rows=12))
         cursor = connection.cursor()
@@ -223,7 +221,6 @@ class TestCursor(unittest.TestCase):
 
     def test_executemany_w_dml(self):
         from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import Cursor
         connection = connect(
             self._mock_client(rows=[], num_dml_affected_rows=12))
         cursor = connection.cursor()

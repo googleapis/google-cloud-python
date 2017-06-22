@@ -34,17 +34,15 @@ def wait_for_job(job):
         job.reload()
         if job.state == 'DONE':
             if job.error_result:
-                # TODO: raise a more specific exception, based on the error.
-                # See: https://cloud.google.com/bigquery/troubleshooting-errors
                 raise exceptions.DatabaseError(job.errors)
             return
         time.sleep(1)
 
 
-def scalar_to_query_parameter(name=None, value=None):
+def scalar_to_query_parameter(value, name=None):
     """Convert a scalar value into a query parameter.
 
-    Note: the bytes type cannot be distinguished from a string in Python 2.
+    Note: You must use the unicode type for string parameters in Python 2.
 
     Raises a :class:`~ google.cloud.bigquery.dbapi.exceptions.ProgrammingError`
     if the type cannot be determined.
@@ -52,11 +50,11 @@ def scalar_to_query_parameter(name=None, value=None):
     For more information about BigQuery data types, see:
     https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
 
-    :type: str
-    :param name: Optional name of the query parameter.
-
     :type: any
     :param value: A scalar value to convert into a query parameter.
+
+    :type: str
+    :param name: Optional name of the query parameter.
 
     :rtype: :class:`~google.cloud.bigquery.ScalarQueryParameter`
     """
@@ -68,9 +66,9 @@ def scalar_to_query_parameter(name=None, value=None):
         parameter_type = 'INT64'
     elif isinstance(value, numbers.Real):
         parameter_type = 'FLOAT64'
-    elif isinstance(value, six.string_types):
+    elif isinstance(value, six.text_type):
         parameter_type = 'STRING'
-    elif isinstance(value, bytes):
+    elif isinstance(value, six.binary_type):
         parameter_type = 'BYTES'
     elif isinstance(value, datetime.datetime):
         parameter_type = 'TIMESTAMP' if value.tzinfo else 'DATETIME'
@@ -88,43 +86,38 @@ def scalar_to_query_parameter(name=None, value=None):
 def to_query_parameters_list(parameters):
     """Converts a list of parameter values into query parameters.
 
-    :type: list
-    :param parameters: List of query parameter values.
+    :type: Sequence[Any]
+    :param parameters: Sequence of query parameter values.
 
     :rtype:
         list of :class:`~google.cloud.bigquery._helpers.AbstractQueryParameter`
     """
-    query_parameters = []
-
-    for value in parameters:
-        query_parameters.append(scalar_to_query_parameter(value=value))
-
-    return query_parameters
+    return [scalar_to_query_parameter(value) for value in parameters]
 
 
 def to_query_parameters_dict(parameters):
     """Converts a dictionary of parameter values into query parameters.
 
-    :type: dict
+    :type: Mapping[str, Any]
     :param parameters: Dictionary of query parameter values.
 
     :rtype:
         list of :class:`~google.cloud.bigquery._helpers.AbstractQueryParameter`
     """
-    query_parameters = []
-
-    for name in parameters:
-        value = parameters[name]
-        query_parameters.append(scalar_to_query_parameter(name, value))
-
-    return query_parameters
+    return [
+        scalar_to_query_parameter(value, name=name)
+        for name, value
+        in six.iteritems(parameters)]
 
 
 def to_query_parameters(parameters):
     """Converts DB-API parameter values into query parameters.
 
-    :type: dict or list
-    :param parameters: Optional dictionary or list of query parameter values.
+    STRUCT/RECORD and REPEATED type parameters are not yet supported.
+    https://github.com/GoogleCloudPlatform/google-cloud-python/issues/3524
+
+    :type: Mapping[str, Any] or Sequence[Any]
+    :param parameters: A dictionary or sequence of query parameter values.
 
     :rtype:
         list of :class:`~google.cloud.bigquery._helpers.AbstractQueryParameter`

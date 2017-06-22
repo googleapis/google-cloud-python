@@ -547,7 +547,7 @@ class TestBigQuery(unittest.TestCase):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
-        EXAMPLES = [
+        examples = [
             {
                 'sql': 'SELECT 1',
                 'expected': 1,
@@ -573,7 +573,7 @@ class TestBigQuery(unittest.TestCase):
                 'expected': zoned,
             },
         ]
-        for example in EXAMPLES:
+        for example in examples:
             query = Config.CLIENT.run_sync_query(example['sql'])
             query.use_legacy_sql = True
             query.run()
@@ -664,8 +664,8 @@ class TestBigQuery(unittest.TestCase):
         ]
 
     def test_sync_query_w_standard_sql_types(self):
-        EXAMPLES = self._generate_standard_sql_types_examples()
-        for example in EXAMPLES:
+        examples = self._generate_standard_sql_types_examples()
+        for example in examples:
             query = Config.CLIENT.run_sync_query(example['sql'])
             query.use_legacy_sql = False
             query.run()
@@ -674,8 +674,8 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(query.rows[0][0], example['expected'])
 
     def test_dbapi_w_standard_sql_types(self):
-        EXAMPLES = self._generate_standard_sql_types_examples()
-        for example in EXAMPLES:
+        examples = self._generate_standard_sql_types_examples()
+        for example in examples:
             Config.CURSOR.execute(example['sql'])
             self.assertEqual(Config.CURSOR.rowcount, 1)
             row = Config.CURSOR.fetchone()
@@ -724,7 +724,7 @@ class TestBigQuery(unittest.TestCase):
     def test_sync_query_w_dml(self):
         dataset_name = _make_dataset_name('dml_tests')
         table_name = 'test_table'
-        self._load_table_for_dml([('Hello World',),], dataset_name, table_name)
+        self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
 
         query = Config.CLIENT.run_sync_query(
             'UPDATE {}.{} '
@@ -739,7 +739,7 @@ class TestBigQuery(unittest.TestCase):
     def test_dbapi_w_dml(self):
         dataset_name = _make_dataset_name('dml_tests')
         table_name = 'test_table'
-        self._load_table_for_dml([('Hello World',),], dataset_name, table_name)
+        self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
 
         Config.CURSOR.execute(
             'UPDATE {}.{} '
@@ -811,7 +811,7 @@ class TestBigQuery(unittest.TestCase):
             name='friends', array_type='STRING',
             values=[phred_name, bharney_name])
         with_friends_param = StructQueryParameter(None, friends_param)
-        EXAMPLES = [
+        examples = [
             {
                 'sql': 'SELECT @question',
                 'expected': question,
@@ -891,7 +891,7 @@ class TestBigQuery(unittest.TestCase):
                 'query_parameters': [with_friends_param],
             },
         ]
-        for example in EXAMPLES:
+        for example in examples:
             query = Config.CLIENT.run_sync_query(
                 example['sql'],
                 query_parameters=example['query_parameters'])
@@ -902,7 +902,7 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(query.rows[0][0], example['expected'])
 
     def test_dbapi_w_query_parameters(self):
-        EXAMPLES = [
+        examples = [
             {
                 'sql': 'SELECT %(boolval)s',
                 'expected': True,
@@ -967,17 +967,19 @@ class TestBigQuery(unittest.TestCase):
             {
                 'sql': 'SELECT TIMESTAMP_TRUNC(%(zoned)s, MINUTE)',
                 'query_parameters': {
-                    'zoned': datetime.datetime(2012, 3, 4, 5, 6, 7, tzinfo=UTC),
+                    'zoned': datetime.datetime(
+                        2012, 3, 4, 5, 6, 7, tzinfo=UTC),
                 },
                 'expected': datetime.datetime(2012, 3, 4, 5, 6, 0, tzinfo=UTC),
             },
         ]
-        for example in EXAMPLES:
+        for example in examples:
             msg = 'sql: {} query_parameters: {}'.format(
                 example['sql'], example['query_parameters'])
 
             try:
-                Config.CURSOR.execute(example['sql'], example['query_parameters'])
+                Config.CURSOR.execute(
+                    example['sql'], example['query_parameters'])
             except dbapi.DatabaseError as ex:
                 raise dbapi.DatabaseError('{} {}'.format(ex, msg))
 

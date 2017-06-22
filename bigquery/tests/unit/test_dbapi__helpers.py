@@ -17,7 +17,6 @@ import math
 import unittest
 
 import mock
-import six
 
 import google.cloud._helpers
 from google.cloud.bigquery.dbapi import _helpers
@@ -42,7 +41,8 @@ class Test_wait_for_job(unittest.TestCase):
 
     def _call_fut(self, job):
         from google.cloud.bigquery.dbapi._helpers import wait_for_job
-        wait_for_job(job)
+        with mock.patch('time.sleep'):
+            wait_for_job(job)
 
     def test_wo_error(self):
         mock_job = self._mock_job()
@@ -53,12 +53,12 @@ class Test_wait_for_job(unittest.TestCase):
     def test_w_error(self):
         from google.cloud.bigquery.dbapi import exceptions
         mock_job = self._mock_job()
-        mock_job.error_result ={'reason': 'invalidQuery'}
+        mock_job.error_result = {'reason': 'invalidQuery'}
         self.assertRaises(exceptions.DatabaseError, self._call_fut, mock_job)
         self.assertEqual('DONE', mock_job.state)
 
 
-class TestHelpers(unittest.TestCase):
+class TestQueryParameters(unittest.TestCase):
 
     def test_scalar_to_query_parameter(self):
         expected_types = [
@@ -67,8 +67,8 @@ class TestHelpers(unittest.TestCase):
             (123, 'INT64'),
             (-123456789, 'INT64'),
             (1.25, 'FLOAT64'),
-            ('I am a plain old string', 'STRING'),
-            (u'I am a unicode string', 'STRING'),
+            (b'I am some bytes', 'BYTES'),
+            (u'I am a string', 'STRING'),
             (datetime.date(2017, 4, 1), 'DATE'),
             (datetime.time(12, 34, 56), 'TIME'),
             (datetime.datetime(2012, 3, 4, 5, 6, 7), 'DATETIME'),
@@ -80,44 +80,32 @@ class TestHelpers(unittest.TestCase):
         ]
         for value, expected_type in expected_types:
             msg = 'value: {} expected_type: {}'.format(value, expected_type)
-            parameter = _helpers.scalar_to_query_parameter(None, value)
+            parameter = _helpers.scalar_to_query_parameter(value)
             self.assertIsNone(parameter.name, msg=msg)
             self.assertEqual(parameter.type_, expected_type, msg=msg)
             self.assertEqual(parameter.value, value, msg=msg)
-            named_parameter = _helpers.scalar_to_query_parameter('myvar', value)
+            named_parameter = _helpers.scalar_to_query_parameter(
+                value, name='myvar')
             self.assertEqual(named_parameter.name, 'myvar', msg=msg)
             self.assertEqual(named_parameter.type_, expected_type, msg=msg)
             self.assertEqual(named_parameter.value, value, msg=msg)
-
-    @unittest.skipIf(six.PY2, 'Bytes cannot be distinguished from string.')
-    def test_scalar_to_query_parameter_w_bytes(self):
-        parameter = _helpers.scalar_to_query_parameter(
-            None, b'some-bytes-literal')
-        self.assertIsNone(parameter.name)
-        self.assertEqual(parameter.type_, 'BYTES')
-        self.assertEqual(parameter.value, b'some-bytes-literal')
-        named_parameter = _helpers.scalar_to_query_parameter(
-            'myvar', b'some-bytes-literal')
-        self.assertEqual(named_parameter.name, 'myvar')
-        self.assertEqual(named_parameter.type_, 'BYTES')
-        self.assertEqual(named_parameter.value, b'some-bytes-literal')
 
     def test_scalar_to_query_parameter_w_unexpected_type(self):
         with self.assertRaises(exceptions.ProgrammingError):
             _helpers.scalar_to_query_parameter(value={'a': 'dictionary'})
 
     def test_scalar_to_query_parameter_w_special_floats(self):
-        nan_parameter = _helpers.scalar_to_query_parameter(None, float('nan'))
+        nan_parameter = _helpers.scalar_to_query_parameter(float('nan'))
         self.assertTrue(math.isnan(nan_parameter.value))
         self.assertEqual(nan_parameter.type_, 'FLOAT64')
-        inf_parameter = _helpers.scalar_to_query_parameter(None, float('inf'))
+        inf_parameter = _helpers.scalar_to_query_parameter(float('inf'))
         self.assertTrue(math.isinf(inf_parameter.value))
         self.assertEqual(inf_parameter.type_, 'FLOAT64')
 
     def test_to_query_parameters_w_dict(self):
         parameters = {
             'somebool': True,
-            'somestring': 'a-string-value',
+            'somestring': u'a-string-value',
         }
         query_parameters = _helpers.to_query_parameters(parameters)
         query_parameter_tuples = []
@@ -128,11 +116,11 @@ class TestHelpers(unittest.TestCase):
             sorted(query_parameter_tuples),
             sorted([
                 ('somebool', 'BOOL', True),
-                ('somestring', 'STRING', 'a-string-value'),
+                ('somestring', 'STRING', u'a-string-value'),
             ]))
 
     def test_to_query_parameters_w_list(self):
-        parameters = [True, 'a-string-value']
+        parameters = [True, u'a-string-value']
         query_parameters = _helpers.to_query_parameters(parameters)
         query_parameter_tuples = []
         for param in query_parameters:
@@ -142,5 +130,5 @@ class TestHelpers(unittest.TestCase):
             sorted(query_parameter_tuples),
             sorted([
                 (None, 'BOOL', True),
-                (None, 'STRING', 'a-string-value'),
+                (None, 'STRING', u'a-string-value'),
             ]))

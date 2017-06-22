@@ -23,7 +23,16 @@ from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
 
 
-_ARRAYSIZE_DEFAULT = 20
+# Per PEP 249: A 7-item sequence containing information describing one result
+# column. The first two items (name and type_code) are mandatory, the other
+# five are optional and are set to None if no meaningful values can be
+# provided.
+Column = collections.namedtuple(
+    'Column',
+    [
+        'name', 'type_code', 'display_size', 'internal_size', 'precision',
+        'scale', 'null_ok',
+    ])
 
 
 class Cursor(object):
@@ -35,8 +44,13 @@ class Cursor(object):
     def __init__(self, connection):
         self.connection = connection
         self.description = None
+        # Per PEP 249: The attribute is -1 in case no .execute*() has been
+        # performed on the cursor or the rowcount of the last operation
+        # cannot be determined by the interface.
         self.rowcount = -1
-        self.arraysize = None
+        # Per PEP 249: The arraysize attribute defaults to 1, meaning to fetch
+        # a single row at a time.
+        self.arraysize = 1
         self._query_data = None
         self._page_token = None
         self._has_fetched_all_rows = True
@@ -47,23 +61,23 @@ class Cursor(object):
     def _set_description(self, schema):
         """Set description from schema.
 
-        :type: list of :class:`~google.cloud.bigquery.schema.SchemaField`
+        :type: Sequence[:class:`~google.cloud.bigquery.schema.SchemaField`]
+        :param schema: A description of fields in the schema.
         """
         if schema is None:
             self.description = None
             return
 
-        desc = []
-        for field in schema:
-            desc.append(tuple([
+        self.description = tuple([
+            Column(
                 field.name,
                 field.field_type,
                 None,
                 None,
                 None,
                 None,
-                field.mode == 'NULLABLE']))
-        self.description = tuple(desc)
+                field.mode == 'NULLABLE')
+            for field in schema])
 
     def _set_rowcount(self, query_results):
         """Set the rowcount from query results.
@@ -86,13 +100,16 @@ class Cursor(object):
         self.rowcount = total_rows
 
     def _format_operation_list(self, operation, parameters):
-        """Formats parameters in operation in way BigQuery expects.
+        """Formats parameters in operation in the way BigQuery expects.
+
+        The input operation will be a query like ``SELECT %s`` and the output
+        will be a query like ``SELECT ?``.
 
         :type: str
         :param operation: A Google BigQuery query string.
 
-        :type: list
-        :param parameters: List parameter values.
+        :type: Sequence[Any]
+        :param parameters: Sequence of parameter values.
         """
         formatted_params = ['?' for _ in parameters]
 
@@ -102,12 +119,15 @@ class Cursor(object):
             raise exceptions.ProgrammingError(ex)
 
     def _format_operation_dict(self, operation, parameters):
-        """Formats parameters in operation in way BigQuery expects.
+        """Formats parameters in operation in the way BigQuery expects.
+
+        The input operation will be a query like ``SELECT %(namedparam)s`` and
+        the output will be a query like ``SELECT @namedparam``.
 
         :type: str
         :param operation: A Google BigQuery query string.
 
-        :type: dict
+        :type: Mapping[str, Any]
         :param parameters: Dictionary of parameter values.
         """
         formatted_params = {}
@@ -128,7 +148,7 @@ class Cursor(object):
         :type: str
         :param operation: A Google BigQuery query string.
 
-        :type: dict or list
+        :type: Mapping[str, Any] or Sequence[Any]
         :param parameters: Optional parameter values.
         """
         if parameters is None:
@@ -145,7 +165,7 @@ class Cursor(object):
         :type: str
         :param operation: A Google BigQuery query string.
 
-        :type: dict or list
+        :type: Mapping[str, Any] or Sequence[Any]
         :param parameters: Optional dictionary or sequence of parameter values.
         """
         self._query_results = None
@@ -191,7 +211,7 @@ class Cursor(object):
         :type: str
         :param operation: A Google BigQuery query string.
 
-        :type: list
+        :type: Sequence[Mapping[str, Any] or Sequence[Any]]
         :param parameters: Sequence of many sets of parameter values.
         """
         for parameters in seq_of_parameters:
@@ -218,14 +238,15 @@ class Cursor(object):
         """Fetch multiple results from the last ``execute*()`` call.
 
         Note that the size parameter is not used for the request/response size.
-        Use ``arraysize()`` before calling ``execute()`` to set the batch size.
+        Set the ``arraysize`` attribute before calling ``execute()`` to set the
+        batch size.
 
         :type: int
         :param size:
-            Optional maximum number of rows to return. Defaults to the
-            arraysize attribute.
+            (Optional) Maximum number of rows to return. Defaults to the
+            ``arraysize`` property value.
 
-        :rtype: tuple
+        :rtype: Sequence[tuple]
         :returns: A list of rows.
         """
         if self._query_data is None:
@@ -233,8 +254,6 @@ class Cursor(object):
                 'No query results: execute() must be called before fetch.')
         if size is None:
             size = self.arraysize
-        if size is None:
-            size = _ARRAYSIZE_DEFAULT
 
         rows = []
         for row in self._query_data:
@@ -246,7 +265,7 @@ class Cursor(object):
     def fetchall(self):
         """Fetch all remaining results from the last ``execute*()`` call.
 
-        :rtype: list of tuples
+        :rtype: Sequence[tuple]
         :returns: A list of all the rows in the results.
         """
         if self._query_data is None:
