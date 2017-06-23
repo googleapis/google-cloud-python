@@ -19,12 +19,6 @@ import mock
 from google.cloud._testing import _GAXBaseAPI
 
 
-def _make_credentials():
-    import google.auth.credentials
-
-    return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
 class _Base(object):
     PROJECT = 'PROJECT'
     PROJECT_PATH = 'projects/%s' % (PROJECT,)

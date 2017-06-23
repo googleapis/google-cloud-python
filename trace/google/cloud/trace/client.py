@@ -151,7 +151,7 @@ class Client(ClientWithProject):
                          which the trace data was collected from the
                          application.
 
-        :type filter: str
+        :type filter_: str
         :param filter_: (Optional) An optional filter for the request.
 
         :type order_by: str

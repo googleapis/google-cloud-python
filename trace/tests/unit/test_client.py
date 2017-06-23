@@ -95,7 +95,7 @@ class TestClient(unittest.TestCase):
         api.list_traces(project_id=self.PROJECT)
         api.list_traces(api._list_traces_called_with, (
             self.PROJECT,
-            None,None,None,None,None,None,None))
+            None, None, None, None, None, None, None))
 
 
 class _DummyTraceAPI(object):

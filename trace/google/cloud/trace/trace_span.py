@@ -50,12 +50,12 @@ class TraceSpan(object):
                    Label keys must be less than 128 bytes.
                    Label values must be less than 16 kilobytes.
 
-    :type start_time: :class:`~datetime.datetime`
+    :type start_time: str
     :param start_time: (Optional) Start of the time interval (inclusive)
                        during which the trace data was collected from the
                        application.
 
-    :type end_time: :class:`~datetime.datetime`
+    :type end_time: str
     :param end_time: (Optional) End of the time interval (inclusive) during
                      which the trace data was collected from the application.
 
@@ -80,7 +80,9 @@ class TraceSpan(object):
         self.end_time = end_time
 
         if span_id is None:
-            self.span_id = self.generate_span_id()
+            span_id = generate_span_id()
+
+        self.span_id = span_id
 
         self.child_spans = []
 
@@ -113,15 +115,16 @@ class TraceSpan(object):
     def __exit__(self, exception_type, exception_value, traceback):
         self.set_end_time()
 
-    def generate_span_id(self):
-        """Return the random generated span ID for a span.
 
-        :rtype: int
-        :returns: Identifier for the span. Must be a 64-bit integer other
-                  than 0 and unique within a trace. Converted to string.
-        """
-        span_id = str(random.getrandbits(64))
-        return int(span_id)
+def generate_span_id(self):
+    """Return the random generated span ID for a span.
+
+    :rtype: int
+    :returns: Identifier for the span. Must be a 64-bit integer other
+                than 0 and unique within a trace. Converted to string.
+    """
+    span_id = str(random.getrandbits(64))
+    return int(span_id)
 
 
 def format_span_json(span):
