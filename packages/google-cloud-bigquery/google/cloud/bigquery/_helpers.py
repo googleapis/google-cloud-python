@@ -318,7 +318,7 @@ class _EnumProperty(_ConfigurationProperty):
         :raises: ValueError if value is not allowed.
         """
         if value not in self.ALLOWED:
-            raise ValueError('Pass one of: %s' ', '.join(self.ALLOWED))
+            raise ValueError('Pass one of: %s' % ', '.join(self.ALLOWED))
 
 
 class UDFResource(object):
