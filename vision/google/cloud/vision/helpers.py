@@ -13,9 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import collections
 import io
-import six
 
 from google.gax.utils import protobuf
 
