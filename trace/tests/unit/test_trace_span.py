@@ -19,7 +19,7 @@ import mock
 
 class TestTraceSpan(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
+    project = 'PROJECT'
 
     @staticmethod
     def _get_target_class():
@@ -33,18 +33,18 @@ class TestTraceSpan(unittest.TestCase):
     def test_constructor_defaults(self):
         from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
 
-        SPAN_ID = 'test_span_id'
-        SPAN_NAME = 'test_span_name'
+        span_id = 'test_span_id'
+        span_name = 'test_span_name'
 
         patch = mock.patch(
             'google.cloud.trace.trace_span.generate_span_id',
-            return_value=SPAN_ID)
+            return_value=span_id)
 
         with patch:
-            span = self._make_one(SPAN_NAME)
+            span = self._make_one(span_name)
 
-        self.assertEqual(span.name, SPAN_NAME)
-        self.assertEqual(span.span_id, SPAN_ID)
+        self.assertEqual(span.name, span_name)
+        self.assertEqual(span.span_id, span_id)
         self.assertEqual(span.kind, Enum.SpanKind.SPAN_KIND_UNSPECIFIED)
         self.assertIsNone(span.parent_span_id)
         self.assertIsNone(span.labels)
@@ -56,33 +56,33 @@ class TestTraceSpan(unittest.TestCase):
 
         from datetime import datetime
 
-        SPAN_ID = 'test_span_id'
-        SPAN_NAME = 'test_span_name'
-        KIND = Enum.SpanKind.RPC_CLIENT
-        PARENT_SPAN_ID = 1234
-        START_TIME = datetime.utcnow().isoformat() + 'Z'
-        END_TIME = datetime.utcnow().isoformat() + 'Z'
-        LABELS = {
+        span_id = 'test_span_id'
+        span_name = 'test_span_name'
+        kind = Enum.SpanKind.RPC_CLIENT
+        parent_span_id = 1234
+        start_time = datetime.utcnow().isoformat() + 'Z'
+        end_time = datetime.utcnow().isoformat() + 'Z'
+        labels = {
             '/http/status_code': '200',
             '/component': 'HTTP load balancer',
         }
 
         span = self._make_one(
-            name=SPAN_NAME,
-            kind=KIND,
-            parent_span_id=PARENT_SPAN_ID,
-            labels=LABELS,
-            start_time=START_TIME,
-            end_time=END_TIME,
-            span_id=SPAN_ID)
+            name=span_name,
+            kind=kind,
+            parent_span_id=parent_span_id,
+            labels=labels,
+            start_time=start_time,
+            end_time=end_time,
+            span_id=span_id)
 
-        self.assertEqual(span.name, SPAN_NAME)
-        self.assertEqual(span.span_id, SPAN_ID)
-        self.assertEqual(span.kind, KIND)
-        self.assertEqual(span.parent_span_id, PARENT_SPAN_ID)
-        self.assertEqual(span.labels, LABELS)
-        self.assertEqual(span.start_time, START_TIME)
-        self.assertEqual(span.end_time, END_TIME)
+        self.assertEqual(span.name, span_name)
+        self.assertEqual(span.span_id, span_id)
+        self.assertEqual(span.kind, kind)
+        self.assertEqual(span.parent_span_id, parent_span_id)
+        self.assertEqual(span.labels, labels)
+        self.assertEqual(span.start_time, start_time)
+        self.assertEqual(span.end_time, end_time)
 
     def test_span(self):
         pass

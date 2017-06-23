@@ -136,6 +136,7 @@ class _TraceAPI(object):
         """
         if page_token is None:
             page_token = INITIAL_PAGE
+
         options = CallOptions(page_token=page_token)
         page_iter = self._gax_api.list_traces(
             project_id=project_id,

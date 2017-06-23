@@ -17,7 +17,7 @@
 from datetime import datetime
 from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
 
-import random
+import uuid
 
 
 class TraceSpan(object):
@@ -123,7 +123,7 @@ def generate_span_id():
     :returns: Identifier for the span. Must be a 64-bit integer other
                 than 0 and unique within a trace. Converted to string.
     """
-    span_id = str(random.getrandbits(64))
+    span_id = uuid.uuid4().int & (1<<64)-1
     return int(span_id)
 
 

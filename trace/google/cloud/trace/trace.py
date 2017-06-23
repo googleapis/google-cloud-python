@@ -18,6 +18,8 @@ from google.cloud.trace.trace_span import TraceSpan
 from google.cloud.trace.trace_span import format_span_json
 from subprocess import check_output
 
+import uuid
+
 _GENERATE_TRACE_ID_COMMAND = 'uuidgen | sed s/-//g'
 
 
@@ -147,7 +149,5 @@ def generate_trace_id():
     :rtype: str
     :returns: 32 digits randomly generated trace ID.
     """
-    trace_id = check_output(_GENERATE_TRACE_ID_COMMAND, shell=True)\
-        .decode('utf-8')\
-        .rstrip('\n')
+    trace_id = str(uuid.uuid4()).replace('-', '')
     return trace_id

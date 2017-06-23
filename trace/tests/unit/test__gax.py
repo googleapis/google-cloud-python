@@ -20,8 +20,7 @@ from google.cloud._testing import _GAXBaseAPI
 
 
 class _Base(object):
-    PROJECT = 'PROJECT'
-    PROJECT_PATH = 'projects/%s' % (PROJECT,)
+    project = 'PROJECT'
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -49,24 +48,23 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
         from datetime import datetime
 
-        PROJECT = 'PROJECT'
-        TRACE_ID = 'test_trace_id'
-        SPAN_ID = 1234
-        SPAN_NAME = 'test_span_name'
-        START_TIME = datetime.utcnow()
-        END_TIME = datetime.utcnow()
+        trace_id = 'test_trace_id'
+        span_id = 1234
+        span_name = 'test_span_name'
+        start_time = datetime.utcnow()
+        end_time = datetime.utcnow()
 
-        TRACES = {
+        traces = {
             'traces': [
                 {
-                    'projectId': PROJECT,
-                    'traceId': TRACE_ID,
+                    'projectId': self.project,
+                    'traceId': trace_id,
                     'spans': [
                         {
-                            'spanId': SPAN_ID,
-                            'name': SPAN_NAME,
-                            'startTime': START_TIME.isoformat() + 'Z',
-                            'endTime': END_TIME.isoformat() + 'Z',
+                            'spanId': span_id,
+                            'name': span_name,
+                            'startTime': start_time.isoformat() + 'Z',
+                            'endTime': end_time.isoformat() + 'Z',
                         },
                     ],
                 },
@@ -75,49 +73,48 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
         gax_api = _GAXTraceAPI()
         api = self._make_one(gax_api, None)
-        api.patch_traces(project_id=PROJECT, traces=TRACES)
-        project_id, traces, options = (gax_api._patch_traces_called_with)
+        api.patch_traces(project_id=self.project, traces=traces)
+        project_id_called, traces_called, options_called = (gax_api._patch_traces_called_with)
 
-        self.assertEqual(len(traces.traces), 1)
-        trace = traces.traces[0]
+        self.assertEqual(len(traces_called.traces), 1)
+        trace = traces_called.traces[0]
 
         self.assertEqual(len(trace.spans), 1)
         span = trace.spans[0]
 
-        self.assertIsInstance(traces, Traces)
-        self.assertEqual(trace.project_id, PROJECT)
-        self.assertEqual(trace.trace_id, TRACE_ID)
+        self.assertIsInstance(traces_called, Traces)
+        self.assertEqual(trace.project_id, self.project)
+        self.assertEqual(trace.trace_id, trace_id)
         self.assertIsInstance(trace, Trace)
 
-        self.assertEqual(span.span_id, SPAN_ID)
-        self.assertEqual(span.name, SPAN_NAME)
+        self.assertEqual(span.span_id, span_id)
+        self.assertEqual(span.name, span_name)
         self.assertEqual(
             span.start_time,
-            _datetime_to_pb_timestamp(START_TIME))
+            _datetime_to_pb_timestamp(start_time))
         self.assertEqual(
             span.end_time,
-            _datetime_to_pb_timestamp(END_TIME))
+            _datetime_to_pb_timestamp(end_time))
         self.assertIsInstance(span, TraceSpan)
 
-        self.assertIsNone(options)
+        self.assertIsNone(options_called)
 
     def test_get_trace(self):
         from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
             Trace)
 
-        PROJECT = 'PROJECT'
-        TRACE_ID = 'test_trace_id'
-        TRACE_PB = Trace(project_id=PROJECT, trace_id=TRACE_ID)
+        trace_id = 'test_trace_id'
+        trace_pb = Trace(project_id=self.project, trace_id=trace_id)
 
-        gax_api = _GAXTraceAPI(_get_trace_response=TRACE_PB)
+        gax_api = _GAXTraceAPI(_get_trace_response=trace_pb)
         api = self._make_one(gax_api, None)
 
-        api.get_trace(project_id=PROJECT, trace_id=TRACE_ID)
+        api.get_trace(project_id=self.project, trace_id=trace_id)
 
-        project_id, trace_id, options = gax_api._get_traces_called_with
-        self.assertEqual(project_id, PROJECT)
-        self.assertEqual(trace_id, TRACE_ID)
-        self.assertIsNone(options)
+        project_id_called, trace_id_called, options_called = gax_api._get_traces_called_with
+        self.assertEqual(project_id_called, self.project)
+        self.assertEqual(trace_id_called, trace_id)
+        self.assertIsNone(options_called)
 
     def _make_trace_pb(
             self,
@@ -131,9 +128,9 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             labels):
         from google.cloud.trace._gax import _traces_mapping_to_pb
 
-        SPAN_KIND = 2
+        span_kind = 2
 
-        TRACES = {
+        traces = {
             'traces': [
                 {
                     'projectId': project,
@@ -144,7 +141,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
                             'name': span_name,
                             'startTime': start_time,
                             'endTime': end_time,
-                            'kind': SPAN_KIND,
+                            'kind': span_kind,
                             'parentSpanId': parent_span_id,
                             'labels': labels,
                         },
@@ -153,7 +150,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             ],
         }
 
-        traces_pb = _traces_mapping_to_pb(TRACES)
+        traces_pb = _traces_mapping_to_pb(traces)
         trace_pb = traces_pb.traces
         return trace_pb
 
@@ -163,42 +160,40 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
         from datetime import datetime
 
-        PROJECT = 'PROJECT'
-        TRACE_ID = 'test_trace_id'
-        SPAN_ID = 1234
-        SPAN_NAME = 'test_span_name'
-        SPAN_KIND = 'RPC_CLIENT'
-        PARENT_SPAN_ID = 123
-        START_TIME = datetime.utcnow().isoformat() + 'Z'
-        END_TIME = datetime.utcnow().isoformat() + 'Z'
-        LABELS = {
+        trace_id = 'test_trace_id'
+        span_id = 1234
+        span_name = 'test_span_name'
+        span_kind = 'RPC_CLIENT'
+        parent_span_id = 123
+        start_time = datetime.utcnow().isoformat() + 'Z'
+        end_time = datetime.utcnow().isoformat() + 'Z'
+        labels = {
             '/http/status_code': '200',
             '/component': 'HTTP load balancer',
         }
-
-        SIZE = 10
-        TOKEN = 'TOKEN'
-        VIEW_TYPE = Enum.ViewType.COMPLETE
+        size = 10
+        token = 'TOKEN'
+        view_type = Enum.ViewType.COMPLETE
 
         trace_pb = self._make_trace_pb(
-            PROJECT,
-            TRACE_ID,
-            SPAN_ID,
-            SPAN_NAME,
-            START_TIME,
-            END_TIME,
-            PARENT_SPAN_ID,
-            LABELS)
+            self.project,
+            trace_id,
+            span_id,
+            span_name,
+            start_time,
+            end_time,
+            parent_span_id,
+            labels)
 
         response = _GAXPageIterator(trace_pb)
         gax_api = _GAXTraceAPI(_list_traces_response=response)
         api = self._make_one(gax_api, None)
 
         iterator = api.list_traces(
-            project_id=PROJECT,
-            view=VIEW_TYPE,
-            page_size=SIZE,
-            page_token=TOKEN)
+            project_id=self.project,
+            view=view_type,
+            page_size=size,
+            page_token=token)
 
         traces = list(iterator)
 
@@ -208,31 +203,39 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertEqual(len(trace['spans']), 1)
         span = trace['spans'][0]
 
-        self.assertEqual(trace['projectId'], PROJECT)
-        self.assertEqual(trace['traceId'], TRACE_ID)
+        self.assertEqual(trace['projectId'], self.project)
+        self.assertEqual(trace['traceId'], trace_id)
 
-        self.assertEqual(span['spanId'], str(SPAN_ID))
-        self.assertEqual(span['name'], SPAN_NAME)
+        self.assertEqual(span['spanId'], str(span_id))
+        self.assertEqual(span['name'], span_name)
 
         self.assertEqual(
-            span['startTime'], START_TIME)
+            span['startTime'], start_time)
         self.assertEqual(
-            span['endTime'], END_TIME)
-        self.assertEqual(span['kind'], SPAN_KIND)
-        self.assertEqual(span['parentSpanId'], str(PARENT_SPAN_ID))
-        self.assertEqual(span['labels'], LABELS)
+            span['endTime'], end_time)
+        self.assertEqual(span['kind'], span_kind)
+        self.assertEqual(span['parentSpanId'], str(parent_span_id))
+        self.assertEqual(span['labels'], labels)
 
-        project_id, view, page_size, start_time, end_time, filter_, order_by, options = (
+        project_id_called,\
+        view_called,\
+        page_size_called,\
+        start_time_called,\
+        end_time_called,\
+        filter__called,\
+        order_by_called,\
+        options_called = (
             gax_api._list_traces_called_with
         )
-        self.assertEqual(project_id, PROJECT)
-        self.assertEqual(view, VIEW_TYPE)
-        self.assertEqual(page_size, SIZE)
-        self.assertIsNone(start_time)
-        self.assertIsNone(end_time)
-        self.assertIsNone(filter_)
-        self.assertIsNone(order_by)
-        self.assertEqual(options.page_token, TOKEN)
+
+        self.assertEqual(project_id_called, self.project)
+        self.assertEqual(view_called, view_type)
+        self.assertEqual(page_size_called, size)
+        self.assertIsNone(start_time_called)
+        self.assertIsNone(end_time_called)
+        self.assertIsNone(filter__called)
+        self.assertIsNone(order_by_called)
+        self.assertEqual(options_called.page_token, token)
 
 
 class Test__parse_trace_pb(unittest.TestCase):
@@ -250,38 +253,38 @@ class Test__parse_trace_pb(unittest.TestCase):
 
         from datetime import datetime
 
-        PROJECT = u'PROJECT'
-        TRACE_ID = u'test_trace_id'
-        SPAN_ID = 1234
-        SPAN_NAME = u'test_span_name'
-        START_TIME = datetime.utcnow()
-        END_TIME = datetime.utcnow()
+        project = u'PROJECT'
+        trace_id = u'test_trace_id'
+        span_id = 1234
+        span_name = u'test_span_name'
+        start_time = datetime.utcnow()
+        end_time = datetime.utcnow()
 
-        start_time_pb = _datetime_to_pb_timestamp(START_TIME)
-        end_time_pb = _datetime_to_pb_timestamp(END_TIME)
+        start_time_pb = _datetime_to_pb_timestamp(start_time)
+        end_time_pb = _datetime_to_pb_timestamp(end_time)
 
         span_pb = TraceSpan(
-            span_id=SPAN_ID,
-            name=SPAN_NAME,
+            span_id=span_id,
+            name=span_name,
             start_time=start_time_pb,
             end_time=end_time_pb)
 
         trace_pb = Trace(
-            project_id=PROJECT,
-            trace_id=TRACE_ID,
+            project_id=project,
+            trace_id=trace_id,
             spans=[span_pb])
 
         parse_result = self._call_fut(trace_pb)
 
         expected_result = {
-            'projectId': PROJECT,
-            'traceId': TRACE_ID,
+            'projectId': project,
+            'traceId': trace_id,
             'spans': [
                 {
-                    'spanId': str(SPAN_ID),
-                    'name': SPAN_NAME,
-                    'startTime': START_TIME.isoformat() + 'Z',
-                    'endTime': END_TIME.isoformat() + 'Z',
+                    'spanId': str(span_id),
+                    'name': span_name,
+                    'startTime': start_time.isoformat() + 'Z',
+                    'endTime': end_time.isoformat() + 'Z',
                 },
             ],
         }

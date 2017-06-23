@@ -19,7 +19,7 @@ import mock
 
 class TestTrace(unittest.TestCase):
 
-    PROJECT = 'PROJECT'
+    project = 'PROJECT'
 
     @staticmethod
     def _get_target_class():
@@ -31,36 +31,36 @@ class TestTrace(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
-        TRACE_ID = 'test_trace_id'
+        trace_id = 'test_trace_id'
 
-        client = mock.Mock(project=self.PROJECT, spec=['project'])
+        client = mock.Mock(project=self.project, spec=['project'])
         patch = mock.patch(
             'google.cloud.trace.trace.generate_trace_id',
-            return_value=TRACE_ID)
+            return_value=trace_id)
 
         with patch:
             trace = self._make_one(client)
 
         self.assertIs(trace.client, client)
-        self.assertEqual(trace.project_id, self.PROJECT)
-        self.assertEqual(trace.trace_id, TRACE_ID)
+        self.assertEqual(trace.project_id, self.project)
+        self.assertEqual(trace.trace_id, trace_id)
 
     def test_constructor_explicit(self):
-        TRACE_ID = 'test_trace_id'
+        trace_id = 'test_trace_id'
 
-        client = mock.Mock(project=self.PROJECT, spec=['project'])
+        client = mock.Mock(project=self.project, spec=['project'])
         trace = self._make_one(
             client=client,
-            project_id=self.PROJECT,
-            trace_id=TRACE_ID)
+            project_id=self.project,
+            trace_id=trace_id)
 
         self.assertIs(trace.client, client)
-        self.assertEqual(trace.project_id, self.PROJECT)
-        self.assertEqual(trace.trace_id, TRACE_ID)
+        self.assertEqual(trace.project_id, self.project)
+        self.assertEqual(trace.trace_id, trace_id)
 
     def test_start(self):
         client = object()
-        trace = self._make_one(client=client, project_id=self.PROJECT)
+        trace = self._make_one(client=client, project_id=self.project)
         trace.start()
 
         self.assertEqual(trace.spans, [])
@@ -71,19 +71,18 @@ class TestTrace(unittest.TestCase):
     def test_span(self):
         from google.cloud.trace.trace_span import TraceSpan
 
-        SPAN_NAME = 'test_span_name'
+        span_name = 'test_span_name'
 
         client = object()
-        trace = self._make_one(client=client, project_id=self.PROJECT)
+        trace = self._make_one(client=client, project_id=self.project)
         trace.spans = []
 
-        trace.span(name=SPAN_NAME)
+        trace.span(name=span_name)
         self.assertEqual(len(trace.spans), 1)
 
         result_span = trace.spans[0]
         self.assertIsInstance(result_span, TraceSpan)
-        self.assertEqual(result_span.name, SPAN_NAME)
-
+        self.assertEqual(result_span.name, span_name)
 
     def test_send(self):
         pass

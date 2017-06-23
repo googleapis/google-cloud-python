@@ -33,7 +33,18 @@ def unit_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet', 'tests/unit')
+    session.run(
+        'py.test',
+        '--quiet',
+        '--cov=google.cloud.trace',
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        '--cov-fail-under=97',
+        'tests/unit',
+        *session.posargs
+    )
 
 
 @nox.session
@@ -63,7 +74,7 @@ def cover(session):
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.interpreter = 'python3.6'
+    session.interpreter = 'python2.7'
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
