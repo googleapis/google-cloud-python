@@ -116,7 +116,7 @@ class TraceSpan(object):
         self.set_end_time()
 
 
-def generate_span_id(self):
+def generate_span_id():
     """Return the random generated span ID for a span.
 
     :rtype: int

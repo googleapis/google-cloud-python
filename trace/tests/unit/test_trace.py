@@ -59,13 +59,31 @@ class TestTrace(unittest.TestCase):
         self.assertEqual(trace.trace_id, TRACE_ID)
 
     def test_start(self):
-        pass
+        client = object()
+        trace = self._make_one(client=client, project_id=self.PROJECT)
+        trace.start()
+
+        self.assertEqual(trace.spans, [])
 
     def test_finish(self):
         pass
 
     def test_span(self):
-        pass
+        from google.cloud.trace.trace_span import TraceSpan
+
+        SPAN_NAME = 'test_span_name'
+
+        client = object()
+        trace = self._make_one(client=client, project_id=self.PROJECT)
+        trace.spans = []
+
+        trace.span(name=SPAN_NAME)
+        self.assertEqual(len(trace.spans), 1)
+
+        result_span = trace.spans[0]
+        self.assertIsInstance(result_span, TraceSpan)
+        self.assertEqual(result_span.name, SPAN_NAME)
+
 
     def test_send(self):
         pass
