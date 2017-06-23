@@ -34,7 +34,7 @@ from pkg_resources import get_distribution
 __version__ = get_distribution('google-cloud-vision').version
 
 from google.cloud.vision.client import Client
-from google.cloud.vision_v1 import *
+from google.cloud.vision_v1 import *  # noqa
 
 
 __all__ = (
