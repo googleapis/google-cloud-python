@@ -65,6 +65,7 @@ class Client(ClientWithProject):
         """
         if project_id is None:
             project_id = self.project
+
         return Trace(client=self, project_id=project_id, trace_id=trace_id)
 
     def patch_traces(self, traces, project_id=None, options=None):

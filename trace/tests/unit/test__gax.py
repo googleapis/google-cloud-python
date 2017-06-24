@@ -154,9 +154,10 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         trace_pb = traces_pb.traces
         return trace_pb
 
-    def test_list_traces(self):
+    def test_list_traces_no_paging(self):
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
+        from google.gax import INITIAL_PAGE
 
         from datetime import datetime
 
@@ -172,8 +173,90 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             '/component': 'HTTP load balancer',
         }
         size = 10
-        token = 'TOKEN'
         view_type = Enum.ViewType.COMPLETE
+
+        trace_pb = self._make_trace_pb(
+            self.project,
+            trace_id,
+            span_id,
+            span_name,
+            start_time,
+            end_time,
+            parent_span_id,
+            labels)
+
+        response = _GAXPageIterator(trace_pb)
+        gax_api = _GAXTraceAPI(_list_traces_response=response)
+        api = self._make_one(gax_api, None)
+
+        iterator = api.list_traces(
+            project_id=self.project,
+            view=view_type,
+            page_size=size)
+
+        traces = list(iterator)
+
+        self.assertEqual(len(traces), 1)
+        trace = traces[0]
+
+        self.assertEqual(len(trace['spans']), 1)
+        span = trace['spans'][0]
+
+        self.assertEqual(trace['projectId'], self.project)
+        self.assertEqual(trace['traceId'], trace_id)
+
+        self.assertEqual(span['spanId'], str(span_id))
+        self.assertEqual(span['name'], span_name)
+
+        self.assertEqual(
+            span['startTime'], start_time)
+        self.assertEqual(
+            span['endTime'], end_time)
+        self.assertEqual(span['kind'], span_kind)
+        self.assertEqual(span['parentSpanId'], str(parent_span_id))
+        self.assertEqual(span['labels'], labels)
+
+        project_id_called,\
+        view_called,\
+        page_size_called,\
+        start_time_called,\
+        end_time_called,\
+        filter__called,\
+        order_by_called,\
+        options_called = (
+            gax_api._list_traces_called_with
+        )
+
+        self.assertEqual(project_id_called, self.project)
+        self.assertEqual(view_called, view_type)
+        self.assertEqual(page_size_called, size)
+        self.assertIsNone(start_time_called)
+        self.assertIsNone(end_time_called)
+        self.assertIsNone(filter__called)
+        self.assertIsNone(order_by_called)
+        self.assertEqual(options_called.page_token, INITIAL_PAGE)
+
+    def test_list_traces_with_paging(self):
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
+        from google.gax import INITIAL_PAGE
+
+        from datetime import datetime
+
+        trace_id = 'test_trace_id'
+        span_id = 1234
+        span_name = 'test_span_name'
+        span_kind = 'RPC_CLIENT'
+        parent_span_id = 123
+        start_time = datetime.utcnow().isoformat() + 'Z'
+        end_time = datetime.utcnow().isoformat() + 'Z'
+        labels = {
+            '/http/status_code': '200',
+            '/component': 'HTTP load balancer',
+        }
+        size = 10
+        view_type = Enum.ViewType.COMPLETE
+        token = 'TOKEN'
 
         trace_pb = self._make_trace_pb(
             self.project,
@@ -247,21 +330,23 @@ class Test__parse_trace_pb(unittest.TestCase):
         return _parse_trace_pb(*args, **kwargs)
 
     def test_registered_type(self):
-        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
             TraceSpan, Trace)
-
-        from datetime import datetime
+        from google.protobuf.timestamp_pb2 import Timestamp
 
         project = u'PROJECT'
         trace_id = u'test_trace_id'
         span_id = 1234
         span_name = u'test_span_name'
-        start_time = datetime.utcnow()
-        end_time = datetime.utcnow()
+        start_time = '2017-06-24T00:12:50.369990Z'
+        end_time = '2017-06-24T00:13:39.633255Z'
+        start_seconds = 1498263170
+        start_nanos = 369990000
+        end_seconds = 1498263219
+        end_nanos = 633255000
 
-        start_time_pb = _datetime_to_pb_timestamp(start_time)
-        end_time_pb = _datetime_to_pb_timestamp(end_time)
+        start_time_pb = Timestamp(seconds=start_seconds, nanos=start_nanos)
+        end_time_pb = Timestamp(seconds=end_seconds, nanos=end_nanos)
 
         span_pb = TraceSpan(
             span_id=span_id,
@@ -283,8 +368,8 @@ class Test__parse_trace_pb(unittest.TestCase):
                 {
                     'spanId': str(span_id),
                     'name': span_name,
-                    'startTime': start_time.isoformat() + 'Z',
-                    'endTime': end_time.isoformat() + 'Z',
+                    'startTime': start_time,
+                    'endTime': end_time,
                 },
             ],
         }
@@ -331,12 +416,17 @@ class Test_make_gax_trace_api(unittest.TestCase):
         host = 'foo.apis.invalid'
         generated_api.SERVICE_ADDRESS = host
 
-        patch = mock.patch.multiple(
-            'google.cloud.trace._gax',
-            TraceServiceClient=generated_api,
-            make_secure_channel=make_channel)
-        with patch:
-            trace_api = self._call_fut(client)
+        patch_channel = mock.patch(
+            'google.cloud.trace._gax.make_secure_channel',
+            new=make_channel)
+
+        patch_api = mock.patch(
+            'google.cloud.trace._gax.trace_service_client.TraceServiceClient',
+            new=generated_api)
+
+        with patch_api:
+            with patch_channel:
+                trace_api = self._call_fut(client)
 
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
@@ -378,3 +468,9 @@ class _GAXTraceAPI(_GAXBaseAPI):
             order_by,
             options)
         return self._list_traces_response
+
+
+def _datetime_to_rfc3339_w_nanos(value):
+    from google.cloud._helpers import _RFC3339_NO_FRACTION
+    no_fraction = value.strftime(_RFC3339_NO_FRACTION)
+    return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)

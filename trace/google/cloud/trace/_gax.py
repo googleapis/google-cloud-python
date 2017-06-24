@@ -14,8 +14,7 @@
 
 """GAX Wrapper for interacting with the Stackdriver Trace API."""
 
-from google.cloud.gapic.trace.v1.trace_service_client import (
-    TraceServiceClient)
+from google.cloud.gapic.trace.v1 import trace_service_client
 from google.cloud.trace._helper import _traces_mapping_to_pb
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
@@ -136,7 +135,6 @@ class _TraceAPI(object):
         """
         if page_token is None:
             page_token = INITIAL_PAGE
-
         options = CallOptions(page_token=page_token)
         page_iter = self._gax_api.list_traces(
             project_id=project_id,
@@ -193,6 +191,8 @@ def make_gax_trace_api(client):
     channel = make_secure_channel(
         client._credentials,
         DEFAULT_USER_AGENT,
-        TraceServiceClient.SERVICE_ADDRESS)
-    generated = TraceServiceClient(channel=channel, lib_name='gccl')
+        trace_service_client.TraceServiceClient.SERVICE_ADDRESS)
+    generated = trace_service_client.TraceServiceClient(
+        channel=channel,
+        lib_name='gccl')
     return _TraceAPI(generated, client)

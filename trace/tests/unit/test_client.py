@@ -62,65 +62,113 @@ class TestClient(unittest.TestCase):
         self.assertIs(api, api_obj)
         self.assertEqual(clients, [client])
 
-    def test_trace(self):
+    def test_trace_default(self):
         from google.cloud.trace.trace import Trace
 
         trace_id = '5e6e73b4131303cb6f5c9dfbaf104e33'
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
-        trace = Trace(client=client, project_id=self.project, trace_id=trace_id)
+        result_trace = client.trace(trace_id=trace_id)
 
-        self.assertIsInstance(trace, Trace)
-        self.assertIs(trace.client, client)
-        self.assertEqual(trace.project_id, self.project)
-        self.assertEqual(trace.trace_id, trace_id)
+        self.assertIsInstance(result_trace, Trace)
+        self.assertIs(result_trace.client, client)
+        self.assertEqual(result_trace.project_id, self.project)
+        self.assertEqual(result_trace.trace_id, trace_id)
+
+    def test_trace_explicit(self):
+        from google.cloud.trace.trace import Trace
+
+        trace_id = '5e6e73b4131303cb6f5c9dfbaf104e33'
+        credentials = _make_credentials()
+        client = self._make_one(project=self.project, credentials=credentials)
+        result_trace = client.trace(project_id=self.project, trace_id=trace_id)
+
+        self.assertIsInstance(result_trace, Trace)
+        self.assertIs(result_trace.client, client)
+        self.assertEqual(result_trace.project_id, self.project)
+        self.assertEqual(result_trace.trace_id, trace_id)
 
     def test_patch_traces(self):
-        traces = 'fake_traces_for_test'
-        api = _DummyTraceAPI()
+        from google.cloud.trace._gax import _TraceAPI
 
-        api.patch_traces(project_id=self.project, traces=traces)
-        self.assertEqual(api._patch_traces_called_with, (self.project, traces, None))
+        def patch_traces(project_id, traces, options=None):
+            _patch_traces_called_with = (project_id, traces, options)
+            return _patch_traces_called_with
+
+        credentials = _make_credentials()
+        client = self._make_one(project=self.project, credentials=credentials)
+        traces = 'fake_traces_for_test'
+
+        mock_trace_api = mock.Mock(spec=_TraceAPI)
+        mock_trace_api.patch_traces = patch_traces
+        patch = mock.patch('google.cloud.trace.client.make_gax_trace_api', return_value=mock_trace_api)
+
+        with patch:
+            patch_traces_called_with = client.patch_traces(
+                project_id=self.project,
+                traces=traces)
+
+        self.assertEqual(patch_traces_called_with, (self.project, traces, None))
 
     def test_get_trace(self):
-        trace_id = '5e6e73b4131303cb6f5c9dfbaf104e33'
-        api = _DummyTraceAPI()
+        from google.cloud.trace._gax import _TraceAPI
 
-        api.get_trace(project_id=self.project, trace_id=trace_id)
-        self.assertEqual(api._get_traces_called_with, (self.project, trace_id, None))
+        def get_trace(trace_id, project_id=None, options=None):
+            _get_trace_called_with = (trace_id, project_id, options)
+            return _get_trace_called_with
+
+        credentials = _make_credentials()
+        client = self._make_one(project=self.project, credentials=credentials)
+        trace_id = '5e6e73b4131303cb6f5c9dfbaf104e33'
+
+        mock_trace_api = mock.Mock(spec=_TraceAPI)
+        mock_trace_api.get_trace = get_trace
+        patch = mock.patch('google.cloud.trace.client.make_gax_trace_api',
+                           return_value=mock_trace_api)
+
+        with patch:
+            get_trace_called_with = client.get_trace(
+                trace_id=trace_id,
+                project_id=self.project)
+
+        self.assertEqual(get_trace_called_with,
+                         (trace_id, self.project, None))
 
     def test_list_traces(self):
-        api = _DummyTraceAPI()
+        from google.cloud.trace._gax import _TraceAPI
 
-        api.list_traces(project_id=self.project)
-        api.list_traces(api._list_traces_called_with, (
+        def list_traces(
+                project_id,
+                view=None,
+                page_size=None,
+                start_time=None,
+                end_time=None,
+                filter_=None,
+                order_by=None,
+                page_token=None):
+            _list_traces_called_with = (
+                project_id,
+                view,
+                page_size,
+                start_time,
+                end_time,
+                filter_,
+                order_by,
+                page_token)
+            return _list_traces_called_with
+
+        credentials = _make_credentials()
+        client = self._make_one(project=self.project, credentials=credentials)
+
+        mock_trace_api = mock.Mock(spec=_TraceAPI)
+        mock_trace_api.list_traces = list_traces
+        patch = mock.patch('google.cloud.trace.client.make_gax_trace_api',
+                           return_value=mock_trace_api)
+
+        with patch:
+            list_traces_called_with = client.list_traces(
+                project_id=self.project)
+
+        self.assertEqual(list_traces_called_with, (
             self.project,
             None, None, None, None, None, None, None))
-
-
-class _DummyTraceAPI(object):
-    def patch_traces(self, project_id, traces, options=None):
-        self._patch_traces_called_with = (project_id, traces, options)
-
-    def get_trace(self, project_id, trace_id, options=None):
-        self._get_traces_called_with = (project_id, trace_id, options)
-
-    def list_traces(
-            self,
-            project_id,
-            view=None,
-            page_size=None,
-            start_time=None,
-            end_time=None,
-            filter_=None,
-            order_by=None,
-            page_token=None):
-        self._list_traces_called_with = (
-            project_id,
-            view,
-            page_size,
-            start_time,
-            end_time,
-            filter_,
-            order_by,
-            page_token)

@@ -50,6 +50,7 @@ class TestTraceSpan(unittest.TestCase):
         self.assertIsNone(span.labels)
         self.assertIsNone(span.start_time)
         self.assertIsNone(span.end_time)
+        self.assertEqual(span.children, [])
 
     def test_constructor_explicit(self):
         from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
@@ -83,6 +84,7 @@ class TestTraceSpan(unittest.TestCase):
         self.assertEqual(span.labels, labels)
         self.assertEqual(span.start_time, start_time)
         self.assertEqual(span.end_time, end_time)
+        self.assertEqual(span.children, [])
 
     def test_span(self):
         pass

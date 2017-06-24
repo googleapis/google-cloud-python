@@ -16,17 +16,16 @@
 
 from google.cloud.trace.trace_span import TraceSpan
 from google.cloud.trace.trace_span import format_span_json
-from subprocess import check_output
 
 import uuid
-
-_GENERATE_TRACE_ID_COMMAND = 'uuidgen | sed s/-//g'
 
 
 class Trace(object):
     """A trace describes how long it takes for an application to perform
     an operation. It consists of a set of spans, each of which represent
     a single timed event within the operation.
+    
+    Node that Trace is not thread-safe and must not be shared between threads.
 
     See
     https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
@@ -137,7 +136,7 @@ def traverse_span_tree(root_span):
         cur_span = span_queue.pop(0)
         span_list.append(format_span_json(cur_span))
 
-        for child_span in cur_span.child_spans:
+        for child_span in cur_span.children:
             span_queue.append(child_span)
 
     return span_list

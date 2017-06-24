@@ -83,8 +83,12 @@ class TraceSpan(object):
             span_id = generate_span_id()
 
         self.span_id = span_id
+        self._child_spans = []
 
-        self.child_spans = []
+    @property
+    def children(self):
+        """The child spans of the current span."""
+        return self._child_spans
 
     def span(self, name='child_span'):
         """Create a child span for the current span and append it to the child
@@ -97,7 +101,7 @@ class TraceSpan(object):
         :returns: A child TraceSpan to be added to the current span.
         """
         child_span = TraceSpan(name, parent_span_id=self.span_id)
-        self.child_spans.append(child_span)
+        self._child_spans.append(child_span)
         return child_span
 
     def set_start_time(self):
