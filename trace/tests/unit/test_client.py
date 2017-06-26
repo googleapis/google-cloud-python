@@ -88,11 +88,31 @@ class TestClient(unittest.TestCase):
         self.assertEqual(result_trace.project_id, self.project)
         self.assertEqual(result_trace.trace_id, trace_id)
 
-    def test_patch_traces(self):
+    def test_patch_traces_default(self):
         from google.cloud.trace._gax import _TraceAPI
 
-        def patch_traces(project_id, traces, options=None):
-            _patch_traces_called_with = (project_id, traces, options)
+        def patch_traces(traces, project_id=None, options=None):
+            _patch_traces_called_with = (traces, project_id, options)
+            return _patch_traces_called_with
+
+        credentials = _make_credentials()
+        client = self._make_one(project=self.project, credentials=credentials)
+        traces = 'fake_traces_for_test'
+
+        mock_trace_api = mock.Mock(spec=_TraceAPI)
+        mock_trace_api.patch_traces = patch_traces
+        patch = mock.patch('google.cloud.trace.client.make_gax_trace_api', return_value=mock_trace_api)
+
+        with patch:
+            patch_traces_called_with = client.patch_traces(traces=traces)
+
+        self.assertEqual(patch_traces_called_with, (traces, self.project, None))
+
+    def test_patch_traces_explicit(self):
+        from google.cloud.trace._gax import _TraceAPI
+
+        def patch_traces(traces, project_id=None, options=None):
+            _patch_traces_called_with = (traces, project_id, options)
             return _patch_traces_called_with
 
         credentials = _make_credentials()
@@ -108,9 +128,31 @@ class TestClient(unittest.TestCase):
                 project_id=self.project,
                 traces=traces)
 
-        self.assertEqual(patch_traces_called_with, (self.project, traces, None))
+        self.assertEqual(patch_traces_called_with, (traces, self.project, None))
 
-    def test_get_trace(self):
+    def test_get_trace_default(self):
+        from google.cloud.trace._gax import _TraceAPI
+
+        def get_trace(trace_id, project_id=None, options=None):
+            _get_trace_called_with = (trace_id, project_id, options)
+            return _get_trace_called_with
+
+        credentials = _make_credentials()
+        client = self._make_one(project=self.project, credentials=credentials)
+        trace_id = '5e6e73b4131303cb6f5c9dfbaf104e33'
+
+        mock_trace_api = mock.Mock(spec=_TraceAPI)
+        mock_trace_api.get_trace = get_trace
+        patch = mock.patch('google.cloud.trace.client.make_gax_trace_api',
+                           return_value=mock_trace_api)
+
+        with patch:
+            get_trace_called_with = client.get_trace(trace_id=trace_id)
+
+        self.assertEqual(get_trace_called_with,
+                         (trace_id, self.project, None))
+
+    def test_get_trace_explicit(self):
         from google.cloud.trace._gax import _TraceAPI
 
         def get_trace(trace_id, project_id=None, options=None):
@@ -134,7 +176,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(get_trace_called_with,
                          (trace_id, self.project, None))
 
-    def test_list_traces(self):
+    def test_list_traces_default(self):
         from google.cloud.trace._gax import _TraceAPI
 
         def list_traces(
@@ -166,9 +208,73 @@ class TestClient(unittest.TestCase):
                            return_value=mock_trace_api)
 
         with patch:
-            list_traces_called_with = client.list_traces(
-                project_id=self.project)
+            list_traces_called_with = client.list_traces()
 
         self.assertEqual(list_traces_called_with, (
             self.project,
             None, None, None, None, None, None, None))
+
+    def test_list_traces_explicit(self):
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
+        from google.cloud.trace._gax import _TraceAPI
+
+        from datetime import datetime
+
+        def list_traces(
+                project_id,
+                view=None,
+                page_size=None,
+                start_time=None,
+                end_time=None,
+                filter_=None,
+                order_by=None,
+                page_token=None):
+            _list_traces_called_with = (
+                project_id,
+                view,
+                page_size,
+                start_time,
+                end_time,
+                filter_,
+                order_by,
+                page_token)
+            return _list_traces_called_with
+
+        credentials = _make_credentials()
+        client = self._make_one(project=self.project, credentials=credentials)
+
+        mock_trace_api = mock.Mock(spec=_TraceAPI)
+        mock_trace_api.list_traces = list_traces
+        patch = mock.patch('google.cloud.trace.client.make_gax_trace_api',
+                           return_value=mock_trace_api)
+
+        view = Enum.ViewType.COMPLETE
+        page_size = 10
+        start_time = datetime.utcnow()
+        end_time = datetime.utcnow()
+        filter_ = '+span:span1'
+        order_by = 'traceId'
+        page_token = 'TOKEN'
+
+
+        with patch:
+            list_traces_called_with = client.list_traces(
+                project_id=self.project,
+                view=view,
+                page_size=page_size,
+                start_time=start_time,
+                end_time=end_time,
+                filter_=filter_,
+                order_by=order_by,
+                page_token=page_token)
+
+        self.assertEqual(list_traces_called_with, (
+            self.project,
+            view,
+            page_size,
+            _datetime_to_pb_timestamp(start_time),
+            _datetime_to_pb_timestamp(end_time),
+            filter_,
+            order_by,
+            page_token))
