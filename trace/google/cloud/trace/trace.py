@@ -93,7 +93,7 @@ class Trace(object):
         """
         spans_list = []
         for root_span in self.spans:
-            span_tree = traverse_span_tree(root_span)
+            span_tree = _traverse_span_tree(root_span)
             spans_list.extend(span_tree)
 
         if len(spans_list) == 0:
@@ -114,8 +114,10 @@ class Trace(object):
             traces=traces,
             options=None)
 
+        return traces
 
-def traverse_span_tree(root_span):
+
+def _traverse_span_tree(root_span):
     """Helper to traverse the span tree in level order.
 
     :rtype: :class:`~google.cloud.trace.trace_span.TraceSpan`
