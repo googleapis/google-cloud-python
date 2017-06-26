@@ -51,12 +51,12 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.24.0, < 0.25dev',
+    'google-cloud-core >= 0.25.0, < 0.26dev',
 ]
 
 setup(
     name='google-cloud-dns',
-    version='0.24.0',
+    version='0.25.0',
     description='Python Client for Google Cloud DNS',
     long_description=README,
     namespace_packages=[
