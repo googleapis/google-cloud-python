@@ -468,9 +468,3 @@ class _GAXTraceAPI(_GAXBaseAPI):
             order_by,
             options)
         return self._list_traces_response
-
-
-def _datetime_to_rfc3339_w_nanos(value):
-    from google.cloud._helpers import _RFC3339_NO_FRACTION
-    no_fraction = value.strftime(_RFC3339_NO_FRACTION)
-    return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)
