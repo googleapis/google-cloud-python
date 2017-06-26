@@ -172,6 +172,10 @@ class TestTrace(unittest.TestCase):
         kind = Enum.SpanKind.SPAN_KIND_UNSPECIFIED
         start_time = '2017-06-25'
         end_time = '2017-06-26'
+        labels = {
+            '/http/status_code': '200',
+            '/component': 'HTTP load balancer',
+        }
 
         child_span = mock.Mock(name=child_span_name,
                                kind=kind,
@@ -179,7 +183,7 @@ class TestTrace(unittest.TestCase):
                                span_id=child_span_id,
                                start_time=start_time,
                                end_time=end_time,
-                               labels=None,
+                               labels=labels,
                                children=[],
                                spec=['name',
                                      'kind',
@@ -213,6 +217,7 @@ class TestTrace(unittest.TestCase):
             'spanId': child_span_id,
             'startTime': start_time,
             'endTime': end_time,
+            'labels': labels,
         }
 
         root_span_json = {

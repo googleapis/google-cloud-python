@@ -23,9 +23,8 @@ import uuid
 class Trace(object):
     """A trace describes how long it takes for an application to perform
     an operation. It consists of a set of spans, each of which represent
-    a single timed event within the operation.
-    
-    Node that Trace is not thread-safe and must not be shared between threads.
+    a single timed event within the operation. Node that Trace is not
+    thread-safe and must not be shared between threads.
 
     See
     https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.

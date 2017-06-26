@@ -87,18 +87,47 @@ class TestTraceSpan(unittest.TestCase):
         self.assertEqual(span.children, [])
 
     def test_span(self):
-        pass
+        from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
+
+        span_id = 'test_span_id'
+        root_span_name = 'root_span'
+        child_span_name = 'child_span'
+        root_span = self._make_one(root_span_name)
+        root_span._child_spans = []
+        kind = Enum.SpanKind.SPAN_KIND_UNSPECIFIED
+
+        patch = mock.patch(
+            'google.cloud.trace.trace_span.generate_span_id',
+            return_value=span_id)
+
+        with patch:
+            with root_span:
+                root_span.span(child_span_name)
+
+        self.assertEqual(len(root_span._child_spans), 1)
+
+        result_child_span = root_span._child_spans[0]
+
+        self.assertEqual(result_child_span.name, child_span_name)
+        self.assertEqual(result_child_span.span_id, span_id)
+        self.assertEqual(result_child_span.kind, kind)
+        self.assertEqual(result_child_span.parent_span_id, root_span.span_id)
+        self.assertIsNone(result_child_span.labels)
+        self.assertIsNone(result_child_span.start_time)
+        self.assertIsNone(result_child_span.end_time)
 
     def test_set_start_time(self):
-        pass
+        span_name = 'root_span'
+        span = self._make_one(span_name)
+        self.assertIsNone(span.start_time)
+
+        span.set_start_time()
+        self.assertIsNotNone(span.start_time)
 
     def test_set_end_time(self):
-        pass
+        span_name = 'root_span'
+        span = self._make_one(span_name)
+        self.assertIsNone(span.end_time)
 
-
-class Test_generate_span_id(unittest.TestCase):
-    pass
-
-
-class Test_format_span_json(unittest.TestCase):
-    pass
+        span.set_end_time()
+        self.assertIsNotNone(span.end_time)

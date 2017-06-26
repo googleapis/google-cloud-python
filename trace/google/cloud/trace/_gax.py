@@ -15,13 +15,14 @@
 """GAX Wrapper for interacting with the Stackdriver Trace API."""
 
 from google.cloud.gapic.trace.v1 import trace_service_client
-from google.cloud.trace._helper import _traces_mapping_to_pb
+from google.cloud.proto.devtools.cloudtrace.v1 import trace_pb2
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.iterator import GAXIterator
 from google.protobuf.json_format import MessageToDict
+from google.protobuf.json_format import ParseDict
 
 
 class _TraceAPI(object):
@@ -196,3 +197,17 @@ def make_gax_trace_api(client):
         channel=channel,
         lib_name='gccl')
     return _TraceAPI(generated, client)
+
+
+def _traces_mapping_to_pb(traces_mapping):
+    """Convert a trace dict to protobuf.
+
+    :type traces_mapping: dict
+    :param traces_mapping: A trace mapping.
+
+    :rtype: class:`google.cloud.proto.devtools.cloudtrace.v1.trace_pb2.Traces`
+    :return: The converted protobuf type traces.
+    """
+    traces_pb = trace_pb2.Traces()
+    ParseDict(traces_mapping, traces_pb)
+    return traces_pb
