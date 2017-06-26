@@ -70,13 +70,13 @@ class Cursor(object):
 
         self.description = tuple([
             Column(
-                field.name,
-                field.field_type,
-                None,
-                None,
-                None,
-                None,
-                field.mode == 'NULLABLE')
+                name=field.name,
+                type_code=field.field_type,
+                display_size=None,
+                internal_size=None,
+                precision=None,
+                scale=None,
+                null_ok=field.mode == 'NULLABLE')
             for field in schema])
 
     def _set_rowcount(self, query_results):
