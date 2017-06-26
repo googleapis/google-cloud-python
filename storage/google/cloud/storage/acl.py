@@ -198,7 +198,6 @@ class ACL(object):
     # as properties).
     reload_path = None
     save_path = None
-    user_project = None
 
     def __init__(self):
         self.entities = {}
@@ -406,18 +405,10 @@ class ACL(object):
         """
         path = self.reload_path
         client = self._require_client(client)
-        query_params = {}
-
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
 
         self.entities.clear()
 
-        found = client._connection.api_request(
-            method='GET',
-            path=path,
-            query_params=query_params,
-        )
+        found = client._connection.api_request(method='GET', path=path)
         self.loaded = True
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
@@ -444,12 +435,8 @@ class ACL(object):
             acl = []
             query_params[self._PREDEFINED_QUERY_PARAM] = predefined
 
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-
         path = self.save_path
         client = self._require_client(client)
-
         result = client._connection.api_request(
             method='PATCH',
             path=path,
@@ -545,11 +532,6 @@ class BucketACL(ACL):
         """Compute the path for PATCH API requests for this ACL."""
         return self.bucket.path
 
-    @property
-    def user_project(self):
-        """Compute the user project charged for API requests for this ACL."""
-        return self.bucket.user_project
-
 
 class DefaultObjectACL(BucketACL):
     """A class representing the default object ACL for a bucket."""
@@ -583,8 +565,3 @@ class ObjectACL(ACL):
     def save_path(self):
         """Compute the path for PATCH API requests for this ACL."""
         return self.blob.path
-
-    @property
-    def user_project(self):
-        """Compute the user project charged for API requests for this ACL."""
-        return self.blob.user_project
