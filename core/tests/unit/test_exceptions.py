@@ -145,6 +145,68 @@ class Test_make_exception(unittest.TestCase):
         self.assertEqual(list(exception.errors), [])
 
 
+class Test__catch_remap_gax_error(unittest.TestCase):
+
+    def _call_fut(self):
+        from google.cloud.exceptions import _catch_remap_gax_error
+
+        return _catch_remap_gax_error()
+
+    @staticmethod
+    def _fake_method(exc, result=None):
+        if exc is None:
+            return result
+        else:
+            raise exc
+
+    @staticmethod
+    def _make_rendezvous(status_code, details):
+        from grpc._channel import _RPCState
+        from google.cloud.exceptions import GrpcRendezvous
+
+        exc_state = _RPCState((), None, None, status_code, details)
+        return GrpcRendezvous(exc_state, None, None, None)
+
+    def test_success(self):
+        expected = object()
+        with self._call_fut():
+            result = self._fake_method(None, expected)
+        self.assertIs(result, expected)
+
+    def test_non_grpc_err(self):
+        exc = RuntimeError('Not a gRPC error')
+        with self.assertRaises(RuntimeError):
+            with self._call_fut():
+                self._fake_method(exc)
+
+    def test_gax_error(self):
+        from google.gax.errors import GaxError
+        from grpc import StatusCode
+        from google.cloud.exceptions import Forbidden
+
+        # First, create low-level GrpcRendezvous exception.
+        details = 'Some error details.'
+        cause = self._make_rendezvous(StatusCode.PERMISSION_DENIED, details)
+        # Then put it into a high-level GaxError.
+        msg = 'GAX Error content.'
+        exc = GaxError(msg, cause=cause)
+
+        with self.assertRaises(Forbidden):
+            with self._call_fut():
+                self._fake_method(exc)
+
+    def test_gax_error_not_mapped(self):
+        from google.gax.errors import GaxError
+        from grpc import StatusCode
+
+        cause = self._make_rendezvous(StatusCode.CANCELLED, None)
+        exc = GaxError(None, cause=cause)
+
+        with self.assertRaises(GaxError):
+            with self._call_fut():
+                self._fake_method(exc)
+
+
 class _Response(object):
     def __init__(self, status):
         self.status = status
