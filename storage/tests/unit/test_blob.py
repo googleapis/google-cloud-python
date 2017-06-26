@@ -366,7 +366,7 @@ class Test_Blob(unittest.TestCase):
 
     def test__get_download_url_with_media_link(self):
         blob_name = 'something.txt'
-        bucket = mock.Mock(spec=[])
+        bucket = _Bucket(name='IRRELEVANT')
         blob = self._make_one(blob_name, bucket=bucket)
         media_link = 'http://test.invalid'
         # Set the media link on the blob
@@ -374,6 +374,19 @@ class Test_Blob(unittest.TestCase):
 
         download_url = blob._get_download_url()
         self.assertEqual(download_url, media_link)
+
+    def test__get_download_url_with_media_link_w_user_project(self):
+        blob_name = 'something.txt'
+        user_project = 'user-project-123'
+        bucket = _Bucket(name='IRRELEVANT', user_project=user_project)
+        blob = self._make_one(blob_name, bucket=bucket)
+        media_link = 'http://test.invalid'
+        # Set the media link on the blob
+        blob._properties['mediaLink'] = media_link
+
+        download_url = blob._get_download_url()
+        self.assertEqual(
+            download_url, '{}?userProject={}'.format(media_link, user_project))
 
     def test__get_download_url_on_the_fly(self):
         blob_name = 'bzzz-fly.txt'
@@ -2415,6 +2428,37 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         expected = 'GET http://example.com/: {}'.format(message_str)
         self.assertEqual(exc_info.exception.message, expected)
         self.assertEqual(exc_info.exception.errors, [])
+
+
+class Test__add_query_parameters(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage.blob import _add_query_parameters
+
+        return _add_query_parameters(*args, **kwargs)
+
+    def test_w_empty_list(self):
+        BASE_URL = 'https://test.example.com/base'
+        self.assertEqual(self._call_fut(BASE_URL, []), BASE_URL)
+
+    def test_wo_existing_qs(self):
+        BASE_URL = 'https://test.example.com/base'
+        NV_LIST = [('one', 'One'), ('two', 'Two')]
+        expected = '&'.join([
+            '{}={}'.format(name, value) for name, value in NV_LIST])
+        self.assertEqual(
+            self._call_fut(BASE_URL, NV_LIST),
+            '{}?{}'.format(BASE_URL, expected))
+
+    def test_w_existing_qs(self):
+        BASE_URL = 'https://test.example.com/base?one=Three'
+        NV_LIST = [('one', 'One'), ('two', 'Two')]
+        expected = '&'.join([
+            '{}={}'.format(name, value) for name, value in NV_LIST])
+        self.assertEqual(
+            self._call_fut(BASE_URL, NV_LIST),
+            '{}&{}'.format(BASE_URL, expected))
 
 
 class _Connection(object):
