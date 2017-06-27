@@ -92,8 +92,9 @@ class Trace(object):
         """
         spans_list = []
         for root_span in self.spans:
-            span_tree = _traverse_span_tree(root_span)
-            spans_list.extend(span_tree)
+            span_tree = list(iter(root_span))
+            span_tree_json = [format_span_json(span) for span in span_tree]
+            spans_list.extend(span_tree_json)
 
         if len(spans_list) == 0:
             return
@@ -113,34 +114,7 @@ class Trace(object):
             traces=traces,
             options=None)
 
-        return traces
-
-
-def _traverse_span_tree(root_span):
-    """Helper to traverse the span tree in level order.
-
-    :rtype: :class:`~google.cloud.trace.trace_span.TraceSpan`
-    :param root_span: The root span in a span tree.
-
-    :rtype: list
-    :returns: A list of all the spans in a span tree.
-    """
-    span_list = []
-
-    if root_span is None:
-        return span_list
-
-    span_queue = []
-    span_queue.append(root_span)
-
-    while span_queue:
-        cur_span = span_queue.pop(0)
-        span_list.append(format_span_json(cur_span))
-
-        for child_span in cur_span.children:
-            span_queue.append(child_span)
-
-    return span_list
+        return spans_list
 
 
 def generate_trace_id():

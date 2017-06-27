@@ -131,3 +131,23 @@ class TestTraceSpan(unittest.TestCase):
 
         span.set_end_time()
         self.assertIsNotNone(span.end_time)
+
+    def test___iter__(self):
+        root_span_name = 'root_span_name'
+        child1_span_name = 'child1_span_name'
+        child2_span_name = 'child2_span_name'
+        child1_child1_span_name = 'child1_child1_span_name'
+
+        root_span = self._make_one(root_span_name)
+        child1_span = self._make_one(child1_span_name)
+        child2_span = self._make_one(child2_span_name)
+        child1_child1_span = self._make_one(child1_child1_span_name)
+
+        child1_span._child_spans.append(child1_child1_span)
+        root_span._child_spans.extend([child1_span, child2_span])
+
+        span_iter_list = list(iter(root_span))
+
+        self.assertEqual(
+            span_iter_list,
+            [child1_child1_span, child1_span, child2_span, root_span])

@@ -17,6 +17,7 @@
 from datetime import datetime
 from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
 
+from itertools import chain
 import random
 
 
@@ -111,6 +112,11 @@ class TraceSpan(object):
     def set_end_time(self):
         """Set the end time for a span."""
         self.end_time = datetime.utcnow().isoformat() + 'Z'
+
+    def __iter__(self):
+        for span in chain(*(map(iter, self.children))):
+            yield span
+        yield self
 
     def __enter__(self):
         self.set_start_time()

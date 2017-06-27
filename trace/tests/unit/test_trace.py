@@ -65,24 +65,9 @@ class TestTrace(unittest.TestCase):
 
         self.assertEqual(trace.spans, [])
 
-    def test_finish_with_empty_span(self):
-
-        def patch_traces(traces, project_id=None, options=None):
-            _patch_traces_called_with = (traces, project_id, options)
-            return _patch_traces_called_with
-
-        client = mock.Mock(project=self.project, spec=['project'])
-        client.patch_traces = patch_traces
-        trace = self._make_one(client=client)
-
-        with trace:
-            trace.spans = [None]
-            self.assertEqual(trace.spans, [None])
-
-        self.assertEqual(trace.spans, [])
-
     def test_finish_with_valid_span(self):
         from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
+        from google.cloud.trace.trace_span import TraceSpan
 
         def patch_traces(traces, project_id=None, options=None):
             _patch_traces_called_with = (traces, project_id, options)
@@ -98,22 +83,16 @@ class TestTrace(unittest.TestCase):
         start_time = '2017-06-25'
         end_time = '2017-06-26'
 
-        span = mock.Mock(name=span_name,
-                         kind=kind,
-                         parent_span_id=None,
-                         span_id=span_id,
-                         start_time=start_time,
-                         end_time=end_time,
-                         labels=None,
-                         children=[],
-                         spec=['name',
-                               'kind',
-                               'parent_span_id',
-                               'span_id',
-                               'start_time',
-                               'end_time',
-                               'labels',
-                               'children'])
+        span = mock.Mock(spec=TraceSpan)
+        span.name = span_name
+        span.kind = kind
+        span.parent_span_id = None
+        span.span_id = span_id
+        span.start_time = start_time
+        span.end_time = end_time
+        span.labels = None
+        span.children = []
+        span.__iter__ = mock.Mock(return_value=iter([span]))
 
         with trace:
             trace.spans = [span]
@@ -153,6 +132,7 @@ class TestTrace(unittest.TestCase):
     def test_send_with_spans(self):
         from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
         from google.cloud.trace.client import Client
+        from google.cloud.trace.trace_span import TraceSpan
 
         client = mock.Mock(spec=Client)
         client.project = self.project
@@ -170,38 +150,28 @@ class TestTrace(unittest.TestCase):
             '/component': 'HTTP load balancer',
         }
 
-        child_span = mock.Mock(name=child_span_name,
-                               kind=kind,
-                               parent_span_id=root_span_id,
-                               span_id=child_span_id,
-                               start_time=start_time,
-                               end_time=end_time,
-                               labels=labels,
-                               children=[],
-                               spec=['name',
-                                     'kind',
-                                     'parent_span_id',
-                                     'span_id',
-                                     'start_time',
-                                     'end_time',
-                                     'labels',
-                                     'children'])
-        root_span = mock.Mock(name=root_span_name,
-                              kind=kind,
-                              parent_span_id=None,
-                              span_id=root_span_id,
-                              start_time=start_time,
-                              end_time=end_time,
-                              labels=None,
-                              children=[child_span],
-                              spec=['name',
-                                    'kind',
-                                    'parent_span_id',
-                                    'span_id',
-                                    'start_time',
-                                    'end_time',
-                                    'labels',
-                                    'children'])
+        child_span = mock.Mock(spec=TraceSpan)
+        child_span.name = child_span_name
+        child_span.kind = kind
+        child_span.parent_span_id = root_span_id
+        child_span.span_id = child_span_id
+        child_span.start_time = start_time
+        child_span.end_time = end_time
+        child_span.labels = labels
+        child_span.children = []
+        child_span.__iter__ = mock.Mock(return_value=iter([child_span]))
+
+        root_span = mock.Mock(spec=TraceSpan)
+        root_span.name = root_span_name
+        root_span.kind = kind
+        root_span.parent_span_id = None
+        root_span.span_id = root_span_id
+        root_span.start_time = start_time
+        root_span.end_time = end_time
+        root_span.labels = None
+        root_span.children = []
+        root_span.__iter__ = mock.Mock(
+            return_value=iter([root_span, child_span]))
 
         child_span_json = {
             'name': child_span.name,
