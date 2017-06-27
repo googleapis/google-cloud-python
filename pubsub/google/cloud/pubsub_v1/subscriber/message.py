@@ -42,17 +42,23 @@ class Message(object):
         publish_time (datetime): The time that this message was originally
             published.
     """
-    def __init__(self, consumer, ack_id, message):
+    def __init__(self, policy, ack_id, message):
         """Construct the Message.
 
+        .. note::
+
+            This class should not be constructed directly; it is the
+            responsibility of :class:`BasePolicy` subclasses to do so.
+
         Args:
-            consumer (~.pubsub_v1.subscriber.consumer.BaseConsumer): The
-                consumer which originally received this message.
+            policy (~.pubsub_v1.subscriber.policy.BasePolicy): The policy
+                that created this message, and understands how to handle
+                actions from that message (e.g. acks).
             ack_id (str): The ack_id received from Pub/Sub.
             message (~.pubsub_v1.types.PubsubMessage): The message received
                 from Pub/Sub.
         """
-        self._consumer = consumer
+        self._policy = policy
         self._ack_id = ack_id
         self._message = message
         self.message_id = message.message_id
@@ -112,13 +118,14 @@ class Message(object):
         you receive the message again.
 
         .. warning::
+        
             Acks in Pub/Sub are best effort. You should always
             ensure that your processing code is idempotent, as you may
             receive any given message more than once.
         """
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
-        self._consumer.histogram.add(time_to_ack)
-        self._consumer.ack(self._ack_id)
+        self._policy.histogram.add(time_to_ack)
+        self._policy.ack(self._ack_id)
 
     def modify_ack_deadline(self, seconds):
         """Set the deadline for acknowledgement to the given value.
@@ -138,7 +145,7 @@ class Message(object):
                 to. This should be between 0 and 600. Due to network latency,
                 values below 10 are advised against.
         """
-        self._consumer.modify_ack_deadline(self._ack_id, seconds)
+        self._policy.modify_ack_deadline(self._ack_id, seconds)
 
     def nack(self):
         """Decline to acknowldge the given message.

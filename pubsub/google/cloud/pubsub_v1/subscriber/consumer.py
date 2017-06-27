@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Bidirectional Streaming Consumer.
+
 The goal here is to consume a bidirectional streaming RPC by fanning out the
 responses received from the server to be processed and fanning in requests from
 the response processors to be sent to the server through the request stream.
@@ -124,7 +125,7 @@ from google.cloud.pubsub_v1.subscriber import helper_threads
 _LOGGER = logging.getLogger(__name__)
 
 
-class BidiStream(object):
+class Consumer(object):
     """Bi-directional streaming RPC consumer.
 
     This class coordinates the consumption of a bi-directional streaming RPC.
@@ -168,12 +169,13 @@ class BidiStream(object):
     for the actual processing of the responses, which may be CPU intensive.
     """
 
-    def __init__(self, consumer):
+    def __init__(self, policy):
         """
         Args:
-            consumer (Consumer): The consumer.
+            policy (Consumer): The consumer policy, which defines how
+                requests and responses are handled.
         """
-        self._consumer = consumer
+        self._policy = policy
         self._request_queue = queue.Queue()
         self._exiting = threading.Event()
 
@@ -184,6 +186,7 @@ class BidiStream(object):
 
     def send_request(self, request):
         """Queue a request to be sent to gRPC.
+
         Args:
             request (Any): The request protobuf.
         """
@@ -197,7 +200,7 @@ class BidiStream(object):
         """
         # Note: gRPC will run this in a separate thread. This can and must
         # block to keep the stream open.
-        initial_request = self._consumer.on_initial_request()
+        initial_request = self._policy.on_initial_request()
         if initial_request is not None:
             _LOGGER.debug(
                 'Sending initial request: {}'.format(initial_request),
@@ -225,7 +228,7 @@ class BidiStream(object):
                 break
 
             request_generator = self._request_generator_thread()
-            response_generator = self._consumer.call_rpc(request_generator)
+            response_generator = self._policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
                     self._policy.on_response(response)
@@ -251,7 +254,7 @@ class BidiStream(object):
             self._request_queue,
             self._consume_thread,
         )
-        self._consumer.initialize(self)
+        self._policy.initialize(self)
 
     def stop_consuming(self):
         """Signal the stream to stop and block until it completes."""

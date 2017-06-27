@@ -17,20 +17,21 @@ from __future__ import absolute_import
 from concurrent import futures
 import multiprocessing
 
-from google.gax.errors import GaxError
-
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import exceptions
+from google.cloud.pubsub_v1.subscriber import helper_threads
 from google.cloud.pubsub_v1.subscriber.consumer import base
+from google.cloud.pubsub_v1.subscriber.message import Message
 
 
-class Consumer(base.BaseConsumer):
+class Policy(base.BasePolicy):
     """A consumer class based on :class:``multiprocessing.Process``.
 
     This consumer handles the connection to the Pub/Sub service and all of
     the concurrency needs.
     """
     def __init__(self, client, subscription):
+        # Default the callback to a no-op; it is provided by `.open`.
+        self._callback = lambda message: None
+
         # Create a manager for keeping track of shared state.
         self._manager = multiprocessing.Manager()
         self._shared = self._manager.Namespace()
@@ -39,12 +40,16 @@ class Consumer(base.BaseConsumer):
         self._shared.request_queue = self._manager.Queue()
 
         # Call the superclass constructor.
-        super(Consumer, self).__init__(client, subscription,
+        super(Policy, self).__init__(client, subscription,
             histogram_data=self._shared.histogram_data,
         )
 
         # Also maintain a request queue and an executor.
         self._executor = futures.ProcessPoolExecutor()
+        self._callback_requests = helper_threads.QueueCallbackThread(
+            self._shared.request_queue,
+            self._on_callback_request,
+        )
 
         # Keep track of the GRPC connection.
         self._process = None
@@ -60,8 +65,7 @@ class Consumer(base.BaseConsumer):
 
     def close(self):
         """Close the existing connection."""
-        self._process.terminate()
-        self._process = None
+        self._consumer.helper_threads.stop('callback requests worker')
 
     def open(self, callback):
         """Open a streaming pull connection and begin receiving messages.
@@ -73,27 +77,22 @@ class Consumer(base.BaseConsumer):
         Args:
             callback (function): The callback function.
         """
-        # Sanity check: If the connection is already open, fail.
-        if self._process is not None:
-            raise exceptions.AlreadyOpen(self._subscription)
+        self._callback = callback
+        self._consumer.helper_threads.start('callback requests worker',
+            self._shared.request_queue,
+            self._callback_requests,
+        )
 
-        # Open the request.
-        self._process = multiprocessing.Process(self.stream)
-        self._process.daemon = True
-        self._process.start()
+    def on_callback_request(self, callback_request):
+        """Map the callback request to the appropriate GRPC request."""
+        action, args = callback_request[0], callback_request[1:]
+        getattr(self, action)(*args)
 
-    def stream(self):
-        """Stream data to and from the Cloud Pub/Sub service."""
+    def on_response(self, response):
+        """Process all received Pub/Sub messages.
 
-        # The streaming connection expects a series of StreamingPullRequest
-        # objects. The first one must specify the subscription and the
-        # ack deadline; prepend this to the list.
-        self._shared.outgoing_requests.insert(0, types.StreamingPullRequest(
-            stream_ack_deadline_seconds=self.ack_deadline,
-            subscription=self._subscription,
-        ))
-
-        try:
-            outgoing = iter(self._shared.outgoing_requests)
-        except GaxError:
-            return self.stream()
+        For each message, schedule a callback with the executor.
+        """
+        for msg in response.received_messages:
+            message = Message(self, msg.ack_id, msg.message)
+            self._executor.submit(self._callback, message)

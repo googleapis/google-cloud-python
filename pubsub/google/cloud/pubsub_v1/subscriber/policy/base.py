@@ -19,25 +19,25 @@ import abc
 import six
 
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import bidi_stream
+from google.cloud.pubsub_v1.subscriber import consumer
 from google.cloud.pubsub_v1.subscriber import histogram
 
 
 @six.add_metaclass(abc.ABCMeta)
-class BaseConsumer(object):
-    """Abstract class defining a subscription consumer.
+class BasePolicy(object):
+    """Abstract class defining a subscription policy.
 
-    Although the :class:`~.pubsub_v1.subscriber.consumer.mp.Consumer` class,
+    Although the :class:`~.pubsub_v1.subscriber.policy.mp.Policy` class,
     based on :class:`multiprocessing.Process`, is fine for most cases,
     advanced users may need to implement something based on a different
     concurrency model.
 
-    This class defines the interface for the consumer implementation;
-    subclasses may be passed as the ``consumer_class`` argument to
+    This class defines the interface for the policy implementation;
+    subclasses may be passed as the ``policy_class`` argument to
     :class:`~.pubsub_v1.client.SubscriberClient`.
     """
     def __init__(self, client, subscription, histogram_data=None):
-        """Instantiate the consumer.
+        """Instantiate the policy.
 
         Args:
             client (~.pubsub_v1.subscriber.client): The subscriber client used
@@ -58,7 +58,7 @@ class BaseConsumer(object):
         """
         self._client = client
         self._subscription = subscription
-        self._bidi_stream = bidi_stream.BidiStream(self)
+        self._consumer = consumer.Consumer(self)
         self._ack_deadline = 10
         self._last_histogram_size = 0
         self.histogram = histogram.Histogram(data=histogram_data)
@@ -102,7 +102,7 @@ class BaseConsumer(object):
     def ack(self, ack_id):
         """Acknowledge the message corresponding to the given ack_id."""
         request = types.StreamingPullRequest(ack_ids=[ack_id])
-        self._bidi_stream.send_request(request)
+        self._consumer.send_request(request)
 
     def call_rpc(self, request_generator):
         """Invoke the Pub/Sub streaming pull RPC.
@@ -120,7 +120,7 @@ class BaseConsumer(object):
             modify_deadline_ack_ids=[ack_id],
             modify_deadline_seconds=[seconds],
         )
-        self._bidi_stream.send_request(request)
+        self._consumer.send_request(request)
 
     def nack(self, ack_id):
         """Explicitly deny receipt of a message."""
