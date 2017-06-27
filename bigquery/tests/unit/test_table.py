@@ -403,7 +403,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         table = self._make_one(self.TABLE_NAME, dataset)
         table.partitioning_type = 'DAY'
-        table.create()            
+        table.create()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -1049,12 +1049,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(project=self.PROJECT)
         dataset = _Dataset(client)
         table = self._make_one(self.TABLE_NAME, dataset=dataset)
-        ROWS = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
 
         with self.assertRaises(ValueError) as exc:
             table.fetch_data()
