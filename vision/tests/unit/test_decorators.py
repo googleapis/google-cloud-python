@@ -65,6 +65,7 @@ class SingleFeatureMethodTests(unittest.TestCase):
         )
         image = {'source': {'image_uri': 'gs://my-test-bucket/image.jpg'}}
         response = client.face_detection(image, image_context=SENTINEL)
+        assert isinstance(response, vision.types.AnnotateImageResponse)
 
         # Assert that the single-image method was called as expected.
         ai.assert_called_once_with({
