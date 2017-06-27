@@ -52,7 +52,7 @@ def lint(session):
     Returns a failure if flake8 finds linting errors or sufficiently
     serious code quality issues.
     """
-    session.interpreter = 'python3.6'
+    session.interpreter = 'python2.7'
     session.install('flake8', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google/cloud/trace')
@@ -73,7 +73,7 @@ def cover(session):
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.interpreter = 'python3.6'
+    session.interpreter = 'python2.7'
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')

@@ -131,7 +131,7 @@ class _TraceAPI(object):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: dict
+        :rtype: :class:`~google.cloud.iterator.Iterator`
         :returns: Traces that match the specified filter conditions.
         """
         if page_token is None:
@@ -187,7 +187,7 @@ def make_gax_trace_api(client):
     :param client: The client that holds configuration details.
 
     :rtype: :class:`~google.cloud.trace._gax._TraceAPI`
-    :return: A Trace API instance with the proper configurations.
+    :returns: A Trace API instance with the proper configurations.
     """
     channel = make_secure_channel(
         client._credentials,
@@ -206,7 +206,7 @@ def _traces_mapping_to_pb(traces_mapping):
     :param traces_mapping: A trace mapping.
 
     :rtype: class:`google.cloud.proto.devtools.cloudtrace.v1.trace_pb2.Traces`
-    :return: The converted protobuf type traces.
+    :returns: The converted protobuf type traces.
     """
     traces_pb = trace_pb2.Traces()
     ParseDict(traces_mapping, traces_pb)

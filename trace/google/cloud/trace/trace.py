@@ -74,7 +74,7 @@ class Trace(object):
         """Create a new span for the trace and append it to the spans list.
 
         :type name: str
-        :param name: The name of the span.
+        :param name: (Optional) The name of the span.
 
         :rtype: :class:`~google.cloud.trace.trace_span.TraceSpan`
         :returns: A TraceSpan to be added to the current Trace.
@@ -113,8 +113,6 @@ class Trace(object):
             project_id=self.project_id,
             traces=traces,
             options=None)
-
-        return spans_list
 
 
 def generate_trace_id():

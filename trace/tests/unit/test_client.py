@@ -91,44 +91,42 @@ class TestClient(unittest.TestCase):
     def test_patch_traces_default(self):
         from google.cloud.trace._gax import _TraceAPI
 
-        def patch_traces(traces, project_id=None, options=None):
-            _patch_traces_called_with = (traces, project_id, options)
-            return _patch_traces_called_with
-
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
         traces = 'fake_traces_for_test'
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
-        mock_trace_api.patch_traces = patch_traces
+        mock_trace_api.patch_traces = mock.Mock()
         patch = mock.patch('google.cloud.trace.client.make_gax_trace_api', return_value=mock_trace_api)
 
         with patch:
-            patch_traces_called_with = client.patch_traces(traces=traces)
+            client.patch_traces(traces=traces)
 
-        self.assertEqual(patch_traces_called_with, (traces, self.project, None))
+        mock_trace_api.patch_traces.assert_called_with(
+            options=None,
+            project_id='PROJECT',
+            traces='fake_traces_for_test')
 
     def test_patch_traces_explicit(self):
         from google.cloud.trace._gax import _TraceAPI
 
-        def patch_traces(traces, project_id=None, options=None):
-            _patch_traces_called_with = (traces, project_id, options)
-            return _patch_traces_called_with
-
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
         traces = 'fake_traces_for_test'
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
-        mock_trace_api.patch_traces = patch_traces
+        mock_trace_api.patch_traces = mock.Mock()
         patch = mock.patch('google.cloud.trace.client.make_gax_trace_api', return_value=mock_trace_api)
 
         with patch:
-            patch_traces_called_with = client.patch_traces(
+            client.patch_traces(
                 project_id=self.project,
                 traces=traces)
 
-        self.assertEqual(patch_traces_called_with, (traces, self.project, None))
+        mock_trace_api.patch_traces.assert_called_with(
+            options=None,
+            project_id='PROJECT',
+            traces='fake_traces_for_test')
 
     def test_get_trace_default(self):
         from google.cloud.trace._gax import _TraceAPI

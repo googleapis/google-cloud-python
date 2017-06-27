@@ -43,8 +43,8 @@ class TraceSpan(object):
                  distinguished using RPC_CLIENT and RPC_SERVER to identify
                  queueing latency associated with the span.
 
-    :type parent_span_id: str
-    :param parent_span_id: ID of the parent span. Optional.
+    :type parent_span_id: int
+    :param parent_span_id: (Optional) ID of the parent span.
 
     :type labels: dict
     :param labels: Collection of labels associated with the span.
@@ -60,7 +60,7 @@ class TraceSpan(object):
     :param end_time: (Optional) End of the time interval (inclusive) during
                      which the trace data was collected from the application.
 
-    :type span_id: str
+    :type span_id: int
     :param span_id: Identifier for the span, unique within a trace.
     """
 

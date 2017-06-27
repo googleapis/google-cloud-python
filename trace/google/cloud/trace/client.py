@@ -61,7 +61,7 @@ class Client(ClientWithProject):
         :param trace_id: ID of the trace. 32 digits uuid.
 
         :rtype: :class:`~google.cloud.trace.trace.Trace`
-        :return: A Trace instance.
+        :returns: A Trace instance.
         """
         if project_id is None:
             project_id = self.project
@@ -85,7 +85,7 @@ class Client(ClientWithProject):
         if project_id is None:
             project_id = self.project
 
-        return self.trace_api.patch_traces(
+        self.trace_api.patch_traces(
             project_id=project_id,
             traces=traces,
             options=options)
@@ -104,7 +104,7 @@ class Client(ClientWithProject):
         :param options: (Optional) Overrides the default settings for this
                         call, e.g, timeout, retries etc.
 
-        :rtype: :dict
+        :rtype: dict
         :returns: A Trace dict.
         """
         if project_id is None:
@@ -163,7 +163,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: dict
+        :rtype: :class:`~google.cloud.iterator.Iterator`
         :returns: Traces that match the specified filter conditions.
         """
         if project_id is None:
