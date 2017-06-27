@@ -14,15 +14,11 @@
 
 from __future__ import absolute_import
 
-import functools
 import pkg_resources
-
-import six
 
 from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
-from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber.consumer import mp
 
 

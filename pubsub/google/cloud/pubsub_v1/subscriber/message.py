@@ -56,9 +56,6 @@ class Message(object):
         self._ack_id = ack_id
         self._message = message
         self.message_id = message.message_id
-        self.data = message.data
-        self.attributes = message.attributes
-        self.publish_time = message.publish_time
 
         # The instantiation time is the time that this message
         # was received. Tracking this provides us a way to be smart about
@@ -68,11 +65,11 @@ class Message(object):
     def __repr__(self):
         # Get an abbreviated version of the data.
         abbv_data = self._data
-        if len(answer) > 50:
+        if len(abbv_data) > 50:
             abbv_data = abbv_data[0:50] + b'...'
 
         # Return a useful representation.
-        answer  = 'Message {\n'
+        answer = 'Message {\n'
         answer += '    data: {0!r}\n'.format(abbv_data)
         answer += '    attributes: {0!r}\n'.format(self.attributes)
         answer += '}'

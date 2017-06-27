@@ -18,12 +18,14 @@ import abc
 
 import six
 
+from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.subscriber import bidi_stream
 from google.cloud.pubsub_v1.subscriber import histogram
 
 
 @six.add_metaclass(abc.ABCMeta)
 class BaseConsumer(object):
-    """Abstract base class for consumers.
+    """Abstract class defining a subscription consumer.
 
     Although the :class:`~.pubsub_v1.subscriber.consumer.mp.Consumer` class,
     based on :class:`multiprocessing.Process`, is fine for most cases,
@@ -40,8 +42,9 @@ class BaseConsumer(object):
         Args:
             client (~.pubsub_v1.subscriber.client): The subscriber client used
                 to create this instance.
-            subscription (str): The name of the subscription. The canonical format
-                for this is ``projects/{project}/subscriptions/{subscription}``.
+            subscription (str): The name of the subscription. The canonical
+                format for this is
+                ``projects/{project}/subscriptions/{subscription}``.
             histogram_data (dict): Optional: A structure to store the histogram
                 data for predicting appropriate ack times. If set, this should
                 be a dictionary-like object.
@@ -55,6 +58,7 @@ class BaseConsumer(object):
         """
         self._client = client
         self._subscription = subscription
+        self._bidi_stream = bidi_stream.BidiStream(self)
         self._ack_deadline = 10
         self._last_histogram_size = 0
         self.histogram = histogram.Histogram(data=histogram_data)
@@ -75,6 +79,18 @@ class BaseConsumer(object):
         return self._ack_deadline
 
     @property
+    def initial_request(self):
+        """Return the initial request.
+
+        This defines the intiial request that must always be sent to Pub/Sub
+        immediately upon opening the subscription.
+        """
+        return types.StreamingPullRequest(
+            stream_ack_deadline_seconds=self.histogram.percentile(99),
+            subscription=self.subscription,
+        )
+
+    @property
     def subscription(self):
         """Return the subscription.
 
@@ -83,14 +99,65 @@ class BaseConsumer(object):
         """
         return self._subscription
 
-    @abc.abstractmethod
     def ack(self, ack_id):
         """Acknowledge the message corresponding to the given ack_id."""
+        request = types.StreamingPullRequest(ack_ids=[ack_id])
+        self._bidi_stream.send_request(request)
+
+    def call_rpc(self, request_generator):
+        """Invoke the Pub/Sub streaming pull RPC.
+
+        Args:
+            request_generator (Generator): A generator that yields requests,
+                and blocks if there are no outstanding requests (until such
+                time as there are).
+        """
+        return self._client.api.streaming_pull(request_generator)
+
+    def modify_ack_deadline(self, ack_id, seconds):
+        """Modify the ack deadline for the given ack_id."""
+        request = types.StreamingPullRequest(
+            modify_deadline_ack_ids=[ack_id],
+            modify_deadline_seconds=[seconds],
+        )
+        self._bidi_stream.send_request(request)
+
+    def nack(self, ack_id):
+        """Explicitly deny receipt of a message."""
+        return self.modify_ack_deadline(ack_id, 0)
+
+    @abc.abstractmethod
+    def on_response(self, response):
+        """Process a response from gRPC.
+
+        This gives the consumer control over how responses are scheduled to
+        be processed. This method is expected to not block and instead
+        schedule the response to be consumed by some sort of concurrency.
+
+        For example, if a the Policy implementation takes a callback in its
+        constructor, you can schedule the callback using a
+        :cls:`concurrent.futures.ThreadPoolExecutor`::
+
+            self._pool.submit(self._callback, response)
+
+        This is called from the response consumer helper thread.
+
+        Args:
+            response (Any): The protobuf response from the RPC.
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def modify_ack_deadline(self, ack_id, seconds):
-        """Modify the ack deadline for the given ack_id."""
+    def on_exception(self, exception):
+        """Called when a gRPC exception occurs.
+
+        If this method does nothing, then the stream is re-started. If this
+        raises an exception, it will stop the consumer thread.
+        This is executed on the response consumer helper thread.
+
+        Args:
+            exception (Exception): The exception raised by the RPC.
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -100,5 +167,9 @@ class BaseConsumer(object):
         For each message received, the ``callback`` function is fired with
         a :class:`~.pubsub_v1.subscriber.message.Message` as its only
         argument.
+
+        Args:
+            callback (Callable[Message]): A callable that receives a
+                Pub/Sub Message.
         """
         raise NotImplementedError

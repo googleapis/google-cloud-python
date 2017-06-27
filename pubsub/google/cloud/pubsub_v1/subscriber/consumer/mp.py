@@ -14,16 +14,13 @@
 
 from __future__ import absolute_import
 
-import abc
+from concurrent import futures
 import multiprocessing
-
-import six
 
 from google.gax.errors import GaxError
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import exceptions
-from google.cloud.pubsub_v1.subscriber import histogram
 from google.cloud.pubsub_v1.subscriber.consumer import base
 
 
@@ -38,13 +35,16 @@ class Consumer(base.BaseConsumer):
         self._manager = multiprocessing.Manager()
         self._shared = self._manager.Namespace()
         self._shared.subscription = subscription
-        self._shared.outgoing_requests = self._manager.list()
         self._shared.histogram_data = self._manager.dict()
+        self._shared.request_queue = self._manager.Queue()
 
         # Call the superclass constructor.
         super(Consumer, self).__init__(client, subscription,
             histogram_data=self._shared.histogram_data,
         )
+
+        # Also maintain a request queue and an executor.
+        self._executor = futures.ProcessPoolExecutor()
 
         # Keep track of the GRPC connection.
         self._process = None
@@ -58,23 +58,10 @@ class Consumer(base.BaseConsumer):
         """
         return self._shared.subscription
 
-    def ack(self, ack_id):
-        """Acknowledge the message corresponding to the given ack_id."""
-        self._shared.outgoing_requests.append(types.StreamingPullRequest(
-            ack_ids=[ack_id],
-        ))
-
     def close(self):
         """Close the existing connection."""
         self._process.terminate()
         self._process = None
-
-    def modify_ack_deadline(self, ack_id, seconds):
-        """Modify the ack deadline for the given ack_id."""
-        self._shared.outgoing_requests.append(types.StreamingPullRequest(
-            modify_deadline_ack_ids=[ack_id],
-            modify_deadline_seconds=[seconds],
-        ))
 
     def open(self, callback):
         """Open a streaming pull connection and begin receiving messages.
@@ -106,12 +93,7 @@ class Consumer(base.BaseConsumer):
             subscription=self._subscription,
         ))
 
-        import sys
         try:
             outgoing = iter(self._shared.outgoing_requests)
-            import pdb ; pdb.set_trace()
-            for r in self._client.api.streaming_pull(outgoing):
-                import pdb ; pdb.set_trace()
-                print(r, file=sys.stderr)
         except GaxError:
             return self.stream()
