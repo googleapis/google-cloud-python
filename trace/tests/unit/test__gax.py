@@ -35,15 +35,17 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         return _TraceAPI
 
     def test_constructor(self):
-        gax_api = _GAXTraceAPI()
+        gax_api = object()
         client = object()
         api = self._make_one(gax_api, client)
         self.assertIs(api._gax_api, gax_api)
         self.assertIs(api.client, client)
 
     def test_patch_traces(self):
+        from google.cloud.gapic.trace.v1 import trace_service_client
         from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
             TraceSpan, Trace, Traces)
+        from google.cloud.trace._gax import _traces_mapping_to_pb
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
         from datetime import datetime
@@ -71,11 +73,17 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             ],
         }
 
-        gax_api = _GAXTraceAPI()
+        traces_pb = _traces_mapping_to_pb(traces)
+
+        gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
         api = self._make_one(gax_api, None)
         api.patch_traces(project_id=self.project, traces=traces)
-        project_id_called, traces_called, options_called = (gax_api._patch_traces_called_with)
 
+        gax_api.patch_traces.assert_called_with(self.project, traces_pb, None)
+
+        call_args = gax_api.patch_traces.call_args[0]
+        self.assertEqual(len(call_args), 3)
+        traces_called = call_args[1]
         self.assertEqual(len(traces_called.traces), 1)
         trace = traces_called.traces[0]
 
@@ -97,24 +105,20 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             _datetime_to_pb_timestamp(end_time))
         self.assertIsInstance(span, TraceSpan)
 
-        self.assertIsNone(options_called)
-
     def test_get_trace(self):
-        from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
-            Trace)
+        from google.cloud.gapic.trace.v1 import trace_service_client
 
         trace_id = 'test_trace_id'
-        trace_pb = Trace(project_id=self.project, trace_id=trace_id)
 
-        gax_api = _GAXTraceAPI(_get_trace_response=trace_pb)
+        gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
         api = self._make_one(gax_api, None)
+        patch = mock.patch('google.cloud.trace._gax._parse_trace_pb',
+                           return_value='fake_pb_result')
 
-        api.get_trace(project_id=self.project, trace_id=trace_id)
+        with patch:
+            api.get_trace(project_id=self.project, trace_id=trace_id)
 
-        project_id_called, trace_id_called, options_called = gax_api._get_traces_called_with
-        self.assertEqual(project_id_called, self.project)
-        self.assertEqual(trace_id_called, trace_id)
-        self.assertIsNone(options_called)
+        gax_api.get_trace.assert_called_with(self.project, trace_id, None)
 
     def _make_trace_pb(
             self,
@@ -156,6 +160,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     def test_list_traces_no_paging(self):
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.gapic.trace.v1 import trace_service_client
         from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
         from google.gax import INITIAL_PAGE
 
@@ -186,7 +191,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             labels)
 
         response = _GAXPageIterator(trace_pb)
-        gax_api = _GAXTraceAPI(_list_traces_response=response)
+        gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
+        gax_api.list_traces.return_value = response
         api = self._make_one(gax_api, None)
 
         iterator = api.list_traces(
@@ -216,30 +222,21 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertEqual(span['parentSpanId'], str(parent_span_id))
         self.assertEqual(span['labels'], labels)
 
-        project_id_called,\
-        view_called,\
-        page_size_called,\
-        start_time_called,\
-        end_time_called,\
-        filter__called,\
-        order_by_called,\
-        options_called = (
-            gax_api._list_traces_called_with
-        )
+        call_args = gax_api.list_traces.call_args[1]
 
-        self.assertEqual(project_id_called, self.project)
-        self.assertEqual(view_called, view_type)
-        self.assertEqual(page_size_called, size)
-        self.assertIsNone(start_time_called)
-        self.assertIsNone(end_time_called)
-        self.assertIsNone(filter__called)
-        self.assertIsNone(order_by_called)
-        self.assertEqual(options_called.page_token, INITIAL_PAGE)
+        self.assertEqual(call_args['project_id'], self.project)
+        self.assertEqual(call_args['view'], view_type)
+        self.assertEqual(call_args['page_size'], size)
+        self.assertIsNone(call_args['start_time'])
+        self.assertIsNone(call_args['end_time'])
+        self.assertIsNone(call_args['filter_'])
+        self.assertIsNone(call_args['order_by'])
+        self.assertEqual(call_args['options'].page_token, INITIAL_PAGE)
 
     def test_list_traces_with_paging(self):
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.gapic.trace.v1 import trace_service_client
         from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
-        from google.gax import INITIAL_PAGE
 
         from datetime import datetime
 
@@ -269,7 +266,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             labels)
 
         response = _GAXPageIterator(trace_pb)
-        gax_api = _GAXTraceAPI(_list_traces_response=response)
+        gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
+        gax_api.list_traces.return_value = response
         api = self._make_one(gax_api, None)
 
         iterator = api.list_traces(
@@ -300,25 +298,16 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertEqual(span['parentSpanId'], str(parent_span_id))
         self.assertEqual(span['labels'], labels)
 
-        project_id_called,\
-        view_called,\
-        page_size_called,\
-        start_time_called,\
-        end_time_called,\
-        filter__called,\
-        order_by_called,\
-        options_called = (
-            gax_api._list_traces_called_with
-        )
+        call_args = gax_api.list_traces.call_args[1]
 
-        self.assertEqual(project_id_called, self.project)
-        self.assertEqual(view_called, view_type)
-        self.assertEqual(page_size_called, size)
-        self.assertIsNone(start_time_called)
-        self.assertIsNone(end_time_called)
-        self.assertIsNone(filter__called)
-        self.assertIsNone(order_by_called)
-        self.assertEqual(options_called.page_token, token)
+        self.assertEqual(call_args['project_id'], self.project)
+        self.assertEqual(call_args['view'], view_type)
+        self.assertEqual(call_args['page_size'], size)
+        self.assertIsNone(call_args['start_time'])
+        self.assertIsNone(call_args['end_time'])
+        self.assertIsNone(call_args['filter_'])
+        self.assertIsNone(call_args['order_by'])
+        self.assertEqual(call_args['options'].page_token, token)
 
 
 class Test__parse_trace_pb(unittest.TestCase):
@@ -438,33 +427,3 @@ class Test_make_gax_trace_api(unittest.TestCase):
         self.assertIsInstance(trace_api, _TraceAPI)
         self.assertIs(trace_api._gax_api, generated)
         self.assertIs(trace_api.client, client)
-
-
-class _GAXTraceAPI(_GAXBaseAPI):
-    def patch_traces(self, project_id, traces, options=None):
-        self._patch_traces_called_with = (project_id, traces, options)
-
-    def get_trace(self, project_id, trace_id, options=None):
-        self._get_traces_called_with = (project_id, trace_id, options)
-        return self._get_trace_response
-
-    def list_traces(
-            self,
-            project_id,
-            view=None,
-            page_size=None,
-            start_time=None,
-            end_time=None,
-            filter_=None,
-            order_by=None,
-            options=None):
-        self._list_traces_called_with = (
-            project_id,
-            view,
-            page_size,
-            start_time,
-            end_time,
-            filter_,
-            order_by,
-            options)
-        return self._list_traces_response

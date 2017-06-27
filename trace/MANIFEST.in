@@ -1,5 +1,5 @@
 include README.rst LICENSE
-recursive-include unit_tests *
+recursive-include tests *
 global-include google *.json *.proto
 graft google
 global-exclude *.py[co]

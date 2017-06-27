@@ -138,16 +138,11 @@ class TestTrace(unittest.TestCase):
         self.assertEqual(result_span.name, span_name)
 
     def test_send_without_spans(self):
-        def patch_traces(traces, project_id=None, options=None):
-            self._patch_traces_called_with = (traces, project_id, options)
-            return self._patch_traces_called_with
-
         client = mock.Mock(project=self.project, spec=['project'])
         trace_id = 'test_trace_id'
         trace = self._make_one(client=client, trace_id=trace_id)
         trace.spans = []
 
-        client.patch_traces = patch_traces
         trace.send()
 
         self.assertFalse(client.called)
@@ -157,12 +152,10 @@ class TestTrace(unittest.TestCase):
 
     def test_send_with_spans(self):
         from google.cloud.gapic.trace.v1.enums import TraceSpan as Enum
+        from google.cloud.trace.client import Client
 
-        def patch_traces(traces, project_id=None, options=None):
-            self._patch_traces_called_with = (traces, project_id, options)
-            return self._patch_traces_called_with
-
-        client = mock.Mock(project=self.project, spec=['project'])
+        client = mock.Mock(spec=Client)
+        client.project = self.project
         trace_id = 'test_trace_id'
         trace = self._make_one(client=client, trace_id=trace_id)
         child_span_name = 'child_span'
@@ -242,11 +235,12 @@ class TestTrace(unittest.TestCase):
             ]
         }
 
-        client.patch_traces = patch_traces
         trace.send()
 
-        self.assertEqual(self._patch_traces_called_with,
-                         (traces, self.project, None))
+        client.patch_traces.assert_called_with(project_id=self.project,
+                                               traces=traces,
+                                               options=None)
+
         self.assertEqual(trace.project_id, self.project)
         self.assertEqual(trace.trace_id, trace_id)
         self.assertEqual(trace.spans, [root_span])

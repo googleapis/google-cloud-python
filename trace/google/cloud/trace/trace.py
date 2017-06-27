@@ -149,5 +149,5 @@ def generate_trace_id():
     :rtype: str
     :returns: 32 digits randomly generated trace ID.
     """
-    trace_id = str(uuid.uuid4()).replace('-', '')
+    trace_id = uuid.uuid4().hex
     return trace_id
