@@ -75,6 +75,7 @@ def lint(session):
     session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google/cloud/bigquery')
+    session.run('flake8', 'tests')
     session.run(
         'gcp-devrel-py-tools', 'run-pylint',
         '--config', 'pylint.config.py',

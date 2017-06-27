@@ -167,9 +167,9 @@ class TestBigQuery(unittest.TestCase):
             'newest' + unique_resource_id(),
         ]
         for dataset_name in datasets_to_create:
-            dataset = Config.CLIENT.dataset(dataset_name)
-            retry_403(dataset.create)()
-            self.to_delete.append(dataset)
+            created_dataset = Config.CLIENT.dataset(dataset_name)
+            retry_403(created_dataset.create)()
+            self.to_delete.append(created_dataset)
 
         # Retrieve the datasets.
         iterator = Config.CLIENT.list_datasets()
@@ -222,9 +222,9 @@ class TestBigQuery(unittest.TestCase):
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         for table_name in tables_to_create:
-            table = dataset.table(table_name, schema=[full_name, age])
-            table.create()
-            self.to_delete.insert(0, table)
+            created_table = dataset.table(table_name, schema=[full_name, age])
+            created_table.create()
+            self.to_delete.insert(0, created_table)
 
         # Retrieve the tables.
         iterator = dataset.list_tables()
@@ -838,7 +838,6 @@ class TestBigQuery(unittest.TestCase):
         SQL = 'SELECT * from `{}.{}.{}` LIMIT {}'.format(
             PUBLIC, DATASET_NAME, TABLE_NAME, LIMIT)
 
-        dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
         query = Config.CLIENT.run_sync_query(SQL)
         query.use_legacy_sql = False
         query.run()
