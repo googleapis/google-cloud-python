@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -231,22 +231,19 @@ class TestCursor(unittest.TestCase):
         self.assertEquals(cursor.rowcount, 12)
 
     def test__format_operation_w_dict(self):
-        from google.cloud.bigquery import dbapi
-        connection = dbapi.connect(self._mock_client())
-        cursor = connection.cursor()
+        from google.cloud.bigquery.dbapi import cursor
         formatted_operation = cursor._format_operation(
-            'SELECT %(somevalue)s, %(othervalue)s;',
+            'SELECT %(somevalue)s, %(a `weird` one)s;',
             {
                 'somevalue': 'hi',
-                'othervalue': 'world',
+                'a `weird` one': 'world',
             })
         self.assertEquals(
-            formatted_operation, 'SELECT @somevalue, @othervalue;')
+            formatted_operation, 'SELECT @`somevalue`, @`a \\`weird\\` one`;')
 
     def test__format_operation_w_wrong_dict(self):
         from google.cloud.bigquery import dbapi
-        connection = dbapi.connect(self._mock_client())
-        cursor = connection.cursor()
+        from google.cloud.bigquery.dbapi import cursor
         self.assertRaises(
             dbapi.ProgrammingError,
             cursor._format_operation,
@@ -257,17 +254,14 @@ class TestCursor(unittest.TestCase):
             })
 
     def test__format_operation_w_sequence(self):
-        from google.cloud.bigquery import dbapi
-        connection = dbapi.connect(self._mock_client())
-        cursor = connection.cursor()
+        from google.cloud.bigquery.dbapi import cursor
         formatted_operation = cursor._format_operation(
             'SELECT %s, %s;', ('hello', 'world'))
         self.assertEquals(formatted_operation, 'SELECT ?, ?;')
 
     def test__format_operation_w_too_short_sequence(self):
         from google.cloud.bigquery import dbapi
-        connection = dbapi.connect(self._mock_client())
-        cursor = connection.cursor()
+        from google.cloud.bigquery.dbapi import cursor
         self.assertRaises(
             dbapi.ProgrammingError,
             cursor._format_operation,

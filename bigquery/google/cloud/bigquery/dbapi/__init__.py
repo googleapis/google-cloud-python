@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,12 +53,12 @@ from google.cloud.bigquery.dbapi.types import ROWID
 from google.cloud.bigquery.dbapi.types import STRING
 
 
-apilevel = "2.0"
+apilevel = '2.0'
 
 # Threads may share the module, but not connections.
 threadsafety = 1
 
-paramstyle = "pyformat"
+paramstyle = 'pyformat'
 
 __all__ = [
     'apilevel', 'threadsafety', 'paramstyle', 'connect', 'Connection',

@@ -26,6 +26,10 @@ class TestTypes(unittest.TestCase):
         self.assertEqual('STRUCT', types.BINARY)
         self.assertNotEqual('STRING', types.BINARY)
 
+    def test_binary_constructor(self):
+        self.assertEqual(types.Binary(u'hello'), b'hello')
+        self.assertEqual(types.Binary(u'\u1f60'), u'\u1f60'.encode('utf-8'))
+
     def test_timefromticks(self):
         somedatetime = datetime.datetime(
             2017, 2, 18, 12, 47, 26, tzinfo=google.cloud._helpers.UTC)

@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ from google.cloud.bigquery.dbapi import cursor
 class Connection(object):
     """DB-API Connection to Google BigQuery.
 
-    :type: :class:`~google.cloud.bigquery.Client`
+    :type client: :class:`~google.cloud.bigquery.Client`
     :param client: A client used to connect to BigQuery.
     """
     def __init__(self, client):
@@ -37,6 +37,7 @@ class Connection(object):
         """Return a new cursor object.
 
         :rtype: :class:`~google.cloud.bigquery.dbapi.Cursor`
+        :returns: A DB-API cursor that uses this connection.
         """
         return cursor.Cursor(self)
 
@@ -44,12 +45,13 @@ class Connection(object):
 def connect(client=None):
     """Construct a DB-API connection to Google BigQuery.
 
-    :type: :class:`~google.cloud.bigquery.Client`
+    :type client: :class:`~google.cloud.bigquery.Client`
     :param client:
         (Optional) A client used to connect to BigQuery. If not passed, a
         client is created using default options inferred from the environment.
 
     :rtype: :class:`~google.cloud.bigquery.dbapi.Connection`
+    :returns: A new DB-API connection to BigQuery.
     """
     if client is None:
         client = bigquery.Client()

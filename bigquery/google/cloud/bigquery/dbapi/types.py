@@ -14,15 +14,13 @@
 
 """Types used in the Google BigQuery DB-API.
 
-See `PEP 249`_ for details.
+See `PEP-249`_ for details.
 
-.. _`PEP 249`:
+.. _PEP-249:
     https://www.python.org/dev/peps/pep-0249/#type-objects-and-constructors
 """
 
 import datetime
-
-import six
 
 
 Date = datetime.date
@@ -30,7 +28,18 @@ Time = datetime.time
 Timestamp = datetime.datetime
 DateFromTicks = datetime.date.fromtimestamp
 TimestampFromTicks = datetime.datetime.fromtimestamp
-Binary = six.binary_type
+
+
+def Binary(string):
+    """Contruct a DB-API binary value.
+
+    :type string: str
+    :param string: A string to encode as a binary value.
+
+    :rtype: bytes
+    :returns: The UTF-8 encoded bytes representing the string.
+    """
+    return string.encode('utf-8')
 
 
 def TimeFromTicks(ticks, tz=None):
@@ -54,9 +63,9 @@ def TimeFromTicks(ticks, tz=None):
 class _DBAPITypeObject(object):
     """DB-API type object which compares equal to many different strings.
 
-    See `PEP 249`_ for details.
+    See `PEP-249`_ for details.
 
-    .. _`PEP 249`:
+    .. _PEP-249:
         https://www.python.org/dev/peps/pep-0249/#implementation-hints-for-module-authors
     """
 
@@ -64,9 +73,7 @@ class _DBAPITypeObject(object):
         self.values = values
 
     def __eq__(self, other):
-        if other in self.values:
-            return True
-        return False
+        return other in self.values
 
 
 STRING = 'STRING'

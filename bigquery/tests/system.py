@@ -76,7 +76,7 @@ class Config(object):
 
 def setUpModule():
     Config.CLIENT = bigquery.Client()
-    Config.CURSOR = dbapi.connect().cursor()
+    Config.CURSOR = dbapi.connect(Config.CLIENT).cursor()
 
 
 class TestBigQuery(unittest.TestCase):
@@ -379,9 +379,6 @@ class TestBigQuery(unittest.TestCase):
                     write_disposition='WRITE_EMPTY',
                 )
 
-        def _job_done(instance):
-            return instance.state.lower() == 'done'
-
         # Retry until done.
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
@@ -419,9 +416,6 @@ class TestBigQuery(unittest.TestCase):
                 source_format='AVRO',
                 write_disposition='WRITE_TRUNCATE'
             )
-
-        def _job_done(instance):
-            return instance.state.lower() == 'done'
 
         # Retry until done.
         retry = RetryInstanceState(_job_done, max_tries=8)
@@ -495,9 +489,6 @@ class TestBigQuery(unittest.TestCase):
 
         job.begin()
 
-        def _job_done(instance):
-            return instance.state in ('DONE', 'done')
-
         # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
@@ -530,9 +521,6 @@ class TestBigQuery(unittest.TestCase):
         job = Config.CLIENT.run_async_query(JOB_NAME, QUERY)
         job.begin()
         job.cancel()
-
-        def _job_done(instance):
-            return instance.state in ('DONE', 'done')
 
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
@@ -701,7 +689,7 @@ class TestBigQuery(unittest.TestCase):
         with _NamedTemporaryFile() as temp:
             with open(temp.name, 'w') as csv_write:
                 writer = csv.writer(csv_write)
-                writer.writerow(('Greeting'))
+                writer.writerow(('Greeting',))
                 writer.writerows(rows)
 
             with open(temp.name, 'rb') as csv_read:
@@ -713,9 +701,6 @@ class TestBigQuery(unittest.TestCase):
                     write_disposition='WRITE_EMPTY',
                 )
 
-        def _job_done(instance):
-            return instance.state.lower() == 'done'
-
         # Retry until done.
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
@@ -725,12 +710,13 @@ class TestBigQuery(unittest.TestCase):
         dataset_name = _make_dataset_name('dml_tests')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
+        query_template = """UPDATE {}.{}
+            SET greeting = 'Guten Tag'
+            WHERE greeting = 'Hello World'
+            """
 
         query = Config.CLIENT.run_sync_query(
-            'UPDATE {}.{} '
-            'SET greeting = \'Guten Tag\' '
-            'WHERE greeting = \'Hello World\''.format(
-                dataset_name, table_name))
+            query_template.format(dataset_name, table_name))
         query.use_legacy_sql = False
         query.run()
 
@@ -740,12 +726,12 @@ class TestBigQuery(unittest.TestCase):
         dataset_name = _make_dataset_name('dml_tests')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
+        query_template = """UPDATE {}.{}
+            SET greeting = 'Guten Tag'
+            WHERE greeting = 'Hello World'
+            """
 
-        Config.CURSOR.execute(
-            'UPDATE {}.{} '
-            'SET greeting = \'Guten Tag\' '
-            'WHERE greeting = \'Hello World\''.format(
-                dataset_name, table_name))
+        Config.CURSOR.execute(query_template.format(dataset_name, table_name))
         self.assertEqual(Config.CURSOR.rowcount, 1)
         self.assertIsNone(Config.CURSOR.fetchone())
 
@@ -911,6 +897,20 @@ class TestBigQuery(unittest.TestCase):
                 },
             },
             {
+                'sql': 'SELECT %(a "very" weird `name`)s',
+                'expected': True,
+                'query_parameters': {
+                    'a "very" weird `name`': True,
+                },
+            },
+            {
+                'sql': 'SELECT %(select)s',
+                'expected': True,
+                'query_parameters': {
+                    'select': True,  # this name is a keyword
+                },
+            },
+            {
                 'sql': 'SELECT %s',
                 'expected': False,
                 'query_parameters': [False],
@@ -977,11 +977,7 @@ class TestBigQuery(unittest.TestCase):
             msg = 'sql: {} query_parameters: {}'.format(
                 example['sql'], example['query_parameters'])
 
-            try:
-                Config.CURSOR.execute(
-                    example['sql'], example['query_parameters'])
-            except dbapi.DatabaseError as ex:
-                raise dbapi.DatabaseError('{} {}'.format(ex, msg))
+            Config.CURSOR.execute(example['sql'], example['query_parameters'])
 
             self.assertEqual(Config.CURSOR.rowcount, 1, msg=msg)
             row = Config.CURSOR.fetchone()
@@ -1121,3 +1117,7 @@ class TestBigQuery(unittest.TestCase):
             parts = time.strptime(expected[7], '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)              # FavoriteTime
+
+
+def _job_done(instance):
+    return instance.state.lower() == 'done'
