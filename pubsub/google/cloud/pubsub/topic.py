@@ -462,7 +462,6 @@ class Batch(object):
         self.topic = topic
         self.client = client
         self.messages = []
-        self.message_ids = []
 
         # Set the autocommit rules. If the interval or number of messages
         # is exceeded, then the .publish() method will imply a commit.
@@ -499,6 +498,10 @@ class Batch(object):
 
         :type attrs: dict (string -> string)
         :param attrs: key-value pairs to send as message attributes
+
+        :rtype: list
+        :returns: A list, potentially with message IDs (if the batch
+            committed).
         """
         self.topic._timestamp_message(attrs)
 
@@ -518,19 +521,19 @@ class Batch(object):
         # was added, autocommit.
         now = time.time()
         if now - self._start_timestamp > self._max_interval:
-            self.commit()
-            return
+            return self.commit()
 
         # If the number of messages on the list is greater than the
         # maximum allowed, autocommit (with the batch's client).
         if len(self.messages) >= self._max_messages:
-            self.commit()
-            return
+            return self.commit()
 
         # If we have reached the max size, autocommit.
         if self._current_size >= self._max_size:
-            self.commit()
-            return
+            return self.commit()
+
+        # Return an empty list for consistency when a commit does not occur.
+        return []
 
     def commit(self, client=None):
         """Send saved messages as a single API call.
@@ -547,5 +550,5 @@ class Batch(object):
             client = self.client
         api = client.publisher_api
         message_ids = api.topic_publish(self.topic.full_name, self.messages[:])
-        self.message_ids.extend(message_ids)
         self._reset_state()
+        return message_ids
