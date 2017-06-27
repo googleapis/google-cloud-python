@@ -16,7 +16,6 @@ from __future__ import absolute_import
 
 import copy
 import multiprocessing
-import queue
 import time
 import uuid
 
@@ -332,7 +331,7 @@ class Future(object):
 
         # If the timeout has been exceeded, raise TimeoutError.
         if timeout and timeout < 0:
-            raise TimeoutError('Timed out waiting for an exception.')
+            raise exceptions.TimeoutError('Timed out waiting for exception.')
 
         # Wait a little while and try again.
         time.sleep(_wait)
