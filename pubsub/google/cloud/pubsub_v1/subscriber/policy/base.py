@@ -15,6 +15,8 @@
 from __future__ import absolute_import
 
 import abc
+import random
+import time
 
 import six
 
@@ -91,6 +93,17 @@ class BasePolicy(object):
         )
 
     @property
+    def managed_ack_ids(self):
+        """Return the ack IDs currently being managed by the policy.
+
+        Returns:
+            set: The set of ack IDs being managed.
+        """
+        if not hasattr(self, '_managed_ack_ids'):
+            self._managed_ack_ids = set()
+        return self._managed_ack_ids
+
+    @property
     def subscription(self):
         """Return the subscription.
 
@@ -100,7 +113,11 @@ class BasePolicy(object):
         return self._subscription
 
     def ack(self, ack_id):
-        """Acknowledge the message corresponding to the given ack_id."""
+        """Acknowledge the message corresponding to the given ack_id.
+
+        Args:
+            ack_id (str): The ack ID.
+        """
         request = types.StreamingPullRequest(ack_ids=[ack_id])
         self._consumer.send_request(request)
 
@@ -114,8 +131,70 @@ class BasePolicy(object):
         """
         return self._client.api.streaming_pull(request_generator)
 
+    def drop(self, ack_id):
+        """Remove the given ack ID from lease management.
+
+        Args:
+            ack_id (str): The ack ID.
+        """
+        self.managed_ack_ids.remove(ack_id)
+
+    def lease(self, ack_id):
+        """Add the given ack ID to lease management.
+
+        Args:
+            ack_id (str): The ack ID.
+        """
+        self.managed_ack_ids.add(ack_id)
+
+    def maintain_leases(self):
+        """Maintain all of the leases being managed by the policy.
+
+        This method modifies the ack deadline for all of the managed
+        ack IDs, then waits for most of that time (but with jitter), and
+        then calls itself.
+
+        .. warning::
+            This method blocks, and generally should be run in a separate
+            thread or process.
+
+            Additionally, you should not have to call this method yourself,
+            unless you are implementing your own policy. If you are
+            implementing your own policy, you _should_ call this method
+            in an appropriate form of subprocess.
+        """
+        # Determine the appropriate duration for the lease.
+        # This is based off of how long previous messages have taken to ack,
+        # with a sensible default and within the ranges allowed by Pub/Sub.
+        p99 = self.histogram.percentile(99)
+
+        # Create a streaming pull request.
+        # We do not actually call `modify_ack_deadline` over and over because
+        # it is more efficient to make a single request.
+        ack_ids = list(self.managed_ack_ids)
+        if len(ack_ids) > 0:
+            request = types.StreamingPullRequest(
+                modify_deadline_ack_ids=ack_ids,
+                modify_deadline_seconds=[p99] * len(ack_ids),
+            )
+            self._consumer.send_request(request)
+
+        # Now wait an appropriate period of time and do this again.
+        #
+        # We determine the appropriate period of time based on a random
+        # period between 0 seconds and 90% of the lease. This use of
+        # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
+        # where there are many clients.
+        time.sleep(random.uniform(0.0, p99 * 0.9))
+        self.maintain_managed_leases()
+
     def modify_ack_deadline(self, ack_id, seconds):
-        """Modify the ack deadline for the given ack_id."""
+        """Modify the ack deadline for the given ack_id.
+
+        Args:
+            ack_id (str): The ack ID
+            seconds (int): The number of seconds to set the new deadline to.
+        """
         request = types.StreamingPullRequest(
             modify_deadline_ack_ids=[ack_id],
             modify_deadline_seconds=[seconds],
@@ -123,7 +202,11 @@ class BasePolicy(object):
         self._consumer.send_request(request)
 
     def nack(self, ack_id):
-        """Explicitly deny receipt of a message."""
+        """Explicitly deny receipt of a message.
+
+        Args:
+            ack_id (str): The ack ID.
+        """
         return self.modify_ack_deadline(ack_id, 0)
 
     @abc.abstractmethod

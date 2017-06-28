@@ -168,7 +168,6 @@ class Consumer(object):
     low. The Consumer and end-user can configure any sort of executor they want
     for the actual processing of the responses, which may be CPU intensive.
     """
-
     def __init__(self, policy):
         """
         Args:
@@ -243,18 +242,13 @@ class Consumer(object):
             except Exception as e:
                 self._policy.on_exception(e)
 
-    def _consume_thread(self):
-        """Thread to consume the stream."""
-        self._blocking_consume()
-
     def start_consuming(self):
         """Start consuming the stream."""
         self._exiting.clear()
         self.helper_threads.start('consume bidirectional stream',
             self._request_queue,
-            self._consume_thread,
+            self._blocking_consume,
         )
-        self._policy.initialize(self)
 
     def stop_consuming(self):
         """Signal the stream to stop and block until it completes."""

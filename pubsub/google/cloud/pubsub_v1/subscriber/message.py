@@ -68,6 +68,10 @@ class Message(object):
         # the default lease deadline.
         self._received_timestamp = time.time()
 
+        # The policy should lease this message, telling PubSub that it has
+        # it until it is acked or otherwise dropped.
+        self.lease()
+
     def __repr__(self):
         # Get an abbreviated version of the data.
         abbv_data = self._data
@@ -118,7 +122,6 @@ class Message(object):
         you receive the message again.
 
         .. warning::
-        
             Acks in Pub/Sub are best effort. You should always
             ensure that your processing code is idempotent, as you may
             receive any given message more than once.
@@ -126,6 +129,31 @@ class Message(object):
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._policy.histogram.add(time_to_ack)
         self._policy.ack(self._ack_id)
+        self.release()
+
+    def drop(self):
+        """Release the message from lease management.
+
+        This informs the policy to no longer hold on to the lease for this
+        message. Pub/Sub will re-deliver the message if it is not acknowledged
+        before the existing lease expires.
+
+        .. warning::
+            For most use cases, the only reason to drop a message from
+            lease management is on :meth:`ack` or :meth:`nack`; these methods
+            both call this one. You probably do not want to call this method
+            directly.
+        """
+        self._policy.drop(self._ack_id)
+
+    def lease(self):
+        """Inform the policy to lease this message continually.
+
+        .. note::
+            This method is called by the constructor, and you should never
+            need to call it manually.
+        """
+        self._policy.lease(self._ack_id)
 
     def modify_ack_deadline(self, seconds):
         """Set the deadline for acknowledgement to the given value.
@@ -153,3 +181,4 @@ class Message(object):
         This will cause the message to be re-delivered to the subscription.
         """
         self.modify_ack_deadline(seconds=0)
+        self.release()

@@ -36,6 +36,7 @@ class Policy(base.BasePolicy):
         self._manager = multiprocessing.Manager()
         self._shared = self._manager.Namespace()
         self._shared.subscription = subscription
+        self._shared.managed_ack_ids = self._manager.set()
         self._shared.histogram_data = self._manager.dict()
         self._shared.request_queue = self._manager.Queue()
 
@@ -51,8 +52,19 @@ class Policy(base.BasePolicy):
             self._on_callback_request,
         )
 
-        # Keep track of the GRPC connection.
-        self._process = None
+        # Spawn a process that maintains all of the leases for this policy.
+        self._lease_process = multiprocessing.Process(self.maintain_leases)
+        self._lease_process.daemon = True
+        self._lease_process.start()
+
+    @property
+    def managed_ack_ids(self):
+        """Return the ack IDs currently being managed by the policy.
+
+        Returns:
+            set: The set of ack IDs being managed.
+        """
+        return self._shared.managed_ack_ids
 
     @property
     def subscription(self):
@@ -87,6 +99,13 @@ class Policy(base.BasePolicy):
         """Map the callback request to the appropriate GRPC request."""
         action, args = callback_request[0], callback_request[1:]
         getattr(self, action)(*args)
+
+    def on_exception(self, exception):
+        """Bubble the exception.
+
+        This will cause the stream to exit loudly.
+        """
+        raise exception
 
     def on_response(self, response):
         """Process all received Pub/Sub messages.
