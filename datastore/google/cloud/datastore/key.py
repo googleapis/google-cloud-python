@@ -325,8 +325,7 @@ class Key(object):
         This is intended to work with the "legacy" representation of a
         datastore "Key" used within Google App Engine (a so-called
         "Reference"). This assumes that ``urlsafe`` was created within an App
-        Engine app via something like ``ndb.Key(...).urlsafe()``. The base64
-        encoded values will have padding removed.
+        Engine app via something like ``ndb.Key(...).urlsafe()``.
 
         :type urlsafe: bytes or unicode
         :param urlsafe: The base64 encoded (ASCII) string corresponding to a
