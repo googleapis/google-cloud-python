@@ -304,7 +304,8 @@ class Key(object):
         This is intended to work with the "legacy" representation of a
         datastore "Key" used within Google App Engine (a so-called
         "Reference"). The returned string can be used as the ``urlsafe``
-        argument to ``ndb.Key(urlsafe=...)``.
+        argument to ``ndb.Key(urlsafe=...)``. The base64 encoded values
+        will have padding removed.
 
         :rtype: bytes
         :returns: A bytestring containing the key encoded as URL-safe base64.
@@ -315,7 +316,7 @@ class Key(object):
             name_space=self.namespace,
         )
         raw_bytes = reference.SerializeToString()
-        return base64.urlsafe_b64encode(raw_bytes)
+        return base64.urlsafe_b64encode(raw_bytes).strip(b'=')
 
     @classmethod
     def from_legacy_urlsafe(cls, urlsafe):
@@ -334,6 +335,8 @@ class Key(object):
         :returns: The key corresponding to ``urlsafe``.
         """
         urlsafe = _to_bytes(urlsafe, encoding='ascii')
+        padding = b'=' * (-len(urlsafe) % 4)
+        urlsafe += padding
         raw_bytes = base64.urlsafe_b64decode(urlsafe)
 
         reference = _app_engine_key_pb2.Reference()
