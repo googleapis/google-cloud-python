@@ -334,10 +334,9 @@ class Key(object):
         :rtype: :class:`~google.cloud.datastore.key.Key`.
         :returns: The key corresponding to ``urlsafe``.
         """
+        urlsafe = _to_bytes(urlsafe, encoding='ascii')
         padding = b'=' * (-len(urlsafe) % 4)
         urlsafe += padding
-
-        urlsafe = _to_bytes(urlsafe, encoding='ascii')
         raw_bytes = base64.urlsafe_b64decode(urlsafe)
 
         reference = _app_engine_key_pb2.Reference()
