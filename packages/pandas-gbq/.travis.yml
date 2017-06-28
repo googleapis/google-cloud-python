@@ -5,8 +5,8 @@ language: python
 env:
   - PYTHON=2.7 PANDAS=0.19.2 COVERAGE='false' LINT='true'
   - PYTHON=3.5 PANDAS=0.18.1 COVERAGE='true' LINT='false'
-  - PYTHON=3.6 PANDAS=0.20.1 COVERAGE='false' LINT='true'
-  - PYTHON=3.6 PANDAS=MASTER COVERAGE='false' LINT='false'
+  - PYTHON=3.6 PANDAS=0.20.1 COVERAGE='false' LINT='false'
+  - PYTHON=3.6 PANDAS=MASTER COVERAGE='false' LINT='true'
 
 before_install:
   - echo "before_install"
@@ -19,6 +19,7 @@ install:
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda config --add channels pandas
+  - conda config --add channels conda-forge
   - conda update -q conda
   - conda info -a
   - conda create -n test-environment python=$PYTHON
@@ -31,8 +32,12 @@ install:
       conda install pandas=$PANDAS;
     fi
   - pip install coverage pytest pytest-cov flake8 codecov
-  - REQ="ci/requirements-${PYTHON}-${PANDAS}.pip"
-  - pip install -r $REQ
+  - REQ="ci/requirements-${PYTHON}-${PANDAS}"
+  - if [ -f "$REQ.pip" ]; then
+      pip install -r "$REQ.pip";
+    else
+      conda install --file "$REQ.conda";
+    fi
   - conda list
   - python setup.py install
 
