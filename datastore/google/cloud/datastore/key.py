@@ -304,7 +304,9 @@ class Key(object):
         This is intended to work with the "legacy" representation of a
         datastore "Key" used within Google App Engine (a so-called
         "Reference"). The returned string can be used as the ``urlsafe``
-        argument to ``ndb.Key(urlsafe=...)``.
+        argument to ``ndb.Key(urlsafe=...)``. Notice that the datastore's
+        version of urlsafe encoding does not have padding characters, unlike
+        the out of the box urlsafe_b64encode's generated urlsafe.
 
         :rtype: bytes
         :returns: A bytestring containing the key encoded as URL-safe base64.
@@ -315,7 +317,7 @@ class Key(object):
             name_space=self.namespace,
         )
         raw_bytes = reference.SerializeToString()
-        return base64.urlsafe_b64encode(raw_bytes)
+        return base64.urlsafe_b64encode(raw_bytes).strip("=")
 
     @classmethod
     def from_legacy_urlsafe(cls, urlsafe):
@@ -324,7 +326,10 @@ class Key(object):
         This is intended to work with the "legacy" representation of a
         datastore "Key" used within Google App Engine (a so-called
         "Reference"). This assumes that ``urlsafe`` was created within an App
-        Engine app via something like ``ndb.Key(...).urlsafe()``.
+        Engine app via something like ``ndb.Key(...).urlsafe()``. Notice that
+        the datastore's version of urlsafe encoding does not have padding
+        characters, unlike the out of the box urlsafe_b64encode's generated
+        urlsafe.
 
         :type urlsafe: bytes or unicode
         :param urlsafe: The base64 encoded (ASCII) string corresponding to a
@@ -333,6 +338,15 @@ class Key(object):
         :rtype: :class:`~google.cloud.datastore.key.Key`.
         :returns: The key corresponding to ``urlsafe``.
         """
+        if not isinstance(urlsafe, basestring):
+            raise TypeError('urlsafe must be a string; received %r' % urlsafe)
+        if isinstance(urlsafe, unicode):
+            urlsafe = urlsafe.encode('utf8')
+
+        mod = len(urlsafe) % 4
+        if mod:
+            urlsafe += '=' * (4 - mod)
+
         urlsafe = _to_bytes(urlsafe, encoding='ascii')
         raw_bytes = base64.urlsafe_b64decode(urlsafe)
 
