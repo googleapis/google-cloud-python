@@ -49,7 +49,7 @@ def system_tests(session, python_version):
 
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
-        return
+        session.skip('Credentials must be set via environment variable.')
 
     # Run the system tests against latest Python 2 and Python 3 only.
     session.interpreter = 'python{}'.format(python_version)
