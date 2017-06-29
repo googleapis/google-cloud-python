@@ -91,7 +91,7 @@ for it using our direct methods:
     ... })
     >>> len(response.annotations)
     1
-    >>> for face in resposne.annotations[0].faces:
+    >>> for face in response.annotations[0].faces:
     ...     print(face.joy)
     Likelihood.VERY_LIKELY
     Likelihood.VERY_LIKELY
@@ -103,7 +103,7 @@ No results found
 ****************
 
 If no results for the detection performed can be extracted from the image, then
-an empty list is returned. This behavior is similiar with all detection types.
+an empty list is returned. This behavior is similar with all detection types.
 
 
 Example with :meth:`~google.cloud.vision.ImageAnnotatorClient.logo_detection`:
