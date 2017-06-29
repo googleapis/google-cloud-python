@@ -10,7 +10,6 @@ jobs:
           name: Decrypt credentials
           command: |
             if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
-              apt-get update && apt-get install -y openssl
               openssl aes-256-cbc -d -a -k "$GOOGLE_CREDENTIALS_PASSPHRASE" \
                   -in /var/code/gcp/test_utils/credentials.json.enc \
                   -out "$GOOGLE_APPLICATION_CREDENTIALS"
