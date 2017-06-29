@@ -227,6 +227,7 @@ class Consumer(object):
             response_generator = self._policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
+                    print(response)
                     self._policy.on_response(response)
 
                 # If the loop above exits without an exception, then the
