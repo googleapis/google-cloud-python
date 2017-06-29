@@ -19,7 +19,7 @@ import pkg_resources
 from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
-from google.cloud.pubsub_v1.subscriber.consumer import mp
+from google.cloud.pubsub_v1.subscriber.policy import mp
 
 
 __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -38,19 +38,19 @@ class SubscriberClient(object):
         flow_control (~.pubsub_v1.types.FlowControl): The flow control
             settings. Use this to prevent situations where you are
             inundated with too many messages at once.
-        consumer_class (class): A class that describes how to handle
+        policy_class (class): A class that describes how to handle
             subscriptions. You may subclass the
-            :class:`.pubsub_v1.subscriber.consumer.base.BaseConsumer`
+            :class:`.pubsub_v1.subscriber.policy.base.BasePolicy`
             class in order to define your own consumer. This is primarily
             provided to allow use of different concurrency models; the default
             is based on :class:`multiprocessing.Process`.
-        **kwargs (dict): Any additional arguments provided are sent as keyword
+        kwargs (dict): Any additional arguments provided are sent as keyword
             keyword arguments to the underlying
             :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.
             Generally, you should not need to set additional keyword
             arguments.
     """
-    def __init__(self, flow_control=(), consumer_class=mp.Consumer,
+    def __init__(self, flow_control=(), policy_class=mp.Policy,
                  **kwargs):
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
@@ -60,7 +60,7 @@ class SubscriberClient(object):
 
         # The subcription class is responsible to retrieving and dispatching
         # messages.
-        self._consumer_class = consumer_class
+        self._policy_class = policy_class
 
     def subscribe(self, subscription, callback=None):
         """Return a representation of an individual subscription.
@@ -94,7 +94,7 @@ class SubscriberClient(object):
             ~.pubsub_v1.subscriber.consumer.base.BaseConsumer: An instance
                 of the defined ``consumer_class`` on the client.
         """
-        subscr = self._consumer_class(self, subscription)
+        subscr = self._policy_class(self, subscription)
         if callable(callback):
             subscr.open(callback)
         return subscr

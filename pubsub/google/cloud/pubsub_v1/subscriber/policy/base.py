@@ -186,7 +186,7 @@ class BasePolicy(object):
         # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
         # where there are many clients.
         time.sleep(random.uniform(0.0, p99 * 0.9))
-        self.maintain_managed_leases()
+        self.maintain_leases()
 
     def modify_ack_deadline(self, ack_id, seconds):
         """Modify the ack deadline for the given ack_id.

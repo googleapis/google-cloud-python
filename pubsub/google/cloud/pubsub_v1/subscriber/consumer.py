@@ -197,15 +197,12 @@ class Consumer(object):
         This blocks for new requests on the request queue and yields them to
         gRPC.
         """
-        # Note: gRPC will run this in a separate thread. This can and must
-        # block to keep the stream open.
-        initial_request = self._policy.on_initial_request()
-        if initial_request is not None:
-            _LOGGER.debug(
-                'Sending initial request: {}'.format(initial_request),
-            )
-            yield initial_request
+        # First, yield the initial request. This occurs on every new
+        # connection, fundamentally including a resumed connection.
+        yield self._policy.initial_request
 
+        # Now yield each of the items on the request queue, and block if there
+        # are none. This can and must block to keep the stream open.
         while True:
             request = self._request_queue.get()
             if request == helper_threads.STOP:

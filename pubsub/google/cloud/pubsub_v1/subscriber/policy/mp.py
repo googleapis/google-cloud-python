@@ -15,11 +15,23 @@
 from __future__ import absolute_import
 
 from concurrent import futures
+from multiprocessing import managers
+import logging
 import multiprocessing
 
 from google.cloud.pubsub_v1.subscriber import helper_threads
-from google.cloud.pubsub_v1.subscriber.consumer import base
+from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
+
+
+logger = logging.getLogger(__name__)
+
+
+# Allow sets to be able to be run through the managers; ensure they are
+# iterable and have add/remove.
+managers.SyncManager.register('set', set,
+    exposed=('__contains__', '__iter__', 'add', 'remove'),
+)
 
 
 class Policy(base.BasePolicy):
@@ -34,26 +46,28 @@ class Policy(base.BasePolicy):
 
         # Create a manager for keeping track of shared state.
         self._manager = multiprocessing.Manager()
-        self._shared = self._manager.Namespace()
-        self._shared.subscription = subscription
-        self._shared.managed_ack_ids = self._manager.set()
-        self._shared.histogram_data = self._manager.dict()
-        self._shared.request_queue = self._manager.Queue()
+        self._shared = self._manager.Namespace(subscription=subscription)
+        self._managed_ack_ids = self._manager.set()
+        self._request_queue = self._manager.Queue()
 
         # Call the superclass constructor.
         super(Policy, self).__init__(client, subscription,
-            histogram_data=self._shared.histogram_data,
+            histogram_data=self._manager.dict(),
         )
 
         # Also maintain a request queue and an executor.
+        logger.debug('Creating callback requests thread (not starting).')
         self._executor = futures.ProcessPoolExecutor()
         self._callback_requests = helper_threads.QueueCallbackThread(
-            self._shared.request_queue,
-            self._on_callback_request,
+            self._request_queue,
+            self.on_callback_request,
         )
 
         # Spawn a process that maintains all of the leases for this policy.
-        self._lease_process = multiprocessing.Process(self.maintain_leases)
+        logger.debug('Spawning lease process.')
+        self._lease_process = multiprocessing.Process(
+            target=self.maintain_leases,
+        )
         self._lease_process.daemon = True
         self._lease_process.start()
 
@@ -64,7 +78,7 @@ class Policy(base.BasePolicy):
         Returns:
             set: The set of ack IDs being managed.
         """
-        return self._shared.managed_ack_ids
+        return self._managed_ack_ids
 
     @property
     def subscription(self):
@@ -87,13 +101,15 @@ class Policy(base.BasePolicy):
         argument.
 
         Args:
-            callback (function): The callback function.
+            callback (Callable): The callback function.
         """
+        logger.debug('Starting callback requests worker.')
         self._callback = callback
         self._consumer.helper_threads.start('callback requests worker',
-            self._shared.request_queue,
+            self._request_queue,
             self._callback_requests,
         )
+        self._consumer.start_consuming()
 
     def on_callback_request(self, callback_request):
         """Map the callback request to the appropriate GRPC request."""
