@@ -49,7 +49,6 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.24.0, < 0.25dev',
     'google-auth >= 0.4.0',
     'six',
 ]
