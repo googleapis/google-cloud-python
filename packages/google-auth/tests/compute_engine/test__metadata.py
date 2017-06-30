@@ -24,103 +24,101 @@ from six.moves import reload_module
 from google.auth import _helpers
 from google.auth import environment_vars
 from google.auth import exceptions
+from google.auth import transport
 from google.auth.compute_engine import _metadata
 
 PATH = 'instance/service-accounts/default'
 
 
-@pytest.fixture
-def mock_request():
-    request_mock = mock.Mock()
+def make_request(data, status=http_client.OK, headers=None):
+    response = mock.create_autospec(transport.Response, instance=True)
+    response.status = status
+    response.data = _helpers.to_bytes(data)
+    response.headers = headers or {}
 
-    def set_response(data, status=http_client.OK, headers=None):
-        response = mock.Mock()
-        response.status = status
-        response.data = _helpers.to_bytes(data)
-        response.headers = headers or {}
-        request_mock.return_value = response
-        return request_mock
+    request = mock.create_autospec(transport.Request)
+    request.return_value = response
 
-    yield set_response
+    return request
 
 
-def test_ping_success(mock_request):
-    request_mock = mock_request('', headers=_metadata._METADATA_HEADERS)
+def test_ping_success():
+    request = make_request('', headers=_metadata._METADATA_HEADERS)
 
-    assert _metadata.ping(request_mock)
+    assert _metadata.ping(request)
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url=_metadata._METADATA_IP_ROOT,
         headers=_metadata._METADATA_HEADERS,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT)
 
 
-def test_ping_failure_bad_flavor(mock_request):
-    request_mock = mock_request(
+def test_ping_failure_bad_flavor():
+    request = make_request(
         '', headers={_metadata._METADATA_FLAVOR_HEADER: 'meep'})
 
-    assert not _metadata.ping(request_mock)
+    assert not _metadata.ping(request)
 
 
-def test_ping_failure_connection_failed(mock_request):
-    request_mock = mock_request('')
-    request_mock.side_effect = exceptions.TransportError()
+def test_ping_failure_connection_failed():
+    request = make_request('')
+    request.side_effect = exceptions.TransportError()
 
-    assert not _metadata.ping(request_mock)
+    assert not _metadata.ping(request)
 
 
-def test_ping_success_custom_root(mock_request):
-    request_mock = mock_request('', headers=_metadata._METADATA_HEADERS)
+def test_ping_success_custom_root():
+    request = make_request('', headers=_metadata._METADATA_HEADERS)
 
     fake_ip = '1.2.3.4'
     os.environ[environment_vars.GCE_METADATA_IP] = fake_ip
     reload_module(_metadata)
 
     try:
-        assert _metadata.ping(request_mock)
+        assert _metadata.ping(request)
     finally:
         del os.environ[environment_vars.GCE_METADATA_IP]
         reload_module(_metadata)
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url='http://' + fake_ip,
         headers=_metadata._METADATA_HEADERS,
         timeout=_metadata._METADATA_DEFAULT_TIMEOUT)
 
 
-def test_get_success_json(mock_request):
+def test_get_success_json():
     key, value = 'foo', 'bar'
 
     data = json.dumps({key: value})
-    request_mock = mock_request(
+    request = make_request(
         data, headers={'content-type': 'application/json'})
 
-    result = _metadata.get(request_mock, PATH)
+    result = _metadata.get(request, PATH)
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS)
     assert result[key] == value
 
 
-def test_get_success_text(mock_request):
+def test_get_success_text():
     data = 'foobar'
-    request_mock = mock_request(data, headers={'content-type': 'text/plain'})
+    request = make_request(data, headers={'content-type': 'text/plain'})
 
-    result = _metadata.get(request_mock, PATH)
+    result = _metadata.get(request, PATH)
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS)
     assert result == data
 
 
-def test_get_success_custom_root(mock_request):
-    request_mock = mock_request(
+def test_get_success_custom_root():
+    request = make_request(
         '{}', headers={'content-type': 'application/json'})
 
     fake_root = 'another.metadata.service'
@@ -128,55 +126,55 @@ def test_get_success_custom_root(mock_request):
     reload_module(_metadata)
 
     try:
-        _metadata.get(request_mock, PATH)
+        _metadata.get(request, PATH)
     finally:
         del os.environ[environment_vars.GCE_METADATA_ROOT]
         reload_module(_metadata)
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url='http://{}/computeMetadata/v1/{}'.format(fake_root, PATH),
         headers=_metadata._METADATA_HEADERS)
 
 
-def test_get_failure(mock_request):
-    request_mock = mock_request(
+def test_get_failure():
+    request = make_request(
         'Metadata error', status=http_client.NOT_FOUND)
 
     with pytest.raises(exceptions.TransportError) as excinfo:
-        _metadata.get(request_mock, PATH)
+        _metadata.get(request, PATH)
 
     assert excinfo.match(r'Metadata error')
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS)
 
 
-def test_get_failure_bad_json(mock_request):
-    request_mock = mock_request(
+def test_get_failure_bad_json():
+    request = make_request(
         '{', headers={'content-type': 'application/json'})
 
     with pytest.raises(exceptions.TransportError) as excinfo:
-        _metadata.get(request_mock, PATH)
+        _metadata.get(request, PATH)
 
     assert excinfo.match(r'invalid JSON')
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url=_metadata._METADATA_ROOT + PATH,
         headers=_metadata._METADATA_HEADERS)
 
 
-def test_get_project_id(mock_request):
+def test_get_project_id():
     project = 'example-project'
-    request_mock = mock_request(
+    request = make_request(
         project, headers={'content-type': 'text/plain'})
 
-    project_id = _metadata.get_project_id(request_mock)
+    project_id = _metadata.get_project_id(request)
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url=_metadata._METADATA_ROOT + 'project/project-id',
         headers=_metadata._METADATA_HEADERS)
@@ -184,15 +182,15 @@ def test_get_project_id(mock_request):
 
 
 @mock.patch('google.auth._helpers.utcnow', return_value=datetime.datetime.min)
-def test_get_service_account_token(utcnow, mock_request):
+def test_get_service_account_token(utcnow):
     ttl = 500
-    request_mock = mock_request(
+    request = make_request(
         json.dumps({'access_token': 'token', 'expires_in': ttl}),
         headers={'content-type': 'application/json'})
 
-    token, expiry = _metadata.get_service_account_token(request_mock)
+    token, expiry = _metadata.get_service_account_token(request)
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url=_metadata._METADATA_ROOT + PATH + '/token',
         headers=_metadata._METADATA_HEADERS)
@@ -200,15 +198,15 @@ def test_get_service_account_token(utcnow, mock_request):
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)
 
 
-def test_get_service_account_info(mock_request):
+def test_get_service_account_info():
     key, value = 'foo', 'bar'
-    request_mock = mock_request(
+    request = make_request(
         json.dumps({key: value}),
         headers={'content-type': 'application/json'})
 
-    info = _metadata.get_service_account_info(request_mock)
+    info = _metadata.get_service_account_info(request)
 
-    request_mock.assert_called_once_with(
+    request.assert_called_once_with(
         method='GET',
         url=_metadata._METADATA_ROOT + PATH + '/?recursive=true',
         headers=_metadata._METADATA_HEADERS)

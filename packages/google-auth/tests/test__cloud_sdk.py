@@ -40,43 +40,36 @@ with io.open(os.path.join(DATA_DIR, 'cloud_sdk_config.json'), 'rb') as fh:
     CLOUD_SDK_CONFIG_FILE_DATA = fh.read()
 
 
-@mock.patch(
-    'subprocess.check_output', autospec=True,
-    return_value=CLOUD_SDK_CONFIG_FILE_DATA)
-def test_get_project_id(check_output_mock):
-    project_id = _cloud_sdk.get_project_id()
-    assert project_id == 'example-project'
+@pytest.mark.parametrize('data, expected_project_id', [
+    (CLOUD_SDK_CONFIG_FILE_DATA, 'example-project'),
+    (b'I am some bad json', None),
+    (b'{}', None)
+])
+def test_get_project_id(data, expected_project_id):
+    check_output_patch = mock.patch(
+        'subprocess.check_output', autospec=True, return_value=data)
+
+    with check_output_patch as check_output:
+        project_id = _cloud_sdk.get_project_id()
+
+    assert project_id == expected_project_id
+    assert check_output.called
 
 
 @mock.patch(
     'subprocess.check_output', autospec=True,
     side_effect=subprocess.CalledProcessError(-1, None))
-def test_get_project_id_call_error(check_output_mock):
+def test_get_project_id_call_error(check_output):
     project_id = _cloud_sdk.get_project_id()
     assert project_id is None
-
-
-@mock.patch(
-    'subprocess.check_output', autospec=True,
-    return_value=b'I am some bad json')
-def test_get_project_id_bad_json(check_output_mock):
-    project_id = _cloud_sdk.get_project_id()
-    assert project_id is None
-
-
-@mock.patch(
-    'subprocess.check_output', autospec=True,
-    return_value=b'{}')
-def test_get_project_id_missing_value(check_output_mock):
-    project_id = _cloud_sdk.get_project_id()
-    assert project_id is None
+    assert check_output.called
 
 
 @mock.patch(
     'google.auth._cloud_sdk.get_config_path', autospec=True)
-def test_get_application_default_credentials_path(mock_get_config_dir):
+def test_get_application_default_credentials_path(get_config_dir):
     config_path = 'config_path'
-    mock_get_config_dir.return_value = config_path
+    get_config_dir.return_value = config_path
     credentials_path = _cloud_sdk.get_application_default_credentials_path()
     assert credentials_path == os.path.join(
         config_path, _cloud_sdk._CREDENTIALS_FILENAME)
@@ -91,8 +84,8 @@ def test_get_config_path_env_var(monkeypatch):
 
 
 @mock.patch('os.path.expanduser')
-def test_get_config_path_unix(mock_expanduser):
-    mock_expanduser.side_effect = lambda path: path
+def test_get_config_path_unix(expanduser):
+    expanduser.side_effect = lambda path: path
 
     config_path = _cloud_sdk.get_config_path()
 

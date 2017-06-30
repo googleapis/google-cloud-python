@@ -28,13 +28,15 @@ import google.auth.credentials
 
 
 def make_request(status, data=None):
-    response = mock.Mock(spec=transport.Response)
+    response = mock.create_autospec(transport.Response, instance=True)
     response.status = status
 
     if data is not None:
         response.data = json.dumps(data).encode('utf-8')
 
-    return mock.Mock(return_value=response, spec=transport.Request)
+    request = mock.create_autospec(transport.Request)
+    request.return_value = response
+    return request
 
 
 def make_credentials():
@@ -54,7 +56,8 @@ def make_credentials():
 class TestSigner(object):
     def test_constructor(self):
         request = mock.sentinel.request
-        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        credentials = mock.create_autospec(
+            google.auth.credentials.Credentials, instance=True)
 
         signer = iam.Signer(
             request, credentials, mock.sentinel.service_account_email)

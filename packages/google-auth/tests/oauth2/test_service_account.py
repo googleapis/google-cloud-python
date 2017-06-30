@@ -17,11 +17,11 @@ import json
 import os
 
 import mock
-import pytest
 
 from google.auth import _helpers
 from google.auth import crypt
 from google.auth import jwt
+from google.auth import transport
 from google.oauth2 import service_account
 
 
@@ -41,21 +41,17 @@ SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, 'service_account.json')
 with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
 
-
-@pytest.fixture(scope='module')
-def signer():
-    return crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, '1')
+SIGNER = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, '1')
 
 
 class TestCredentials(object):
     SERVICE_ACCOUNT_EMAIL = 'service-account@example.com'
     TOKEN_URI = 'https://example.com/oauth2/token'
-    credentials = None
 
-    @pytest.fixture(autouse=True)
-    def credentials_fixture(self, signer):
-        self.credentials = service_account.Credentials(
-            signer, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI)
+    @classmethod
+    def make_credentials(cls):
+        return service_account.Credentials(
+            SIGNER, cls.SERVICE_ACCOUNT_EMAIL, cls.TOKEN_URI)
 
     def test_from_service_account_info(self):
         credentials = service_account.Credentials.from_service_account_info(
@@ -112,96 +108,108 @@ class TestCredentials(object):
         assert credentials._additional_claims == additional_claims
 
     def test_default_state(self):
-        assert not self.credentials.valid
+        credentials = self.make_credentials()
+        assert not credentials.valid
         # Expiration hasn't been set yet
-        assert not self.credentials.expired
+        assert not credentials.expired
         # Scopes haven't been specified yet
-        assert self.credentials.requires_scopes
+        assert credentials.requires_scopes
 
     def test_sign_bytes(self):
+        credentials = self.make_credentials()
         to_sign = b'123'
-        signature = self.credentials.sign_bytes(to_sign)
+        signature = credentials.sign_bytes(to_sign)
         assert crypt.verify_signature(to_sign, signature, PUBLIC_CERT_BYTES)
 
     def test_signer(self):
-        assert isinstance(self.credentials.signer, crypt.Signer)
+        credentials = self.make_credentials()
+        assert isinstance(credentials.signer, crypt.Signer)
 
     def test_signer_email(self):
-        assert self.credentials.signer_email == self.SERVICE_ACCOUNT_EMAIL
+        credentials = self.make_credentials()
+        assert credentials.signer_email == self.SERVICE_ACCOUNT_EMAIL
 
     def test_create_scoped(self):
+        credentials = self.make_credentials()
         scopes = ['email', 'profile']
-        credentials = self.credentials.with_scopes(scopes)
+        credentials = credentials.with_scopes(scopes)
         assert credentials._scopes == scopes
 
     def test_with_claims(self):
-        new_credentials = self.credentials.with_claims({'meep': 'moop'})
+        credentials = self.make_credentials()
+        new_credentials = credentials.with_claims({'meep': 'moop'})
         assert new_credentials._additional_claims == {'meep': 'moop'}
 
     def test__make_authorization_grant_assertion(self):
-        token = self.credentials._make_authorization_grant_assertion()
+        credentials = self.make_credentials()
+        token = credentials._make_authorization_grant_assertion()
         payload = jwt.decode(token, PUBLIC_CERT_BYTES)
         assert payload['iss'] == self.SERVICE_ACCOUNT_EMAIL
         assert payload['aud'] == self.TOKEN_URI
 
     def test__make_authorization_grant_assertion_scoped(self):
+        credentials = self.make_credentials()
         scopes = ['email', 'profile']
-        credentials = self.credentials.with_scopes(scopes)
+        credentials = credentials.with_scopes(scopes)
         token = credentials._make_authorization_grant_assertion()
         payload = jwt.decode(token, PUBLIC_CERT_BYTES)
         assert payload['scope'] == 'email profile'
 
     def test__make_authorization_grant_assertion_subject(self):
+        credentials = self.make_credentials()
         subject = 'user@example.com'
-        credentials = self.credentials.with_subject(subject)
+        credentials = credentials.with_subject(subject)
         token = credentials._make_authorization_grant_assertion()
         payload = jwt.decode(token, PUBLIC_CERT_BYTES)
         assert payload['sub'] == subject
 
     @mock.patch('google.oauth2._client.jwt_grant', autospec=True)
-    def test_refresh_success(self, jwt_grant_mock):
+    def test_refresh_success(self, jwt_grant):
+        credentials = self.make_credentials()
         token = 'token'
-        jwt_grant_mock.return_value = (
+        jwt_grant.return_value = (
             token,
             _helpers.utcnow() + datetime.timedelta(seconds=500),
             {})
-        request_mock = mock.Mock()
+        request = mock.create_autospec(transport.Request, instance=True)
 
         # Refresh credentials
-        self.credentials.refresh(request_mock)
+        credentials.refresh(request)
 
         # Check jwt grant call.
-        assert jwt_grant_mock.called
-        request, token_uri, assertion = jwt_grant_mock.call_args[0]
-        assert request == request_mock
-        assert token_uri == self.credentials._token_uri
+        assert jwt_grant.called
+
+        called_request, token_uri, assertion = jwt_grant.call_args[0]
+        assert called_request == request
+        assert token_uri == credentials._token_uri
         assert jwt.decode(assertion, PUBLIC_CERT_BYTES)
         # No further assertion done on the token, as there are separate tests
         # for checking the authorization grant assertion.
 
         # Check that the credentials have the token.
-        assert self.credentials.token == token
+        assert credentials.token == token
 
         # Check that the credentials are valid (have a token and are not
         # expired)
-        assert self.credentials.valid
+        assert credentials.valid
 
     @mock.patch('google.oauth2._client.jwt_grant', autospec=True)
-    def test_before_request_refreshes(self, jwt_grant_mock):
+    def test_before_request_refreshes(self, jwt_grant):
+        credentials = self.make_credentials()
         token = 'token'
-        jwt_grant_mock.return_value = (
+        jwt_grant.return_value = (
             token, _helpers.utcnow() + datetime.timedelta(seconds=500), None)
-        request_mock = mock.Mock()
+        request = mock.create_autospec(transport.Request, instance=True)
 
         # Credentials should start as invalid
-        assert not self.credentials.valid
+        assert not credentials.valid
 
         # before_request should cause a refresh
-        self.credentials.before_request(
-            request_mock, 'GET', 'http://example.com?a=1#3', {})
+        credentials.before_request(
+            request, 'GET', 'http://example.com?a=1#3', {})
 
         # The refresh endpoint should've been called.
-        assert jwt_grant_mock.called
+        assert jwt_grant.called
 
         # Credentials should now be valid.
-        assert self.credentials.valid
+        assert credentials.valid

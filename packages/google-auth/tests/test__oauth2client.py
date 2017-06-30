@@ -112,16 +112,16 @@ def test__convert_appengine_app_assertion_credentials(
             old_credentials.service_account_id)
 
 
-class MockCredentials(object):
+class FakeCredentials(object):
     pass
 
 
 def test_convert_success():
-    convert_function = mock.Mock()
+    convert_function = mock.Mock(spec=['__call__'])
     conversion_map_patch = mock.patch.object(
         _oauth2client, '_CLASS_CONVERSION_MAP',
-        {MockCredentials: convert_function})
-    credentials = MockCredentials()
+        {FakeCredentials: convert_function})
+    credentials = FakeCredentials()
 
     with conversion_map_patch:
         result = _oauth2client.convert(credentials)

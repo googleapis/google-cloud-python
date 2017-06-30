@@ -19,7 +19,11 @@ import pytest
 
 from google.auth import _helpers
 from google.auth import credentials
+from google.auth import transport
+
 try:
+    # pylint: disable=ungrouped-imports
+    import grpc
     import google.auth.transport.grpc
     HAS_GRPC = True
 except ImportError:  # pragma: NO COVER
@@ -29,9 +33,9 @@ except ImportError:  # pragma: NO COVER
 pytestmark = pytest.mark.skipif(not HAS_GRPC, reason='gRPC is unavailable.')
 
 
-class MockCredentials(credentials.Credentials):
+class CredentialsStub(credentials.Credentials):
     def __init__(self, token='token'):
-        super(MockCredentials, self).__init__()
+        super(CredentialsStub, self).__init__()
         self.token = token
         self.expiry = None
 
@@ -41,36 +45,40 @@ class MockCredentials(credentials.Credentials):
 
 class TestAuthMetadataPlugin(object):
     def test_call_no_refresh(self):
-        credentials = MockCredentials()
-        request = mock.Mock()
+        credentials = CredentialsStub()
+        request = mock.create_autospec(transport.Request)
 
         plugin = google.auth.transport.grpc.AuthMetadataPlugin(
             credentials, request)
 
-        context = mock.Mock()
-        callback = mock.Mock()
+        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        context.method_name = mock.sentinel.method_name
+        context.service_url = mock.sentinel.service_url
+        callback = mock.create_autospec(grpc.AuthMetadataPluginCallback)
 
         plugin(context, callback)
 
-        assert callback.called_once_with(
-            [('authorization', 'Bearer {}'.format(credentials.token))], None)
+        callback.assert_called_once_with(
+            [(u'authorization', u'Bearer {}'.format(credentials.token))], None)
 
     def test_call_refresh(self):
-        credentials = MockCredentials()
+        credentials = CredentialsStub()
         credentials.expiry = datetime.datetime.min + _helpers.CLOCK_SKEW
-        request = mock.Mock()
+        request = mock.create_autospec(transport.Request)
 
         plugin = google.auth.transport.grpc.AuthMetadataPlugin(
             credentials, request)
 
-        context = mock.Mock()
-        callback = mock.Mock()
+        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        context.method_name = mock.sentinel.method_name
+        context.service_url = mock.sentinel.service_url
+        callback = mock.create_autospec(grpc.AuthMetadataPluginCallback)
 
         plugin(context, callback)
 
         assert credentials.token == 'token1'
-        assert callback.called_once_with(
-            [('authorization', 'Bearer {}'.format(credentials.token))], None)
+        callback.assert_called_once_with(
+            [(u'authorization', u'Bearer {}'.format(credentials.token))], None)
 
 
 @mock.patch('grpc.composite_channel_credentials', autospec=True)
@@ -80,8 +88,8 @@ class TestAuthMetadataPlugin(object):
 def test_secure_authorized_channel(
         secure_channel, ssl_channel_credentials, metadata_call_credentials,
         composite_channel_credentials):
-    credentials = mock.Mock()
-    request = mock.Mock()
+    credentials = CredentialsStub()
+    request = mock.create_autospec(transport.Request)
     target = 'example.com:80'
 
     channel = google.auth.transport.grpc.secure_authorized_channel(

@@ -22,6 +22,7 @@ from six.moves import http_client
 from six.moves import urllib
 
 from google.auth import exceptions
+from google.auth import transport
 from google.oauth2 import _client
 
 
@@ -46,7 +47,7 @@ def test__handle_error_response_non_json():
 
 
 @mock.patch('google.auth._helpers.utcnow', return_value=datetime.datetime.min)
-def test__parse_expiry(now_mock):
+def test__parse_expiry(unused_utcnow):
     result = _client._parse_expiry({'expires_in': 500})
     assert result == datetime.datetime.min + datetime.timedelta(seconds=500)
 
@@ -55,15 +56,17 @@ def test__parse_expiry_none():
     assert _client._parse_expiry({}) is None
 
 
-def _make_request(response_data):
-    response = mock.Mock()
-    response.status = http_client.OK
+def make_request(response_data, status=http_client.OK):
+    response = mock.create_autospec(transport.Response, instance=True)
+    response.status = status
     response.data = json.dumps(response_data).encode('utf-8')
-    return mock.Mock(return_value=response)
+    request = mock.create_autospec(transport.Request)
+    request.return_value = response
+    return request
 
 
 def test__token_endpoint_request():
-    request = _make_request({'test': 'response'})
+    request = make_request({'test': 'response'})
 
     result = _client._token_endpoint_request(
         request, 'http://example.com', {'test': 'params'})
@@ -80,16 +83,13 @@ def test__token_endpoint_request():
 
 
 def test__token_endpoint_request_error():
-    response = mock.Mock()
-    response.status = http_client.BAD_REQUEST
-    response.data = b'Error'
-    request = mock.Mock(return_value=response)
+    request = make_request({}, status=http_client.BAD_REQUEST)
 
     with pytest.raises(exceptions.RefreshError):
         _client._token_endpoint_request(request, 'http://example.com', {})
 
 
-def _verify_request_params(request, params):
+def verify_request_params(request, params):
     request_body = request.call_args[1]['body']
     request_params = urllib.parse.parse_qs(request_body)
 
@@ -98,8 +98,8 @@ def _verify_request_params(request, params):
 
 
 @mock.patch('google.auth._helpers.utcnow', return_value=datetime.datetime.min)
-def test_jwt_grant(now_mock):
-    request = _make_request({
+def test_jwt_grant(utcnow):
+    request = make_request({
         'access_token': 'token',
         'expires_in': 500,
         'extra': 'data'})
@@ -108,19 +108,19 @@ def test_jwt_grant(now_mock):
         request, 'http://example.com', 'assertion_value')
 
     # Check request call
-    _verify_request_params(request, {
+    verify_request_params(request, {
         'grant_type': _client._JWT_GRANT_TYPE,
         'assertion': 'assertion_value'
     })
 
     # Check result
     assert token == 'token'
-    assert expiry == datetime.datetime.min + datetime.timedelta(seconds=500)
+    assert expiry == utcnow() + datetime.timedelta(seconds=500)
     assert extra_data['extra'] == 'data'
 
 
 def test_jwt_grant_no_access_token():
-    request = _make_request({
+    request = make_request({
         # No access token.
         'expires_in': 500,
         'extra': 'data'})
@@ -130,8 +130,8 @@ def test_jwt_grant_no_access_token():
 
 
 @mock.patch('google.auth._helpers.utcnow', return_value=datetime.datetime.min)
-def test_refresh_grant(now_mock):
-    request = _make_request({
+def test_refresh_grant(unused_utcnow):
+    request = make_request({
         'access_token': 'token',
         'refresh_token': 'new_refresh_token',
         'expires_in': 500,
@@ -142,7 +142,7 @@ def test_refresh_grant(now_mock):
         'client_secret')
 
     # Check request call
-    _verify_request_params(request, {
+    verify_request_params(request, {
         'grant_type': _client._REFRESH_GRANT_TYPE,
         'refresh_token': 'refresh_token',
         'client_id': 'client_id',
@@ -157,7 +157,7 @@ def test_refresh_grant(now_mock):
 
 
 def test_refresh_grant_no_access_token():
-    request = _make_request({
+    request = make_request({
         # No access token.
         'refresh_token': 'new_refresh_token',
         'expires_in': 500,

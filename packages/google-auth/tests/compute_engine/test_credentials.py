@@ -19,6 +19,7 @@ import pytest
 
 from google.auth import _helpers
 from google.auth import exceptions
+from google.auth import transport
 from google.auth.compute_engine import credentials
 
 
@@ -41,9 +42,9 @@ class TestCredentials(object):
     @mock.patch(
         'google.auth._helpers.utcnow',
         return_value=datetime.datetime.min + _helpers.CLOCK_SKEW)
-    @mock.patch('google.auth.compute_engine._metadata.get')
-    def test_refresh_success(self, get_mock, now_mock):
-        get_mock.side_effect = [{
+    @mock.patch('google.auth.compute_engine._metadata.get', autospec=True)
+    def test_refresh_success(self, get, utcnow):
+        get.side_effect = [{
             # First request is for sevice account info.
             'email': 'service-account@example.com',
             'scopes': ['one', 'two']
@@ -59,7 +60,7 @@ class TestCredentials(object):
         # Check that the credentials have the token and proper expiration
         assert self.credentials.token == 'token'
         assert self.credentials.expiry == (
-            now_mock() + datetime.timedelta(seconds=500))
+            utcnow() + datetime.timedelta(seconds=500))
 
         # Check the credential info
         assert (self.credentials.service_account_email ==
@@ -71,8 +72,8 @@ class TestCredentials(object):
         assert self.credentials.valid
 
     @mock.patch('google.auth.compute_engine._metadata.get', autospec=True)
-    def test_refresh_error(self, get_mock):
-        get_mock.side_effect = exceptions.TransportError('http error')
+    def test_refresh_error(self, get):
+        get.side_effect = exceptions.TransportError('http error')
 
         with pytest.raises(exceptions.RefreshError) as excinfo:
             self.credentials.refresh(None)
@@ -80,8 +81,8 @@ class TestCredentials(object):
         assert excinfo.match(r'http error')
 
     @mock.patch('google.auth.compute_engine._metadata.get', autospec=True)
-    def test_before_request_refreshes(self, get_mock):
-        get_mock.side_effect = [{
+    def test_before_request_refreshes(self, get):
+        get.side_effect = [{
             # First request is for sevice account info.
             'email': 'service-account@example.com',
             'scopes': 'one two'
@@ -95,11 +96,12 @@ class TestCredentials(object):
         assert not self.credentials.valid
 
         # before_request should cause a refresh
+        request = mock.create_autospec(transport.Request, instance=True)
         self.credentials.before_request(
-            mock.Mock(), 'GET', 'http://example.com?a=1#3', {})
+            request, 'GET', 'http://example.com?a=1#3', {})
 
         # The refresh endpoint should've been called.
-        assert get_mock.called
+        assert get.called
 
         # Credentials should now be valid.
         assert self.credentials.valid
