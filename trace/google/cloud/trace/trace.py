@@ -53,6 +53,7 @@ class Trace(object):
             trace_id = generate_trace_id()
 
         self.trace_id = trace_id
+        self.spans = []
 
     def __enter__(self):
         self.start()
