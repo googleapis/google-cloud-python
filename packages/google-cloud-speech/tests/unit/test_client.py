@@ -135,7 +135,7 @@ class TestClient(unittest.TestCase):
                 'encoding': 'FLAC',
                 'maxAlternatives': 2,
                 'sampleRateHertz': 16000,
-                'speechContext': {
+                'speechContexts': {
                     'phrases': [
                         'hi',
                     ]
