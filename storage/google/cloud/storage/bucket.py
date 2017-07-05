@@ -1016,7 +1016,8 @@ class Bucket(_PropertyMixin):
 
         if not isinstance(credentials, google.auth.credentials.Signing):
             auth_uri = ('http://google-cloud-python.readthedocs.io/en/latest/'
-                        'google-cloud-auth.html#setting-up-a-service-account')
+                        'core/auth.html?highlight=authentication#setting-up-'
+                        'a-service-account')
             raise AttributeError(
                 'you need a private key to sign credentials.'
                 'the credentials you are currently using %s '
