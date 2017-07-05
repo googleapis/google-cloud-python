@@ -39,8 +39,7 @@ class ContextTracer(object):
         :rtype: :class:`~google.cloud.trace.trace.Trace`
         :returns: The Trace object.
         """
-        trace = Trace(client=self.client, trace_id=self.trace_id)
-        return trace
+        return Trace(client=self.client, trace_id=self.trace_id)
 
     def start_trace(self):
         """Start a trace."""
