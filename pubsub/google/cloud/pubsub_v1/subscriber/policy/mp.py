@@ -19,6 +19,8 @@ from multiprocessing import managers
 import logging
 import multiprocessing
 
+import grpc
+
 from google.cloud.pubsub_v1.subscriber import helper_threads
 from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
@@ -121,6 +123,13 @@ class Policy(base.BasePolicy):
 
         This will cause the stream to exit loudly.
         """
+        # If this is DEADLINE_EXCEEDED, then we want to retry.
+        # That entails just returning None.
+        deadline_exceeded = grpc.StatusCode.DEADLINE_EXCEEDED
+        if getattr(exception, 'code', lambda: None)() == deadline_exceeded:
+            return
+
+        # Raise any other exception.
         raise exception
 
     def on_response(self, response):

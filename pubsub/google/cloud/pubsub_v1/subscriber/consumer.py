@@ -227,7 +227,6 @@ class Consumer(object):
             response_generator = self._policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
-                    print(response)
                     self._policy.on_response(response)
 
                 # If the loop above exits without an exception, then the
@@ -236,7 +235,8 @@ class Consumer(object):
                 # case, break out of the while loop and exit this thread.
                 _LOGGER.debug('Clean RPC loop exit signalled consumer exit.')
                 break
-
+            except KeyboardInterrupt:
+                self.stop_consuming()
             except Exception as e:
                 self._policy.on_exception(e)
 
