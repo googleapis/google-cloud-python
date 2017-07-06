@@ -139,6 +139,52 @@ request.  If you have uncommitted changes, you will need to ``stash`` them prior
 to updating.  This will effectively store your changes and they can be reapplied
 after updating.
 
+Install in Development Mode
+---------------------------
+
+It's helpful to install pandas-gbq in development mode so that you can
+use the library without reinstalling the package after every change.
+
+Conda
+~~~~~
+
+Create a new conda environment and install the necessary dependencies
+
+.. code-block:: shell
+
+   $ conda create -n my-env --channel conda-forge  \
+         pandas \
+         google-auth-oauthlib \
+         google-api-python-client \
+         google-auth-httplib2
+   $ source activate my-env
+
+Install pandas-gbq in development mode
+
+.. code-block:: shell
+
+    $ python setup.py develop
+
+Pip & virtualenv
+~~~~~~~~~~~~~~~~
+
+*Skip this section if you already followed the conda instructions.*
+
+Create a new `virtual
+environment <https://virtualenv.pypa.io/en/stable/userguide/>`__.
+
+.. code-block:: shell
+
+    $ virtualenv env
+    $ source env/bin/activate
+
+You can install pandas-gbq and its dependencies in `development mode via
+pip <https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs>`__.
+
+.. code-block:: shell
+
+    $ pip install -e .
+
 Contributing to the code base
 =============================
 
