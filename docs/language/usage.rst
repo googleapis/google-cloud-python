@@ -1,14 +1,6 @@
 Natural Language
 ================
 
-.. toctree::
-  :maxdepth: 2
-  :hidden:
-
-  client
-  document
-  responses
-
 The `Google Natural Language`_ API can be used to reveal the
 structure and meaning of text via powerful machine
 learning models. You can use it to extract information about
@@ -21,40 +13,43 @@ with your document storage on Google Cloud Storage.
 
 .. _Google Natural Language: https://cloud.google.com/natural-language/docs/getting-started
 
-Client
-------
 
-:class:`~google.cloud.language.client.Client` objects provide a
-means to configure your application. Each instance holds
-an authenticated connection to the Natural Language service.
+********************************
+Authentication and Configuration
+********************************
 
-For an overview of authentication in ``google-cloud-python``, see
-:doc:`/core/auth`.
+- For an overview of authentication in ``google-cloud-python``,
+  see :doc:`/core/auth`.
 
-Assuming your environment is set up as described in that document,
-create an instance of :class:`~google.cloud.language.client.Client`.
+- In addition to any authentication configuration, you should also set the
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd
+  like to interact with. If the :envvar:`GOOGLE_CLOUD_PROJECT` environment
+  variable is not present, the project ID from JSON file credentials is used.
 
-  .. code-block:: python
+  If you are using Google App Engine or Google Compute Engine
+  this will be detected automatically.
+
+- After configuring your environment, create a
+  :class:`~google.cloud.language_v1.LanguageServiceClient`.
+
+.. code-block:: python
 
      >>> from google.cloud import language
-     >>> client = language.Client()
+     >>> client = language.LanguageServiceClient()
 
-By default the ``language`` is ``'en-US'`` and the ``encoding`` is
-UTF-8. To over-ride these values:
+or pass in ``credentials`` explicitly.
 
-  .. code-block:: python
+.. code-block:: python
 
-     >>> document = client.document_from_text(
-     ...     text_content, language='es', encoding=language.Encoding.UTF16)
+     >>> from google.cloud import language
+     >>> client = language.LanguageServiceClient(
+     ...     credentials=creds,
+     ... )
 
 
-The encoding can be one of
-:attr:`Encoding.UTF8 <google.cloud.language.document.Encoding.UTF8>`,
-:attr:`Encoding.UTF16 <google.cloud.language.document.Encoding.UTF16>`, or
-:attr:`Encoding.UTF32 <google.cloud.language.document.Encoding.UTF32>`.
-
-Methods
--------
+*********
+Documents
+*********
 
 The Google Natural Language API has three supported methods
 
@@ -62,109 +57,90 @@ The Google Natural Language API has three supported methods
 - `analyzeSentiment`_
 - `annotateText`_
 
-and each method uses a `Document`_ for representing text. To
-create a :class:`~google.cloud.language.document.Document`,
+and each method uses a :class:`~.language_v1.types.Document` for representing
+text.
 
   .. code-block:: python
 
-     >>> text_content = (
-     ...     'Google, headquartered in Mountain View, unveiled the '
-     ...     'new Android phone at the Consumer Electronic Show.  '
-     ...     'Sundar Pichai said in his keynote that users love '
-     ...     'their new Android phones.')
-     >>> document = client.document_from_text(text_content)
+      >>> document = language.types.Document(
+      ...     content='Google, headquartered in Mountain View, unveiled the '
+      ...             'new Android phone at the Consumer Electronic Show.  '
+      ...             'Sundar Pichai said in his keynote that users love '
+      ...             'their new Android phones.',
+      ...     language='en',
+      ...     type='PLAIN_TEXT',
+      ... )
 
-By using :meth:`~google.cloud.language.client.Client.document_from_text`,
-the document's type is plain text:
-
-  .. code-block:: python
-
-     >>> document.doc_type == language.Document.PLAIN_TEXT
-     True
 
 The document's language defaults to ``None``, which will cause the API to
 auto-detect the language.
 
-In addition, the
-:meth:`~google.cloud.language.client.Client.document_from_html`,
-factory can be used to created an HTML document. In this
-method and the from text method, the language can be
-over-ridden:
+In addition, you can construct an HTML document:
 
   .. code-block:: python
 
-     >>> html_content = """\
-     ... <html>
-     ...   <head>
-     ...     <title>El Tiempo de las Historias</time>
-     ...   </head>
-     ...   <body>
-     ...     <p>La vaca salt&oacute; sobre la luna.</p>
-     ...   </body>
-     ... </html>
-     ... """
-     >>> document = client.document_from_html(html_content,
-     ...                                      language='es')
+      >>> html_content = """\
+      ... <html>
+      ...   <head>
+      ...     <title>El Tiempo de las Historias</time>
+      ...   </head>
+      ...   <body>
+      ...     <p>La vaca salt&oacute; sobre la luna.</p>
+      ...   </body>
+      ... </html>
+      ... """
+      >>> document = language.types.Document(
+      ...     content=html_content,
+      ...     language='es',
+      ...     type='HTML',
+      ... )
 
 The ``language`` argument can be either ISO-639-1 or BCP-47 language
-codes; at the time, only English, Spanish, and Japanese `are supported`_.
-However, the ``analyzeSentiment`` method `only supports`_ English text.
+codes. The API reference page contains the full list of `supported languages`_.
 
-.. _are supported: https://cloud.google.com/natural-language/docs/
-.. _only supports: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment#body.request_body.FIELDS.document
+.. _supported languages: https://cloud.google.com/natural-language/docs/languages
 
-The document type (``doc_type``) value can be one of
-:attr:`Document.PLAIN_TEXT <google.cloud.language.document.Document.PLAIN_TEXT>` or
-:attr:`Document.HTML <google.cloud.language.document.Document.HTML>`.
 
 In addition to supplying the text / HTML content, a document can refer
-to content stored in `Google Cloud Storage`_. We can use the
-:meth:`~google.cloud.language.client.Client.document_from_url` method:
+to content stored in `Google Cloud Storage`_.
 
   .. code-block:: python
 
-     >>> gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
-     >>> document = client.document_from_url(
-     ...     gcs_url, doc_type=language.Document.HTML)
-     >>> document.gcs_url == gcs_url
-     True
-     >>> document.doc_type == language.Document.PLAIN_TEXT
-     True
-
-The document type can be specified with the ``doc_type`` argument:
-
-  .. code-block:: python
-
-     >>> document = client.document_from_url(
-     ...     gcs_url, doc_type=language.Document.HTML)
+     >>> document = language.types.Document(
+     ...     gcs_content_uri='gs://my-text-bucket/sentiment-me.txt',
+     ...     type=language.enums.HTML,
+     ... )
 
 .. _analyzeEntities: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeEntities
 .. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment
 .. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText
-.. _Document: https://cloud.google.com/natural-language/reference/rest/v1beta1/Document
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
+****************
 Analyze Entities
-----------------
+****************
 
-The :meth:`~google.cloud.language.document.Document.analyze_entities` method
-finds named entities (i.e. proper names) in the text and returns them
-as a :class:`list` of :class:`~google.cloud.language.entity.Entity` objects.
-Each entity has a corresponding type, salience (prominence), associated
-metadata and other properties.
+The :meth:`~.language_v1.LanguageServiceClient.analyze_entities`
+method finds named entities (i.e. proper names) in the text. This method
+returns a :class:`~.language_v1.types.AnalyzeEntitiesResponse`.
 
   .. code-block:: python
 
-     >>> text_content = ("Michelangelo Caravaggio, Italian painter, is "
-     ...                 "known for 'The Calling of Saint Matthew'.")
-     >>> document = client.document_from_text(text_content)
-     >>> entity_response = document.analyze_entities()
-     >>> for entity in entity_response.entities:
+     >>> document = language.types.Document(
+     ...     content='Michelangelo Caravaggio, Italian painter, is '
+     ...             'known for "The Calling of Saint Matthew".',
+     ...     type=language.enums.Type.PLAIN_TEXT,
+     ... )
+     >>> response = client.analyze_entities(
+     ...     document=document,
+     ...     encoding_type='UTF32',
+     ... )
+     >>> for entity in response.entities:
      ...     print('=' * 20)
-     ...     print('         name: %s' % (entity.name,))
-     ...     print('         type: %s' % (entity.entity_type,))
-     ...     print('     metadata: %s' % (entity.metadata,))
-     ...     print('     salience: %s' % (entity.salience,))
+     ...     print('         name: {0}'.format(entity.name))
+     ...     print('         type: {0}'.format(entity.entity_type))
+     ...     print('     metadata: {0}'.format(entity.metadata))
+     ...     print('     salience: {0}'.format(entity.salience))
      ====================
               name: Michelangelo Caravaggio
               type: PERSON
@@ -181,90 +157,84 @@ metadata and other properties.
           metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Caravaggio'}
           salience: 0.038798928
 
-Analyze Sentiment
------------------
+.. note::
 
-The :meth:`~google.cloud.language.document.Document.analyze_sentiment` method
-analyzes the sentiment of the provided text and returns a
-:class:`~google.cloud.language.sentiment.Sentiment`. Currently, this method
-only supports English text.
+  It is recommended to send an ``encoding_type`` argument to Natural
+  Language methods, so they provide useful offsets for the data they return.
+  While the correct value varies by environment, in Python you *usually*
+  want ``UTF32``.
+
+
+*****************
+Analyze Sentiment
+*****************
+
+The :meth:`~.language_v1.LanguageServiceClient.analyze_sentiment` method
+analyzes the sentiment of the provided text. This method returns a
+:class:`~.language_v1.types.AnalyzeSentimentResponse`.
 
   .. code-block:: python
 
-     >>> text_content = "Jogging isn't very fun."
-     >>> document = client.document_from_text(text_content)
-     >>> sentiment_response = document.analyze_sentiment()
-     >>> sentiment = sentiment_response.sentiment
+     >>> document = language.types.Document(
+     ...     content='Jogging is not very fun.',
+     ...     type='PLAIN_TEXT',
+     ... )
+     >>> response = client.analyze_sentiment(
+     ...     document=document,
+     ...     encoding_type='UTF32',
+     ... )
+     >>> sentiment = response.document_sentiment
      >>> print(sentiment.score)
      -1
      >>> print(sentiment.magnitude)
      0.8
 
+.. note::
+
+  It is recommended to send an ``encoding_type`` argument to Natural
+  Language methods, so they provide useful offsets for the data they return.
+  While the correct value varies by environment, in Python you *usually*
+  want ``UTF32``.
+
+
+*************
 Annotate Text
--------------
+*************
 
-The :meth:`~google.cloud.language.document.Document.annotate_text` method
+The :meth:`~.language_v1.LanguageServiceClient.annotate_text` method
 analyzes a document and is intended for users who are familiar with
-machine learning and need in-depth text features to build upon.
+machine learning and need in-depth text features to build upon. This method
+returns a :class:`~.language_v1.types.AnnotateTextResponse`.
 
-The method returns a named tuple with four entries:
 
-* ``sentences``: A :class:`list` of sentences in the text
-* ``tokens``: A :class:`list` of :class:`~google.cloud.language.syntax.Token`
-  object (e.g. words, punctuation)
-* ``sentiment``: The :class:`~google.cloud.language.sentiment.Sentiment` of
-  the text (as returned by
-  :meth:`~google.cloud.language.document.Document.analyze_sentiment`)
-* ``entities``: :class:`list` of :class:`~google.cloud.language.entity.Entity`
-  objects extracted from the text (as returned by
-  :meth:`~google.cloud.language.document.Document.analyze_entities`)
+*************
+API Reference
+*************
 
-By default :meth:`~google.cloud.language.document.Document.annotate_text` has
-three arguments ``include_syntax``, ``include_entities`` and
-``include_sentiment`` which are all :data:`True`. However, each of these
-`Features`_ can be selectively turned off by setting the corresponding
-arguments to :data:`False`.
+This package includes clients for multiple versions of the Natural Language
+API. By default, you will get ``v1``, the latest GA version.
 
-When ``include_syntax=False``, ``sentences`` and ``tokens`` in the
-response is :data:`None`. When ``include_sentiment=False``, ``sentiment`` in
-the response is :data:`None`. When ``include_entities=False``, ``entities`` in
-the response is :data:`None`.
+.. toctree::
+  :maxdepth: 2
 
-  .. code-block:: python
+  gapic/v1/api
+  gapic/v1/types
 
-     >>> text_content = 'The cow jumped over the Moon.'
-     >>> document = client.document_from_text(text_content)
-     >>> annotations = document.annotate_text()
-     >>> # Sentences present if include_syntax=True
-     >>> print(annotations.sentences)
-     ['The cow jumped over the Moon.']
-     >>> # Tokens present if include_syntax=True
-     >>> for token in annotations.tokens:
-     ...     msg = '%11s: %s' % (token.part_of_speech, token.text_content)
-     ...     print(msg)
-      DETERMINER: The
-            NOUN: cow
-            VERB: jumped
-      ADPOSITION: over
-      DETERMINER: the
-            NOUN: Moon
-     PUNCTUATION: .
-     >>> # Sentiment present if include_sentiment=True
-     >>> print(annotations.sentiment.score)
-     1
-     >>> print(annotations.sentiment.magnitude)
-     0.1
-     >>> # Entities present if include_entities=True
-     >>> for entity in annotations.entities:
-     ...     print('=' * 20)
-     ...     print('         name: %s' % (entity.name,))
-     ...     print('         type: %s' % (entity.entity_type,))
-     ...     print('     metadata: %s' % (entity.metadata,))
-     ...     print('     salience: %s' % (entity.salience,))
-     ====================
-              name: Moon
-              type: LOCATION
-          metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Natural_satellite'}
-          salience: 0.11793101
+If you are interested in beta features ahead of the latest GA, you may
+opt-in to the v1.1 beta, which is spelled ``v1beta2``. In order to do this,
+you will want to import from ``google.cloud.language_v1beta2`` in lieu of
+``google.cloud.language``.
 
-.. _Features: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText#Features
+An API and type reference is provided for the v1.1 beta also:
+
+.. toctree::
+  :maxdepth: 2
+
+  gapic/v1beta2/api
+  gapic/v1beta2/types
+
+.. note::
+
+  The client for the beta API is provided on a provisional basis. The API
+  surface is subject to change, and it is possible that this client will be
+  deprecated or removed after its features become GA.
