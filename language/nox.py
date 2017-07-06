@@ -30,6 +30,9 @@ def unit_tests(session, python_version):
     # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
 
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-' + python_version
+
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
     session.install('-e', '.')
@@ -53,6 +56,9 @@ def system_tests(session, python_version):
 
     # Run the system tests against latest Python 2 and Python 3 only.
     session.interpreter = 'python{}'.format(python_version)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'sys-' + python_version
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
@@ -88,6 +94,10 @@ def lint(session):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'setup'
+
     session.install('docutils', 'Pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
