@@ -30,6 +30,9 @@ def unit_tests(session, python_version):
     # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
 
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-' + python_version
+
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
     session.install('-e', '.')
@@ -54,6 +57,9 @@ def system_tests(session, python_version):
     # Run the system tests against latest Python 2 and Python 3 only.
     session.interpreter = 'python{}'.format(python_version)
 
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'sys-' + python_version
+
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
     session.install('mock', 'pytest', *LOCAL_DEPS)
@@ -72,6 +78,7 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
+
     session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google/cloud/bigquery')
@@ -89,6 +96,10 @@ def lint(session):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'setup'
+
     session.install('docutils', 'Pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
@@ -102,6 +113,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.interpreter = 'python3.6'
+
     session.install('coverage', 'pytest-cov')
     session.run('coverage', 'report', '--show-missing', '--fail-under=100')
     session.run('coverage', 'erase')
