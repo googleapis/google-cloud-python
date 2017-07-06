@@ -22,10 +22,20 @@ try:
 except ImportError:  # pragma: NO COVER
     flask = None
 
+try:
+    import webapp2
+except (ImportError, SyntaxError):  # pragma: NO COVER
+    # If you try to import webapp2 under python3, you'll get a syntax
+    # error (since it hasn't been ported yet).  We just pretend it
+    # doesn't exist.  This is unlikely to hit in real life but does
+    # in the tests.
+    webapp2 = None
+
 from google.cloud.logging.handlers.middleware.request import (
     _get_django_request)
 
 _FLASK_TRACE_HEADER = 'X_CLOUD_TRACE_CONTEXT'
+_WEBAPP2_TRACE_HEADER = 'x-cloud-trace-context'
 _DJANGO_TRACE_HEADER = 'HTTP_X_CLOUD_TRACE_CONTEXT'
 
 
@@ -69,6 +79,33 @@ def get_trace_id_from_flask():
     return trace_id
 
 
+def get_trace_id_from_webapp2():
+    """Get trace_id from webapp2 request headers.
+
+    :rtype: str
+    :return: Trace_id in HTTP request headers.
+    """
+    if webapp2 is None:
+        return None
+
+    try:
+        # get_request() succeeds if we're in the middle of a webapp2
+        # request, or raises an assertion error otherwise:
+        # "Request global variable is not set".
+        req = webapp2.get_request()
+    except AssertionError:
+        return None
+
+    header = req.headers.get(_WEBAPP2_TRACE_HEADER)
+
+    if header is None:
+        return None
+
+    trace_id = header.split('/', 1)[0]
+
+    return trace_id
+
+
 def get_trace_id_from_django():
     """Get trace_id from django request headers.
 
@@ -95,7 +132,8 @@ def get_trace_id():
     :rtype: str
     :returns: Trace_id in HTTP request headers.
     """
-    checkers = (get_trace_id_from_django, get_trace_id_from_flask)
+    checkers = (get_trace_id_from_django, get_trace_id_from_flask,
+                get_trace_id_from_webapp2)
 
     for checker in checkers:
         trace_id = checker()

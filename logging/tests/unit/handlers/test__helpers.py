@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 import unittest
 
 import mock
@@ -61,6 +62,57 @@ class Test_get_trace_id_from_flask(unittest.TestCase):
             trace_id = self._call_fut()
 
         self.assertEqual(trace_id, expected_trace_id)
+
+
+# webapp2 has not been ported to python3 yet, so do not try to test its
+# functionality there.
+if sys.version_info[0] == 2:
+    class Test_get_trace_id_from_webapp2(unittest.TestCase):
+
+        @staticmethod
+        def create_app():
+            import webapp2
+
+            class GetTraceId(webapp2.RequestHandler):
+                def get(self):
+                    from google.cloud.logging.handlers import _helpers
+
+                    trace_id = _helpers.get_trace_id_from_webapp2()
+                    self.response.content_type = "text/plain"
+                    self.response.out.write(trace_id)
+
+            app = webapp2.WSGIApplication([
+                ('/', GetTraceId),
+            ])
+
+            return app
+
+        def setUp(self):
+            self.app = self.create_app()
+
+        def test_no_context_header(self):
+            import webob
+
+            req = webob.BaseRequest.blank('/')
+            response = req.get_response(self.app)
+            trace_id = response.body
+
+            self.assertEquals("None", trace_id)
+
+        def test_valid_context_header(self):
+            import webob
+
+            webapp2_trace_header = 'X-Cloud-Trace-Context'
+            expected_trace_id = 'testtraceidwebapp2'
+            webapp2_trace_id = expected_trace_id + '/testspanid'
+
+            req = webob.BaseRequest.blank(
+                '/',
+                headers={webapp2_trace_header: webapp2_trace_id})
+            response = req.get_response(self.app)
+            trace_id = response.body
+
+            self.assertEqual(trace_id, expected_trace_id)
 
 
 class Test_get_trace_id_from_django(unittest.TestCase):
