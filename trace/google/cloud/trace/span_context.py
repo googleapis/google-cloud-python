@@ -20,11 +20,14 @@ import re
 import logging
 
 _TRACE_CONTEXT_HEADER_FORMAT = '([0-9a-f]{32})(\/(\d+))?(;o=(\d+))?'
+_TRACE_HEADER_KEY = 'X_CLOUD_TRACE_CONTEXT'
+_TRACE_ID_FORMAT = '[0-9a-f]{32}?'
 
 
-class TraceContext(object):
-    """TraceContext includes 3 fields: traceId, spanId, and an enabled flag 
-    which indicateswhether or not the request is being traced.
+class SpanContext(object):
+    """SpanContext includes 3 fields: traceId, spanId, and an enabled flag 
+    which indicates whether or not the request is being traced. It contains the
+    current context to be propagate to the child spans.
     
     :type trace_id: str
     :param trace_id: (Optional) Trace_id is a 32 digits uuid for the trace.
@@ -49,7 +52,7 @@ class TraceContext(object):
         if trace_id is None:
             trace_id = generate_trace_id()
 
-        self.trace_id = trace_id
+        self.trace_id = self.check_trace_id(trace_id)
         self.span_id = self.check_span_id(span_id)
         self.enabled = enabled
         self.from_header = from_header
@@ -68,7 +71,7 @@ class TraceContext(object):
         if not isinstance(span_id, int):
             try:
                 span_id = int(span_id)
-            except ValueError:
+            except (TypeError, ValueError):
                 logging.warning(
                     'The type of span_id should be int, got {}.'.format(
                         span_id.__class__.__name__))
@@ -76,7 +79,36 @@ class TraceContext(object):
 
         return span_id
 
-    def convert_to_string(self):
+    def check_trace_id(self, trace_id):
+        """Check the format of the trace_id to ensure it is 32-character hex 
+        value representing a 128-bit number.
+
+        :type trace_id: str
+        :param trace_id:
+        
+        :rtype: str
+        :returns: Trace_id for the current context.
+        """
+        trace_id_pattern = re.compile(_TRACE_CONTEXT_HEADER_FORMAT)
+
+        try:
+            match = trace_id_pattern.match(trace_id)
+
+            if match:
+                return trace_id
+            else:
+                logging.warning(
+                    'Trace_id {} does not the match the required format,'
+                    'generate a new one instead.'.format(trace_id))
+                return generate_trace_id()
+
+        except TypeError:
+            logging.warning(
+                'Trace_id should be str, got {}. Generate a new one.'.format(
+                    trace_id.__class__.__name__))
+            return generate_trace_id()
+
+    def __str__(self):
         """Returns a string form of the TraceContext. This is the format of 
         the Trace Context Header and should be forwarded to downstream
         requests as the X-Cloud-Trace-Context header.
@@ -92,30 +124,41 @@ class TraceContext(object):
 
 
 def generate_context_from_header(header):
-    """Parse a request header and generate a TraceContext object.
+    """Parse a request header and generate a SpanContext object.
 
-    :type header: 
-    :param header: Request header from web application.
+    :type header: str
+    :param header: Value of a single HTTP request header from web application.
 
-    :rtype: :class:`~google.cloud.trace.trace_context.TraceContext`
-    :returns: A TraceContext object.
+    :rtype: :class:`~google.cloud.trace.trace_context.SpanContext`
+    :returns: A SpanContext object.
     """
     pattern = re.compile(_TRACE_CONTEXT_HEADER_FORMAT)
-    match = re.search(pattern, header)
+
+    try:
+        match = re.search(pattern, header)
+    except TypeError:
+        logging.warning(
+            'Header should be str, got {}. Cannot parse the header, '
+            'generate a new context instead.'.format(
+                header.__class__.__name__))
+        return SpanContext()
 
     if match:
         trace_id = match.group(1)
         span_id = match.group(3)
-        enabled = match.group(5)
+        enabled = bool(match.group(5))
 
         if enabled is None:
-            enabled = 1
+            enabled = True
 
-        trace_context = TraceContext(
+        trace_context = SpanContext(
             trace_id=trace_id,
             span_id=span_id,
             enabled=enabled,
             from_header=True)
         return trace_context
     else:
-        return TraceContext()
+        logging.warning(
+            'Cannot parse the header {}, generate a new context instead.'
+                .format(header))
+        return SpanContext()

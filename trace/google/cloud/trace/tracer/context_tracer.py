@@ -22,15 +22,15 @@ class ContextTracer(object):
     :type client: :class:`~google.cloud.trace.client.Client`
     :param client: The client that owns this API object.
     
-    :rtype: :class:`~google.cloud.trace.trace_context.TraceContext`
-    :returns: A TraceContext object.
+    :type span_context: :class:`~google.cloud.trace.span_context.SpanContext`
+    :param span_context: The current span context.
     """
     _span_stack = []
 
-    def __init__(self, client, trace_context):
+    def __init__(self, client, span_context):
         self.client = client
-        self.trace_context = trace_context
-        self.trace_id = trace_context.trace_id
+        self.span_context = span_context
+        self.trace_id = span_context.trace_id
         self.trace = self.trace()
 
     def trace(self):
@@ -58,11 +58,11 @@ class ContextTracer(object):
         :rtype: :class:`~google.cloud.trace.trace_span.TraceSpan`
         :returns: The TraceSpan object.
         """
-        parent_span_id = self.trace_context.span_id
+        parent_span_id = self.span_context.span_id
         span = TraceSpan(name, parent_span_id=parent_span_id)
         self.trace.spans.append(span)
         self._span_stack.append(span)
-        self.trace_context.span_id = span.span_id
+        self.span_context.span_id = span.span_id
         return span
 
     def start_span(self, name='span'):
@@ -83,6 +83,6 @@ class ContextTracer(object):
         cur_span.finish()
 
         if not self._span_stack:
-            self.trace_context.span_id = None
+            self.span_context.span_id = None
         else:
-            self.trace_context.span_id = self._span_stack[-1]
+            self.span_context.span_id = self._span_stack[-1]

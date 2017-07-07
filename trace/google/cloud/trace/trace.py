@@ -26,6 +26,8 @@ class Trace(object):
     a single timed event within the operation. Node that Trace is not
     thread-safe and must not be shared between threads.
 
+    A trace contains one or more spans, initially the spans list is empty.
+
     See
     https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
     cloudtrace.v1#google.devtools.cloudtrace.v1.Trace
