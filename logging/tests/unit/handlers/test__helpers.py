@@ -12,10 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
+import json
 import unittest
 
 import mock
+import six
+
+try:
+    from webapp2 import RequestHandler
+except SyntaxError:
+    # webapp2 has not been ported to python3, so it will give a syntax
+    # error if we try.  We'll just skip the webapp2 tests in that case.
+    RequestHandler = object
 
 
 class Test_get_trace_id_from_flask(unittest.TestCase):
@@ -38,11 +46,9 @@ class Test_get_trace_id_from_flask(unittest.TestCase):
 
         return app
 
-    def setUp(self):
-        self.app = self.create_app()
-
     def test_no_context_header(self):
-        with self.app.test_request_context(
+        app = self.create_app()
+        with app.test_request_context(
                 path='/',
                 headers={}):
             trace_id = self._call_fut()
@@ -54,7 +60,8 @@ class Test_get_trace_id_from_flask(unittest.TestCase):
         expected_trace_id = 'testtraceidflask'
         flask_trace_id = expected_trace_id + '/testspanid'
 
-        context = self.app.test_request_context(
+        app = self.create_app()
+        context = app.test_request_context(
             path='/',
             headers={flask_trace_header: flask_trace_id})
 
@@ -64,55 +71,52 @@ class Test_get_trace_id_from_flask(unittest.TestCase):
         self.assertEqual(trace_id, expected_trace_id)
 
 
-# webapp2 has not been ported to python3 yet, so do not try to test its
-# functionality there.
-if sys.version_info[0] == 2:
-    class Test_get_trace_id_from_webapp2(unittest.TestCase):
+class _GetTraceId(RequestHandler):
+    def get(self):
+        from google.cloud.logging.handlers import _helpers
 
-        @staticmethod
-        def create_app():
-            import webapp2
+        trace_id = _helpers.get_trace_id_from_webapp2()
+        self.response.content_type = 'application/json'
+        self.response.out.write(json.dumps(trace_id))
 
-            class GetTraceId(webapp2.RequestHandler):
-                def get(self):
-                    from google.cloud.logging.handlers import _helpers
 
-                    trace_id = _helpers.get_trace_id_from_webapp2()
-                    self.response.content_type = "text/plain"
-                    self.response.out.write(trace_id)
 
-            app = webapp2.WSGIApplication([
-                ('/', GetTraceId),
-            ])
+@unittest.skipIf(six.PY3, 'webapp2 is Python 2 only')
+class Test_get_trace_id_from_webapp2(unittest.TestCase):
 
-            return app
+    @staticmethod
+    def create_app():
+        import webapp2
 
-        def setUp(self):
-            self.app = self.create_app()
+        app = webapp2.WSGIApplication([
+            ('/', _GetTraceId),
+        ])
 
-        def test_no_context_header(self):
-            import webob
+        return app
 
-            req = webob.BaseRequest.blank('/')
-            response = req.get_response(self.app)
-            trace_id = response.body
+    def test_no_context_header(self):
+        import webob
 
-            self.assertEquals("None", trace_id)
+        req = webob.BaseRequest.blank('/')
+        response = req.get_response(self.create_app())
+        trace_id = json.loads(response.body)
 
-        def test_valid_context_header(self):
-            import webob
+        self.assertEquals(None, trace_id)
 
-            webapp2_trace_header = 'X-Cloud-Trace-Context'
-            expected_trace_id = 'testtraceidwebapp2'
-            webapp2_trace_id = expected_trace_id + '/testspanid'
+    def test_valid_context_header(self):
+        import webob
 
-            req = webob.BaseRequest.blank(
-                '/',
-                headers={webapp2_trace_header: webapp2_trace_id})
-            response = req.get_response(self.app)
-            trace_id = response.body
+        webapp2_trace_header = 'X-Cloud-Trace-Context'
+        expected_trace_id = 'testtraceidwebapp2'
+        webapp2_trace_id = expected_trace_id + '/testspanid'
 
-            self.assertEqual(trace_id, expected_trace_id)
+        req = webob.BaseRequest.blank(
+            '/',
+            headers={webapp2_trace_header: webapp2_trace_id})
+        response = req.get_response(self.create_app())
+        trace_id = json.loads(response.body)
+
+        self.assertEqual(trace_id, expected_trace_id)
 
 
 class Test_get_trace_id_from_django(unittest.TestCase):
