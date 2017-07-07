@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""TraceContext encapsulates the current context within the request's trace."""
+"""SpanContext encapsulates the current context within the request's trace."""
 
 from google.cloud.trace.trace import generate_trace_id
 
