@@ -124,12 +124,12 @@ class TestTraceSpan(unittest.TestCase):
         span.start()
         self.assertIsNotNone(span.start_time)
 
-    def test_finish(self):
+    def test_end(self):
         span_name = 'root_span'
         span = self._make_one(span_name)
         self.assertIsNone(span.end_time)
 
-        span.finish()
+        span.end()
         self.assertIsNotNone(span.end_time)
 
     def test___iter__(self):

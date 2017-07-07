@@ -22,14 +22,14 @@ try:
 except ImportError:  # pragma: NO COVER
     flask = None
 
-from google.cloud.trace.span_context import generate_context_from_header
+from google.cloud.trace.propagation.google_cloud_format import from_header
 from google.cloud.trace.span_context import _TRACE_HEADER_KEY
 from google.cloud.trace.tracer.context_tracer import ContextTracer
 
 
 class FlaskTracer(ContextTracer):
     """The flask implementation of the ContextTracer Interface.
-    
+
     :type client: :class:`~google.cloud.trace.client.Client`
     :param client: The client that owns this API object.
 
@@ -39,7 +39,7 @@ class FlaskTracer(ContextTracer):
     def __init__(self, client, span_context=None):
         if span_context is None:
             header = get_flask_header()
-            span_context = generate_context_from_header(header)
+            span_context = from_header(header)
 
         super(FlaskTracer, self).__init__(
             client=client,

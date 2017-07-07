@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.trace.span_context import SpanContext
 from google.cloud.trace.trace import Trace
 from google.cloud.trace.trace_span import TraceSpan
 
@@ -21,7 +22,7 @@ class ContextTracer(object):
 
     :type client: :class:`~google.cloud.trace.client.Client`
     :param client: The client that owns this API object.
-    
+
     :type span_context: :class:`~google.cloud.trace.span_context.SpanContext`
     :param span_context: The current span context.
     """
@@ -29,6 +30,10 @@ class ContextTracer(object):
 
     def __init__(self, client, span_context):
         self.client = client
+
+        if span_context is None:
+            span_context = SpanContext()
+
         self.span_context = span_context
         self.trace_id = span_context.trace_id
         self.trace = self.trace()
@@ -51,10 +56,10 @@ class ContextTracer(object):
 
     def span(self, name='span'):
         """Create a new span with the trace using the context information.
-        
+
         :type name: str
         :param name: The name of the span.
-        
+
         :rtype: :class:`~google.cloud.trace.trace_span.TraceSpan`
         :returns: The TraceSpan object.
         """
@@ -80,7 +85,7 @@ class ContextTracer(object):
         except IndexError:
             raise
 
-        cur_span.finish()
+        cur_span.end()
 
         if not self._span_stack:
             self.span_context.span_id = None
