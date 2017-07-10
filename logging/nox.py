@@ -36,7 +36,7 @@ def unit_tests(session, python_version):
     # Install all test dependencies, then install this package in-place.
     session.install(
         'mock', 'pytest', 'pytest-cov',
-        'flask', 'django', *LOCAL_DEPS)
+        'flask', 'webapp2', 'webob', 'django', *LOCAL_DEPS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
