@@ -33,6 +33,7 @@ from google.cloud._helpers import UTC
 from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.spanner._helpers import TimestampWithNanoseconds
 from google.cloud.spanner.client import Client
+from google.cloud.spanner.keyset import KeyRange
 from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import BurstyPool
 
@@ -584,6 +585,32 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             [(row[0], row[2]) for row in self._row_data(ROW_COUNT)]))
         self._check_row_data(rows, expected)
 
+    def test_read_w_single_key(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+
+        snapshot = session.snapshot(read_timestamp=committed)
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, KeySet(keys=[(0,)])))
+
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        expected = [all_data_rows[0]]
+        self._check_row_data(rows, expected)
+
+    def test_read_w_multiple_keys(self):
+        ROW_COUNT = 40
+        indices = [0, 5, 17]
+        session, committed = self._set_up_table(ROW_COUNT)
+
+        snapshot = session.snapshot(read_timestamp=committed)
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS,
+            KeySet(keys=[(index,) for index in indices])))
+
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        expected = [row for row in all_data_rows if row[0] in indices]
+        self._check_row_data(rows, expected)
+
     def test_read_w_limit(self):
         ROW_COUNT = 4000
         LIMIT = 100
@@ -597,21 +624,40 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = all_data_rows[:LIMIT]
         self._check_row_data(rows, expected)
 
-    def test_read_w_range(self):
-        from google.cloud.spanner.keyset import KeyRange
+    def test_read_w_ranges(self):
         ROW_COUNT = 4000
-        START_CLOSED = 1000
-        END_OPEN = 2000
+        START = 1000
+        END = 2000
         session, committed = self._set_up_table(ROW_COUNT)
-        key_range = KeyRange(start_closed=[START_CLOSED], end_open=[END_OPEN])
-        keyset = KeySet(ranges=(key_range,))
-
         snapshot = session.snapshot(read_timestamp=committed)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+
+        closed_closed = KeyRange(start_closed=[START], end_closed=[END])
+        keyset = KeySet(ranges=(closed_closed,))
         rows = list(snapshot.read(
             self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START:END+1]
+        self._check_row_data(rows, expected)
 
-        all_data_rows = list(self._row_data(ROW_COUNT))
-        expected = all_data_rows[START_CLOSED:END_OPEN]
+        closed_open = KeyRange(start_closed=[START], end_open=[END])
+        keyset = KeySet(ranges=(closed_open,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START:END]
+        self._check_row_data(rows, expected)
+
+        open_open = KeyRange(start_open=[START], end_open=[END])
+        keyset = KeySet(ranges=(open_open,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START+1:END]
+        self._check_row_data(rows, expected)
+
+        open_closed = KeyRange(start_open=[START], end_closed=[END])
+        keyset = KeySet(ranges=(open_closed,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START+1:END+1]
         self._check_row_data(rows, expected)
 
     def test_execute_sql_w_manual_consume(self):
