@@ -124,7 +124,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         if 'view' in resource:
             self.assertEqual(table.view_query, resource['view']['query'])
-            self.assertEqual(table.view_use_legacy_sql, resource['view'].get('useLegacySql'))
+            self.assertEqual(
+                table.view_use_legacy_sql,
+                resource['view'].get('useLegacySql'))
         else:
             self.assertIsNone(table.view_query)
             self.assertIsNone(table.view_use_legacy_sql)
