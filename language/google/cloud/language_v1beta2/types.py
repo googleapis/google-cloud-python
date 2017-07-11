@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 import sys
 
-from google.cloud.proto.language.v1 import language_service_pb2
+from google.cloud.proto.language.v1beta2 import language_service_pb2
 
 from google.gax.utils.messages import get_messages
 
