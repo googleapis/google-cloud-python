@@ -786,6 +786,14 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         self._check_sql_results(
             snapshot,
+            sql='SELECT description FROM all_types WHERE eye_d = @my_id',
+            params={'my_id': None},
+            param_types={'my_id': Type(code=INT64)},
+            expected=[],
+        )
+
+        self._check_sql_results(
+            snapshot,
             sql='SELECT eye_d FROM all_types WHERE description = @description',
             params={'description': u'dog'},
             param_types={'description': Type(code=STRING)},
