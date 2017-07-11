@@ -514,7 +514,7 @@ class GbqConnector(object):
             self._print('Requesting query... ', end="")
             query_reply = job_collection.insert(
                 projectId=self.project_id, body=job_data).execute()
-            self._print('ok.\nQuery running...')
+            self._print('ok.')
         except (RefreshError, ValueError):
             if self.private_key:
                 raise AccessDenied(
@@ -527,13 +527,15 @@ class GbqConnector(object):
             self.process_http_error(ex)
 
         job_reference = query_reply['jobReference']
+        job_id = job_reference['jobId']
+        self._print('Job ID: %s\nQuery running...' % job_id)
 
         while not query_reply.get('jobComplete', False):
             self.print_elapsed_seconds('  Elapsed', 's. Waiting...')
             try:
                 query_reply = job_collection.getQueryResults(
                     projectId=job_reference['projectId'],
-                    jobId=job_reference['jobId']).execute()
+                    jobId=job_id).execute()
             except HttpError as ex:
                 self.process_http_error(ex)
 
@@ -584,7 +586,7 @@ class GbqConnector(object):
             try:
                 query_reply = job_collection.getQueryResults(
                     projectId=job_reference['projectId'],
-                    jobId=job_reference['jobId'],
+                    jobId=job_id,
                     pageToken=page_token).execute()
             except HttpError as ex:
                 self.process_http_error(ex)
