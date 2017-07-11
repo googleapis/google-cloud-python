@@ -35,7 +35,7 @@ EXTRAS_REQUIRE = {
 
 setup(
     author='Google Cloud Platform',
-    author_email='googleapis-packages@google.com',
+    author_email='googleapis-publisher@google.com',
     name='google-cloud-vision',
     version='0.25.0',
     description='Python Client for Google Cloud Vision',
