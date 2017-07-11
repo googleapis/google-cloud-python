@@ -538,6 +538,42 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         return session, committed
 
+    def test_snapshot_read_w_various_staleness(self):
+        from datetime import datetime
+        from google.cloud._helpers import UTC
+        ROW_COUNT = 400
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+
+        before_reads = datetime.utcnow().replace(tzinfo=UTC)
+
+        # Test w/ read timestamp
+        read_tx = session.snapshot(read_timestamp=committed)
+        rows = list(read_tx.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ min read timestamp
+        min_read_ts = session.snapshot(min_read_timestamp=committed)
+        rows = list(min_read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        staleness = datetime.utcnow().replace(tzinfo=UTC) - before_reads
+
+        # Test w/ max staleness
+        max_staleness = session.snapshot(max_staleness=staleness)
+        rows = list(max_staleness.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ exact staleness
+        exact_staleness = session.snapshot(exact_staleness=staleness)
+        rows = list(exact_staleness.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ strong
+        strong = session.snapshot()
+        rows = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
     def test_read_w_manual_consume(self):
         ROW_COUNT = 4000
         session, committed = self._set_up_table(ROW_COUNT)
