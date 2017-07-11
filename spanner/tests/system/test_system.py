@@ -87,6 +87,10 @@ def setUpModule():
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
 
+    # Defend against back-end returning configs for regions we aren't
+    # actually allowed to use.
+    configs = [config for config in configs if '-us-' in config.name]
+
     if len(configs) < 1:
         raise ValueError('List instance configs failed in module set up.')
 
