@@ -687,6 +687,26 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             sql, params=params, param_types=param_types))
         self._check_row_data(rows, expected=expected)
 
+    def test_execute_sql_returning_array_of_struct(self):
+        SQL = (
+            "SELECT ARRAY(SELECT AS STRUCT C1, C2 "
+            "FROM (SELECT 'a' AS C1, 1 AS C2 "
+            "UNION ALL SELECT 'b' AS C1, 2 AS C2) "
+            "ORDER BY C1 ASC)"
+        )
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        snapshot = session.snapshot()
+        self._check_sql_results(
+            snapshot,
+            sql=SQL,
+            params=None,
+            param_types=None,
+            expected=[
+                [[['a', 1], ['b', 2]]],
+            ])
+
     def test_execute_sql_w_query_param(self):
         session = self._db.session()
         session.create()
