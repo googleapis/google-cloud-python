@@ -33,6 +33,7 @@ from google.cloud._helpers import UTC
 from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.spanner._helpers import TimestampWithNanoseconds
 from google.cloud.spanner.client import Client
+from google.cloud.spanner.keyset import KeyRange
 from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import BurstyPool
 
@@ -86,6 +87,10 @@ def setUpModule():
     retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
+
+    # Defend against back-end returning configs for regions we aren't
+    # actually allowed to use.
+    configs = [config for config in configs if '-us-' in config.name]
 
     if len(configs) < 1:
         raise ValueError('List instance configs failed in module set up.')
@@ -533,6 +538,42 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         return session, committed
 
+    def test_snapshot_read_w_various_staleness(self):
+        from datetime import datetime
+        from google.cloud._helpers import UTC
+        ROW_COUNT = 400
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+
+        before_reads = datetime.utcnow().replace(tzinfo=UTC)
+
+        # Test w/ read timestamp
+        read_tx = session.snapshot(read_timestamp=committed)
+        rows = list(read_tx.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ min read timestamp
+        min_read_ts = session.snapshot(min_read_timestamp=committed)
+        rows = list(min_read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        staleness = datetime.utcnow().replace(tzinfo=UTC) - before_reads
+
+        # Test w/ max staleness
+        max_staleness = session.snapshot(max_staleness=staleness)
+        rows = list(max_staleness.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ exact staleness
+        exact_staleness = session.snapshot(exact_staleness=staleness)
+        rows = list(exact_staleness.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ strong
+        strong = session.snapshot()
+        rows = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
     def test_read_w_manual_consume(self):
         ROW_COUNT = 4000
         session, committed = self._set_up_table(ROW_COUNT)
@@ -580,6 +621,32 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             [(row[0], row[2]) for row in self._row_data(ROW_COUNT)]))
         self._check_row_data(rows, expected)
 
+    def test_read_w_single_key(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+
+        snapshot = session.snapshot(read_timestamp=committed)
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, KeySet(keys=[(0,)])))
+
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        expected = [all_data_rows[0]]
+        self._check_row_data(rows, expected)
+
+    def test_read_w_multiple_keys(self):
+        ROW_COUNT = 40
+        indices = [0, 5, 17]
+        session, committed = self._set_up_table(ROW_COUNT)
+
+        snapshot = session.snapshot(read_timestamp=committed)
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS,
+            KeySet(keys=[(index,) for index in indices])))
+
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        expected = [row for row in all_data_rows if row[0] in indices]
+        self._check_row_data(rows, expected)
+
     def test_read_w_limit(self):
         ROW_COUNT = 4000
         LIMIT = 100
@@ -593,21 +660,40 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = all_data_rows[:LIMIT]
         self._check_row_data(rows, expected)
 
-    def test_read_w_range(self):
-        from google.cloud.spanner.keyset import KeyRange
+    def test_read_w_ranges(self):
         ROW_COUNT = 4000
-        START_CLOSED = 1000
-        END_OPEN = 2000
+        START = 1000
+        END = 2000
         session, committed = self._set_up_table(ROW_COUNT)
-        key_range = KeyRange(start_closed=[START_CLOSED], end_open=[END_OPEN])
-        keyset = KeySet(ranges=(key_range,))
-
         snapshot = session.snapshot(read_timestamp=committed)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+
+        closed_closed = KeyRange(start_closed=[START], end_closed=[END])
+        keyset = KeySet(ranges=(closed_closed,))
         rows = list(snapshot.read(
             self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START:END+1]
+        self._check_row_data(rows, expected)
 
-        all_data_rows = list(self._row_data(ROW_COUNT))
-        expected = all_data_rows[START_CLOSED:END_OPEN]
+        closed_open = KeyRange(start_closed=[START], end_open=[END])
+        keyset = KeySet(ranges=(closed_open,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START:END]
+        self._check_row_data(rows, expected)
+
+        open_open = KeyRange(start_open=[START], end_open=[END])
+        keyset = KeySet(ranges=(open_open,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START+1:END]
+        self._check_row_data(rows, expected)
+
+        open_closed = KeyRange(start_open=[START], end_closed=[END])
+        keyset = KeySet(ranges=(open_closed,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START+1:END+1]
         self._check_row_data(rows, expected)
 
     def test_execute_sql_w_manual_consume(self):
@@ -636,6 +722,26 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(snapshot.execute_sql(
             sql, params=params, param_types=param_types))
         self._check_row_data(rows, expected=expected)
+
+    def test_execute_sql_returning_array_of_struct(self):
+        SQL = (
+            "SELECT ARRAY(SELECT AS STRUCT C1, C2 "
+            "FROM (SELECT 'a' AS C1, 1 AS C2 "
+            "UNION ALL SELECT 'b' AS C1, 2 AS C2) "
+            "ORDER BY C1 ASC)"
+        )
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        snapshot = session.snapshot()
+        self._check_sql_results(
+            snapshot,
+            sql=SQL,
+            params=None,
+            param_types=None,
+            expected=[
+                [[['a', 1], ['b', 2]]],
+            ])
 
     def test_execute_sql_w_query_param(self):
         session = self._db.session()
@@ -712,6 +818,14 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             params={'my_id': 19},
             param_types={'my_id': Type(code=INT64)},
             expected=[(u'dog',)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT description FROM all_types WHERE eye_d = @my_id',
+            params={'my_id': None},
+            param_types={'my_id': Type(code=INT64)},
+            expected=[],
         )
 
         self._check_sql_results(
