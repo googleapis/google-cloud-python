@@ -43,10 +43,16 @@ class SchemaField(object):
         self.description = description
         self.fields = fields
 
-    def __eq__(self, other):
+    def __key(self):
         return (
-            self.name == other.name and
-            self.field_type.lower() == other.field_type.lower() and
-            self.mode == other.mode and
-            self.description == other.description and
-            self.fields == other.fields)
+            self.name,
+            self.field_type.lower(),
+            self.mode,
+            self.description,
+            self.fields)
+
+    def __eq__(self, other):
+        return self.__key() == other.__key()
+
+    def __hash__(self):
+        return hash(self.__key())

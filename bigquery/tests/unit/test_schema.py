@@ -111,3 +111,21 @@ class TestSchemaField(unittest.TestCase):
         field = self._make_one('test', 'RECORD', fields=[sub1, sub2])
         other = self._make_one('test', 'RECORD', fields=[sub1, sub2])
         self.assertEqual(field, other)
+
+    def test__hash__set_equality(self):
+        sub1 = self._make_one('sub1', 'STRING')
+        sub2 = self._make_one('sub2', 'STRING')
+        field1 = self._make_one('test', 'RECORD', fields=[sub1])
+        field2 = self._make_one('test', 'RECORD', fields=[sub2])
+        set_one = {field1, field2}
+        set_two = {field1, field2}
+        self.assertEqual(set_one, set_two)
+
+    def test__hash__not_quals(self):
+        sub1 = self._make_one('sub1', 'STRING')
+        sub2 = self._make_one('sub2', 'STRING')
+        field1 = self._make_one('test', 'RECORD', fields=[sub1])
+        field2 = self._make_one('test', 'RECORD', fields=[sub2])
+        set_one = {field1}
+        set_two = {field2}
+        self.assertNotEqual(set_one, set_two)
