@@ -202,6 +202,10 @@ class GbqConnector(object):
         self.credentials = self.get_credentials()
         self.service = self.get_service()
 
+        # BQ Queries costs $5 per TB. First 1 TB per month is free
+        # see here for more: https://cloud.google.com/bigquery/pricing
+        self.query_price_for_TB = 5. / 2**40  # USD/TB
+
     def get_credentials(self):
         if self.private_key:
             return self.get_service_account_credentials()
@@ -545,8 +549,10 @@ class GbqConnector(object):
             else:
                 bytes_processed = int(query_reply.get(
                     'totalBytesProcessed', '0'))
-                self._print('Query done.\nProcessed: {}\n'.format(
+                self._print('Query done.\nProcessed: {}'.format(
                     self.sizeof_fmt(bytes_processed)))
+                self._print('Standard price: ${:,.2f} USD\n'.format(
+                    bytes_processed * self.query_price_for_TB))
 
             self._print('Retrieving results...')
 
