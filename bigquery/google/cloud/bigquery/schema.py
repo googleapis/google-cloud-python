@@ -41,9 +41,13 @@ class SchemaField(object):
         self.field_type = field_type
         self.mode = mode
         self.description = description
-        self.fields = fields
+        self.fields = None if(fields is None) else tuple(fields)
 
-    def __key(self):
+    def _key(self):
+        """
+        A tuple describing the contents of this :class:`SchemaField`.
+        Used to compute this instance's hashcode and evaluate equality.
+        """
         return (
             self.name,
             self.field_type.lower(),
@@ -52,7 +56,7 @@ class SchemaField(object):
             self.fields)
 
     def __eq__(self, other):
-        return self.__key() == other.__key()
+        return self._key() == other._key()
 
     def __hash__(self):
-        return hash(self.__key())
+        return hash(self._key())
