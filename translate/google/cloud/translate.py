@@ -18,8 +18,15 @@
 from google.cloud.translate_v2 import __version__
 from google.cloud.translate_v2.client import Client
 
+# These constants are essentially deprecated; strings should be used instead.
+# They are imported here for backwards compatibility.
+from google.cloud.translate_v2.client import BASE
+from google.cloud.translate_v2.client import NMT
+
 
 __all__ = (
     '__version__',
+    'BASE',
     'Client',
+    'NMT',
 )
