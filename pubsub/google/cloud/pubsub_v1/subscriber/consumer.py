@@ -200,6 +200,9 @@ class Consumer(object):
         """
         # First, yield the initial request. This occurs on every new
         # connection, fundamentally including a resumed connection.
+        _LOGGER.debug('Sending initial request: {initial_request}'.format(
+            initial_request=self._policy.initial_request,
+        ))
         yield self._policy.initial_request
 
         # Now yield each of the items on the request queue, and block if there
