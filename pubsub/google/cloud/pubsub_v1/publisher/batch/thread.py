@@ -230,7 +230,8 @@ class Batch(base.BaseBatch):
                 :class:`concurrent.futures.Future` interface.
         """
         # Coerce the type, just in case.
-        message = types.PubsubMessage(message)
+        if not isinstance(message, types.PubsubMessage):
+            message = types.PubsubMessage(message)
 
         # Add the size to the running total of the size, so we know
         # if future messages need to be rejected.

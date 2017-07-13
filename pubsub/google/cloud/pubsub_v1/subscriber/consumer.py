@@ -178,6 +178,7 @@ class Consumer(object):
         self._request_queue = queue.Queue()
         self._exiting = threading.Event()
 
+        self.active = False
         self.helper_threads = helper_threads.HelperThreadRegistry()
         """:cls:`_helper_threads.HelperThreads`: manages the helper threads.
             The policy may use this to schedule its own helper threads.
@@ -239,10 +240,15 @@ class Consumer(object):
             except KeyboardInterrupt:
                 self.stop_consuming()
             except Exception as exc:
-                self._policy.on_exception(exc)
+                try:
+                    self._policy.on_exception(exc)
+                except:
+                    self.active = False
+                    raise
 
     def start_consuming(self):
         """Start consuming the stream."""
+        self.active = True
         self._exiting.clear()
         self.helper_threads.start('consume bidirectional stream',
             self._request_queue,
@@ -251,5 +257,6 @@ class Consumer(object):
 
     def stop_consuming(self):
         """Signal the stream to stop and block until it completes."""
+        self.active = False
         self._exiting.set()
         self.helper_threads.stop_all()

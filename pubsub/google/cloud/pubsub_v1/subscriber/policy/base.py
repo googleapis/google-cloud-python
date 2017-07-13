@@ -170,6 +170,10 @@ class BasePolicy(object):
             implementing your own policy, you _should_ call this method
             in an appropriate form of subprocess.
         """
+        # Sanity check: Should this infinitely-recursive loop quit?
+        if not self._consumer.active:
+            return
+
         # Determine the appropriate duration for the lease.
         # This is based off of how long previous messages have taken to ack,
         # with a sensible default and within the ranges allowed by Pub/Sub.

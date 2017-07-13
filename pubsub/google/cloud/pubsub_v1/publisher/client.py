@@ -147,9 +147,9 @@ class PublisherClient(object):
 
         # Coerce all attributes to text strings.
         for k, v in copy.copy(attrs).items():
-            if isinstance(data, six.text_type):
+            if isinstance(v, six.text_type):
                 continue
-            if isinstance(data, six.binary_type):
+            if isinstance(v, six.binary_type):
                 attrs[k] = v.decode('utf-8')
                 continue
             raise TypeError('All attributes being published to Pub/Sub must '

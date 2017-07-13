@@ -54,16 +54,9 @@ class Policy(base.BasePolicy):
             self.on_callback_request,
         )
 
-        # Spawn a process that maintains all of the leases for this policy.
-        logger.debug('Spawning lease process.')
-        self._lease_process = threading.Thread(
-            target=self.maintain_leases,
-        )
-        self._lease_process.daemon = True
-        self._lease_process.start()
-
     def close(self):
         """Close the existing connection."""
+        # Close the main subscription connection.
         self._consumer.helper_threads.stop('callback requests worker')
         self._consumer.stop_consuming()
 
@@ -77,13 +70,23 @@ class Policy(base.BasePolicy):
         Args:
             callback (Callable): The callback function.
         """
+        # Start the thread to pass the requests.
         logger.debug('Starting callback requests worker.')
         self._callback = callback
         self._consumer.helper_threads.start('callback requests worker',
             self._request_queue,
             self._callback_requests,
         )
+
+        # Actually start consuming messages.
         self._consumer.start_consuming()
+
+        # Spawn a helper thread that maintains all of the leases for
+        # this policy.
+        logger.debug('Spawning lease maintenance worker.')
+        self._leaser = threading.Thread(target=self.maintain_leases)
+        self._leaser.daemon = True
+        self._leaser.start()
 
     def on_callback_request(self, callback_request):
         """Map the callback request to the appropriate GRPC request."""
