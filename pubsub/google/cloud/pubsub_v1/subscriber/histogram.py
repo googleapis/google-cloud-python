@@ -148,7 +148,7 @@ class Histogram(object):
         for k in reversed(list(self._data.keys())):
             target -= self._data[k]
             if target <= 0:
-                return self._data[k]
+                return k
 
         # The only way to get here is if there was no data.
         # In this case, just return 10 seconds.

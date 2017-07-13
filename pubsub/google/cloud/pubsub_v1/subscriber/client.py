@@ -19,7 +19,7 @@ import pkg_resources
 from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
-from google.cloud.pubsub_v1.subscriber.policy import mp
+from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -43,14 +43,14 @@ class SubscriberClient(object):
             :class:`.pubsub_v1.subscriber.policy.base.BasePolicy`
             class in order to define your own consumer. This is primarily
             provided to allow use of different concurrency models; the default
-            is based on :class:`multiprocessing.Process`.
+            is based on :class:`threading.Thread`.
         kwargs (dict): Any additional arguments provided are sent as keyword
             keyword arguments to the underlying
             :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.
             Generally, you should not need to set additional keyword
             arguments.
     """
-    def __init__(self, flow_control=(), policy_class=mp.Policy,
+    def __init__(self, flow_control=(), policy_class=thread.Policy,
                  **kwargs):
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.

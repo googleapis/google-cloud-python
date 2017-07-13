@@ -227,6 +227,7 @@ class Consumer(object):
             response_generator = self._policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
+                    _LOGGER.debug('Received response: {0}'.format(response))
                     self._policy.on_response(response)
 
                 # If the loop above exits without an exception, then the
@@ -237,8 +238,8 @@ class Consumer(object):
                 break
             except KeyboardInterrupt:
                 self.stop_consuming()
-            except Exception as e:
-                self._policy.on_exception(e)
+            except Exception as exc:
+                self._policy.on_exception(exc)
 
     def start_consuming(self):
         """Start consuming the stream."""

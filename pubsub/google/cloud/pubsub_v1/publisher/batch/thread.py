@@ -14,12 +14,9 @@
 
 from __future__ import absolute_import
 
-import copy
-import multiprocessing
+import threading
 import time
 import uuid
-
-import six
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
@@ -53,7 +50,7 @@ class Batch(base.BaseBatch):
             create this batch.
         topic (str): The topic. The format for this is
             ``projects/{project}/topics/{topic}``.
-        settings (~.pubsub_v1.types.Batching): The settings for batch
+        settings (~.pubsub_v1.types.BatchSettings): The settings for batch
             publishing. These should be considered immutable once the batch
             has been opened.
         autocommit (bool): Whether to autocommit the batch when the time
@@ -62,27 +59,26 @@ class Batch(base.BaseBatch):
     """
     def __init__(self, client, topic, settings, autocommit=True):
         self._client = client
-        self._manager = multiprocessing.Manager()
 
         # Create a namespace that is owned by the client manager; this
         # is necessary to be able to have these values be communicable between
         # processes.
-        self._shared = self.manager.Namespace()
-        self._shared.futures = self.manager.list()
-        self._shared.messages = self.manager.list()
-        self._shared.message_ids = self.manager.dict()
-        self._shared.settings = settings
-        self._shared.status = self.Status.ACCEPTING_MESSAGES
-        self._shared.topic = topic
+        self._futures = []
+        self._messages = []
+        self._size = 0
+        self._message_ids = {}
+        self._settings = settings
+        self._status = self.Status.ACCEPTING_MESSAGES
+        self._topic = topic
 
         # This is purely internal tracking.
-        self._process = None
+        self._thread = None
 
         # Continually monitor the thread until it is time to commit the
         # batch, or the batch is explicitly committed.
-        if autocommit and self._shared.settings.max_latency < float('inf'):
-            self._process = multiprocessing.Process(target=self.monitor)
-            self._process.start()
+        if autocommit and self._settings.max_latency < float('inf'):
+            self._thread = threading.Thread(target=self.monitor)
+            self._thread.start()
 
     @property
     def client(self):
@@ -94,14 +90,33 @@ class Batch(base.BaseBatch):
         return self._client
 
     @property
-    def manager(self):
-        """Return the client's manager.
+    def messages(self):
+        """Return the messages currently in the batch.
 
         Returns:
-            :class:`multiprocessing.Manager`: The manager responsible for
-                handling shared memory objects.
+            Sequence: The messages currently in the batch.
         """
-        return self._manager
+        return self._messages
+
+    @property
+    def settings(self):
+        """Return the batch settings.
+
+        Returns:
+            ~.pubsub_v1.types.BatchSettings: The batch settings. These are
+                considered immutable once the batch has been opened.
+        """
+        return self._settings
+
+    @property
+    def size(self):
+        """Return the total size of all of the messages currently in the batch.
+
+        Returns:
+            int: The total size of all of the messages currently
+                 in the batch, in bytes.
+        """
+        return self._size
 
     @property
     def status(self):
@@ -111,24 +126,51 @@ class Batch(base.BaseBatch):
             str: The status of this batch. All statuses are human-readable,
                 all-lowercase strings.
         """
-        return self._shared.status
+        return self._status
 
     def commit(self):
+        """Actually publish all of the messages on the active batch.
+
+        This synchronously sets the batch status to in-flight, and then opens
+        a new thread, which handles actually sending the messages to Pub/Sub.
+
+        .. note::
+
+            This method is non-blocking. It opens a new thread, which calls
+            :meth:`_commit`, which does block.
+        """
+        # Set the status to in-flight synchronously, to ensure that
+        # this batch will necessarily not accept new messages.
+        #
+        # Yes, this is repeated in `_commit`, because that method is called
+        # directly by `monitor`.
+        self._status = 'in-flight'
+
+        # Start a new thread to actually handle the commit.
+        commit_thread = threading.Thread(target=self._commit)
+        commit_thread.start()
+
+    def _commit(self):
         """Actually publish all of the messages on the active batch.
 
         This moves the batch out from being the active batch to an in-flight
         batch on the publisher, and then the batch is discarded upon
         completion.
+
+        .. note::
+
+            This method blocks. The :meth:`commit` method is the non-blocking
+            version, which calls this one.
         """
         # Update the status.
-        self._shared.status = 'in-flight'
+        self._status = 'in-flight'
 
         # Begin the request to publish these messages.
-        if len(self._shared.messages) == 0:
+        if len(self._messages) == 0:
             raise Exception('Empty queue')
         response = self._client.api.publish(
-            self._shared.topic,
-            self._shared.messages,
+            self._topic,
+            self.messages,
         )
 
         # FIXME (lukesneeringer): Check for failures; retry.
@@ -138,7 +180,7 @@ class Batch(base.BaseBatch):
 
         # Sanity check: If the number of message IDs is not equal to the
         # number of futures I have, then something went wrong.
-        if len(response.message_ids) != len(self._shared.futures):
+        if len(response.message_ids) != len(self._futures):
             raise exceptions.PublishError(
                 'Some messages were not successfully published.',
             )
@@ -146,9 +188,9 @@ class Batch(base.BaseBatch):
         # Iterate over the futures on the queue and return the response IDs.
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
-        self._shared.status = self.Status.SUCCESS
-        for message_id, fut in zip(response.message_ids, self._shared.futures):
-            self._shared.message_ids[hash(fut)] = message_id
+        self._status = self.Status.SUCCESS
+        for message_id, fut in zip(response.message_ids, self._futures):
+            self._message_ids[hash(fut)] = message_id
             fut._trigger()
 
     def monitor(self):
@@ -161,74 +203,46 @@ class Batch(base.BaseBatch):
         # in a separate thread.
         #
         # Sleep for however long we should be waiting.
-        time.sleep(self._shared.settings.max_latency)
+        time.sleep(self._settings.max_latency)
 
         # If, in the intervening period, the batch started to be committed,
         # then no-op at this point.
-        if self._shared.status != self.Status.ACCEPTING_MESSAGES:
+        if self._status != self.Status.ACCEPTING_MESSAGES:
             return
 
         # Commit.
-        return self.commit()
+        return self._commit()
 
-    def publish(self, data, **attrs):
+    def publish(self, message):
         """Publish a single message.
-
-        .. note::
-            Messages in Pub/Sub are blobs of bytes. They are *binary* data,
-            not text. You must send data as a bytestring
-            (``bytes`` in Python 3; ``str`` in Python 2), and this library
-            will raise an exception if you send a text string.
-
-            The reason that this is so important (and why we do not try to
-            coerce for you) is because Pub/Sub is also platform independent
-            and there is no way to know how to decode messages properly on
-            the other side; therefore, encoding and decoding is a required
-            exercise for the developer.
 
         Add the given message to this object; this will cause it to be
         published once the batch either has enough messages or a sufficient
         period of time has elapsed.
 
-        Args:
-            data (bytes): A bytestring representing the message body. This
-                must be a bytestring (a text string will raise TypeError).
-            attrs (Mapping[str, str]): A dictionary of attributes to be
-                sent as metadata. (These may be text strings or byte strings.)
+        This method is called by :meth:`~.PublisherClient.publish`.
 
-        Raises:
-            TypeError: If the ``data`` sent is not a bytestring, or if the
-                ``attrs`` are not either a ``str`` or ``bytes``.
+        Args:
+            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
             ~.pubsub_v1.publisher.batch.mp.Future: An object conforming to the
                 :class:`concurrent.futures.Future` interface.
         """
-        # Sanity check: Is the data being sent as a bytestring?
-        # If it is literally anything else, complain loudly about it.
-        if not isinstance(data, six.binary_type):
-            raise TypeError('Data being published to Pub/Sub must be sent '
-                            'as a bytestring.')
+        # Coerce the type, just in case.
+        message = types.PubsubMessage(message)
 
-        # Coerce all attributes to text strings.
-        for k, v in copy.copy(attrs).items():
-            if isinstance(data, six.text_type):
-                continue
-            if isinstance(data, six.binary_type):
-                attrs[k] = v.decode('utf-8')
-                continue
-            raise TypeError('All attributes being published to Pub/Sub must '
-                            'be sent as text strings.')
+        # Add the size to the running total of the size, so we know
+        # if future messages need to be rejected.
+        self._size += message.ByteSize()
 
         # Store the actual message in the batch's message queue.
-        self._shared.messages.append(
-            types.PubsubMessage(data=data, attributes=attrs),
-        )
+        self._messages.append(message)
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
-        f = Future(self._shared)
-        self._shared.futures.append(f)
+        f = Future(self)
+        self._futures.append(f)
         return f
 
 
@@ -242,11 +256,11 @@ class Future(object):
     methods in this library.
 
     Args:
-        batch (:class:`multiprocessing.Namespace`): Information about the
-            batch object that is committing this message.
+        batch (:class:`~.Batch`): The batch object that is committing
+            this message.
     """
-    def __init__(self, batch_info):
-        self._batch_info = batch_info
+    def __init__(self, batch):
+        self._batch = batch
         self._callbacks = []
         self._hash = hash(uuid.uuid4())
 
@@ -280,7 +294,7 @@ class Future(object):
         This still returns True in failure cases; checking `result` or
         `exception` is the canonical way to assess success or failure.
         """
-        return self._batch_info.status in ('success', 'error')
+        return self._batch.status in ('success', 'error')
 
     def result(self, timeout=None):
         """Return the message ID, or raise an exception.
@@ -302,7 +316,7 @@ class Future(object):
         # return an appropriate value.
         err = self.exception(timeout=timeout)
         if err is None:
-            return self._batch_info.message_ids[hash(self)]
+            return self._batch.message_ids[hash(self)]
         raise err
 
     def exception(self, timeout=None, _wait=1):
@@ -322,12 +336,12 @@ class Future(object):
             :class:`Exception`: The exception raised by the call, if any.
         """
         # If the batch completed successfully, this should return None.
-        if self._batch_info.status == 'success':
+        if self._batch.status == 'success':
             return None
 
         # If this batch had an error, this should return it.
-        if self._batch_info.status == 'error':
-            return self._batch_info.error
+        if self._batch.status == 'error':
+            return self._batch.error
 
         # If the timeout has been exceeded, raise TimeoutError.
         if timeout and timeout < 0:

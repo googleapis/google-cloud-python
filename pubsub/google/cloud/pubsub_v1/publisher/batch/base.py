@@ -24,8 +24,8 @@ import six
 class BaseBatch(object):
     """The base batching class for Pub/Sub publishing.
 
-    Although the :class:`~.pubsub_v1.publisher.batch.mp.Batch` class, based
-    on :class:`multiprocessing.Process`, is fine for most cases, advanced
+    Although the :class:`~.pubsub_v1.publisher.batch.thread.Batch` class, based
+    on :class:`threading.Thread`, is fine for most cases, advanced
     users may need to implement something based on a different concurrency
     model.
 
@@ -33,6 +33,10 @@ class BaseBatch(object):
     subclasses may be passed as the ``batch_class`` argument to
     :class:`~.pubsub_v1.client.PublisherClient`.
     """
+    def __len__(self):
+        """Return the number of messages currently in the batch."""
+        return len(self.messages)
+
     @property
     @abc.abstractmethod
     def client(self):
@@ -44,47 +48,95 @@ class BaseBatch(object):
         raise NotImplementedError
 
     @property
+    @abc.abstractmethod
+    def client(self):
+        """Return the client used to create this batch.
+
+        Returns:
+            ~.pubsub_v1.client.PublisherClient: A publisher client.
+        """
+        raise NotImplementedError
+
+    @property
+    @abc.abstractmethod
+    def messages(self):
+        """Return the messages currently in the batch.
+
+        Returns:
+            Sequence: The messages currently in the batch.
+        """
+        raise NotImplementedError
+
+    @property
+    @abc.abstractmethod
+    def size(self):
+        """Return the total size of all of the messages currently in the batch.
+
+        Returns:
+            int: The total size of all of the messages currently
+                 in the batch, in bytes.
+        """
+        raise NotImplementedError
+
+    @property
+    @abc.abstractmethod
+    def settings(self):
+        """Return the batch settings.
+
+        Returns:
+            ~.pubsub_v1.types.BatchSettings: The batch settings. These are
+                considered immutable once the batch has been opened.
+        """
+        raise NotImplementedError
+
+    @property
+    @abc.abstractmethod
     def status(self):
         """Return the status of this batch.
 
         Returns:
             str: The status of this batch. All statuses are human-readable,
-                all-lowercase strings, and represented in the
-                :class:`BaseBatch.Status` enum.
+                all-lowercase strings. The ones represented in the
+                :class:`BaseBatch.Status` enum are special, but other statuses
+                are permitted.
         """
         raise NotImplementedError
 
-    def publish(self, data, **attrs):
+    def will_accept(self, message):
+        """Return True if the batch is able to accept the message.
+
+        Args:
+            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
+
+        Returns:
+            bool: Whether this batch can accept the message.
+        """
+        # If this batch is not accepting messages generally, return False.
+        if self.status != self.Status.ACCEPTING_MESSAGES:
+            return False
+
+        # If this batch can not hold the message in question, return False.
+        if self.size + message.ByteSize() > self.settings.max_bytes:
+            return False
+
+        # Okay, everything is good.
+        return True
+
+    @abc.abstractmethod
+    def publish(self, message):
         """Publish a single message.
-
-        .. note::
-            Messages in Pub/Sub are blobs of bytes. They are *binary* data,
-            not text. You must send data as a bytestring
-            (``bytes`` in Python 3; ``str`` in Python 2), and this library
-            will raise an exception if you send a text string.
-
-            The reason that this is so important (and why we do not try to
-            coerce for you) is because Pub/Sub is also platform independent
-            and there is no way to know how to decode messages properly on
-            the other side; therefore, encoding and decoding is a required
-            exercise for the developer.
 
         Add the given message to this object; this will cause it to be
         published once the batch either has enough messages or a sufficient
         period of time has elapsed.
 
-        Args:
-            data (bytes): A bytestring representing the message body. This
-                must be a bytestring (a text string will raise TypeError).
-            attrs (Mapping[str, str]): A dictionary of attributes to be
-                sent as metadata. (These may be text strings or byte strings.)
+        This method is called by :meth:`~.PublisherClient.publish`.
 
-        Raises:
-            TypeError: If the ``data`` sent is not a bytestring, or if the
-                ``attrs`` are not either a ``str`` or ``bytes``.
+        Args:
+            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~.pubsub_v1.publisher.future.Future: An object conforming to the
+            ~.pubsub_v1.publisher.batch.mp.Future: An object conforming to the
                 :class:`concurrent.futures.Future` interface.
         """
         raise NotImplementedError
@@ -101,7 +153,19 @@ class BaseBatch(object):
         SUCCESS = 'success'
 
 
-# Make a fake batch. This is used by the client to do single-op checks
-# for batch existence.
-FakeBatch = collections.namedtuple('FakeBatch', ['status'])
-FAKE = FakeBatch(status='fake')
+class RejectionBatch(object):
+    """A fake batch-like object that refuses to accept any message.
+
+    This is used by the client to do single-op checks for batch
+    existence.
+    """
+    def will_accept(self, message):
+        """Return False.
+
+        Args:
+            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
+
+        Returns:
+            bool: Whether this batch can accept the message. It never can.
+        """
+        return False

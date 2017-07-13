@@ -129,7 +129,7 @@ class Message(object):
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._policy.histogram.add(time_to_ack)
         self._policy.ack(self._ack_id)
-        self.release()
+        self.drop()
 
     def drop(self):
         """Release the message from lease management.
@@ -181,4 +181,4 @@ class Message(object):
         This will cause the message to be re-delivered to the subscription.
         """
         self.modify_ack_deadline(seconds=0)
-        self.release()
+        self.drop()

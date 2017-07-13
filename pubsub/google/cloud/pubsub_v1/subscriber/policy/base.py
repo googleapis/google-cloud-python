@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import abc
+import logging
 import random
 import time
 
@@ -26,13 +27,15 @@ from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import consumer
 from google.cloud.pubsub_v1.subscriber import histogram
 
+logger = logging.getLogger(__name__)
+
 
 @six.add_metaclass(abc.ABCMeta)
 class BasePolicy(object):
     """Abstract class defining a subscription policy.
 
-    Although the :class:`~.pubsub_v1.subscriber.policy.mp.Policy` class,
-    based on :class:`multiprocessing.Process`, is fine for most cases,
+    Although the :class:`~.pubsub_v1.subscriber.policy.thread.Policy` class,
+    based on :class:`threading.Thread`, is fine for most cases,
     advanced users may need to implement something based on a different
     concurrency model.
 
@@ -86,7 +89,7 @@ class BasePolicy(object):
     def initial_request(self):
         """Return the initial request.
 
-        This defines the intiial request that must always be sent to Pub/Sub
+        This defines the initial request that must always be sent to Pub/Sub
         immediately upon opening the subscription.
         """
         return types.StreamingPullRequest(
@@ -171,11 +174,13 @@ class BasePolicy(object):
         # This is based off of how long previous messages have taken to ack,
         # with a sensible default and within the ranges allowed by Pub/Sub.
         p99 = self.histogram.percentile(99)
+        logger.debug('The current p99 value is %d seconds.' % p99)
 
         # Create a streaming pull request.
         # We do not actually call `modify_ack_deadline` over and over because
         # it is more efficient to make a single request.
         ack_ids = list(self.managed_ack_ids)
+        logger.debug('Renewing lease for %d ack IDs.' % len(ack_ids))
         if len(ack_ids) > 0:
             request = types.StreamingPullRequest(
                 modify_deadline_ack_ids=ack_ids,
@@ -189,7 +194,9 @@ class BasePolicy(object):
         # period between 0 seconds and 90% of the lease. This use of
         # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
         # where there are many clients.
-        time.sleep(random.uniform(0.0, p99 * 0.9))
+        snooze = random.uniform(0.0, p99 * 0.9)
+        logger.debug('Snoozing lease management for %f seconds.' % snooze)
+        time.sleep(snooze)
         self.maintain_leases()
 
     def modify_ack_deadline(self, ack_id, seconds):

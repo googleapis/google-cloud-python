@@ -15,9 +15,9 @@
 from __future__ import absolute_import
 
 from concurrent import futures
-from multiprocessing import managers
+import queue
 import logging
-import multiprocessing
+import threading
 
 import grpc
 
@@ -29,15 +29,8 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 logger = logging.getLogger(__name__)
 
 
-# Allow sets to be able to be run through the managers; ensure they are
-# iterable and have add/remove.
-managers.SyncManager.register('set', set,
-    exposed=('__contains__', '__iter__', 'add', 'remove'),
-)
-
-
 class Policy(base.BasePolicy):
-    """A consumer class based on :class:``multiprocessing.Process``.
+    """A consumer class based on :class:``threading.Thread``.
 
     This consumer handles the connection to the Pub/Sub service and all of
     the concurrency needs.
@@ -47,19 +40,15 @@ class Policy(base.BasePolicy):
         self._callback = lambda message: None
 
         # Create a manager for keeping track of shared state.
-        self._manager = multiprocessing.Manager()
-        self._shared = self._manager.Namespace(subscription=subscription)
-        self._managed_ack_ids = self._manager.set()
-        self._request_queue = self._manager.Queue()
+        self._managed_ack_ids = set()
+        self._request_queue = queue.Queue()
 
         # Call the superclass constructor.
-        super(Policy, self).__init__(client, subscription,
-            histogram_data=self._manager.dict(),
-        )
+        super(Policy, self).__init__(client, subscription)
 
         # Also maintain a request queue and an executor.
         logger.debug('Creating callback requests thread (not starting).')
-        self._executor = futures.ProcessPoolExecutor()
+        self._executor = futures.ThreadPoolExecutor()
         self._callback_requests = helper_threads.QueueCallbackThread(
             self._request_queue,
             self.on_callback_request,
@@ -67,33 +56,16 @@ class Policy(base.BasePolicy):
 
         # Spawn a process that maintains all of the leases for this policy.
         logger.debug('Spawning lease process.')
-        self._lease_process = multiprocessing.Process(
+        self._lease_process = threading.Thread(
             target=self.maintain_leases,
         )
         self._lease_process.daemon = True
         self._lease_process.start()
 
-    @property
-    def managed_ack_ids(self):
-        """Return the ack IDs currently being managed by the policy.
-
-        Returns:
-            set: The set of ack IDs being managed.
-        """
-        return self._managed_ack_ids
-
-    @property
-    def subscription(self):
-        """Return the subscription.
-
-        Returns:
-            str: The subscription
-        """
-        return self._shared.subscription
-
     def close(self):
         """Close the existing connection."""
         self._consumer.helper_threads.stop('callback requests worker')
+        self._consumer.stop_consuming()
 
     def open(self, callback):
         """Open a streaming pull connection and begin receiving messages.
@@ -138,5 +110,6 @@ class Policy(base.BasePolicy):
         For each message, schedule a callback with the executor.
         """
         for msg in response.received_messages:
+            logger.debug('New message received from Pub/Sub: %r', msg)
             message = Message(self, msg.ack_id, msg.message)
             self._executor.submit(self._callback, message)

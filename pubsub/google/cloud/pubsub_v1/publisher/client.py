@@ -15,7 +15,6 @@
 from __future__ import absolute_import
 
 import copy
-import functools
 import pkg_resources
 
 import six
@@ -25,7 +24,7 @@ from google.cloud.gapic.pubsub.v1 import publisher_client
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher.batch import base
-from google.cloud.pubsub_v1.publisher.batch import mp
+from google.cloud.pubsub_v1.publisher.batch import thread
 
 
 __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
@@ -47,13 +46,13 @@ class PublisherClient(object):
             :class:`.pubsub_v1.publisher.batch.base.BaseBatch` class in
             order to define your own batcher. This is primarily provided to
             allow use of different concurrency models; the default
-            is based on :class:`multiprocessing.Process`.
+            is based on :class:`threading.Thread`.
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
             :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
             Generally, you should not need to set additional keyword arguments.
     """
-    def __init__(self, batch_settings=(), batch_class=mp.Batch, **kwargs):
+    def __init__(self, batch_settings=(), batch_class=thread.Batch, **kwargs):
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         kwargs['lib_name'] = 'gccl'
@@ -66,23 +65,19 @@ class PublisherClient(object):
         self._batch_class = batch_class
         self._batches = {}
 
-    @property
-    def concurrency(self):
-        """Return the concurrency strategy instance.
+        # Instantiate the "rejection batch", which is used for single-op
+        # acceptance checks if no batch is present.
+        self._rejection = base.RejectionBatch()
 
-        Returns:
-            ~.pubsub_v1.concurrency.base.PublishStrategy: The class responsible
-                for handling publishing concurrency.
-        """
-        return self._concurrency
-
-    def batch(self, topic, create=True, autocommit=True):
+    def batch(self, topic, message, create=True, autocommit=True):
         """Return the current batch.
 
         This will create a new batch only if no batch currently exists.
 
         Args:
             topic (str): A string representing the topic.
+            message (~.pubsub_v1.types.PubsubMessage): The message that will
+                be committed.
             create (bool): Whether to create a new batch if no batch is
                 found. Defaults to True.
             autocommit (bool): Whether to autocommit this batch.
@@ -93,8 +88,7 @@ class PublisherClient(object):
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
-        accepting = base.BaseBatch.Status.ACCEPTING_MESSAGES
-        if self._batches.get(topic, base.FAKE).status != accepting:
+        if not self._batches.get(topic, self._rejection).will_accept(message):
             if not create:
                 return None
             self._batches[topic] = self._batch_class(
@@ -161,5 +155,8 @@ class PublisherClient(object):
             raise TypeError('All attributes being published to Pub/Sub must '
                             'be sent as text strings.')
 
+        # Create the Pub/Sub message object.
+        message = types.PubsubMessage(data=data, attributes=attrs)
+
         # Delegate the publishing to the batch.
-        return self.batch(topic).publish(data, *attrs)
+        return self.batch(topic, message=message).publish(message)
