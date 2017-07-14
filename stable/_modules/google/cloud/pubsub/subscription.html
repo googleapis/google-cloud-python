@@ -1,340 +1,43 @@
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>google.cloud.pubsub.subscription &mdash; google-cloud 0.24.1 documentation</title>
-  
-
-  
-  
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.pubsub.subscription &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../../../genindex.html"/>
-        <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0.24.1 documentation" href="../../../../index.html"/>
-        <link rel="up" title="Module code" href="../../../index.html"/> 
-
-  
-  <script src="../../../../_static/js/modernizr.min.js"></script>
-
-</head>
-
-<body class="wy-body-for-nav" role="document">
-
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
    
-  <div class="wy-grid-for-nav">
-
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
-
-          
-            <a href="../../../../index.html" class="icon icon-home"> google-cloud
-          
-
-          
-          </a>
-
-          
-            
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">google-cloud</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-api.html">Shared Core Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-config.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-auth.html">Authentication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../iterators.html">Iterators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../operation-api.html">Long-Running Operations</a></li>
-</ul>
-<p class="caption"><span class="caption-text">BigQuery</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-dataset.html">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-job.html">Jobs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-table.html">Tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-query.html">Query</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-schema.html">Schemas</a></li>
-</ul>
-<p class="caption"><span class="caption-text">BigTable</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance-api.html">Instance Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table-api.html">Table Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-data-api.html">Data API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance.html">Instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-cluster.html">Cluster</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table.html">Table</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-column-family.html">Column Families</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row.html">Bigtable Row</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row-filters.html">Bigtable Row Filters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row-data.html">Row Data</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Datastore</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-entities.html">Entities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-keys.html">Keys</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-queries.html">Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-transactions.html">Transactions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-batches.html">Batches</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-helpers.html">Helpers</a></li>
-</ul>
-<p class="caption"><span class="caption-text">DNS</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-zone.html">Managed Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-resource-record-set.html">Resource Record Sets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-changes.html">Change Sets</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Natural Language</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../language-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../language-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../language-document.html">Document</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../language-responses.html">Natural Language Response Classes</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Pub/Sub</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-topic.html">Topics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-subscription.html">Subscriptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-message.html">Message</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-iam.html">IAM Policy</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Resource Manager</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-api.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-project.html">Projects</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Runtime Configuration</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-config.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-variable.html">Variables</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Spanner</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-usage.html">Database Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-implicit-txn-usage.html">Implicit Transactions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-pool-usage.html">Session Pools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-batch-usage.html">Batching Modifications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-transaction-usage.html">Read-write Transactions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-api.html">Spanner Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-api.html">Instance API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-api.html">Database API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-api.html">Session API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-keyset-api.html">Keyset API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-batch-api.html">Batch API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-transaction-api.html">Transaction API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-streamed-api.html">StreamedResultSet API</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Speech</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-encoding.html">Speech Encoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-operation.html">Speech Operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-result.html">Speech Result</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-sample.html">Speech Sample</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-alternative.html">Speech Alternative</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Stackdriver Error Reporting</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-util.html">Error Reporting Utilities</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#cloud-logging-handler-transports">Cloud Logging Handler transports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-logger.html">Logger</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-entries.html">Entries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-metric.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-sink.html">Sinks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-stdlib-usage.html">Integration with Python logging module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers.html">Python Logging Module Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-metric.html">Metric Descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-resource.html">Monitored Resource Descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-group.html">Groups</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-query.html">Time Series Query</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-timeseries.html">Time Series</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-label.html">Label Descriptors</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Storage</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-blobs.html">Blobs / Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-acl.html">ACL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-batch.html">Batches</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Translate</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../translate-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../translate-client.html">Client</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Vision</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-usage.html">Using the Vision API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-annotations.html">Vision Annotations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-batch.html">Vision Batch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-crop-hint.html">Vision Crop Hint</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-safe-search.html">Vision Safe Search</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-text.html">Vision Full Text</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-web.html">Vision Web Annotations</a></li>
-</ul>
-<p class="caption"><span class="caption-text">External Links</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/">GitHub</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues">Issues</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/google-cloud-python">Stack Overflow</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/google-cloud">PyPI</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">google-cloud</a>
-        
-      </nav>
-
-
-      
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>google.cloud.pubsub.subscription</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-        
-      </li>
-    
-  </ul>
-
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
             
   <h1>Source code for google.cloud.pubsub.subscription</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2015 Google Inc.</span>
@@ -353,16 +56,20 @@
 
 <span class="sd">&quot;&quot;&quot;Define API Subscriptions.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">datetime</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub.snapshot</span> <span class="k">import</span> <span class="n">Snapshot</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub._helpers</span> <span class="k">import</span> <span class="n">topic_name_from_path</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub.iam</span> <span class="k">import</span> <span class="n">Policy</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub.message</span> <span class="k">import</span> <span class="n">Message</span>
 
 
-<div class="viewcode-block" id="Subscription"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription">[docs]</a><span class="k">class</span> <span class="nc">Subscription</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription">[docs]</a><span class="k">class</span> <span class="nc">Subscription</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Subscriptions receive messages published to their topics.</span>
 
-<span class="sd">    See:</span>
+<span class="sd">    See</span>
 <span class="sd">    https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions</span>
 
 <span class="sd">    :type name: str</span>
@@ -382,6 +89,19 @@
 <span class="sd">        (Optional) URL to which messages will be pushed by the back-end.  If</span>
 <span class="sd">        not set, the application must pull messages.</span>
 
+<span class="sd">    :type retain_acked_messages: bool</span>
+<span class="sd">    :param retain_acked_messages:</span>
+<span class="sd">        (Optional) Whether to retain acked messages. If set, acked messages</span>
+<span class="sd">        are retained in the subscription&#39;s backlog for a duration indicated</span>
+<span class="sd">        by `message_retention_duration`.</span>
+
+<span class="sd">    :type message_retention_duration: :class:`datetime.timedelta`</span>
+<span class="sd">    :param message_retention_duration:</span>
+<span class="sd">        (Optional) Whether to retain acked messages. If set, acked messages</span>
+<span class="sd">        are retained in the subscription&#39;s backlog for a duration indicated</span>
+<span class="sd">        by `message_retention_duration`. If unset, defaults to 7 days.</span>
+
+
 <span class="sd">    :type client: :class:`~google.cloud.pubsub.client.Client`</span>
 <span class="sd">    :param client:</span>
 <span class="sd">        (Optional) The client to use.  If not passed, falls back to the</span>
@@ -391,11 +111,12 @@
     <span class="n">_DELETED_TOPIC_PATH</span> <span class="o">=</span> <span class="s1">&#39;_deleted-topic_&#39;</span>
     <span class="sd">&quot;&quot;&quot;Value of ``projects.subscriptions.topic`` when topic has been deleted.</span>
 
-<span class="sd">    See:</span>
+<span class="sd">    See</span>
 <span class="sd">    https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">retain_acked_messages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message_retention_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -407,12 +128,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">topic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span> <span class="ow">or</span> <span class="n">topic</span><span class="o">.</span><span class="n">_client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">ack_deadline</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_endpoint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retain_acked_messages</span> <span class="o">=</span> <span class="n">retain_acked_messages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_retention_duration</span> <span class="o">=</span> <span class="n">message_retention_duration</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a topic given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -446,10 +168,21 @@
         <span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
         <span class="n">push_config</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span>
+        <span class="n">retain_acked_messages</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retainAckedMessages&#39;</span><span class="p">)</span>
+        <span class="n">resource_duration</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">message_retention_duration</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span>
+            <span class="n">seconds</span><span class="o">=</span><span class="n">resource_duration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;seconds&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">microseconds</span><span class="o">=</span><span class="n">resource_duration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nanos&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="n">ack_deadline</span><span class="p">,</span>
-                       <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span></div>
+                       <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">,</span>
+                       <span class="n">retain_acked_messages</span><span class="o">=</span><span class="n">retain_acked_messages</span><span class="p">,</span>
+                       <span class="n">message_retention_duration</span><span class="o">=</span><span class="n">message_retention_duration</span><span class="p">,</span>
+                       <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="n">ack_deadline</span><span class="p">,</span>
+                   <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">,</span>
+                   <span class="n">retain_acked_messages</span><span class="o">=</span><span class="n">retain_acked_messages</span><span class="p">,</span>
+                   <span class="n">message_retention_duration</span><span class="o">=</span><span class="n">message_retention_duration</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -466,7 +199,7 @@
         <span class="sd">&quot;&quot;&quot;URL path for the subscription&#39;s APIs&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
 
-<div class="viewcode-block" id="Subscription.auto_ack"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.auto_ack">[docs]</a>    <span class="k">def</span> <span class="nf">auto_ack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.auto_ack"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.auto_ack">[docs]</a>    <span class="k">def</span> <span class="nf">auto_ack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:class:`AutoAck` factory</span>
 
 <span class="sd">        :type return_immediately: bool</span>
@@ -501,15 +234,15 @@
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
         <span class="k">return</span> <span class="n">client</span>
 
-<div class="viewcode-block" id="Subscription.create"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.create"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create the subscription via a PUT request</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create</span>
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_create]</span>
 <span class="sd">           :end-before: [END subscription_create]</span>
 
@@ -521,10 +254,12 @@
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_create</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span>
+            <span class="n">ack_deadline</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span><span class="p">,</span>
+            <span class="n">retain_acked_messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retain_acked_messages</span><span class="p">,</span>
+            <span class="n">message_retention_duration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">message_retention_duration</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.exists"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.exists"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test existence of the subscription via a GET request</span>
 
 <span class="sd">        See</span>
@@ -532,7 +267,7 @@
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_exists]</span>
 <span class="sd">           :end-before: [END subscription_exists]</span>
 
@@ -553,7 +288,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Subscription.reload"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.reload"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  sync local subscription configuration via a GET request</span>
 
 <span class="sd">        See</span>
@@ -565,7 +300,7 @@
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_reload]</span>
 <span class="sd">           :end-before: [END subscription_reload]</span>
 
@@ -579,17 +314,20 @@
         <span class="n">data</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">subscription_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
         <span class="n">push_config</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s1">&#39;topic&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">topic_name</span> <span class="o">=</span> <span class="n">topic_name_from_path</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;topic&#39;</span><span class="p">],</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">topic_name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.delete"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.delete"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  delete the subscription via a DELETE request.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete</span>
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_delete]</span>
 <span class="sd">           :end-before: [END subscription_delete]</span>
 
@@ -602,19 +340,19 @@
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.modify_push_configuration"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.modify_push_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">modify_push_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.modify_push_configuration"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.modify_push_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">modify_push_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  update the push endpoint for the subscription.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_push_pull]</span>
 <span class="sd">           :end-before: [END subscription_push_pull]</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_pull_push]</span>
 <span class="sd">           :end-before: [END subscription_pull_push]</span>
 
@@ -633,15 +371,15 @@
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_modify_push_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_endpoint</span></div>
 
-<div class="viewcode-block" id="Subscription.pull"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.pull">[docs]</a>    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.pull"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.pull">[docs]</a>    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  retrieve messages for the subscription.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/pull</span>
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_pull]</span>
 <span class="sd">           :end-before: [END subscription_pull]</span>
 
@@ -672,15 +410,15 @@
         <span class="k">return</span> <span class="p">[(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;ackId&#39;</span><span class="p">],</span> <span class="n">Message</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]))</span>
                 <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Subscription.acknowledge"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.acknowledge">[docs]</a>    <span class="k">def</span> <span class="nf">acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.acknowledge"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.acknowledge">[docs]</a>    <span class="k">def</span> <span class="nf">acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/acknowledge</span>
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_acknowledge]</span>
 <span class="sd">           :end-before: [END subscription_acknowledge]</span>
 
@@ -696,10 +434,10 @@
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.modify_ack_deadline"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.modify_ack_deadline"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  update acknowledgement deadline for a retrieved message.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline</span>
 
 <span class="sd">        :type ack_ids: list of string</span>
@@ -718,15 +456,53 @@
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_modify_ack_deadline</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.get_iam_policy"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.snapshot"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a snapshot of this subscription.</span>
+
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param name: the name of the subscription</span>
+
+<span class="sd">        :rtype: :class:`Snapshot`</span>
+<span class="sd">        :returns: The snapshot created with the passed in arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Snapshot</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Subscription.seek_snapshot"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.seek_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">seek_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  seek a subscription to a given snapshot</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek</span>
+
+<span class="sd">        :type snapshot: :class:`Snapshot`</span>
+<span class="sd">        :param snapshot: The snapshot to seek to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">subscription_seek</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Subscription.seek_timestamp"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.seek_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">seek_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  seek a subscription to a given point in time</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek</span>
+
+<span class="sd">        :type time: :class:`datetime.datetime`</span>
+<span class="sd">        :param time: The time to seek to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">subscription_seek</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Subscription.get_iam_policy"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch the IAM policy for the subscription.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/getIamPolicy</span>
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_get_iam_policy]</span>
 <span class="sd">           :end-before: [END subscription_get_iam_policy]</span>
 
@@ -744,15 +520,15 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.set_iam_policy"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.set_iam_policy"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the IAM policy for the subscription.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy</span>
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_set_iam_policy]</span>
 <span class="sd">           :end-before: [END subscription_set_iam_policy]</span>
 
@@ -775,15 +551,15 @@
         <span class="n">resp</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.check_iam_permissions"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.check_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">check_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.check_iam_permissions"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.check_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">check_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify permissions allowed for the current user.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/testIamPermissions</span>
 
 <span class="sd">        Example:</span>
 
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">           :start-after: [START subscription_check_iam_permissions]</span>
 <span class="sd">           :end-before: [END subscription_check_iam_permissions]</span>
 
@@ -804,7 +580,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">permissions</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="AutoAck"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.AutoAck">[docs]</a><span class="k">class</span> <span class="nc">AutoAck</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="AutoAck"><a class="viewcode-back" href="../../../../pubsub/subscription.html#google.cloud.pubsub.subscription.AutoAck">[docs]</a><span class="k">class</span> <span class="nc">AutoAck</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrapper for :meth:`Subscription.pull` results.</span>
 
 <span class="sd">    Mapping, tracks messages still-to-be-acknowledged.</span>
@@ -856,66 +632,100 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_subscription</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span></div>
 </pre></div>
 
-           </div>
-           <div class="articleComments">
-            
-           </div>
           </div>
-          <footer>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2014-2017, Google.
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
         </div>
       </div>
-
-    </section>
-
-  </div>
-  
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">google-cloud</a></h1>
 
 
-  
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../../',
-            VERSION:'0.24.1',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+<p class="blurb">Google Cloud Client Libraries for Python</p>
 
-  
 
-  
-  
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-  
 
-  
-  
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
-      });
-  </script>
-   
 
-</body>
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
 </html>

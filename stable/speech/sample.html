@@ -1,0 +1,457 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Speech Sample &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Speech Alternative" href="alternative.html" />
+    <link rel="prev" title="Speech Result" href="result.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.speech.sample">
+<span id="speech-sample"></span><h1>Speech Sample<a class="headerlink" href="#module-google.cloud.speech.sample" title="Permalink to this headline">#</a></h1>
+<p>Sample class to handle content for Google Cloud Speech API.</p>
+<dl class="class">
+<dt id="google.cloud.speech.sample.Sample">
+<em class="property">class </em><code class="descclassname">google.cloud.speech.sample.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>content=None</em>, <em>source_uri=None</em>, <em>stream=None</em>, <em>encoding=None</em>, <em>sample_rate_hertz=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/speech/sample.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Representation of an audio sample to be used with Google Speech API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) Bytes containing audio data.</li>
+<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) URI that points to a file that contains
+audio data bytes as specified in RecognitionConfig.
+Currently, only Google Cloud Storage URIs are
+supported, which must be specified in the following
+format: <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>.</li>
+<li><strong>stream</strong> (<em>file</em>) – (Optional) File like object to stream.</li>
+<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – encoding of audio data sent in all RecognitionAudio
+messages, can be one of: <a class="reference internal" href="encoding.html#google.cloud.speech.encoding.Encoding.LINEAR16" title="google.cloud.speech.encoding.Encoding.LINEAR16"><code class="xref py py-attr docutils literal"><span class="pre">LINEAR16</span></code></a>,
+<a class="reference internal" href="encoding.html#google.cloud.speech.encoding.Encoding.FLAC" title="google.cloud.speech.encoding.Encoding.FLAC"><code class="xref py py-attr docutils literal"><span class="pre">FLAC</span></code></a>, <a class="reference internal" href="encoding.html#google.cloud.speech.encoding.Encoding.MULAW" title="google.cloud.speech.encoding.Encoding.MULAW"><code class="xref py py-attr docutils literal"><span class="pre">MULAW</span></code></a>,
+<a class="reference internal" href="encoding.html#google.cloud.speech.encoding.Encoding.AMR" title="google.cloud.speech.encoding.Encoding.AMR"><code class="xref py py-attr docutils literal"><span class="pre">AMR</span></code></a>, <a class="reference internal" href="encoding.html#google.cloud.speech.encoding.Encoding.AMR_WB" title="google.cloud.speech.encoding.Encoding.AMR_WB"><code class="xref py py-attr docutils literal"><span class="pre">AMR_WB</span></code></a></li>
+<li><strong>sample_rate_hertz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Sample rate in Hertz of the audio data sent in
+all requests. Valid values are: 8000-48000. For
+best results, set the sampling rate of the audio
+source to 16000 Hz. If that’s not possible, use
+the native sample rate of the audio source
+(instead of re-sampling).</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.speech.client.Client" title="google.cloud.speech.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client that owns this instance of sample.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.chunk_size">
+<code class="descname">chunk_size</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.chunk_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Chunk size to send over gRPC. ~100ms</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Optimized chunk size.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.content" title="Permalink to this definition">#</a></dt>
+<dd><p>Bytes of audio content.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)">bytes</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Byte stream of audio content.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.default_encoding">
+<code class="descname">default_encoding</code><em class="property"> = 'FLAC'</em><a class="headerlink" href="#google.cloud.speech.sample.Sample.default_encoding" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.encoding">
+<code class="descname">encoding</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.encoding" title="Permalink to this definition">#</a></dt>
+<dd><p>Audio encoding type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String value of Encoding type.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.speech.sample.Sample.long_running_recognize">
+<code class="descname">long_running_recognize</code><span class="sig-paren">(</span><em>language_code</em>, <em>max_alternatives=None</em>, <em>profanity_filter=None</em>, <em>speech_contexts=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/speech/sample.html#Sample.long_running_recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample.long_running_recognize" title="Permalink to this definition">#</a></dt>
+<dd><p>Asychronous Recognize request to Google Speech API.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1/speech/longrunningrecognize">long_running_recognize</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The language of the supplied audio as
+BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Maximum number of recognition
+hypotheses to be returned. The server may
+return fewer than maxAlternatives.
+Valid values are 0-30. A value of 0 or 1
+will return a maximum of 1. Defaults to 1</li>
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, the server will attempt to filter
+out profanities, replacing all but the
+initial character in each filtered word with
+asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
+omitted, profanities won’t be filtered out.</li>
+<li><strong>speech_contexts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – A list of strings (max 50) containing words and
+phrases “hints” so that the speech recognition
+is more likely to recognize them. This can be
+used to improve the accuracy for specific words
+and phrases. This can also be used to add new
+words to the vocabulary of the recognizer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="operation.html#google.cloud.speech.operation.Operation" title="google.cloud.speech.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Operation for asynchronous request to Google Speech API.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.speech.sample.Sample.recognize">
+<code class="descname">recognize</code><span class="sig-paren">(</span><em>language_code</em>, <em>max_alternatives=None</em>, <em>profanity_filter=None</em>, <em>speech_contexts=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/speech/sample.html#Sample.recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample.recognize" title="Permalink to this definition">#</a></dt>
+<dd><p>Synchronous Speech Recognition.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1/speech/recognize">recognize</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The language of the supplied audio as
+BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Maximum number of recognition
+hypotheses to be returned. The server may
+return fewer than maxAlternatives.
+Valid values are 0-30. A value of 0 or 1
+will return a maximum of 1. Defaults to 1</li>
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, the server will attempt to filter
+out profanities, replacing all but the
+initial character in each filtered word with
+asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
+omitted, profanities won’t be filtered out.</li>
+<li><strong>speech_contexts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – A list of strings (max 50) containing words and
+phrases “hints” so that the speech recognition
+is more likely to recognize them. This can be
+used to improve the accuracy for specific words
+and phrases. This can also be used to add new
+words to the vocabulary of the recognizer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>A list of dictionaries. One dict for each alternative. Each
+dictionary typically contains two keys (though not
+all will be present in all cases)</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">transcript</span></code>: The detected text from the audio recording.</li>
+<li><code class="docutils literal"><span class="pre">confidence</span></code>: The confidence in language detection, float
+between 0 and 1.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.sample_rate_hertz">
+<code class="descname">sample_rate_hertz</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.sample_rate_hertz" title="Permalink to this definition">#</a></dt>
+<dd><p>Sample rate integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Integer between 8000 and 48,000.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.source_uri">
+<code class="descname">source_uri</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.source_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Google Cloud Storage URI of audio source.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Google Cloud Storage URI string.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.stream">
+<code class="descname">stream</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Stream the content when it is a file-like object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">File like object to stream.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.speech.sample.Sample.streaming_recognize">
+<code class="descname">streaming_recognize</code><span class="sig-paren">(</span><em>language_code</em>, <em>max_alternatives=None</em>, <em>profanity_filter=None</em>, <em>speech_contexts=()</em>, <em>single_utterance=False</em>, <em>interim_results=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/speech/sample.html#Sample.streaming_recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample.streaming_recognize" title="Permalink to this definition">#</a></dt>
+<dd><p>Streaming speech recognition.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Streaming recognition requests are limited to 1 minute of audio.
+See <a class="reference external" href="https://cloud.google.com/speech/limits#content">https://cloud.google.com/speech/limits#content</a></p>
+</div>
+<dl class="docutils">
+<dt>Yields: Instance of</dt>
+<dd><a class="reference internal" href="result.html#google.cloud.speech.result.StreamingSpeechResult" title="google.cloud.speech.result.StreamingSpeechResult"><code class="xref py py-class docutils literal"><span class="pre">StreamingSpeechResult</span></code></a>
+containing results and metadata from the streaming request.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The language of the supplied audio as
+BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Maximum number of recognition
+hypotheses to be returned. The server may
+return fewer than maxAlternatives.
+Valid values are 0-30. A value of 0 or 1
+will return a maximum of 1. Defaults to 1</li>
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, the server will attempt to filter
+out profanities, replacing all but the
+initial character in each filtered word with
+asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
+omitted, profanities won’t be filtered out.</li>
+<li><strong>speech_contexts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – A list of strings (max 50) containing words and
+phrases “hints” so that the speech recognition
+is more likely to recognize them. This can be
+used to improve the accuracy for specific words
+and phrases. This can also be used to add new
+words to the vocabulary of the recognizer.</li>
+<li><strong>single_utterance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) If false or omitted, the recognizer
+will perform continuous recognition
+(continuing to process audio even if the user
+pauses speaking) until the client closes the
+output stream (gRPC API) or when the maximum
+time limit has been reached. Multiple
+SpeechRecognitionResults with the is_final
+flag set to true may be returned.
+If true, the recognizer will detect a single
+spoken utterance. When it detects that the
+user has paused or stopped speaking, it will
+return an END_OF_UTTERANCE event and cease
+recognition. It will return no more than one
+SpeechRecognitionResult with the is_final flag
+set to true.</li>
+<li><strong>interim_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) If true, interim results (tentative
+hypotheses) may be returned as they become
+available (these interim results are indicated
+with the <code class="docutils literal"><span class="pre">is_final=False</span></code> flag). If false or
+omitted, only is_final=true result(s) are
+returned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">EnvironmentError if gRPC is not available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Speech</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client.html">Speech Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.html">Speech Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation.html">Speech Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result.html">Speech Result</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Speech Sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alternative.html">Speech Alternative</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#client">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#asynchronous-recognition">Asynchronous Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#synchronous-recognition">Synchronous Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#streaming-recognition">Streaming Recognition</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Speech</a><ul>
+      <li>Previous: <a href="result.html" title="previous chapter">Speech Result</a></li>
+      <li>Next: <a href="alternative.html" title="next chapter">Speech Alternative</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/speech/sample.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

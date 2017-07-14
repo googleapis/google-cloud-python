@@ -1,0 +1,484 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Table &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Table Admin API" href="table-api.html" />
+    <link rel="prev" title="Instance Admin API" href="instance-api.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.bigtable.table">
+<span id="table"></span><h1>Table<a class="headerlink" href="#module-google.cloud.bigtable.table" title="Permalink to this headline">#</a></h1>
+<p>User-friendly container for Google Cloud Bigtable Table.</p>
+<dl class="class">
+<dt id="google.cloud.bigtable.table.Table">
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.table.</code><code class="descname">Table</code><span class="sig-paren">(</span><em>table_id</em>, <em>instance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Representation of a Google Cloud Bigtable Table.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We don’t define any properties on a table other than the name.
+The only other fields are <code class="docutils literal"><span class="pre">column_families</span></code> and <code class="docutils literal"><span class="pre">granularity</span></code>,
+The <code class="docutils literal"><span class="pre">column_families</span></code> are not stored locally and
+<code class="docutils literal"><span class="pre">granularity</span></code> is an enum with only one value.</p>
+</div>
+<p>We can use a <a class="reference internal" href="#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> to:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#google.cloud.bigtable.table.Table.create" title="google.cloud.bigtable.table.Table.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> the table</li>
+<li><code class="xref py py-meth docutils literal"><span class="pre">rename()</span></code> the table</li>
+<li><a class="reference internal" href="#google.cloud.bigtable.table.Table.delete" title="google.cloud.bigtable.table.Table.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> the table</li>
+<li><a class="reference internal" href="#google.cloud.bigtable.table.Table.list_column_families" title="google.cloud.bigtable.table.Table.list_column_families"><code class="xref py py-meth docutils literal"><span class="pre">list_column_families()</span></code></a> in the table</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ID of the table.</li>
+<li><strong>instance</strong> (<a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) – The instance that owns the table.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.column_family">
+<code class="descname">column_family</code><span class="sig-paren">(</span><em>column_family_id</em>, <em>gc_rule=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.column_family"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.column_family" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to create a column family associated with this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ID of the column family. Must be of the
+form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
+<li><strong>gc_rule</strong> (<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>) – (Optional) The garbage collection settings for this
+column family.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A column family owned by this table.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>initial_split_keys=None</em>, <em>column_families=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates this table.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A create request returns a
+<code class="xref py py-class docutils literal"><span class="pre">_generated.table_pb2.Table</span></code> but we don’t use
+this response.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>initial_split_keys</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – (Optional) List of row keys that will be
+used to initially split the table into
+several tablets (Tablets are similar to
+HBase regions). Given two split keys,
+<code class="docutils literal"><span class="pre">&quot;s1&quot;</span></code> and <code class="docutils literal"><span class="pre">&quot;s2&quot;</span></code>, three tablets will be
+created, spanning the key ranges:
+<code class="docutils literal"><span class="pre">[,</span> <span class="pre">s1)</span></code>, <code class="docutils literal"><span class="pre">[s1,</span> <span class="pre">s2)</span></code>, <code class="docutils literal"><span class="pre">[s2,</span> <span class="pre">)</span></code>.</li>
+<li><strong>column_families</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – (Optional) List or other iterable of
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> instances.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete this table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.list_column_families">
+<code class="descname">list_column_families</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.list_column_families"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.list_column_families" title="Permalink to this definition">#</a></dt>
+<dd><p>List the column families owned by this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of column families attached to this table. Keys
+are strings (column family names) and values are
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> instances.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the column
+family name from the response does not agree with the computed
+name from the column family ID.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.mutate_rows">
+<code class="descname">mutate_rows</code><span class="sig-paren">(</span><em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.mutate_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.mutate_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Mutates multiple rows in bulk.</p>
+<p>The method tries to update all specified rows.
+If some of the rows weren’t updated, it would not remove mutations.
+They can be applied to the row separately.
+If row mutations finished successfully, they would be cleaned up.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List or other iterable of <a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> instances.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of response statuses (<cite>google.rpc.status_pb2.Status</cite>)
+corresponding to success or failure of each row mutation
+sent. These will be in the same order as the <cite>rows</cite>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigtable.table.Table.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigtable.table.Table.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Table name used in requests.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This property will not change if <code class="docutils literal"><span class="pre">table_id</span></code> does not, but the
+return value is not cached.</p>
+</div>
+<p>The table name is of the form</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">&quot;projects/../instances/../tables/{table_id}&quot;</span></code></div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The table name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.read_row">
+<code class="descname">read_row</code><span class="sig-paren">(</span><em>row_key</em>, <em>filter_=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.read_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.read_row" title="Permalink to this definition">#</a></dt>
+<dd><p>Read a single row from this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The key of the row to read from.</li>
+<li><strong>filter</strong> (<a class="reference internal" href="row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to apply to the contents of the
+row. If unset, returns the entire row.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowData" title="google.cloud.bigtable.row_data.PartialRowData"><code class="xref py py-class docutils literal"><span class="pre">PartialRowData</span></code></a>, <code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The contents of the row if any chunks were returned in
+the response, otherwise <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if a commit row
+chunk is never encountered.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.read_rows">
+<code class="descname">read_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.read_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Read rows from this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>start_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) The beginning of a range of row keys to
+read from. The range will include <code class="docutils literal"><span class="pre">start_key</span></code>. If
+left empty, will be interpreted as the empty string.</li>
+<li><strong>end_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) The end of a range of row keys to read from.
+The range will not include <code class="docutils literal"><span class="pre">end_key</span></code>. If left empty,
+will be interpreted as an infinite string.</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) The read will terminate after committing to N
+rows’ worth of results. The default (zero) is to return
+all results.</li>
+<li><strong>filter</strong> (<a class="reference internal" href="row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to apply to the contents of the
+specified row(s). If unset, reads every column in
+each row.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData" title="google.cloud.bigtable.row_data.PartialRowsData"><code class="xref py py-class docutils literal"><span class="pre">PartialRowsData</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData" title="google.cloud.bigtable.row_data.PartialRowsData"><code class="xref py py-class docutils literal"><span class="pre">PartialRowsData</span></code></a> convenience wrapper for consuming
+the streamed results.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.row">
+<code class="descname">row</code><span class="sig-paren">(</span><em>row_key</em>, <em>filter_=None</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.row" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to create a row associated with this table.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">At most one of <code class="docutils literal"><span class="pre">filter_</span></code> and <code class="docutils literal"><span class="pre">append</span></code> can be used in a
+<code class="xref py py-class docutils literal"><span class="pre">Row</span></code>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>row_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The key for the row being created.</li>
+<li><strong>filter</strong> (<a class="reference internal" href="row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) Filter to be used for conditional mutations.
+See <a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> for more details.</li>
+<li><strong>append</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Flag to determine if the row should be used
+for append mutations.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A row owned by this table.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if both
+<code class="docutils literal"><span class="pre">filter_</span></code> and <code class="docutils literal"><span class="pre">append</span></code> are used.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.table.Table.sample_row_keys">
+<code class="descname">sample_row_keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.sample_row_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.sample_row_keys" title="Permalink to this definition">#</a></dt>
+<dd><p>Read a sample of row keys in the table.</p>
+<p>The returned row keys will delimit contiguous sections of the table of
+approximately equal size, which can be used to break up the data for
+distributed tasks like mapreduces.</p>
+<p>The elements in the iterator are a SampleRowKeys response and they have
+the properties <code class="docutils literal"><span class="pre">offset_bytes</span></code> and <code class="docutils literal"><span class="pre">row_key</span></code>. They occur in sorted
+order. The table might have contents before the first row key in the
+list and after the last one, but a key containing the empty string
+indicates “end of table” and will be the last response given, if
+present.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Row keys in this list may not have ever been written to or read
+from, and users should therefore not make any assumptions about the
+row key structure that are specific to their use case.</p>
+</div>
+<p>The <code class="docutils literal"><span class="pre">offset_bytes</span></code> field on a response indicates the approximate
+total storage space used by all rows in the table which precede
+<code class="docutils literal"><span class="pre">row_key</span></code>. Buffering the contents of all rows between two subsequent
+samples would require space roughly equal to the difference in their
+<code class="docutils literal"><span class="pre">offset_bytes</span></code> fields.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GrpcRendezvous" title="google.cloud.exceptions.GrpcRendezvous"><code class="xref py py-class docutils literal"><span class="pre">GrpcRendezvous</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A cancel-able iterator. Can be consumed by calling <code class="docutils literal"><span class="pre">next()</span></code>
+or by casting to a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> and can be cancelled by
+calling <code class="docutils literal"><span class="pre">cancel()</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigtable.table.TableMismatchError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigtable.table.</code><code class="descname">TableMismatchError</code><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#TableMismatchError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.TableMismatchError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a></p>
+<p>Row from another table.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigtable.table.TooManyMutationsError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigtable.table.</code><code class="descname">TooManyMutationsError</code><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#TooManyMutationsError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.TooManyMutationsError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a></p>
+<p>The number of mutations for bulk request is too big.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Bigtable</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html">Base for Everything</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster.html">Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance.html">Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance Admin API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-api.html">Table Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="column-family.html">Column Families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row.html">Bigtable Row</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row-data.html">Row Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-api.html">Data API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Bigtable</a><ul>
+      <li>Previous: <a href="instance-api.html" title="previous chapter">Instance Admin API</a></li>
+      <li>Next: <a href="table-api.html" title="next chapter">Table Admin API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/bigtable/table.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
