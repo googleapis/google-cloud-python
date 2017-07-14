@@ -382,6 +382,7 @@ class Table(object):
         response_iterator = client._data_stub.SampleRowKeys(request_pb)
         return response_iterator
 
+
 def _mutate_rows_request(table_name, rows):
     """Creates a request to mutate rows in a table.
 
