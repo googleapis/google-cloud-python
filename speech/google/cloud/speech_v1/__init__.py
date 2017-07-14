@@ -17,7 +17,7 @@ from __future__ import absolute_import
 from google.cloud.gapic.speech.v1 import speech_client
 from google.cloud.gapic.speech.v1 import enums
 
-from google.cloud.speech.helpers import SpeechHelpers
+from google.cloud.speech_v1.helpers import SpeechHelpers
 from google.cloud.speech_v1 import types
 
 

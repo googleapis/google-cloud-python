@@ -16,6 +16,8 @@ import os
 import time
 import unittest
 
+import six
+
 from google.cloud import exceptions
 from google.cloud import speech
 from google.cloud import storage
@@ -227,7 +229,10 @@ class TestSpeechClient(unittest.TestCase):
                                                      interim_results=True)
             responses = list(recognize)
             for response in responses:
-                self.assertIsInstance(response.alternatives[0].transcript, str)
+                self.assertIsInstance(
+                    response.alternatives[0].transcript,
+                    six.text_type,
+                )
 
             self.assertGreater(len(responses), 5)
             self._check_results(responses[-1].alternatives)

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import collections
+from types import GeneratorType
 import unittest
 
 import mock
@@ -51,7 +51,7 @@ class HelperTests(unittest.TestCase):
             # that evalutes to the correct format.
             _, args, _ = sr.mock_calls[0]
             api_requests = args[0]
-            assert isinstance(api_requests, collections.Generator)
+            assert isinstance(api_requests, GeneratorType)
             assert list(api_requests) == [
                 types.StreamingRecognizeRequest(streaming_config=config),
                 requests[0],
