@@ -18,22 +18,26 @@ import unittest
 
 import mock
 
-from google.auth.credentials import Credentials
 
-from google.cloud.speech_v1 import SpeechClient
-from google.cloud.speech_v1 import types
+class TestSpeechClient(unittest.TestCase):
 
+    @staticmethod
+    def _make_one():
+        import google.auth.credentials
+        from google.cloud.speech_v1 import SpeechClient
 
-class HelperTests(unittest.TestCase):
-    def setUp(self):
-        credentials = mock.Mock(spec=Credentials)
-        self.client = SpeechClient(credentials=credentials)
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        return SpeechClient(credentials=credentials)
 
     def test_inherited_method(self):
+        from google.cloud.speech_v1 import types
+
+        client = self._make_one()
+
         config = types.RecognitionConfig(encoding='FLAC')
         audio = types.RecognitionAudio(uri='http://foo.com/bar.wav')
-        with mock.patch.object(self.client, '_recognize') as recognize:
-            self.client.recognize(config, audio)
+        with mock.patch.object(client, '_recognize') as recognize:
+            client.recognize(config, audio)
 
             # Assert that the underlying GAPIC method was called as expected.
             recognize.assert_called_once_with(types.RecognizeRequest(
@@ -41,11 +45,15 @@ class HelperTests(unittest.TestCase):
                 audio=audio,
             ), None)
 
-    def test_streaming(self):
+    def test_streaming_recognize(self):
+        from google.cloud.speech_v1 import types
+
+        client = self._make_one()
+
         config = types.StreamingRecognitionConfig()
         requests = [types.StreamingRecognizeRequest(audio_content=b'...')]
-        with mock.patch.object(self.client, '_streaming_recognize') as sr:
-            self.client.streaming_recognize(config, requests)
+        with mock.patch.object(client, '_streaming_recognize') as sr:
+            client.streaming_recognize(config, requests)
 
             # Assert that we called streaming recognize with an iterable
             # that evalutes to the correct format.

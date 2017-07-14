@@ -16,9 +16,6 @@ import unittest
 
 import mock
 
-from google.cloud import _helpers
-from google.cloud.gapic.speech.v1.speech_client import SpeechClient
-
 
 def _make_credentials():
     import google.auth.credentials
@@ -37,11 +34,13 @@ class TestGAPICSpeechAPI(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    @mock.patch.object(_helpers, 'make_secure_channel',
-        return_value=mock.sentinel.channel)
-    @mock.patch.object(SpeechClient, '__init__', return_value=None)
-    @mock.patch.object(_helpers, 'make_secure_stub',
-        return_value=mock.sentinel.stub)
+    @mock.patch('google.cloud._helpers.make_secure_channel',
+                return_value=mock.sentinel.channel)
+    @mock.patch(
+        'google.cloud.gapic.speech.v1.speech_client.SpeechClient.__init__',
+        return_value=None)
+    @mock.patch('google.cloud._helpers.make_secure_stub',
+                return_value=mock.sentinel.stub)
     def test_constructor(self, mocked_stub, mocked_init, mocked_channel):
         from google.longrunning import operations_grpc
         from google.cloud._http import DEFAULT_USER_AGENT
