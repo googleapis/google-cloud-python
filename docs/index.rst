@@ -12,7 +12,7 @@
   resource-manager/api
   runtimeconfig/usage
   spanner/usage
-  speech/usage
+  speech/index
   error-reporting/usage
   monitoring/usage
   logging/usage
