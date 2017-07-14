@@ -14,6 +14,8 @@
 
 """Base classes for client used to interact with Google Cloud APIs."""
 
+import io
+import json
 from pickle import PicklingError
 
 import google.auth.credentials
@@ -27,8 +29,8 @@ from google.cloud.credentials import get_credentials
 
 _GOOGLE_AUTH_CREDENTIALS_HELP = (
     'This library only supports credentials from google-auth-library-python. '
-    'See https://google-cloud-python.readthedocs.io/en/latest/'
-    'google-cloud-auth.html for help on authentication with this library.'
+    'See https://google-cloud-python.readthedocs.io/en/latest/core/auth.html '
+    'for help on authentication with this library.'
 )
 
 
@@ -39,6 +41,8 @@ class _ClientFactoryMixin(object):
 
         This class is virtual.
     """
+
+    _SET_PROJECT = False
 
     @classmethod
     def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
@@ -58,15 +62,21 @@ class _ClientFactoryMixin(object):
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to pass to constructor.
 
-        :rtype: :class:`google.cloud.pubsub.client.Client`
+        :rtype: :class:`_ClientFactoryMixin`
         :returns: The client created with the retrieved JSON credentials.
         :raises: :class:`TypeError` if there is a conflict with the kwargs
                  and the credentials created by the factory.
         """
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
-        credentials = service_account.Credentials.from_service_account_file(
-            json_credentials_path)
+        with io.open(json_credentials_path, 'r', encoding='utf-8') as json_fi:
+            credentials_info = json.load(json_fi)
+        credentials = service_account.Credentials.from_service_account_info(
+            credentials_info)
+        if cls._SET_PROJECT:
+            if 'project' not in kwargs:
+                kwargs['project'] = credentials_info.get('project_id')
+
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
@@ -206,6 +216,8 @@ class ClientWithProject(Client, _ClientProjectMixin):
     :raises: :class:`ValueError` if the project is neither passed in nor
              set in the environment.
     """
+
+    _SET_PROJECT = True  # Used by from_service_account_json()
 
     def __init__(self, project=None, credentials=None, _http=None):
         _ClientProjectMixin.__init__(self, project=project)

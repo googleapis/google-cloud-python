@@ -124,8 +124,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         if 'view' in resource:
             self.assertEqual(table.view_query, resource['view']['query'])
+            self.assertEqual(
+                table.view_use_legacy_sql,
+                resource['view'].get('useLegacySql'))
         else:
             self.assertIsNone(table.view_query)
+            self.assertIsNone(table.view_use_legacy_sql)
 
         if 'schema' in resource:
             self._verifySchema(table.schema, resource)
@@ -160,6 +164,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.location)
         self.assertIsNone(table.view_query)
+        self.assertIsNone(table.view_use_legacy_sql)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -358,6 +363,22 @@ class TestTable(unittest.TestCase, _SchemaBase):
         del table.view_query
         self.assertIsNone(table.view_query)
 
+    def test_view_use_legacy_sql_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset)
+        with self.assertRaises(ValueError):
+            table.view_use_legacy_sql = 12345
+
+    def test_view_use_legacy_sql_setter(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset)
+        table.view_use_legacy_sql = False
+        table.view_query = 'select * from foo'
+        self.assertEqual(table.view_use_legacy_sql, False)
+        self.assertEqual(table.view_query, 'select * from foo')
+
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         client = _Client(self.PROJECT)
@@ -395,14 +416,29 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIs(table._dataset._client, client)
         self._verifyResourceProperties(table, RESOURCE)
 
-    def test_create_no_view_query_no_schema(self):
-        conn = _Connection()
+    def test_create_new_day_partitioned_table(self):
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
         table = self._make_one(self.TABLE_NAME, dataset)
+        table.partitioning_type = 'DAY'
+        table.create()
 
-        with self.assertRaises(ValueError):
-            table.create()
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.TABLE_NAME},
+            'timePartitioning': {'type': 'DAY'},
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(table, RESOURCE)
 
     def test_create_w_bound_client(self):
         from google.cloud.bigquery.table import SchemaField
@@ -647,7 +683,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _millis
-        from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         DESCRIPTION = 'DESCRIPTION'
@@ -667,10 +702,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client=client1)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                               schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
         table.friendly_name = TITLE
         table.description = DESCRIPTION
         table.view_query = QUERY
@@ -967,7 +999,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
                                           tzinfo=UTC)
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
-        RESOURCE['view'] = {'query': QUERY}
+        RESOURCE['view'] = {'query': QUERY, 'useLegacySql': True}
         RESOURCE['type'] = 'VIEW'
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -979,6 +1011,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.location = LOCATION
         table.expires = self.EXP_TIME
         table.view_query = QUERY
+        table.view_use_legacy_sql = True
 
         table.update(client=client2)
 
@@ -994,7 +1027,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                  'tableId': self.TABLE_NAME},
             'expirationTime': _millis(self.EXP_TIME),
             'location': 'EU',
-            'view': {'query': QUERY},
+            'view': {'query': QUERY, 'useLegacySql': True},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -1031,6 +1064,18 @@ class TestTable(unittest.TestCase, _SchemaBase):
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_fetch_data_wo_schema(self):
+        from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
+
+        client = _Client(project=self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
+
+        with self.assertRaises(ValueError) as exc:
+            table.fetch_data()
+
+        self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
 
     def test_fetch_data_w_bound_client(self):
         import datetime
@@ -1344,7 +1389,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             if isinstance(row[2], datetime.datetime):
                 joined = _microseconds_from_datetime(joined) * 1e-6
             return {'full_name': row[0],
-                    'age': row[1],
+                    'age': str(row[1]),
                     'joined': joined}
 
         SENT = {
@@ -1393,7 +1438,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         ]
 
         def _row_data(row):
-            return {'full_name': row[0], 'age': row[1], 'voter': row[2]}
+            return {
+                'full_name': row[0],
+                'age': str(row[1]),
+                'voter': row[2] and 'true' or 'false',
+            }
 
         SENT = {
             'skipInvalidRows': True,

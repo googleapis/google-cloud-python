@@ -256,7 +256,7 @@ class PartialRowsData(object):
         """Consume the next ``ReadRowsResponse`` from the stream.
 
         Parse the response and its chunks into a new/existing row in
-        :attr:`_rows`
+        :attr:`_rows`. Rows are returned in order by row key.
         """
         response = six.next(self._response_iterator)
         self._counter += 1

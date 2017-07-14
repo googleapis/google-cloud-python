@@ -20,7 +20,62 @@ breaks a document down into tokens and sentences.
 
 
 class PartOfSpeech(object):
-    """Part of speech of a :class:`Token`."""
+    """A Google Cloud Natural Language API Part of speech object.
+
+    These are the grammatical categories of the matched token in
+    the sentence. https://cloud.google.com/natural-language/docs\
+    /reference/rest/v1/Token#PartOfSpeech
+
+    :type aspect: str
+    :param aspect: The grammatical aspect. https://cloud.google\
+                   .com/natural-language/docs/reference/rest/v1/\
+                   Token#Aspect
+
+    :type reciprocity: str
+    :param reciprocity: The grammatical reciprocity. https://\
+                        cloud.google.com/natural-language/docs/reference\
+                        /rest/v1/Token#Reciprocity
+
+    :type case: str
+    :param case: The grammatical case. https://cloud.google.com/\
+                 natural-language/docs/reference/rest/v1/Token#Case
+
+    :type mood: str
+    :param mood: The grammatical mood. https://cloud.google.com/\
+                 natural-language/docs/reference/rest/v1/Token#Mood
+
+    :type tag: str
+    :param tag: The part of speech tag. https://cloud.google.com/natural\
+                -language/docs/reference/rest/v1/Token#Tag
+
+    :type person: str
+    :param person: The grammatical person. https://cloud.google.com/\
+                   natural-language/docs/reference/rest/v1/Token#Person
+
+    :type number: str
+    :param number: The grammatical number. https://cloud.google.com/natural\
+                   -language/docs/reference/rest/v1/Token#Number
+
+    :type tense: str
+    :param tense: The grammatical tense. https://cloud.google.com/natural\
+                  -language/docs/reference/rest/v1/Token#Tense
+
+    :type form: str
+    :param form: The grammatical form. https://cloud.google.com/natural\
+                 -language/docs/reference/rest/v1/Token#Form
+
+    :type proper: str
+    :param proper: The grammatical properness. https://cloud.google.com/\
+                   natural-language/docs/reference/rest/v1/Token#Proper
+
+    :type voice: str
+    :param voice: The grammatical voice. https://cloud.google.com/\
+                  natural-language/docs/reference/rest/v1/Token#Voice
+
+    :type gender: str
+    :param gender: The grammatical gender. https://cloud.google.com/\
+                   natural-language/docs/reference/rest/v1/Token#Gender
+    """
 
     UNKNOWN = 'UNKNOWN'
     """Unknown part of speech."""
@@ -81,6 +136,36 @@ class PartOfSpeech(object):
         'AFFIX': 'AFFIX',
     }
 
+    def __init__(self, aspect, reciprocity, case, mood, tag, person,
+                 number, tense, form, proper, voice, gender):
+        self.aspect = aspect
+        self.reciprocity = reciprocity
+        self.case = case
+        self.mood = mood
+        self.tag = tag
+        self.person = person
+        self.number = number
+        self.tense = tense
+        self.form = form
+        self.proper = proper
+        self.voice = voice
+        self.gender = gender
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        return PartOfSpeech(aspect=payload['aspect'],
+                            reciprocity=payload['reciprocity'],
+                            case=payload['case'],
+                            mood=payload['mood'],
+                            tag=payload['tag'],
+                            person=payload['person'],
+                            number=payload['number'],
+                            tense=payload['tense'],
+                            form=payload['form'],
+                            proper=payload['proper'],
+                            voice=payload['voice'],
+                            gender=payload['gender'])
+
     @classmethod
     def reverse(cls, tag):
         """Reverses the API's enum name for the one on this class.
@@ -118,9 +203,9 @@ class Token(object):
                        document according to the encoding type specified
                        in the API request.
 
-    :type part_of_speech: str
-    :param part_of_speech: The part of speech of the token. See
-                           :class:`PartOfSpeech` for possible values.
+    :type part_of_speech: PartOfSpeech
+    :param part_of_speech: An object representing the Part of Speech of the
+                           token with it's properties.
 
     :type edge_index: int
     :param edge_index: The head of this token in the dependency tree. This is
@@ -159,7 +244,7 @@ class Token(object):
         text_span = payload['text']
         text_content = text_span['content']
         text_begin = text_span['beginOffset']
-        part_of_speech = payload['partOfSpeech']['tag']
+        part_of_speech = PartOfSpeech.from_api_repr(payload['partOfSpeech'])
         edge = payload['dependencyEdge']
         edge_index = edge['headTokenIndex']
         edge_label = edge['label']

@@ -22,18 +22,19 @@ import httplib2
 import six
 
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import make_exception
+from google.cloud.iterator import HTTPIterator
 from google.cloud.streaming.exceptions import HttpError
 from google.cloud.streaming.http_wrapper import Request
 from google.cloud.streaming.http_wrapper import make_api_request
 from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
 from google.cloud.streaming.transfer import Upload
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery._helpers import _row_from_json
-from google.cloud.iterator import HTTPIterator
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
+from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'table.reload()'"
@@ -43,7 +44,7 @@ _MARKER = object()
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
 
-    See:
+    See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
     :type name: str
@@ -192,7 +193,7 @@ class Table(object):
     def table_type(self):
         """The type of the table.
 
-        Possible values are "TABLE" or "VIEW".
+        Possible values are "TABLE", "VIEW", or "EXTERNAL".
 
         :rtype: str, or ``NoneType``
         :returns: the URL (None until set from the server).
@@ -363,12 +364,48 @@ class Table(object):
         """
         if not isinstance(value, six.string_types):
             raise ValueError("Pass a string")
-        self._properties['view'] = {'query': value}
+        if self._properties.get('view') is None:
+            self._properties['view'] = {}
+        self._properties['view']['query'] = value
 
     @view_query.deleter
     def view_query(self):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
+
+    @property
+    def view_use_legacy_sql(self):
+        """Specifies whether to execute the view with legacy or standard SQL.
+
+        If not set, None is returned. BigQuery's default mode is equivalent to
+        useLegacySql = True.
+
+        :rtype: bool, or ``NoneType``
+        :returns: The boolean for view.useLegacySql as set by the user, or
+                  None (the default).
+        """
+        view = self._properties.get('view')
+        if view is not None:
+            return view.get('useLegacySql')
+
+    @view_use_legacy_sql.setter
+    def view_use_legacy_sql(self, value):
+        """Update the view sub-property 'useLegacySql'.
+
+        This boolean specifies whether to execute the view with legacy SQL
+        (True) or standard SQL (False). The default, if not specified, is
+        'True'.
+
+        :type value: bool
+        :param value: The boolean for view.useLegacySql
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, bool):
+            raise ValueError("Pass a boolean")
+        if self._properties.get('view') is None:
+            self._properties['view'] = {}
+        self._properties['view']['useLegacySql'] = value
 
     def list_partitions(self, client=None):
         """List the partitions in a table.
@@ -469,19 +506,20 @@ class Table(object):
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
-        elif self._schema:
+            if self.view_use_legacy_sql is not None:
+                view['useLegacySql'] = self.view_use_legacy_sql
+
+        if self._schema:
             resource['schema'] = {
                 'fields': _build_schema_resource(self._schema)
             }
-        else:
-            raise ValueError("Set either 'view_query' or 'schema'.")
 
         return resource
 
     def create(self, client=None):
-        """API call:  create the dataset via a PUT request
+        """API call:  create the table via a PUT request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -631,7 +669,7 @@ class Table(object):
     def delete(self, client=None):
         """API call:  delete the table via a DELETE request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -645,7 +683,7 @@ class Table(object):
     def fetch_data(self, max_results=None, page_token=None, client=None):
         """API call:  fetch the table data via a GET request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list
 
         .. note::
@@ -674,6 +712,9 @@ class Table(object):
                   (this is distinct from the total number of rows in the
                   current page: ``iterator.page.num_items``).
         """
+        if len(self._schema) == 0:
+            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+
         client = self._require_client(client)
         path = '%s/data' % (self.path,)
         iterator = HTTPIterator(client=client, path=path,
@@ -694,7 +735,7 @@ class Table(object):
                     client=None):
         """API call:  insert table data via a POST request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
         :type rows: list of tuples
@@ -716,7 +757,7 @@ class Table(object):
         :param template_suffix:
             (Optional) treat ``name`` as a template table and provide a suffix.
             BigQuery will create the table ``<name> + <template_suffix>`` based
-            on the schema of the template table. See:
+            on the schema of the template table. See
             https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -742,11 +783,9 @@ class Table(object):
             row_info = {}
 
             for field, value in zip(self._schema, row):
-                if field.field_type == 'TIMESTAMP':
-                    # BigQuery stores TIMESTAMP data internally as a
-                    # UNIX timestamp with microsecond precision.
-                    # Specifies the number of seconds since the epoch.
-                    value = _convert_timestamp(value)
+                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
+                if converter is not None:  # STRING doesn't need converting
+                    value = converter(value)
                 row_info[field.name] = value
 
             info = {'json': row_info}
@@ -918,9 +957,6 @@ class Table(object):
             'configuration': {
                 'load': {
                     'sourceFormat': source_format,
-                    'schema': {
-                        'fields': _build_schema_resource(self._schema),
-                    },
                     'destinationTable': {
                         'projectId': self._dataset.project,
                         'datasetId': self._dataset.name,
@@ -929,6 +965,12 @@ class Table(object):
                 }
             }
         }
+
+        if len(self._schema) > 0:
+            load_config = metadata['configuration']['load']
+            load_config['schema'] = {
+                'fields': _build_schema_resource(self._schema)
+            }
 
         _configure_job_metadata(metadata, allow_jagged_rows,
                                 allow_quoted_newlines, create_disposition,
@@ -1073,47 +1115,6 @@ def _build_schema_resource(fields):
     return infos
 
 
-def _item_to_row(iterator, resource):
-    """Convert a JSON row to the native object.
-
-    .. note::
-
-        This assumes that the ``schema`` attribute has been
-        added to the iterator after being created, which
-        should be done by the caller.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: tuple
-    :returns: The next row in the page.
-    """
-    return _row_from_json(resource, iterator.schema)
-
-
-# pylint: disable=unused-argument
-def _rows_page_start(iterator, page, response):
-    """Grab total rows after a :class:`~google.cloud.iterator.Page` started.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.cloud.iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
-    """
-    total_rows = response.get('totalRows')
-    if total_rows is not None:
-        total_rows = int(total_rows)
-    iterator.total_rows = total_rows
-# pylint: enable=unused-argument
-
-
 class _UploadConfig(object):
     """Faux message FBO apitools' 'configure_request'."""
     accept = ['*/*']
@@ -1129,10 +1130,3 @@ class _UrlBuilder(object):
     def __init__(self):
         self.query_params = {}
         self._relative_path = ''
-
-
-def _convert_timestamp(value):
-    """Helper for :meth:`Table.insert_data`."""
-    if isinstance(value, datetime.datetime):
-        value = _microseconds_from_datetime(value) * 1e-6
-    return value

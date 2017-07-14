@@ -109,6 +109,37 @@ def get_changed_files():
         return None
 
 
+def reverse_map(dict_of_sets):
+    """Reverse a map of one-to-many.
+
+    So the map::
+
+      {
+        'A': {'B', 'C'},
+        'B': {'C'},
+      }
+
+    becomes
+
+      {
+        'B': {'A'},
+        'C': {'A', 'B'},
+      }
+
+    Args:
+        dict_of_sets (dict[set]): A dictionary of sets, mapping
+            one value to many.
+
+    Returns:
+        dict[set]: The reversed map.
+    """
+    result = {}
+    for key, values in dict_of_sets.items():
+        for value in values:
+            result.setdefault(value, set()).add(key)
+
+    return result
+
 def get_changed_packages(file_list):
     """Return a list of changed packages based on the provided file list.
 
@@ -129,6 +160,7 @@ def get_changed_packages(file_list):
 
     # Create a set based on the list of changed files.
     answer = set()
+    reverse_deps = reverse_map(PKG_DEPENDENCIES)
     for file_ in file_list:
         # Ignore root directory changes (setup.py, .gitignore, etc.).
         if os.path.sep not in file_:
@@ -147,7 +179,7 @@ def get_changed_packages(file_list):
         # Add the package, as well as any dependencies this package has.
         # NOTE: For now, dependencies only go down one level.
         answer.add(package)
-        answer = answer.union(PKG_DEPENDENCIES.get(package, set()))
+        answer = answer.union(reverse_deps.get(package, set()))
 
     # We got this far without being short-circuited; return the final answer.
     return answer

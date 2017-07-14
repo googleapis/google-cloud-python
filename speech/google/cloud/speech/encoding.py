@@ -18,7 +18,7 @@
 class Encoding(object):
     """Audio encoding types.
 
-    See:
+    See
     https://cloud.google.com/speech/reference/rest/v1/RecognitionConfig#AudioEncoding
     """
 

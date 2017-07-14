@@ -123,7 +123,7 @@ Check out the `Authentication section`_ in our documentation to learn more.
 You may also find the `authentication document`_ shared by all the
 ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Contributing
@@ -131,9 +131,9 @@ Contributing
 
 Contributions to this library are always welcome and highly encouraged.
 
-See `CONTRIBUTING`_ for more information on how to get started.
+See the `CONTRIBUTING doc`_ for more information on how to get started.
 
-.. _CONTRIBUTING: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst
+.. _CONTRIBUTING doc: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst
 
 Community
 ---------
@@ -148,9 +148,9 @@ channel, click here to `get an invitation`_.
 License
 -------
 
-Apache 2.0 - See `LICENSE`_ for more information.
+Apache 2.0 - See `the LICENSE`_ for more information.
 
-.. _LICENSE: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/LICENSE
+.. _the LICENSE: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/LICENSE
 
 .. |circleci| image:: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python.svg?style=shield
    :target: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python

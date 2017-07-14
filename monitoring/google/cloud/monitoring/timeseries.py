@@ -152,7 +152,7 @@ def _make_typed_value(value):
     type to send to the API. For example, a Python float will be sent to the
     API with "doubleValue" as its key.
 
-    See: https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TypedValue
+    See https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TypedValue
 
     :type value: bool, int, float, str, or dict
     :param value: value to infer the typed value of.

@@ -70,6 +70,7 @@ class TestQueryResults(unittest.TestCase):
             ]
             resource['pageToken'] = self.TOKEN
             resource['totalBytesProcessed'] = 100000
+            resource['numDmlAffectedRows'] = 123
             resource['cacheHit'] = False
 
         return resource
@@ -124,10 +125,12 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(query.complete, resource.get('jobComplete'))
         self.assertEqual(query.errors, resource.get('errors'))
         self.assertEqual(query.page_token, resource.get('pageToken'))
+
         if 'totalRows' in resource:
             self.assertEqual(query.total_rows, int(resource['totalRows']))
         else:
             self.assertIsNone(query.total_rows)
+
         if 'totalBytesProcessed' in resource:
             self.assertEqual(query.total_bytes_processed,
                              int(resource['totalBytesProcessed']))
@@ -138,6 +141,12 @@ class TestQueryResults(unittest.TestCase):
             self.assertEqual(query.name, resource['jobReference']['jobId'])
         else:
             self.assertIsNone(query.name)
+
+        if 'numDmlAffectedRows' in resource:
+            self.assertEqual(query.num_dml_affected_rows,
+                             int(resource['numDmlAffectedRows']))
+        else:
+            self.assertIsNone(query.num_dml_affected_rows)
 
         self._verify_udf_resources(query, resource)
         self._verifyQueryParameters(query, resource)
@@ -371,6 +380,27 @@ class TestQueryResults(unittest.TestCase):
         query._set_properties(resource)
         self.assertEqual(query.total_bytes_processed, TOTAL_BYTES_PROCESSED)
 
+    def test_num_dml_affected_rows_missing(self):
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        self.assertIsNone(query.num_dml_affected_rows)
+
+    def test_num_dml_affected_rows_present_integer(self):
+        DML_AFFECTED_ROWS = 123456
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'numDmlAffectedRows': DML_AFFECTED_ROWS}
+        query._set_properties(resource)
+        self.assertEqual(query.num_dml_affected_rows, DML_AFFECTED_ROWS)
+
+    def test_num_dml_affected_rows_present_string(self):
+        DML_AFFECTED_ROWS = 123456
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client)
+        resource = {'numDmlAffectedRows': str(DML_AFFECTED_ROWS)}
+        query._set_properties(resource)
+        self.assertEqual(query.num_dml_affected_rows, DML_AFFECTED_ROWS)
+
     def test_schema(self):
         client = _Client(self.PROJECT)
         query = self._make_one(self.QUERY, client)
@@ -546,7 +576,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
 
-    def test_run_w_named_query_paramter(self):
+    def test_run_w_named_query_parameter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
 
         PATH = 'projects/%s/queries' % self.PROJECT
@@ -582,7 +612,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
 
-    def test_run_w_positional_query_paramter(self):
+    def test_run_w_positional_query_parameter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
 
         PATH = 'projects/%s/queries' % self.PROJECT
@@ -624,6 +654,8 @@ class TestQueryResults(unittest.TestCase):
         self.assertRaises(ValueError, query.fetch_data)
 
     def test_fetch_data_w_bound_client(self):
+        import six
+
         PATH = 'projects/%s/queries/%s' % (self.PROJECT, self.JOB_NAME)
         BEFORE = self._makeResource(complete=False)
         AFTER = self._makeResource(complete=True)
@@ -635,7 +667,11 @@ class TestQueryResults(unittest.TestCase):
         query._set_properties(BEFORE)
         self.assertFalse(query.complete)
 
-        rows, total_rows, page_token = query.fetch_data()
+        iterator = query.fetch_data()
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
 
         self.assertTrue(query.complete)
         self.assertEqual(len(rows), 4)
@@ -652,6 +688,8 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_fetch_data_w_alternate_client(self):
+        import six
+
         PATH = 'projects/%s/queries/%s' % (self.PROJECT, self.JOB_NAME)
         MAX = 10
         TOKEN = 'TOKEN'
@@ -668,9 +706,13 @@ class TestQueryResults(unittest.TestCase):
         query._set_properties(BEFORE)
         self.assertFalse(query.complete)
 
-        rows, total_rows, page_token = query.fetch_data(
+        iterator = query.fetch_data(
             client=client2, max_results=MAX, page_token=TOKEN,
             start_index=START, timeout_ms=TIMEOUT)
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
 
         self.assertTrue(query.complete)
         self.assertEqual(len(rows), 4)

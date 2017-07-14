@@ -38,7 +38,7 @@ Assigning to '{}' is deprecated.  Replace with 'policy[{}] = members."""
 class Policy(collections.MutableMapping):
     """IAM Policy
 
-    See:
+    See
     https://cloud.google.com/iam/reference/rest/v1/Policy
 
     :type etag: str
@@ -59,7 +59,7 @@ class Policy(collections.MutableMapping):
     def __init__(self, etag=None, version=None):
         self.etag = etag
         self.version = version
-        self._bindings = {}
+        self._bindings = collections.defaultdict(set)
 
     def __iter__(self):
         return iter(self._bindings)

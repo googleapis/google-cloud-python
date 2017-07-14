@@ -188,7 +188,7 @@ class Instance(object):
     def create(self):
         """Create this instance.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance
 
         .. note::
@@ -234,7 +234,7 @@ class Instance(object):
     def exists(self):
         """Test whether this instance exists.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig
         """
         api = self._client.instance_admin_api
@@ -252,7 +252,7 @@ class Instance(object):
     def reload(self):
         """Reload the metadata for this instance.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig
         """
         api = self._client.instance_admin_api
@@ -270,7 +270,7 @@ class Instance(object):
     def update(self):
         """Update this instance.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance
 
         .. note::
@@ -315,7 +315,7 @@ class Instance(object):
     def delete(self):
         """Mark an instance and all of its databases for permanent deletion.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance
 
         Immediately upon completion of the request:
@@ -360,7 +360,7 @@ class Instance(object):
     def list_databases(self, page_size=None, page_token=None):
         """List databases for the instance.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases
 
         :type page_size: int
