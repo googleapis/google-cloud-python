@@ -20,7 +20,7 @@ For an overview of authentication in ``google-cloud-python``, see
 :doc:`/core/auth`.
 
 Assuming your environment is set up as described in that document,
-create an instance of :class:`~.google.cloud.speech.SpeechClient`.
+create an instance of :class:`~.speech_v1.SpeechClient`.
 
 .. code-block:: python
 
@@ -31,7 +31,7 @@ create an instance of :class:`~.google.cloud.speech.SpeechClient`.
 Asynchronous Recognition
 ------------------------
 
-The :meth:`~.google.cloud.speech.SpeechClient.long_running_recognize` method
+The :meth:`~.speech_v1.SpeechClient.long_running_recognize` method
 sends audio data to the Speech API and initiates a Long Running Operation.
 
 Using this operation, you can periodically poll for recognition results.
@@ -75,7 +75,7 @@ See: `Speech Asynchronous Recognize`_
 Synchronous Recognition
 -----------------------
 
-The :meth:`~google.cloud.speech.Client.recognize` method converts speech
+The :meth:`~.speech_v1.SpeechClient.recognize` method converts speech
 data to text and returns alternative text transcriptions.
 
 This example uses ``language_code='en-GB'`` to better recognize a dialect from
@@ -168,7 +168,7 @@ words to the vocabulary of the recognizer.
 Streaming Recognition
 ---------------------
 
-The :meth:`~google.cloud.speech.Client.streaming_recognize` method converts
+The :meth:`~speech_v1.SpeechClient.streaming_recognize` method converts
 speech data to possible text alternatives on the fly.
 
 .. note::
