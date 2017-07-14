@@ -17,7 +17,6 @@
 
 import six
 
-from __future__ import absolute_import
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
 from google.cloud.bigtable._generated import (
