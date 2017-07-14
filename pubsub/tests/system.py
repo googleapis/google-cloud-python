@@ -22,6 +22,7 @@ from grpc import StatusCode
 import httplib2
 
 from google.cloud.environment_vars import PUBSUB_EMULATOR
+from google.cloud.exceptions import Conflict
 from google.cloud.pubsub import client
 
 from test_utils.retry import RetryInstanceState
@@ -113,6 +114,9 @@ class TestPubsub(unittest.TestCase):
         self.assertTrue(topic.exists())
         self.assertEqual(topic.name, topic_name)
 
+        with self.assertRaises(Conflict):
+            topic.create()
+
     def test_list_topics(self):
         before = _consume_topics(Config.CLIENT)
         topics_to_create = [
@@ -151,6 +155,9 @@ class TestPubsub(unittest.TestCase):
         self.assertTrue(subscription.exists())
         self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
         self.assertIs(subscription.topic, topic)
+
+        with self.assertRaises(Conflict):
+            subscription.create()
 
     def test_create_subscription_w_ack_deadline(self):
         TOPIC_NAME = 'create-sub-ack' + unique_resource_id('-')
@@ -349,6 +356,9 @@ class TestPubsub(unittest.TestCase):
 
         self.assertIn(snapshot.full_name, map(full_name, after_snapshots))
         self.assertNotIn(snapshot.full_name, map(full_name, before_snapshots))
+
+        with self.assertRaises(Conflict):
+            snapshot.create()
 
 
     def test_seek(self):

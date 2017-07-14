@@ -608,10 +608,13 @@ class Bucket(_PropertyMixin):
 
     @property
     def lifecycle_rules(self):
-        """Lifecycle rules configured for this bucket.
+        """Retrieve or set lifecycle rules configured for this bucket.
 
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :setter: Set lifestyle rules for this bucket.
+        :getter: Gets the lifestyle rules for this bucket.
 
         :rtype: list(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
@@ -621,6 +624,14 @@ class Bucket(_PropertyMixin):
 
     @lifecycle_rules.setter
     def lifecycle_rules(self, rules):
+        """Set lifestyle rules configured for this bucket.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :type entries: list of dictionaries
+        :param entries: A sequence of mappings describing each lifecycle rule.
+        """
         self._patch_property('lifecycle', {'rule': rules})
 
     location = _scalar_property('location')
@@ -721,9 +732,12 @@ class Bucket(_PropertyMixin):
 
     @property
     def storage_class(self):
-        """Retrieve the storage class for the bucket.
+        """Retrieve or set the storage class for the bucket.
 
         See https://cloud.google.com/storage/docs/storage-classes
+
+        :setter: Set the storage class for this bucket.
+        :getter: Gets the the storage class for this bucket.
 
         :rtype: str or ``NoneType``
         :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
@@ -766,6 +780,9 @@ class Bucket(_PropertyMixin):
 
         See  https://cloud.google.com/storage/docs/object-versioning for
         details.
+
+        :setter: Update whether versioning is enabled for this bucket.
+        :getter: Query whether versioning is enabled for this bucket.
 
         :rtype: bool
         :returns: True if enabled, else False.
@@ -999,7 +1016,8 @@ class Bucket(_PropertyMixin):
 
         if not isinstance(credentials, google.auth.credentials.Signing):
             auth_uri = ('http://google-cloud-python.readthedocs.io/en/latest/'
-                        'google-cloud-auth.html#setting-up-a-service-account')
+                        'core/auth.html?highlight=authentication#setting-up-'
+                        'a-service-account')
             raise AttributeError(
                 'you need a private key to sign credentials.'
                 'the credentials you are currently using %s '

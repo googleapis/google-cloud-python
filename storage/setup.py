@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
+    'author_email': 'googleapis-publisher@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -51,7 +51,7 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.24.1, < 0.25dev',
+    'google-cloud-core >= 0.25.0, < 0.26dev',
     'google-auth >= 1.0.0',
     'google-resumable-media >= 0.1.1',
     'requests >= 2.0.0',
@@ -59,7 +59,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-storage',
-    version='1.1.1',
+    version='1.2.0',
     description='Python Client for Google Cloud Storage',
     long_description=README,
     namespace_packages=[

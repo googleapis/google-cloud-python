@@ -21,11 +21,38 @@ from setuptools import setup
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
-    readme = readme_file.read()
+
+with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
+    README = file_obj.read()
+
+# NOTE: This is duplicated throughout and we should try to
+#       consolidate.
+SETUP_BASE = {
+    'author': 'Google Cloud Platform',
+    'author_email': 'googleapis-publisher@google.com',
+    'scripts': [],
+    'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
+    'license': 'Apache 2.0',
+    'platforms': 'Posix; MacOS X; Windows',
+    'include_package_data': True,
+    'zip_safe': False,
+    'classifiers': [
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Internet',
+    ],
+}
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.24.0, < 0.25dev',
+    'google-cloud-core >= 0.25.0, < 0.26dev',
     'google-gax >= 0.15.13, < 0.16dev',
     'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]

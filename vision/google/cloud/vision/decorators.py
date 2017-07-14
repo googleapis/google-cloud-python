@@ -13,8 +13,6 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import functools
-import sys
 
 
 def add_single_feature_methods(cls):
@@ -87,6 +85,8 @@ def _create_single_feature_method(feature, enum):
         image (:class:`~.{module}.types.Image`): The image to analyze.
         options (:class:`google.gax.CallOptions`): Overrides the
             default settings for this call, e.g, timeout, retries, etc.
+        kwargs (dict): Additional properties to be set on the
+            :class:`~.{module}.types.AnnotateImageRequest`.
 
     Returns:
         :class:`~.{module}.types.AnnotateImageResponse`: The API response.
@@ -96,16 +96,17 @@ def _create_single_feature_method(feature, enum):
     feature_value = {'type': enum.__dict__[feature]}
 
     # Define the function to be returned.
-    def inner(self, image, options=None):
+    def inner(self, image, options=None, **kwargs):
         """Return a single feature annotation for the given image.
 
         Intended for use with functools.partial, to create the particular
         single-feature methods.
         """
-        request = {
-            'image': image,
-            'features': [feature_value],
-        }
+        request = dict(
+            image=image,
+            features=[feature_value],
+            **kwargs
+        )
         return self.annotate_image(request, options=options)
 
     # Set the appropriate function metadata.

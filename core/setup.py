@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
+    'author_email': 'googleapis-publisher@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -61,7 +61,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-core',
-    version='0.24.1',
+    version='0.25.0',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[

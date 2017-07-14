@@ -32,7 +32,8 @@ from google.cloud.streaming.http_wrapper import make_api_request
 from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
 from google.cloud.streaming.transfer import Upload
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery._helpers import _row_from_json
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
@@ -192,7 +193,7 @@ class Table(object):
     def table_type(self):
         """The type of the table.
 
-        Possible values are "TABLE" or "VIEW".
+        Possible values are "TABLE", "VIEW", or "EXTERNAL".
 
         :rtype: str, or ``NoneType``
         :returns: the URL (None until set from the server).
@@ -363,12 +364,48 @@ class Table(object):
         """
         if not isinstance(value, six.string_types):
             raise ValueError("Pass a string")
-        self._properties['view'] = {'query': value}
+        if self._properties.get('view') is None:
+            self._properties['view'] = {}
+        self._properties['view']['query'] = value
 
     @view_query.deleter
     def view_query(self):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
+
+    @property
+    def view_use_legacy_sql(self):
+        """Specifies whether to execute the view with legacy or standard SQL.
+
+        If not set, None is returned. BigQuery's default mode is equivalent to
+        useLegacySql = True.
+
+        :rtype: bool, or ``NoneType``
+        :returns: The boolean for view.useLegacySql as set by the user, or
+                  None (the default).
+        """
+        view = self._properties.get('view')
+        if view is not None:
+            return view.get('useLegacySql')
+
+    @view_use_legacy_sql.setter
+    def view_use_legacy_sql(self, value):
+        """Update the view sub-property 'useLegacySql'.
+
+        This boolean specifies whether to execute the view with legacy SQL
+        (True) or standard SQL (False). The default, if not specified, is
+        'True'.
+
+        :type value: bool
+        :param value: The boolean for view.useLegacySql
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, bool):
+            raise ValueError("Pass a boolean")
+        if self._properties.get('view') is None:
+            self._properties['view'] = {}
+        self._properties['view']['useLegacySql'] = value
 
     def list_partitions(self, client=None):
         """List the partitions in a table.
@@ -469,6 +506,8 @@ class Table(object):
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
+            if self.view_use_legacy_sql is not None:
+                view['useLegacySql'] = self.view_use_legacy_sql
 
         if self._schema:
             resource['schema'] = {
@@ -478,7 +517,7 @@ class Table(object):
         return resource
 
     def create(self, client=None):
-        """API call:  create the dataset via a PUT request
+        """API call:  create the table via a PUT request
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
@@ -1074,47 +1113,6 @@ def _build_schema_resource(fields):
             info['fields'] = _build_schema_resource(field.fields)
         infos.append(info)
     return infos
-
-
-def _item_to_row(iterator, resource):
-    """Convert a JSON row to the native object.
-
-    .. note::
-
-        This assumes that the ``schema`` attribute has been
-        added to the iterator after being created, which
-        should be done by the caller.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: tuple
-    :returns: The next row in the page.
-    """
-    return _row_from_json(resource, iterator.schema)
-
-
-# pylint: disable=unused-argument
-def _rows_page_start(iterator, page, response):
-    """Grab total rows after a :class:`~google.cloud.iterator.Page` started.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.cloud.iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
-    """
-    total_rows = response.get('totalRows')
-    if total_rows is not None:
-        total_rows = int(total_rows)
-    iterator.total_rows = total_rows
-# pylint: enable=unused-argument
 
 
 class _UploadConfig(object):
