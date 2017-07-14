@@ -1,340 +1,43 @@
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>google.cloud.storage.blob &mdash; google-cloud f6dab41 documentation</title>
-  
-
-  
-  
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.storage.blob &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../../../genindex.html"/>
-        <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f6dab41 documentation" href="../../../../index.html"/>
-        <link rel="up" title="Module code" href="../../../index.html"/> 
-
-  
-  <script src="../../../../_static/js/modernizr.min.js"></script>
-
-</head>
-
-<body class="wy-body-for-nav" role="document">
-
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
    
-  <div class="wy-grid-for-nav">
-
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
-
-          
-            <a href="../../../../index.html" class="icon icon-home"> google-cloud
-          
-
-          
-          </a>
-
-          
-            
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">google-cloud</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-api.html">Shared Core Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-config.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../google-cloud-auth.html">Authentication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../iterators.html">Iterators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../operation-api.html">Long-Running Operations</a></li>
-</ul>
-<p class="caption"><span class="caption-text">BigQuery</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-dataset.html">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-job.html">Jobs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-table.html">Tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-query.html">Query</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery-schema.html">Schemas</a></li>
-</ul>
-<p class="caption"><span class="caption-text">BigTable</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance-api.html">Instance Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table-api.html">Table Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-data-api.html">Data API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance.html">Instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-cluster.html">Cluster</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table.html">Table</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-column-family.html">Column Families</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row.html">Bigtable Row</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row-filters.html">Bigtable Row Filters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-row-data.html">Row Data</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Datastore</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-entities.html">Entities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-keys.html">Keys</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-queries.html">Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-transactions.html">Transactions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-batches.html">Batches</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../datastore-helpers.html">Helpers</a></li>
-</ul>
-<p class="caption"><span class="caption-text">DNS</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-zone.html">Managed Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-resource-record-set.html">Resource Record Sets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../dns-changes.html">Change Sets</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Natural Language</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../language-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../language-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../language-document.html">Document</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../language-responses.html">Natural Language Response Classes</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Pub/Sub</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-topic.html">Topics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-subscription.html">Subscriptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-message.html">Message</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub-iam.html">IAM Policy</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Resource Manager</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-api.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager-project.html">Projects</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Runtime Configuration</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-config.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig-variable.html">Variables</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Spanner</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-usage.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-usage.html">Database Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-crud-usage.html">Session Creation / Deletion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-implicit-txn-usage.html">Implicit Transactions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-pool-usage.html">Session Pools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-batch-usage.html">Batching Modifications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-transaction-usage.html">Read-write Transactions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-client-api.html">Spanner Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-instance-api.html">Instance API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-database-api.html">Database API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-api.html">Session API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-keyset-api.html">Keyset API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-batch-api.html">Batch API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-transaction-api.html">Transaction API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../spanner-streamed-api.html">StreamedResultSet API</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Speech</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-encoding.html">Speech Encoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-operation.html">Speech Operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-result.html">Speech Result</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-sample.html">Speech Sample</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-alternative.html">Speech Alternative</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Stackdriver Error Reporting</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting-util.html">Error Reporting Utilities</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-usage.html#cloud-logging-handler-transports">Cloud Logging Handler transports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-logger.html">Logger</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-entries.html">Entries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-metric.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-sink.html">Sinks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-stdlib-usage.html">Integration with Python logging module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers.html">Python Logging Module Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-metric.html">Metric Descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-resource.html">Monitored Resource Descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-group.html">Groups</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-query.html">Time Series Query</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-timeseries.html">Time Series</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring-label.html">Label Descriptors</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Storage</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-blobs.html">Blobs / Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-acl.html">ACL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../storage-batch.html">Batches</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Translate</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../translate-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../translate-client.html">Client</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Vision</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-usage.html">Using the Vision API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-annotations.html">Vision Annotations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-batch.html">Vision Batch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-crop-hint.html">Vision Crop Hint</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-safe-search.html">Vision Safe Search</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-text.html">Vision Full Text</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../vision-web.html">Vision Web Annotations</a></li>
-</ul>
-<p class="caption"><span class="caption-text">External Links</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/">GitHub</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues">Issues</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/google-cloud-python">Stack Overflow</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/google-cloud">PyPI</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">google-cloud</a>
-        
-      </nav>
-
-
-      
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>google.cloud.storage.blob</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-        
-      </li>
-    
-  </ul>
-
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
   
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
             
   <h1>Source code for google.cloud.storage.blob</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2014 Google Inc.</span>
@@ -431,7 +134,7 @@
     <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> bytes remaining.&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.</span>
 
 <span class="sd">    :type name: str</span>
@@ -469,7 +172,7 @@
     <span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;Allowed values for :attr:`storage_class`.</span>
 
-<span class="sd">    See:</span>
+<span class="sd">    See</span>
 <span class="sd">    https://cloud.google.com/storage/docs/json_api/v1/objects#storageClass</span>
 <span class="sd">    https://cloud.google.com/storage/docs/per-object-storage-class</span>
 
@@ -516,7 +219,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">,))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="Blob.path_helper"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.path_helper">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Blob.path_helper"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.path_helper">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">path_helper</span><span class="p">(</span><span class="n">bucket_path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Relative URL path for a blob.</span>
 
@@ -573,7 +276,7 @@
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">quoted_name</span><span class="o">=</span><span class="n">_quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
 
-<div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
                             <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                             <span class="n">generation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_disposition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                             <span class="n">response_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -657,7 +360,7 @@
             <span class="n">response_disposition</span><span class="o">=</span><span class="n">response_disposition</span><span class="p">,</span>
             <span class="n">generation</span><span class="o">=</span><span class="n">generation</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this blob exists.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -685,7 +388,7 @@
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Blob.delete"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.delete"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from Cloud Storage.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -767,7 +470,7 @@
             <span class="k">while</span> <span class="ow">not</span> <span class="n">download</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
                 <span class="n">download</span><span class="o">.</span><span class="n">consume_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a file-like object.</span>
 
 <span class="sd">        .. note::</span>
@@ -778,9 +481,10 @@
 <span class="sd">        Downloading a file that has been encrypted with a `customer-supplied`_</span>
 <span class="sd">        encryption key:</span>
 
-<span class="sd">         .. literalinclude:: storage_snippets.py</span>
+<span class="sd">         .. literalinclude:: snippets.py</span>
 <span class="sd">            :start-after: [START download_to_file]</span>
 <span class="sd">            :end-before: [END download_to_file]</span>
+<span class="sd">            :dedent: 4</span>
 
 <span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
 <span class="sd">        least 32.</span>
@@ -808,7 +512,7 @@
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">download_url</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
 
 <span class="sd">        :type filename: str</span>
@@ -829,7 +533,7 @@
             <span class="n">mtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">updated</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
             <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">mtime</span><span class="p">,</span> <span class="n">mtime</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob as a string.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -1157,7 +861,7 @@
 
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
 
@@ -1179,9 +883,10 @@
 
 <span class="sd">        Uploading a file with a `customer-supplied`_ encryption key:</span>
 
-<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">        .. literalinclude:: snippets.py</span>
 <span class="sd">            :start-after: [START upload_from_file]</span>
 <span class="sd">            :end-before: [END upload_from_file]</span>
+<span class="sd">            :dedent: 4</span>
 
 <span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
 <span class="sd">        least 32.</span>
@@ -1230,7 +935,7 @@
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
 
 <span class="sd">        The content type of the upload will be determined in order</span>
@@ -1270,7 +975,7 @@
                 <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
                 <span class="n">size</span><span class="o">=</span><span class="n">total_bytes</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload contents of this blob from the provided string.</span>
 
 <span class="sd">        .. note::</span>
@@ -1303,7 +1008,7 @@
             <span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
             <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.create_resumable_upload_session"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.create_resumable_upload_session">[docs]</a>    <span class="k">def</span> <span class="nf">create_resumable_upload_session</span><span class="p">(</span>
+<div class="viewcode-block" id="Blob.create_resumable_upload_session"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.create_resumable_upload_session">[docs]</a>    <span class="k">def</span> <span class="nf">create_resumable_upload_session</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1390,10 +1095,10 @@
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.get_iam_policy"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.get_iam_policy"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the IAM policy for the object.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -1412,10 +1117,10 @@
             <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.set_iam_policy"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.set_iam_policy"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the IAM policy for the bucket.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy</span>
 
 <span class="sd">        :type policy: :class:`google.cloud.iam.Policy`</span>
@@ -1440,10 +1145,10 @@
             <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.test_iam_permissions"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.test_iam_permissions"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test permissions</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions</span>
 
 <span class="sd">        :type permissions: list of string</span>
@@ -1467,7 +1172,7 @@
             <span class="n">query_params</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span></div>
 
-<div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -1478,7 +1183,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.compose"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.compose">[docs]</a>    <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.compose"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.compose">[docs]</a>    <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Concatenate source blobs into this one.</span>
 
 <span class="sd">        :type sources: list of :class:`Blob`</span>
@@ -1504,7 +1209,7 @@
             <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.rewrite"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.rewrite">[docs]</a>    <span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.rewrite"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.rewrite">[docs]</a>    <span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rewrite source blob into this one.</span>
 
 <span class="sd">        :type source: :class:`Blob`</span>
@@ -1553,10 +1258,10 @@
 
         <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">],</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span></div>
 
-<div class="viewcode-block" id="Blob.update_storage_class"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.update_storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">update_storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_class</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.update_storage_class"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.update_storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">update_storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_class</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update blob&#39;s storage class via a rewrite-in-place.</span>
 
-<span class="sd">        See:</span>
+<span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/per-object-storage-class</span>
 
 <span class="sd">        :type new_class: str</span>
@@ -1583,7 +1288,7 @@
     <span class="n">cache_control</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;cacheControl&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Cache-Control&#39; header for this object.</span>
 
-<span class="sd">    See: `RFC 7234`_ and `API reference docs`_.</span>
+<span class="sd">    See `RFC 7234`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
@@ -1595,7 +1300,7 @@
     <span class="n">content_disposition</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentDisposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Disposition&#39; header for this object.</span>
 
-<span class="sd">    See: `RFC 6266`_ and `API reference docs`_.</span>
+<span class="sd">    See `RFC 6266`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
@@ -1607,7 +1312,7 @@
     <span class="n">content_encoding</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentEncoding&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Encoding&#39; header for this object.</span>
 
-<span class="sd">    See: `RFC 7231`_ and `API reference docs`_.</span>
+<span class="sd">    See `RFC 7231`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
@@ -1619,7 +1324,7 @@
     <span class="n">content_language</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentLanguage&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Language&#39; header for this object.</span>
 
-<span class="sd">    See: `BCP47`_ and `API reference docs`_.</span>
+<span class="sd">    See `BCP47`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
@@ -1631,7 +1336,7 @@
     <span class="n">content_type</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="n">_CONTENT_TYPE_FIELD</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Type&#39; header for this object.</span>
 
-<span class="sd">    See: `RFC 2616`_ and `API reference docs`_.</span>
+<span class="sd">    See `RFC 2616`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
@@ -1643,7 +1348,7 @@
     <span class="n">crc32c</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;crc32c&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;CRC32C checksum for this object.</span>
 
-<span class="sd">    See: `RFC 4960`_ and `API reference docs`_.</span>
+<span class="sd">    See `RFC 4960`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns :data:`None`.</span>
 
@@ -1656,7 +1361,7 @@
     <span class="k">def</span> <span class="nf">component_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Number of underlying components that make up this object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The component count (in case of a composed object) or</span>
@@ -1671,7 +1376,7 @@
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ETag for the object.</span>
 
-<span class="sd">        See: `RFC 2616 (etags)`_ and `API reference docs`_.</span>
+<span class="sd">        See `RFC 2616 (etags)`_ and `API reference docs`_.</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The blob etag or ``None`` if the property is not set locally.</span>
@@ -1684,7 +1389,7 @@
     <span class="k">def</span> <span class="nf">generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the generation for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The generation of the blob or ``None`` if the property</span>
@@ -1698,7 +1403,7 @@
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ID for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The ID of the blob or ``None`` if the property is not</span>
@@ -1709,7 +1414,7 @@
     <span class="n">md5_hash</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;md5Hash&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;MD5 hash for this object.</span>
 
-<span class="sd">    See: `RFC 1321`_ and `API reference docs`_.</span>
+<span class="sd">    See `RFC 1321`_ and `API reference docs`_.</span>
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
@@ -1722,7 +1427,7 @@
     <span class="k">def</span> <span class="nf">media_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the media download URI for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The media link for the blob or ``None`` if the property is</span>
@@ -1734,7 +1439,7 @@
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve arbitrary/application specific metadata for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: dict or ``NoneType``</span>
 <span class="sd">        :returns: The metadata associated with the blob or ``None`` if the</span>
@@ -1746,7 +1451,7 @@
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update arbitrary/application specific metadata for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :type value: dict</span>
 <span class="sd">        :param value: (Optional) The blob metadata to set.</span>
@@ -1757,7 +1462,7 @@
     <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the metageneration for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The metageneration of the blob or ``None`` if the property</span>
@@ -1771,7 +1476,7 @@
     <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve info about the owner of the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: dict or ``NoneType``</span>
 <span class="sd">        :returns: Mapping of owner&#39;s role/ID. If the property is not set</span>
@@ -1783,7 +1488,7 @@
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the URI for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The self link for the blob or ``None`` if the property is</span>
@@ -1795,7 +1500,7 @@
     <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Size of the object, in bytes.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The size of the blob or ``None`` if the property</span>
@@ -1813,7 +1518,7 @@
 <span class="sd">    exists in a bucket, call :meth:`update_storage_class` (which uses</span>
 <span class="sd">    the &quot;storage.objects.rewrite&quot; method).</span>
 
-<span class="sd">    See: https://cloud.google.com/storage/docs/storage-classes</span>
+<span class="sd">    See https://cloud.google.com/storage/docs/storage-classes</span>
 
 <span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    :returns: If set, one of &quot;MULTI_REGIONAL&quot;, &quot;REGIONAL&quot;,</span>
@@ -1825,7 +1530,7 @@
     <span class="k">def</span> <span class="nf">time_deleted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the timestamp at which the object was deleted.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
 <span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
@@ -1840,7 +1545,7 @@
     <span class="k">def</span> <span class="nf">time_created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the timestamp at which the object was created.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
 <span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
@@ -1854,7 +1559,7 @@
     <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the timestamp at which the object was updated.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
 <span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
 <span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
@@ -1948,66 +1653,100 @@
                          <span class="n">error_info</span><span class="o">=</span><span class="n">error_info</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
-           </div>
-           <div class="articleComments">
-            
-           </div>
           </div>
-          <footer>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2014-2017, Google.
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
         </div>
       </div>
-
-    </section>
-
-  </div>
-  
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">google-cloud</a></h1>
 
 
-  
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../../',
-            VERSION:'f6dab41',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+<p class="blurb">Google Cloud Client Libraries for Python</p>
 
-  
 
-  
-  
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-  
 
-  
-  
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
-      });
-  </script>
-   
 
-</body>
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
 </html>

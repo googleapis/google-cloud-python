@@ -1,0 +1,374 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Pub / Sub &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pub/Sub Client" href="client.html" />
+    <link rel="prev" title="Natural Language Response Classes" href="../language/responses.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pub-sub">
+<h1>Pub / Sub<a class="headerlink" href="#pub-sub" title="Permalink to this headline">#</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="authentication-configuration">
+<h2>Authentication / Configuration<a class="headerlink" href="#authentication-configuration" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p class="first">Use <a class="reference internal" href="client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
+your applications.</p>
+</li>
+<li><p class="first">In addition to any authentication configuration, you should also set the
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d like
+to interact with. If you are Google App Engine or Google Compute Engine
+this will be detected automatically.</p>
+</li>
+<li><p class="first">The library now enables the <code class="docutils literal"><span class="pre">gRPC</span></code> transport for the pubsub API by
+default, assuming that the required dependencies are installed and
+importable.  To <em>disable</em> this transport, set the
+<span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code> environment variable to a
+non-empty string, e.g.:  <code class="docutils literal"><span class="pre">$</span> <span class="pre">export</span> <span class="pre">GOOGLE_CLOUD_DISABLE_GRPC=true</span></code>.</p>
+</li>
+<li><p class="first"><a class="reference internal" href="client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
+and an authenticated connection to the PubSub service.</p>
+</li>
+<li><p class="first">The authentication credentials can be implicitly determined from the
+environment or directly via
+<code class="xref py py-meth docutils literal"><span class="pre">from_service_account_json</span></code>
+and
+<code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12</span></code>.</p>
+</li>
+<li><p class="first">After setting <code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code>
+environment variables, create a <a class="reference internal" href="client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="manage-topics-for-a-project">
+<h2>Manage topics for a project<a class="headerlink" href="#manage-topics-for-a-project" title="Permalink to this headline">#</a></h2>
+<p>List topics for the default project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_topics</span><span class="p">():</span>   <span class="c1"># API request(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a new topic for the default project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">TOPIC_NAME</span><span class="p">)</span>
+    <span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Check for the existence of a topic:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="ow">not</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
+    <span class="k">assert</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Delete a topic:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
+    <span class="n">topic</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Fetch the IAM policy for a topic:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Update the IAM policy for a topic:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span> <span class="o">=</span> <span class="p">[</span><span class="n">ALL_USERS</span><span class="p">]</span>
+    <span class="n">LOGS_GROUP</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span> <span class="o">=</span> <span class="p">[</span><span class="n">LOGS_GROUP</span><span class="p">]</span>
+    <span class="n">new_policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>   <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Test permissions allowed by the current IAM policy on a topic:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
+    <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
+    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="publish-messages-to-a-topic">
+<h2>Publish messages to a topic<a class="headerlink" href="#publish-messages-to-a-topic" title="Permalink to this headline">#</a></h2>
+<p>Publish a single message to a topic, without attributes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;This is the message payload&#39;</span><span class="p">)</span>               <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Publish a single message to a topic, with attributes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Another message payload&#39;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;EXTRA&#39;</span><span class="p">)</span>    <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Publish a set of messages to a topic (as a single request):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">PAYLOAD1</span><span class="p">)</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">PAYLOAD2</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">EXTRA</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The only API request happens during the <code class="docutils literal"><span class="pre">__exit__()</span></code> of the topic
+used as a context manager, and only if the block exits without raising
+an exception.</p>
+</div>
+</div>
+<div class="section" id="manage-subscriptions-to-topics">
+<h2>Manage subscriptions to topics<a class="headerlink" href="#manage-subscriptions-to-topics" title="Permalink to this headline">#</a></h2>
+<p>List all subscriptions for the default project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">():</span>  <span class="c1"># API request(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>List subscriptions for a topic:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">():</span>   <span class="c1"># API request(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a new pull subscription for a topic, with defaults:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">sub_defaults</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_DEFAULTS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a new pull subscription for a topic with a non-default ACK deadline:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">sub_ack90</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_ACK90</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a new push subscription for a topic:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_PUSH</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="n">PUSH_URL</span><span class="p">)</span>
+    <span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>               <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Check for the existence of a subscription:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">subscription</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>                        <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Convert a pull subscription to push:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span>
+        <span class="n">push_endpoint</span><span class="o">=</span><span class="n">PUSH_URL</span><span class="p">)</span>                                 <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Convert a push subscription to pull:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Re-synchronize a subscription with the back-end:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>                               <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Fetch the IAM policy for a subscription</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Update the IAM policy for a subscription:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span> <span class="o">=</span> <span class="p">[</span><span class="n">ALL_USERS</span><span class="p">]</span>
+    <span class="n">LOGS_GROUP</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span> <span class="o">=</span> <span class="p">[</span><span class="n">LOGS_GROUP</span><span class="p">]</span>
+    <span class="n">new_policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>   <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Test permissions allowed by the current IAM policy on a subscription:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
+    <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
+    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Delete a subscription:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>                               <span class="c1"># API request</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pull-messages-from-a-subscription">
+<h2>Pull messages from a subscription<a class="headerlink" href="#pull-messages-from-a-subscription" title="Permalink to this headline">#</a></h2>
+<p>Fetch pending messages for a pull subscription:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">pulled</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that received messages must be acknowledged, or else the back-end
+will re-send them later:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">pulled</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ApplicationException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subscription</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">([</span><span class="n">ack_id</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Fetch messages for a pull subscription without blocking (none pending):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">pulled</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">return_immediately</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Update the acknowlegement deadline for pulled messages:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pulled</span><span class="p">:</span>
+        <span class="n">subscription</span><span class="o">.</span><span class="n">modify_ack_deadline</span><span class="p">(</span><span class="n">ack_id</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>    <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Fetch pending messages, acknowledging those whose processing doesn’t raise an
+error:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.pubsub.subscription</span> <span class="k">import</span> <span class="n">AutoAck</span>
+    <span class="k">with</span> <span class="n">AutoAck</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">ack</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ack</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+                <span class="k">del</span> <span class="n">ack</span><span class="p">[</span><span class="n">ack_id</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">pull</span></code> API request occurs at entry to the <code class="docutils literal"><span class="pre">with</span></code> block, and the
+<code class="docutils literal"><span class="pre">acknowlege</span></code> API request occurs at the end, passing only the <code class="docutils literal"><span class="pre">ack_ids</span></code>
+which haven’t been deleted from <code class="docutils literal"><span class="pre">ack</span></code></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pub / Sub</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Pub/Sub Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topic.html">Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subscription.html">Subscriptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-configuration">Authentication / Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manage-topics-for-a-project">Manage topics for a project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#publish-messages-to-a-topic">Publish messages to a topic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manage-subscriptions-to-topics">Manage subscriptions to topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-messages-from-a-subscription">Pull messages from a subscription</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../language/responses.html" title="previous chapter">Natural Language Response Classes</a></li>
+      <li>Next: <a href="client.html" title="next chapter">Pub/Sub Client</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/pubsub/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

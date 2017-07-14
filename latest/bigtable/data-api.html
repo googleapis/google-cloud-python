@@ -1,0 +1,448 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Data API &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Datastore" href="../datastore/usage.html" />
+    <link rel="prev" title="Bigtable Row Filters" href="row-filters.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data-api">
+<h1>Data API<a class="headerlink" href="#data-api" title="Permalink to this headline">#</a></h1>
+<p>After creating a <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> and some
+column families, you are ready to store and retrieve data.</p>
+<div class="section" id="cells-vs-columns-vs-column-families">
+<h2>Cells vs. Columns vs. Column Families<a class="headerlink" href="#cells-vs-columns-vs-column-families" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li>As explained in the <a class="reference internal" href="table-api.html"><span class="doc">table overview</span></a>, tables can
+have many column families.</li>
+<li>As described below, a table can also have many rows which are
+specified by row keys.</li>
+<li>Within a row, data is stored in a cell. A cell simply has a value (as
+bytes) and a timestamp. The number of cells in each row can be
+different, depending on what was stored in each row.</li>
+<li>Each cell lies in a column (<strong>not</strong> a column family). A column is really
+just a more <strong>specific</strong> modifier within a column family. A column
+can be present in every column family, in only one or anywhere in between.</li>
+<li>Within a column family there can be many columns. For example, within
+the column family <code class="docutils literal"><span class="pre">foo</span></code> we could have columns <code class="docutils literal"><span class="pre">bar</span></code> and <code class="docutils literal"><span class="pre">baz</span></code>.
+These would typically be represented as <code class="docutils literal"><span class="pre">foo:bar</span></code> and <code class="docutils literal"><span class="pre">foo:baz</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="modifying-data">
+<h2>Modifying Data<a class="headerlink" href="#modifying-data" title="Permalink to this headline">#</a></h2>
+<p>Since data is stored in cells, which are stored in rows, we
+use the metaphor of a <strong>row</strong> in classes that are used to modify
+(write, update, delete) data in a
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>.</p>
+<div class="section" id="direct-vs-conditional-vs-append">
+<h3>Direct vs. Conditional vs. Append<a class="headerlink" href="#direct-vs-conditional-vs-append" title="Permalink to this headline">#</a></h3>
+<p>There are three ways to modify data in a table, described by the
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L50-L52">MutateRow</a>, <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L62-L64">CheckAndMutateRow</a> and <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L70-L72">ReadModifyWriteRow</a> API
+methods.</p>
+<ul class="simple">
+<li>The <strong>direct</strong> way is via <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L50-L52">MutateRow</a> which involves simply
+adding, overwriting or deleting cells. The
+<a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> class
+handles direct mutations.</li>
+<li>The <strong>conditional</strong> way is via <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L62-L64">CheckAndMutateRow</a>. This method
+first checks if some filter is matched in a a given row, then
+applies one of two sets of mutations, depending on if a match
+occurred or not. (These mutation sets are called the “true
+mutations” and “false mutations”.) The
+<a class="reference internal" href="row.html#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a> class
+handles conditional mutations.</li>
+<li>The <strong>append</strong> way is via <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L70-L72">ReadModifyWriteRow</a>. This simply
+appends (as bytes) or increments (as an integer) data in a presumed
+existing cell in a row. The
+<a class="reference internal" href="row.html#google.cloud.bigtable.row.AppendRow" title="google.cloud.bigtable.row.AppendRow"><code class="xref py py-class docutils literal"><span class="pre">AppendRow</span></code></a> class
+handles append mutations.</li>
+</ul>
+</div>
+<div class="section" id="row-factory">
+<h3>Row Factory<a class="headerlink" href="#row-factory" title="Permalink to this headline">#</a></h3>
+<p>A single factory can be used to create any of the three row types.
+To create a <a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Unlike the previous string values we’ve used before, the row key must
+be <code class="docutils literal"><span class="pre">bytes</span></code>.</p>
+<p>To create a <a class="reference internal" href="row.html#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a>,
+first create a <code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code> and
+then</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">cond_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To create an <a class="reference internal" href="row.html#google.cloud.bigtable.row.AppendRow" title="google.cloud.bigtable.row.AppendRow"><code class="xref py py-class docutils literal"><span class="pre">AppendRow</span></code></a></p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">append_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-up-mutations">
+<h3>Building Up Mutations<a class="headerlink" href="#building-up-mutations" title="Permalink to this headline">#</a></h3>
+<p>In all three cases, a set of mutations (or two sets) are built up
+on a row before they are sent of in a batch via</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="direct-mutations">
+<h3>Direct Mutations<a class="headerlink" href="#direct-mutations" title="Permalink to this headline">#</a></h3>
+<p>Direct mutations can be added via one of four methods</p>
+<ul>
+<li><p class="first"><a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow.set_cell" title="google.cloud.bigtable.row.DirectRow.set_cell"><code class="xref py py-meth docutils literal"><span class="pre">set_cell()</span></code></a> allows a
+single value to be written to a column</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+             <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the <code class="docutils literal"><span class="pre">timestamp</span></code> is omitted, the current time on the Google Cloud
+Bigtable server will be used when the cell is stored.</p>
+<p>The value can either be bytes or an integer, which will be converted to
+bytes as a signed 64-bit integer.</p>
+</li>
+<li><p class="first"><a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a> deletes
+all cells (i.e. for all timestamps) in a given column</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Remember, this only happens in the <code class="docutils literal"><span class="pre">row</span></code> we are using.</p>
+<p>If we only want to delete cells from a limited range of time, a
+<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code> can
+be used</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span>
+                <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow.delete_cells" title="google.cloud.bigtable.row.DirectRow.delete_cells"><code class="xref py py-meth docutils literal"><span class="pre">delete_cells()</span></code></a> does
+the same thing as
+<a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a>,
+but accepts a list of columns in a column family rather than a single one.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="p">[</span><span class="n">column1</span><span class="p">,</span> <span class="n">column2</span><span class="p">],</span>
+                 <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In addition, if we want to delete cells from every column in a column family,
+the special <code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code>
+value can be used</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">ALL_COLUMNS</span><span class="p">,</span>
+                 <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow.delete" title="google.cloud.bigtable.row.DirectRow.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> will delete the
+entire row</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="conditional-mutations">
+<h3>Conditional Mutations<a class="headerlink" href="#conditional-mutations" title="Permalink to this headline">#</a></h3>
+<p>Making <strong>conditional</strong> modifications is essentially identical
+to <strong>direct</strong> modifications: it uses the exact same methods
+to accumulate mutations.</p>
+<p>However, each mutation added must specify a <code class="docutils literal"><span class="pre">state</span></code>: will the mutation be
+applied if the filter matches or if it fails to match.</p>
+<p>For example:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">cond_row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+                  <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will add to the set of true mutations.</p>
+</div>
+<div class="section" id="append-mutations">
+<h3>Append Mutations<a class="headerlink" href="#append-mutations" title="Permalink to this headline">#</a></h3>
+<p>Append mutations can be added via one of two methods</p>
+<ul>
+<li><p class="first"><a class="reference internal" href="row.html#google.cloud.bigtable.row.AppendRow.append_cell_value" title="google.cloud.bigtable.row.AppendRow.append_cell_value"><code class="xref py py-meth docutils literal"><span class="pre">append_cell_value()</span></code></a>
+appends a bytes value to an existing cell:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">append_row</span><span class="o">.</span><span class="n">append_cell_value</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">bytes_value</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><a class="reference internal" href="row.html#google.cloud.bigtable.row.AppendRow.increment_cell_value" title="google.cloud.bigtable.row.AppendRow.increment_cell_value"><code class="xref py py-meth docutils literal"><span class="pre">increment_cell_value()</span></code></a>
+increments an integer value in an existing cell:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">append_row</span><span class="o">.</span><span class="n">increment_cell_value</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">int_value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since only bytes are stored in a cell, the cell value is decoded as
+a signed 64-bit integer before being incremented. (This happens on
+the Google Cloud Bigtable server, not in the library.)</p>
+</li>
+</ul>
+<p>Notice that no timestamp was specified. This is because <strong>append</strong> mutations
+operate on the latest value of the specified column.</p>
+<p>If there are no cells in the specified column, then the empty string (bytes
+case) or zero (integer case) are the assumed values.</p>
+</div>
+<div class="section" id="starting-fresh">
+<h3>Starting Fresh<a class="headerlink" href="#starting-fresh" title="Permalink to this headline">#</a></h3>
+<p>If accumulated mutations need to be dropped, use</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="reading-data">
+<h2>Reading Data<a class="headerlink" href="#reading-data" title="Permalink to this headline">#</a></h2>
+<div class="section" id="read-single-row-from-a-table">
+<h3>Read Single Row from a Table<a class="headerlink" href="#read-single-row-from-a-table" title="Permalink to this headline">#</a></h3>
+<p>To make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L36-L38">ReadRows</a> API request for a single row key, use
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_row" title="google.cloud.bigtable.table.Table.read_row"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_row()</span></code></a>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row_data</span><span class="o">.</span><span class="n">cells</span>
+<span class="go">{</span>
+<span class="go">    u&#39;fam1&#39;: {</span>
+<span class="go">        b&#39;col1&#39;: [</span>
+<span class="go">            &lt;google.cloud.bigtable.row_data.Cell at 0x7f80d150ef10&gt;,</span>
+<span class="go">            &lt;google.cloud.bigtable.row_data.Cell at 0x7f80d150ef10&gt;,</span>
+<span class="go">        ],</span>
+<span class="go">        b&#39;col2&#39;: [</span>
+<span class="go">            &lt;google.cloud.bigtable.row_data.Cell at 0x7f80d150ef10&gt;,</span>
+<span class="go">        ],</span>
+<span class="go">    },</span>
+<span class="go">    u&#39;fam2&#39;: {</span>
+<span class="go">        b&#39;col3&#39;: [</span>
+<span class="go">            &lt;google.cloud.bigtable.row_data.Cell at 0x7f80d150ef10&gt;,</span>
+<span class="go">            &lt;google.cloud.bigtable.row_data.Cell at 0x7f80d150ef10&gt;,</span>
+<span class="go">            &lt;google.cloud.bigtable.row_data.Cell at 0x7f80d150ef10&gt;,</span>
+<span class="go">        ],</span>
+<span class="go">    },</span>
+<span class="go">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span> <span class="o">=</span> <span class="n">row_data</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="sa">u</span><span class="s1">&#39;fam1&#39;</span><span class="p">][</span><span class="sa">b</span><span class="s1">&#39;col1&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span>
+<span class="go">&lt;google.cloud.bigtable.row_data.Cell at 0x7f80d150ef10&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span><span class="o">.</span><span class="n">value</span>
+<span class="go">b&#39;val1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span><span class="o">.</span><span class="n">timestamp</span>
+<span class="go">datetime.datetime(2016, 2, 27, 3, 41, 18, 122823, tzinfo=&lt;UTC&gt;)</span>
+</pre></div>
+</div>
+<p>Rather than returning a <a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a>
+or similar class, this method returns a
+<a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowData" title="google.cloud.bigtable.row_data.PartialRowData"><code class="xref py py-class docutils literal"><span class="pre">PartialRowData</span></code></a>
+instance. This class is used for reading and parsing data rather than for
+modifying data (as <a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> is).</p>
+<p>A filter can also be applied to the results:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_val</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The allowable <code class="docutils literal"><span class="pre">filter_</span></code> values are the same as those used for a
+<a class="reference internal" href="row.html#google.cloud.bigtable.row.ConditionalRow" title="google.cloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a>. For
+more information, see the
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_row" title="google.cloud.bigtable.table.Table.read_row"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_row()</span></code></a> documentation.</p>
+</div>
+<div class="section" id="stream-many-rows-from-a-table">
+<h3>Stream Many Rows from a Table<a class="headerlink" href="#stream-many-rows-from-a-table" title="Permalink to this headline">#</a></h3>
+<p>To make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L36-L38">ReadRows</a> API request for a stream of rows, use
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_rows" title="google.cloud.bigtable.table.Table.read_rows"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_rows()</span></code></a>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_rows</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Using gRPC over HTTP/2, a continual stream of responses will be delivered.
+In particular</p>
+<ul class="simple">
+<li><a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData.consume_next" title="google.cloud.bigtable.row_data.PartialRowsData.consume_next"><code class="xref py py-meth docutils literal"><span class="pre">consume_next()</span></code></a>
+pulls the next result from the stream, parses it and stores it on the
+<a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData" title="google.cloud.bigtable.row_data.PartialRowsData"><code class="xref py py-class docutils literal"><span class="pre">PartialRowsData</span></code></a> instance</li>
+<li><a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData.consume_all" title="google.cloud.bigtable.row_data.PartialRowsData.consume_all"><code class="xref py py-meth docutils literal"><span class="pre">consume_all()</span></code></a>
+pulls results from the stream until there are no more</li>
+<li><a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData.cancel" title="google.cloud.bigtable.row_data.PartialRowsData.cancel"><code class="xref py py-meth docutils literal"><span class="pre">cancel()</span></code></a> closes
+the stream</li>
+</ul>
+<p>See the <a class="reference internal" href="row-data.html#google.cloud.bigtable.row_data.PartialRowsData" title="google.cloud.bigtable.row_data.PartialRowsData"><code class="xref py py-class docutils literal"><span class="pre">PartialRowsData</span></code></a>
+documentation for more information.</p>
+<p>As with
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_row" title="google.cloud.bigtable.table.Table.read_row"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_row()</span></code></a>, an optional
+<code class="docutils literal"><span class="pre">filter_</span></code> can be applied. In addition a <code class="docutils literal"><span class="pre">start_key</span></code> and / or <code class="docutils literal"><span class="pre">end_key</span></code>
+can be supplied for the stream, a <code class="docutils literal"><span class="pre">limit</span></code> can be set and a boolean
+<code class="docutils literal"><span class="pre">allow_row_interleaving</span></code> can be specified to allow faster streamed results
+at the potential cost of non-sequential reads.</p>
+<p>See the <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_rows" title="google.cloud.bigtable.table.Table.read_rows"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_rows()</span></code></a>
+documentation for more information on the optional arguments.</p>
+</div>
+<div class="section" id="sample-keys-in-a-table">
+<h3>Sample Keys in a Table<a class="headerlink" href="#sample-keys-in-a-table" title="Permalink to this headline">#</a></h3>
+<p>Make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L44-L46">SampleRowKeys</a> API request with
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.sample_row_keys" title="google.cloud.bigtable.table.Table.sample_row_keys"><code class="xref py py-meth docutils literal"><span class="pre">Table.sample_row_keys()</span></code></a>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">keys_iterator</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sample_row_keys</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The returned row keys will delimit contiguous sections of the table of
+approximately equal size, which can be used to break up the data for
+distributed tasks like mapreduces.</p>
+<p>As with
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.read_rows" title="google.cloud.bigtable.table.Table.read_rows"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_rows()</span></code></a>, the
+returned <code class="docutils literal"><span class="pre">keys_iterator</span></code> is connected to a cancellable HTTP/2 stream.</p>
+<p>The next key in the result can be accessed via</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">next_key</span> <span class="o">=</span> <span class="n">keys_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or all keys can be iterated over via</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">curr_key</span> <span class="ow">in</span> <span class="n">keys_iterator</span><span class="p">:</span>
+    <span class="n">do_something</span><span class="p">(</span><span class="n">curr_key</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Just as with reading, the stream can be canceled:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">keys_iterator</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Bigtable</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html">Base for Everything</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster.html">Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance.html">Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-api.html">Table Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="column-family.html">Column Families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row.html">Bigtable Row</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row-data.html">Row Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Bigtable</a><ul>
+      <li>Previous: <a href="row-filters.html" title="previous chapter">Bigtable Row Filters</a></li>
+      <li>Next: <a href="../datastore/usage.html" title="next chapter">Datastore</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/bigtable/data-api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

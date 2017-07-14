@@ -1,0 +1,229 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Integration with Python logging module &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python Logging Module Handler" href="handlers.html" />
+    <link rel="prev" title="Sinks" href="sink.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="integration-with-python-logging-module">
+<h1>Integration with Python logging module<a class="headerlink" href="#integration-with-python-logging-module" title="Permalink to this headline">#</a></h1>
+<p>It’s possible to tie the Python <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.6)"><code class="xref py py-mod docutils literal"><span class="pre">logging</span></code></a> module directly into Google Cloud Logging. To use it,
+create a <code class="xref py py-class docutils literal"><span class="pre">CloudLoggingHandler</span></code> instance from your
+Logging client.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.cloud.logging</span> <span class="c1"># Don&#39;t conflict with standard logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.logging.handlers</span> <span class="kn">import</span> <span class="n">CloudLoggingHandler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cloud_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;cloudLogger&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cloud_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span> <span class="c1"># defaults to WARN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cloud_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cloud_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="last docutils">
+<dt>This handler by default uses an asynchronous transport that sends log entries on a background</dt>
+<dd>thread. However, the API call will still be made in the same process. For other transport
+options, see the transports section.</dd>
+</dl>
+</div>
+<p>All logs will go to a single custom log, which defaults to “python”. The name of the Python
+logger will be included in the structured log entry under the “python_logger” field. You can
+change it by providing a name to the handler:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mycustomlog&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is also possible to attach the handler to the root Python logger, so that for example a plain
+<cite>logging.warn</cite> call would be sent to Cloud Logging, as well as any other loggers created. However,
+you must avoid infinite recursion from the logging calls the client itself makes. A helper
+method <code class="xref py py-meth docutils literal"><span class="pre">setup_logging</span></code> is provided to configure
+this automatically:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">google.cloud.logging</span> <span class="c1"># Don&#39;t conflict with standard logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.logging.handlers</span> <span class="kn">import</span> <span class="n">CloudLoggingHandler</span><span class="p">,</span> <span class="n">setup_logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span> <span class="c1"># defaults to WARN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">setup_logging</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also exclude certain loggers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">setup_logging</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">excluded_loggers</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">,))</span>
+</pre></div>
+</div>
+<div class="section" id="python-logging-handler-transports">
+<h2>Python logging handler transports<a class="headerlink" href="#python-logging-handler-transports" title="Permalink to this headline">#</a></h2>
+<p>The Python logging handler can use different transports. The default is
+<code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.handlers.BackgroundThreadTransport</span></code>.</p>
+<blockquote>
+<div><p>1. <code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.handlers.BackgroundThreadTransport</span></code> this is the default. It writes
+entries on a background <code class="xref py py-class docutils literal"><span class="pre">python.threading.Thread</span></code>.</p>
+<p>1. <code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.handlers.SyncTransport</span></code> this handler does a direct API call on each
+logging statement to write the entry.</p>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Stackdriver Logging</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client.html">Stackdriver Logging Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logger.html">Logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entries.html">Entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metric.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink.html">Sinks</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Integration with Python logging module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers-container-engine.html">Google Container Engine Log Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports-sync.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports-thread.html">Python Logging Handler Threaded Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports-base.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#authentication-and-configuration">Authentication and Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#writing-log-entries">Writing log entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#retrieving-log-entries">Retrieving log entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#delete-all-entries-for-a-logger">Delete all entries for a logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#manage-log-metrics">Manage log metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#export-log-entries-using-sinks">Export log entries using sinks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#integration-with-python-logging-module">Integration with Python logging module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Stackdriver Logging</a><ul>
+      <li>Previous: <a href="sink.html" title="previous chapter">Sinks</a></li>
+      <li>Next: <a href="handlers.html" title="next chapter">Python Logging Module Handler</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/logging/stdlib-usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

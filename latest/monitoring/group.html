@@ -1,0 +1,456 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Groups &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Time Series Query" href="query.html" />
+    <link rel="prev" title="Monitored Resource Descriptors" href="resource.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.monitoring.group">
+<span id="groups"></span><h1>Groups<a class="headerlink" href="#module-google.cloud.monitoring.group" title="Permalink to this headline">#</a></h1>
+<p>Groups for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups">Google Stackdriver Monitoring API (V3)</a>.</p>
+<dl class="class">
+<dt id="google.cloud.monitoring.group.Group">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring.group.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>client</em>, <em>group_id=None</em>, <em>display_name=None</em>, <em>parent_id=None</em>, <em>filter_string=None</em>, <em>is_cluster=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A dynamic collection of monitored resources.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.monitoring.client.Client</span></code></a>) – A client for operating on the metric descriptor.</li>
+<li><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The ID of the group.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) A user-assigned name for this group, used only for display
+purposes.</li>
+<li><strong>parent_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The ID of the group’s parent, if it has one.</li>
+<li><strong>filter_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The filter string used to determine which monitored
+resources belong to this group.</li>
+<li><strong>is_cluster</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If true, the members of this group are considered to be a cluster. The
+system can perform additional analysis on groups that are clusters.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a new group based on this object via a <code class="docutils literal"><span class="pre">POST</span></code> request.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_string</span> <span class="o">=</span> <span class="s1">&#39;resource.type = &quot;gce_instance&quot;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">display_name</span><span class="o">=</span><span class="s1">&#39;My group&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">filter_string</span><span class="o">=</span><span class="n">filter_string</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">parent_id</span><span class="o">=</span><span class="s1">&#39;5678&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">is_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">name</span></code> attribute is ignored in preparing the creation request.
+All attributes are overwritten by the values received in the response
+(normally affecting only <code class="docutils literal"><span class="pre">name</span></code>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete the group via a <code class="docutils literal"><span class="pre">DELETE</span></code> request.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Only the <code class="docutils literal"><span class="pre">client</span></code> and <code class="docutils literal"><span class="pre">name</span></code> attributes are used.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method will fail for groups that have one or more children
+groups.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.exists" title="Permalink to this definition">#</a></dt>
+<dd><p>Test for the existence of the group via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating existence of the group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.fetch_parent">
+<code class="descname">fetch_parent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.fetch_parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.fetch_parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the parent group of this group via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The parent of the group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring.group.Group.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.monitoring.group.Group.id" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the group ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)">None</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the ID of the group based on it’s name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.list_ancestors">
+<code class="descname">list_ancestors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.list_ancestors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.list_ancestors" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all ancestors of this group via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<p>The groups are returned in order, starting with the immediate parent
+and ending with the most distant ancestor. If the specified group has
+no immediate parent, the results are empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of group instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.list_children">
+<code class="descname">list_children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.list_children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.list_children" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all children of this group via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<p>Returns groups whose parent_name field contains the group name. If no
+groups have this parent, the results are empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of group instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.list_descendants">
+<code class="descname">list_descendants</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.list_descendants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.list_descendants" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all descendants of this group via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<p>This returns a superset of the results returned by the <code class="xref py py-meth docutils literal"><span class="pre">children()</span></code>
+method, and includes children-of-children, and so forth.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of group instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.list_members">
+<code class="descname">list_members</code><span class="sig-paren">(</span><em>filter_string=None</em>, <em>end_time=None</em>, <em>start_time=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.list_members"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.list_members" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all members of this group via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<p>If no <code class="docutils literal"><span class="pre">end_time</span></code> is provided then the group membership over the last
+minute is returned.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">list_members</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">member</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>List members that are Compute Engine VM instances:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_string</span> <span class="o">=</span> <span class="s1">&#39;resource.type = &quot;gce_instance&quot;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">list_members</span><span class="p">(</span><span class="n">filter_string</span><span class="o">=</span><span class="n">filter_string</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">member</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>List historical members that existed between 4 and 5 hours ago:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t0</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">list_members</span><span class="p">(</span><span class="n">end_time</span><span class="o">=</span><span class="n">t1</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">t0</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">member</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filter_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) An optional list filter describing the members to be
+returned. The filter may reference the type, labels, and metadata
+of monitored resources that comprise the group. See the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters#group-filter">filter
+documentation</a>.</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The end time (inclusive) of the time interval for which
+results should be returned, as a datetime object. If <code class="docutils literal"><span class="pre">start_time</span></code>
+is specified, then this must also be specified.</li>
+<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – (Optional) The start time (exclusive) of the time interval for
+which results should be returned, as a datetime object.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of resource instances.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the <code class="docutils literal"><span class="pre">start_time</span></code> is specified, but the
+<code class="docutils literal"><span class="pre">end_time</span></code> is missing.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring.group.Group.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.monitoring.group.Group.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the fully qualified name of the group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)">None</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The fully qualified name of the group in the format
+“projects/&lt;project&gt;/groups/&lt;id&gt;”.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring.group.Group.parent_name">
+<code class="descname">parent_name</code><a class="headerlink" href="#google.cloud.monitoring.group.Group.parent_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the fully qualified name of the parent group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)">None</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The fully qualified name of the parent group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.monitoring.group.Group.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.monitoring.group.Group.path" title="Permalink to this definition">#</a></dt>
+<dd><p>URL path to this group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the path based on project and group name.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if <a class="reference internal" href="#google.cloud.monitoring.group.Group.name" title="google.cloud.monitoring.group.Group.name"><code class="xref py py-attr docutils literal"><span class="pre">name</span></code></a> is not specified.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.reload" title="Permalink to this definition">#</a></dt>
+<dd><p>Sync local group information via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This will overwrite any local changes you’ve made and not saved
+via <a class="reference internal" href="#google.cloud.monitoring.group.Group.update" title="google.cloud.monitoring.group.Group.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a>.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.group.Group.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/group.html#Group.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.group.Group.update" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the group via a <code class="docutils literal"><span class="pre">PUT</span></code> request.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Stackdriver Monitoring</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client.html">Stackdriver Monitoring Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metric.html">Metric Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource.html">Monitored Resource Descriptors</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html">Time Series Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries.html">Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="label.html">Label Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#the-stackdriver-monitoring-client-object">The Stackdriver Monitoring Client Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#monitored-resource-descriptors">Monitored Resource Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#metric-descriptors">Metric Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#groups">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#time-series-queries">Time Series Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#writing-custom-metrics">Writing Custom Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Stackdriver Monitoring</a><ul>
+      <li>Previous: <a href="resource.html" title="previous chapter">Monitored Resource Descriptors</a></li>
+      <li>Next: <a href="query.html" title="next chapter">Time Series Query</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/monitoring/group.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
