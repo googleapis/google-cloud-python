@@ -1,0 +1,863 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Shared Core Modules &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BigQuery" href="../bigquery/usage.html" />
+    <link rel="prev" title="Long-Running Operations" href="operation-api.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="shared-core-modules">
+<h1>Shared Core Modules<a class="headerlink" href="#shared-core-modules" title="Permalink to this headline">#</a></h1>
+<div class="section" id="module-google.cloud.client">
+<span id="base-client"></span><h2>Base Client<a class="headerlink" href="#module-google.cloud.client" title="Permalink to this headline">#</a></h2>
+<p>Base classes for client used to interact with Google Cloud APIs.</p>
+<dl class="class">
+<dt id="google.cloud.client.Client">
+<em class="property">class </em><code class="descclassname">google.cloud.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.client.Client" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientFactoryMixin</span></code></p>
+<p>Client to bundle configuration needed for API requests.</p>
+<p>Stores <code class="docutils literal"><span class="pre">credentials</span></code> and an HTTP object so that subclasses
+can pass them along to a connection class.</p>
+<p>If no value is passed in for <code class="docutils literal"><span class="pre">_http</span></code>, a <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> object
+will be created and authorized with the <code class="docutils literal"><span class="pre">credentials</span></code>. If not, the
+<code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">_http</span></code> need not be related.</p>
+<p>Callers and subclasses may seek to use the private key from
+<code class="docutils literal"><span class="pre">credentials</span></code> to sign data.</p>
+<p>A custom (non-<code class="docutils literal"><span class="pre">httplib2</span></code>) HTTP object must have a <code class="docutils literal"><span class="pre">request</span></code> method
+which accepts the following arguments:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">uri</span></code></li>
+<li><code class="docutils literal"><span class="pre">method</span></code></li>
+<li><code class="docutils literal"><span class="pre">body</span></code></li>
+<li><code class="docutils literal"><span class="pre">headers</span></code></li>
+</ul>
+<p>In addition, <code class="docutils literal"><span class="pre">redirections</span></code> and <code class="docutils literal"><span class="pre">connection_type</span></code> may be used.</p>
+<p>A custom <code class="docutils literal"><span class="pre">_http</span></code> object will also need to be able to add a bearer token
+to API requests and handle token refresh on 401 errors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
+passed), falls back to the default inferred from the
+environment.</li>
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
+that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
+<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
+This parameter should be considered private, and could
+change in the future.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.client.Client.SCOPE">
+<code class="descname">SCOPE</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<dd><p>The scopes required for authenticating with a service.</p>
+<p>Needs to be set by subclasses.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.client.Client.from_service_account_json">
+<code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.client.Client.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to retrieve JSON credentials while creating client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>json_credentials_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The path to a private key file (this file
+was given to you when you created the
+service account). This file must contain
+a JSON object with a private key and
+other credentials information (downloaded
+from the Google APIs console).</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – Remaining positional arguments to pass to constructor.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Remaining keyword arguments to pass to constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">_ClientFactoryMixin</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The client created with the retrieved JSON credentials.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code></a> if there is a conflict with the kwargs
+and the credentials created by the factory.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.client.ClientWithProject">
+<em class="property">class </em><code class="descclassname">google.cloud.client.</code><code class="descname">ClientWithProject</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/client.html#ClientWithProject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.client.ClientWithProject" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.Client</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientProjectMixin</span></code></p>
+<p>Client that also stores a project.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the project which the client acts on behalf of. If not
+passed falls back to the default inferred from the
+environment.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
+passed), falls back to the default inferred from the
+environment.</li>
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
+that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
+<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
+This parameter should be considered private, and could
+change in the future.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the project is neither passed in nor
+set in the environment.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.client.ClientWithProject.from_service_account_json">
+<code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.client.ClientWithProject.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to retrieve JSON credentials while creating client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>json_credentials_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The path to a private key file (this file
+was given to you when you created the
+service account). This file must contain
+a JSON object with a private key and
+other credentials information (downloaded
+from the Google APIs console).</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – Remaining positional arguments to pass to constructor.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Remaining keyword arguments to pass to constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">_ClientFactoryMixin</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The client created with the retrieved JSON credentials.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code></a> if there is a conflict with the kwargs
+and the credentials created by the factory.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-google.cloud.credentials">
+<span id="credentials-helpers"></span><h2>Credentials Helpers<a class="headerlink" href="#module-google.cloud.credentials" title="Permalink to this headline">#</a></h2>
+<p>A simple wrapper around the OAuth2 credentials library.</p>
+<dl class="function">
+<dt id="google.cloud.credentials.generate_signed_url">
+<code class="descclassname">google.cloud.credentials.</code><code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>credentials</em>, <em>resource</em>, <em>expiration</em>, <em>api_access_endpoint=''</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em>, <em>response_type=None</em>, <em>response_disposition=None</em>, <em>generation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/credentials.html#generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.credentials.generate_signed_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate signed URL to provide query-string auth’n to a resource.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Assumes <code class="docutils literal"><span class="pre">credentials</span></code> implements the
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a> interface. Also assumes
+<code class="docutils literal"><span class="pre">credentials</span></code> has a <code class="docutils literal"><span class="pre">service_account_email</span></code> property which
+identifies the credentials.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are on Google Compute Engine, you can’t generate a signed URL.
+Follow <a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues/922">Issue 922</a> for updates on this. If you’d like to be able to
+generate a signed URL from GCE, you can use a standard service account
+from a JSON file rather than a GCE service account.</p>
+</div>
+<p>See headers <a class="reference external" href="https://cloud.google.com/storage/docs/reference-headers">reference</a> for more details on optional arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a>) – Credentials object with an associated private key to
+sign text.</li>
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A pointer to a specific resource
+(typically, <code class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></code>).</li>
+<li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">long</span></code>, <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>,
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – When the signed URL should expire.</li>
+<li><strong>api_access_endpoint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional URI base. Defaults to empty string.</li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The HTTP verb that will be used when requesting the URL.
+Defaults to <code class="docutils literal"><span class="pre">'GET'</span></code>.</li>
+<li><strong>content_md5</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The MD5 hash of the object referenced by
+<code class="docutils literal"><span class="pre">resource</span></code>.</li>
+<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The content type of the object referenced
+by <code class="docutils literal"><span class="pre">resource</span></code>.</li>
+<li><strong>response_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Content type of responses to requests for
+the signed URL. Used to over-ride the content type of
+the underlying resource.</li>
+<li><strong>response_disposition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Content disposition of responses to
+requests for the signed URL.</li>
+<li><strong>generation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) A value that indicates which generation of
+the resource to fetch.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
+until expiration.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.credentials.get_credentials">
+<code class="descclassname">google.cloud.credentials.</code><code class="descname">get_credentials</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/credentials.html#get_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.credentials.get_credentials" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets credentials implicitly from the current environment.</p>
+<p>Uses <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.0.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Credentials</span></code></a>,</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new credentials instance corresponding to the implicit
+environment.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-google.cloud.exceptions">
+<span id="exceptions"></span><h2>Exceptions<a class="headerlink" href="#module-google.cloud.exceptions" title="Permalink to this headline">#</a></h2>
+<p>Custom exceptions for <code class="xref py py-mod docutils literal"><span class="pre">google.cloud</span></code> package.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/status-codes">https://cloud.google.com/storage/docs/json_api/v1/status-codes</a></p>
+<dl class="exception">
+<dt id="google.cloud.exceptions.BadGateway">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">BadGateway</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#BadGateway"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.BadGateway" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ServerError" title="google.cloud.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a ‘502 Bad Gateway’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.BadRequest">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">BadRequest</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#BadRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.BadRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘400 Bad Request’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.ClientError">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">ClientError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#ClientError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.ClientError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.GoogleCloudError</span></code></a></p>
+<p>Base for 4xx responses</p>
+<p>This class is abstract</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.Conflict">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">Conflict</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#Conflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.Conflict" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘409 Conflict’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.Forbidden">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">Forbidden</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#Forbidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.Forbidden" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘403 Forbidden’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.GatewayTimeout">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">GatewayTimeout</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#GatewayTimeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.GatewayTimeout" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ServerError" title="google.cloud.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a <cite>504 Gateway Timeout’</cite> response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.GoogleCloudError">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">GoogleCloudError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#GoogleCloudError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.GoogleCloudError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<p>Base error class for Google Cloud errors (abstract).</p>
+<p>Each subclass represents a single type of HTTP error response.</p>
+<dl class="attribute">
+<dt id="google.cloud.exceptions.GoogleCloudError.code">
+<code class="descname">code</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.exceptions.GoogleCloudError.code" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP status code.  Concrete subclasses <em>must</em> define.</p>
+<p>See <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.exceptions.GoogleCloudError.errors">
+<code class="descname">errors</code><a class="headerlink" href="#google.cloud.exceptions.GoogleCloudError.errors" title="Permalink to this definition">#</a></dt>
+<dd><p>Detailed error information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of mappings describing each error.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.exceptions.GrpcRendezvous">
+<code class="descclassname">google.cloud.exceptions.</code><code class="descname">GrpcRendezvous</code><a class="headerlink" href="#google.cloud.exceptions.GrpcRendezvous" title="Permalink to this definition">#</a></dt>
+<dd><p>Exception class raised by gRPC stable.</p>
+<p>alias of <code class="xref py py-class docutils literal"><span class="pre">_Rendezvous</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.InternalServerError">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">InternalServerError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#InternalServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.InternalServerError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ServerError" title="google.cloud.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a ‘500 Internal Server Error’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.LengthRequired">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">LengthRequired</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#LengthRequired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.LengthRequired" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘411 Length Required’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.MethodNotAllowed">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">MethodNotAllowed</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#MethodNotAllowed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.MethodNotAllowed" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘405 Method Not Allowed’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.MethodNotImplemented">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">MethodNotImplemented</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#MethodNotImplemented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.MethodNotImplemented" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ServerError" title="google.cloud.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a ‘501 Not Implemented’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.MovedPermanently">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">MovedPermanently</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#MovedPermanently"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.MovedPermanently" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.Redirection" title="google.cloud.exceptions.Redirection"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Redirection</span></code></a></p>
+<p>Exception mapping a ‘301 Moved Permanently’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.NotFound">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">NotFound</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#NotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.NotFound" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘404 Not Found’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.NotModified">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">NotModified</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#NotModified"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.NotModified" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.Redirection" title="google.cloud.exceptions.Redirection"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Redirection</span></code></a></p>
+<p>Exception mapping a ‘304 Not Modified’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.PreconditionFailed">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">PreconditionFailed</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#PreconditionFailed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.PreconditionFailed" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘412 Precondition Failed’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.Redirection">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">Redirection</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#Redirection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.Redirection" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.GoogleCloudError</span></code></a></p>
+<p>Base for 3xx responses</p>
+<p>This class is abstract.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.RequestRangeNotSatisfiable">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">RequestRangeNotSatisfiable</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#RequestRangeNotSatisfiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.RequestRangeNotSatisfiable" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘416 Request Range Not Satisfiable’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.ResumeIncomplete">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">ResumeIncomplete</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#ResumeIncomplete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.ResumeIncomplete" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.Redirection" title="google.cloud.exceptions.Redirection"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Redirection</span></code></a></p>
+<p>Exception mapping a ‘308 Resume Incomplete’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.ServerError">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">ServerError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#ServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.ServerError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.GoogleCloudError</span></code></a></p>
+<p>Base for 5xx responses:  (abstract)</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.ServiceUnavailable">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">ServiceUnavailable</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#ServiceUnavailable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.ServiceUnavailable" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ServerError" title="google.cloud.exceptions.ServerError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ServerError</span></code></a></p>
+<p>Exception mapping a ‘503 Service Unavailable’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.TemporaryRedirect">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">TemporaryRedirect</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#TemporaryRedirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.TemporaryRedirect" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.Redirection" title="google.cloud.exceptions.Redirection"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Redirection</span></code></a></p>
+<p>Exception mapping a ‘307 Temporary Redirect’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.TooManyRequests">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">TooManyRequests</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#TooManyRequests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.TooManyRequests" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘429 Too Many Requests’ response.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.exceptions.Unauthorized">
+<em class="property">exception </em><code class="descclassname">google.cloud.exceptions.</code><code class="descname">Unauthorized</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#Unauthorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.Unauthorized" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.exceptions.ClientError" title="google.cloud.exceptions.ClientError"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.ClientError</span></code></a></p>
+<p>Exception mapping a ‘401 Unauthorized’ response.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.exceptions.make_exception">
+<code class="descclassname">google.cloud.exceptions.</code><code class="descname">make_exception</code><span class="sig-paren">(</span><em>response</em>, <em>content</em>, <em>error_info=None</em>, <em>use_json=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#make_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.make_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  create exception based on HTTP response code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>response</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Response" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Response</span></code></a> or other HTTP response object) – A response object that defines a status code as the
+status attribute.</li>
+<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>dictionary</em>) – The body of the HTTP error response.</li>
+<li><strong>error_info</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional string giving extra information about the
+failed request.</li>
+<li><strong>use_json</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Flag indicating if <code class="docutils literal"><span class="pre">content</span></code> is expected to be JSON.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">instance of <a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a>, or a concrete subclass.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Exception specific to the error response.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-google.cloud.environment_vars">
+<span id="environment-variables"></span><h2>Environment Variables<a class="headerlink" href="#module-google.cloud.environment_vars" title="Permalink to this headline">#</a></h2>
+<p>Comprehensive list of environment variables used in google-cloud.</p>
+<p>These enable many types of implicit behavior in both production
+and tests.</p>
+<dl class="data">
+<dt id="google.cloud.environment_vars.BIGTABLE_EMULATOR">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">BIGTABLE_EMULATOR</code><em class="property"> = 'BIGTABLE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.BIGTABLE_EMULATOR" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining host for Bigtable emulator.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.environment_vars.DISABLE_GRPC">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">DISABLE_GRPC</code><em class="property"> = 'GOOGLE_CLOUD_DISABLE_GRPC'</em><a class="headerlink" href="#google.cloud.environment_vars.DISABLE_GRPC" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable acting as flag to disable gRPC.</p>
+<p>To be used for APIs where both an HTTP and gRPC implementation
+exist.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.environment_vars.GCD_DATASET">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">GCD_DATASET</code><em class="property"> = 'DATASTORE_DATASET'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_DATASET" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining default dataset ID under GCD.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.environment_vars.GCD_HOST">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">GCD_HOST</code><em class="property"> = 'DATASTORE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_HOST" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining host for GCD dataset server.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.environment_vars.PUBSUB_EMULATOR">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">PUBSUB_EMULATOR</code><em class="property"> = 'PUBSUB_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.PUBSUB_EMULATOR" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining host for Pub/Sub emulator.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-google.cloud.iam">
+<span id="iam-support"></span><h2>IAM Support<a class="headerlink" href="#module-google.cloud.iam" title="Permalink to this headline">#</a></h2>
+<p>Non-API-specific IAM policy definitions</p>
+<p>For allowed roles / permissions, see:
+<a class="reference external" href="https://cloud.google.com/iam/docs/understanding-roles">https://cloud.google.com/iam/docs/understanding-roles</a></p>
+<dl class="data">
+<dt id="google.cloud.iam.EDITOR_ROLE">
+<code class="descclassname">google.cloud.iam.</code><code class="descname">EDITOR_ROLE</code><em class="property"> = 'roles/editor'</em><a class="headerlink" href="#google.cloud.iam.EDITOR_ROLE" title="Permalink to this definition">#</a></dt>
+<dd><p>Generic role implying rights to modify an object.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.iam.OWNER_ROLE">
+<code class="descclassname">google.cloud.iam.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'roles/owner'</em><a class="headerlink" href="#google.cloud.iam.OWNER_ROLE" title="Permalink to this definition">#</a></dt>
+<dd><p>Generic role implying all rights to an object.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iam.Policy">
+<em class="property">class </em><code class="descclassname">google.cloud.iam.</code><code class="descname">Policy</code><span class="sig-paren">(</span><em>etag=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.MutableMapping" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">collections.abc.MutableMapping</span></code></a></p>
+<p>IAM Policy</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/iam/reference/rest/v1/Policy">https://cloud.google.com/iam/reference/rest/v1/Policy</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>etag</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – ETag used to identify a unique of the policy</li>
+<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – unique version of the policy</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.all_users">
+<em class="property">static </em><code class="descname">all_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.all_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.all_users" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a member representing all users.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all users.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.authenticated_users">
+<em class="property">static </em><code class="descname">authenticated_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.authenticated_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.authenticated_users" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a member representing all authenticated users.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A member string representing all authenticated users.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.domain">
+<em class="property">static </em><code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.domain" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a domain member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The domain for this member.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given domain.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iam.Policy.editors">
+<code class="descname">editors</code><a class="headerlink" href="#google.cloud.iam.Policy.editors" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to editor role.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.iam.Policy.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a policy from the resource returned from the API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – resource returned from the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the parsed policy</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.group">
+<em class="property">static </em><code class="descname">group</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.group" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a group member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – An id or e-mail for this particular group.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iam.Policy.owners">
+<code class="descname">owners</code><a class="headerlink" href="#google.cloud.iam.Policy.owners" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to owner role.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.service_account">
+<em class="property">static </em><code class="descname">service_account</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.service_account" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a service account member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – E-mail for this particular service account.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given service account.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.iam.Policy.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a Policy resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a resource to be passed to the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> API.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.iam.Policy.user">
+<em class="property">static </em><code class="descname">user</code><span class="sig-paren">(</span><em>email</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/iam.html#Policy.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iam.Policy.user" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for a user member.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – E-mail for this particular user.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A member string corresponding to the given user.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.iam.Policy.viewers">
+<code class="descname">viewers</code><a class="headerlink" href="#google.cloud.iam.Policy.viewers" title="Permalink to this definition">#</a></dt>
+<dd><p>Legacy access to viewer role.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.iam.VIEWER_ROLE">
+<code class="descclassname">google.cloud.iam.</code><code class="descname">VIEWER_ROLE</code><em class="property"> = 'roles/viewer'</em><a class="headerlink" href="#google.cloud.iam.VIEWER_ROLE" title="Permalink to this definition">#</a></dt>
+<dd><p>Generic role implying rights to access an object.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Core</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth.html">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Shared Core Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Core</a><ul>
+      <li>Previous: <a href="operation-api.html" title="previous chapter">Long-Running Operations</a></li>
+      <li>Next: <a href="../bigquery/usage.html" title="next chapter">BigQuery</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/core/modules.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

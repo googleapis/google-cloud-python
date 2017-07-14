@@ -1,0 +1,246 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Message &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="IAM Policy" href="iam.html" />
+    <link rel="prev" title="Subscriptions" href="subscription.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.pubsub.message">
+<span id="message"></span><h1>Message<a class="headerlink" href="#module-google.cloud.pubsub.message" title="Permalink to this headline">#</a></h1>
+<p>Define API Topics.</p>
+<dl class="class">
+<dt id="google.cloud.pubsub.message.Message">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub.message.</code><code class="descname">Message</code><span class="sig-paren">(</span><em>data</em>, <em>message_id</em>, <em>attributes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/pubsub/message.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.message.Message" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Messages can be published to a topic and received by subscribers.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage">https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – the payload of the message.</li>
+<li><strong>message_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – An ID assigned to the message by the API.</li>
+<li><strong>attributes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – (Optional) Extra metadata associated by the publisher with the message.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.pubsub.message.Message.attributes">
+<code class="descname">attributes</code><a class="headerlink" href="#google.cloud.pubsub.message.Message.attributes" title="Permalink to this definition">#</a></dt>
+<dd><p>Lazily-constructed attribute dictionary.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.pubsub.message.Message.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>api_repr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/pubsub/message.html#Message.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.message.Message.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  construct message from API representation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>api_repr</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – (Optional) The API representation of the message</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.pubsub.message.Message" title="google.cloud.pubsub.message.Message"><code class="xref py py-class docutils literal"><span class="pre">Message</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The message created from the response.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub.message.Message.service_timestamp">
+<code class="descname">service_timestamp</code><a class="headerlink" href="#google.cloud.pubsub.message.Message.service_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>Return server-set timestamp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp (in UTC timezone) in RFC 3339 format</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub.message.Message.timestamp">
+<code class="descname">timestamp</code><a class="headerlink" href="#google.cloud.pubsub.message.Message.timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>Return sortable timestamp from attributes, if passed.</p>
+<p>Allows sorting messages in publication order (assuming consistent
+clocks across all publishers).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp (in UTC timezone) parsed from RFC 3339 timestamp</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">ValueError if timestamp not in <code class="docutils literal"><span class="pre">attributes</span></code>, or if it does
+not match the RFC 3339 format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Pub / Sub</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client.html">Pub/Sub Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topic.html">Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subscription.html">Subscriptions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#authentication-configuration">Authentication / Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#manage-topics-for-a-project">Manage topics for a project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#publish-messages-to-a-topic">Publish messages to a topic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#manage-subscriptions-to-topics">Manage subscriptions to topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#pull-messages-from-a-subscription">Pull messages from a subscription</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Pub / Sub</a><ul>
+      <li>Previous: <a href="subscription.html" title="previous chapter">Subscriptions</a></li>
+      <li>Next: <a href="iam.html" title="next chapter">IAM Policy</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/pubsub/message.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

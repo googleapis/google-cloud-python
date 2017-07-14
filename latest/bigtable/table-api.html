@@ -1,0 +1,276 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Table Admin API &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Column Families" href="column-family.html" />
+    <link rel="prev" title="Table" href="table.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="table-admin-api">
+<h1>Table Admin API<a class="headerlink" href="#table-admin-api" title="Permalink to this headline">#</a></h1>
+<p>After creating an <a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>, you can
+interact with individual tables, groups of tables or column families within
+a table.</p>
+<div class="section" id="list-tables">
+<h2>List Tables<a class="headerlink" href="#list-tables" title="Permalink to this headline">#</a></h2>
+<p>If you want a comprehensive list of all existing tables in a instance, make a
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L40-L42">ListTables</a> API request with
+<a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance.list_tables" title="google.cloud.bigtable.instance.Instance.list_tables"><code class="xref py py-meth docutils literal"><span class="pre">Instance.list_tables()</span></code></a>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">instance</span><span class="o">.</span><span class="n">list_tables</span><span class="p">()</span>
+<span class="go">[&lt;google.cloud.bigtable.table.Table at 0x7ff6a1de8f50&gt;,</span>
+<span class="go"> &lt;google.cloud.bigtable.table.Table at 0x7ff6a1de8350&gt;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="table-factory">
+<h2>Table Factory<a class="headerlink" href="#table-factory" title="Permalink to this headline">#</a></h2>
+<p>To create a <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> object:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Even if this <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> already
+has been created with the API, you’ll want this object to use as a
+parent of a <a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a>
+or <a class="reference internal" href="row.html#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a>.</p>
+</div>
+<div class="section" id="create-a-new-table">
+<h2>Create a new Table<a class="headerlink" href="#create-a-new-table" title="Permalink to this headline">#</a></h2>
+<p>After creating the table object, make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L35-L37">CreateTable</a> API request
+with <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.create" title="google.cloud.bigtable.table.Table.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you would like to initially split the table into several tablets (tablets are
+similar to HBase regions):</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">initial_split_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-an-existing-table">
+<h2>Delete an existing Table<a class="headerlink" href="#delete-an-existing-table" title="Permalink to this headline">#</a></h2>
+<p>Make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L50-L52">DeleteTable</a> API request with
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.delete" title="google.cloud.bigtable.table.Table.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="list-column-families-in-a-table">
+<h2>List Column Families in a Table<a class="headerlink" href="#list-column-families-in-a-table" title="Permalink to this headline">#</a></h2>
+<p>Though there is no <strong>official</strong> method for retrieving <a class="reference external" href="https://cloud.google.com/bigtable/docs/schema-design#column_families_and_column_qualifiers">column families</a>
+associated with a table, the <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L45-L47">GetTable</a> API method returns a
+table object with the names of the column families.</p>
+<p>To retrieve the list of column families use
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table.list_column_families" title="google.cloud.bigtable.table.Table.list_column_families"><code class="xref py py-meth docutils literal"><span class="pre">list_column_families()</span></code></a>:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_families</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">list_column_families</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="column-family-factory">
+<h2>Column Family Factory<a class="headerlink" href="#column-family-factory" title="Permalink to this headline">#</a></h2>
+<p>To create a
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily" title="google.cloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> object:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There is no real reason to use this factory unless you intend to
+create or delete a column family.</p>
+<p>In addition, you can specify an optional <code class="docutils literal"><span class="pre">gc_rule</span></code> (a
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>
+or similar):</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span>
+                                    <span class="n">gc_rule</span><span class="o">=</span><span class="n">gc_rule</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This rule helps the backend determine when and how to clean up old cells
+in the column family.</p>
+<p>See <a class="reference internal" href="column-family.html"><span class="doc">Column Families</span></a> for more information about
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.GarbageCollectionRule" title="google.cloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>
+and related classes.</p>
+</div>
+<div class="section" id="create-a-new-column-family">
+<h2>Create a new Column Family<a class="headerlink" href="#create-a-new-column-family" title="Permalink to this headline">#</a></h2>
+<p>After creating the column family object, make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L61-L63">CreateColumnFamily</a> API
+request with
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily.create" title="google.cloud.bigtable.column_family.ColumnFamily.create"><code class="xref py py-meth docutils literal"><span class="pre">ColumnFamily.create()</span></code></a></p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-an-existing-column-family">
+<h2>Delete an existing Column Family<a class="headerlink" href="#delete-an-existing-column-family" title="Permalink to this headline">#</a></h2>
+<p>Make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L71-L73">DeleteColumnFamily</a> API request with
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily.delete" title="google.cloud.bigtable.column_family.ColumnFamily.delete"><code class="xref py py-meth docutils literal"><span class="pre">ColumnFamily.delete()</span></code></a></p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="update-an-existing-column-family">
+<h2>Update an existing Column Family<a class="headerlink" href="#update-an-existing-column-family" title="Permalink to this headline">#</a></h2>
+<p>Make an <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L66-L68">UpdateColumnFamily</a> API request with
+<a class="reference internal" href="column-family.html#google.cloud.bigtable.column_family.ColumnFamily.update" title="google.cloud.bigtable.column_family.ColumnFamily.update"><code class="xref py py-meth docutils literal"><span class="pre">ColumnFamily.delete()</span></code></a></p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="next-step">
+<h2>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h2>
+<p>Now we go down the final step of the hierarchy from
+<a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> to
+<a class="reference internal" href="row.html#google.cloud.bigtable.row.Row" title="google.cloud.bigtable.row.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a> as well as streaming
+data directly via a <a class="reference internal" href="table.html#google.cloud.bigtable.table.Table" title="google.cloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>.</p>
+<p>Head next to learn about the <a class="reference internal" href="data-api.html"><span class="doc">Data API</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Bigtable</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html">Base for Everything</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster.html">Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance.html">Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Table</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Table Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="column-family.html">Column Families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row.html">Bigtable Row</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row-data.html">Row Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-api.html">Data API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Bigtable</a><ul>
+      <li>Previous: <a href="table.html" title="previous chapter">Table</a></li>
+      <li>Next: <a href="column-family.html" title="next chapter">Column Families</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/bigtable/table-api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

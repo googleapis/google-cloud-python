@@ -1,0 +1,359 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Cluster &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Instance" href="instance.html" />
+    <link rel="prev" title="Client" href="client.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.bigtable.cluster">
+<span id="cluster"></span><h1>Cluster<a class="headerlink" href="#module-google.cloud.bigtable.cluster" title="Permalink to this headline">#</a></h1>
+<p>User friendly container for Google Cloud Bigtable Cluster.</p>
+<dl class="class">
+<dt id="google.cloud.bigtable.cluster.Cluster">
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.cluster.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>cluster_id</em>, <em>instance</em>, <em>serve_nodes=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Representation of a Google Cloud Bigtable Cluster.</p>
+<p>We can use a <a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster" title="google.cloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a> to:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster.reload" title="google.cloud.bigtable.cluster.Cluster.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a> itself</li>
+<li><a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster.create" title="google.cloud.bigtable.cluster.Cluster.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> itself</li>
+<li><a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster.update" title="google.cloud.bigtable.cluster.Cluster.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a> itself</li>
+<li><a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster.delete" title="google.cloud.bigtable.cluster.Cluster.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> itself</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For now, we leave out the <code class="docutils literal"><span class="pre">default_storage_type</span></code> (an enum)
+which if not sent will end up as <code class="xref py py-data docutils literal"><span class="pre">data_v2_pb2.STORAGE_SSD</span></code>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ID of the cluster.</li>
+<li><strong>instance</strong> (<a class="reference internal" href="instance.html#google.cloud.bigtable.instance.Instance" title="google.cloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) – The instance where the cluster resides.</li>
+<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) The number of nodes in the cluster.
+Defaults to <a class="reference internal" href="#google.cloud.bigtable.cluster.DEFAULT_SERVE_NODES" title="google.cloud.bigtable.cluster.DEFAULT_SERVE_NODES"><code class="xref py py-data docutils literal"><span class="pre">DEFAULT_SERVE_NODES</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.bigtable.cluster.Cluster.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Make a copy of this cluster.</p>
+<p>Copies the local data stored as simple types and copies the client
+attached to this instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster" title="google.cloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A copy of the current cluster.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.cluster.Cluster.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Create this cluster.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Uses the <code class="docutils literal"><span class="pre">project</span></code>, <code class="docutils literal"><span class="pre">instance</span></code> and <code class="docutils literal"><span class="pre">cluster_id</span></code> on the
+current <a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster" title="google.cloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a> in addition to the <code class="docutils literal"><span class="pre">serve_nodes</span></code>.
+To change them before creating, reset the values via</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">cluster</span><span class="o">.</span><span class="n">serve_nodes</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">=</span> <span class="s1">&#39;i-changed-my-mind&#39;</span>
+</pre></div>
+</div>
+<p class="last">before calling <a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster.create" title="google.cloud.bigtable.cluster.Cluster.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The long-running operation corresponding to the
+create operation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.cluster.Cluster.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete this cluster.</p>
+<p>Marks a cluster and all of its tables for permanent deletion in 7 days.</p>
+<p>Immediately upon completion of the request:</p>
+<ul class="simple">
+<li>Billing will cease for all of the cluster’s reserved resources.</li>
+<li>The cluster’s <code class="docutils literal"><span class="pre">delete_time</span></code> field will be set 7 days in the future.</li>
+</ul>
+<p>Soon afterward:</p>
+<ul class="simple">
+<li>All tables within the cluster will become unavailable.</li>
+</ul>
+<p>At the cluster’s <code class="docutils literal"><span class="pre">delete_time</span></code>:</p>
+<ul class="simple">
+<li>The cluster and <strong>all of its tables</strong> will immediately and
+irrevocably disappear from the API, and their data will be
+permanently deleted.</li>
+</ul>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigtable.cluster.Cluster.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>cluster_pb</em>, <em>instance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a cluster instance from a protobuf.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cluster_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">instance_pb2.Cluster</span></code>) – A cluster protobuf object.</li>
+<li><strong>instance</strong> (<code class="xref py py-class docutils literal"><span class="pre">Instance&gt;</span></code>) – The instance that owns the cluster.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster" title="google.cloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The cluster parsed from the protobuf response.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the cluster
+name does not match
+<code class="docutils literal"><span class="pre">projects/{project}/instances/{instance}/clusters/{cluster_id}</span></code>
+or if the parsed project ID does not match the project ID
+on the client.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigtable.cluster.Cluster.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Cluster name used in requests.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This property will not change if <code class="docutils literal"><span class="pre">_instance</span></code> and <code class="docutils literal"><span class="pre">cluster_id</span></code>
+do not, but the return value is not cached.</p>
+</div>
+<p>The cluster name is of the form</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">&quot;projects/{project}/instances/{instance}/clusters/{cluster_id}&quot;</span></code></div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The cluster name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.cluster.Cluster.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster.reload" title="Permalink to this definition">#</a></dt>
+<dd><p>Reload the metadata for this cluster.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigtable.cluster.Cluster.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/cluster.html#Cluster.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.cluster.Cluster.update" title="Permalink to this definition">#</a></dt>
+<dd><p>Update this cluster.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Updates the <code class="docutils literal"><span class="pre">serve_nodes</span></code>. If you’d like to
+change them before updating, reset the values via</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">cluster</span><span class="o">.</span><span class="n">serve_nodes</span> <span class="o">=</span> <span class="mi">8</span>
+</pre></div>
+</div>
+<p class="last">before calling <a class="reference internal" href="#google.cloud.bigtable.cluster.Cluster.update" title="google.cloud.bigtable.cluster.Cluster.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The long-running operation corresponding to the
+update operation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.bigtable.cluster.DEFAULT_SERVE_NODES">
+<code class="descclassname">google.cloud.bigtable.cluster.</code><code class="descname">DEFAULT_SERVE_NODES</code><em class="property"> = 3</em><a class="headerlink" href="#google.cloud.bigtable.cluster.DEFAULT_SERVE_NODES" title="Permalink to this definition">#</a></dt>
+<dd><p>Default number of nodes to use when creating a cluster.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Bigtable</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client-intro.html">Base for Everything</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance.html">Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table-api.html">Table Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="column-family.html">Column Families</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row.html">Bigtable Row</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row-data.html">Row Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-api.html">Data API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Bigtable</a><ul>
+      <li>Previous: <a href="client.html" title="previous chapter">Client</a></li>
+      <li>Next: <a href="instance.html" title="next chapter">Instance</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/bigtable/cluster.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,326 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>DNS &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DNS Client" href="client.html" />
+    <link rel="prev" title="Helpers" href="../datastore/helpers.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dns">
+<h1>DNS<a class="headerlink" href="#dns" title="Permalink to this headline">#</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="client">
+<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects provide a means to
+configure your DNS applications.  Each instance holds both a <code class="docutils literal"><span class="pre">project</span></code>
+and an authenticated connection to the DNS service.</p>
+<p>For an overview of authentication in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>, see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
+<p>Assuming your environment is set up as described in that document,
+create an instance of <a class="reference internal" href="client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="projects">
+<h2>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">#</a></h2>
+<p>A project is the top-level container in the <code class="docutils literal"><span class="pre">DNS</span></code> API:  it is tied
+closely to billing, and can provide default access control across all its
+datasets.  If no <code class="docutils literal"><span class="pre">project</span></code> is passed to the client container, the library
+attempts to infer a project using the environment (including explicit
+environment variables, GAE, or GCE).</p>
+<p>To override the project inferred from the environment, pass an explicit
+<code class="docutils literal"><span class="pre">project</span></code> to the constructor, or to either of the alternative
+<code class="docutils literal"><span class="pre">classmethod</span></code> factories:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="project-quotas">
+<h2>Project Quotas<a class="headerlink" href="#project-quotas" title="Permalink to this headline">#</a></h2>
+<p>Query the quotas for a given project:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quotas</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">quotas</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">quotas</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+<span class="go">managedZones: 10000</span>
+<span class="go">resourceRecordsPerRrset: 100</span>
+<span class="go">rrsetsPerManagedZone: 10000</span>
+<span class="go">rrsetAdditionsPerChange: 100</span>
+<span class="go">rrsetDeletionsPerChange: 100</span>
+<span class="go">totalRrdataSizePerChange: 10000</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="section" id="project-acls">
+<h3>Project ACLs<a class="headerlink" href="#project-acls" title="Permalink to this headline">#</a></h3>
+<p>Each project has an access control list granting reader / writer / owner
+permission to one or more entities.  This list cannot be queried or set
+via the API:  it must be managed using the Google Developer Console.</p>
+</div>
+</div>
+<div class="section" id="managed-zones">
+<h2>Managed Zones<a class="headerlink" href="#managed-zones" title="Permalink to this headline">#</a></h2>
+<p>A “managed zone” is the container for DNS records for the same DNS name
+suffix and has a set of name servers that accept and responds to queries:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Acme Company zone&#39;</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>List the zones for a given project:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zones</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_zones</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">zone</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">zones</span><span class="p">]</span>
+<span class="go">[&#39;acme-co&#39;]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="resource-record-sets">
+<h2>Resource Record Sets<a class="headerlink" href="#resource-record-sets" title="Permalink to this headline">#</a></h2>
+<p>Each managed zone exposes a read-only set of resource records:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">record_type</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">ttl</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">rrdatas</span><span class="p">)</span>
+<span class="gp">... </span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">]</span>
+<span class="go">[(&#39;example.com.&#39;, &#39;SOA&#39;, 21600, [&#39;ns-cloud1.googlecomains.com dns-admin.google.com 1 21600 3600 1209600 300&#39;])]</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The <code class="docutils literal"><span class="pre">page_token</span></code> returned from <code class="docutils literal"><span class="pre">zone.list_resource_record_sets()</span></code> will
+be an opaque string if there are more resources than can be returned in a
+single request.  To enumerate them all, repeat calling
+<code class="docutils literal"><span class="pre">zone.list_resource_record_sets()</span></code>, passing the <code class="docutils literal"><span class="pre">page_token</span></code>, until
+the token is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">next_batch</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="gp">... </span>    <span class="n">records</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">next_batch</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="change-requests">
+<h2>Change requests<a class="headerlink" href="#change-requests" title="Permalink to this headline">#</a></h2>
+<p>Update the resource record set for a zone by creating a change request
+bundling additions to or deletions from the set.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TWO_HOURS</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>  <span class="c1"># seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_set</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">resource_record_set</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="s1">&#39;www.example.com.&#39;</span><span class="p">,</span> <span class="s1">&#39;CNAME&#39;</span><span class="p">,</span> <span class="n">TWO_HOURS</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;www1.example.com.&#39;</span><span class="p">,])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">changes</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="o">.</span><span class="n">add_record_set</span><span class="p">(</span><span class="n">record_set</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">changes</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;done&#39;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Waiting for changes to complete&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>     <span class="c1"># or whatever interval is appropriate</span>
+<span class="gp">... </span>    <span class="n">changes</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>   <span class="c1"># API request</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>List changes made to the resource record set for a given zone:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">dns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c1"># API request</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The <code class="docutils literal"><span class="pre">page_token</span></code> returned from <code class="docutils literal"><span class="pre">zone.list_changes()</span></code> will be
+an opaque string if there are more changes than can be returned in a
+single request.  To enumerate them all, repeat calling
+<code class="docutils literal"><span class="pre">zone.list_changes()</span></code>, passing the <code class="docutils literal"><span class="pre">page_token</span></code>, until the token
+is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">next_batch</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>  <span class="c1"># API request</span>
+<span class="gp">... </span>    <span class="n">changes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">next_batch</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DNS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="client.html">DNS Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone.html">Managed Zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource-record-set.html">Resource Record Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changes.html">Change Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#projects">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-quotas">Project Quotas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#managed-zones">Managed Zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resource-record-sets">Resource Record Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#change-requests">Change requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../datastore/helpers.html" title="previous chapter">Helpers</a></li>
+      <li>Next: <a href="client.html" title="next chapter">DNS Client</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/dns/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,731 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Stackdriver Monitoring Client &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Metric Descriptors" href="metric.html" />
+    <link rel="prev" title="Stackdriver Monitoring" href="usage.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.monitoring.client">
+<span id="stackdriver-monitoring-client"></span><h1>Stackdriver Monitoring Client<a class="headerlink" href="#module-google.cloud.monitoring.client" title="Permalink to this headline">#</a></h1>
+<p>Client for interacting with the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/">Google Stackdriver Monitoring API (V3)</a>.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">())</span>  <span class="c1"># Requires pandas.</span>
+</pre></div>
+</div>
+<p>At present, the client supports querying of time series, metric descriptors,
+and monitored resource descriptors.</p>
+<dl class="class">
+<dt id="google.cloud.monitoring.client.Client">
+<em class="property">class </em><code class="descclassname">google.cloud.monitoring.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/modules.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
+<p>Client to bundle configuration needed for API requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The target project. If not passed, falls back to the
+default inferred from the environment.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
+passed), falls back to the default inferred from the
+environment.</li>
+<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
+that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
+<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
+This parameter should be considered private, and could
+change in the future.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.monitoring.client.Client.SCOPE">
+<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/monitoring.read', 'https://www.googleapis.com/auth/monitoring', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#google.cloud.monitoring.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<dd><p>The scopes required for authenticating as a Monitoring consumer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.fetch_group">
+<code class="descname">fetch_group</code><span class="sig-paren">(</span><em>group_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.fetch_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.fetch_group" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch a group from the API based on it’s ID.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_group</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;That group does not exist!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ID of the group.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="group.html#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The group instance.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a> if the group
+is not found.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.fetch_metric_descriptor">
+<code class="descname">fetch_metric_descriptor</code><span class="sig-paren">(</span><em>metric_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.fetch_metric_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.fetch_metric_descriptor" title="Permalink to this definition">#</a></dt>
+<dd><p>Look up a metric descriptor by type.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">METRIC</span> <span class="o">=</span> <span class="s1">&#39;compute.googleapis.com/instance/cpu/utilization&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">fetch_metric_descriptor</span><span class="p">(</span><span class="n">METRIC</span><span class="p">))</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The metric type name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The metric descriptor instance.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a> if the metric
+descriptor is not found.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.fetch_resource_descriptor">
+<code class="descname">fetch_resource_descriptor</code><span class="sig-paren">(</span><em>resource_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.fetch_resource_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.fetch_resource_descriptor" title="Permalink to this definition">#</a></dt>
+<dd><p>Look up a monitored resource descriptor by type.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">fetch_resource_descriptor</span><span class="p">(</span><span class="s1">&#39;gce_instance&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The resource type name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="resource.html#google.cloud.monitoring.resource.ResourceDescriptor" title="google.cloud.monitoring.resource.ResourceDescriptor"><code class="xref py py-class docutils literal"><span class="pre">ResourceDescriptor</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The resource descriptor instance.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a> if the resource
+descriptor is not found.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.group">
+<code class="descname">group</code><span class="sig-paren">(</span><em>group_id=None</em>, <em>display_name=None</em>, <em>parent_id=None</em>, <em>filter_string=None</em>, <em>is_cluster=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.group" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory constructor for group object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will not make an HTTP request; it simply instantiates
+a group object owned by this client.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The ID of the group.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) A user-assigned name for this group, used only for
+display purposes.</li>
+<li><strong>parent_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The ID of the group’s parent, if it has one.</li>
+<li><strong>filter_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The filter string used to determine which monitored
+resources belong to this group.</li>
+<li><strong>is_cluster</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If true, the members of this group are considered to be a cluster.
+The system can perform additional analysis on groups that are
+clusters.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The group created with the passed-in arguments.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if both <code class="docutils literal"><span class="pre">group_id</span></code> and <code class="docutils literal"><span class="pre">name</span></code> are specified.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.list_groups">
+<code class="descname">list_groups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.list_groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.list_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>List all groups for the project.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_groups</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">((</span><span class="n">group</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="group.html#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of group instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.list_metric_descriptors">
+<code class="descname">list_metric_descriptors</code><span class="sig-paren">(</span><em>filter_string=None</em>, <em>type_prefix=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.list_metric_descriptors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.list_metric_descriptors" title="Permalink to this definition">#</a></dt>
+<dd><p>List all metric descriptors for the project.</p>
+<p>Examples:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metric_descriptors</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">descriptor</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metric_descriptors</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">type_prefix</span><span class="o">=</span><span class="s1">&#39;custom.&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">descriptor</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filter_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) An optional filter expression describing the metric
+descriptors to be returned. See the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">filter documentation</a>.</li>
+<li><strong>type_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) An optional prefix constraining the selected metric
+types. This adds <code class="docutils literal"><span class="pre">metric.type</span> <span class="pre">=</span> <span class="pre">starts_with(&quot;&lt;prefix&gt;&quot;)</span></code> to the
+filter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of metric descriptor instances.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.list_resource_descriptors">
+<code class="descname">list_resource_descriptors</code><span class="sig-paren">(</span><em>filter_string=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.list_resource_descriptors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.list_resource_descriptors" title="Permalink to this definition">#</a></dt>
+<dd><p>List all monitored resource descriptors for the project.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_resource_descriptors</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">descriptor</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) An optional filter expression describing the resource
+descriptors to be returned. See the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">filter documentation</a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of
+<a class="reference internal" href="resource.html#google.cloud.monitoring.resource.ResourceDescriptor" title="google.cloud.monitoring.resource.ResourceDescriptor"><code class="xref py py-class docutils literal"><span class="pre">ResourceDescriptor</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of resource descriptor instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.monitoring.client.Client.metric">
+<em class="property">static </em><code class="descname">metric</code><span class="sig-paren">(</span><em>type_</em>, <em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory for constructing metric objects.</p>
+<p><a class="reference internal" href="metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a> objects are typically
+created to write custom metric values. The type should match the
+metric type specified in the
+<a class="reference internal" href="metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a> used to
+create the custom metric:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                       <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>                           <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;successful&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="p">})</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The metric type name.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A mapping from label names to values for all labels
+enumerated in the associated
+<a class="reference internal" href="metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The metric object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.metric_descriptor">
+<code class="descname">metric_descriptor</code><span class="sig-paren">(</span><em>type_</em>, <em>metric_kind='METRIC_KIND_UNSPECIFIED'</em>, <em>value_type='VALUE_TYPE_UNSPECIFIED'</em>, <em>labels=()</em>, <em>unit=''</em>, <em>description=''</em>, <em>display_name=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.metric_descriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.metric_descriptor" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a metric descriptor object.</p>
+<p>Metric descriptors specify the schema for a particular metric type.</p>
+<p>This factory method is used most often in conjunction with the metric
+descriptor
+<a class="reference internal" href="metric.html#google.cloud.monitoring.metric.MetricDescriptor.create" title="google.cloud.monitoring.metric.MetricDescriptor.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>
+method to define custom metrics:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">metric_kind</span><span class="o">=</span><span class="n">MetricKind</span><span class="o">.</span><span class="n">GAUGE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">value_type</span><span class="o">=</span><span class="n">ValueType</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is a simple example of a custom metric.&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here is an example where the custom metric is parameterized by a
+metric label:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="n">LabelDescriptor</span><span class="p">(</span><span class="s1">&#39;response_code&#39;</span><span class="p">,</span> <span class="n">LabelValueType</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;HTTP status code&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_app/response_count&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">metric_kind</span><span class="o">=</span><span class="n">MetricKind</span><span class="o">.</span><span class="n">CUMULATIVE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">value_type</span><span class="o">=</span><span class="n">ValueType</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="n">label</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Cumulative count of HTTP responses.&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The metric type including a DNS name prefix. For example:
+<code class="docutils literal"><span class="pre">&quot;custom.googleapis.com/my_metric&quot;</span></code></li>
+<li><strong>metric_kind</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The kind of measurement. It must be one of
+<code class="xref py py-data docutils literal"><span class="pre">MetricKind.GAUGE</span></code>, <code class="xref py py-data docutils literal"><span class="pre">MetricKind.DELTA</span></code>,
+or <code class="xref py py-data docutils literal"><span class="pre">MetricKind.CUMULATIVE</span></code>.
+See <a class="reference internal" href="metric.html#google.cloud.monitoring.metric.MetricKind" title="google.cloud.monitoring.metric.MetricKind"><code class="xref py py-class docutils literal"><span class="pre">MetricKind</span></code></a>.</li>
+<li><strong>value_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The value type of the metric. It must be one of
+<code class="xref py py-data docutils literal"><span class="pre">ValueType.BOOL</span></code>, <code class="xref py py-data docutils literal"><span class="pre">ValueType.INT64</span></code>,
+<code class="xref py py-data docutils literal"><span class="pre">ValueType.DOUBLE</span></code>, <code class="xref py py-data docutils literal"><span class="pre">ValueType.STRING</span></code>,
+or <code class="xref py py-data docutils literal"><span class="pre">ValueType.DISTRIBUTION</span></code>.
+See <code class="xref py py-class docutils literal"><span class="pre">ValueType</span></code>.</li>
+<li><strong>labels</strong> (list of <a class="reference internal" href="label.html#google.cloud.monitoring.label.LabelDescriptor" title="google.cloud.monitoring.label.LabelDescriptor"><code class="xref py py-class docutils literal"><span class="pre">LabelDescriptor</span></code></a>) – A sequence of zero or more label descriptors specifying the labels
+used to identify a specific instance of this metric.</li>
+<li><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – An optional unit in which the metric value is reported.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – An optional detailed description of the metric.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – An optional concise name for the metric.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The metric descriptor created with the passed-in arguments.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>metric_type='compute.googleapis.com/instance/cpu/utilization'</em>, <em>end_time=None</em>, <em>days=0</em>, <em>hours=0</em>, <em>minutes=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.query" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a query object for retrieving metric data.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">())</span>  <span class="c1"># Requires pandas.</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The metric type name. The default value is
+<code class="xref py py-data docutils literal"><span class="pre">Query.DEFAULT_METRIC_TYPE</span></code>,
+but please note that this default value is provided only for
+demonstration purposes and is subject to change. See the
+<a class="reference external" href="https://cloud.google.com/monitoring/api/metrics">supported metrics</a>.</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – <p>(Optional) The end time (inclusive) of the time interval
+for which results should be returned, as a datetime object.
+The default is the start of the current minute.</p>
+<p>The start time (exclusive) is determined by combining the
+values of  <code class="docutils literal"><span class="pre">days</span></code>, <code class="docutils literal"><span class="pre">hours</span></code>, and <code class="docutils literal"><span class="pre">minutes</span></code>, and
+subtracting the resulting duration from the end time.</p>
+<p>It is also allowed to omit the end time and duration here,
+in which case
+<a class="reference internal" href="query.html#google.cloud.monitoring.query.Query.select_interval" title="google.cloud.monitoring.query.Query.select_interval"><code class="xref py py-meth docutils literal"><span class="pre">select_interval()</span></code></a>
+must be called before the query is executed.</p>
+</li>
+<li><strong>days</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The number of days in the time interval.</li>
+<li><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The number of hours in the time interval.</li>
+<li><strong>minutes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The number of minutes in the time interval.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="query.html#google.cloud.monitoring.query.Query" title="google.cloud.monitoring.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The query object.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if <code class="docutils literal"><span class="pre">end_time</span></code> is specified but
+<code class="docutils literal"><span class="pre">days</span></code>, <code class="docutils literal"><span class="pre">hours</span></code>, and <code class="docutils literal"><span class="pre">minutes</span></code> are all zero.
+If you really want to specify a point in time, use
+<a class="reference internal" href="query.html#google.cloud.monitoring.query.Query.select_interval" title="google.cloud.monitoring.query.Query.select_interval"><code class="xref py py-meth docutils literal"><span class="pre">select_interval()</span></code></a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.monitoring.client.Client.resource">
+<em class="property">static </em><code class="descname">resource</code><span class="sig-paren">(</span><em>type_</em>, <em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory for constructing monitored resource objects.</p>
+<p>A monitored resource object (
+<a class="reference internal" href="resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a>) is
+typically used to create a
+<a class="reference internal" href="timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a> object.</p>
+<p>For a list of possible monitored resource types and their associated
+labels, see:</p>
+<p><a class="reference external" href="https://cloud.google.com/monitoring/api/resources">https://cloud.google.com/monitoring/api/resources</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The monitored resource type name.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A mapping from label names to values for all labels
+enumerated in the associated
+<a class="reference internal" href="resource.html#google.cloud.monitoring.resource.ResourceDescriptor" title="google.cloud.monitoring.resource.ResourceDescriptor"><code class="xref py py-class docutils literal"><span class="pre">ResourceDescriptor</span></code></a>,
+except that <code class="docutils literal"><span class="pre">project_id</span></code> can and should be omitted
+when writing time series data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A monitored resource object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="google.cloud.monitoring.client.Client.time_series">
+<em class="property">static </em><code class="descname">time_series</code><span class="sig-paren">(</span><em>metric</em>, <em>resource</em>, <em>value</em>, <em>end_time=None</em>, <em>start_time=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.time_series" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a time series object for a single data point.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">While <a class="reference internal" href="timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a>
+objects returned by the API typically have multiple data points,
+<a class="reference internal" href="timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a> objects
+sent to the API must have at most one point.</p>
+</div>
+<p>For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">timeseries</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">1.23</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="n">end_time</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more information, see:</p>
+<p><a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries">https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>metric</strong> (<a class="reference internal" href="metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a>) – A <a class="reference internal" href="metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a>.</li>
+<li><strong>resource</strong> (<a class="reference internal" href="resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a>) – A <a class="reference internal" href="resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a>
+object.</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – <p>The value of the data point to create for the
+<a class="reference internal" href="timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Python type of the value will determine the
+<code class="xref py py-class docutils literal"><span class="pre">ValueType</span></code> sent to the API, which must match the value
+type specified in the metric descriptor. For example, a Python
+float will be sent to the API as a <code class="xref py py-data docutils literal"><span class="pre">ValueType.DOUBLE</span></code>.</p>
+</div>
+</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime</span></code></a>) – The end time for the point to be included in the time series.
+Assumed to be UTC if no time zone information is present.
+Defaults to the current time, as obtained by calling
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.utcnow" title="(in Python v3.6)"><code class="xref py py-meth docutils literal"><span class="pre">datetime.datetime.utcnow()</span></code></a>.</li>
+<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime</span></code></a>) – The start time for the point to be included in the time series.
+Assumed to be UTC if no time zone information is present.
+Defaults to None. If the start time is unspecified,
+the API interprets the start time to be the same as the end time.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A time series object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.write_point">
+<code class="descname">write_point</code><span class="sig-paren">(</span><em>metric</em>, <em>resource</em>, <em>value</em>, <em>end_time=None</em>, <em>start_time=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.write_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.write_point" title="Permalink to this definition">#</a></dt>
+<dd><p>Write a single point for a metric to the API.</p>
+<p>This is a convenience method to write a single time series object to
+the API. To write multiple time series objects to the API as a batch
+operation, use the
+<a class="reference internal" href="#google.cloud.monitoring.client.Client.time_series" title="google.cloud.monitoring.client.Client.time_series"><code class="xref py py-meth docutils literal"><span class="pre">time_series()</span></code></a>
+factory method to create time series objects and the
+<a class="reference internal" href="#google.cloud.monitoring.client.Client.write_time_series" title="google.cloud.monitoring.client.Client.write_time_series"><code class="xref py py-meth docutils literal"><span class="pre">write_time_series()</span></code></a>
+method to write the objects.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>metric</strong> (<a class="reference internal" href="metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a>) – A <a class="reference internal" href="metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a>
+object.</li>
+<li><strong>resource</strong> (<a class="reference internal" href="resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a>) – A <a class="reference internal" href="resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a>
+object.</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – <p>The value of the data point to create for the
+<a class="reference internal" href="timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Python type of the value will determine the
+<code class="xref py py-class docutils literal"><span class="pre">ValueType</span></code> sent to the API, which must match the value
+type specified in the metric descriptor. For example, a Python
+float will be sent to the API as a <code class="xref py py-data docutils literal"><span class="pre">ValueType.DOUBLE</span></code>.</p>
+</div>
+</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime</span></code></a>) – The end time for the point to be included in the time series.
+Assumed to be UTC if no time zone information is present.
+Defaults to the current time, as obtained by calling
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.utcnow" title="(in Python v3.6)"><code class="xref py py-meth docutils literal"><span class="pre">datetime.datetime.utcnow()</span></code></a>.</li>
+<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime</span></code></a>) – The start time for the point to be included in the time series.
+Assumed to be UTC if no time zone information is present.
+Defaults to None. If the start time is unspecified,
+the API interprets the start time to be the same as the end time.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.write_time_series">
+<code class="descname">write_time_series</code><span class="sig-paren">(</span><em>timeseries_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/monitoring/client.html#Client.write_time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.write_time_series" title="Permalink to this definition">#</a></dt>
+<dd><p>Write a list of time series objects to the API.</p>
+<p>The recommended approach to creating time series objects is using
+the <a class="reference internal" href="#google.cloud.monitoring.client.Client.time_series" title="google.cloud.monitoring.client.Client.time_series"><code class="xref py py-meth docutils literal"><span class="pre">time_series()</span></code></a> factory
+method.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_time_series</span><span class="p">([</span><span class="n">ts1</span><span class="p">,</span> <span class="n">ts2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>If you only need to write a single time series object, consider using
+the <a class="reference internal" href="#google.cloud.monitoring.client.Client.write_point" title="google.cloud.monitoring.client.Client.write_point"><code class="xref py py-meth docutils literal"><span class="pre">write_point()</span></code></a> method
+instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeseries_list</strong> (list of <a class="reference internal" href="timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a>) – A list of time series object to be written
+to the API. Each time series must contain exactly one point.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Stackdriver Monitoring</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stackdriver Monitoring Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metric.html">Metric Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resource.html">Monitored Resource Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html">Time Series Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries.html">Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="label.html">Label Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#the-stackdriver-monitoring-client-object">The Stackdriver Monitoring Client Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#monitored-resource-descriptors">Monitored Resource Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#metric-descriptors">Metric Descriptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#groups">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#time-series-queries">Time Series Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#writing-custom-metrics">Writing Custom Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Stackdriver Monitoring</a><ul>
+      <li>Previous: <a href="usage.html" title="previous chapter">Stackdriver Monitoring</a></li>
+      <li>Next: <a href="metric.html" title="next chapter">Metric Descriptors</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/monitoring/client.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

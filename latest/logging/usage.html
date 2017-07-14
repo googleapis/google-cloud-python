@@ -1,0 +1,495 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Stackdriver Logging &#8212; google-cloud 0.26.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.26.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Stackdriver Logging Client" href="client.html" />
+    <link rel="prev" title="Label Descriptors" href="../monitoring/label.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="stackdriver-logging">
+<h1>Stackdriver Logging<a class="headerlink" href="#stackdriver-logging" title="Permalink to this headline">#</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="authentication-and-configuration">
+<h2>Authentication and Configuration<a class="headerlink" href="#authentication-and-configuration" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p class="first">For an overview of authentication in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>,
+see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
+</li>
+<li><p class="first">In addition to any authentication configuration, you should also set the
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d like
+to interact with. If you are Google App Engine or Google Compute Engine
+this will be detected automatically.</p>
+</li>
+<li><p class="first">The library now enables the <code class="docutils literal"><span class="pre">gRPC</span></code> transport for the logging API by
+default, assuming that the required dependencies are installed and
+importable.  To <em>disable</em> this transport, set the
+<span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code> environment variable to a
+non-empty string, e.g.:  <code class="docutils literal"><span class="pre">$</span> <span class="pre">export</span> <span class="pre">GOOGLE_CLOUD_DISABLE_GRPC=true</span></code>.</p>
+</li>
+<li><p class="first">After configuring your environment, create a
+<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="writing-log-entries">
+<h2>Writing log entries<a class="headerlink" href="#writing-log-entries" title="Permalink to this headline">#</a></h2>
+<p>To write log entries, first create a
+<a class="reference internal" href="logger.html#google.cloud.logging.logger.Logger" title="google.cloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">Logger</span></code></a>, passing the “log name” with
+which to associate the entries:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">logger</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="n">LOG_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Write a simple text entry to the logger.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">log_text</span><span class="p">(</span><span class="s2">&quot;A simple entry&quot;</span><span class="p">)</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+<p>Write a dictionary entry to the logger.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">log_struct</span><span class="p">({</span>
+    <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;My second entry&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;weather&#39;</span><span class="p">:</span> <span class="s1">&#39;partly cloudy&#39;</span><span class="p">,</span>
+<span class="p">})</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="retrieving-log-entries">
+<h2>Retrieving log entries<a class="headerlink" href="#retrieving-log-entries" title="Permalink to this headline">#</a></h2>
+<p>Fetch entries for the default project.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Fetch entries across multiple projects.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">PROJECT_IDS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;one-project&#39;</span><span class="p">,</span> <span class="s1">&#39;another-project&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">project_ids</span><span class="o">=</span><span class="n">PROJECT_IDS</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Filter entries retrieved using the <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">Advanced Logs Filters</a> syntax</p>
+<p>Fetch entries for the default project.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">FILTER</span> <span class="o">=</span> <span class="s1">&#39;logName:log_name AND textPayload:simple&#39;</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Sort entries in descending timestamp order.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.logging</span> <span class="k">import</span> <span class="n">DESCENDING</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">DESCENDING</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retrieve entries in batches of 10, iterating until done.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">()</span>
+<span class="n">pages</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">pages</span>
+
+<span class="n">page1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page1</span><span class="p">:</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+<span class="n">page2</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page2</span><span class="p">:</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retrieve entries for a single logger, sorting in descending timestamp order:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.logging</span> <span class="k">import</span> <span class="n">DESCENDING</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">DESCENDING</span><span class="p">):</span>  <span class="c1"># API call(s)</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-all-entries-for-a-logger">
+<h2>Delete all entries for a logger<a class="headerlink" href="#delete-all-entries-for-a-logger" title="Permalink to this headline">#</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="manage-log-metrics">
+<h2>Manage log metrics<a class="headerlink" href="#manage-log-metrics" title="Permalink to this headline">#</a></h2>
+<p>Metrics are counters of entries which match a given filter.  They can be
+used within Stackdriver Monitoring to create charts and alerts.</p>
+<p>List all metrics for a project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metrics</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a metric:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span>
+    <span class="n">METRIC_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">DESCRIPTION</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">metric</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="n">metric</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="k">assert</span> <span class="n">metric</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+<p>Refresh local information about a metric:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">existing_metric</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="n">METRIC_NAME</span><span class="p">)</span>
+<span class="n">existing_metric</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+<p>Update a metric:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">existing_metric</span><span class="o">.</span><span class="n">filter_</span> <span class="o">=</span> <span class="n">UPDATED_FILTER</span>
+<span class="n">existing_metric</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">UPDATED_DESCRIPTION</span>
+<span class="n">existing_metric</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+<p>Delete a metric:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">metric</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="export-log-entries-using-sinks">
+<h2>Export log entries using sinks<a class="headerlink" href="#export-log-entries-using-sinks" title="Permalink to this headline">#</a></h2>
+<p>Sinks allow exporting entries which match a given filter to Cloud Storage
+buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
+<div class="section" id="export-to-cloud-storage">
+<h3>Export to Cloud Storage<a class="headerlink" href="#export-to-cloud-storage" title="Permalink to this headline">#</a></h3>
+<p>Make sure that the storage bucket you want to export logs too has
+<code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner. See
+<a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_cloud_storage">Setting permissions for Cloud Storage</a>.</p>
+<p>Add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner of the bucket:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="n">logs_group</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
+<span class="n">logs_group</span><span class="o">.</span><span class="n">grant_owner</span><span class="p">()</span>
+<span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="n">logs_group</span><span class="p">)</span>
+<span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+<p>Create a Cloud Storage sink:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;storage.googleapis.com/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span>
+<span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="export-to-bigquery">
+<h3>Export to BigQuery<a class="headerlink" href="#export-to-bigquery" title="Permalink to this headline">#</a></h3>
+<p>To export logs to BigQuery you must log into the Cloud Platform Console
+and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> to a dataset.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_to_bigquery">Setting permissions for BigQuery</a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">AccessGrant</span>
+<span class="n">grants</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span>
+<span class="n">grants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AccessGrant</span><span class="p">(</span>
+    <span class="s1">&#39;WRITER&#39;</span><span class="p">,</span> <span class="s1">&#39;groupByEmail&#39;</span><span class="p">,</span> <span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">))</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span> <span class="o">=</span> <span class="n">grants</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+<p>Create a BigQuery sink:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;bigquery.googleapis.com</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
+<span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="export-to-pub-sub">
+<h3>Export to Pub/Sub<a class="headerlink" href="#export-to-pub-sub" title="Permalink to this headline">#</a></h3>
+<p>To export logs to BigQuery you must log into the Cloud Platform Console
+and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> to a topic.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export_v2#errors_exporting_logs_to_cloud_pubsub">Setting permissions for Pub/Sub</a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="n">policy</span><span class="o">.</span><span class="n">owners</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">))</span>
+<span class="n">topic</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+<p>Create a Cloud Pub/Sub sink:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DESTINATION</span> <span class="o">=</span> <span class="s1">&#39;pubsub.googleapis.com/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
+<span class="n">sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">FILTER</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">DESTINATION</span><span class="p">)</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="n">sink</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="manage-sinks">
+<h3>Manage Sinks<a class="headerlink" href="#manage-sinks" title="Permalink to this headline">#</a></h3>
+<p>List all sinks for a project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sink</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_sinks</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">sink</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Refresh local information about a sink:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">existing_sink</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sink</span><span class="p">(</span><span class="n">SINK_NAME</span><span class="p">)</span>
+<span class="n">existing_sink</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Update a sink:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">existing_sink</span><span class="o">.</span><span class="n">filter_</span> <span class="o">=</span> <span class="n">UPDATED_FILTER</span>
+<span class="n">existing_sink</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Delete a sink:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sink</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="integration-with-python-logging-module">
+<h2>Integration with Python logging module<a class="headerlink" href="#integration-with-python-logging-module" title="Permalink to this headline">#</a></h2>
+<p>It’s possible to tie the Python <a class="reference external" href="https://docs.python.org/3/library/logging.html#module-logging" title="(in Python v3.6)"><code class="xref py py-mod docutils literal"><span class="pre">logging</span></code></a> module directly into Google
+Stackdriver Logging. There are different handler options to accomplish this.
+To automatically pick the default for your current environment, use
+<a class="reference internal" href="client.html#google.cloud.logging.client.Client.get_default_handler" title="google.cloud.logging.client.Client.get_default_handler"><code class="xref py py-meth docutils literal"><span class="pre">get_default_handler()</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_default_handler</span><span class="p">()</span>
+<span class="n">cloud_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;cloudLogger&#39;</span><span class="p">)</span>
+<span class="n">cloud_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">cloud_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+<span class="n">cloud_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is also possible to attach the handler to the root Python logger, so that
+for example a plain <code class="docutils literal"><span class="pre">logging.warn</span></code> call would be sent to Stackdriver Logging,
+as well as any other loggers created. A helper method
+<a class="reference internal" href="client.html#google.cloud.logging.client.Client.setup_logging" title="google.cloud.logging.client.Client.setup_logging"><code class="xref py py-meth docutils literal"><span class="pre">setup_logging()</span></code></a> is provided
+to configure this automatically.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To reduce cost and quota usage, do not enable Stackdriver logging
+handlers while testing locally.</p>
+</div>
+<p>You can also exclude certain loggers:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                     <span class="n">excluded_loggers</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">,))</span>
+</pre></div>
+</div>
+<div class="section" id="cloud-logging-handler">
+<h3>Cloud Logging Handler<a class="headerlink" href="#cloud-logging-handler" title="Permalink to this headline">#</a></h3>
+<p>If you prefer not to use
+<a class="reference internal" href="client.html#google.cloud.logging.client.Client.get_default_handler" title="google.cloud.logging.client.Client.get_default_handler"><code class="xref py py-meth docutils literal"><span class="pre">get_default_handler()</span></code></a>, you can
+directly create a
+<a class="reference internal" href="handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="google.cloud.logging.handlers.handlers.CloudLoggingHandler"><code class="xref py py-class docutils literal"><span class="pre">CloudLoggingHandler</span></code></a> instance
+which will write directly to the API.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.logging.handlers</span> <span class="k">import</span> <span class="n">CloudLoggingHandler</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="n">cloud_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;cloudLogger&#39;</span><span class="p">)</span>
+<span class="n">cloud_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">cloud_logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+<span class="n">cloud_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;bad news&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This handler by default uses an asynchronous transport that sends log
+entries on a background thread. However, the API call will still be made
+in the same process. For other transport options, see the transports
+section.</p>
+</div>
+<p>All logs will go to a single custom log, which defaults to “python”. The name
+of the Python logger will be included in the structured log entry under the
+“python_logger” field. You can change it by providing a name to the handler:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">handler</span> <span class="o">=</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;mycustomlog&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cloud-logging-handler-transports">
+<h3>Cloud Logging Handler transports<a class="headerlink" href="#cloud-logging-handler-transports" title="Permalink to this headline">#</a></h3>
+<p>The <a class="reference internal" href="handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="google.cloud.logging.handlers.handlers.CloudLoggingHandler"><code class="xref py py-class docutils literal"><span class="pre">CloudLoggingHandler</span></code></a>
+logging handler can use different transports. The default is
+<code class="xref py py-class docutils literal"><span class="pre">BackgroundThreadTransport</span></code>.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><code class="xref py py-class docutils literal"><span class="pre">BackgroundThreadTransport</span></code> this is
+the default. It writes entries on a background
+<code class="xref py py-class docutils literal"><span class="pre">python.threading.Thread</span></code>.</li>
+</ol>
+<ol class="arabic simple">
+<li><code class="xref py py-class docutils literal"><span class="pre">SyncTransport</span></code> this handler does a
+direct API call on each logging statement to write the entry.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="fluentd-logging-handlers">
+<h3>fluentd logging handlers<a class="headerlink" href="#fluentd-logging-handlers" title="Permalink to this headline">#</a></h3>
+<p>Besides <a class="reference internal" href="handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler" title="google.cloud.logging.handlers.handlers.CloudLoggingHandler"><code class="xref py py-class docutils literal"><span class="pre">CloudLoggingHandler</span></code></a>,
+which writes directly to the API, two other handlers are provided.
+<a class="reference internal" href="handlers-app-engine.html#google.cloud.logging.handlers.app_engine.AppEngineHandler" title="google.cloud.logging.handlers.app_engine.AppEngineHandler"><code class="xref py py-class docutils literal"><span class="pre">AppEngineHandler</span></code></a>, which is
+recommended when running on the Google App Engine Flexible vanilla runtimes
+(i.e. your app.yaml contains <code class="docutils literal"><span class="pre">runtime:</span> <span class="pre">python</span></code>), and
+<a class="reference internal" href="handlers-container-engine.html#google.cloud.logging.handlers.container_engine.ContainerEngineHandler" title="google.cloud.logging.handlers.container_engine.ContainerEngineHandler"><code class="xref py py-class docutils literal"><span class="pre">ContainerEngineHandler</span></code></a>
+, which is recommended when running on <a class="reference external" href="https://cloud.google.com/container-engine/">Google Container Engine</a> with the
+Stackdriver Logging plugin enabled.</p>
+<p><a class="reference internal" href="client.html#google.cloud.logging.client.Client.get_default_handler" title="google.cloud.logging.client.Client.get_default_handler"><code class="xref py py-meth docutils literal"><span class="pre">get_default_handler()</span></code></a> and
+<a class="reference internal" href="client.html#google.cloud.logging.client.Client.setup_logging" title="google.cloud.logging.client.Client.setup_logging"><code class="xref py py-meth docutils literal"><span class="pre">setup_logging()</span></code></a> will attempt to use
+the environment to automatically detect whether the code is running in
+these platforms and use the appropriate handler.</p>
+<p>In both cases, the fluentd agent is configured to automatically parse log files
+in an expected format and forward them to Stackdriver logging. The handlers
+provided help set the correct metadata such as log level so that logs can be
+filtered accordingly.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Stackdriver Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Stackdriver Logging Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logger.html">Logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entries.html">Entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metric.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink.html">Sinks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stdlib-usage.html">Integration with Python logging module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers-container-engine.html">Google Container Engine Log Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports-sync.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports-thread.html">Python Logging Handler Threaded Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transports-base.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-and-configuration">Authentication and Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-log-entries">Writing log entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#retrieving-log-entries">Retrieving log entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-all-entries-for-a-logger">Delete all entries for a logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manage-log-metrics">Manage log metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#export-log-entries-using-sinks">Export log entries using sinks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-with-python-logging-module">Integration with Python logging module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../monitoring/label.html" title="previous chapter">Label Descriptors</a></li>
+      <li>Next: <a href="client.html" title="next chapter">Stackdriver Logging Client</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/logging/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
