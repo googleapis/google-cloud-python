@@ -85,7 +85,7 @@ Great Britain.
 
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
-    >>> result = client.recognize(
+    >>> results = client.recognize(
     ...     audio=speech.types.RecognitionAudio(
     ...         uri='gs://my-bucket/recording.flac',
     ...     ),
@@ -113,7 +113,7 @@ Example of using the profanity filter.
 
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
-    >>> result = client.recognize(
+    >>> results = client.recognize(
     ...     audio=speech.types.RecognitionAudio(
     ...         uri='gs://my-bucket/recording.flac',
     ...     ),
@@ -142,7 +142,7 @@ words to the vocabulary of the recognizer.
     >>> from google.cloud import speech
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
-    >>> result = client.recognize(
+    >>> results = client.recognize(
     ...     audio=speech.types.RecognitionAudio(
     ...         uri='gs://my-bucket/recording.flac',
     ...     ),
