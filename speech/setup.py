@@ -37,7 +37,7 @@ setup(
     author='Google Cloud Platform',
     author_email='googleapis-packages@google.com',
     name='google-cloud-speech',
-    version='0.26.0',
+    version='0.27.0',
     description='Python Client for Google Cloud Speech',
     long_description=readme,
     namespace_packages=[
