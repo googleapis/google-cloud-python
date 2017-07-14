@@ -38,10 +38,16 @@ def unit_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet',
-        '--cov=google.cloud.speech', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
+    session.run(
+        'py.test', '--quiet',
+        '--cov=google.cloud.speech',
+        '--cov=google.cloud.speech_v1',
+        '--cov=tests.unit'
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        '--cov-fail-under=0',
+        os.path.join('tests', 'unit'),
     )
 
 

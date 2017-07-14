@@ -23,5 +23,23 @@ from google.cloud.speech.client import Client
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 
+from google.cloud.speech_v1 import enums
+from google.cloud.speech_v1 import SpeechClient
+from google.cloud.speech_v1 import types
 
-__all__ = ['__version__', 'Alternative', 'Client', 'Encoding', 'Operation']
+
+__all__ = (
+    # Common
+    '__version__',
+
+    # Deprecated Manual Layer
+    'Alternative',
+    'Client',
+    'Encoding',
+    'Operation',
+
+    # GAPIC & Partial Manual Layer
+    'enums',
+    'SpeechClient',
+    'types',
+)
