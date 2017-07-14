@@ -246,6 +246,7 @@ class TestClient(unittest.TestCase):
             next(sample.recognize(language_code='en-US'))
 
     def test_sync_recognize_with_empty_results_gax(self):
+        from google.cloud import _helpers
         from google.cloud._testing import _Monkey
 
         from google.cloud import speech
@@ -255,13 +256,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=credentials, _use_grpc=True)
         client._credentials = credentials
 
-        channel_args = []
-        channel_obj = object()
-
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
-
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(
                 response=_make_sync_response(), channel=channel, **kwargs)
@@ -269,16 +263,19 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechClient=speech_api,
-                     make_secure_channel=make_channel):
-            client._speech_api = _gax.GAPICSpeechAPI(client)
+        with _Monkey(_gax, SpeechClient=speech_api):
+            with mock.patch.object(_helpers, 'make_secure_channel') as msc:
+                client._speech_api = _gax.GAPICSpeechAPI(client)
 
-        low_level = client.speech_api._gapic_api
-        self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
-        self.assertIs(low_level._channel, channel_obj)
-        self.assertEqual(
-            channel_args,
-            [(credentials, _gax.DEFAULT_USER_AGENT, host)])
+                low_level = client.speech_api._gapic_api
+                self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
+                self.assertIs(low_level._channel, msc.return_value)
+
+                assert msc.mock_calls[0] == mock.call(
+                    credentials,
+                    _gax.DEFAULT_USER_AGENT,
+                    host,
+                )
 
         sample = client.sample(
             source_uri=self.AUDIO_SOURCE_URI, encoding=speech.Encoding.FLAC,
@@ -288,6 +285,7 @@ class TestClient(unittest.TestCase):
             next(sample.recognize(language_code='en-US'))
 
     def test_sync_recognize_with_gax(self):
+        from google.cloud import _helpers
         from google.cloud._testing import _Monkey
 
         from google.cloud import speech
@@ -306,13 +304,6 @@ class TestClient(unittest.TestCase):
         }]
         result = _make_result(alternatives)
 
-        channel_args = []
-        channel_obj = object()
-
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
-
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(
                 response=_make_sync_response(result), channel=channel,
@@ -325,15 +316,19 @@ class TestClient(unittest.TestCase):
             source_uri=self.AUDIO_SOURCE_URI, encoding=speech.Encoding.FLAC,
             sample_rate_hertz=self.SAMPLE_RATE)
 
-        with _Monkey(_gax, SpeechClient=speech_api,
-                     make_secure_channel=make_channel):
-            client._speech_api = _gax.GAPICSpeechAPI(client)
+        with _Monkey(_gax, SpeechClient=speech_api):
+            with mock.patch.object(_helpers, 'make_secure_channel') as msc:
+                client._speech_api = _gax.GAPICSpeechAPI(client)
 
-        low_level = client.speech_api._gapic_api
-        self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
-        self.assertIs(low_level._channel, channel_obj)
-        self.assertEqual(
-            channel_args, [(creds, _gax.DEFAULT_USER_AGENT, host)])
+                low_level = client.speech_api._gapic_api
+                self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
+                self.assertIs(low_level._channel, msc.return_value)
+
+                assert msc.mock_calls[0] == mock.call(
+                    creds,
+                    _gax.DEFAULT_USER_AGENT,
+                    host,
+                )
 
         results = [i for i in sample.recognize(language_code='en-US')]
 
@@ -350,18 +345,6 @@ class TestClient(unittest.TestCase):
             result.alternatives[1].transcript, alternatives[1]['transcript'])
         self.assertEqual(
             result.alternatives[1].confidence, alternatives[1]['confidence'])
-
-    def test_async_supported_encodings(self):
-        from google.cloud import speech
-
-        credentials = _make_credentials()
-        client = self._make_one(credentials=credentials, _use_grpc=True)
-
-        sample = client.sample(
-            source_uri=self.AUDIO_SOURCE_URI, encoding=speech.Encoding.FLAC,
-            sample_rate_hertz=self.SAMPLE_RATE)
-        with self.assertRaises(ValueError):
-            sample.recognize(language_code='en-US')
 
     def test_async_recognize_no_gax(self):
         from google.cloud import speech
@@ -392,6 +375,7 @@ class TestClient(unittest.TestCase):
     def test_async_recognize_with_gax(self):
         from google.cloud._testing import _Monkey
 
+        from google.cloud import _helpers
         from google.cloud import speech
         from google.cloud.speech import _gax
         from google.cloud.speech.operation import Operation
@@ -399,13 +383,6 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials, _use_grpc=True)
         client._credentials = credentials
-
-        channel_args = []
-        channel_obj = object()
-
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
 
         sample = client.sample(
             encoding=speech.Encoding.LINEAR16,
@@ -415,20 +392,21 @@ class TestClient(unittest.TestCase):
 
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(channel=channel, **kwargs)
+        speech_api.SERVICE_ADDRESS = 'foo.api.invalid'
 
-        host = 'foo.apis.invalid'
-        speech_api.SERVICE_ADDRESS = host
+        with _Monkey(_gax, SpeechClient=speech_api):
+            with mock.patch.object(_helpers, 'make_secure_channel') as msc:
+                api = client.speech_api
 
-        with _Monkey(_gax, SpeechClient=speech_api,
-                     make_secure_channel=make_channel):
-            api = client.speech_api
+                low_level = api._gapic_api
+                self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
+                self.assertIs(low_level._channel, msc.return_value)
 
-        low_level = api._gapic_api
-        self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
-        self.assertIs(low_level._channel, channel_obj)
-        expected = (credentials, _gax.DEFAULT_USER_AGENT,
-                    low_level.SERVICE_ADDRESS)
-        self.assertEqual(channel_args, [expected])
+                assert msc.mock_calls[0] == mock.call(
+                    credentials,
+                    _gax.DEFAULT_USER_AGENT,
+                    'foo.api.invalid',
+                )
 
         operation = sample.long_running_recognize(language_code='en-US')
         self.assertIsInstance(operation, Operation)
@@ -450,6 +428,7 @@ class TestClient(unittest.TestCase):
     def test_streaming_closed_stream(self):
         from io import BytesIO
 
+        from google.cloud import _helpers
         from google.cloud._testing import _Monkey
 
         from google.cloud.speech import _gax
@@ -459,13 +438,6 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
         client._credentials = credentials
-
-        channel_args = []
-        channel_obj = object()
-
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
 
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(channel=channel, **kwargs)
@@ -480,9 +452,9 @@ class TestClient(unittest.TestCase):
             stream=stream, encoding=Encoding.LINEAR16,
             sample_rate_hertz=self.SAMPLE_RATE)
 
-        with _Monkey(_gax, SpeechClient=speech_api,
-                     make_secure_channel=make_channel):
-            client._speech_api = _gax.GAPICSpeechAPI(client)
+        with _Monkey(_gax, SpeechClient=speech_api):
+            with mock.patch.object(_helpers, 'make_secure_channel') as msc:
+                client._speech_api = _gax.GAPICSpeechAPI(client)
 
         with self.assertRaises(ValueError):
             list(sample.streaming_recognize(language_code='en-US'))
@@ -490,6 +462,7 @@ class TestClient(unittest.TestCase):
     def test_stream_recognize_interim_results(self):
         from io import BytesIO
 
+        from google.cloud import _helpers
         from google.cloud._testing import _Monkey
 
         from google.cloud.speech import _gax
@@ -518,13 +491,6 @@ class TestClient(unittest.TestCase):
                 alternatives, is_final=True, stability=0.4375))
         responses = [first_response, second_response, last_response]
 
-        channel_args = []
-        channel_obj = object()
-
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
-
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(
                 channel=channel, response=responses, **kwargs)
@@ -532,9 +498,9 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechClient=speech_api,
-                     make_secure_channel=make_channel):
-            client._speech_api = _gax.GAPICSpeechAPI(client)
+        with _Monkey(_gax, SpeechClient=speech_api):
+            with mock.patch.object(_helpers, 'make_secure_channel') as msc:
+                client._speech_api = _gax.GAPICSpeechAPI(client)
 
         sample = client.sample(
             stream=stream, encoding=Encoding.LINEAR16,
@@ -582,6 +548,7 @@ class TestClient(unittest.TestCase):
     def test_stream_recognize(self):
         from io import BytesIO
 
+        from google.cloud import _helpers
         from google.cloud._testing import _Monkey
 
         from google.cloud.speech import _gax
@@ -609,10 +576,6 @@ class TestClient(unittest.TestCase):
         channel_args = []
         channel_obj = object()
 
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
-
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(
                 channel=channel, response=responses, **kwargs)
@@ -620,9 +583,9 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechClient=speech_api,
-                     make_secure_channel=make_channel):
-            client._speech_api = _gax.GAPICSpeechAPI(client)
+        with _Monkey(_gax, SpeechClient=speech_api):
+            with mock.patch.object(_helpers, 'make_secure_channel') as msc:
+                client._speech_api = _gax.GAPICSpeechAPI(client)
 
         sample = client.sample(
             stream=stream, encoding=Encoding.LINEAR16,
@@ -639,6 +602,7 @@ class TestClient(unittest.TestCase):
     def test_stream_recognize_no_results(self):
         from io import BytesIO
 
+        from google.cloud import _helpers
         from google.cloud._testing import _Monkey
 
         from google.cloud.speech import _gax
@@ -651,13 +615,6 @@ class TestClient(unittest.TestCase):
 
         responses = [_make_streaming_response()]
 
-        channel_args = []
-        channel_obj = object()
-
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
-
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(
                 channel=channel, response=responses, **kwargs)
@@ -665,9 +622,9 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechClient=speech_api,
-                     make_secure_channel=make_channel):
-            client._speech_api = _gax.GAPICSpeechAPI(client)
+        with _Monkey(_gax, SpeechClient=speech_api):
+            with mock.patch.object(_helpers, 'make_secure_channel') as msc:
+                client._speech_api = _gax.GAPICSpeechAPI(client)
 
         sample = client.sample(
             stream=stream, encoding=Encoding.LINEAR16,
@@ -677,6 +634,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results, [])
 
     def test_speech_api_with_gax(self):
+        from google.cloud import _helpers
         from google.cloud._testing import _Monkey
 
         from google.cloud.speech import _gax
@@ -685,29 +643,25 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=creds, _use_grpc=True)
         client._credentials = creds
 
-        channel_args = []
-        channel_obj = object()
-
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
-
         def speech_api(channel=None, **kwargs):
             return _MockGAPICSpeechAPI(channel=channel, **kwargs)
 
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechClient=speech_api,
-                     make_secure_channel=make_channel):
-            client._speech_api = _gax.GAPICSpeechAPI(client)
+        with _Monkey(_gax, SpeechClient=speech_api):
+            with mock.patch.object(_helpers, 'make_secure_channel') as msc:
+                client._speech_api = _gax.GAPICSpeechAPI(client)
 
-        low_level = client.speech_api._gapic_api
-        self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
-        self.assertIs(low_level._channel, channel_obj)
-        expected = (
-            creds, _gax.DEFAULT_USER_AGENT, low_level.SERVICE_ADDRESS)
-        self.assertEqual(channel_args, [expected])
+                low_level = client.speech_api._gapic_api
+                self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
+                self.assertIs(low_level._channel, msc.return_value)
+
+                assert msc.mock_calls[0] == mock.call(
+                    creds,
+                    _gax.DEFAULT_USER_AGENT,
+                    low_level.SERVICE_ADDRESS,
+                )
 
     def test_speech_api_without_gax(self):
         from google.cloud._http import Connection

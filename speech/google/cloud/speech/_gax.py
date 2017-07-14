@@ -26,8 +26,7 @@ from google.cloud.proto.speech.v1.cloud_speech_pb2 import (
     StreamingRecognizeRequest)
 from google.longrunning import operations_grpc
 
-from google.cloud._helpers import make_secure_channel
-from google.cloud._helpers import make_secure_stub
+from google.cloud import _helpers
 from google.cloud._http import DEFAULT_USER_AGENT
 
 from google.cloud.speech import __version__
@@ -46,7 +45,7 @@ class GAPICSpeechAPI(object):
     def __init__(self, client=None):
         self._client = client
         credentials = self._client._credentials
-        channel = make_secure_channel(
+        channel = _helpers.make_secure_channel(
             credentials, DEFAULT_USER_AGENT,
             SpeechClient.SERVICE_ADDRESS)
         self._gapic_api = SpeechClient(
@@ -54,7 +53,7 @@ class GAPICSpeechAPI(object):
             lib_name='gccl',
             lib_version=__version__,
         )
-        self._operations_stub = make_secure_stub(
+        self._operations_stub = _helpers.make_secure_stub(
             credentials,
             DEFAULT_USER_AGENT,
             operations_grpc.OperationsStub,
