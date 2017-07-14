@@ -66,7 +66,7 @@ setup(
     name='google-cloud-speech',
     version='0.27.0',
     description='Python Client for Google Cloud Speech',
-    long_description=readme,
+    long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
