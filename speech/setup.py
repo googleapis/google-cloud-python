@@ -56,9 +56,6 @@ REQUIREMENTS = [
     'google-gax >= 0.15.13, < 0.16dev',
     'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]
-EXTRAS_REQUIRE = {
-    ':python_version<"3.4"': ['enum34'],
-}
 
 setup(
     author='Google Cloud Platform',
@@ -77,7 +74,6 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
-    extras_require=EXTRAS_REQUIRE,
     url='https://github.com/GoogleCloudPlatform/google-cloud-python',
     license='Apache 2.0',
     platforms='Posix; MacOS X; Windows',
