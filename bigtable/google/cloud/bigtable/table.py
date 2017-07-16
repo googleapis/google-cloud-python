@@ -181,7 +181,7 @@ class Table(object):
             table_pb = table_v2_pb2.Table()
             for col_fam in column_families:
                 curr_id = col_fam.column_family_id
-                table_pb.column_families[curr_id].MergeFrom(col_fam.to_pb())
+                table_pb.column_families[curr_id].CopyFrom(col_fam.to_pb())
 
         request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
             initial_splits=initial_split_keys or [],
