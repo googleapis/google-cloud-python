@@ -9,7 +9,7 @@ Python Client for Google BigQuery
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery-usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery/usage.html
 
 Quick Start
 -----------
