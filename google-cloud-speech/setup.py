@@ -37,7 +37,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -58,8 +58,6 @@ REQUIREMENTS = [
 ]
 
 setup(
-    author='Google Cloud Platform',
-    author_email='googleapis-packages@google.com',
     name='google-cloud-speech',
     version='0.27.0',
     description='Python Client for Google Cloud Speech',
@@ -74,23 +72,5 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
-    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
-    license='Apache 2.0',
-    platforms='Posix; MacOS X; Windows',
-    include_package_data=True,
-    zip_safe=False,
-    scripts=[],
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Topic :: Internet',
-    ],
+    **SETUP_BASE
 )
