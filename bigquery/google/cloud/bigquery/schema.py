@@ -61,7 +61,6 @@ class SchemaField(object):
     def mode(self):
         """str: The mode of the field.
 
-
         Will be one of 'NULLABLE', 'REQUIRED', or 'REPEATED'.
         """
         return self._mode
