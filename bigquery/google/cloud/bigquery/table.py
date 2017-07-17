@@ -1079,7 +1079,7 @@ def _parse_schema_resource(info):
                 present in ``info``.
     """
     if 'fields' not in info:
-        return None
+        return ()
 
     schema = []
     for r_field in info['fields']:
@@ -1109,7 +1109,7 @@ def _build_schema_resource(fields):
                 'mode': field.mode}
         if field.description is not None:
             info['description'] = field.description
-        if field.fields is not None:
+        if field.fields:
             info['fields'] = _build_schema_resource(field.fields)
         infos.append(info)
     return infos
