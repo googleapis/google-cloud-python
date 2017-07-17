@@ -326,6 +326,7 @@ class TestSnapshot(unittest.TestCase):
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertIsNone(snapshot._exact_staleness)
+        self.assertFalse(snapshot._multi_use)
 
     def test_ctor_w_multiple_options(self):
         timestamp = self._makeTimestamp()
@@ -346,6 +347,7 @@ class TestSnapshot(unittest.TestCase):
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertIsNone(snapshot._exact_staleness)
+        self.assertFalse(snapshot._multi_use)
 
     def test_ctor_w_min_read_timestamp(self):
         timestamp = self._makeTimestamp()
@@ -357,6 +359,7 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(snapshot._min_read_timestamp, timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertIsNone(snapshot._exact_staleness)
+        self.assertFalse(snapshot._multi_use)
 
     def test_ctor_w_max_staleness(self):
         duration = self._makeDuration()
@@ -368,6 +371,7 @@ class TestSnapshot(unittest.TestCase):
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertEqual(snapshot._max_staleness, duration)
         self.assertIsNone(snapshot._exact_staleness)
+        self.assertFalse(snapshot._multi_use)
 
     def test_ctor_w_exact_staleness(self):
         duration = self._makeDuration()
@@ -379,6 +383,59 @@ class TestSnapshot(unittest.TestCase):
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertEqual(snapshot._exact_staleness, duration)
+        self.assertFalse(snapshot._multi_use)
+
+    def test_ctor_w_multi_use(self):
+        session = _Session()
+        snapshot = self._make_one(session, multi_use=True)
+        self.assertTrue(snapshot._session is session)
+        self.assertTrue(snapshot._strong)
+        self.assertIsNone(snapshot._read_timestamp)
+        self.assertIsNone(snapshot._min_read_timestamp)
+        self.assertIsNone(snapshot._max_staleness)
+        self.assertIsNone(snapshot._exact_staleness)
+        self.assertTrue(snapshot._multi_use)
+
+    def test_ctor_w_multi_use_and_read_timestamp(self):
+        timestamp = self._makeTimestamp()
+        session = _Session()
+        snapshot = self._make_one(
+            session, read_timestamp=timestamp, multi_use=True)
+        self.assertTrue(snapshot._session is session)
+        self.assertFalse(snapshot._strong)
+        self.assertEqual(snapshot._read_timestamp, timestamp)
+        self.assertIsNone(snapshot._min_read_timestamp)
+        self.assertIsNone(snapshot._max_staleness)
+        self.assertIsNone(snapshot._exact_staleness)
+        self.assertTrue(snapshot._multi_use)
+
+    def test_ctor_w_multi_use_and_min_read_timestamp(self):
+        timestamp = self._makeTimestamp()
+        session = _Session()
+
+        with self.assertRaises(ValueError):
+            self._make_one(
+                session, min_read_timestamp=timestamp, multi_use=True)
+
+    def test_ctor_w_multi_use_and_max_staleness(self):
+        duration = self._makeDuration()
+        session = _Session()
+
+        with self.assertRaises(ValueError):
+            self._make_one(session, max_staleness=duration, multi_use=True)
+
+    def test_ctor_w_multi_use_and_exact_staleness(self):
+        duration = self._makeDuration()
+        session = _Session()
+        snapshot = self._make_one(
+            session, exact_staleness=duration, multi_use=True)
+        self.assertTrue(snapshot._session is session)
+        self.assertFalse(snapshot._strong)
+        self.assertIsNone(snapshot._read_timestamp)
+        self.assertIsNone(snapshot._min_read_timestamp)
+        self.assertIsNone(snapshot._max_staleness)
+        self.assertEqual(snapshot._exact_staleness, duration)
+        self.assertTrue(snapshot._multi_use)
 
     def test__make_txn_selector_strong(self):
         session = _Session()

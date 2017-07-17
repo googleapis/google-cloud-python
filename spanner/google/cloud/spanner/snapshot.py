@@ -157,9 +157,15 @@ class Snapshot(_SnapshotBase):
     :type exact_staleness: :class:`datetime.timedelta`
     :param exact_staleness: Execute all reads at a timestamp that is
                             ``exact_staleness`` old.
+
+    :type multi_use: :class:`bool`
+    :param multi_use: If true, the first read operation creates a read-only
+                      transaction, used to ensure isolation / consistency
+                      for subsequent read operations.  Incompatible with
+                      ``max_staleness`` and ``min_read_timestamp``.
     """
     def __init__(self, session, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
+                 max_staleness=None, exact_staleness=None, multi_use=False):
         super(Snapshot, self).__init__(session)
         opts = [
             read_timestamp, min_read_timestamp, max_staleness, exact_staleness]
@@ -168,11 +174,17 @@ class Snapshot(_SnapshotBase):
         if len(flagged) > 1:
             raise ValueError("Supply zero or one options.")
 
+        if multi_use and (min_read_timestamp or max_staleness):
+            raise ValueError(
+                "'multi_use' is incompatile with "
+                "'min_read_timestamp' / 'max_staleness'")
+
         self._strong = len(flagged) == 0
         self._read_timestamp = read_timestamp
         self._min_read_timestamp = min_read_timestamp
         self._max_staleness = max_staleness
         self._exact_staleness = exact_staleness
+        self._multi_use = multi_use
 
     def _make_txn_selector(self):
         """Helper for :meth:`read`."""

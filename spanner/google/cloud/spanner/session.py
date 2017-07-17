@@ -139,30 +139,15 @@ class Session(object):
                 raise NotFound(self.name)
             raise
 
-    def snapshot(self, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
+    def snapshot(self, **kw):
         """Create a snapshot to perform a set of reads with shared staleness.
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
-        If no options are passed, reads will use the ``strong`` model, reading
-        at a timestamp where all previously committed transactions are visible.
-
-        :type read_timestamp: :class:`datetime.datetime`
-        :param read_timestamp: Execute all reads at the given timestamp.
-
-        :type min_read_timestamp: :class:`datetime.datetime`
-        :param min_read_timestamp: Execute all reads at a
-                                   timestamp >= ``min_read_timestamp``.
-
-        :type max_staleness: :class:`datetime.timedelta`
-        :param max_staleness: Read data at a
-                              timestamp >= NOW - ``max_staleness`` seconds.
-
-        :type exact_staleness: :class:`datetime.timedelta`
-        :param exact_staleness: Execute all reads at a timestamp that is
-                                ``exact_staleness`` old.
+        :type kw: dict
+        :param kw: Passed through to
+                   :class:`~google.cloud.spanner.snapshot.Snapshot` ctor.
 
         :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`
         :returns: a snapshot bound to this session
@@ -171,11 +156,7 @@ class Session(object):
         if self._session_id is None:
             raise ValueError("Session has not been created.")
 
-        return Snapshot(self,
-                        read_timestamp=read_timestamp,
-                        min_read_timestamp=min_read_timestamp,
-                        max_staleness=max_staleness,
-                        exact_staleness=exact_staleness)
+        return Snapshot(self, **kw)
 
     def read(self, table, columns, keyset, index='', limit=0,
              resume_token=b''):
