@@ -141,6 +141,26 @@ class TestSchemaField(unittest.TestCase):
         other = self._make_one('test', 'RECORD', fields=[sub1, sub2])
         self.assertEqual(field, other)
 
+    def test___ne___wrong_type(self):
+        field = self._make_one('toast', 'INTEGER')
+        other = object()
+        self.assertNotEqual(field, other)
+        self.assertIs(field.__ne__(other), NotImplemented)
+
+    def test___ne___same_value(self):
+        field1 = self._make_one('test', 'TIMESTAMP', mode='REPEATED')
+        field2 = self._make_one('test', 'TIMESTAMP', mode='REPEATED')
+        # unittest ``assertEqual`` uses ``==`` not ``!=``.
+        comparison_val = (field1 != field2)
+        self.assertFalse(comparison_val)
+
+    def test___ne___different_values(self):
+        field1 = self._make_one(
+            'test1', 'FLOAT', mode='REPEATED', description='Not same')
+        field2 = self._make_one(
+            'test2', 'FLOAT', mode='NULLABLE', description='Knot saym')
+        self.assertNotEqual(field1, field2)
+
     def test___hash__set_equality(self):
         sub1 = self._make_one('sub1', 'STRING')
         sub2 = self._make_one('sub2', 'STRING')

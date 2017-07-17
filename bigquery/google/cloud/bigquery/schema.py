@@ -101,6 +101,12 @@ class SchemaField(object):
         else:
             return NotImplemented
 
+    def __ne__(self, other):
+        if isinstance(other, SchemaField):
+            return self._key() != other._key()
+        else:
+            return NotImplemented
+
     def __hash__(self):
         return hash(self._key())
 
