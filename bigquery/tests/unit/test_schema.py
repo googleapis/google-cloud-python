@@ -32,7 +32,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.field_type, 'STRING')
         self.assertEqual(field.mode, 'NULLABLE')
         self.assertIsNone(field.description)
-        self.assertIsNone(field.fields)
+        self.assertEqual(field.fields, ())
 
     def test_ctor_explicit(self):
         field = self._make_one('test', 'STRING', mode='REQUIRED',
@@ -41,7 +41,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.field_type, 'STRING')
         self.assertEqual(field.mode, 'REQUIRED')
         self.assertEqual(field.description, 'Testing')
-        self.assertIsNone(field.fields)
+        self.assertEqual(field.fields, ())
 
     def test_ctor_subfields(self):
         field = self._make_one(
@@ -57,12 +57,12 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.fields[0].field_type, 'STRING')
         self.assertEqual(field.fields[0].mode, 'NULLABLE')
         self.assertIsNone(field.fields[0].description)
-        self.assertIsNone(field.fields[0].fields)
+        self.assertEqual(field.fields[0].fields, ())
         self.assertEqual(field.fields[1].name, 'local_number')
         self.assertEqual(field.fields[1].field_type, 'STRING')
         self.assertEqual(field.fields[1].mode, 'NULLABLE')
         self.assertIsNone(field.fields[1].description)
-        self.assertIsNone(field.fields[1].fields)
+        self.assertEqual(field.fields[1].fields, ())
 
     def test___eq___name_mismatch(self):
         field = self._make_one('test', 'STRING')
@@ -129,3 +129,8 @@ class TestSchemaField(unittest.TestCase):
         set_one = {field1}
         set_two = {field2}
         self.assertNotEqual(set_one, set_two)
+
+    def test__repr(self):
+        field1 = self._make_one('field1', 'STRING')
+        expected = "SchemaField('field1', 'string', 'NULLABLE', None, ())"
+        self.assertEqual(repr(field1), expected)

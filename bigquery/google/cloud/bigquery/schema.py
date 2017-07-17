@@ -32,16 +32,16 @@ class SchemaField(object):
     :type description: str
     :param description: optional description for the field.
 
-    :type fields: list of :class:`SchemaField`, or None
+    :type fields: tuple of :class:`SchemaField`
     :param fields: subfields (requires ``field_type`` of 'RECORD').
     """
     def __init__(self, name, field_type, mode='NULLABLE', description=None,
-                 fields=None):
+                 fields=()):
         self.name = name
         self.field_type = field_type
         self.mode = mode
         self.description = description
-        self.fields = None if(fields is None) else tuple(fields)
+        self.fields = tuple(fields)
 
     def _key(self):
         """
@@ -60,3 +60,6 @@ class SchemaField(object):
 
     def __hash__(self):
         return hash(self._key())
+
+    def __repr__(self):
+        return "SchemaField{}".format(self._key())

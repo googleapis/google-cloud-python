@@ -42,8 +42,8 @@ class TestQueryResults(unittest.TestCase):
             'errors': [],
             'schema': {
                 'fields': [
-                    {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED'},
-                    {'name': 'age', 'type': 'INTEGER', 'mode': 'REQURED'},
+                    {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED', 'fields': ()},
+                    {'name': 'age', 'type': 'INTEGER', 'mode': 'REQURED', 'fields': ()},
                 ],
             },
         }
@@ -90,7 +90,7 @@ class TestQueryResults(unittest.TestCase):
                                  expected.get('description'))
                 self.assertEqual(found.fields, expected.get('fields'))
         else:
-            self.assertIsNone(query.schema)
+            self.assertEqual(query.schema, ())
 
     def _verifyRows(self, query, resource):
         expected = resource.get('rows')
@@ -166,7 +166,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertIsNone(query.page_token)
         self.assertEqual(query.query_parameters, [])
         self.assertEqual(query.rows, [])
-        self.assertIsNone(query.schema)
+        self.assertEqual(query.schema, ())
         self.assertIsNone(query.total_rows)
         self.assertIsNone(query.total_bytes_processed)
         self.assertEqual(query.udf_resources, [])
@@ -408,8 +408,8 @@ class TestQueryResults(unittest.TestCase):
         resource = {
             'schema': {
                 'fields': [
-                    {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED'},
-                    {'name': 'age', 'type': 'INTEGER', 'mode': 'REQURED'},
+                    {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED', 'fields': ()},
+                    {'name': 'age', 'type': 'INTEGER', 'mode': 'REQURED', 'fields': ()},
                 ],
             },
         }

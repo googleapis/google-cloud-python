@@ -491,8 +491,8 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             'sourceFormat': 'CSV',
             'writeDisposition': 'WRITE_TRUNCATE',
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'},
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED', 'fields': ()},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED', 'fields': ()},
             ]}
         }
         RESOURCE['configuration']['load'] = LOAD_CONFIGURATION
