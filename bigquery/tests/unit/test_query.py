@@ -42,8 +42,14 @@ class TestQueryResults(unittest.TestCase):
             'errors': [],
             'schema': {
                 'fields': [
-                    {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED', 'fields': ()},
-                    {'name': 'age', 'type': 'INTEGER', 'mode': 'REQURED', 'fields': ()},
+                    {'name': 'full_name',
+                     'type': 'STRING',
+                     'mode': 'REQURED',
+                     'fields': ()},
+                    {'name': 'age',
+                     'type': 'INTEGER',
+                     'mode': 'REQURED',
+                     'fields': ()},
                 ],
             },
         }
@@ -408,8 +414,15 @@ class TestQueryResults(unittest.TestCase):
         resource = {
             'schema': {
                 'fields': [
-                    {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED', 'fields': ()},
-                    {'name': 'age', 'type': 'INTEGER', 'mode': 'REQURED', 'fields': ()},
+                    {'name':
+                     'full_name',
+                     'type': 'STRING',
+                     'mode': 'REQURED',
+                     'fields': ()},
+                    {'name': 'age',
+                     'type': 'INTEGER',
+                     'mode': 'REQURED',
+                     'fields': ()},
                 ],
             },
         }

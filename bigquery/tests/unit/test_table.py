@@ -465,8 +465,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'datasetId': self.DS_NAME,
                 'tableId': self.TABLE_NAME},
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED', 'fields': ()},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED', 'fields': ()}]},
+                {'name': 'full_name',
+                 'type': 'STRING',
+                 'mode': 'REQUIRED',
+                 'fields': ()},
+                {'name': 'age',
+                 'type': 'INTEGER',
+                 'mode': 'REQUIRED',
+                 'fields': ()}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -500,8 +506,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'tableId': self.TABLE_NAME},
             'timePartitioning': {'type': 'DAY'},
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED', 'fields': ()},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED', 'fields': ()}]},
+                {'name': 'full_name',
+                 'type': 'STRING',
+                 'mode': 'REQUIRED',
+                 'fields': ()},
+                {'name': 'age',
+                 'type': 'INTEGER',
+                 'mode': 'REQUIRED',
+                 'fields': ()}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -535,8 +547,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'tableId': self.TABLE_NAME},
             'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED', 'fields': ()},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED', 'fields': ()}]},
+                {'name': 'full_name',
+                 'type': 'STRING',
+                 'mode': 'REQUIRED',
+                 'fields': ()},
+                {'name': 'age',
+                 'type': 'INTEGER',
+                 'mode': 'REQUIRED',
+                 'fields': ()}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -756,8 +774,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'datasetId': self.DS_NAME,
                 'tableId': self.TABLE_NAME},
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED', 'fields': ()},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED', 'fields': ()}]},
+                {'name': 'full_name',
+                 'type': 'STRING',
+                 'mode': 'REQUIRED',
+                 'fields': ()},
+                {'name': 'age',
+                 'type': 'INTEGER',
+                 'mode': 'REQUIRED',
+                 'fields': ()}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -912,8 +936,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
             'location': LOCATION,
             'expirationTime': _millis(self.EXP_TIME),
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED', 'fields': ()},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'NULLABLE', 'fields': ()}]},
+                {'name': 'full_name',
+                 'type': 'STRING',
+                 'mode': 'REQUIRED',
+                 'fields': ()},
+                {'name': 'age',
+                 'type': 'INTEGER',
+                 'mode': 'NULLABLE',
+                 'fields': ()}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -974,8 +1004,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
                  'datasetId': self.DS_NAME,
                  'tableId': self.TABLE_NAME},
             'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED', 'fields': ()},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED', 'fields': ()}]},
+                {'name': 'full_name',
+                 'type': 'STRING',
+                 'mode': 'REQUIRED',
+                 'fields': ()},
+                {'name': 'age',
+                 'type': 'INTEGER',
+                 'mode': 'REQUIRED',
+                 'fields': ()}]},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
         }

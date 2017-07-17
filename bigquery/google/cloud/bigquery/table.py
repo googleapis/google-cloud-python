@@ -1109,8 +1109,7 @@ def _build_schema_resource(fields):
                 'mode': field.mode}
         if field.description is not None:
             info['description'] = field.description
-        if field.fields is not None:
-            info['fields'] = tuple(_build_schema_resource(field.fields))
+        info['fields'] = tuple(_build_schema_resource(field.fields))
         infos.append(info)
     return infos
 
