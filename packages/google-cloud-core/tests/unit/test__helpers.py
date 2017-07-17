@@ -554,6 +554,35 @@ class Test__pb_timestamp_to_datetime(unittest.TestCase):
         self.assertEqual(self._call_fut(timestamp), dt_stamp)
 
 
+class Test__from_any_pb(unittest.TestCase):
+
+    def _call_fut(self, pb_type, any_pb):
+        from google.cloud._helpers import _from_any_pb
+
+        return _from_any_pb(pb_type, any_pb)
+
+    def test_success(self):
+        from google.protobuf import any_pb2
+        from google.type import date_pb2
+
+        in_message = date_pb2.Date(year=1990)
+        in_message_any = any_pb2.Any()
+        in_message_any.Pack(in_message)
+        out_message = self._call_fut(date_pb2.Date, in_message_any)
+        self.assertEqual(in_message, out_message)
+
+    def test_failure(self, ):
+        from google.protobuf import any_pb2
+        from google.type import date_pb2
+        from google.type import timeofday_pb2
+
+        in_message = any_pb2.Any()
+        in_message.Pack(date_pb2.Date(year=1990))
+
+        with self.assertRaises(TypeError):
+            self._call_fut(timeofday_pb2.TimeOfDay, in_message)
+
+
 class Test__pb_timestamp_to_rfc3339(unittest.TestCase):
 
     def _call_fut(self, timestamp):
