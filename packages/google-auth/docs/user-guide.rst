@@ -127,10 +127,35 @@ credentials one of two ways:
 
         credentials = app_engine.Credentials()
 
+In order to make authenticated requests in the App Engine environment using the
+credentials and transports provided by this library, you need to follow a few
+additional steps:
+
+#. If you are using the :mod:`google.auth.transport.requests` transport, vendor
+   in the `requests-toolbelt`_ library into you app, and enable the App Engine
+   monkeypatch. Refer `App Engine documentation`_ for more details on this.
+#. To make HTTPS calls, enable the ``ssl`` library for you app by adding the
+   following configuration to the ``app.yaml`` file::
+
+        libraries:
+        - name: ssl
+          version: latest
+
+#. Enable billing for you App Engine project. Then enable socket support for
+   your app. This can be achieved by setting an environment variable in the
+   ``app.yaml`` file::
+
+        env_variables:
+          GAE_USE_SOCKETS_HTTPLIB : 'true'
+
 .. _App Engine standard environment:
     https://cloud.google.com/appengine/docs/python
 .. _App Engine App Identity API:
     https://cloud.google.com/appengine/docs/python/appidentity/
+.. _requests-toolbelt:
+    https://toolbelt.readthedocs.io/en/latest/
+.. _App Engine documentation:
+    https://cloud.google.com/appengine/docs/standard/python/issue-requests
 
 User credentials
 ++++++++++++++++
