@@ -30,6 +30,18 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         self.assertIs(streamed._response_iterator, iterator)
+        self.assertIsNone(streamed._source)
+        self.assertEqual(streamed.rows, [])
+        self.assertIsNone(streamed.metadata)
+        self.assertIsNone(streamed.stats)
+        self.assertIsNone(streamed.resume_token)
+
+    def test_ctor_w_source(self):
+        iterator = _MockCancellableIterator()
+        source = object()
+        streamed = self._make_one(iterator, source=source)
+        self.assertIs(streamed._response_iterator, iterator)
+        self.assertIs(streamed._source, source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)

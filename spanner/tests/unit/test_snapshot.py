@@ -105,7 +105,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
-    def test_read_normal(self):
+    def _read_helper(self, multi_use):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -147,10 +147,16 @@ class Test_SnapshotBase(unittest.TestCase):
             _streaming_read_response=_MockCancellableIterator(*result_sets))
         session = _Session(database)
         derived = self._makeDerived(session)
+        derived._multi_use = multi_use
 
         result_set = derived.read(
             TABLE_NAME, COLUMNS, KEYSET,
             index=INDEX, limit=LIMIT, resume_token=TOKEN)
+
+        if multi_use:
+            self.assertIs(result_set._source, derived)
+        else:
+            self.assertIsNone(result_set._source)
 
         result_set.consume_all()
         self.assertEqual(list(result_set.rows), VALUES)
@@ -171,6 +177,12 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(resume_token, TOKEN)
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
+
+    def test_read_wo_multi_use(self):
+        self._read_helper(multi_use=False)
+
+    def test_read_w_multi_use(self):
+        self._read_helper(multi_use=True)
 
     def test_execute_sql_grpc_error(self):
         from google.cloud.proto.spanner.v1.transaction_pb2 import (
@@ -208,7 +220,7 @@ class Test_SnapshotBase(unittest.TestCase):
         with self.assertRaises(ValueError):
             derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
 
-    def test_execute_sql_normal(self):
+    def _execute_sql_helper(self, multi_use):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -248,10 +260,16 @@ class Test_SnapshotBase(unittest.TestCase):
             _execute_streaming_sql_response=iterator)
         session = _Session(database)
         derived = self._makeDerived(session)
+        derived._multi_use = multi_use
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
             query_mode=MODE, resume_token=TOKEN)
+
+        if multi_use:
+            self.assertIs(result_set._source, derived)
+        else:
+            self.assertIsNone(result_set._source)
 
         result_set.consume_all()
         self.assertEqual(list(result_set.rows), VALUES)
@@ -273,6 +291,12 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(resume_token, TOKEN)
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
+
+    def test_execute_sql_wo_mulit_use(self):
+        self._execute_sql_helper(multi_use=False)
+
+    def test_execute_sql_w_mulit_use(self):
+        self._execute_sql_helper(multi_use=True)
 
 
 class _MockCancellableIterator(object):

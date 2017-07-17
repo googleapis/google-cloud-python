@@ -34,6 +34,8 @@ class _SnapshotBase(_SessionWrapper):
     :type session: :class:`~google.cloud.spanner.session.Session`
     :param session: the session used to perform the commit
     """
+    _multi_use = False
+
     def _make_txn_selector(self):  # pylint: disable=redundant-returns-doc
         """Helper for :meth:`read` / :meth:`execute_sql`.
 
@@ -81,7 +83,10 @@ class _SnapshotBase(_SessionWrapper):
             transaction=transaction, index=index, limit=limit,
             resume_token=resume_token, options=options)
 
-        return StreamedResultSet(iterator)
+        if self._multi_use:
+            return StreamedResultSet(iterator, source=self)
+        else:
+            return StreamedResultSet(iterator)
 
     def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
                     resume_token=b''):
@@ -128,7 +133,10 @@ class _SnapshotBase(_SessionWrapper):
             transaction=transaction, params=params_pb, param_types=param_types,
             query_mode=query_mode, resume_token=resume_token, options=options)
 
-        return StreamedResultSet(iterator)
+        if self._multi_use:
+            return StreamedResultSet(iterator, source=self)
+        else:
+            return StreamedResultSet(iterator)
 
 
 class Snapshot(_SnapshotBase):
@@ -164,6 +172,8 @@ class Snapshot(_SnapshotBase):
                       for subsequent read operations.  Incompatible with
                       ``max_staleness`` and ``min_read_timestamp``.
     """
+    _transaction_id = None
+
     def __init__(self, session, read_timestamp=None, min_read_timestamp=None,
                  max_staleness=None, exact_staleness=None, multi_use=False):
         super(Snapshot, self).__init__(session)
