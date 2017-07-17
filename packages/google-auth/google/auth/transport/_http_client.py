@@ -94,7 +94,7 @@ class Request(transport.Request):
                 'http.client transport only supports the http scheme, {}'
                 'was specified'.format(parts.scheme))
 
-        connection = http_client.HTTPConnection(parts.netloc)
+        connection = http_client.HTTPConnection(parts.netloc, timeout=timeout)
 
         try:
             _LOGGER.debug('Making request: %s %s', method, url)
