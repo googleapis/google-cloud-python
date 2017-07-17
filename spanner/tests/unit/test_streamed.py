@@ -99,6 +99,43 @@ class TestStreamedResultSet(unittest.TestCase):
             return Value(list_value=ListValue(values=value_pbs))
         return Value(list_value=_make_list_value_pb(values))
 
+    @staticmethod
+    def _makeResultSetMetadata(fields=(), transaction_id=None):
+        from google.cloud.proto.spanner.v1.result_set_pb2 import (
+            ResultSetMetadata)
+        metadata = ResultSetMetadata()
+        for field in fields:
+            metadata.row_type.fields.add().CopyFrom(field)
+        if transaction_id is not None:
+            metadata.transaction.id = transaction_id
+        return metadata
+
+    @staticmethod
+    def _makeResultSetStats(query_plan=None, **kw):
+        from google.cloud.proto.spanner.v1.result_set_pb2 import (
+            ResultSetStats)
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud.spanner._helpers import _make_value_pb
+
+        query_stats = Struct(fields={
+            key: _make_value_pb(value) for key, value in kw.items()})
+        return ResultSetStats(
+            query_plan=query_plan,
+            query_stats=query_stats,
+        )
+
+    @staticmethod
+    def _makePartialResultSet(
+            values, metadata=None, stats=None, chunked_value=False):
+        from google.cloud.proto.spanner.v1.result_set_pb2 import (
+            PartialResultSet)
+        return PartialResultSet(
+            values=values,
+            metadata=metadata,
+            stats=stats,
+            chunked_value=chunked_value,
+        )
+
     def test_properties_set(self):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
@@ -106,8 +143,8 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
         ]
-        metadata = streamed._metadata = _ResultSetMetadataPB(FIELDS)
-        stats = streamed._stats = _ResultSetStatsPB()
+        metadata = streamed._metadata = self._makeResultSetMetadata(FIELDS)
+        stats = streamed._stats = self._makeResultSetStats()
         self.assertEqual(list(streamed.fields), FIELDS)
         self.assertIs(streamed.metadata, metadata)
         self.assertIs(streamed.stats, stats)
@@ -120,7 +157,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeScalarField('registered_voter', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeValue(True)
         chunk = self._makeValue(False)
 
@@ -133,7 +170,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeScalarField('age', 'INT64'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeValue(42)
         chunk = self._makeValue(13)
 
@@ -147,7 +184,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeScalarField('weight', 'FLOAT64'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeValue(u'Na')
         chunk = self._makeValue(u'N')
 
@@ -160,7 +197,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeScalarField('weight', 'FLOAT64'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeValue(3.14159)
         chunk = self._makeValue('')
 
@@ -175,7 +212,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeScalarField('weight', 'FLOAT64'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeValue(3.14159)
         chunk = self._makeValue(2.71828)
 
@@ -188,7 +225,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeScalarField('name', 'STRING'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeValue(u'phred')
         chunk = self._makeValue(u'wylma')
 
@@ -203,7 +240,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeScalarField('image', 'BYTES'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeValue(u'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\n')
         chunk = self._makeValue(u'B3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n')
 
@@ -218,7 +255,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeArrayField('name', element_type_code='BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeListValue([True, True])
         chunk = self._makeListValue([False, False, False])
 
@@ -234,7 +271,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeArrayField('name', element_type_code='INT64'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeListValue([0, 1, 2])
         chunk = self._makeListValue([3, 4, 5])
 
@@ -256,7 +293,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeArrayField('name', element_type_code='FLOAT64'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeListValue([PI, SQRT_2])
         chunk = self._makeListValue(['', EULER, LOG_10])
 
@@ -272,7 +309,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeArrayField('name', element_type_code='STRING'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeListValue([u'A', u'B', u'C'])
         chunk = self._makeListValue([None, u'D', u'E'])
 
@@ -288,7 +325,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeArrayField('name', element_type_code='STRING'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeListValue([u'A', u'B', u'C'])
         chunk = self._makeListValue([u'D', u'E'])
 
@@ -310,7 +347,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             StructType.Field(name='loloi', type=array_type)
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeListValue(value_pbs=[
             self._makeListValue([0, 1]),
             self._makeListValue([2]),
@@ -342,7 +379,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             StructType.Field(name='lolos', type=array_type)
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeListValue(value_pbs=[
             self._makeListValue([u'A', u'B']),
             self._makeListValue([u'C']),
@@ -372,7 +409,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeArrayField('test', element_type=struct_type),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         partial = self._makeListValue([u'Phred '])
         streamed._pending_chunk = self._makeListValue(value_pbs=[partial])
         rest = self._makeListValue([u'Phlyntstone', 31])
@@ -396,7 +433,7 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [
             self._makeArrayField('test', element_type=struct_type),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         partial = self._makeListValue([u'Phred Phlyntstone', True])
         streamed._pending_chunk = self._makeListValue(value_pbs=[partial])
         rest = self._makeListValue([True])
@@ -417,7 +454,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._current_row = []
         streamed._merge_values([])
         self.assertEqual(streamed.rows, [])
@@ -431,7 +468,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         BARE = [u'Phred Phlyntstone', 42]
         VALUES = [self._makeValue(bare) for bare in BARE]
         streamed._current_row = []
@@ -447,7 +484,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         BARE = [u'Phred Phlyntstone', 42, True]
         VALUES = [self._makeValue(bare) for bare in BARE]
         streamed._current_row = []
@@ -463,7 +500,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         BARE = [
             u'Phred Phlyntstone', 42, True,
             u'Bharney Rhubble', 39, True,
@@ -483,7 +520,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         BEFORE = [
             u'Phred Phlyntstone'
         ]
@@ -500,7 +537,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         BEFORE = [u'Phred Phlyntstone']
         streamed._current_row[:] = BEFORE
         MERGED = [42]
@@ -517,7 +554,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         BEFORE = [
             u'Phred Phlyntstone'
         ]
@@ -536,7 +573,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         BEFORE = [
             self._makeValue(u'Phred Phlyntstone')
         ]
@@ -564,16 +601,16 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        metadata = _ResultSetMetadataPB(FIELDS)
+        metadata = self._makeResultSetMetadata(FIELDS)
         BARE = [u'Phred Phlyntstone', 42]
         VALUES = [self._makeValue(bare) for bare in BARE]
-        result_set = _PartialResultSetPB(VALUES, metadata=metadata)
+        result_set = self._makePartialResultSet(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
         streamed.consume_next()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
-        self.assertIs(streamed.metadata, metadata)
+        self.assertEqual(streamed.metadata, metadata)
         self.assertEqual(streamed.resume_token, result_set.resume_token)
 
     def test_consume_next_w_partial_result(self):
@@ -585,10 +622,10 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [
             self._makeValue(u'Phred '),
         ]
-        result_set = _PartialResultSetPB(VALUES, chunked_value=True)
+        result_set = self._makePartialResultSet(VALUES, chunked_value=True)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed.consume_next()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, [])
@@ -607,10 +644,10 @@ class TestStreamedResultSet(unittest.TestCase):
             u'Wylma Phlyntstone',
         ]
         VALUES = [self._makeValue(bare) for bare in BARE]
-        result_set = _PartialResultSetPB(VALUES)
+        result_set = self._makePartialResultSet(VALUES)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
-        streamed._metadata = _ResultSetMetadataPB(FIELDS)
+        streamed._metadata = self._makeResultSetMetadata(FIELDS)
         streamed._pending_chunk = self._makeValue(u'Phred ')
         streamed.consume_next()
         self.assertEqual(streamed.rows, [
@@ -627,22 +664,22 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        metadata = _ResultSetMetadataPB(FIELDS)
-        stats = _ResultSetStatsPB(
+        metadata = self._makeResultSetMetadata(FIELDS)
+        stats = self._makeResultSetStats(
             rows_returned="1",
             elapsed_time="1.23 secs",
-            cpu_tme="0.98 secs",
+            cpu_time="0.98 secs",
         )
         BARE = [u'Phred Phlyntstone', 42, True]
         VALUES = [self._makeValue(bare) for bare in BARE]
-        result_set = _PartialResultSetPB(VALUES, stats=stats)
+        result_set = self._makePartialResultSet(VALUES, stats=stats)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
         streamed._metadata = metadata
         streamed.consume_next()
         self.assertEqual(streamed.rows, [BARE])
         self.assertEqual(streamed._current_row, [])
-        self.assertIs(streamed._stats, stats)
+        self.assertEqual(streamed._stats, stats)
         self.assertEqual(streamed.resume_token, result_set.resume_token)
 
     def test_consume_all_empty(self):
@@ -656,16 +693,16 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        metadata = _ResultSetMetadataPB(FIELDS)
+        metadata = self._makeResultSetMetadata(FIELDS)
         BARE = [u'Phred Phlyntstone', 42]
         VALUES = [self._makeValue(bare) for bare in BARE]
-        result_set = _PartialResultSetPB(VALUES, metadata=metadata)
+        result_set = self._makePartialResultSet(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
         streamed.consume_all()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
-        self.assertIs(streamed.metadata, metadata)
+        self.assertEqual(streamed.metadata, metadata)
 
     def test_consume_all_multiple_result_sets_filled(self):
         FIELDS = [
@@ -673,15 +710,15 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        metadata = _ResultSetMetadataPB(FIELDS)
+        metadata = self._makeResultSetMetadata(FIELDS)
         BARE = [
             u'Phred Phlyntstone', 42, True,
             u'Bharney Rhubble', 39, True,
             u'Wylma Phlyntstone', 41, True,
         ]
         VALUES = [self._makeValue(bare) for bare in BARE]
-        result_set1 = _PartialResultSetPB(VALUES[:4], metadata=metadata)
-        result_set2 = _PartialResultSetPB(VALUES[4:])
+        result_set1 = self._makePartialResultSet(VALUES[:4], metadata=metadata)
+        result_set2 = self._makePartialResultSet(VALUES[4:])
         iterator = _MockCancellableIterator(result_set1, result_set2)
         streamed = self._make_one(iterator)
         streamed.consume_all()
@@ -705,17 +742,17 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        metadata = _ResultSetMetadataPB(FIELDS)
+        metadata = self._makeResultSetMetadata(FIELDS)
         BARE = [u'Phred Phlyntstone', 42]
         VALUES = [self._makeValue(bare) for bare in BARE]
-        result_set = _PartialResultSetPB(VALUES, metadata=metadata)
+        result_set = self._makePartialResultSet(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
         found = list(streamed)
         self.assertEqual(found, [])
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
-        self.assertIs(streamed.metadata, metadata)
+        self.assertEqual(streamed.metadata, metadata)
 
     def test___iter___multiple_result_sets_filled(self):
         FIELDS = [
@@ -723,15 +760,15 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        metadata = _ResultSetMetadataPB(FIELDS)
+        metadata = self._makeResultSetMetadata(FIELDS)
         BARE = [
             u'Phred Phlyntstone', 42, True,
             u'Bharney Rhubble', 39, True,
             u'Wylma Phlyntstone', 41, True,
         ]
         VALUES = [self._makeValue(bare) for bare in BARE]
-        result_set1 = _PartialResultSetPB(VALUES[:4], metadata=metadata)
-        result_set2 = _PartialResultSetPB(VALUES[4:])
+        result_set1 = self._makePartialResultSet(VALUES[:4], metadata=metadata)
+        result_set2 = self._makePartialResultSet(VALUES[4:])
         iterator = _MockCancellableIterator(result_set1, result_set2)
         streamed = self._make_one(iterator)
         found = list(streamed)
@@ -750,7 +787,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        metadata = _ResultSetMetadataPB(FIELDS)
+        metadata = self._makeResultSetMetadata(FIELDS)
         ALREADY = [
             [u'Pebbylz Phlyntstone', 4, False],
             [u'Dino Rhubble', 4, False],
@@ -761,8 +798,8 @@ class TestStreamedResultSet(unittest.TestCase):
             u'Wylma Phlyntstone', 41, True,
         ]
         VALUES = [self._makeValue(bare) for bare in BARE]
-        result_set1 = _PartialResultSetPB(VALUES[:4], metadata=metadata)
-        result_set2 = _PartialResultSetPB(VALUES[4:])
+        result_set1 = self._makePartialResultSet(VALUES[:4], metadata=metadata)
+        result_set2 = self._makePartialResultSet(VALUES[4:])
         iterator = _MockCancellableIterator(result_set1, result_set2)
         streamed = self._make_one(iterator)
         streamed._rows[:] = ALREADY
@@ -789,25 +826,6 @@ class _MockCancellableIterator(object):
 
     def __next__(self):  # pragma: NO COVER Py3k
         return self.next()
-
-
-class _ResultSetMetadataPB(object):
-
-    def __init__(self, fields):
-        from google.cloud.proto.spanner.v1.type_pb2 import StructType
-
-        self.row_type = StructType(fields=fields)
-
-
-class _ResultSetStatsPB(object):
-
-    def __init__(self, query_plan=None, **query_stats):
-        from google.protobuf.struct_pb2 import Struct
-        from google.cloud.spanner._helpers import _make_value_pb
-
-        self.query_plan = query_plan
-        self.query_stats = Struct(fields={
-            key: _make_value_pb(value) for key, value in query_stats.items()})
 
 
 class _PartialResultSetPB(object):
