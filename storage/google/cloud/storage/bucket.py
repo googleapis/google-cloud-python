@@ -228,7 +228,7 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, client=None):
+    def get_blob(self, blob_name, client=None, **kwargs):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist:
@@ -245,11 +245,15 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to pass to the :class:`~google.cloud.storage.blob.Blob`
+                       constructor.
+
         :rtype: :class:`google.cloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
-        blob = Blob(bucket=self, name=blob_name)
+        blob = Blob(bucket=self, name=blob_name, **kwargs)
         try:
             response = client._connection.api_request(
                 method='GET', path=blob.path, _target_object=blob)
