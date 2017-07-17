@@ -32,40 +32,40 @@ class Future(object):
     """
 
     @abc.abstractmethod
-    def cancel(self):  # pragma: NO COVER
+    def cancel(self):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def cancelled(self):  # pragma: NO COVER
+    def cancelled(self):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def running(self):  # pragma: NO COVER
+    def running(self):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def done(self):  # pragma: NO COVER
+    def done(self):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def result(self, timeout=None):  # pragma: NO COVER
+    def result(self, timeout=None):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def exception(self, timeout=None):  # pragma: NO COVER
+    def exception(self, timeout=None):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def add_done_callback(self, fn):  # pragma: NO COVER
+    def add_done_callback(self, fn):
         # pylint: disable=invalid-name
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def set_result(self, result):  # pragma: NO COVER
+    def set_result(self, result):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def set_exception(self, exception):  # pragma: NO COVER
+    def set_exception(self, exception):
         raise NotImplementedError()
 
 
@@ -89,7 +89,7 @@ class PollingFuture(Future):
         self._done_callbacks = []
 
     @abc.abstractmethod
-    def _blocking_poll(self, timeout=None):  # pragma: NO COVER
+    def _blocking_poll(self, timeout=None):
         """Poll and wait for the Future to be resolved.
 
         Args:
