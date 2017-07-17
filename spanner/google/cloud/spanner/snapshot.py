@@ -198,6 +198,9 @@ class Snapshot(_SnapshotBase):
 
     def _make_txn_selector(self):
         """Helper for :meth:`read`."""
+        if self._transaction_id is not None:
+            return TransactionSelector(id=self._transaction_id)
+
         if self._read_timestamp:
             key = 'read_timestamp'
             value = _datetime_to_pb_timestamp(self._read_timestamp)

@@ -53,12 +53,19 @@ class Test_SnapshotBase(unittest.TestCase):
 
         class _Derived(self._getTargetClass()):
 
+            _transaction_id = None
+            _multi_use = False
+
             def _make_txn_selector(self):
                 from google.cloud.proto.spanner.v1.transaction_pb2 import (
                     TransactionOptions, TransactionSelector)
 
+                if self._transaction_id:
+                    return TransactionSelector(id=self._transaction_id)
                 options = TransactionOptions(
                     read_only=TransactionOptions.ReadOnly(strong=True))
+                if self._multi_use:
+                    return TransactionSelector(begin=options)
                 return TransactionSelector(single_use=options)
 
         return _Derived(session)
@@ -105,7 +112,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
-    def _read_helper(self, multi_use):
+    def _read_helper(self, multi_use, first=True):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -116,6 +123,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.spanner.keyset import KeySet
         from google.cloud.spanner._helpers import _make_value_pb
 
+        TXN_ID = b'DEADBEEF'
         VALUES = [
             [u'bharney', 31],
             [u'phred', 32],
@@ -148,6 +156,8 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
+        if not first:
+            derived._transaction_id = TXN_ID
 
         result_set = derived.read(
             TABLE_NAME, COLUMNS, KEYSET,
@@ -171,7 +181,13 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(columns, COLUMNS)
         self.assertEqual(key_set, KEYSET.to_pb())
         self.assertIsInstance(transaction, TransactionSelector)
-        self.assertTrue(transaction.single_use.read_only.strong)
+        if multi_use:
+            if first:
+                self.assertTrue(transaction.begin.read_only.strong)
+            else:
+                self.assertEqual(transaction.id, TXN_ID)
+        else:
+            self.assertTrue(transaction.single_use.read_only.strong)
         self.assertEqual(index, INDEX)
         self.assertEqual(limit, LIMIT)
         self.assertEqual(resume_token, TOKEN)
@@ -220,7 +236,7 @@ class Test_SnapshotBase(unittest.TestCase):
         with self.assertRaises(ValueError):
             derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
 
-    def _execute_sql_helper(self, multi_use):
+    def _execute_sql_helper(self, multi_use, first=True):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -230,6 +246,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.proto.spanner.v1.type_pb2 import STRING, INT64
         from google.cloud.spanner._helpers import _make_value_pb
 
+        TXN_ID = b'DEADBEEF'
         VALUES = [
             [u'bharney', u'rhubbyl', 31],
             [u'phred', u'phlyntstone', 32],
@@ -261,6 +278,8 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
+        if not first:
+            derived._transaction_id = TXN_ID
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
@@ -282,7 +301,13 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(r_session, self.SESSION_NAME)
         self.assertEqual(sql, SQL_QUERY_WITH_PARAM)
         self.assertIsInstance(transaction, TransactionSelector)
-        self.assertTrue(transaction.single_use.read_only.strong)
+        if multi_use:
+            if first:
+                self.assertTrue(transaction.begin.read_only.strong)
+            else:
+                self.assertEqual(transaction.id, TXN_ID)
+        else:
+            self.assertTrue(transaction.single_use.read_only.strong)
         expected_params = Struct(fields={
             key: _make_value_pb(value) for (key, value) in PARAMS.items()})
         self.assertEqual(params, expected_params)
@@ -292,11 +317,14 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
-    def test_execute_sql_wo_mulit_use(self):
+    def test_execute_sql_wo_multi_use(self):
         self._execute_sql_helper(multi_use=False)
 
-    def test_execute_sql_w_mulit_use(self):
-        self._execute_sql_helper(multi_use=True)
+    def test_execute_sql_w_multi_use_w_first(self):
+        self._execute_sql_helper(multi_use=True, first=True)
+
+    def test_execute_sql_w_multi_use_wo_first(self):
+        self._execute_sql_helper(multi_use=True, first=False)
 
 
 class _MockCancellableIterator(object):
@@ -460,6 +488,14 @@ class TestSnapshot(unittest.TestCase):
         self.assertIsNone(snapshot._max_staleness)
         self.assertEqual(snapshot._exact_staleness, duration)
         self.assertTrue(snapshot._multi_use)
+
+    def test__make_txn_selector_w_transaction_id(self):
+        TXN_ID = b'DEADBEEF'
+        session = _Session()
+        snapshot = self._make_one(session)
+        snapshot._transaction_id = TXN_ID
+        selector = snapshot._make_txn_selector()
+        self.assertEqual(selector.id, TXN_ID)
 
     def test__make_txn_selector_strong(self):
         session = _Session()
