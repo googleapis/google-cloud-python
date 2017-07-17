@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+import mock
 import unittest
 
 
@@ -596,22 +597,25 @@ class TestStreamedResultSet(unittest.TestCase):
             streamed.consume_next()
 
     def test_consume_next_first_set_partial(self):
+        TXN_ID = b'DEADBEEF'
         FIELDS = [
             self._makeScalarField('full_name', 'STRING'),
             self._makeScalarField('age', 'INT64'),
             self._makeScalarField('married', 'BOOL'),
         ]
-        metadata = self._makeResultSetMetadata(FIELDS)
+        metadata = self._makeResultSetMetadata(FIELDS, transaction_id=TXN_ID)
         BARE = [u'Phred Phlyntstone', 42]
         VALUES = [self._makeValue(bare) for bare in BARE]
         result_set = self._makePartialResultSet(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
-        streamed = self._make_one(iterator)
+        source = mock.Mock(_transaction_id=None, spec=['_transaction_id'])
+        streamed = self._make_one(iterator, source=source)
         streamed.consume_next()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
         self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(source._transaction_id, TXN_ID)
 
     def test_consume_next_w_partial_result(self):
         FIELDS = [

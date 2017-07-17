@@ -134,8 +134,10 @@ class StreamedResultSet(object):
         self._resume_token = response.resume_token
 
         if self._metadata is None:  # first response
-            # XXX: copy implicit txn ID to snapshot, if present.
-            self._metadata = response.metadata
+            metadata = self._metadata = response.metadata
+
+            if self._source is not None:
+                self._source._transaction_id = metadata.transaction.id
 
         if response.HasField('stats'):  # last response
             self._stats = response.stats
