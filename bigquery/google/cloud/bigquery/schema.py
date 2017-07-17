@@ -26,7 +26,7 @@ class SchemaField(object):
                        'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD').
 
     :type mode: str
-    :param mode: the type of the field (one of 'NULLABLE', 'REQUIRED',
+    :param mode: the mode of the field (one of 'NULLABLE', 'REQUIRED',
                  or 'REPEATED').
 
     :type description: str
@@ -35,31 +35,75 @@ class SchemaField(object):
     :type fields: tuple of :class:`SchemaField`
     :param fields: subfields (requires ``field_type`` of 'RECORD').
     """
-    def __init__(self, name, field_type, mode='NULLABLE', description=None,
-                 fields=()):
-        self.name = name
-        self.field_type = field_type
-        self.mode = mode
-        self.description = description
-        self.fields = tuple(fields)
+    def __init__(self, name, field_type, mode='NULLABLE',
+                 description=None, fields=()):
+        self._name = name
+        self._field_type = field_type
+        self._mode = mode
+        self._description = description
+        self._fields = tuple(fields)
+
+    @property
+    def name(self):
+        """str: The name of the field."""
+        return self._name
+
+    @property
+    def field_type(self):
+        """str: The type of the field.
+
+        Will be one of 'STRING', 'INTEGER', 'FLOAT', 'BOOLEAN',
+        'TIMESTAMP' or 'RECORD'.
+        """
+        return self._field_type
+
+    @property
+    def mode(self):
+        """str: The mode of the field.
+
+
+        Will be one of 'NULLABLE', 'REQUIRED', or 'REPEATED'.
+        """
+        return self._mode
+
+    @property
+    def description(self):
+        """Optional[str]: Description for the field."""
+        return self._description
+
+    @property
+    def fields(self):
+        """tuple: Subfields contained in this field.
+
+        If ``field_type`` is not 'RECORD', this property must be
+        empty / unset.
+        """
+        return self._fields
 
     def _key(self):
-        """
-        A tuple describing the contents of this :class:`SchemaField`.
+        """A tuple key that unique-ly describes this field.
+
         Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            tuple: The contents of this :class:`SchemaField`.
         """
         return (
-            self.name,
-            self.field_type.lower(),
-            self.mode,
-            self.description,
-            self.fields)
+            self._name,
+            self._field_type.lower(),
+            self._mode,
+            self._description,
+            self._fields,
+        )
 
     def __eq__(self, other):
-        return self._key() == other._key()
+        if isinstance(other, SchemaField):
+            return self._key() == other._key()
+        else:
+            return NotImplemented
 
     def __hash__(self):
         return hash(self._key())
 
     def __repr__(self):
-        return "SchemaField{}".format(self._key())
+        return 'SchemaField{}'.format(self._key())

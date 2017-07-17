@@ -26,43 +26,72 @@ class TestSchemaField(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor_defaults(self):
+    def test_constructor_defaults(self):
         field = self._make_one('test', 'STRING')
-        self.assertEqual(field.name, 'test')
-        self.assertEqual(field.field_type, 'STRING')
-        self.assertEqual(field.mode, 'NULLABLE')
-        self.assertIsNone(field.description)
-        self.assertEqual(field.fields, ())
+        self.assertEqual(field._name, 'test')
+        self.assertEqual(field._field_type, 'STRING')
+        self.assertEqual(field._mode, 'NULLABLE')
+        self.assertIsNone(field._description)
+        self.assertEqual(field._fields, ())
 
-    def test_ctor_explicit(self):
+    def test_constructor_explicit(self):
         field = self._make_one('test', 'STRING', mode='REQUIRED',
                                description='Testing')
-        self.assertEqual(field.name, 'test')
-        self.assertEqual(field.field_type, 'STRING')
-        self.assertEqual(field.mode, 'REQUIRED')
-        self.assertEqual(field.description, 'Testing')
-        self.assertEqual(field.fields, ())
+        self.assertEqual(field._name, 'test')
+        self.assertEqual(field._field_type, 'STRING')
+        self.assertEqual(field._mode, 'REQUIRED')
+        self.assertEqual(field._description, 'Testing')
+        self.assertEqual(field._fields, ())
 
-    def test_ctor_subfields(self):
+    def test_constructor_subfields(self):
+        sub_field1 = self._make_one('area_code', 'STRING')
+        sub_field2 = self._make_one('local_number', 'STRING')
         field = self._make_one(
-            'phone_number', 'RECORD',
-            fields=[self._make_one('area_code', 'STRING'),
-                    self._make_one('local_number', 'STRING')])
-        self.assertEqual(field.name, 'phone_number')
-        self.assertEqual(field.field_type, 'RECORD')
-        self.assertEqual(field.mode, 'NULLABLE')
-        self.assertIsNone(field.description)
-        self.assertEqual(len(field.fields), 2)
-        self.assertEqual(field.fields[0].name, 'area_code')
-        self.assertEqual(field.fields[0].field_type, 'STRING')
-        self.assertEqual(field.fields[0].mode, 'NULLABLE')
-        self.assertIsNone(field.fields[0].description)
-        self.assertEqual(field.fields[0].fields, ())
-        self.assertEqual(field.fields[1].name, 'local_number')
-        self.assertEqual(field.fields[1].field_type, 'STRING')
-        self.assertEqual(field.fields[1].mode, 'NULLABLE')
-        self.assertIsNone(field.fields[1].description)
-        self.assertEqual(field.fields[1].fields, ())
+            'phone_number',
+            'RECORD',
+            fields=[sub_field1, sub_field2],
+        )
+        self.assertEqual(field._name, 'phone_number')
+        self.assertEqual(field._field_type, 'RECORD')
+        self.assertEqual(field._mode, 'NULLABLE')
+        self.assertIsNone(field._description)
+        self.assertEqual(len(field._fields), 2)
+        self.assertIs(field._fields[0], sub_field1)
+        self.assertIs(field._fields[1], sub_field2)
+
+    def test_name_property(self):
+        name = 'lemon-ness'
+        schema_field = self._make_one(name, 'INTEGER')
+        self.assertIs(schema_field.name, name)
+
+    def test_field_type_property(self):
+        field_type = 'BOOLEAN'
+        schema_field = self._make_one('whether', field_type)
+        self.assertIs(schema_field.field_type, field_type)
+
+    def test_mode_property(self):
+        mode = 'REPEATED'
+        schema_field = self._make_one('again', 'FLOAT', mode=mode)
+        self.assertIs(schema_field.mode, mode)
+
+    def test_description_property(self):
+        description = 'It holds some data.'
+        schema_field = self._make_one(
+            'do', 'TIMESTAMP', description=description)
+        self.assertIs(schema_field.description, description)
+
+    def test_fields_property(self):
+        sub_field1 = self._make_one('one', 'STRING')
+        sub_field2 = self._make_one('fish', 'INTEGER')
+        fields = (sub_field1, sub_field2)
+        schema_field = self._make_one('boat', 'RECORD', fields=fields)
+        self.assertIs(schema_field.fields, fields)
+
+    def test___eq___wrong_type(self):
+        field = self._make_one('test', 'STRING')
+        other = object()
+        self.assertNotEqual(field, other)
+        self.assertIs(field.__eq__(other), NotImplemented)
 
     def test___eq___name_mismatch(self):
         field = self._make_one('test', 'STRING')
