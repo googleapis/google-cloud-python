@@ -379,6 +379,29 @@ def _bytes_to_unicode(value):
         raise ValueError('%r could not be converted to unicode' % (value,))
 
 
+def _from_any_pb(pb_type, any_pb):
+    """Converts an Any protobuf to the specified message type
+
+    Args:
+        pb_type (type): the type of the message that any_pb stores an instance
+            of.
+        any_pb (google.protobuf.any_pb2.Any): the object to be converted.
+
+    Returns:
+        pb_type: An instance of the pb_type message.
+
+    Raises:
+        TypeError: if the message could not be converted.
+    """
+    msg = pb_type()
+    if not any_pb.Unpack(msg):
+        raise TypeError(
+            'Could not convert {} to {}'.format(
+                any_pb.__class__.__name__, pb_type.__name__))
+
+    return msg
+
+
 def _pb_timestamp_to_datetime(timestamp_pb):
     """Convert a Timestamp protobuf to a datetime object.
 
