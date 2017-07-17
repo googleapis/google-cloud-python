@@ -1844,6 +1844,22 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['body'], BODY)
     # pylint: enable=too-many-statements
 
+    def test_upload_from_file_w_jobid(self):
+        import json
+        from google.cloud._helpers import _to_bytes
+
+        requested, PATH, BODY = self._upload_from_file_helper(job_name='foo')
+        parse_chunk = _email_chunk_parser()
+        req = requested[0]
+        ctype, boundary = [x.strip()
+                           for x in req['headers']['content-type'].split(';')]
+        divider = b'--' + _to_bytes(boundary[len('boundary="'):-1])
+        chunks = req['body'].split(divider)[1:-1]  # discard prolog / epilog
+        text_msg = parse_chunk(chunks[0].strip())
+        metadata = json.loads(text_msg._payload)
+        load_config = metadata['configuration']['load']
+        self.assertEqual(load_config['jobReference'], {'jobId': 'foo'})
+
 
 class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 
