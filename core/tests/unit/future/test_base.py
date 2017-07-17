@@ -27,6 +27,8 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import threading
+
 import mock
 import pytest
 
@@ -98,19 +100,21 @@ class PollingFutureImplWithPoll(PollingFutureImpl):
     def __init__(self):
         super(PollingFutureImplWithPoll, self).__init__()
         self.poll_count = 0
+        self.event = threading.Event()
 
     def _blocking_poll(self, timeout=None):
         if self._result_set:
             return
 
         self.poll_count += 1
+        self.event.wait()
         self.set_result(42)
 
 
-@mock.patch('time.sleep')
-def test_result_with_polling(unusued_sleep):
+def test_result_with_polling():
     future = PollingFutureImplWithPoll()
 
+    future.event.set()
     result = future.result()
 
     assert result == 42
@@ -120,15 +124,37 @@ def test_result_with_polling(unusued_sleep):
     assert future.poll_count == 1
 
 
-@mock.patch('time.sleep')
-def test_callback_background_thread(unused_sleep):
+def test_callback_background_thread():
     future = PollingFutureImplWithPoll()
     callback = mock.Mock()
 
     future.add_done_callback(callback)
 
     assert future._polling_thread is not None
+    assert future.poll_count == 1
 
+    future.event.set()
     future._polling_thread.join()
 
     callback.assert_called_once_with(future)
+
+
+def test_double_callback_background_thread():
+    future = PollingFutureImplWithPoll()
+    callback = mock.Mock()
+    callback2 = mock.Mock()
+
+    future.add_done_callback(callback)
+    current_thread = future._polling_thread
+    assert current_thread is not None
+
+    # only one polling thread should be created.
+    future.add_done_callback(callback2)
+    assert future._polling_thread is current_thread
+
+    future.event.set()
+    future._polling_thread.join()
+
+    assert future.poll_count == 1
+    callback.assert_called_once_with(future)
+    callback2.assert_called_once_with(future)

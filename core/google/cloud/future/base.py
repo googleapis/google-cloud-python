@@ -88,7 +88,7 @@ class PollingFuture(Future):
         self._done_callbacks = []
 
     @abc.abstractmethod
-    def _blocking_poll(self, timeout=None):
+    def _blocking_poll(self, timeout=None):  # pragma: NO COVER
         """Poll and wait for the Future to be resolved.
 
         Args:
