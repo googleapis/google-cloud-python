@@ -23,7 +23,7 @@ from google.cloud.future import _helpers
 
 @six.add_metaclass(abc.ABCMeta)
 class Future(object):
-    # pylint: disable=missing-docstring, invalid-name
+    # pylint: disable=missing-docstring
     # We inherit the interfaces here from concurrent.futures.
 
     """Future interface.
@@ -57,6 +57,7 @@ class Future(object):
 
     @abc.abstractmethod
     def add_done_callback(self, fn):  # pragma: NO COVER
+        # pylint: disable=invalid-name
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -95,6 +96,7 @@ class PollingFuture(Future):
             timeout (int): How long to wait for the operation to complete.
                 If None, wait indefinitely.
         """
+        # pylint: disable=missing-raises
         raise NotImplementedError()
 
     def result(self, timeout=None):
