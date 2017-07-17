@@ -246,8 +246,8 @@ class Bucket(_PropertyMixin):
                        to the ``client`` stored on the current bucket.
 
         :type kwargs: dict
-        :param kwargs: Keyword arguments to pass to the :class:`~google.cloud.storage.blob.Blob`
-                       constructor.
+        :param kwargs: Keyword arguments to pass to the
+                       :class:`~google.cloud.storage.blob.Blob` constructor.
 
         :rtype: :class:`google.cloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
