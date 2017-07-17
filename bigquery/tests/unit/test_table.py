@@ -465,14 +465,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'datasetId': self.DS_NAME,
                 'tableId': self.TABLE_NAME},
             'schema': {'fields': [
-                {'name': 'full_name',
-                 'type': 'STRING',
-                 'mode': 'REQUIRED',
-                 'fields': ()},
-                {'name': 'age',
-                 'type': 'INTEGER',
-                 'mode': 'REQUIRED',
-                 'fields': ()}]},
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -506,14 +500,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'tableId': self.TABLE_NAME},
             'timePartitioning': {'type': 'DAY'},
             'schema': {'fields': [
-                {'name': 'full_name',
-                 'type': 'STRING',
-                 'mode': 'REQUIRED',
-                 'fields': ()},
-                {'name': 'age',
-                 'type': 'INTEGER',
-                 'mode': 'REQUIRED',
-                 'fields': ()}]},
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -547,14 +535,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'tableId': self.TABLE_NAME},
             'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
             'schema': {'fields': [
-                {'name': 'full_name',
-                 'type': 'STRING',
-                 'mode': 'REQUIRED',
-                 'fields': ()},
-                {'name': 'age',
-                 'type': 'INTEGER',
-                 'mode': 'REQUIRED',
-                 'fields': ()}]},
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -774,14 +756,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'datasetId': self.DS_NAME,
                 'tableId': self.TABLE_NAME},
             'schema': {'fields': [
-                {'name': 'full_name',
-                 'type': 'STRING',
-                 'mode': 'REQUIRED',
-                 'fields': ()},
-                {'name': 'age',
-                 'type': 'INTEGER',
-                 'mode': 'REQUIRED',
-                 'fields': ()}]},
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -936,14 +912,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
             'location': LOCATION,
             'expirationTime': _millis(self.EXP_TIME),
             'schema': {'fields': [
-                {'name': 'full_name',
-                 'type': 'STRING',
-                 'mode': 'REQUIRED',
-                 'fields': ()},
-                {'name': 'age',
-                 'type': 'INTEGER',
-                 'mode': 'NULLABLE',
-                 'fields': ()}]},
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'NULLABLE'}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -1004,14 +974,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
                  'datasetId': self.DS_NAME,
                  'tableId': self.TABLE_NAME},
             'schema': {'fields': [
-                {'name': 'full_name',
-                 'type': 'STRING',
-                 'mode': 'REQUIRED',
-                 'fields': ()},
-                {'name': 'age',
-                 'type': 'INTEGER',
-                 'mode': 'REQUIRED',
-                 'fields': ()}]},
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
         }
@@ -1943,13 +1907,11 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         self.assertEqual(resource[0],
                          {'name': 'full_name',
                           'type': 'STRING',
-                          'mode': 'REQUIRED',
-                          'fields': ()})
+                          'mode': 'REQUIRED'})
         self.assertEqual(resource[1],
                          {'name': 'age',
                           'type': 'INTEGER',
-                          'mode': 'REQUIRED',
-                          'fields': ()})
+                          'mode': 'REQUIRED'})
 
     def test_w_description(self):
         from google.cloud.bigquery.table import SchemaField
@@ -1964,13 +1926,11 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
                          {'name': 'full_name',
                           'type': 'STRING',
                           'mode': 'REQUIRED',
-                          'fields': (),
                           'description': DESCRIPTION})
         self.assertEqual(resource[1],
                          {'name': 'age',
                           'type': 'INTEGER',
-                          'mode': 'REQUIRED',
-                          'fields': ()})
+                          'mode': 'REQUIRED'})
 
     def test_w_subfields(self):
         from google.cloud.bigquery.table import SchemaField
@@ -1985,20 +1945,17 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         self.assertEqual(resource[0],
                          {'name': 'full_name',
                           'type': 'STRING',
-                          'mode': 'REQUIRED',
-                          'fields': ()})
+                          'mode': 'REQUIRED'})
         self.assertEqual(resource[1],
                          {'name': 'phone',
                           'type': 'RECORD',
                           'mode': 'REPEATABLE',
-                          'fields': ({'name': 'type',
+                          'fields': [{'name': 'type',
                                       'type': 'STRING',
-                                      'mode': 'REQUIRED',
-                                      'fields': ()},
+                                      'mode': 'REQUIRED'},
                                      {'name': 'number',
                                       'type': 'STRING',
-                                      'mode': 'REQUIRED',
-                                      'fields': ()})})
+                                      'mode': 'REQUIRED'}]})
 
 
 class _Client(object):

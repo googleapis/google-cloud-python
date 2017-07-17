@@ -42,14 +42,8 @@ class TestQueryResults(unittest.TestCase):
             'errors': [],
             'schema': {
                 'fields': [
-                    {'name': 'full_name',
-                     'type': 'STRING',
-                     'mode': 'REQURED',
-                     'fields': ()},
-                    {'name': 'age',
-                     'type': 'INTEGER',
-                     'mode': 'REQURED',
-                     'fields': ()},
+                    {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED'},
+                    {'name': 'age', 'type': 'INTEGER', 'mode': 'REQURED'},
                 ],
             },
         }
@@ -94,7 +88,7 @@ class TestQueryResults(unittest.TestCase):
                 self.assertEqual(found.mode, expected['mode'])
                 self.assertEqual(found.description,
                                  expected.get('description'))
-                self.assertEqual(found.fields, expected.get('fields'))
+                self.assertEqual(found.fields, expected.get('fields', ()))
         else:
             self.assertEqual(query.schema, ())
 
@@ -414,15 +408,8 @@ class TestQueryResults(unittest.TestCase):
         resource = {
             'schema': {
                 'fields': [
-                    {'name':
-                     'full_name',
-                     'type': 'STRING',
-                     'mode': 'REQURED',
-                     'fields': ()},
-                    {'name': 'age',
-                     'type': 'INTEGER',
-                     'mode': 'REQURED',
-                     'fields': ()},
+                    {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED'},
+                    {'name': 'age', 'type': 'INTEGER', 'mode': 'REQURED'},
                 ],
             },
         }

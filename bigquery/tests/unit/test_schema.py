@@ -141,7 +141,7 @@ class TestSchemaField(unittest.TestCase):
         other = self._make_one('test', 'RECORD', fields=[sub1, sub2])
         self.assertEqual(field, other)
 
-    def test__hash__set_equality(self):
+    def test___hash__set_equality(self):
         sub1 = self._make_one('sub1', 'STRING')
         sub2 = self._make_one('sub2', 'STRING')
         field1 = self._make_one('test', 'RECORD', fields=[sub1])
@@ -150,7 +150,7 @@ class TestSchemaField(unittest.TestCase):
         set_two = {field1, field2}
         self.assertEqual(set_one, set_two)
 
-    def test__hash__not_equals(self):
+    def test___hash__not_equals(self):
         sub1 = self._make_one('sub1', 'STRING')
         sub2 = self._make_one('sub2', 'STRING')
         field1 = self._make_one('test', 'RECORD', fields=[sub1])
@@ -159,7 +159,7 @@ class TestSchemaField(unittest.TestCase):
         set_two = {field2}
         self.assertNotEqual(set_one, set_two)
 
-    def test__repr(self):
+    def test___repr__(self):
         field1 = self._make_one('field1', 'STRING')
         expected = "SchemaField('field1', 'string', 'NULLABLE', None, ())"
         self.assertEqual(repr(field1), expected)

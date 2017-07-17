@@ -1090,7 +1090,7 @@ def _parse_schema_resource(info):
         sub_fields = _parse_schema_resource(r_field)
         schema.append(
             SchemaField(name, field_type, mode, description, sub_fields))
-    return tuple(schema)
+    return schema
 
 
 def _build_schema_resource(fields):
@@ -1109,7 +1109,8 @@ def _build_schema_resource(fields):
                 'mode': field.mode}
         if field.description is not None:
             info['description'] = field.description
-        info['fields'] = tuple(_build_schema_resource(field.fields))
+        if field.fields:
+            info['fields'] = _build_schema_resource(field.fields)
         infos.append(info)
     return infos
 
