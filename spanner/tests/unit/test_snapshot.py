@@ -486,6 +486,36 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(options.read_only.exact_staleness.seconds, 3)
         self.assertEqual(options.read_only.exact_staleness.nanos, 123456000)
 
+    def test__make_txn_selector_strong_w_multi_use(self):
+        session = _Session()
+        snapshot = self._make_one(session, multi_use=True)
+        selector = snapshot._make_txn_selector()
+        options = selector.begin
+        self.assertTrue(options.read_only.strong)
+
+    def test__make_txn_selector_w_read_timestamp_w_multi_use(self):
+        from google.cloud._helpers import _pb_timestamp_to_datetime
+
+        timestamp = self._makeTimestamp()
+        session = _Session()
+        snapshot = self._make_one(
+            session, read_timestamp=timestamp, multi_use=True)
+        selector = snapshot._make_txn_selector()
+        options = selector.begin
+        self.assertEqual(
+            _pb_timestamp_to_datetime(options.read_only.read_timestamp),
+            timestamp)
+
+    def test__make_txn_selector_w_exact_staleness_w_multi_use(self):
+        duration = self._makeDuration(seconds=3, microseconds=123456)
+        session = _Session()
+        snapshot = self._make_one(
+            session, exact_staleness=duration, multi_use=True)
+        selector = snapshot._make_txn_selector()
+        options = selector.begin
+        self.assertEqual(options.read_only.exact_staleness.seconds, 3)
+        self.assertEqual(options.read_only.exact_staleness.nanos, 123456000)
+
 
 class _Session(object):
 

@@ -206,4 +206,8 @@ class Snapshot(_SnapshotBase):
 
         options = TransactionOptions(
             read_only=TransactionOptions.ReadOnly(**{key: value}))
-        return TransactionSelector(single_use=options)
+
+        if self._multi_use:
+            return TransactionSelector(begin=options)
+        else:
+            return TransactionSelector(single_use=options)
