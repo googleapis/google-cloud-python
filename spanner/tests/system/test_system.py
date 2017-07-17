@@ -686,6 +686,21 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows, all_data_rows)
 
+    def test_multiuse_snapshot_read_isolation_strong(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        strong = session.snapshot(multi_use=True)
+
+        before = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
+
     def test_read_w_manual_consume(self):
         ROW_COUNT = 4000
         session, committed = self._set_up_table(ROW_COUNT)
@@ -834,6 +849,22 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(snapshot.execute_sql(
             sql, params=params, param_types=param_types))
         self._check_row_data(rows, expected=expected)
+
+    def test_multiuse_snapshot_execute_sql_isolation_strong(self):
+        ROW_COUNT = 40
+        SQL = 'SELECT * FROM {}'.format(self.TABLE)
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        strong = session.snapshot(multi_use=True)
+
+        before = list(strong.execute_sql(SQL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(strong.execute_sql(SQL))
+        self._check_row_data(after, all_data_rows)
 
     def test_execute_sql_returning_array_of_struct(self):
         SQL = (
