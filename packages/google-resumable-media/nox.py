@@ -124,8 +124,12 @@ def system_tests(session, python_version):
     for env_var in SYSTEM_TEST_ENV_VARS:
         if env_var not in os.environ:
             missing.append(env_var)
+
+    # Only run system tests if the environment variables are set.
     if missing:
-        raise ValueError('Environment variable(s) unset', *missing)
+        all_vars = ', '.join(missing)
+        msg = 'Environment variable(s) unset: {}'.format(all_vars)
+        session.skip(msg)
 
     # Run the system tests against latest Python 2 and Python 3 only.
     session.interpreter = 'python{}'.format(python_version)
