@@ -132,7 +132,7 @@ def test_unexpected_result():
 
     exception = future.exception()
 
-    assert 'Unknown operation error' in '{!r}'.format(exception)
+    assert 'Unexpected state' in '{!r}'.format(exception)
 
 
 def test__refresh_http():

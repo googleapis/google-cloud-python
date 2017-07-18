@@ -27,23 +27,23 @@ from google.cloud.future import base
 
 
 class Operation(base.PollingFuture):
-    """A Future for interacting with a Google API Long-Running Operation."""
+    """A Future for interacting with a Google API Long-Running Operation.
+
+    Args:
+        operation (google.longrunning.operations_pb2.Operation): The
+            initial operation.
+        refresh (Callable[[], Operation]): A callable that returns the
+            latest state of the operation.
+        cancel (Callable[[], None]), A callable that tries to cancel
+            the operation.
+        result_type (type): The protobuf type for the operation's result.
+        metadata_type (type): The protobuf type for the operation's
+            metadata.
+    """
 
     def __init__(
             self, operation, refresh, cancel,
             result_type, metadata_type=None):
-        """
-        Args:
-            operation (google.longrunning.operations_pb2.Operation): The
-                initial operation.
-            refresh (Callable[[], Operation]): A callable that returns the
-                latest state of the operation.
-            cancel (Callable[[], None]), A callable that tries to cancel
-                the operation.
-            result_type (type): The protobuf type for the operation's result.
-            metadata_type (type): The protobuf type for the operation's
-                metadata.
-        """
         super(Operation, self).__init__()
         self._operation = operation
         self._refresh = refresh
@@ -56,8 +56,7 @@ class Operation(base.PollingFuture):
 
     @property
     def operation(self):
-        """google.longrunning.Operation: The current long-running operation
-        message."""
+        """google.longrunning.Operation: The current long-running operation."""
         return self._operation
 
     @property
@@ -70,8 +69,7 @@ class Operation(base.PollingFuture):
             self._metadata_type, self._operation.metadata)
 
     def _set_result_from_operation(self):
-        """Set the result or exception from the current Operation message,
-        if it is complete."""
+        """Set the result or exception from the operation if it is complete."""
         # This must be done in a lock to prevent the polling thread
         # and main thread from both executing the completion logic
         # at the same time.
@@ -94,7 +92,8 @@ class Operation(base.PollingFuture):
                 self.set_exception(exception)
             else:
                 exception = exceptions.GoogleCloudError(
-                    'Unknown operation error')
+                    'Unexpected state: Long-running operation had neither '
+                    'response nor error set.')
                 self.set_exception(exception)
 
     def _refresh_and_update(self):
@@ -105,16 +104,14 @@ class Operation(base.PollingFuture):
             self._operation = self._refresh()
             self._set_result_from_operation()
 
-        return self._operation
-
     def done(self):
         """Checks to see if the operation is complete.
 
         Returns:
             bool: True if the operation is complete, False otherwise.
         """
-        operation = self._refresh_and_update()
-        return operation.done
+        self._refresh_and_update()
+        return self._operation.done
 
     def cancel(self):
         """Attempt to cancel the operation.
@@ -131,9 +128,9 @@ class Operation(base.PollingFuture):
 
     def cancelled(self):
         """True if the operation was cancelled."""
-        operation = self._refresh_and_update()
-        return (operation.HasField('error') and
-                operation.error.code == code_pb2.CANCELLED)
+        self._refresh_and_update()
+        return (self._operation.HasField('error') and
+                self._operation.error.code == code_pb2.CANCELLED)
 
 
 def _refresh_http(api_request, operation_name):
@@ -141,7 +138,7 @@ def _refresh_http(api_request, operation_name):
 
     Args:
         api_request (Callable): A callable used to make an API request. This
-            should generally be an instance of
+            should generally be
             :meth:`google.cloud._http.Connection.api_request`.
         operation_name (str): The name of the operation.
 
@@ -159,7 +156,7 @@ def _cancel_http(api_request, operation_name):
 
     Args:
         api_request (Callable): A callable used to make an API request. This
-            should generally be an instance of
+            should generally be
             :meth:`google.cloud._http.Connection.api_request`.
         operation_name (str): The name of the operation.
     """
@@ -174,12 +171,12 @@ def from_http_json(operation, api_request, result_type, **kwargs):
     to a given API) vis `HTTP/JSON`_.
 
     .. _HTTP/JSON: https://cloud.google.com/speech/reference/rest/\
-              v1beta1/operations#Operation
+            v1beta1/operations#Operation
 
     Args:
         operation (dict): Operation as a dictionary.
         api_request (Callable): A callable used to make an API request. This
-            should generally be an instance of
+            should generally be
             :meth:`google.cloud._http.Connection.api_request`.
         result_type (type): The protobuf result type.
         kwargs: Keyword args passed into the :class:`Operation` constructor.

@@ -16,6 +16,8 @@
 
 import abc
 import concurrent.futures
+import functools
+import operator
 
 import six
 import tenacity
@@ -115,16 +117,20 @@ class PollingFuture(Future):
         if self._result_set:
             return
 
-        retry_on = tenacity.retry_if_result(lambda result: result is not True)
-        wait_on = tenacity.wait_exponential(multiplier=1, max=10)
+        retry_on = tenacity.retry_if_result(
+            functools.partial(operator.is_not, True))
+        # Use exponential backoff with jitter.
+        wait_on = (
+            tenacity.wait_exponential(multiplier=1, max=10) +
+            tenacity.wait_random(0, 1))
 
-        if timeout is not None:
+        if timeout is None:
+            retry = tenacity.retry(retry=retry_on, wait=wait_on)
+        else:
             retry = tenacity.retry(
                 retry=retry_on,
                 wait=wait_on,
                 stop=tenacity.stop_after_delay(timeout))
-        else:
-            retry = tenacity.retry(retry=retry_on, wait=wait_on)
 
         try:
             retry(self.done)()
