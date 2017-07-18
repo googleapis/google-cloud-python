@@ -954,7 +954,8 @@ class Test_Blob(unittest.TestCase):
             resumable_media.PERMANENT_REDIRECT, headers2)
         json_body = '{{"size": "{:d}"}}'.format(total_bytes)
         fake_response3 = self._mock_requests_response(
-            http_client.OK, headers3, content=json_body)
+            http_client.OK, headers3,
+            content=json_body.encode('utf-8'))
 
         responses = [fake_response1, fake_response2, fake_response3]
         fake_transport.request.side_effect = responses
@@ -1161,7 +1162,7 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = u'Someone is already in this spot.'
+        message = b'Someone is already in this spot.'
         response = mock.Mock(
             content=message, status_code=http_client.CONFLICT,
             spec=[u'content', u'status_code'])
@@ -1170,7 +1171,7 @@ class Test_Blob(unittest.TestCase):
         with self.assertRaises(exceptions.Conflict) as exc_info:
             self._upload_from_file_helper(side_effect=side_effect)
 
-        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
         self.assertEqual(exc_info.exception.errors, [])
 
     def _do_upload_mock_call_helper(self, blob, client, content_type, size):
@@ -1307,7 +1308,7 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = u'5-oh-3 woe is me.'
+        message = b'5-oh-3 woe is me.'
         response = mock.Mock(
             content=message, status_code=http_client.SERVICE_UNAVAILABLE,
             spec=[u'content', u'status_code'])
@@ -1317,7 +1318,7 @@ class Test_Blob(unittest.TestCase):
             self._create_resumable_upload_session_helper(
                 side_effect=side_effect)
 
-        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_get_iam_policy(self):
@@ -2238,17 +2239,18 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         return exc_info
 
     def test_default(self):
-        message = u'Failure'
+        message = b'Failure'
         exc_info = self._helper(message)
-        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_with_error_info(self):
-        message = u'Eeek bad.'
+        message = b'Eeek bad.'
         error_info = 'http://test.invalid'
         exc_info = self._helper(message, error_info=error_info)
 
-        full_message = u'{} ({})'.format(message, error_info)
+        message_str = message.decode('utf-8')
+        full_message = u'{} ({})'.format(message_str, error_info)
         self.assertEqual(exc_info.exception.message, full_message)
         self.assertEqual(exc_info.exception.errors, [])
 
