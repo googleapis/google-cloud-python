@@ -125,6 +125,9 @@ def test_callback_background_thread():
     future.add_done_callback(callback)
 
     assert future._polling_thread is not None
+
+    # Give the thread a second to poll
+    time.sleep(1)
     assert future.poll_count == 1
 
     future.event.set()
