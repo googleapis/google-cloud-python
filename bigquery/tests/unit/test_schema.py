@@ -74,6 +74,16 @@ class TestSchemaField(unittest.TestCase):
         schema_field = self._make_one('again', 'FLOAT', mode=mode)
         self.assertIs(schema_field.mode, mode)
 
+    def test_is_nullable(self):
+        mode = 'NULLABLE'
+        schema_field = self._make_one('test', 'FLOAT', mode=mode)
+        self.assertTrue(schema_field.is_nullable)
+
+    def test_is_not_nullable(self):
+        mode = 'REPEATED'
+        schema_field = self._make_one('test', 'FLOAT', mode=mode)
+        self.assertFalse(schema_field.is_nullable)
+
     def test_description_property(self):
         description = 'It holds some data.'
         schema_field = self._make_one(
