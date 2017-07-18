@@ -33,7 +33,7 @@ from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _validate_name
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
-from google.cloud.storage.blob import Blob
+from google.cloud.storage.blob import Blob, _get_encryption_headers
 
 
 def _blobs_page_start(iterator, page, response):
@@ -228,7 +228,7 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, client=None, **kwargs):
+    def get_blob(self, blob_name, client=None, encryption_key=None, **kwargs):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist:
@@ -245,6 +245,12 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type encryption_key: bytes
+        :param encryption_key:
+            Optional 32 byte encryption key for customer-supplied encryption.
+            See
+            https://cloud.google.com/storage/docs/encryption#customer-supplied.
+
         :type kwargs: dict
         :param kwargs: Keyword arguments to pass to the
                        :class:`~google.cloud.storage.blob.Blob` constructor.
@@ -253,10 +259,14 @@ class Bucket(_PropertyMixin):
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
-        blob = Blob(bucket=self, name=blob_name, **kwargs)
+        blob = Blob(bucket=self, name=blob_name, encryption_key=encryption_key,
+                    **kwargs)
         try:
+            headers = _get_encryption_headers(encryption_key)
             response = client._connection.api_request(
-                method='GET', path=blob.path, _target_object=blob)
+                method='GET', path=blob.path, _target_object=blob,
+                headers=headers
+            )
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
