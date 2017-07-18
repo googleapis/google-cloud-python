@@ -173,8 +173,6 @@ class Batch(base.BaseBatch):
             self.messages,
         )
 
-        # FIXME (lukesneeringer): Check for failures; retry.
-
         # We got a response from Pub/Sub; denote that we are processing.
         self._status = 'processing results'
 

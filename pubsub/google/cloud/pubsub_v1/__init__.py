@@ -15,8 +15,8 @@
 from __future__ import absolute_import
 
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher import PublisherClient
-from google.cloud.pubsub_v1.subscriber import SubscriberClient
+from google.cloud.pubsub_v1.publisher import Client as PublisherClient
+from google.cloud.pubsub_v1.subscriber import Client as SubscriberClient
 
 __all__ = (
     'PublisherClient',

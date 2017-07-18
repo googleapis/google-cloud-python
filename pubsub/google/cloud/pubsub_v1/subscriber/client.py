@@ -27,7 +27,7 @@ __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 @_gapic.add_methods(subscriber_client.SubscriberClient,
                     blacklist=('pull', 'streaming_pull'))
-class SubscriberClient(object):
+class Client(object):
     """A subscriber client for Google Cloud Pub/Sub.
 
     This creates an object that is capable of subscribing to messages.

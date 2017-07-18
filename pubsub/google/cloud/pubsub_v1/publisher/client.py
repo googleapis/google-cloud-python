@@ -31,7 +31,7 @@ __VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 
 @_gapic.add_methods(publisher_client.PublisherClient, blacklist=('publish',))
-class PublisherClient(object):
+class Client(object):
     """A publisher client for Google Cloud Pub/Sub.
 
     This creates an object that is capable of publishing messages.
@@ -70,7 +70,7 @@ class PublisherClient(object):
         self._rejection = base.RejectionBatch()
 
     def batch(self, topic, message, create=True, autocommit=True):
-        """Return the current batch.
+        """Return the current batch for the provided topic.
 
         This will create a new batch only if no batch currently exists.
 
@@ -84,7 +84,7 @@ class PublisherClient(object):
                 This is primarily useful for debugging.
 
         Returns:
-            :class:~`pubsub_v1.batch.Batch` The batch object.
+            ~.pubsub_v1.batch.Batch: The batch object.
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
@@ -136,7 +136,7 @@ class PublisherClient(object):
                 sent as metadata. (These may be text strings or byte strings.)
 
         Returns:
-            :class:`~.pubsub_v1.publisher.futures.Future`: An object conforming
+            ~.pubsub_v1.publisher.futures.Future: An object conforming
                 to the ``concurrent.futures.Future`` interface.
         """
         # Sanity check: Is the data being sent as a bytestring?
