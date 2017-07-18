@@ -66,6 +66,11 @@ class SchemaField(object):
         return self._mode
 
     @property
+    def is_nullable(self):
+        """Check whether 'mode' is 'nullable'."""
+        return self._mode == 'NULLABLE'
+
+    @property
     def description(self):
         """Optional[str]: Description for the field."""
         return self._description
