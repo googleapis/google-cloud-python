@@ -32,7 +32,7 @@ setuptools.setup(
     version='0.2.0',
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
-    author_email='jjg+google-cloud-python@google.com',
+    author_email='googleapis-publisher@google.com',
     long_description=README,
     namespace_packages=['google'],
     scripts=[],
