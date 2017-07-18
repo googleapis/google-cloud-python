@@ -76,7 +76,7 @@ class Cursor(object):
                 internal_size=None,
                 precision=None,
                 scale=None,
-                null_ok=field.mode == 'NULLABLE')
+                null_ok=field.is_nullable)
             for field in schema])
 
     def _set_rowcount(self, query_results):
