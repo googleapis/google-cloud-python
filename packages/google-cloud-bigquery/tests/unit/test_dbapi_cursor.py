@@ -90,7 +90,7 @@ class TestCursor(unittest.TestCase):
         cursor = connection.cursor()
         cursor.execute('SELECT 1;')
         row = cursor.fetchone()
-        self.assertEquals(row, (1,))
+        self.assertEqual(row, (1,))
         self.assertIsNone(cursor.fetchone())
 
     def test_fetchmany_wo_execute_raises_error(self):
@@ -106,8 +106,8 @@ class TestCursor(unittest.TestCase):
         cursor = connection.cursor()
         cursor.execute('SELECT 1;')
         rows = cursor.fetchmany()
-        self.assertEquals(len(rows), 1)
-        self.assertEquals(rows[0], (1,))
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0], (1,))
 
     def test_fetchmany_w_size(self):
         from google.cloud.bigquery import dbapi
@@ -121,14 +121,14 @@ class TestCursor(unittest.TestCase):
         cursor = connection.cursor()
         cursor.execute('SELECT a, b, c;')
         rows = cursor.fetchmany(size=2)
-        self.assertEquals(len(rows), 2)
-        self.assertEquals(rows[0], (1, 2, 3))
-        self.assertEquals(rows[1], (4, 5, 6))
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0], (1, 2, 3))
+        self.assertEqual(rows[1], (4, 5, 6))
         second_page = cursor.fetchmany(size=2)
-        self.assertEquals(len(second_page), 1)
-        self.assertEquals(second_page[0], (7, 8, 9))
+        self.assertEqual(len(second_page), 1)
+        self.assertEqual(second_page[0], (7, 8, 9))
         third_page = cursor.fetchmany(size=2)
-        self.assertEquals(third_page, [])
+        self.assertEqual(third_page, [])
 
     def test_fetchmany_w_arraysize(self):
         from google.cloud.bigquery import dbapi
@@ -143,14 +143,14 @@ class TestCursor(unittest.TestCase):
         cursor.arraysize = 2
         cursor.execute('SELECT a, b, c;')
         rows = cursor.fetchmany()
-        self.assertEquals(len(rows), 2)
-        self.assertEquals(rows[0], (1, 2, 3))
-        self.assertEquals(rows[1], (4, 5, 6))
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0], (1, 2, 3))
+        self.assertEqual(rows[1], (4, 5, 6))
         second_page = cursor.fetchmany()
-        self.assertEquals(len(second_page), 1)
-        self.assertEquals(second_page[0], (7, 8, 9))
+        self.assertEqual(len(second_page), 1)
+        self.assertEqual(second_page[0], (7, 8, 9))
         third_page = cursor.fetchmany()
-        self.assertEquals(third_page, [])
+        self.assertEqual(third_page, [])
 
     def test_fetchall_wo_execute_raises_error(self):
         from google.cloud.bigquery import dbapi
@@ -165,10 +165,10 @@ class TestCursor(unittest.TestCase):
         cursor = connection.cursor()
         cursor.execute('SELECT 1;')
         self.assertIsNone(cursor.description)
-        self.assertEquals(cursor.rowcount, 1)
+        self.assertEqual(cursor.rowcount, 1)
         rows = cursor.fetchall()
-        self.assertEquals(len(rows), 1)
-        self.assertEquals(rows[0], (1,))
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0], (1,))
 
     def test_execute_w_dml(self):
         from google.cloud.bigquery.dbapi import connect
@@ -177,7 +177,7 @@ class TestCursor(unittest.TestCase):
         cursor = connection.cursor()
         cursor.execute('DELETE FROM UserSessions WHERE user_id = \'test\';')
         self.assertIsNone(cursor.description)
-        self.assertEquals(cursor.rowcount, 12)
+        self.assertEqual(cursor.rowcount, 12)
 
     def test_execute_w_query(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -193,29 +193,29 @@ class TestCursor(unittest.TestCase):
         cursor.execute('SELECT a, b, c FROM hello_world WHERE d > 3;')
 
         # Verify the description.
-        self.assertEquals(len(cursor.description), 3)
+        self.assertEqual(len(cursor.description), 3)
         a_name, a_type, _, _, _, _, a_null_ok = cursor.description[0]
-        self.assertEquals(a_name, 'a')
-        self.assertEquals(a_type, 'STRING')
-        self.assertEquals(a_type, dbapi.STRING)
+        self.assertEqual(a_name, 'a')
+        self.assertEqual(a_type, 'STRING')
+        self.assertEqual(a_type, dbapi.STRING)
         self.assertTrue(a_null_ok)
         b_name, b_type, _, _, _, _, b_null_ok = cursor.description[1]
-        self.assertEquals(b_name, 'b')
-        self.assertEquals(b_type, 'STRING')
-        self.assertEquals(b_type, dbapi.STRING)
+        self.assertEqual(b_name, 'b')
+        self.assertEqual(b_type, 'STRING')
+        self.assertEqual(b_type, dbapi.STRING)
         self.assertFalse(b_null_ok)
         c_name, c_type, _, _, _, _, c_null_ok = cursor.description[2]
-        self.assertEquals(c_name, 'c')
-        self.assertEquals(c_type, 'INTEGER')
-        self.assertEquals(c_type, dbapi.NUMBER)
+        self.assertEqual(c_name, 'c')
+        self.assertEqual(c_type, 'INTEGER')
+        self.assertEqual(c_type, dbapi.NUMBER)
         self.assertTrue(c_null_ok)
 
         # Verify the results.
-        self.assertEquals(cursor.rowcount, 2)
+        self.assertEqual(cursor.rowcount, 2)
         row = cursor.fetchone()
-        self.assertEquals(row, ('hello', 'world', 1))
+        self.assertEqual(row, ('hello', 'world', 1))
         row = cursor.fetchone()
-        self.assertEquals(row, ('howdy', 'y\'all', 2))
+        self.assertEqual(row, ('howdy', 'y\'all', 2))
         row = cursor.fetchone()
         self.assertIsNone(row)
 
@@ -228,7 +228,7 @@ class TestCursor(unittest.TestCase):
             'DELETE FROM UserSessions WHERE user_id = %s;',
             (('test',), ('anothertest',)))
         self.assertIsNone(cursor.description)
-        self.assertEquals(cursor.rowcount, 12)
+        self.assertEqual(cursor.rowcount, 12)
 
     def test__format_operation_w_dict(self):
         from google.cloud.bigquery.dbapi import cursor
@@ -238,7 +238,7 @@ class TestCursor(unittest.TestCase):
                 'somevalue': 'hi',
                 'a `weird` one': 'world',
             })
-        self.assertEquals(
+        self.assertEqual(
             formatted_operation, 'SELECT @`somevalue`, @`a \\`weird\\` one`;')
 
     def test__format_operation_w_wrong_dict(self):
@@ -257,7 +257,7 @@ class TestCursor(unittest.TestCase):
         from google.cloud.bigquery.dbapi import cursor
         formatted_operation = cursor._format_operation(
             'SELECT %s, %s;', ('hello', 'world'))
-        self.assertEquals(formatted_operation, 'SELECT ?, ?;')
+        self.assertEqual(formatted_operation, 'SELECT ?, ?;')
 
     def test__format_operation_w_too_short_sequence(self):
         from google.cloud.bigquery import dbapi
