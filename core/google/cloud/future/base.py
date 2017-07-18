@@ -76,9 +76,8 @@ class Future(object):
 class PollingFuture(Future):
     """A Future that needs to poll some service to check its status.
 
-    The private :meth:`done` method should be implemented by
-    subclasses. The polling behavior will repeatedly call ``done`` until it
-    returns True.
+    The :meth:`done` method should be implemented by subclasses. The polling
+    behavior will repeatedly call ``done`` until it returns True.
 
     .. note: Privacy here is intended to prevent the final class from
     overexposing, not to prevent subclasses from accessing methods.
