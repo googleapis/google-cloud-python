@@ -1015,7 +1015,7 @@ class Bucket(_PropertyMixin):
         credentials = client._base_connection.credentials
 
         if not isinstance(credentials, google.auth.credentials.Signing):
-            auth_uri = ('http://google-cloud-python.readthedocs.io/en/latest/'
+            auth_uri = ('https://google-cloud-python.readthedocs.io/en/latest/'
                         'core/auth.html?highlight=authentication#setting-up-'
                         'a-service-account')
             raise AttributeError(
