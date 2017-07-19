@@ -17,6 +17,7 @@ import math
 import operator
 import os
 import struct
+import threading
 import unittest
 
 from google.cloud.proto.spanner.v1.type_pb2 import ARRAY
@@ -543,8 +544,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(rows)
 
     def _transaction_concurrency_helper(self, unit_of_work, pkey):
-        import threading
         INITIAL_VALUE = 123
+        NUM_THREADS = 3     # conforms to equivalent Java systest.
 
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -561,10 +562,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         # We don't want to run the threads' transactions in the current
         # session, which would fail.
-        txn_sessions = [
-            self._db.session(), self._db.session(), self._db.session()]
+        txn_sessions = []
 
-        for txn_session in txn_sessions:
+        for _ in range(NUM_THREADS):
+            txn_session = self._db.session()
+            txn_sessions.append(txn_session)
             txn_session.create()
             self.to_delete.append(txn_session)
 
@@ -594,9 +596,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(len(rows), 1)
         pkey, value = rows[0]
         transaction.update(
-                self.COUNTERS_TABLE,
-                self.COUNTERS_COLUMNS,
-                [[pkey, value + 1]])
+            self.COUNTERS_TABLE,
+            self.COUNTERS_COLUMNS,
+            [[pkey, value + 1]])
 
     def test_transaction_read_w_concurrent_updates(self):
         PKEY = 'read_w_concurrent_updates'
