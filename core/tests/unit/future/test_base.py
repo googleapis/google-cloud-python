@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import concurrent.futures
 import threading
+import time
 
 import mock
 import pytest
@@ -21,16 +23,13 @@ from google.cloud.future import base
 
 
 class PollingFutureImpl(base.PollingFuture):
-    def _blocking_poll(self, timeout=None):  # pragma: NO COVER
-        pass
+    def done(self):
+        return False
 
     def cancel(self):
         return True
 
     def cancelled(self):
-        return False
-
-    def done(self):
         return False
 
     def running(self):
@@ -87,13 +86,11 @@ class PollingFutureImplWithPoll(PollingFutureImpl):
         self.poll_count = 0
         self.event = threading.Event()
 
-    def _blocking_poll(self, timeout=None):
-        if self._result_set:
-            return
-
+    def done(self):
         self.poll_count += 1
         self.event.wait()
         self.set_result(42)
+        return True
 
 
 def test_result_with_polling():
@@ -109,6 +106,18 @@ def test_result_with_polling():
     assert future.poll_count == 1
 
 
+class PollingFutureImplTimeout(PollingFutureImplWithPoll):
+    def done(self):
+        time.sleep(1)
+        return False
+
+
+def test_result_timeout():
+    future = PollingFutureImplTimeout()
+    with pytest.raises(concurrent.futures.TimeoutError):
+        future.result(timeout=1)
+
+
 def test_callback_background_thread():
     future = PollingFutureImplWithPoll()
     callback = mock.Mock()
@@ -116,6 +125,9 @@ def test_callback_background_thread():
     future.add_done_callback(callback)
 
     assert future._polling_thread is not None
+
+    # Give the thread a second to poll
+    time.sleep(1)
     assert future.poll_count == 1
 
     future.event.set()
