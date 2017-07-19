@@ -17,12 +17,15 @@ import pytest
 import google.auth
 from google.auth import _helpers
 from google.auth import compute_engine
+from google.auth import exceptions
 from google.auth.compute_engine import _metadata
 
 
 @pytest.fixture(autouse=True)
 def check_gce_environment(http_request):
-    if not _metadata.ping(http_request, timeout=1):
+    try:
+        _metadata.get_service_account_info(http_request)
+    except exceptions.TransportError:
         pytest.skip('Compute Engine metadata service is not available.')
 
 
