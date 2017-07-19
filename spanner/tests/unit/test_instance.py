@@ -78,10 +78,10 @@ class TestInstance(unittest.TestCase):
         new_instance = instance.copy()
 
         # Make sure the client copy succeeded.
-        self.assertFalse(new_instance._client is client)
+        self.assertIsNot(new_instance._client, client)
         self.assertEqual(new_instance._client, client)
         # Make sure the client got copied to a new instance.
-        self.assertFalse(instance is new_instance)
+        self.assertIsNot(instance, new_instance)
         self.assertEqual(instance, new_instance)
 
     def test__update_from_pb_success(self):
