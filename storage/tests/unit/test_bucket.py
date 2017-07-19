@@ -246,6 +246,8 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
     def test_get_blob_hit_with_kwargs(self):
+        from google.cloud.storage.blob import _get_encryption_headers
+
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         CHUNK_SIZE = 1024 * 1024
@@ -262,6 +264,7 @@ class Test_Bucket(unittest.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+        self.assertEqual(kw['headers'], _get_encryption_headers(KEY))
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
         self.assertEqual(blob._encryption_key, KEY)
 
