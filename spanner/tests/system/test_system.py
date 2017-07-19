@@ -488,13 +488,16 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
+    def _transaction_read_then_raise(self, transaction):
+        rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+        self.assertEqual(len(rows), 0)
+        transaction.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
+        raise TestException()
+
     @RetryErrors(exception=GrpcRendezvous)
     def test_transaction_read_and_insert_then_execption(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
-
-        class TestException(Exception):
-            pass
 
         session = self._db.session()
         session.create()
@@ -503,15 +506,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         with session.batch() as batch:
             batch.delete(self.TABLE, self.ALL)
 
-        def _unit_of_work(transaction):
-            rows = list(transaction.read(
-                self.TABLE, self.COLUMNS, self.ALL))
-            assert len(rows) == 0
-            transaction.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
-            raise TestException()
-
         with self.assertRaises(TestException):
-            session.run_in_transaction(_unit_of_work)
+            session.run_in_transaction(self._transaction_read_then_raise)
 
         # Transaction was rolled back.
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
@@ -1024,6 +1020,10 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
     def test_four_meg(self):
         from tests.system.utils.streaming_utils import FOUR_MEG
         self._verify_two_columns(FOUR_MEG)
+
+
+class TestException(Exception):
+    """Placeholder for any user-defined exception."""
 
 
 class _DatabaseDropper(object):
