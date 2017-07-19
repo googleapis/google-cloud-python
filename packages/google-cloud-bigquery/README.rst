@@ -26,7 +26,7 @@ possible. Check out the `Authentication section`_ in our documentation to
 learn more. You may also find the `authentication document`_ shared by all
 the ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Using the API
@@ -86,7 +86,7 @@ Perform a synchronous query
 See the ``google-cloud-python`` API `BigQuery documentation`_ to learn how
 to connect to BigQuery using this Client Library.
 
-.. _BigQuery documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery-usage.html
+.. _BigQuery documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery/usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery.svg
    :target: https://pypi.python.org/pypi/google-cloud-bigquery
