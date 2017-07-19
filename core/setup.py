@@ -57,6 +57,7 @@ REQUIREMENTS = [
     'google-auth >= 0.4.0, < 2.0.0dev',
     'google-auth-httplib2',
     'six',
+    'tenacity >= 4.0.0, <5.0.0dev'
 ]
 
 setup(
