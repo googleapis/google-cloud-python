@@ -15,8 +15,12 @@
 """Abstract and helper bases for Future implementations."""
 
 import abc
+import concurrent.futures
+import functools
+import operator
 
 import six
+import tenacity
 
 from google.cloud.future import _helpers
 
@@ -72,8 +76,8 @@ class Future(object):
 class PollingFuture(Future):
     """A Future that needs to poll some service to check its status.
 
-    The private :meth:`_blocking_poll` method should be implemented by
-    subclasses.
+    The :meth:`done` method should be implemented by subclasses. The polling
+    behavior will repeatedly call ``done`` until it returns True.
 
     .. note: Privacy here is intended to prevent the final class from
     overexposing, not to prevent subclasses from accessing methods.
@@ -89,6 +93,19 @@ class PollingFuture(Future):
         self._done_callbacks = []
 
     @abc.abstractmethod
+    def done(self):
+        """Checks to see if the operation is complete.
+
+        Returns:
+            bool: True if the operation is complete, False otherwise.
+        """
+        # pylint: disable=redundant-returns-doc, missing-raises-doc
+        raise NotImplementedError()
+
+    def running(self):
+        """True if the operation is currently running."""
+        return not self.done()
+
     def _blocking_poll(self, timeout=None):
         """Poll and wait for the Future to be resolved.
 
@@ -96,8 +113,32 @@ class PollingFuture(Future):
             timeout (int): How long to wait for the operation to complete.
                 If None, wait indefinitely.
         """
-        # pylint: disable=missing-raises
-        raise NotImplementedError()
+        if self._result_set:
+            return
+
+        retry_on = tenacity.retry_if_result(
+            functools.partial(operator.is_not, True))
+        # Use exponential backoff with jitter.
+        wait_on = (
+            tenacity.wait_exponential(multiplier=1, max=10) +
+            tenacity.wait_random(0, 1))
+
+        if timeout is None:
+            retry = tenacity.retry(retry=retry_on, wait=wait_on)
+        else:
+            retry = tenacity.retry(
+                retry=retry_on,
+                wait=wait_on,
+                stop=tenacity.stop_after_delay(timeout))
+
+        try:
+            retry(self.done)()
+        except tenacity.RetryError as exc:
+            six.raise_from(
+                concurrent.futures.TimeoutError(
+                    'Operation did not complete within the designated '
+                    'timeout.'),
+                exc)
 
     def result(self, timeout=None):
         """Get the result of the operation, blocking if necessary.
@@ -113,7 +154,7 @@ class PollingFuture(Future):
             google.gax.GaxError: If the operation errors or if the timeout is
                 reached before the operation completes.
         """
-        self._blocking_poll()
+        self._blocking_poll(timeout=timeout)
 
         if self._exception is not None:
             # pylint: disable=raising-bad-type
