@@ -86,7 +86,7 @@ Perform a synchronous query
 See the ``google-cloud-python`` API `BigQuery documentation`_ to learn how
 to connect to BigQuery using this Client Library.
 
-.. _BigQuery documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery-usage.html
+.. _BigQuery documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery/usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery.svg
    :target: https://pypi.python.org/pypi/google-cloud-bigquery

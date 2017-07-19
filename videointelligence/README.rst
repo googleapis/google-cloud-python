@@ -7,10 +7,6 @@ Python Client for Google Cloud Video Intelligence
 
 |pypi| |versions|
 
--  `Documentation`_
-
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/video-intelligence-usage.html
-
 Quick Start
 -----------
 
