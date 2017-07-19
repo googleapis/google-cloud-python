@@ -18,6 +18,7 @@ import operator
 import os
 import struct
 import threading
+import time
 import unittest
 
 from google.cloud.proto.spanner.v1.type_pb2 import ARRAY
@@ -717,15 +718,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(after, all_data_rows)
 
     def test_multiuse_snapshot_read_isolation_exact_staleness(self):
-        import time
-        from datetime import timedelta
         ROW_COUNT = 40
 
         session, committed = self._set_up_table(ROW_COUNT)
         all_data_rows = list(self._row_data(ROW_COUNT))
 
         time.sleep(1)
-        delta = timedelta(microseconds=1000)
+        delta = datetime.timedelta(microseconds=1000)
 
         exact = session.snapshot(exact_staleness=delta, multi_use=True)
 
