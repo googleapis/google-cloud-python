@@ -113,7 +113,7 @@ class Blob(_PropertyMixin):
     :type encryption_key: bytes
     :param encryption_key:
         Optional 32 byte encryption key for customer-supplied encryption.
-        See https://cloud.google.com/storage/docs/encryption#customer-supplied
+        See https://cloud.google.com/storage/docs/encryption#customer-supplied.
     """
 
     _chunk_size = None  # Default value for each instance.
