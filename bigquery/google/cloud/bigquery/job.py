@@ -427,7 +427,7 @@ class _AsyncJob(_BaseJob):
     def result(self, timeout=None):
         if self.state is None:
             self.begin()
-        return super(self, _AsyncJob).result(timeout=timeout)
+        return super(_AsyncJob, self).result(timeout=timeout)
 
     def cancelled(self):
         return False
