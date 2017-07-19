@@ -9,7 +9,7 @@ Python Client for Google Cloud Speech
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech-usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
 
 Quick Start
 -----------
