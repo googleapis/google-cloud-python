@@ -701,6 +701,43 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         after = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(after, all_data_rows)
 
+    def test_multiuse_snapshot_read_isolation_read_timestamp(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        read_ts = session.snapshot(read_timestamp=committed, multi_use=True)
+
+        before = list(read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
+
+    def test_multiuse_snapshot_read_isolation_exact_staleness(self):
+        import time
+        from datetime import timedelta
+        ROW_COUNT = 40
+
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+
+        time.sleep(1)
+        delta = timedelta(microseconds=1000)
+
+        exact = session.snapshot(exact_staleness=delta, multi_use=True)
+
+        before = list(exact.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(exact.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
+
     def test_read_w_manual_consume(self):
         ROW_COUNT = 4000
         session, committed = self._set_up_table(ROW_COUNT)
