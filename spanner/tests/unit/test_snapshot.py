@@ -66,7 +66,7 @@ class Test_SnapshotBase(unittest.TestCase):
     def test_ctor(self):
         session = _Session()
         base = self._make_one(session)
-        self.assertTrue(base._session is session)
+        self.assertIs(base._session, session)
 
     def test__make_txn_selector_virtual(self):
         session = _Session()
@@ -320,7 +320,7 @@ class TestSnapshot(unittest.TestCase):
     def test_ctor_defaults(self):
         session = _Session()
         snapshot = self._make_one(session)
-        self.assertTrue(snapshot._session is session)
+        self.assertIs(snapshot._session, session)
         self.assertTrue(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
         self.assertIsNone(snapshot._min_read_timestamp)
@@ -340,7 +340,7 @@ class TestSnapshot(unittest.TestCase):
         timestamp = self._makeTimestamp()
         session = _Session()
         snapshot = self._make_one(session, read_timestamp=timestamp)
-        self.assertTrue(snapshot._session is session)
+        self.assertIs(snapshot._session, session)
         self.assertFalse(snapshot._strong)
         self.assertEqual(snapshot._read_timestamp, timestamp)
         self.assertIsNone(snapshot._min_read_timestamp)
@@ -351,7 +351,7 @@ class TestSnapshot(unittest.TestCase):
         timestamp = self._makeTimestamp()
         session = _Session()
         snapshot = self._make_one(session, min_read_timestamp=timestamp)
-        self.assertTrue(snapshot._session is session)
+        self.assertIs(snapshot._session, session)
         self.assertFalse(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
         self.assertEqual(snapshot._min_read_timestamp, timestamp)
@@ -362,7 +362,7 @@ class TestSnapshot(unittest.TestCase):
         duration = self._makeDuration()
         session = _Session()
         snapshot = self._make_one(session, max_staleness=duration)
-        self.assertTrue(snapshot._session is session)
+        self.assertIs(snapshot._session, session)
         self.assertFalse(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
         self.assertIsNone(snapshot._min_read_timestamp)
@@ -373,7 +373,7 @@ class TestSnapshot(unittest.TestCase):
         duration = self._makeDuration()
         session = _Session()
         snapshot = self._make_one(session, exact_staleness=duration)
-        self.assertTrue(snapshot._session is session)
+        self.assertIs(snapshot._session, session)
         self.assertFalse(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
         self.assertIsNone(snapshot._min_read_timestamp)
