@@ -3,7 +3,7 @@ Python Client for Cloud Spanner
 
     Python idiomatic client for `Cloud Spanner`_.
 
-.. _Cloud Spanner: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner-usage.html
+.. _Cloud Spanner: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/usage.html
 
 
 Quick Start
