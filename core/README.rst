@@ -9,7 +9,7 @@ used by all of the ``google-cloud-*``.
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/google-cloud-api.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/core/modules.html
 
 Quick Start
 -----------
