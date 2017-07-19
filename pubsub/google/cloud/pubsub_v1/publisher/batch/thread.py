@@ -60,16 +60,15 @@ class Batch(base.BaseBatch):
     def __init__(self, client, topic, settings, autocommit=True):
         self._client = client
 
-        # Create a namespace that is owned by the client manager; this
-        # is necessary to be able to have these values be communicable between
-        # processes.
+        # These objects are all communicated between threads; ensure that
+        # any writes to them are atomic.
         self._futures = []
         self._messages = []
         self._size = 0
-        self._message_ids = {}
         self._settings = settings
         self._status = self.Status.ACCEPTING_MESSAGES
         self._topic = topic
+        self.message_ids = {}
 
         # This is purely internal tracking.
         self._thread = None
@@ -167,8 +166,8 @@ class Batch(base.BaseBatch):
 
         # Begin the request to publish these messages.
         if len(self._messages) == 0:
-            raise Exception('Empty queue')
-        response = self._client.api.publish(
+            return
+        response = self.client.api.publish(
             self._topic,
             self.messages,
         )
@@ -188,7 +187,7 @@ class Batch(base.BaseBatch):
         # if not.
         self._status = self.Status.SUCCESS
         for message_id, fut in zip(response.message_ids, self._futures):
-            self._message_ids[hash(fut)] = message_id
+            self.message_ids[hash(fut)] = message_id
             fut._trigger()
 
     def monitor(self):
@@ -229,7 +228,7 @@ class Batch(base.BaseBatch):
         """
         # Coerce the type, just in case.
         if not isinstance(message, types.PubsubMessage):
-            message = types.PubsubMessage(message)
+            message = types.PubsubMessage(**message)
 
         # Add the size to the running total of the size, so we know
         # if future messages need to be rejected.
@@ -255,7 +254,7 @@ class Future(object):
     methods in this library.
 
     Args:
-        batch (:class:`~.Batch`): The batch object that is committing
+        batch (`~.Batch`): The batch object that is committing
             this message.
     """
     def __init__(self, batch):
@@ -290,10 +289,13 @@ class Future(object):
     def done(self):
         """Return True if the publish has completed, False otherwise.
 
-        This still returns True in failure cases; checking `result` or
-        `exception` is the canonical way to assess success or failure.
+        This still returns True in failure cases; checking :meth:`result` or
+        :meth:`exception` is the canonical way to assess success or failure.
         """
-        return self._batch.status in ('success', 'error')
+        return self._batch.status in (
+            self._batch.Status.SUCCESS,
+            self._batch.Status.ERROR,
+        )
 
     def result(self, timeout=None):
         """Return the message ID, or raise an exception.
@@ -305,9 +307,12 @@ class Future(object):
             timeout (int|float): The number of seconds before this call
                 times out and raises TimeoutError.
 
+        Returns:
+            str: The message ID.
+
         Raises:
-            :class:~`pubsub_v1.TimeoutError`: If the request times out.
-            :class:~`Exception`: For undefined exceptions in the underlying
+            ~.pubsub_v1.TimeoutError: If the request times out.
+            Exception: For undefined exceptions in the underlying
                 call execution.
         """
         # Attempt to get the exception if there is one.
@@ -329,11 +334,15 @@ class Future(object):
                 times out and raises TimeoutError.
 
         Raises:
-            :exc:`TimeoutError`: If the request times out.
+            TimeoutError: If the request times out.
 
         Returns:
-            :class:`Exception`: The exception raised by the call, if any.
+            Exception: The exception raised by the call, if any.
         """
+        # If no timeout was specified, use inf.
+        if timeout is None:
+            timeout = float('inf')
+
         # If the batch completed successfully, this should return None.
         if self._batch.status == 'success':
             return None
@@ -343,14 +352,14 @@ class Future(object):
             return self._batch.error
 
         # If the timeout has been exceeded, raise TimeoutError.
-        if timeout and timeout < 0:
+        if timeout <= 0:
             raise exceptions.TimeoutError('Timed out waiting for exception.')
 
         # Wait a little while and try again.
         time.sleep(_wait)
         return self.exception(
             timeout=timeout - _wait,
-            _wait=min(_wait * 2, 60),
+            _wait=min(_wait * 2, timeout, 60),
         )
 
     def add_done_callback(self, fn):

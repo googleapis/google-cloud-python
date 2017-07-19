@@ -94,9 +94,9 @@ def test_publish():
 def test_publish_data_not_bytestring_error():
     client = publisher.Client()
     with pytest.raises(TypeError):
-        client.publish(u'This is a text string.')
+        client.publish('topic_name', u'This is a text string.')
     with pytest.raises(TypeError):
-        client.publish(42)
+        client.publish('topic_name', 42)
 
 
 def test_publish_attrs_bytestring():
@@ -120,4 +120,4 @@ def test_publish_attrs_bytestring():
 def test_publish_attrs_type_error():
     client = publisher.Client()
     with pytest.raises(TypeError):
-        client.publish(b'foo', answer=42)
+        client.publish('topic_name', b'foo', answer=42)
