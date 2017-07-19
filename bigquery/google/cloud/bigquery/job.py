@@ -1189,3 +1189,8 @@ class QueryJob(_AsyncJob):
         """
         from google.cloud.bigquery.query import QueryResults
         return QueryResults.from_query_job(self)
+
+    def result(self, timeout=None):
+        super(QueryJob, self).result(timeout=timeout)
+        # Return a QueryResults instance instead of returning the job.
+        return self.results()
