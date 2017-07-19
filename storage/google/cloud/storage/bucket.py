@@ -33,7 +33,8 @@ from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _validate_name
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
-from google.cloud.storage.blob import Blob, _get_encryption_headers
+from google.cloud.storage.blob import Blob
+from google.cloud.storage.blob import _get_encryption_headers
 
 
 def _blobs_page_start(iterator, page, response):
@@ -265,8 +266,7 @@ class Bucket(_PropertyMixin):
             headers = _get_encryption_headers(encryption_key)
             response = client._connection.api_request(
                 method='GET', path=blob.path, _target_object=blob,
-                headers=headers
-            )
+                headers=headers)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
