@@ -13,8 +13,9 @@
 # limitations under the License.
 
 
-import mock
 import unittest
+
+import mock
 
 
 class TestStreamedResultSet(unittest.TestCase):

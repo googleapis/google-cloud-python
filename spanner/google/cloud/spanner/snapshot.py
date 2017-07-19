@@ -184,10 +184,11 @@ class Snapshot(_SnapshotBase):
         if len(flagged) > 1:
             raise ValueError("Supply zero or one options.")
 
-        if multi_use and (min_read_timestamp or max_staleness):
-            raise ValueError(
-                "'multi_use' is incompatile with "
-                "'min_read_timestamp' / 'max_staleness'")
+        if multi_use:
+            if min_read_timestamp is not None or max_staleness is not None:
+                raise ValueError(
+                    "'multi_use' is incompatible with "
+                    "'min_read_timestamp' / 'max_staleness'")
 
         self._strong = len(flagged) == 0
         self._read_timestamp = read_timestamp
