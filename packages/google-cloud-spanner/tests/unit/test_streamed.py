@@ -561,7 +561,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed.consume_next()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
-        self.assertTrue(streamed.metadata is metadata)
+        self.assertIs(streamed.metadata, metadata)
         self.assertEqual(streamed.resume_token, result_set.resume_token)
 
     def test_consume_next_w_partial_result(self):
@@ -630,7 +630,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed.consume_next()
         self.assertEqual(streamed.rows, [BARE])
         self.assertEqual(streamed._current_row, [])
-        self.assertTrue(streamed._stats is stats)
+        self.assertIs(streamed._stats, stats)
         self.assertEqual(streamed.resume_token, result_set.resume_token)
 
     def test_consume_all_empty(self):
@@ -653,7 +653,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed.consume_all()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
-        self.assertTrue(streamed.metadata is metadata)
+        self.assertIs(streamed.metadata, metadata)
 
     def test_consume_all_multiple_result_sets_filled(self):
         FIELDS = [
@@ -703,7 +703,7 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(found, [])
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
-        self.assertTrue(streamed.metadata is metadata)
+        self.assertIs(streamed.metadata, metadata)
 
     def test___iter___multiple_result_sets_filled(self):
         FIELDS = [

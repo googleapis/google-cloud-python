@@ -60,7 +60,7 @@ class TestClient(unittest.TestCase):
         expected_creds = expected_creds or creds.with_scopes.return_value
         self.assertIs(client._credentials, expected_creds)
 
-        self.assertTrue(client._credentials is expected_creds)
+        self.assertIs(client._credentials, expected_creds)
         if expected_scopes is not None:
             creds.with_scopes.assert_called_once_with(expected_scopes)
 
@@ -162,7 +162,7 @@ class TestClient(unittest.TestCase):
 
         self.assertTrue(isinstance(api, _Client))
         again = client.instance_admin_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
         self.assertEqual(api.kwargs['lib_name'], 'gccl')
         self.assertIs(api.kwargs['credentials'], client.credentials)
 
@@ -183,7 +183,7 @@ class TestClient(unittest.TestCase):
 
         self.assertTrue(isinstance(api, _Client))
         again = client.database_admin_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
         self.assertEqual(api.kwargs['lib_name'], 'gccl')
         self.assertIs(api.kwargs['credentials'], client.credentials)
 
@@ -202,7 +202,7 @@ class TestClient(unittest.TestCase):
     def test_credentials_property(self):
         credentials = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
-        self.assertTrue(client.credentials is credentials)
+        self.assertIs(client.credentials, credentials)
 
     def test_project_name_property(self):
         credentials = _Credentials()
@@ -236,7 +236,7 @@ class TestClient(unittest.TestCase):
         project, page_size, options = api._listed_instance_configs
         self.assertEqual(project, self.PATH)
         self.assertEqual(page_size, None)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
         self.assertEqual(
             options.kwargs['metadata'],
             [('google-cloud-resource-prefix', client.project_name)])
@@ -292,7 +292,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(instance.configuration_name)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertEqual(instance.node_count, DEFAULT_NODE_COUNT)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
 
     def test_instance_factory_explicit(self):
         from google.cloud.spanner.instance import Instance
@@ -309,7 +309,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance.configuration_name, self.CONFIGURATION_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
 
     def test_list_instances_wo_paging(self):
         from google.cloud._testing import _GAXPageIterator
@@ -342,7 +342,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project, self.PATH)
         self.assertEqual(filter_, 'name:TEST')
         self.assertEqual(page_size, None)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
         self.assertEqual(
             options.kwargs['metadata'],
             [('google-cloud-resource-prefix', client.project_name)])

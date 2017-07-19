@@ -50,7 +50,7 @@ class TestDatabase(_BaseTest):
         database = self._make_one(self.DATABASE_ID, instance)
 
         self.assertEqual(database.database_id, self.DATABASE_ID)
-        self.assertTrue(database._instance is instance)
+        self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), [])
         self.assertIsInstance(database._pool, BurstyPool)
         # BurstyPool does not create sessions during 'bind()'.
@@ -61,7 +61,7 @@ class TestDatabase(_BaseTest):
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
         self.assertEqual(database.database_id, self.DATABASE_ID)
-        self.assertTrue(database._instance is instance)
+        self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), [])
         self.assertIs(database._pool, pool)
         self.assertIs(pool._bound, database)
@@ -89,7 +89,7 @@ class TestDatabase(_BaseTest):
             self.DATABASE_ID, instance, ddl_statements=DDL_STATEMENTS,
             pool=pool)
         self.assertEqual(database.database_id, self.DATABASE_ID)
-        self.assertTrue(database._instance is instance)
+        self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), DDL_STATEMENTS)
 
     def test_from_pb_bad_database_name(self):
@@ -196,10 +196,10 @@ class TestDatabase(_BaseTest):
 
         with _Monkey(MUT, SpannerClient=_mock_spanner_client):
             api = database.spanner_api
-            self.assertTrue(api is _client)
+            self.assertIs(api,  _client)
             # API instance is cached
             again = database.spanner_api
-            self.assertTrue(again is api)
+            self.assertIs(again, api)
 
     def test___eq__(self):
         instance = _Instance(self.INSTANCE_NAME)
@@ -567,8 +567,8 @@ class TestDatabase(_BaseTest):
         session = database.session()
 
         self.assertTrue(isinstance(session, Session))
-        self.assertTrue(session.session_id is None)
-        self.assertTrue(session._database is database)
+        self.assertIs(session.session_id, None)
+        self.assertIs(session._database, database)
 
     def test_execute_sql_defaults(self):
         QUERY = 'SELECT * FROM employees'
@@ -671,7 +671,7 @@ class TestDatabase(_BaseTest):
 
         checkout = database.batch()
         self.assertIsInstance(checkout, BatchCheckout)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
 
     def test_snapshot_defaults(self):
         from google.cloud.spanner.database import SnapshotCheckout
@@ -685,7 +685,7 @@ class TestDatabase(_BaseTest):
 
         checkout = database.snapshot()
         self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertIsNone(checkout._min_read_timestamp)
         self.assertIsNone(checkout._max_staleness)
@@ -707,7 +707,7 @@ class TestDatabase(_BaseTest):
         checkout = database.snapshot(read_timestamp=now)
 
         self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertEqual(checkout._read_timestamp, now)
         self.assertIsNone(checkout._min_read_timestamp)
         self.assertIsNone(checkout._max_staleness)
@@ -729,7 +729,7 @@ class TestDatabase(_BaseTest):
         checkout = database.snapshot(min_read_timestamp=now)
 
         self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertEqual(checkout._min_read_timestamp, now)
         self.assertIsNone(checkout._max_staleness)
@@ -750,7 +750,7 @@ class TestDatabase(_BaseTest):
         checkout = database.snapshot(max_staleness=staleness)
 
         self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertIsNone(checkout._min_read_timestamp)
         self.assertEqual(checkout._max_staleness, staleness)
@@ -771,7 +771,7 @@ class TestDatabase(_BaseTest):
         checkout = database.snapshot(exact_staleness=staleness)
 
         self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertIsNone(checkout._min_read_timestamp)
         self.assertIsNone(checkout._max_staleness)
@@ -788,7 +788,7 @@ class TestBatchCheckout(_BaseTest):
     def test_ctor(self):
         database = _Database(self.DATABASE_NAME)
         checkout = self._make_one(database)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
 
     def test_context_mgr_success(self):
         import datetime
@@ -865,7 +865,7 @@ class TestSnapshotCheckout(_BaseTest):
         pool.put(session)
 
         checkout = self._make_one(database)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertIsNone(checkout._min_read_timestamp)
         self.assertIsNone(checkout._max_staleness)
@@ -891,7 +891,7 @@ class TestSnapshotCheckout(_BaseTest):
         pool.put(session)
 
         checkout = self._make_one(database, read_timestamp=now)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertEqual(checkout._read_timestamp, now)
         self.assertIsNone(checkout._min_read_timestamp)
         self.assertIsNone(checkout._max_staleness)
@@ -918,7 +918,7 @@ class TestSnapshotCheckout(_BaseTest):
         pool.put(session)
 
         checkout = self._make_one(database, min_read_timestamp=now)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertEqual(checkout._min_read_timestamp, now)
         self.assertIsNone(checkout._max_staleness)
@@ -944,7 +944,7 @@ class TestSnapshotCheckout(_BaseTest):
         pool.put(session)
 
         checkout = self._make_one(database, max_staleness=staleness)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
         self.assertIsNone(checkout._read_timestamp)
         self.assertIsNone(checkout._min_read_timestamp)
         self.assertEqual(checkout._max_staleness, staleness)

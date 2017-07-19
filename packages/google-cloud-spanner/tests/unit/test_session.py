@@ -39,8 +39,8 @@ class TestSession(unittest.TestCase):
     def test_constructor(self):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
-        self.assertTrue(session.session_id is None)
-        self.assertTrue(session._database is database)
+        self.assertIs(session.session_id, None)
+        self.assertIs(session._database, database)
 
     def test___lt___(self):
         database = _Database(self.DATABASE_NAME)
@@ -223,7 +223,7 @@ class TestSession(unittest.TestCase):
         snapshot = session.snapshot()
 
         self.assertIsInstance(snapshot, Snapshot)
-        self.assertTrue(snapshot._session is session)
+        self.assertIs(snapshot._session, session)
         self.assertTrue(snapshot._strong)
 
     def test_read_not_created(self):
@@ -352,7 +352,7 @@ class TestSession(unittest.TestCase):
         batch = session.batch()
 
         self.assertIsInstance(batch, Batch)
-        self.assertTrue(batch._session is session)
+        self.assertIs(batch._session, session)
 
     def test_transaction_not_created(self):
         database = _Database(self.DATABASE_NAME)
@@ -371,8 +371,8 @@ class TestSession(unittest.TestCase):
         transaction = session.transaction()
 
         self.assertIsInstance(transaction, Transaction)
-        self.assertTrue(transaction._session is session)
-        self.assertTrue(session._transaction is transaction)
+        self.assertIs(transaction._session, session)
+        self.assertIs(session._transaction, transaction)
 
     def test_transaction_w_existing_txn(self):
         database = _Database(self.DATABASE_NAME)
@@ -382,7 +382,7 @@ class TestSession(unittest.TestCase):
         existing = session.transaction()
         another = session.transaction()  # invalidates existing txn
 
-        self.assertTrue(session._transaction is another)
+        self.assertIs(session._transaction, another)
         self.assertTrue(existing._rolled_back)
 
     def test_retry_transaction_w_commit_error_txn_already_begun(self):
