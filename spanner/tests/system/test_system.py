@@ -358,6 +358,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         'description',
         'exactly_hwhen',
     )
+    COUNTERS_TABLE = 'counters'
+    COUNTERS_COLUMNS = (
+        'name',
+        'value',
+    )
     SOME_DATE = datetime.date(2011, 1, 17)
     SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
     NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
@@ -507,6 +512,86 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
+
+    def _transaction_concurrency_helper(self, unit_of_work, pkey):
+        import threading
+        INITIAL_VALUE = 123
+
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.insert_or_update(
+                self.COUNTERS_TABLE,
+                self.COUNTERS_COLUMNS,
+                [[pkey, INITIAL_VALUE]])
+
+        # We don't want to run the threads' transactions in the current
+        # session, which would fail.
+        txn_sessions = [
+            self._db.session(), self._db.session(), self._db.session()]
+
+        for txn_session in txn_sessions:
+            txn_session.create()
+            self.to_delete.append(txn_session)
+
+        threads = [
+            threading.Thread(
+                target=txn_session.run_in_transaction,
+                args=(unit_of_work, pkey))
+            for txn_session in txn_sessions]
+
+        for thread in threads:
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+        keyset = KeySet(keys=[(pkey,)])
+        rows = list(session.read(
+            self.COUNTERS_TABLE, self.COUNTERS_COLUMNS, keyset))
+        self.assertEqual(len(rows), 1)
+        _, value = rows[0]
+        self.assertEqual(value, INITIAL_VALUE + len(threads))
+
+    def _read_w_concurrent_update(self, transaction, pkey):
+        keyset = KeySet(keys=[(pkey,)])
+        rows = list(transaction.read(
+            self.COUNTERS_TABLE, self.COUNTERS_COLUMNS, keyset))
+        self.assertEqual(len(rows), 1)
+        pkey, value = rows[0]
+        transaction.update(
+                self.COUNTERS_TABLE,
+                self.COUNTERS_COLUMNS,
+                [[pkey, value + 1]])
+
+    def test_transaction_read_w_concurrent_updates(self):
+        PKEY = 'read_w_concurrent_updates'
+        self._transaction_concurrency_helper(
+            self._read_w_concurrent_update, PKEY)
+
+    def _query_w_concurrent_update(self, transaction, pkey):
+        SQL = 'SELECT * FROM counters WHERE name = @name'
+        rows = list(transaction.execute_sql(
+            SQL,
+            params={'name': pkey},
+            param_types={'name': Type(code=STRING)},
+        ))
+        self.assertEqual(len(rows), 1)
+        pkey, value = rows[0]
+        transaction.update(
+                self.COUNTERS_TABLE,
+                self.COUNTERS_COLUMNS,
+                [[pkey, value + 1]])
+
+    def test_transaction_query_w_concurrent_updates(self):
+        PKEY = 'query_w_concurrent_updates'
+        self._transaction_concurrency_helper(
+            self._query_w_concurrent_update, PKEY)
 
     @staticmethod
     def _row_data(max_index):
