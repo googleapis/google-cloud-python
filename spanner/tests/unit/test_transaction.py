@@ -48,7 +48,7 @@ class TestTransaction(unittest.TestCase):
     def test_ctor_defaults(self):
         session = _Session()
         transaction = self._make_one(session)
-        self.assertTrue(transaction._session is session)
+        self.assertIs(transaction._session, session)
         self.assertIsNone(transaction._id)
         self.assertIsNone(transaction.committed)
         self.assertEqual(transaction._rolled_back, False)

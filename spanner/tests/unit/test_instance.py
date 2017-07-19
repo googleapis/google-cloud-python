@@ -50,8 +50,8 @@ class TestInstance(unittest.TestCase):
         client = object()
         instance = self._make_one(self.INSTANCE_ID, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
-        self.assertTrue(instance._client is client)
-        self.assertTrue(instance.configuration_name is None)
+        self.assertIs(instance._client, client)
+        self.assertIs(instance.configuration_name, None)
         self.assertEqual(instance.node_count, DEFAULT_NODE_COUNT)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
 
@@ -64,7 +64,7 @@ class TestInstance(unittest.TestCase):
                                   node_count=self.NODE_COUNT,
                                   display_name=DISPLAY_NAME)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
         self.assertEqual(instance.configuration_name, self.CONFIG_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
@@ -78,10 +78,10 @@ class TestInstance(unittest.TestCase):
         new_instance = instance.copy()
 
         # Make sure the client copy succeeded.
-        self.assertFalse(new_instance._client is client)
+        self.assertIsNot(new_instance._client, client)
         self.assertEqual(new_instance._client, client)
         # Make sure the client got copied to a new instance.
-        self.assertFalse(instance is new_instance)
+        self.assertIsNot(instance, new_instance)
         self.assertEqual(instance, new_instance)
 
     def test__update_from_pb_success(self):
@@ -496,7 +496,7 @@ class TestInstance(unittest.TestCase):
 
         self.assertTrue(isinstance(database, Database))
         self.assertEqual(database.database_id, DATABASE_ID)
-        self.assertTrue(database._instance is instance)
+        self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), [])
         self.assertIsInstance(database._pool, BurstyPool)
         pool = database._pool
@@ -516,7 +516,7 @@ class TestInstance(unittest.TestCase):
 
         self.assertTrue(isinstance(database, Database))
         self.assertEqual(database.database_id, DATABASE_ID)
-        self.assertTrue(database._instance is instance)
+        self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), DDL_STATEMENTS)
         self.assertIs(database._pool, pool)
         self.assertIs(pool._bound, database)
@@ -547,7 +547,7 @@ class TestInstance(unittest.TestCase):
         instance_name, page_size, options = api._listed_databases
         self.assertEqual(instance_name, self.INSTANCE_NAME)
         self.assertEqual(page_size, None)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', instance.name)])
 
