@@ -88,8 +88,8 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(credentials=creds, _http=http)
-        self.assertTrue(client._credentials is creds)
-        self.assertTrue(client._http is http)
+        self.assertIs(client._credentials, creds)
+        self.assertIs(client._http, http)
 
     def test_ctor_use_grpc_preset(self):
         creds = _make_credentials()
