@@ -9,7 +9,7 @@ Python Client for Google Cloud Datastore
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore-client.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore/client.html
 
 Quick Start
 -----------
@@ -26,7 +26,7 @@ possible. Check out the `Authentication section`_ in our documentation to
 learn more. You may also find the `authentication document`_ shared by all
 the ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Using the API
@@ -44,7 +44,7 @@ queries, and eventual consistency for all other queries.
 See the ``google-cloud-python`` API `datastore documentation`_ to learn how to
 interact with the Cloud Datastore using this Client Library.
 
-.. _datastore documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore-client.html
+.. _datastore documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore/client.html
 
 See the `official Google Cloud Datastore documentation`_ for more details on
 how to activate Cloud Datastore for your project.
