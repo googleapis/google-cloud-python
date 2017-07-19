@@ -60,7 +60,7 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
               signed payload.
     """
     if not isinstance(credentials, google.auth.credentials.Signing):
-        auth_uri = ('http://google-cloud-python.readthedocs.io/en/latest/'
+        auth_uri = ('https://google-cloud-python.readthedocs.io/en/latest/'
                     'core/auth.html?highlight=authentication#setting-up-'
                     'a-service-account')
         raise AttributeError('you need a private key to sign credentials.'
