@@ -459,7 +459,7 @@ class TestResumableUploadUnknownSize(object):
             utils.RESUMABLE_UPLOAD, chunk_size)
         # Initiate the upload.
         metadata = {u'name': blob_name}
-        with open(ICO_FILE, 'rb') as stream:
+        with open(ICO_FILE, u'rb') as stream:
             response = upload.initiate(
                 authorized_transport, stream, metadata, ICO_CONTENT_TYPE,
                 stream_final=False)

@@ -125,7 +125,7 @@ class Test_require_status_code(object):
 
 class Test_calculate_retry_wait(object):
 
-    @mock.patch('random.randint', return_value=125)
+    @mock.patch(u'random.randint', return_value=125)
     def test_past_limit(self, randint_mock):
         base_wait, wait_time = _helpers.calculate_retry_wait(70.0, 64.0)
 
@@ -133,7 +133,7 @@ class Test_calculate_retry_wait(object):
         assert wait_time == 64.125
         randint_mock.assert_called_once_with(0, 1000)
 
-    @mock.patch('random.randint', return_value=250)
+    @mock.patch(u'random.randint', return_value=250)
     def test_at_limit(self, randint_mock):
         base_wait, wait_time = _helpers.calculate_retry_wait(50.0, 50.0)
 
@@ -141,7 +141,7 @@ class Test_calculate_retry_wait(object):
         assert wait_time == 50.25
         randint_mock.assert_called_once_with(0, 1000)
 
-    @mock.patch('random.randint', return_value=875)
+    @mock.patch(u'random.randint', return_value=875)
     def test_under_limit(self, randint_mock):
         base_wait, wait_time = _helpers.calculate_retry_wait(16.0, 33.0)
 
@@ -165,8 +165,8 @@ class Test_wait_and_retry(object):
         assert ret_val is response
         func.assert_called_once_with()
 
-    @mock.patch('time.sleep')
-    @mock.patch('random.randint')
+    @mock.patch(u'time.sleep')
+    @mock.patch(u'random.randint')
     def test_success_with_retry(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
 
@@ -198,8 +198,8 @@ class Test_wait_and_retry(object):
         sleep_mock.assert_any_call(2.625)
         sleep_mock.assert_any_call(4.375)
 
-    @mock.patch('time.sleep')
-    @mock.patch('random.randint')
+    @mock.patch(u'time.sleep')
+    @mock.patch(u'random.randint')
     def test_retry_exceeds_max_cumulative(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125]
 
