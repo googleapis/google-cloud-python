@@ -61,6 +61,6 @@ To get started with this API, you'll need to create
                   attr1='value1', attr2='value2')
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
-   :target: https://pypi.python.org/pypi/google-cloud-pubsub
+   :target: https://pypi.org/project/google-cloud-pubsub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
-   :target: https://pypi.python.org/pypi/google-cloud-pubsub
+   :target: https://pypi.org/project/google-cloud-pubsub/
