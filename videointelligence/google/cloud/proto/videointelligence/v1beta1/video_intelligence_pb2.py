@@ -884,6 +884,47 @@ DESCRIPTOR.enum_types_by_name['Likelihood'] = _LIKELIHOOD
 AnnotateVideoRequest = _reflection.GeneratedProtocolMessageType('AnnotateVideoRequest', (_message.Message,), dict(
   DESCRIPTOR = _ANNOTATEVIDEOREQUEST,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Video annotation request.
+  
+  
+  Attributes:
+      input_uri:
+          Input video location. Currently, only `Google Cloud Storage
+          <https://cloud.google.com/storage/>`__ URIs are supported,
+          which must be specified in the following format:
+          ``gs://bucket-id/object-id`` (other URI formats return [google
+          .rpc.Code.INVALID\_ARGUMENT][google.rpc.Code.INVALID\_ARGUMENT
+          ]). For more information, see `Request URIs
+          </storage/docs/reference-uris>`__. A video URI may include
+          wildcards in ``object-id``, and thus identify multiple videos.
+          Supported wildcards: '\*' to match 0 or more characters; '?'
+          to match 1 character. If unset, the input video should be
+          embedded in the request as ``input_content``. If set,
+          ``input_content`` should be unset.
+      input_content:
+          The video data bytes. Encoding: base64. If unset, the input
+          video(s) should be specified via ``input_uri``. If set,
+          ``input_uri`` should be unset.
+      features:
+          Requested video annotation features.
+      video_context:
+          Additional video context and/or feature-specific parameters.
+      output_uri:
+          Optional location where the output (in JSON format) should be
+          stored. Currently, only `Google Cloud Storage
+          <https://cloud.google.com/storage/>`__ URIs are supported,
+          which must be specified in the following format:
+          ``gs://bucket-id/object-id`` (other URI formats return [google
+          .rpc.Code.INVALID\_ARGUMENT][google.rpc.Code.INVALID\_ARGUMENT
+          ]). For more information, see `Request URIs
+          </storage/docs/reference-uris>`__.
+      location_id:
+          Optional cloud region where annotation should take place.
+          Supported cloud regions: ``us-east1``, ``us-west1``, ``europe-
+          west1``, ``asia-east1``. If no region is specified, a region
+          will be determined based on video file location.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.AnnotateVideoRequest)
   ))
 _sym_db.RegisterMessage(AnnotateVideoRequest)
@@ -891,6 +932,36 @@ _sym_db.RegisterMessage(AnnotateVideoRequest)
 VideoContext = _reflection.GeneratedProtocolMessageType('VideoContext', (_message.Message,), dict(
   DESCRIPTOR = _VIDEOCONTEXT,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Video context and/or feature-specific parameters.
+  
+  
+  Attributes:
+      segments:
+          Video segments to annotate. The segments may overlap and are
+          not required to be contiguous or span the whole video. If
+          unspecified, each video is treated as a single segment.
+      label_detection_mode:
+          If label detection has been requested, what labels should be
+          detected in addition to video-level labels or segment-level
+          labels. If unspecified, defaults to ``SHOT_MODE``.
+      stationary_camera:
+          Whether the video has been shot from a stationary (i.e. non-
+          moving) camera. When set to true, might improve detection
+          accuracy for moving objects.
+      label_detection_model:
+          Model to use for label detection. Supported values: "latest"
+          and "stable" (the default).
+      face_detection_model:
+          Model to use for face detection. Supported values: "latest"
+          and "stable" (the default).
+      shot_change_detection_model:
+          Model to use for shot change detection. Supported values:
+          "latest" and "stable" (the default).
+      safe_search_detection_model:
+          Model to use for safe search detection. Supported values:
+          "latest" and "stable" (the default).
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.VideoContext)
   ))
 _sym_db.RegisterMessage(VideoContext)
@@ -898,6 +969,16 @@ _sym_db.RegisterMessage(VideoContext)
 VideoSegment = _reflection.GeneratedProtocolMessageType('VideoSegment', (_message.Message,), dict(
   DESCRIPTOR = _VIDEOSEGMENT,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Video segment.
+  
+  
+  Attributes:
+      start_time_offset:
+          Start offset in microseconds (inclusive). Unset means 0.
+      end_time_offset:
+          End offset in microseconds (inclusive). Unset means 0.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.VideoSegment)
   ))
 _sym_db.RegisterMessage(VideoSegment)
@@ -905,6 +986,21 @@ _sym_db.RegisterMessage(VideoSegment)
 LabelLocation = _reflection.GeneratedProtocolMessageType('LabelLocation', (_message.Message,), dict(
   DESCRIPTOR = _LABELLOCATION,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Label location.
+  
+  
+  Attributes:
+      segment:
+          Video segment. Set to [-1, -1] for video-level labels. Set to
+          [timestamp, timestamp] for frame-level labels. Otherwise,
+          corresponds to one of ``AnnotateSpec.segments`` (if specified)
+          or to shot boundaries (if requested).
+      confidence:
+          Confidence that the label is accurate. Range: [0, 1].
+      level:
+          Label level.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.LabelLocation)
   ))
 _sym_db.RegisterMessage(LabelLocation)
@@ -912,6 +1008,18 @@ _sym_db.RegisterMessage(LabelLocation)
 LabelAnnotation = _reflection.GeneratedProtocolMessageType('LabelAnnotation', (_message.Message,), dict(
   DESCRIPTOR = _LABELANNOTATION,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Label annotation.
+  
+  
+  Attributes:
+      description:
+          Textual description, e.g. ``Fixed-gear bicycle``.
+      language_code:
+          Language code for ``description`` in BCP-47 format.
+      locations:
+          Where the label was detected and with what confidence.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.LabelAnnotation)
   ))
 _sym_db.RegisterMessage(LabelAnnotation)
@@ -919,6 +1027,29 @@ _sym_db.RegisterMessage(LabelAnnotation)
 SafeSearchAnnotation = _reflection.GeneratedProtocolMessageType('SafeSearchAnnotation', (_message.Message,), dict(
   DESCRIPTOR = _SAFESEARCHANNOTATION,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Safe search annotation (based on per-frame visual signals only). If no
+  unsafe content has been detected in a frame, no annotations are present
+  for that frame. If only some types of unsafe content have been detected
+  in a frame, the likelihood is set to ``UNKNOWN`` for all other types of
+  unsafe content.
+  
+  
+  Attributes:
+      adult:
+          Likelihood of adult content.
+      spoof:
+          Likelihood that an obvious modification was made to the
+          original version to make it appear funny or offensive.
+      medical:
+          Likelihood of medical content.
+      violent:
+          Likelihood of violent content.
+      racy:
+          Likelihood of racy content.
+      time_offset:
+          Video time offset in microseconds.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.SafeSearchAnnotation)
   ))
 _sym_db.RegisterMessage(SafeSearchAnnotation)
@@ -926,6 +1057,20 @@ _sym_db.RegisterMessage(SafeSearchAnnotation)
 BoundingBox = _reflection.GeneratedProtocolMessageType('BoundingBox', (_message.Message,), dict(
   DESCRIPTOR = _BOUNDINGBOX,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Bounding box.
+  
+  
+  Attributes:
+      left:
+          Left X coordinate.
+      right:
+          Right X coordinate.
+      bottom:
+          Bottom Y coordinate.
+      top:
+          Top Y coordinate.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.BoundingBox)
   ))
 _sym_db.RegisterMessage(BoundingBox)
@@ -933,6 +1078,16 @@ _sym_db.RegisterMessage(BoundingBox)
 FaceLocation = _reflection.GeneratedProtocolMessageType('FaceLocation', (_message.Message,), dict(
   DESCRIPTOR = _FACELOCATION,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Face location.
+  
+  
+  Attributes:
+      bounding_box:
+          Bounding box in a frame.
+      time_offset:
+          Video time offset in microseconds.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.FaceLocation)
   ))
 _sym_db.RegisterMessage(FaceLocation)
@@ -940,6 +1095,21 @@ _sym_db.RegisterMessage(FaceLocation)
 FaceAnnotation = _reflection.GeneratedProtocolMessageType('FaceAnnotation', (_message.Message,), dict(
   DESCRIPTOR = _FACEANNOTATION,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Face annotation.
+  
+  
+  Attributes:
+      thumbnail:
+          Thumbnail of a representative face view (in JPEG format).
+          Encoding: base64.
+      segments:
+          All locations where a face was detected. Faces are detected
+          and tracked on a per-video basis (as opposed to across
+          multiple videos).
+      locations:
+          Face locations at one frame per second.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.FaceAnnotation)
   ))
 _sym_db.RegisterMessage(FaceAnnotation)
@@ -947,6 +1117,29 @@ _sym_db.RegisterMessage(FaceAnnotation)
 VideoAnnotationResults = _reflection.GeneratedProtocolMessageType('VideoAnnotationResults', (_message.Message,), dict(
   DESCRIPTOR = _VIDEOANNOTATIONRESULTS,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Annotation results for a single video.
+  
+  
+  Attributes:
+      input_uri:
+          Video file location in `Google Cloud Storage
+          <https://cloud.google.com/storage/>`__.
+      label_annotations:
+          Label annotations. There is exactly one element for each
+          unique label.
+      face_annotations:
+          Face annotations. There is exactly one element for each unique
+          face.
+      shot_annotations:
+          Shot annotations. Each shot is represented as a video segment.
+      safe_search_annotations:
+          Safe search annotations.
+      error:
+          If set, indicates an error. Note that for a single
+          ``AnnotateVideoRequest`` some videos may succeed and some may
+          fail.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.VideoAnnotationResults)
   ))
 _sym_db.RegisterMessage(VideoAnnotationResults)
@@ -954,6 +1147,17 @@ _sym_db.RegisterMessage(VideoAnnotationResults)
 AnnotateVideoResponse = _reflection.GeneratedProtocolMessageType('AnnotateVideoResponse', (_message.Message,), dict(
   DESCRIPTOR = _ANNOTATEVIDEORESPONSE,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Video annotation response. Included in the ``response`` field of the
+  ``Operation`` returned by the ``GetOperation`` call of the
+  ``google::longrunning::Operations`` service.
+  
+  
+  Attributes:
+      annotation_results:
+          Annotation results for all videos specified in
+          ``AnnotateVideoRequest``.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.AnnotateVideoResponse)
   ))
 _sym_db.RegisterMessage(AnnotateVideoResponse)
@@ -961,6 +1165,22 @@ _sym_db.RegisterMessage(AnnotateVideoResponse)
 VideoAnnotationProgress = _reflection.GeneratedProtocolMessageType('VideoAnnotationProgress', (_message.Message,), dict(
   DESCRIPTOR = _VIDEOANNOTATIONPROGRESS,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Annotation progress for a single video.
+  
+  
+  Attributes:
+      input_uri:
+          Video file location in `Google Cloud Storage
+          <https://cloud.google.com/storage/>`__.
+      progress_percent:
+          Approximate percentage processed thus far. Guaranteed to be
+          100 when fully processed.
+      start_time:
+          Time when the request was received.
+      update_time:
+          Time of the most recent update.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.VideoAnnotationProgress)
   ))
 _sym_db.RegisterMessage(VideoAnnotationProgress)
@@ -968,6 +1188,17 @@ _sym_db.RegisterMessage(VideoAnnotationProgress)
 AnnotateVideoProgress = _reflection.GeneratedProtocolMessageType('AnnotateVideoProgress', (_message.Message,), dict(
   DESCRIPTOR = _ANNOTATEVIDEOPROGRESS,
   __module__ = 'google.cloud.proto.videointelligence.v1beta1.video_intelligence_pb2'
+  ,
+  __doc__ = """Video annotation progress. Included in the ``metadata`` field of the
+  ``Operation`` returned by the ``GetOperation`` call of the
+  ``google::longrunning::Operations`` service.
+  
+  
+  Attributes:
+      annotation_progress:
+          Progress metadata for all videos specified in
+          ``AnnotateVideoRequest``.
+  """,
   # @@protoc_insertion_point(class_scope:google.cloud.videointelligence.v1beta1.AnnotateVideoProgress)
   ))
 _sym_db.RegisterMessage(AnnotateVideoProgress)
@@ -979,10 +1210,10 @@ try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
   import grpc
-  from grpc.framework.common import cardinality
-  from grpc.framework.interfaces.face import utilities as face_utilities
   from grpc.beta import implementations as beta_implementations
   from grpc.beta import interfaces as beta_interfaces
+  from grpc.framework.common import cardinality
+  from grpc.framework.interfaces.face import utilities as face_utilities
 
 
   class VideoIntelligenceServiceStub(object):
