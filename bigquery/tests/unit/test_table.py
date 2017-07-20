@@ -38,7 +38,8 @@ class _SchemaBase(object):
 
 
 class TestTable(unittest.TestCase, _SchemaBase):
-    PROJECT = 'project'
+
+    PROJECT = 'prahj-ekt'
     DS_NAME = 'dataset-name'
     TABLE_NAME = 'table-name'
 
@@ -1560,6 +1561,161 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
+    @mock.patch('google.auth.transport.requests.AuthorizedSession')
+    def test__make_transport(self, session_factory):
+        client = mock.Mock(spec=[u'_credentials'])
+        table = self._make_one(self.TABLE_NAME, None)
+        transport = table._make_transport(client)
+
+        self.assertIs(transport, session_factory.return_value)
+        session_factory.assert_called_once_with(client._credentials)
+
+    @staticmethod
+    def _mock_requests_response(status_code, headers, content=b''):
+        return mock.Mock(
+            content=content, headers=headers, status_code=status_code,
+            spec=['content', 'headers', 'status_code'])
+
+    def _mock_transport(self, status_code, headers, content=b''):
+        fake_transport = mock.Mock(spec=['request'])
+        fake_response = self._mock_requests_response(
+            status_code, headers, content=content)
+        fake_transport.request.return_value = fake_response
+        return fake_transport
+
+    def _initiate_resumable_upload_helper(self, num_retries=None):
+        from google.resumable_media.requests import ResumableUpload
+        from google.cloud.bigquery.table import _DEFAULT_CHUNKSIZE
+        from google.cloud.bigquery.table import _GENERIC_CONTENT_TYPE
+        from google.cloud.bigquery.table import _get_upload_headers
+        from google.cloud.bigquery.table import _get_upload_metadata
+
+        connection = _Connection()
+        client = _Client(self.PROJECT, connection=connection)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset)
+
+        # Create mocks to be checked for doing transport.
+        resumable_url = 'http://test.invalid?upload_id=hey-you'
+        response_headers = {'location': resumable_url}
+        fake_transport = self._mock_transport(
+            http_client.OK, response_headers)
+        table._make_transport = mock.Mock(
+            return_value=fake_transport, spec=[])
+
+        # Create some mock arguments and call the method under test.
+        data = b'goodbye gudbi gootbee'
+        stream = io.BytesIO(data)
+        metadata = _get_upload_metadata(
+            'CSV', table._schema, table._dataset, table.name)
+        upload, transport = table._initiate_resumable_upload(
+            client, stream, metadata, num_retries)
+
+        # Check the returned values.
+        self.assertIsInstance(upload, ResumableUpload)
+        upload_url = (
+            'https://www.googleapis.com/upload/bigquery/v2/projects/' +
+            self.PROJECT +
+            '/jobs?uploadType=resumable')
+        self.assertEqual(upload.upload_url, upload_url)
+        expected_headers = _get_upload_headers(connection.USER_AGENT)
+        self.assertEqual(upload._headers, expected_headers)
+        self.assertFalse(upload.finished)
+        self.assertEqual(upload._chunk_size, _DEFAULT_CHUNKSIZE)
+        self.assertIs(upload._stream, stream)
+        self.assertIsNone(upload._total_bytes)
+        self.assertEqual(upload._content_type, _GENERIC_CONTENT_TYPE)
+        self.assertEqual(upload.resumable_url, resumable_url)
+
+        retry_strategy = upload._retry_strategy
+        self.assertEqual(retry_strategy.max_sleep, 64.0)
+        if num_retries is None:
+            self.assertEqual(retry_strategy.max_cumulative_retry, 600.0)
+            self.assertIsNone(retry_strategy.max_retries)
+        else:
+            self.assertIsNone(retry_strategy.max_cumulative_retry)
+            self.assertEqual(retry_strategy.max_retries, num_retries)
+        self.assertIs(transport, fake_transport)
+        # Make sure we never read from the stream.
+        self.assertEqual(stream.tell(), 0)
+
+        # Check the mocks.
+        table._make_transport.assert_called_once_with(client)
+        request_headers = expected_headers.copy()
+        request_headers['x-upload-content-type'] = _GENERIC_CONTENT_TYPE
+        fake_transport.request.assert_called_once_with(
+            'POST',
+            upload_url,
+            data=json.dumps(metadata).encode('utf-8'),
+            headers=request_headers,
+        )
+
+    def test__initiate_resumable_upload(self):
+        self._initiate_resumable_upload_helper()
+
+    def test__initiate_resumable_upload_with_retry(self):
+        self._initiate_resumable_upload_helper(num_retries=11)
+
+    def _do_multipart_upload_success_helper(
+            self, get_boundary, num_retries=None):
+        from google.cloud.bigquery.table import _get_upload_headers
+        from google.cloud.bigquery.table import _get_upload_metadata
+
+        connection = _Connection()
+        client = _Client(self.PROJECT, connection=connection)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset)
+
+        # Create mocks to be checked for doing transport.
+        fake_transport = self._mock_transport(http_client.OK, {})
+        table._make_transport = mock.Mock(return_value=fake_transport, spec=[])
+
+        # Create some mock arguments.
+        data = b'Bzzzz-zap \x00\x01\xf4'
+        stream = io.BytesIO(data)
+        metadata = _get_upload_metadata(
+            'CSV', table._schema, table._dataset, table.name)
+        size = len(data)
+        response = table._do_multipart_upload(
+            client, stream, metadata, size, num_retries)
+
+        # Check the mocks and the returned value.
+        self.assertIs(response, fake_transport.request.return_value)
+        self.assertEqual(stream.tell(), size)
+        table._make_transport.assert_called_once_with(client)
+        get_boundary.assert_called_once_with()
+
+        upload_url = (
+            'https://www.googleapis.com/upload/bigquery/v2/projects/' +
+            self.PROJECT +
+            '/jobs?uploadType=multipart')
+        payload = (
+            b'--==0==\r\n' +
+            b'content-type: application/json; charset=UTF-8\r\n\r\n' +
+            json.dumps(metadata).encode('utf-8') + b'\r\n' +
+            b'--==0==\r\n' +
+            b'content-type: */*\r\n\r\n' +
+            data + b'\r\n' +
+            b'--==0==--')
+        headers = _get_upload_headers(connection.USER_AGENT)
+        headers['content-type'] = b'multipart/related; boundary="==0=="'
+        fake_transport.request.assert_called_once_with(
+            'POST',
+            upload_url,
+            data=payload,
+            headers=headers,
+        )
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload(self, get_boundary):
+        self._do_multipart_upload_success_helper(get_boundary)
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload_with_retry(self, get_boundary):
+        self._do_multipart_upload_success_helper(get_boundary, num_retries=8)
+
 
 class TestTableUpload(object):
 
@@ -1996,9 +2152,6 @@ class _Client(object):
         self.project = project
         self._connection = connection
 
-    def job_from_resource(self, resource):  # pylint: disable=unused-argument
-        return self._job
-
     def run_sync_query(self, query):
         return _Query(query, self)
 
@@ -2050,14 +2203,3 @@ class _Connection(object):
             raise NotFound('miss')
         else:
             return response
-
-    def build_api_url(self, path, query_params=None,
-                      api_base_url=API_BASE_URL):
-        from six.moves.urllib.parse import urlencode
-        from six.moves.urllib.parse import urlsplit
-        from six.moves.urllib.parse import urlunsplit
-
-        # Mimic the build_api_url interface.
-        qs = urlencode(query_params or {})
-        scheme, netloc, _, _, _ = urlsplit(api_base_url)
-        return urlunsplit((scheme, netloc, path, qs, ''))

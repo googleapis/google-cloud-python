@@ -19,7 +19,9 @@ import os
 import nox
 
 
-LOCAL_DEPS = ('../core/',)
+LOCAL_DEPS = (
+    os.path.join('..', 'core'),
+)
 
 
 @nox.session
@@ -38,10 +40,17 @@ def unit_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet',
-        '--cov=google.cloud.bigquery', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=term-missing', '--cov-fail-under=97',
-        'tests/unit', *session.posargs
+    session.run(
+        'py.test',
+        '--quiet',
+        '--cov=google.cloud.bigquery',
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        '--cov-fail-under=97',
+        os.path.join('tests', 'unit'),
+        *session.posargs
     )
 
 
@@ -63,11 +72,14 @@ def system_tests(session, python_version):
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
     session.install('mock', 'pytest', *LOCAL_DEPS)
-    session.install('../storage/', '../test_utils/')
+    session.install(
+        os.path.join('..', 'storage'),
+        os.path.join('..', 'test_utils'),
+    )
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', 'tests/system.py', '--pdb')
+    session.run('py.test', '--quiet', os.path.join('tests', 'system.py'))
 
 
 @nox.session
@@ -81,7 +93,7 @@ def lint(session):
 
     session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
     session.install('.')
-    session.run('flake8', 'google/cloud/bigquery')
+    session.run('flake8', os.path.join('google', 'cloud', 'bigquery'))
     session.run('flake8', 'tests')
     session.run(
         'gcp-devrel-py-tools', 'run-pylint',
