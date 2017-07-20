@@ -40,8 +40,8 @@ def unit_tests(session, python_version):
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet',
         '--cov=google.cloud.bigquery', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
+        '--cov-config=.coveragerc', '--cov-report=term-missing', '--cov-fail-under=97',
+        'tests/unit', *session.posargs
     )
 
 

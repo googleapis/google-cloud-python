@@ -15,7 +15,6 @@
 """Define API Datasets."""
 
 import datetime
-import json
 import os
 
 import httplib2
@@ -26,7 +25,6 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
-from google.cloud._helpers import _bytes_to_unicode
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.exceptions import NotFound
@@ -50,6 +48,7 @@ _GENERIC_CONTENT_TYPE = u'*/*'
 _READ_LESS_THAN_SIZE = (
     'Size {:d} was specified but the file-like object only had '
     '{:d} bytes remaining.')
+_DEFAULT_NUM_RETRIES = 6
 
 
 class Table(object):
@@ -1004,7 +1003,7 @@ class Table(object):
                          source_format,
                          rewind=False,
                          size=None,
-                         num_retries=6,
+                         num_retries=_DEFAULT_NUM_RETRIES,
                          allow_jagged_rows=None,
                          allow_quoted_newlines=None,
                          create_disposition=None,
@@ -1213,13 +1212,6 @@ def _build_schema_resource(fields):
         infos.append(info)
     return infos
 # pylint: enable=unused-argument
-
-
-def _convert_timestamp(value):
-    """Helper for :meth:`Table.insert_data`."""
-    if isinstance(value, datetime.datetime):
-        value = _microseconds_from_datetime(value) * 1e-6
-    return value
 
 
 def _maybe_rewind(stream, rewind=False):
