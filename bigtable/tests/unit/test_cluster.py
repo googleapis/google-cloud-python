@@ -393,12 +393,14 @@ class Test__prepare_create_request(unittest.TestCase):
         instance = _Instance(INSTANCE_ID, client)
         cluster = Cluster(CLUSTER_ID, instance,
                           serve_nodes=SERVE_NODES)
+        cluster.location = u'projects/prahj-ekt/locations/zona-tres'
 
         request_pb = self._call_fut(cluster)
 
         self.assertEqual(request_pb.cluster_id, CLUSTER_ID)
         self.assertEqual(request_pb.parent, instance.name)
         self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
+        self.assertEqual(request_pb.cluster.location, cluster.location)
 
 
 def _ClusterPB(*args, **kw):
