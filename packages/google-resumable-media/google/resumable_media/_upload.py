@@ -572,7 +572,7 @@ class ResumableUpload(UploadBase):
             self._get_status_code, callback=self._make_invalid)
         if status_code == http_client.OK:
             body = self._get_body(response)
-            json_response = json.loads(body.decode('utf-8'))
+            json_response = json.loads(body.decode(u'utf-8'))
             self._bytes_uploaded = int(json_response[u'size'])
             # Tombstone the current upload so it cannot be used again.
             self._finished = True

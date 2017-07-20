@@ -574,7 +574,7 @@ class TestResumableUpload(object):
 
         total_bytes = 158
         response_body = u'{{"size": "{:d}"}}'.format(total_bytes)
-        response_body = response_body.encode('utf-8')
+        response_body = response_body.encode(u'utf-8')
         # Check status before.
         assert upload._bytes_uploaded == 0
         assert not upload._finished
