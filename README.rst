@@ -34,6 +34,7 @@ The following client libraries have **beta** support:
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
+-  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 
 **Beta** indicates that the client library for a particular service is
 mostly stable and is being prepared for release. Issues and requests
@@ -89,8 +90,10 @@ updates. See `versioning`_ for more details.
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 .. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
-.. _Cloud Spanner: https://cloud.google.com/spanner/
+.. _Cloud Spanner: https://pypi.python.org/pypi/google-cloud-spanner
 .. _Cloud Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
+.. _Google Cloud Video Intelligence: https://pypi.python.org/pypi/google-cloud-videointelligence
+.. _Video Intelligence README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/videointelligence
 .. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 
 If you need support for other Google APIs, check out the
