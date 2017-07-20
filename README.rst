@@ -34,7 +34,7 @@ The following client libraries have **beta** support:
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
--  `Cloud Video Intelligence`_ (`Video Intelligence README`_)
+-  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 
 **Beta** indicates that the client library for a particular service is
 mostly stable and is being prepared for release. Issues and requests
@@ -92,7 +92,7 @@ updates. See `versioning`_ for more details.
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
 .. _Cloud Spanner: https://pypi.python.org/pypi/google-cloud-spanner
 .. _Cloud Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
-.. _Cloud Video Intelligence: https://pypi.python.org/pypi/google-cloud-videointelligence
+.. _Google Cloud Video Intelligence: https://pypi.python.org/pypi/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/videointelligence
 .. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 
