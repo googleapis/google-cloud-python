@@ -1975,7 +1975,8 @@ class TestTableUpload(object):
                 self.EXPECTED_CONFIGURATION,
                 None)
 
-        assert json.loads(result.content) == {'size': file_obj_len}
+        content = result.content.decode('utf-8')
+        assert json.loads(content) == {'size': file_obj_len}
 
         # Verify that configuration data was passed in with the initial
         # request.
