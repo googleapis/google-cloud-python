@@ -21,9 +21,7 @@ from google.cloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
 from google.cloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
-from google.cloud.operation import Operation
-from google.cloud.operation import register_type
-
+from google.cloud.future import operation
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                               r'instances/(?P<instance>[^/]+)/clusters/'
@@ -31,9 +29,6 @@ _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
 
 DEFAULT_SERVE_NODES = 3
 """Default number of nodes to use when creating a cluster."""
-
-
-register_type(messages_v2_pb2.UpdateClusterMetadata)
 
 
 def _prepare_create_request(cluster):
@@ -208,15 +203,18 @@ class Cluster(object):
         :returns: The long-running operation corresponding to the
                   create operation.
         """
-        request_pb = _prepare_create_request(self)
-        # We expect a `google.longrunning.operations_pb2.Operation`.
         client = self._instance._client
+
+        # We expect a `google.longrunning.operations_pb2.Operation`.
+        request_pb = _prepare_create_request(self)
         operation_pb = client._instance_stub.CreateCluster(request_pb)
 
-        operation = Operation.from_pb(operation_pb, client)
-        operation.target = self
-        operation.caller_metadata['request_type'] = 'CreateCluster'
-        return operation
+        operation_future = operation.from_grpc(
+            operation_pb,
+            client._operations_stub,
+            data_v2_pb2.Cluster,
+            metadata_type=messages_v2_pb2.UpdateClusterMetadata)
+        return operation_future
 
     def update(self):
         """Update this cluster.
@@ -236,18 +234,21 @@ class Cluster(object):
         :returns: The long-running operation corresponding to the
                   update operation.
         """
+        client = self._instance._client
+
+        # We expect a `google.longrunning.operations_pb2.Operation`.
         request_pb = data_v2_pb2.Cluster(
             name=self.name,
             serve_nodes=self.serve_nodes,
         )
-        # We expect a `google.longrunning.operations_pb2.Operation`.
-        client = self._instance._client
         operation_pb = client._instance_stub.UpdateCluster(request_pb)
 
-        operation = Operation.from_pb(operation_pb, client)
-        operation.target = self
-        operation.caller_metadata['request_type'] = 'UpdateCluster'
-        return operation
+        operation_future = operation.from_grpc(
+            operation_pb,
+            client._operations_stub,
+            data_v2_pb2.Cluster,
+            metadata_type=messages_v2_pb2.UpdateClusterMetadata)
+        return operation_future
 
     def delete(self):
         """Delete this cluster.
