@@ -18,8 +18,6 @@ import re
 
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.cloud.proto.spanner.admin.database.v1 import (
-    spanner_database_admin_pb2 as admin_v1_pb2)
 from google.cloud.gapic.spanner.v1.spanner_client import SpannerClient
 from grpc import StatusCode
 import six
@@ -27,7 +25,6 @@ import six
 # pylint: disable=ungrouped-imports
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.operation import register_type
 from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.batch import Batch
@@ -43,10 +40,6 @@ _DATABASE_NAME_RE = re.compile(
     r'instances/(?P<instance_id>[a-z][-a-z0-9]*)/'
     r'databases/(?P<database_id>[a-z][a-z0-9_\-]*[a-z0-9])$'
     )
-
-register_type(admin_v1_pb2.Database)
-register_type(admin_v1_pb2.CreateDatabaseMetadata)
-register_type(admin_v1_pb2.UpdateDatabaseDdlMetadata)
 
 
 class Database(object):
@@ -205,7 +198,6 @@ class Database(object):
                 ))
             raise
 
-        future.caller_metadata = {'request_type': 'CreateDatabase'}
         return future
 
     def exists(self):
@@ -252,7 +244,7 @@ class Database(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
         """
         client = self._instance._client
@@ -267,7 +259,6 @@ class Database(object):
                 raise NotFound(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'UpdateDatabaseDdl'}
         return future
 
     def drop(self):

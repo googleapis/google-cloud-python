@@ -241,8 +241,6 @@ class TestInstance(unittest.TestCase):
         future = instance.create()
 
         self.assertIs(future, op_future)
-        self.assertEqual(future.caller_metadata,
-                         {'request_type': 'CreateInstance'})
 
         (parent, instance_id, instance, options) = api._created_instance
         self.assertEqual(parent, self.PARENT)
@@ -424,8 +422,6 @@ class TestInstance(unittest.TestCase):
         future = instance.update()
 
         self.assertIs(future, op_future)
-        self.assertEqual(future.caller_metadata,
-                         {'request_type': 'UpdateInstance'})
 
         instance, field_mask, options = api._updated_instance
         self.assertEqual(field_mask.paths,

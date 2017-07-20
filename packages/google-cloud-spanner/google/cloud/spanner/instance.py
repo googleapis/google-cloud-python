@@ -28,7 +28,6 @@ from grpc import StatusCode
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
-from google.cloud.operation import register_type
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.database import Database
 from google.cloud.spanner.pool import BurstyPool
@@ -40,10 +39,6 @@ _INSTANCE_NAME_RE = re.compile(
     r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 
 DEFAULT_NODE_COUNT = 1
-
-register_type(admin_v1_pb2.Instance)
-register_type(admin_v1_pb2.CreateInstanceMetadata)
-register_type(admin_v1_pb2.UpdateInstanceMetadata)
 
 
 class Instance(object):
@@ -204,7 +199,7 @@ class Instance(object):
 
            before calling :meth:`create`.
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
         """
         api = self._client.instance_admin_api
@@ -228,7 +223,6 @@ class Instance(object):
                 raise Conflict(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'CreateInstance'}
         return future
 
     def exists(self):
@@ -285,7 +279,7 @@ class Instance(object):
 
             before calling :meth:`update`.
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
         """
         api = self._client.instance_admin_api
@@ -309,7 +303,6 @@ class Instance(object):
                 raise NotFound(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'UpdateInstance'}
         return future
 
     def delete(self):
