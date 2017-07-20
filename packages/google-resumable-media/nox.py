@@ -42,9 +42,14 @@ def unit_tests(session, python_version):
     line_coverage = '--cov-fail-under=99'
     session.run(
         'py.test',
-        '--cov=google.resumable_media', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', line_coverage,
+        '--cov=google.resumable_media',
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        line_coverage,
         os.path.join('tests', 'unit'),
+        *session.posargs
     )
 
 
@@ -102,7 +107,8 @@ def lint(session):
     session.run(
         'flake8',
         os.path.join('google', 'resumable_media'),
-        'tests')
+        'tests',
+    )
 
 
 @nox.session
@@ -140,7 +146,11 @@ def system_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the system tests.
-    session.run('py.test', os.path.join('tests', 'system'))
+    session.run(
+        'py.test',
+        os.path.join('tests', 'system'),
+        *session.posargs
+    )
 
 
 @nox.session

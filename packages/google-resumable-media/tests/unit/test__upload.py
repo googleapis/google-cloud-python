@@ -557,7 +557,7 @@ class TestResumableUpload(object):
         assert not upload.invalid
         response = _make_response(status_code=http_client.NOT_FOUND)
         with pytest.raises(common.InvalidResponse) as exc_info:
-            upload._process_response(response)
+            upload._process_response(response, None)
 
         error = exc_info.value
         assert error.response is response
@@ -572,16 +572,20 @@ class TestResumableUpload(object):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
-        total_bytes = 158
+        # Check / set status before.
+        assert upload._bytes_uploaded == 0
+        upload._bytes_uploaded = 20
+        assert not upload._finished
+
+        # Set the response body.
+        bytes_sent = 158
+        total_bytes = upload._bytes_uploaded + bytes_sent
         response_body = u'{{"size": "{:d}"}}'.format(total_bytes)
         response_body = response_body.encode(u'utf-8')
-        # Check status before.
-        assert upload._bytes_uploaded == 0
-        assert not upload._finished
         response = mock.Mock(
             content=response_body, status_code=http_client.OK,
             spec=[u'content', u'status_code'])
-        ret_val = upload._process_response(response)
+        ret_val = upload._process_response(response, bytes_sent)
         assert ret_val is None
         # Check status after.
         assert upload._bytes_uploaded == total_bytes
@@ -596,7 +600,7 @@ class TestResumableUpload(object):
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
         with pytest.raises(common.InvalidResponse) as exc_info:
-            upload._process_response(response)
+            upload._process_response(response, None)
         # Make sure the upload is invalid after the failure.
         assert upload.invalid
 
@@ -616,7 +620,7 @@ class TestResumableUpload(object):
         response = _make_response(
             status_code=resumable_media.PERMANENT_REDIRECT, headers=headers)
         with pytest.raises(common.InvalidResponse) as exc_info:
-            upload._process_response(response)
+            upload._process_response(response, 81)
 
         # Check the error response.
         error = exc_info.value
@@ -635,7 +639,7 @@ class TestResumableUpload(object):
         headers = {u'range': u'bytes=0-171'}
         response = _make_response(
             status_code=resumable_media.PERMANENT_REDIRECT, headers=headers)
-        ret_val = upload._process_response(response)
+        ret_val = upload._process_response(response, 172)
         assert ret_val is None
         # Check status after.
         assert upload._bytes_uploaded == 172
@@ -932,14 +936,9 @@ def _get_headers(response):
     return response.headers
 
 
-def _get_body(response):
-    return response.content
-
-
 def _fix_up_virtual(upload):
     upload._get_status_code = _get_status_code
     upload._get_headers = _get_headers
-    upload._get_body = _get_body
 
 
 def _check_retry_strategy(upload):

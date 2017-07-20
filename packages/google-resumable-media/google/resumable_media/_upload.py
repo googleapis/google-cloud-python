@@ -548,7 +548,7 @@ class ResumableUpload(UploadBase):
         """
         self._invalid = True
 
-    def _process_response(self, response):
+    def _process_response(self, response, bytes_sent):
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
@@ -557,6 +557,8 @@ class ResumableUpload(UploadBase):
 
         Args:
             response (object): The HTTP response object.
+            bytes_sent (int): The number of bytes sent in the request that
+                ``response`` was returned for.
 
         Raises:
             ~google.resumable_media.common.InvalidResponse: If the status
@@ -571,9 +573,15 @@ class ResumableUpload(UploadBase):
             response, (http_client.OK, resumable_media.PERMANENT_REDIRECT),
             self._get_status_code, callback=self._make_invalid)
         if status_code == http_client.OK:
-            body = self._get_body(response)
-            json_response = json.loads(body.decode(u'utf-8'))
-            self._bytes_uploaded = int(json_response[u'size'])
+            # NOTE: We use the "local" information of ``bytes_sent`` to update
+            #       ``bytes_uploaded``, but do not verify this against other
+            #       state. However, there may be some other information:
+            #
+            #       * a ``size`` key in JSON response body
+            #       * the ``total_bytes`` attribute (if set)
+            #       * ``stream.tell()`` (relying on fact that ``initiate()``
+            #         requires stream to be at the beginning)
+            self._bytes_uploaded = self._bytes_uploaded + bytes_sent
             # Tombstone the current upload so it cannot be used again.
             self._finished = True
         else:

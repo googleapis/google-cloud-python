@@ -393,7 +393,7 @@ class ResumableUpload(_helpers.RequestsMixin, _upload.ResumableUpload):
         result = _helpers.http_request(
             transport, method, url, data=payload, headers=headers,
             retry_strategy=self._retry_strategy)
-        self._process_response(result)
+        self._process_response(result, len(payload))
         return result
 
     def recover(self, transport):
