@@ -21,6 +21,7 @@ from google.gax.utils.messages import get_messages
 
 names = []
 for name, message in get_messages(video_intelligence_pb2).items():
+    message.__module__ = 'google.cloud.videointelligence_v1beta1.types'
     setattr(sys.modules[__name__], name, message)
     names.append(name)
 
