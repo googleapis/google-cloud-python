@@ -64,6 +64,6 @@ how to create a bucket.
     blob2.upload_from_filename(filename='/local/path.txt')
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
-   :target: https://pypi.python.org/pypi/google-cloud-storage
+   :target: https://pypi.org/project/google-cloud-storage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg
-   :target: https://pypi.python.org/pypi/google-cloud-storage
+   :target: https://pypi.org/project/google-cloud-storage/
