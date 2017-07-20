@@ -312,8 +312,6 @@ class TestDatabase(_BaseTest):
         future = database.create()
 
         self.assertIs(future, op_future)
-        self.assertEqual(future.caller_metadata,
-                         {'request_type': 'CreateDatabase'})
 
         (parent, create_statement, extra_statements,
          options) = api._created_database
@@ -493,8 +491,6 @@ class TestDatabase(_BaseTest):
         future = database.update_ddl(DDL_STATEMENTS)
 
         self.assertIs(future, op_future)
-        self.assertEqual(future.caller_metadata,
-                         {'request_type': 'UpdateDatabaseDdl'})
 
         name, statements, op_id, options = api._updated_database_ddl
         self.assertEqual(name, self.DATABASE_NAME)
