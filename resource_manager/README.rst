@@ -45,6 +45,6 @@ how to manage projects using this Client Library.
 .. _Resource Manager documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/resource-manager/api.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
-   :target: https://pypi.python.org/pypi/google-cloud-resource-manager
+   :target: https://pypi.org/project/google-cloud-resource-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-manager.svg
-   :target: https://pypi.python.org/pypi/google-cloud-resource-manager
+   :target: https://pypi.org/project/google-cloud-resource-manager/

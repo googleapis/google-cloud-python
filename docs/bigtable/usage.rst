@@ -40,4 +40,4 @@ In the hierarchy of API concepts
 
 .. _Google Cloud Bigtable: https://cloud.google.com/bigtable/docs/
 .. _gRPC: http://www.grpc.io/
-.. _grpcio: https://pypi.python.org/pypi/grpcio
+.. _grpcio: https://pypi.org/project/grpcio/

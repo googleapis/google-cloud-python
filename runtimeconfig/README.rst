@@ -48,6 +48,6 @@ See the ``google-cloud-python`` API runtimeconfig `Documentation`_ to learn
 how to interact with Cloud RuntimeConfig using this Client Library.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg
-   :target: https://pypi.python.org/pypi/google-cloud-runtimeconfig
+   :target: https://pypi.org/project/google-cloud-runtimeconfig/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-runtimeconfig.svg
-   :target: https://pypi.python.org/pypi/google-cloud-runtimeconfig
+   :target: https://pypi.org/project/google-cloud-runtimeconfig/

@@ -67,6 +67,6 @@ how to activate Cloud Datastore for your project.
         print(result)
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
-   :target: https://pypi.python.org/pypi/google-cloud-datastore
+   :target: https://pypi.org/project/google-cloud-datastore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastore.svg
-   :target: https://pypi.python.org/pypi/google-cloud-datastore
+   :target: https://pypi.org/project/google-cloud-datastore/

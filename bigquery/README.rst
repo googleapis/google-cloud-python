@@ -89,6 +89,6 @@ to connect to BigQuery using this Client Library.
 .. _BigQuery documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery/usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery.svg
-   :target: https://pypi.python.org/pypi/google-cloud-bigquery
+   :target: https://pypi.org/project/google-cloud-bigquery/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery.svg
-   :target: https://pypi.python.org/pypi/google-cloud-bigquery
+   :target: https://pypi.org/project/google-cloud-bigquery/

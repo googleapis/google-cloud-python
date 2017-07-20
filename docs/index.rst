@@ -73,4 +73,4 @@ Resources
 * `GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>`__
 * `Issues <https://github.com/GoogleCloudPlatform/google-cloud-python/issues>`__
 * `Stack Overflow <http://stackoverflow.com/questions/tagged/google-cloud-python>`__
-* `PyPI <https://pypi.python.org/pypi/google-cloud>`__
+* `PyPI <https://pypi.org/project/google-cloud/>`__
