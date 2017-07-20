@@ -837,21 +837,6 @@ class _MockCancellableIterator(object):
         return self.next()
 
 
-class _PartialResultSetPB(object):
-
-    resume_token = b'DEADBEEF'
-
-    def __init__(self, values, metadata=None, stats=None, chunked_value=False):
-        self.values = values
-        self.metadata = metadata
-        self.stats = stats
-        self.chunked_value = chunked_value
-
-    def HasField(self, name):
-        assert name == 'stats'
-        return self.stats is not None
-
-
 class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
 
     _json_tests = None

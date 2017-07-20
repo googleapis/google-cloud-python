@@ -197,8 +197,11 @@ class Test_SnapshotBase(unittest.TestCase):
     def test_read_wo_multi_use(self):
         self._read_helper(multi_use=False)
 
-    def test_read_w_multi_use(self):
-        self._read_helper(multi_use=True)
+    def test_read_w_multi_use_wo_first(self):
+        self._read_helper(multi_use=True, first=False)
+
+    def test_read_w_multi_use_w_first(self):
+        self._read_helper(multi_use=True, first=True)
 
     def test_execute_sql_grpc_error(self):
         from google.cloud.proto.spanner.v1.transaction_pb2 import (
