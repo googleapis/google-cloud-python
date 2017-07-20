@@ -49,6 +49,7 @@ def _prepare_create_request(cluster):
         parent=cluster._instance.name,
         cluster_id=cluster.cluster_id,
         cluster=data_v2_pb2.Cluster(
+            location=cluster.location,
             serve_nodes=cluster.serve_nodes,
         ),
     )
