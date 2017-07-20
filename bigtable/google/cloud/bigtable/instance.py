@@ -26,17 +26,12 @@ from google.cloud.bigtable._generated import (
 from google.cloud.bigtable.cluster import Cluster
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.table import Table
-from google.cloud.operation import Operation
-from google.cloud.operation import register_type
+from google.cloud.future import operation
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
-
-
-register_type(messages_v2_pb2.CreateInstanceMetadata)
-register_type(data_v2_pb2.Instance)
 
 
 def _prepare_create_request(instance):
@@ -232,10 +227,12 @@ class Instance(object):
         # We expect a `google.longrunning.operations_pb2.Operation`.
         operation_pb = self._client._instance_stub.CreateInstance(request_pb)
 
-        operation = Operation.from_pb(operation_pb, self._client)
-        operation.target = self
-        operation.caller_metadata['request_type'] = 'CreateInstance'
-        return operation
+        operation_future = operation.from_grpc(
+            operation_pb,
+            self._client._operations_stub,
+            data_v2_pb2.Instance,
+            metadata_type=messages_v2_pb2.CreateInstanceMetadata)
+        return operation_future
 
     def update(self):
         """Update this instance.
