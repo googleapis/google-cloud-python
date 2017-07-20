@@ -35,3 +35,8 @@ learning models in an easy to use REST API.
 
 .. _Video Intelligence: https://cloud.google.com/videointelligence/
 .. _Video Intelligence API docs: https://cloud.google.com/videointelligence/reference/rest/
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-videointelligence.svg
+   :target: https://pypi.org/project/google-cloud-videointelligence/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-videointelligence.svg
+   :target: https://pypi.org/project/google-cloud-videointelligence/
