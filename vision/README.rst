@@ -50,6 +50,6 @@ See the ``google-cloud-python`` API `Documentation`_ to learn
 how to analyze images using this library.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vision.svg
-   :target: https://pypi.python.org/pypi/google-cloud-vision
+   :target: https://pypi.org/project/google-cloud-vision/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vision.svg
-   :target: https://pypi.python.org/pypi/google-cloud-vision
+   :target: https://pypi.org/project/google-cloud-vision/

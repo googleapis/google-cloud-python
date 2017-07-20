@@ -40,5 +40,4 @@ In the hierarchy of API concepts
 
 .. _Cloud Spanner: https://cloud.google.com/spanner/docs/
 .. _gRPC: http://www.grpc.io/
-.. _grpcio: https://pypi.python.org/pypi/grpcio
-
+.. _grpcio: https://pypi.org/project/grpcio/

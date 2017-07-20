@@ -46,6 +46,6 @@ See the ``google-cloud-python`` API Natural Language `Documentation`_ to learn
 how to analyze text with this API.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-language.svg
-   :target: https://pypi.python.org/pypi/google-cloud-language
+   :target: https://pypi.org/project/google-cloud-language/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
-   :target: https://pypi.python.org/pypi/google-cloud-language
+   :target: https://pypi.org/project/google-cloud-language/
