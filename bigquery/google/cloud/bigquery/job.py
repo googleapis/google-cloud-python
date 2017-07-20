@@ -15,6 +15,7 @@
 """Define API Jobs."""
 
 import threading
+import warnings
 
 import six
 
@@ -86,17 +87,23 @@ class WriteDisposition(_EnumProperty):
     ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
 
 
-class _BaseJob(google.cloud.future.base.PollingFuture):
-    """Base class for jobs.
+class _AsyncJob(google.cloud.future.base.PollingFuture):
+    """Base class for asynchronous jobs.
+
+    :type name: str
+    :param name: the name of the job
 
     :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
-    def __init__(self, client):
-        super(_BaseJob, self).__init__()
+    def __init__(self, name, client):
+        super(_AsyncJob, self).__init__()
+        self.name = name
         self._client = client
         self._properties = {}
+        self._result_set = False
+        self._completion_lock = threading.Lock()
 
     @property
     def project(self):
@@ -121,23 +128,6 @@ class _BaseJob(google.cloud.future.base.PollingFuture):
         if client is None:
             client = self._client
         return client
-
-
-class _AsyncJob(_BaseJob):
-    """Base class for asynchronous jobs.
-
-    :type name: str
-    :param name: the name of the job
-
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
-    """
-    def __init__(self, name, client):
-        super(_AsyncJob, self).__init__(client)
-        self.name = name
-        self._result_set = False
-        self._completion_lock = threading.Lock()
 
     @property
     def job_type(self):
@@ -407,10 +397,10 @@ class _AsyncJob(_BaseJob):
             # set, do not call set_result/set_exception again.
             # Note: self._result_set is set to True in set_result and
             # set_exception, in case those methods are invoked directly.
-            if not self.state != 'DONE' or self._result_set:
+            if self.state != 'DONE' or self._result_set:
                 return
 
-            if self.error_result:
+            if self.error_result is not None:
                 exception = exceptions.GoogleCloudError(
                     self.error_result, errors=self.errors)
                 self.set_exception(exception)
@@ -418,6 +408,11 @@ class _AsyncJob(_BaseJob):
                 self.set_result(self)
 
     def done(self):
+        """Refresh the job and checks if it is complete.
+
+        :rtype: bool
+        :returns: True if the job is complete, False otherwise.
+        """
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
         if self.state != 'DONE':
@@ -425,11 +420,33 @@ class _AsyncJob(_BaseJob):
         return self.state == 'DONE'
 
     def result(self, timeout=None):
+        """Start the job and wait for it to complete and get the result.
+
+        :type timeout: int
+        :param timeout: How long to wait for job to complete before raising
+            a :class:`TimeoutError`.
+
+        :rtype: _AsyncJob
+        :returns: This instance.
+
+        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
+            failed or  :class:`TimeoutError` if the job did not complete in the
+            given timeout.
+        """
         if self.state is None:
             self.begin()
         return super(_AsyncJob, self).result(timeout=timeout)
 
     def cancelled(self):
+        """Check if the job has been cancelled.
+
+        This always returns False. It's not possible to check if a job was
+        cancelled in the API. This method is here to satisfy the interface
+        for :class:`google.cloud.future.Future`.
+
+        :rtype: bool
+        :returns: False
+        """
         return False
 
 
@@ -1181,7 +1198,7 @@ class QueryJob(_AsyncJob):
         job._set_properties(resource)
         return job
 
-    def results(self):
+    def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
         :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
@@ -1190,7 +1207,35 @@ class QueryJob(_AsyncJob):
         from google.cloud.bigquery.query import QueryResults
         return QueryResults.from_query_job(self)
 
+    def results(self):
+        """DEPRECATED.
+
+        This method is deprecated. Use :meth:`query_results` or :meth:`result`.
+
+        Construct a QueryResults instance, bound to this job.
+
+        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
+        :returns: The query results.
+        """
+        warnings.warn(
+            'QueryJob.results() is deprecated. Please use query_results() or '
+            'result().', DeprecationWarning)
+        return self.query_results()
+
     def result(self, timeout=None):
+        """Start the job and wait for it to complete and get the result.
+
+        :type timeout: int
+        :param timeout: How long to wait for job to complete before raising
+            a :class:`TimeoutError`.
+
+        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
+        :returns: The query results.
+
+        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
+            failed or  :class:`TimeoutError` if the job did not complete in the
+            given timeout.
+        """
         super(QueryJob, self).result(timeout=timeout)
         # Return a QueryResults instance instead of returning the job.
-        return self.results()
+        return self.query_results()

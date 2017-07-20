@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
+import warnings
+
 import unittest
 
 
@@ -1514,14 +1517,75 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
-    def test_results(self):
+    def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
         client = _Client(self.PROJECT)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
-        results = job.results()
+        results = job.query_results()
         self.assertIsInstance(results, QueryResults)
         self.assertIs(results._job, job)
+
+    def test_results_is_deprecated(self):
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+
+        with warnings.catch_warnings(record=True) as warned:
+            warnings.simplefilter('always')
+            job.results()
+            self.assertEqual(len(warned), 1)
+            self.assertIn('deprecated', str(warned[0]))
+
+    def test_result(self):
+        from google.cloud.bigquery.query import QueryResults
+
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        job._properties['status'] = {'state': 'DONE'}
+
+        result = job.result()
+
+        self.assertIsInstance(result, QueryResults)
+        self.assertIs(result._job, job)
+
+    def test_result_invokes_begins(self):
+        begun_resource = self._makeResource()
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(begun_resource, done_resource)
+        client = _Client(self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+
+        job.result()
+
+        self.assertEqual(len(connection._requested), 2)
+        begin_request, reload_request = connection._requested
+        self.assertEqual(begin_request['method'], 'POST')
+        self.assertEqual(reload_request['method'], 'GET')
+
+    def test_result_error(self):
+        from google.cloud import exceptions
+
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        error_result = {
+            'debugInfo': 'DEBUG',
+            'location': 'LOCATION',
+            'message': 'MESSAGE',
+            'reason': 'REASON'
+        }
+        job._properties['status'] = {
+            'errorResult': error_result,
+            'errors': [error_result],
+            'state': 'DONE'
+        }
+        job._set_future_result()
+
+        with self.assertRaises(exceptions.GoogleCloudError) as exc_info:
+            job.result()
+
+        self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
+        self.assertEqual(exc_info.exception.errors, [error_result])
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
