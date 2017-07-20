@@ -47,6 +47,6 @@ See the ``google-cloud-python`` API Error Reporting `Documentation`_ to learn
 how to get started using this library.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
-   :target: https://pypi.python.org/pypi/google-cloud-error-reporting
+   :target: https://pypi.org/project/google-cloud-error-reporting/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-error-reporting.svg
-   :target: https://pypi.python.org/pypi/google-cloud-error-reporting
+   :target: https://pypi.org/project/google-cloud-error-reporting/

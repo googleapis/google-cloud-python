@@ -57,6 +57,6 @@ connect to Stackdriver Logging using this Client Library.
 .. _logging documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/logging/usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg
-   :target: https://pypi.python.org/pypi/google-cloud-logging
+   :target: https://pypi.org/project/google-cloud-logging/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-logging.svg
-   :target: https://pypi.python.org/pypi/google-cloud-logging
+   :target: https://pypi.org/project/google-cloud-logging/

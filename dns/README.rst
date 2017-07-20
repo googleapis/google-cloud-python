@@ -42,6 +42,6 @@ See the ``google-cloud-python`` API DNS `Documentation`_ to learn
 how to manage DNS records using this Client Library.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
-   :target: https://pypi.python.org/pypi/google-cloud-dns
+   :target: https://pypi.org/project/google-cloud-dns/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dns.svg
-   :target: https://pypi.python.org/pypi/google-cloud-dns
+   :target: https://pypi.org/project/google-cloud-dns/

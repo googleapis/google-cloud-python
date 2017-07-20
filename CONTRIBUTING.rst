@@ -402,7 +402,7 @@ instead of
 ``https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.python.org/pypi/google-cloud
+.. _description on PyPI: https://pypi.org/project/google-cloud/
 
 ********************************************
 Travis Configuration and Build Optimizations
