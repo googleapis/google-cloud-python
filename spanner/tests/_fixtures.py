@@ -38,6 +38,10 @@ CREATE TABLE all_types (
     description STRING(16),
     exactly_hwhen TIMESTAMP)
     PRIMARY KEY (eye_d);
+CREATE TABLE counters (
+    name STRING(1024),
+    value INT64 )
+    PRIMARY KEY (name);
 """
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]
