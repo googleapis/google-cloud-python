@@ -67,6 +67,6 @@ to connect to Stackdriver Monitoring using this Client Library.
 .. _monitoring documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/monitoring/usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
-   :target: https://pypi.python.org/pypi/google-cloud-monitoring
+   :target: https://pypi.org/project/google-cloud-monitoring/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
-   :target: https://pypi.python.org/pypi/google-cloud-monitoring
+   :target: https://pypi.org/project/google-cloud-monitoring/
