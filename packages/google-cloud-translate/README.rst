@@ -42,6 +42,6 @@ See the ``google-cloud-python`` API Translation `Documentation`_ to learn
 how to translate text using this library.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg
-   :target: https://pypi.python.org/pypi/google-cloud-translate
+   :target: https://pypi.org/project/google-cloud-translate/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-translate.svg
-   :target: https://pypi.python.org/pypi/google-cloud-translate
+   :target: https://pypi.org/project/google-cloud-translate/
