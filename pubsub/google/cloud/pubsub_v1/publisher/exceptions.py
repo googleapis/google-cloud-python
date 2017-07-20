@@ -14,3 +14,7 @@
 
 class PublishError(RuntimeError):
     pass
+
+
+class TimeoutError(RuntimeError):
+    pass
