@@ -32,7 +32,6 @@ from google.cloud.bigtable.row_data import PartialRowData
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from test_utils.retry import RetryErrors
-from test_utils.retry import RetryResult
 from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
@@ -63,27 +62,6 @@ class Config(object):
     CLIENT = None
     INSTANCE = None
     IN_EMULATOR = False
-
-
-def _wait_until_complete(operation, max_attempts=5):
-    """Wait until an operation has completed.
-
-    :type operation: :class:`google.cloud.operation.Operation`
-    :param operation: Operation that has not completed.
-
-    :type max_attempts: int
-    :param max_attempts: (Optional) The maximum number of times to check if
-                         the operation has completed. Defaults to 5.
-
-    :rtype: bool
-    :returns: Boolean indicating if the operation is complete.
-    """
-
-    def _operation_complete(result):
-        return result
-
-    retry = RetryResult(_operation_complete, max_tries=max_attempts)
-    return retry(operation.poll)()
 
 
 def _retry_on_unavailable(exc):
@@ -117,8 +95,7 @@ def setUpModule():
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create()
-        if not _wait_until_complete(created_op):
-            raise RuntimeError('Instance creation exceed 5 seconds.')
+        created_op.result(timeout=10)
 
 
 def tearDownModule():
@@ -166,7 +143,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        self.assertTrue(_wait_until_complete(operation))
+        operation.result(timeout=10)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
