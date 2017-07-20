@@ -14,6 +14,7 @@
 
 """Mocks used to emulate gRPC generated objects."""
 
+
 class _FakeStub(object):
     """Acts as a gPRC stub."""
 
@@ -26,16 +27,6 @@ class _FakeStub(object):
         # since __getattribute__ will handle them.
         return _MethodMock(name, self)
 
-class _CustomFakeStub(object):
-    """Acts as a gRPC stub.  Generates a result using an injected callable."""
-    def __init__(self, result_callable):
-        self.result_callable = result_callable
-        self.method_calls = []
-
-    def __getattr__(self, name):
-        # We need not worry about attributes set in constructor
-        # since __getattribute__ will handle them.
-        return _CustomMethodMock(name, self)
 
 class _MethodMock(object):
     """Mock for API method attached to a gRPC stub.
@@ -51,19 +42,5 @@ class _MethodMock(object):
         """Sync method meant to mock a gRPC stub request."""
         self._stub.method_calls.append((self._name, args, kwargs))
         curr_result, self._stub.results = (self._stub.results[0],
-                                       self._stub.results[1:])
+                                           self._stub.results[1:])
         return curr_result
-
-class _CustomMethodMock(object):
-    """
-    Same as _MethodMock, but backed by an injected callable.
-    """
-
-    def __init__(self, name, stub):
-        self._name = name
-        self._stub = stub
-
-    def __call__(self, *args, **kwargs):
-        """Sync method meant to mock a gRPC stub request."""
-        self._stub.method_calls.append((self._name, args, kwargs))
-        return self._stub.result_callable()

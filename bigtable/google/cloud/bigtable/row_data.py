@@ -274,9 +274,6 @@ class PartialRowsData(object):
 
             self._validate_chunk(chunk)
 
-            if hasattr(self._response_iterator, 'set_start_key'):
-                self._response_iterator.set_start_key(chunk.row_key)
-
             if chunk.reset_row:
                 row = self._row = None
                 cell = self._cell = self._previous_cell = None
