@@ -21,7 +21,7 @@ class TestConnection(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.translate._http import Connection
+        from google.cloud.translate_v2._http import Connection
 
         return Connection
 
@@ -57,7 +57,7 @@ class TestConnection(unittest.TestCase):
 
     def test_extra_headers(self):
         from google.cloud import _http as base_http
-        from google.cloud.translate import _http as MUT
+        from google.cloud.translate_v2 import _http as MUT
 
         http = mock.Mock(spec=['request'])
         response = mock.Mock(status=200, spec=['status'])

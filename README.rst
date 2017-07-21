@@ -20,6 +20,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
+-  `Google Cloud Translation`_ (`Translation README`_)
 
 **GA** (general availability) indicates that the client library for a
 particular service is stable, and that the code surface will not change in
@@ -33,7 +34,6 @@ The following client libraries have **beta** support:
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
--  `Google Cloud Translation`_ (`Translation README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 
 **Beta** indicates that the client library for a particular service is
