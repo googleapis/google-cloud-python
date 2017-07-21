@@ -19,6 +19,7 @@ import operator
 import os
 import time
 import unittest
+import uuid
 
 from google.cloud import bigquery
 from google.cloud._helpers import UTC
@@ -1012,6 +1013,15 @@ class TestBigQuery(unittest.TestCase):
         iterator = query.fetch_data()
         rows = list(iterator)
         self.assertEqual(len(rows), LIMIT)
+
+    def test_async_query_future(self):
+        query_job = Config.CLIENT.run_async_query(
+            str(uuid.uuid4()), 'SELECT 1')
+        query_job.use_legacy_sql = False
+
+        iterator = query_job.result().fetch_data()
+        rows = list(iterator)
+        self.assertEqual(rows, [(1,)])
 
     def test_insert_nested_nested(self):
         # See #2951
