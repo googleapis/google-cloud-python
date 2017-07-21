@@ -29,7 +29,7 @@ REQUIREMENTS = [
 
 setuptools.setup(
     name='google-resumable-media',
-    version='0.2.0',
+    version='0.2.1',
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
