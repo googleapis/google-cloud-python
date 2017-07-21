@@ -1718,6 +1718,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
 
 class TestTableUpload(object):
+    # NOTE: This is a "partner" to `TestTable` meant to test some of the
+    #       "upload" portions of `Table`. It also uses `pytest`-style tests
+    #       rather than `unittest`-style.
 
     @staticmethod
     def _make_table():
