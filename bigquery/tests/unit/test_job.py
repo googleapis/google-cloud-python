@@ -189,6 +189,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                              config['allowQuotedNewlines'])
         else:
             self.assertIsNone(job.allow_quoted_newlines)
+        if 'autodetect' in config:
+            self.assertEqual(job.autodetect_schema,
+                             config['autodetect'])
+        else:
+            self.assertIsNone(job.autodetect_schema)
         if 'ignoreUnknownValues' in config:
             self.assertEqual(job.ignore_unknown_values,
                              config['ignoreUnknownValues'])
@@ -277,6 +282,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         # set/read from resource['configuration']['load']
         self.assertIsNone(job.allow_jagged_rows)
         self.assertIsNone(job.allow_quoted_newlines)
+        self.assertIsNone(job.autodetect_schema)
         self.assertIsNone(job.create_disposition)
         self.assertIsNone(job.encoding)
         self.assertIsNone(job.field_delimiter)
@@ -325,6 +331,41 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         job.schema = [full_name, age]
         self.assertEqual(job.schema, [full_name, age])
+
+    def test_schema_setter_w_autodetect(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = _Client(self.PROJECT)
+        table = _Table()
+        full_name = SchemaField('full_name', 'STRING')
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job.autodetect_schema = False
+        job.schema = [full_name]
+        self.assertEqual(job.schema, [full_name])
+
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job.autodetect_schema = True
+        with self.assertRaises(ValueError):
+            job.schema = [full_name]
+
+    def test_autodetect_setter_w_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = _Client(self.PROJECT)
+        table = _Table()
+        full_name = SchemaField('full_name', 'STRING')
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+
+        job.autodetect_schema = True
+        job.schema = []
+        self.assertEqual(job.schema, [])
+
+        job.autodetect_schema = False
+        job.schema = [full_name]
+        self.assertEqual(job.autodetect_schema, False)
+
+        with self.assertRaises(ValueError):
+            job.autodetect_schema = True
 
     def test_props_set_by_server(self):
         import datetime
@@ -485,6 +526,46 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                         'datasetId': self.DS_NAME,
                         'tableId': self.TABLE_NAME,
                     },
+                },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_autodetect(self):
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
+        RESOURCE = self._makeResource()
+        RESOURCE['configuration']['load']['autodetect'] = True
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        table = _Table()
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job.autodetect_schema = True
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'load': {
+                    'sourceUris': [self.SOURCE1],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.TABLE_NAME,
+                    },
+                    'autodetect': True
                 },
             },
         }
