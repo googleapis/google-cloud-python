@@ -83,7 +83,10 @@ def _error_result_to_exception(error_result):
     # make_exception expects an httplib2 response object.
     fake_response = _FakeResponse(status=status_code)
     return exceptions.make_exception(
-        fake_response, b'', error_info=error_result, use_json=False)
+        fake_response,
+        error_result.get('message', ''),
+        error_info=error_result,
+        use_json=False)
 
 
 class Compression(_EnumProperty):
