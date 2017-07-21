@@ -19,7 +19,7 @@ from six.moves import http_client
 import unittest
 
 
-class TestErrorResultToException(unittest.TestCase):
+class Test__error_result_to_exception(unittest.TestCase):
     def _call_fut(self, *args, **kwargs):
         from google.cloud.bigquery import job
         return job._error_result_to_exception(*args, **kwargs)

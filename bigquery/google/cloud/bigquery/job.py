@@ -36,7 +36,7 @@ from google.cloud.bigquery._helpers import _TypedProperty
 import google.cloud.future.base
 
 _DONE_STATE = 'DONE'
-
+_STOPPED_REASON = 'stopped'
 
 _ERROR_REASON_TO_EXCEPTION = {
     'accessDenied': http_client.FORBIDDEN,
@@ -63,7 +63,20 @@ _FakeResponse = collections.namedtuple('_FakeResponse', ['status'])
 
 
 def _error_result_to_exception(error_result):
-    """"""
+    """Maps BigQuery error reasons to an exception.
+
+    The reasons and their matching HTTP status codes are documented on
+    the `troubleshooting errors`_ page.
+
+    .. _troubleshooting errors: https://cloud.google.com/bigquery\
+        /troubleshooting-errors
+
+    :type error_result: Mapping[str, str]
+    :param error_result: The error result from BigQuery.
+
+    :rtype google.cloud.exceptions.GoogleCloudError:
+    :returns: The mapped exception.
+    """
     reason = error_result.get('reason')
     status_code = _ERROR_REASON_TO_EXCEPTION.get(
         reason, http_client.INTERNAL_SERVER_ERROR)
@@ -488,7 +501,7 @@ class _AsyncJob(google.cloud.future.base.PollingFuture):
         :returns: False
         """
         return (self.error_result is not None
-                and self.error_result.get('reason') == 'stopped')
+                and self.error_result.get('reason') == _STOPPED_REASON)
 
 
 class _LoadConfiguration(object):
