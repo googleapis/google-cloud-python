@@ -368,6 +368,7 @@ class Blob(_PropertyMixin):
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
         :rtype transport:
             :class:`~google.auth.transport.requests.AuthorizedSession`
         :returns: The transport (with credentials) that will

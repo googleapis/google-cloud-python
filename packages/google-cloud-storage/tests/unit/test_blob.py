@@ -775,7 +775,7 @@ class Test_Blob(unittest.TestCase):
         blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
         # Create some mock arguments.
-        client = mock.sentinel.mock
+        client = mock.sentinel.client
         data = b'data here hear hier'
         stream = io.BytesIO(data)
         content_type = u'application/xml'
@@ -865,7 +865,7 @@ class Test_Blob(unittest.TestCase):
         blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
         # Create some mock arguments and call the method under test.
-        client = mock.sentinel.mock
+        client = mock.sentinel.client
         data = b'hello hallo halo hi-low'
         stream = io.BytesIO(data)
         content_type = u'text/plain'
@@ -1033,7 +1033,7 @@ class Test_Blob(unittest.TestCase):
         blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
         # Create some mock arguments and call the method under test.
-        client = mock.sentinel.mock
+        client = mock.sentinel.client
         stream = io.BytesIO(data)
         content_type = u'text/html'
         response = blob._do_resumable_upload(
@@ -1271,7 +1271,7 @@ class Test_Blob(unittest.TestCase):
         # Create some mock arguments and call the method under test.
         content_type = u'text/plain'
         size = 10000
-        client = mock.sentinel.mock
+        client = mock.sentinel.client
         new_url = blob.create_resumable_upload_session(
             content_type=content_type, size=size,
             origin=origin, client=client)
