@@ -33,6 +33,8 @@ from google.cloud.bigquery._helpers import _EnumProperty
 from google.cloud.bigquery._helpers import _TypedProperty
 import google.cloud.future.base
 
+_DONE_STATE = 'DONE'
+
 
 class Compression(_EnumProperty):
     """Pseudo-enum for ``compression`` properties."""
@@ -380,6 +382,8 @@ class _AsyncJob(google.cloud.future.base.PollingFuture):
         api_response = client._connection.api_request(
             method='POST', path='%s/cancel' % (self.path,))
         self._set_properties(api_response['job'])
+        # The Future interface requires that we return True if the *attempt*
+        # to cancel was successful.
         return True
 
     # The following methods implement the PollingFuture interface. Note that
@@ -397,7 +401,7 @@ class _AsyncJob(google.cloud.future.base.PollingFuture):
             # set, do not call set_result/set_exception again.
             # Note: self._result_set is set to True in set_result and
             # set_exception, in case those methods are invoked directly.
-            if self.state != 'DONE' or self._result_set:
+            if self.state != _DONE_STATE or self._result_set:
                 return
 
             if self.error_result is not None:
@@ -415,9 +419,9 @@ class _AsyncJob(google.cloud.future.base.PollingFuture):
         """
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
-        if self.state != 'DONE':
+        if self.state != _DONE_STATE:
             self.reload()
-        return self.state == 'DONE'
+        return self.state == _DONE_STATE
 
     def result(self, timeout=None):
         """Start the job and wait for it to complete and get the result.
