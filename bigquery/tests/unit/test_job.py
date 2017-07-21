@@ -15,7 +15,28 @@
 import copy
 import warnings
 
+from six.moves import http_client
 import unittest
+
+
+class TestErrorResultToException(unittest.TestCase):
+    def _call_fut(self, *args, **kwargs):
+        from google.cloud.bigquery import job
+        return job._error_result_to_exception(*args, **kwargs)
+
+    def test_simple(self):
+        error_result = {
+            'reason': 'invalid',
+            'meta': 'data'
+        }
+        exception = self._call_fut(error_result)
+        self.assertEqual(exception.code, http_client.BAD_REQUEST)
+        self.assertIn("'meta': 'data'", exception.message)
+
+    def test_missing_reason(self):
+        error_result = {}
+        exception = self._call_fut(error_result)
+        self.assertEqual(exception.code, http_client.INTERNAL_SERVER_ERROR)
 
 
 class _Base(object):
@@ -1517,6 +1538,18 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
+    def test_cancelled(self):
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        job._properties['status'] = {
+            'state': 'DONE',
+            'errorResult': {
+                'reason': 'stopped'
+            }
+        }
+
+        self.assertTrue(job.cancelled())
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
@@ -1572,7 +1605,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'debugInfo': 'DEBUG',
             'location': 'LOCATION',
             'message': 'MESSAGE',
-            'reason': 'REASON'
+            'reason': 'invalid'
         }
         job._properties['status'] = {
             'errorResult': error_result,
@@ -1585,7 +1618,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             job.result()
 
         self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
-        self.assertEqual(exc_info.exception.errors, [error_result])
+        self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)

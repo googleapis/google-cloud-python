@@ -14,10 +14,12 @@
 
 """Define API Jobs."""
 
+import collections
 import threading
 import warnings
 
 import six
+from six.moves import http_client
 
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
@@ -34,6 +36,41 @@ from google.cloud.bigquery._helpers import _TypedProperty
 import google.cloud.future.base
 
 _DONE_STATE = 'DONE'
+
+
+_ERROR_REASON_TO_EXCEPTION = {
+    'accessDenied': http_client.FORBIDDEN,
+    'backendError': http_client.INTERNAL_SERVER_ERROR,
+    'billingNotEnabled': http_client.FORBIDDEN,
+    'billingTierLimitExceeded': http_client.BAD_REQUEST,
+    'blocked': http_client.FORBIDDEN,
+    'duplicate': http_client.CONFLICT,
+    'internalError': http_client.INTERNAL_SERVER_ERROR,
+    'invalid': http_client.BAD_REQUEST,
+    'invalidQuery': http_client.BAD_REQUEST,
+    'notFound': http_client.NOT_FOUND,
+    'notImplemented': http_client.NOT_IMPLEMENTED,
+    'quotaExceeded': http_client.FORBIDDEN,
+    'rateLimitExceeded': http_client.FORBIDDEN,
+    'resourceInUse': http_client.BAD_REQUEST,
+    'resourcesExceeded': http_client.BAD_REQUEST,
+    'responseTooLarge': http_client.FORBIDDEN,
+    'stopped': http_client.OK,
+    'tableUnavailable': http_client.BAD_REQUEST,
+}
+
+_FakeResponse = collections.namedtuple('_FakeResponse', ['status'])
+
+
+def _error_result_to_exception(error_result):
+    """"""
+    reason = error_result.get('reason')
+    status_code = _ERROR_REASON_TO_EXCEPTION.get(
+        reason, http_client.INTERNAL_SERVER_ERROR)
+    # make_exception expects an httplib2 response object.
+    fake_response = _FakeResponse(status=status_code)
+    return exceptions.make_exception(
+        fake_response, b'', error_info=error_result, use_json=False)
 
 
 class Compression(_EnumProperty):
@@ -405,8 +442,7 @@ class _AsyncJob(google.cloud.future.base.PollingFuture):
                 return
 
             if self.error_result is not None:
-                exception = exceptions.GoogleCloudError(
-                    self.error_result, errors=self.errors)
+                exception = _error_result_to_exception(self.error_result)
                 self.set_exception(exception)
             else:
                 self.set_result(self)
@@ -451,7 +487,8 @@ class _AsyncJob(google.cloud.future.base.PollingFuture):
         :rtype: bool
         :returns: False
         """
-        return False
+        return (self.error_result is not None
+                and self.error_result.get('reason') == 'stopped')
 
 
 class _LoadConfiguration(object):
