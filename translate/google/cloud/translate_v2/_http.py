@@ -16,7 +16,7 @@
 
 from google.cloud import _http
 
-from google.cloud.translate import __version__
+from google.cloud.translate_v2 import __version__
 
 
 _CLIENT_INFO = _http.CLIENT_INFO_TEMPLATE.format(__version__)

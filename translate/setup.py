@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -56,7 +56,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-translate',
-    version='0.25.0',
+    version='1.0.0',
     description='Python Client for Google Cloud Translation API',
     long_description=README,
     namespace_packages=[

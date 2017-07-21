@@ -20,7 +20,7 @@ import six
 from google.cloud._helpers import _to_bytes
 from google.cloud.client import Client as BaseClient
 
-from google.cloud.translate._http import Connection
+from google.cloud.translate_v2._http import Connection
 
 
 ENGLISH_ISO_639 = 'en'
@@ -189,8 +189,8 @@ class Client(BaseClient):
                                   in the query.
 
         :type model: str
-        :param model: (Optional) The model used to translate the text. The
-                      only accepted values are :attr:`BASE` and :attr:`NMT`.
+        :param model: (Optional) The model used to translate the text, such
+                      as ``'base'`` or ``'nmt'``.
 
         :rtype: str or list
         :returns: A list of dictionaries for each queried value. Each

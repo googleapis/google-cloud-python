@@ -18,9 +18,10 @@
 from pkg_resources import get_distribution
 __version__ = get_distribution('google-cloud-translate').version
 
-from google.cloud.translate.client import BASE
-from google.cloud.translate.client import Client
-from google.cloud.translate.client import NMT
+from google.cloud.translate_v2.client import Client
 
 
-__all__ = ['__version__', 'BASE', 'Client', 'NMT']
+__all__ = (
+    '__version__',
+    'Client',
+)
