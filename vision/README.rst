@@ -9,7 +9,7 @@ Python Client for Google Cloud Vision
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/vision-usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/vision/usage.html
 
 Quick Start
 -----------
@@ -26,7 +26,7 @@ possible. Check out the `Authentication section`_ in our documentation to
 learn more. You may also find the `authentication document`_ shared by all
 the ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Using the API
@@ -50,6 +50,6 @@ See the ``google-cloud-python`` API `Documentation`_ to learn
 how to analyze images using this library.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vision.svg
-   :target: https://pypi.python.org/pypi/google-cloud-vision
+   :target: https://pypi.org/project/google-cloud-vision/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vision.svg
-   :target: https://pypi.python.org/pypi/google-cloud-vision
+   :target: https://pypi.org/project/google-cloud-vision/

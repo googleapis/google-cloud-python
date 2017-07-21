@@ -65,7 +65,7 @@ class Test_BatchBase(_BaseTest):
     def test_ctor(self):
         session = _Session()
         base = self._make_one(session)
-        self.assertTrue(base._session is session)
+        self.assertIs(base._session, session)
         self.assertEqual(len(base._mutations), 0)
 
     def test__check_state_virtual(self):
@@ -177,7 +177,7 @@ class TestBatch(_BaseTest):
     def test_ctor(self):
         session = _Session()
         batch = self._make_one(session)
-        self.assertTrue(batch._session is session)
+        self.assertIs(batch._session, session)
 
     def test_commit_already_committed(self):
         from google.cloud.spanner.keyset import KeySet

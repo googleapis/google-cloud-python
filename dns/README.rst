@@ -9,7 +9,7 @@ Python Client for Google Cloud DNS
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/dns-usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/dns/usage.html
 
 Quick Start
 -----------
@@ -26,7 +26,7 @@ possible. Check out the `Authentication section`_ in our documentation to
 learn more. You may also find the `authentication document`_ shared by all
 the ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Using the API
@@ -42,6 +42,6 @@ See the ``google-cloud-python`` API DNS `Documentation`_ to learn
 how to manage DNS records using this Client Library.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
-   :target: https://pypi.python.org/pypi/google-cloud-dns
+   :target: https://pypi.org/project/google-cloud-dns/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dns.svg
-   :target: https://pypi.python.org/pypi/google-cloud-dns
+   :target: https://pypi.org/project/google-cloud-dns/

@@ -15,6 +15,8 @@
 
 import unittest
 
+import mock
+
 
 class TestCluster(unittest.TestCase):
 
@@ -232,7 +234,7 @@ class TestCluster(unittest.TestCase):
 
     def test_create(self):
         from google.longrunning import operations_pb2
-        from google.cloud.operation import Operation
+        from google.cloud.future import operation
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from tests.unit._testing import _FakeStub
@@ -256,13 +258,9 @@ class TestCluster(unittest.TestCase):
         # Perform the method and check the result.
         result = cluster.create()
 
-        self.assertIsInstance(result, Operation)
-        self.assertEqual(result.name, OP_NAME)
-        self.assertIs(result.target, cluster)
-        self.assertIs(result.client, client)
+        self.assertIsInstance(result, operation.Operation)
+        self.assertEqual(result.operation.name, OP_NAME)
         self.assertIsNone(result.metadata)
-        self.assertEqual(result.caller_metadata,
-                         {'request_type': 'CreateCluster'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
@@ -278,7 +276,7 @@ class TestCluster(unittest.TestCase):
     def test_update(self):
         import datetime
         from google.longrunning import operations_pb2
-        from google.cloud.operation import Operation
+        from google.cloud.future import operation
         from google.protobuf.any_pb2 import Any
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.bigtable._generated import (
@@ -324,15 +322,11 @@ class TestCluster(unittest.TestCase):
 
         result = cluster.update()
 
-        self.assertIsInstance(result, Operation)
-        self.assertEqual(result.name, OP_NAME)
-        self.assertIs(result.target, cluster)
-        self.assertIs(result.client, client)
+        self.assertIsInstance(result, operation.Operation)
+        self.assertEqual(result.operation.name, OP_NAME)
         self.assertIsInstance(result.metadata,
                               messages_v2_pb2.UpdateClusterMetadata)
         self.assertEqual(result.metadata.request_time, NOW_PB)
-        self.assertEqual(result.caller_metadata,
-                         {'request_type': 'UpdateCluster'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
@@ -393,12 +387,14 @@ class Test__prepare_create_request(unittest.TestCase):
         instance = _Instance(INSTANCE_ID, client)
         cluster = Cluster(CLUSTER_ID, instance,
                           serve_nodes=SERVE_NODES)
+        cluster.location = u'projects/prahj-ekt/locations/zona-tres'
 
         request_pb = self._call_fut(cluster)
 
         self.assertEqual(request_pb.cluster_id, CLUSTER_ID)
         self.assertEqual(request_pb.parent, instance.name)
         self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
+        self.assertEqual(request_pb.cluster.location, cluster.location)
 
 
 def _ClusterPB(*args, **kw):
@@ -446,6 +442,7 @@ class _Client(object):
     def __init__(self, project):
         self.project = project
         self.project_name = 'projects/' + self.project
+        self._operations_stub = mock.sentinel.operations_stub
 
     def __eq__(self, other):
         return (other.project == self.project and

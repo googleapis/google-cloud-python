@@ -842,7 +842,8 @@ class Table(object):
                          quote_character=None,
                          skip_leading_rows=None,
                          write_disposition=None,
-                         client=None):
+                         client=None,
+                         job_name=None):
         """Upload the contents of this table from a file-like object.
 
         The content type of the upload will either be
@@ -915,6 +916,10 @@ class Table(object):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current dataset.
 
+        :type job_name: str
+        :param job_name: Optional. The id of the job. Generated if not
+                         explicitly passed in.
+
         :rtype: :class:`google.cloud.bigquery.jobs.LoadTableFromStorageJob`
         :returns: the job instance used to load the data (e.g., for
                   querying status). Note that the job is already started:
@@ -977,7 +982,7 @@ class Table(object):
                                 encoding, field_delimiter,
                                 ignore_unknown_values, max_bad_records,
                                 quote_character, skip_leading_rows,
-                                write_disposition)
+                                write_disposition, job_name)
 
         upload = Upload(file_obj, content_type, total_bytes,
                         auto_transfer=False)
@@ -1033,7 +1038,8 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
                             max_bad_records,
                             quote_character,
                             skip_leading_rows,
-                            write_disposition):
+                            write_disposition,
+                            job_name):
     """Helper for :meth:`Table.upload_from_file`."""
     load_config = metadata['configuration']['load']
 
@@ -1067,6 +1073,9 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
     if write_disposition is not None:
         load_config['writeDisposition'] = write_disposition
 
+    if job_name is not None:
+        load_config['jobReference'] = {'jobId': job_name}
+
 
 def _parse_schema_resource(info):
     """Parse a resource fragment into a schema field.
@@ -1079,7 +1088,7 @@ def _parse_schema_resource(info):
                 present in ``info``.
     """
     if 'fields' not in info:
-        return None
+        return ()
 
     schema = []
     for r_field in info['fields']:
@@ -1109,7 +1118,7 @@ def _build_schema_resource(fields):
                 'mode': field.mode}
         if field.description is not None:
             info['description'] = field.description
-        if field.fields is not None:
+        if field.fields:
             info['fields'] = _build_schema_resource(field.fields)
         infos.append(info)
     return infos

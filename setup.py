@@ -63,7 +63,7 @@ REQUIREMENTS = [
     'google-cloud-resource-manager >= 0.25.0, < 0.26dev',
     'google-cloud-runtimeconfig >= 0.25.0, < 0.26dev',
     'google-cloud-spanner >= 0.25.0, < 0.26dev',
-    'google-cloud-speech >= 0.26.0, < 0.27dev',
+    'google-cloud-speech >= 0.27.0, < 0.28dev',
     'google-cloud-storage >= 1.2.0, < 1.3dev',
     'google-cloud-translate >= 0.25.0, < 0.26dev',
     'google-cloud-videointelligence >= 0.25.0, < 0.26dev',
@@ -72,7 +72,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud',
-    version='0.26.1',
+    version='0.26.2',
     description='API Client library for Google Cloud',
     long_description=README,
     install_requires=REQUIREMENTS,

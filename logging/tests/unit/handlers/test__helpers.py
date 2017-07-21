@@ -101,7 +101,7 @@ class Test_get_trace_id_from_webapp2(unittest.TestCase):
         response = req.get_response(self.create_app())
         trace_id = json.loads(response.body)
 
-        self.assertEquals(None, trace_id)
+        self.assertEqual(None, trace_id)
 
     def test_valid_context_header(self):
         import webob
