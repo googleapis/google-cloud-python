@@ -1765,7 +1765,6 @@ class TestTableUpload(object):
         'configuration': {
             'load': {
                 'sourceFormat': 'CSV',
-                'schema': {'fields': []},
                 'destinationTable': {
                     'projectId': 'project_id',
                     'datasetId': 'test_dataset',
@@ -1821,7 +1820,6 @@ class TestTableUpload(object):
             'configuration': {
                 'load': {
                     'sourceFormat': config_args['source_format'],
-                    'schema': {'fields': []},
                     'destinationTable': {
                         'projectId': table._dataset._client.project,
                         'datasetId': table.dataset_name,
@@ -2146,6 +2144,70 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
                                      {'name': 'number',
                                       'type': 'STRING',
                                       'mode': 'REQUIRED'}]})
+
+
+class Test__get_upload_metadata(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(source_format, schema, dataset, name):
+        from google.cloud.bigquery.table import _get_upload_metadata
+
+        return _get_upload_metadata(source_format, schema, dataset, name)
+
+    def test_empty_schema(self):
+        source_format = 'AVRO'
+        dataset = mock.Mock(project='prediction', spec=['name', 'project'])
+        dataset.name = 'market'  # mock.Mock() treats `name` specially.
+        table_name = 'chairs'
+        metadata = self._call_fut(source_format, [], dataset, table_name)
+
+        expected = {
+            'configuration': {
+                'load': {
+                    'sourceFormat': source_format,
+                    'destinationTable': {
+                        'projectId': dataset.project,
+                        'datasetId': dataset.name,
+                        'tableId': table_name,
+                    },
+                },
+            },
+        }
+        self.assertEqual(metadata, expected)
+
+    def test_with_schema(self):
+        from google.cloud.bigquery.table import SchemaField
+
+        source_format = 'CSV'
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        dataset = mock.Mock(project='blind', spec=['name', 'project'])
+        dataset.name = 'movie'  # mock.Mock() treats `name` specially.
+        table_name = 'teebull-neem'
+        metadata = self._call_fut(
+            source_format, [full_name], dataset, table_name)
+
+        expected = {
+            'configuration': {
+                'load': {
+                    'sourceFormat': source_format,
+                    'destinationTable': {
+                        'projectId': dataset.project,
+                        'datasetId': dataset.name,
+                        'tableId': table_name,
+                    },
+                    'schema': {
+                        'fields': [
+                            {
+                                'name': full_name.name,
+                                'type': full_name.field_type,
+                                'mode': full_name.mode,
+                            },
+                        ],
+                    },
+                },
+            },
+        }
+        self.assertEqual(metadata, expected)
 
 
 class _Client(object):

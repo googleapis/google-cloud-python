@@ -1280,19 +1280,22 @@ def _get_upload_metadata(source_format, schema, dataset, name):
     :rtype: dict
     :returns: The metadata dictionary.
     """
+    load_config = {
+        'sourceFormat': source_format,
+        'destinationTable': {
+            'projectId': dataset.project,
+            'datasetId': dataset.name,
+            'tableId': name,
+        },
+    }
+    if schema:
+        load_config['schema'] = {
+            'fields': _build_schema_resource(schema),
+        }
+
     return {
         'configuration': {
-            'load': {
-                'sourceFormat': source_format,
-                'schema': {
-                    'fields': _build_schema_resource(schema),
-                },
-                'destinationTable': {
-                    'projectId': dataset.project,
-                    'datasetId': dataset.name,
-                    'tableId': name,
-                },
-            },
+            'load': load_config,
         },
     }
 
