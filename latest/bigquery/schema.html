@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Schemas &#8212; google-cloud 0.26.1 documentation</title>
+    <title>Schemas &#8212; google-cloud 0.26.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.1',
+        VERSION:     '0.26.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -46,7 +46,7 @@
 <p>Schemas for BigQuery tables / queries.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery.schema.SchemaField">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.schema.</code><code class="descname">SchemaField</code><span class="sig-paren">(</span><em>name</em>, <em>field_type</em>, <em>mode='NULLABLE'</em>, <em>description=None</em>, <em>fields=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/schema.html#SchemaField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.schema.</code><code class="descname">SchemaField</code><span class="sig-paren">(</span><em>name</em>, <em>field_type</em>, <em>mode='NULLABLE'</em>, <em>description=None</em>, <em>fields=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/schema.html#SchemaField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Describe a single field within a table schema.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -57,15 +57,56 @@
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the name of the field.</li>
 <li><strong>field_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the type of the field (one of ‘STRING’, ‘INTEGER’,
 ‘FLOAT’, ‘BOOLEAN’, ‘TIMESTAMP’ or ‘RECORD’).</li>
-<li><strong>mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the type of the field (one of ‘NULLABLE’, ‘REQUIRED’,
+<li><strong>mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the mode of the field (one of ‘NULLABLE’, ‘REQUIRED’,
 or ‘REPEATED’).</li>
 <li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – optional description for the field.</li>
-<li><strong>fields</strong> (list of <a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code></a>, or None) – subfields (requires <code class="docutils literal"><span class="pre">field_type</span></code> of ‘RECORD’).</li>
+<li><strong>fields</strong> (tuple of <a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code></a>) – subfields (requires <code class="docutils literal"><span class="pre">field_type</span></code> of ‘RECORD’).</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.description" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional[str]</em> – Description for the field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.field_type">
+<code class="descname">field_type</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.field_type" title="Permalink to this definition">#</a></dt>
+<dd><p><em>str</em> – The type of the field.</p>
+<p>Will be one of ‘STRING’, ‘INTEGER’, ‘FLOAT’, ‘BOOLEAN’,
+‘TIMESTAMP’ or ‘RECORD’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.fields" title="Permalink to this definition">#</a></dt>
+<dd><p><em>tuple</em> – Subfields contained in this field.</p>
+<p>If <code class="docutils literal"><span class="pre">field_type</span></code> is not ‘RECORD’, this property must be
+empty / unset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.is_nullable">
+<code class="descname">is_nullable</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.is_nullable" title="Permalink to this definition">#</a></dt>
+<dd><p>Check whether ‘mode’ is ‘nullable’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.mode">
+<code class="descname">mode</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.mode" title="Permalink to this definition">#</a></dt>
+<dd><p><em>str</em> – The mode of the field.</p>
+<p>Will be one of ‘NULLABLE’, ‘REQUIRED’, or ‘REPEATED’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.schema.SchemaField.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.name" title="Permalink to this definition">#</a></dt>
+<dd><p><em>str</em> – The name of the field.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -131,7 +172,7 @@ or ‘REPEATED’).</li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>

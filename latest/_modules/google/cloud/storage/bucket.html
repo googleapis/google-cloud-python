@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 0.26.1 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 0.26.2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.1',
+        VERSION:     '0.26.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -76,6 +76,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">DefaultObjectACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">Blob</span>
+<span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">_get_encryption_headers</span>
 
 
 <span class="k">def</span> <span class="nf">_blobs_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
@@ -270,7 +271,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Bucket.get_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.get_blob">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.get_blob">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a blob object by name.</span>
 
 <span class="sd">        This will return None if the blob doesn&#39;t exist:</span>
@@ -287,14 +288,27 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
+<span class="sd">        :type encryption_key: bytes</span>
+<span class="sd">        :param encryption_key:</span>
+<span class="sd">            Optional 32 byte encryption key for customer-supplied encryption.</span>
+<span class="sd">            See</span>
+<span class="sd">            https://cloud.google.com/storage/docs/encryption#customer-supplied.</span>
+
+<span class="sd">        :type kwargs: dict</span>
+<span class="sd">        :param kwargs: Keyword arguments to pass to the</span>
+<span class="sd">                       :class:`~google.cloud.storage.blob.Blob` constructor.</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.storage.blob.Blob` or None</span>
 <span class="sd">        :returns: The blob object if it exists, otherwise None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="n">encryption_key</span><span class="p">)</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="n">blob</span><span class="p">)</span>
+                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="n">blob</span><span class="p">,</span>
+                <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
             <span class="c1"># NOTE: We assume response.get(&#39;name&#39;) matches `blob_name`.</span>
             <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
             <span class="c1"># NOTE: This will not fail immediately in a batch. However, when</span>
@@ -1057,7 +1071,7 @@
         <span class="n">credentials</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_base_connection</span><span class="o">.</span><span class="n">credentials</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">Signing</span><span class="p">):</span>
-            <span class="n">auth_uri</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;http://google-cloud-python.readthedocs.io/en/latest/&#39;</span>
+            <span class="n">auth_uri</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://google-cloud-python.readthedocs.io/en/latest/&#39;</span>
                         <span class="s1">&#39;core/auth.html?highlight=authentication#setting-up-&#39;</span>
                         <span class="s1">&#39;a-service-account&#39;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
@@ -1140,7 +1154,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 0.26.1 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 0.26.2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.1',
+        VERSION:     '0.26.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -884,7 +884,8 @@
                          <span class="n">quote_character</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">skip_leading_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">write_disposition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                         <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">job_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this table from a file-like object.</span>
 
 <span class="sd">        The content type of the upload will either be</span>
@@ -957,6 +958,10 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current dataset.</span>
 
+<span class="sd">        :type job_name: str</span>
+<span class="sd">        :param job_name: Optional. The id of the job. Generated if not</span>
+<span class="sd">                         explicitly passed in.</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.jobs.LoadTableFromStorageJob`</span>
 <span class="sd">        :returns: the job instance used to load the data (e.g., for</span>
 <span class="sd">                  querying status). Note that the job is already started:</span>
@@ -1019,7 +1024,7 @@
                                 <span class="n">encoding</span><span class="p">,</span> <span class="n">field_delimiter</span><span class="p">,</span>
                                 <span class="n">ignore_unknown_values</span><span class="p">,</span> <span class="n">max_bad_records</span><span class="p">,</span>
                                 <span class="n">quote_character</span><span class="p">,</span> <span class="n">skip_leading_rows</span><span class="p">,</span>
-                                <span class="n">write_disposition</span><span class="p">)</span>
+                                <span class="n">write_disposition</span><span class="p">,</span> <span class="n">job_name</span><span class="p">)</span>
 
         <span class="n">upload</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
                         <span class="n">auto_transfer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1075,7 +1080,8 @@
                             <span class="n">max_bad_records</span><span class="p">,</span>
                             <span class="n">quote_character</span><span class="p">,</span>
                             <span class="n">skip_leading_rows</span><span class="p">,</span>
-                            <span class="n">write_disposition</span><span class="p">):</span>
+                            <span class="n">write_disposition</span><span class="p">,</span>
+                            <span class="n">job_name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper for :meth:`Table.upload_from_file`.&quot;&quot;&quot;</span>
     <span class="n">load_config</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="s1">&#39;load&#39;</span><span class="p">]</span>
 
@@ -1109,6 +1115,9 @@
     <span class="k">if</span> <span class="n">write_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;writeDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">write_disposition</span>
 
+    <span class="k">if</span> <span class="n">job_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jobId&#39;</span><span class="p">:</span> <span class="n">job_name</span><span class="p">}</span>
+
 
 <span class="k">def</span> <span class="nf">_parse_schema_resource</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parse a resource fragment into a schema field.</span>
@@ -1121,7 +1130,7 @@
 <span class="sd">                present in ``info``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="s1">&#39;fields&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="p">()</span>
 
     <span class="n">schema</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">r_field</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]:</span>
@@ -1151,7 +1160,7 @@
                 <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">info</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
             <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
         <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">infos</span>
@@ -1221,7 +1230,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>

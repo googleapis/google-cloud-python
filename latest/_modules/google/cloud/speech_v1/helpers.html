@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.speech.encoding &#8212; google-cloud 0.26.1 documentation</title>
+    <title>google.cloud.speech_v1.helpers &#8212; google-cloud 0.26.2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.1',
+        VERSION:     '0.26.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -39,8 +39,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.speech.encoding</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2016 Google Inc.</span>
+  <h1>Source code for google.cloud.speech_v1.helpers</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017, Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -54,36 +54,80 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Encodings used by the Google Cloud Speech API.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 
-<div class="viewcode-block" id="Encoding"><a class="viewcode-back" href="../../../../speech/encoding.html#google.cloud.speech.encoding.Encoding">[docs]</a><span class="k">class</span> <span class="nc">Encoding</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Audio encoding types.</span>
+<span class="k">class</span> <span class="nc">SpeechHelpers</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A set of convenience methods to make the Speech client easier to use.</span>
 
-<span class="sd">    See</span>
-<span class="sd">    https://cloud.google.com/speech/reference/rest/v1/RecognitionConfig#AudioEncoding</span>
+<span class="sd">    This class should be considered abstract; it is used as a superclass</span>
+<span class="sd">    in a multiple-inheritance construction alongside the applicable GAPIC.</span>
+<span class="sd">    See the :class:`~google.cloud.speech_v1.SpeechClient`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">streaming_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">requests</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform bi-directional speech recognition.</span>
 
-    <span class="n">LINEAR16</span> <span class="o">=</span> <span class="s1">&#39;LINEAR16&#39;</span>
-    <span class="sd">&quot;&quot;&quot;LINEAR16 encoding type.&quot;&quot;&quot;</span>
+<span class="sd">        This method allows you to receive results while sending audio;</span>
+<span class="sd">        it is only available via. gRPC (not REST).</span>
 
-    <span class="n">FLAC</span> <span class="o">=</span> <span class="s1">&#39;FLAC&#39;</span>
-    <span class="sd">&quot;&quot;&quot;FLAC encoding type.&quot;&quot;&quot;</span>
+<span class="sd">        .. warning::</span>
 
-    <span class="n">MULAW</span> <span class="o">=</span> <span class="s1">&#39;MULAW&#39;</span>
-    <span class="sd">&quot;&quot;&quot;MULAW encoding type.&quot;&quot;&quot;</span>
+<span class="sd">            This method is EXPERIMENTAL. Its interface might change in the</span>
+<span class="sd">            future.</span>
 
-    <span class="n">AMR</span> <span class="o">=</span> <span class="s1">&#39;AMR&#39;</span>
-    <span class="sd">&quot;&quot;&quot;AMR encoding type.&quot;&quot;&quot;</span>
+<span class="sd">        Example:</span>
+<span class="sd">          &gt;&gt;&gt; from google.cloud.speech_v1 import enums</span>
+<span class="sd">          &gt;&gt;&gt; from google.cloud.speech_v1 import SpeechClient</span>
+<span class="sd">          &gt;&gt;&gt; from google.cloud.speech_v1 import types</span>
+<span class="sd">          &gt;&gt;&gt; client = SpeechClient()</span>
+<span class="sd">          &gt;&gt;&gt; config = types.StreamingRecognitionConfig(</span>
+<span class="sd">          ...     config=types.RecognitionConfig(</span>
+<span class="sd">          ...         encoding=enums.RecognitionConfig.AudioEncoding.FLAC,</span>
+<span class="sd">          ...     ),</span>
+<span class="sd">          ... )</span>
+<span class="sd">          &gt;&gt;&gt; request = types.StreamingRecognizeRequest(audio_content=b&#39;...&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; requests = [request]</span>
+<span class="sd">          &gt;&gt;&gt; for element in client.streaming_recognize(config, requests):</span>
+<span class="sd">          ...     # process element</span>
+<span class="sd">          ...     pass</span>
 
-    <span class="n">AMR_WB</span> <span class="o">=</span> <span class="s1">&#39;AMR_WB&#39;</span>
-    <span class="sd">&quot;&quot;&quot;AMR_WB encoding type.&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">          config (:class:`~.types.StreamingRecognitionConfig`): The</span>
+<span class="sd">            configuration to use for the stream.</span>
+<span class="sd">          requests (Iterable[:class:`~.types.StreamingRecognizeRequest`]):</span>
+<span class="sd">            The input objects.</span>
+<span class="sd">          options (:class:`google.gax.CallOptions`): Overrides the default</span>
+<span class="sd">            settings for this call, e.g, timeout, retries etc.</span>
 
-    <span class="n">OGG_OPUS</span> <span class="o">=</span> <span class="s1">&#39;OGG_OPUS&#39;</span>
-    <span class="sd">&quot;&quot;&quot;OGG_OPUS encoding type.&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">          Iterable[:class:`~.types.StreamingRecognizeResponse`]</span>
 
-    <span class="n">SPEEX_WITH_HEADER_BYTE</span> <span class="o">=</span> <span class="s1">&#39;SPEEX_WITH_HEADER_BYTE&#39;</span>
-    <span class="sd">&quot;&quot;&quot;SPEEX_WITH_HEADER_BYTE encoding type.&quot;&quot;&quot;</span></div>
+<span class="sd">        Raises:</span>
+<span class="sd">          :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
+<span class="sd">          :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_recognize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_request_iterable</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">requests</span><span class="p">),</span>
+            <span class="n">options</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_streaming_request_iterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">requests</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A generator that yields the config followed by the requests.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config (~.speech_v1.types.StreamingRecognitionConfig): The</span>
+<span class="sd">                configuration to use for the stream.</span>
+<span class="sd">            requests (Iterable[~.speech_v1.types.StreamingRecognizeRequest]):</span>
+<span class="sd">                The input objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Iterable[~.speech_v1.types.StreamingRecognizeRequest]): The</span>
+<span class="sd">                correctly formatted input for</span>
+<span class="sd">                :meth:`~.speech_v1.SpeechClient.streaming_recognize`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognizeRequest</span><span class="p">(</span><span class="n">streaming_config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">request</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">request</span>
 </pre></div>
 
           </div>
@@ -133,7 +177,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
@@ -147,6 +191,8 @@
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
   <li><a href="../../../index.html">Module code</a><ul>
+  <li><a href="../speech_v1.html">google.cloud.speech_v1</a><ul>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
