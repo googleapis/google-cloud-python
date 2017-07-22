@@ -50,7 +50,7 @@ def register_type(klass, type_url=None):
     :param type_url: (Optional) URL naming the type. If not provided,
                      infers the URL from the type descriptor.
 
-    :raises: ValueError if a registration already exists for the URL.
+    :raises ValueError: if a registration already exists for the URL.
     """
     if type_url is None:
         type_url = _compute_type_url(klass)
@@ -258,7 +258,7 @@ class Operation(object):
 
         :rtype: bool
         :returns: A boolean indicating if the current operation has completed.
-        :raises: :class:`~exceptions.ValueError` if the operation
+        :raises ValueError: if the operation
                  has already completed.
         """
         if self.complete:
