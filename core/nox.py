@@ -50,8 +50,7 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install(
-        'flake8', 'flake8-import-order', 'pylint', 'gcp-devrel-py-tools')
+    session.install('flake8', 'pylint', 'gcp-devrel-py-tools')
     session.install('.')
     session.run('flake8', 'google/cloud/core')
     session.run(

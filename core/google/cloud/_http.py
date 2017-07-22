@@ -279,9 +279,7 @@ class JSONConnection(Connection):
             can allow custom behavior, for example, to defer an HTTP request
             and complete initialization of the object at a later time.
 
-        :raises ~google.cloud.exceptions.GoogleCloudError: if the response code
-            is not 200 OK.
-        :raises TypeError: if the response content type is not JSON.
+        :raises: Exception if the response code is not 200 OK.
         :rtype: dict or str
         :returns: The API response payload, either as a raw string or
                   a dictionary if the response is valid JSON.

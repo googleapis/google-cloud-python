@@ -34,7 +34,7 @@ class Operation(base.PollingFuture):
             initial operation.
         refresh (Callable[[], Operation]): A callable that returns the
             latest state of the operation.
-        cancel (Callable[[], None]): A callable that tries to cancel
+        cancel (Callable[[], None]), A callable that tries to cancel
             the operation.
         result_type (type): The protobuf type for the operation's result.
         metadata_type (type): The protobuf type for the operation's

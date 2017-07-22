@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google Cloud namespace package."""
-
 try:
     import pkg_resources
     pkg_resources.declare_namespace(__name__)
