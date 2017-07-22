@@ -17,7 +17,6 @@
 This module is not part of the public API surface.
 """
 
-# Avoid the grpc and google.cloud.grpc collision.
 from __future__ import absolute_import
 
 import calendar
@@ -32,6 +31,8 @@ from google.protobuf import timestamp_pb2
 import google_auth_httplib2
 
 try:
+    # pylint: disable=ungrouped-imports
+    # We must import google.auth.transport.grpc within this try: catch.
     import grpc
     import google.auth.transport.grpc
 except ImportError:  # pragma: NO COVER
@@ -104,7 +105,7 @@ class _LocalStack(Local):
         :rtype: object
         :returns: the top-most item, or None if the stack is empty.
         """
-        if len(self._stack) > 0:
+        if self._stack:
             return self._stack[-1]
 
 
