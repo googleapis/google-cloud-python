@@ -226,14 +226,14 @@ class Policy(collections.MutableMapping):
         if self.version is not None:
             resource['version'] = self.version
 
-        if self._bindings:
+        if len(self._bindings) > 0:
             bindings = resource['bindings'] = []
             for role, members in sorted(self._bindings.items()):
-                if members:
+                if len(members) > 0:
                     bindings.append(
                         {'role': role, 'members': sorted(set(members))})
 
-            if not bindings:
+            if len(bindings) == 0:
                 del resource['bindings']
 
         return resource

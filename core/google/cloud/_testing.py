@@ -14,15 +14,17 @@
 
 """Shared testing utilities."""
 
+
+# Avoid the grpc and google.cloud.grpc collision.
 from __future__ import absolute_import
 
 
 class _Monkey(object):
-    """Context-manager for replacing module names in the scope of a test."""
+    # context-manager for replacing module names in the scope of a test.
 
     def __init__(self, module, **kw):
         self.module = module
-        if not kw:  # pragma: NO COVER
+        if len(kw) == 0:  # pragma: NO COVER
             raise ValueError('_Monkey was used with nothing to monkey-patch')
         self.to_restore = {key: getattr(module, key) for key in kw}
         for key, value in kw.items():
@@ -66,12 +68,8 @@ def _tempdir_maker():
     return _tempdir_mgr
 
 
-# pylint: disable=invalid-name
-# Retain _tempdir as a constant for backwards compatibility despite
-# being an invalid name.
 _tempdir = _tempdir_maker()
 del _tempdir_maker
-# pylint: enable=invalid-name
 
 
 class _GAXBaseAPI(object):
@@ -81,8 +79,7 @@ class _GAXBaseAPI(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
-    @staticmethod
-    def _make_grpc_error(status_code, trailing=None):
+    def _make_grpc_error(self, status_code, trailing=None):
         from grpc._channel import _RPCState
         from google.cloud.exceptions import GrpcRendezvous
 
@@ -114,7 +111,6 @@ class _GAXPageIterator(object):
         self.page_token = kwargs.get('page_token')
 
     def next(self):
-        """Iterate to the next page."""
         import six
         return six.next(self._pages)
 

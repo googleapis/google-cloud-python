@@ -242,8 +242,7 @@ class Iterator(object):
                           results per page while an items iterator will want
                           to increment per item.
 
-        :rtype: :class:`Page`
-        :returns: pages
+        Yields :class:`Page` instances.
         """
         page = self._next_page()
         while page is not None:
@@ -388,8 +387,6 @@ class HTTPIterator(Iterator):
 
         :rtype: dict
         :returns: The parsed JSON response of the next page's contents.
-
-        :raises ValueError: If the HTTP method is not ``GET`` or ``POST``.
         """
         params = self._get_query_params()
         if self._HTTP_METHOD == 'GET':
