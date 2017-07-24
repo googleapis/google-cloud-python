@@ -64,7 +64,7 @@ class _ClientFactoryMixin(object):
 
         :rtype: :class:`_ClientFactoryMixin`
         :returns: The client created with the retrieved JSON credentials.
-        :raises: :class:`TypeError` if there is a conflict with the kwargs
+        :raises TypeError: if there is a conflict with the kwargs
                  and the credentials created by the factory.
         """
         if 'credentials' in kwargs:
