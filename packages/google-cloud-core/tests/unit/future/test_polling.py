@@ -19,10 +19,10 @@ import time
 import mock
 import pytest
 
-from google.cloud.future import base
+from google.cloud.future import polling
 
 
-class PollingFutureImpl(base.PollingFuture):
+class PollingFutureImpl(polling.PollingFuture):
     def done(self):
         return False
 
