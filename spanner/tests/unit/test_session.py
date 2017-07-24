@@ -418,7 +418,7 @@ class TestSession(unittest.TestCase):
         session = self._make_one(database)
         session._session_id = 'DEADBEEF'
         begun_txn = session._transaction = Transaction(session)
-        begun_txn._id = b'FACEDACE'
+        begun_txn._transaction_id = b'FACEDACE'
 
         called_with = []
 

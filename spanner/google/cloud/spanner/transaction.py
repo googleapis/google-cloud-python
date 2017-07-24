@@ -27,12 +27,8 @@ class Transaction(_SnapshotBase, _BatchBase):
     """Implement read-write transaction semantics for a session."""
     committed = None
     """Timestamp at which the transaction was successfully committed."""
-
-    def __init__(self, session):
-        super(Transaction, self).__init__(session)
-        self._id = None
-        self._rolled_back = False
-        self._multi_use = True
+    _rolled_back = False
+    _multi_use = True
 
     def _check_state(self):
         """Helper for :meth:`commit` et al.
@@ -40,7 +36,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :raises: :exc:`ValueError` if the object's state is invalid for making
                  API requests.
         """
-        if self._id is None:
+        if self._transaction_id is None:
             raise ValueError("Transaction is not begun")
 
         if self.committed is not None:
@@ -57,7 +53,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :returns: a selector configured for read-write transaction semantics.
         """
         self._check_state()
-        return TransactionSelector(id=self._id)
+        return TransactionSelector(id=self._transaction_id)
 
     def begin(self):
         """Begin a transaction on the database.
@@ -67,7 +63,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :raises: ValueError if the transaction is already begun, committed,
                  or rolled back.
         """
-        if self._id is not None:
+        if self._transaction_id is not None:
             raise ValueError("Transaction already begun")
 
         if self.committed is not None:
@@ -83,8 +79,8 @@ class Transaction(_SnapshotBase, _BatchBase):
             read_write=TransactionOptions.ReadWrite())
         response = api.begin_transaction(
             self._session.name, txn_options, options=options)
-        self._id = response.id
-        return self._id
+        self._transaction_id = response.id
+        return self._transaction_id
 
     def rollback(self):
         """Roll back a transaction on the database."""
@@ -92,7 +88,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         database = self._session._database
         api = database.spanner_api
         options = _options_with_prefix(database.name)
-        api.rollback(self._session.name, self._id, options=options)
+        api.rollback(self._session.name, self._transaction_id, options=options)
         self._rolled_back = True
 
     def commit(self):
@@ -112,7 +108,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         options = _options_with_prefix(database.name)
         response = api.commit(
             self._session.name, self._mutations,
-            transaction_id=self._id, options=options)
+            transaction_id=self._transaction_id, options=options)
         self.committed = _pb_timestamp_to_datetime(
             response.commit_timestamp)
         return self.committed

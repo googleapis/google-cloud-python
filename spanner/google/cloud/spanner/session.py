@@ -273,7 +273,7 @@ class Session(object):
                 txn = self.transaction()
             else:
                 txn = self._transaction
-            if txn._id is None:
+            if txn._transaction_id is None:
                 txn.begin()
             try:
                 func(txn, *args, **kw)

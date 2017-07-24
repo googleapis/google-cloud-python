@@ -35,6 +35,7 @@ class _SnapshotBase(_SessionWrapper):
     :param session: the session used to perform the commit
     """
     _multi_use = False
+    _transaction_id = None
     _read_request_count = 0
 
     def _make_txn_selector(self):  # pylint: disable=redundant-returns-doc
@@ -194,8 +195,6 @@ class Snapshot(_SnapshotBase):
                       isolation / consistency. Incompatible with
                       ``max_staleness`` and ``min_read_timestamp``.
     """
-    _transaction_id = None
-
     def __init__(self, session, read_timestamp=None, min_read_timestamp=None,
                  max_staleness=None, exact_staleness=None, multi_use=False):
         super(Snapshot, self).__init__(session)
