@@ -23,10 +23,10 @@ from google.rpc import code_pb2
 
 from google.cloud import _helpers
 from google.cloud import exceptions
-from google.cloud.future import base
+from google.cloud.future import polling
 
 
-class Operation(base.PollingFuture):
+class Operation(polling.PollingFuture):
     """A Future for interacting with a Google API Long-Running Operation.
 
     Args:

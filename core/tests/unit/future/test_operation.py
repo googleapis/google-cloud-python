@@ -61,7 +61,7 @@ def make_operation_future(client_operations_responses=None):
 
 
 def test_constructor():
-    future, refresh, cancel = make_operation_future()
+    future, refresh, _ = make_operation_future()
 
     assert future.operation == refresh.responses[0]
     assert future.operation.done is False
