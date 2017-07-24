@@ -1,4 +1,5 @@
 [flake8]
+import-order-style=google
 exclude =
   __pycache__,
   .git,
