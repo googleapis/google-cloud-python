@@ -828,7 +828,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         START = 1000
         END = 2000
         session, committed = self._set_up_table(ROW_COUNT)
-        snapshot = session.snapshot(read_timestamp=committed)
+        snapshot = session.snapshot(read_timestamp=committed, multi_use=True)
         all_data_rows = list(self._row_data(ROW_COUNT))
 
         closed_closed = KeyRange(start_closed=[START], end_closed=[END])
@@ -934,7 +934,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 self.ALL_TYPES_COLUMNS,
                 self.ALL_TYPES_ROWDATA)
 
-        snapshot = session.snapshot(read_timestamp=batch.committed)
+        snapshot = session.snapshot(
+            read_timestamp=batch.committed, multi_use=True)
 
         # Cannot equality-test array values.  See below for a test w/
         # array of IDs.
