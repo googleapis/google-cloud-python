@@ -17,13 +17,12 @@
 import functools
 import threading
 
-from google.longrunning import operations_pb2
-from google.protobuf import json_format
-from google.rpc import code_pb2
-
 from google.cloud import _helpers
 from google.cloud import exceptions
 from google.cloud.future import polling
+from google.longrunning import operations_pb2
+from google.protobuf import json_format
+from google.rpc import code_pb2
 
 
 class Operation(polling.PollingFuture):

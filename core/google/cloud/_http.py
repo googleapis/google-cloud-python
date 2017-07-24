@@ -16,8 +16,8 @@
 
 import json
 import platform
-from pkg_resources import get_distribution
 
+from pkg_resources import get_distribution
 import six
 from six.moves.urllib.parse import urlencode
 
