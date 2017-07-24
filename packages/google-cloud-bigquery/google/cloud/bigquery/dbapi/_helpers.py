@@ -15,32 +15,11 @@
 import collections
 import datetime
 import numbers
-import time
 
 import six
 
 from google.cloud import bigquery
 from google.cloud.bigquery.dbapi import exceptions
-
-
-def wait_for_job(job):
-    """Waits for a job to complete by polling until the state is `DONE`.
-
-    Sleeps 1 second between calls to the BigQuery API.
-
-    :type job: :class:`~google.cloud.bigquery.job._AsyncJob`
-    :param job: Wait for this job to finish.
-
-    :raises: :class:`~google.cloud.bigquery.dbapi.exceptions.DatabaseError`
-        if the job fails.
-    """
-    while True:
-        job.reload()
-        if job.state == 'DONE':
-            if job.error_result:
-                raise exceptions.DatabaseError(job.errors)
-            return
-        time.sleep(1)
 
 
 def scalar_to_query_parameter(value, name=None):
