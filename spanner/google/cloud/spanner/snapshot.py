@@ -73,10 +73,14 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
-        :raises: ValueError for reuse of single-use snapshots.
+        :raises: ValueError for reuse of single-use snapshots, or if a
+                 transaction ID is pending for multiple-use snapshots.
         """
-        if not self._multi_use and self._read_request_count > 0:
-            raise ValueError("Cannot re-use single-use snapshot.")
+        if self._read_request_count > 0:
+            if not self._multi_use:
+                raise ValueError("Cannot re-use single-use snapshot.")
+            if self._transaction_id is None:
+                raise ValueError("Transaction ID pending.")
 
         database = self._session._database
         api = database.spanner_api
@@ -121,10 +125,14 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
-        :raises: ValueError for reuse of single-use snapshots.
+        :raises: ValueError for reuse of single-use snapshots, or if a
+                 transaction ID is pending for multiple-use snapshots.
         """
-        if not self._multi_use and self._read_request_count > 0:
-            raise ValueError("Cannot re-use single-use snapshot.")
+        if self._read_request_count > 0:
+            if not self._multi_use:
+                raise ValueError("Cannot re-use single-use snapshot.")
+            if self._transaction_id is None:
+                raise ValueError("Transaction ID pending.")
 
         if params is not None:
             if param_types is None:

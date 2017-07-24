@@ -32,6 +32,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         super(Transaction, self).__init__(session)
         self._id = None
         self._rolled_back = False
+        self._multi_use = True
 
     def _check_state(self):
         """Helper for :meth:`commit` et al.

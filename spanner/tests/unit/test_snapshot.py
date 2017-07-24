@@ -112,7 +112,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
-    def _read_helper(self, multi_use, first=True):
+    def _read_helper(self, multi_use, first=True, count=0):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -156,18 +156,15 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
+        derived._read_request_count = count
         if not first:
             derived._transaction_id = TXN_ID
-            derived._read_request_count = 1
 
         result_set = derived.read(
             TABLE_NAME, COLUMNS, KEYSET,
             index=INDEX, limit=LIMIT, resume_token=TOKEN)
 
-        if first:
-            self.assertEqual(derived._read_request_count, 1)
-        else:
-            self.assertEqual(derived._read_request_count, 2)
+        self.assertEqual(derived._read_request_count, count + 1)
 
         if multi_use:
             self.assertIs(result_set._source, derived)
@@ -205,13 +202,20 @@ class Test_SnapshotBase(unittest.TestCase):
 
     def test_read_wo_multi_use_w_read_request_count_gt_0(self):
         with self.assertRaises(ValueError):
-            self._read_helper(multi_use=False, first=False)
+            self._read_helper(multi_use=False, count=1)
 
     def test_read_w_multi_use_wo_first(self):
         self._read_helper(multi_use=True, first=False)
 
+    def test_read_w_multi_use_wo_first_w_count_gt_0(self):
+        self._read_helper(multi_use=True, first=False, count=1)
+
     def test_read_w_multi_use_w_first(self):
         self._read_helper(multi_use=True, first=True)
+
+    def test_read_w_multi_use_w_first_w_count_gt_0(self):
+        with self.assertRaises(ValueError):
+            self._read_helper(multi_use=True, first=True, count=1)
 
     def test_execute_sql_grpc_error(self):
         from google.cloud.proto.spanner.v1.transaction_pb2 import (
@@ -249,7 +253,7 @@ class Test_SnapshotBase(unittest.TestCase):
         with self.assertRaises(ValueError):
             derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
 
-    def _execute_sql_helper(self, multi_use, first=True):
+    def _execute_sql_helper(self, multi_use, first=True, count=0):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -291,18 +295,15 @@ class Test_SnapshotBase(unittest.TestCase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
+        derived._read_request_count = count
         if not first:
             derived._transaction_id = TXN_ID
-            derived._read_request_count = 1
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
             query_mode=MODE, resume_token=TOKEN)
 
-        if first:
-            self.assertEqual(derived._read_request_count, 1)
-        else:
-            self.assertEqual(derived._read_request_count, 2)
+        self.assertEqual(derived._read_request_count, count + 1)
 
         if multi_use:
             self.assertIs(result_set._source, derived)
@@ -341,13 +342,20 @@ class Test_SnapshotBase(unittest.TestCase):
 
     def test_execute_sql_wo_multi_use_w_read_request_count_gt_0(self):
         with self.assertRaises(ValueError):
-            self._execute_sql_helper(multi_use=False, first=False)
+            self._execute_sql_helper(multi_use=False, count=1)
+
+    def test_execute_sql_w_multi_use_wo_first(self):
+        self._execute_sql_helper(multi_use=True, first=False)
+
+    def test_execute_sql_w_multi_use_wo_first_w_count_gt_0(self):
+        self._execute_sql_helper(multi_use=True, first=False, count=1)
 
     def test_execute_sql_w_multi_use_w_first(self):
         self._execute_sql_helper(multi_use=True, first=True)
 
-    def test_execute_sql_w_multi_use_wo_first(self):
-        self._execute_sql_helper(multi_use=True, first=False)
+    def test_execute_sql_w_multi_use_w_first_w_count_gt_0(self):
+        with self.assertRaises(ValueError):
+            self._execute_sql_helper(multi_use=True, first=True, count=1)
 
 
 class _MockCancellableIterator(object):

@@ -51,7 +51,8 @@ class TestTransaction(unittest.TestCase):
         self.assertIs(transaction._session, session)
         self.assertIsNone(transaction._id)
         self.assertIsNone(transaction.committed)
-        self.assertEqual(transaction._rolled_back, False)
+        self.assertFalse(transaction._rolled_back)
+        self.assertTrue(transaction._multi_use)
 
     def test__check_state_not_begun(self):
         session = _Session()
