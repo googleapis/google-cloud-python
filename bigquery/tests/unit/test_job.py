@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import copy
-import warnings
 
 from six.moves import http_client
 import unittest
@@ -1559,16 +1558,6 @@ class TestQueryJob(unittest.TestCase, _Base):
         results = job.query_results()
         self.assertIsInstance(results, QueryResults)
         self.assertIs(results._job, job)
-
-    def test_results_is_deprecated(self):
-        client = _Client(self.PROJECT)
-        job = self._make_one(self.JOB_NAME, self.QUERY, client)
-
-        with warnings.catch_warnings(record=True) as warned:
-            warnings.simplefilter('always')
-            job.results()
-            self.assertEqual(len(warned), 1)
-            self.assertIn('deprecated', str(warned[0]))
 
     def test_result(self):
         from google.cloud.bigquery.query import QueryResults

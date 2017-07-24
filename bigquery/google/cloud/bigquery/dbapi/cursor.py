@@ -17,6 +17,7 @@
 import collections
 import uuid
 
+import google.cloud.exceptions
 import six
 
 from google.cloud.bigquery.dbapi import _helpers
@@ -148,9 +149,11 @@ class Cursor(object):
             formatted_operation,
             query_parameters=query_parameters)
         query_job.use_legacy_sql = False
-        query_job.begin()
-        _helpers.wait_for_job(query_job)
-        query_results = query_job.results()
+
+        try:
+            query_results = query_job.result()
+        except google.cloud.exceptions.GoogleCloudError:
+            raise exceptions.DatabaseError(query_job.errors)
 
         # Force the iterator to run because the query_results doesn't
         # have the total_rows populated. See:
