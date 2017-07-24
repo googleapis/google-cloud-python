@@ -17,12 +17,11 @@
 import collections
 import uuid
 
-import google.cloud.exceptions
 import six
 
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
-
+import google.cloud.exceptions
 
 # Per PEP 249: A 7-item sequence containing information describing one result
 # column. The first two items (name and type_code) are mandatory, the other
