@@ -94,12 +94,15 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(conn.build_api_url('/foo'), URI)
 
     def test_build_api_url_w_extra_query_params(self):
-        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlsplit
 
         client = object()
         conn = self._make_mock_one(client)
-        uri = conn.build_api_url('/foo', {'bar': 'baz'})
+        uri = conn.build_api_url('/foo', {
+            'bar': 'baz',
+            'qux': ['quux', 'corge']
+        })
 
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
@@ -111,8 +114,9 @@ class TestJSONConnection(unittest.TestCase):
             'foo',
         ])
         self.assertEqual(path, PATH)
-        parms = dict(parse_qsl(qs))
-        self.assertEqual(parms['bar'], 'baz')
+        parms = dict(parse_qs(qs))
+        self.assertEqual(parms['bar'], ['baz'])
+        self.assertEqual(parms['qux'], ['quux', 'corge'])
 
     def test__make_request_no_data_no_content_type_no_headers(self):
         http = _Http(
@@ -222,7 +226,7 @@ class TestJSONConnection(unittest.TestCase):
                          b'CONTENT')
 
     def test_api_request_w_query_params(self):
-        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlsplit
 
         http = _Http(
@@ -231,7 +235,10 @@ class TestJSONConnection(unittest.TestCase):
         )
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
-        self.assertEqual(conn.api_request('GET', '/', {'foo': 'bar'}), {})
+        self.assertEqual(conn.api_request('GET', '/', {
+            'foo': 'bar',
+            'baz': ['qux', 'quux']
+        }), {})
         self.assertEqual(http._called_with['method'], 'GET')
         uri = http._called_with['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
@@ -244,8 +251,9 @@ class TestJSONConnection(unittest.TestCase):
             '',
         ])
         self.assertEqual(path, PATH)
-        parms = dict(parse_qsl(qs))
-        self.assertEqual(parms['foo'], 'bar')
+        parms = dict(parse_qs(qs))
+        self.assertEqual(parms['foo'], ['bar'])
+        self.assertEqual(parms['baz'], ['qux', 'quux'])
         self.assertIsNone(http._called_with['body'])
         expected_headers = {
             'Accept-Encoding': 'gzip',
