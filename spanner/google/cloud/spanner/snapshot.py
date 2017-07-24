@@ -167,9 +167,10 @@ class Snapshot(_SnapshotBase):
                             ``exact_staleness`` old.
 
     :type multi_use: :class:`bool`
-    :param multi_use: If true, the first read operation creates a read-only
-                      transaction, used to ensure isolation / consistency
-                      for subsequent read operations.  Incompatible with
+    :param multi_use: If true, multipl :meth:`read` / :meth:`execute_sql`
+                      calls can be performed with the snapshot in the
+                      context of a read-only transaction, used to ensure
+                      isolation / consistency. Incompatible with
                       ``max_staleness`` and ``min_read_timestamp``.
     """
     _transaction_id = None
