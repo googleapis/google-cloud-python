@@ -32,7 +32,7 @@ from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
 from google.cloud.bigquery._helpers import _TypedProperty
-import google.cloud.future.base
+import google.cloud.future.polling
 
 _DONE_STATE = 'DONE'
 _STOPPED_REASON = 'stopped'
@@ -141,7 +141,7 @@ class WriteDisposition(_EnumProperty):
     ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
 
 
-class _AsyncJob(google.cloud.future.base.PollingFuture):
+class _AsyncJob(google.cloud.future.polling.PollingFuture):
     """Base class for asynchronous jobs.
 
     :type name: str
