@@ -16,15 +16,15 @@
 
 import base64
 import datetime
+
 import six
 from six.moves.urllib.parse import urlencode
 
 import google.auth
 import google.auth.credentials
-
-from google.cloud._helpers import UTC
-from google.cloud._helpers import _NOW
 from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import _NOW
+from google.cloud._helpers import UTC
 
 
 def get_credentials():
