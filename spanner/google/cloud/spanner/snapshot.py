@@ -225,3 +225,26 @@ class Snapshot(_SnapshotBase):
             return TransactionSelector(begin=options)
         else:
             return TransactionSelector(single_use=options)
+
+    def begin(self):
+        """Begin a transaction on the database.
+
+        :rtype: bytes
+        :returns: the ID for the newly-begun transaction.
+        :raises: ValueError if the transaction is already begun, committed,
+                 or rolled back.
+        """
+        if not self._multi_use:
+            raise ValueError("Cannot call 'begin' single-use snapshots")
+
+        if self._transaction_id is not None:
+            raise ValueError("Transaction already begun")
+
+        database = self._session._database
+        api = database.spanner_api
+        options = _options_with_prefix(database.name)
+        txn_selector = self._make_txn_selector()
+        response = api.begin_transaction(
+            self._session.name, txn_selector.begin, options=options)
+        self._transaction_id = response.id
+        return self._transaction_id
