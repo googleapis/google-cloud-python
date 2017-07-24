@@ -42,7 +42,7 @@ class TestCursor(unittest.TestCase):
         mock_job = mock.create_autospec(job.QueryJob)
         mock_job.error_result = None
         mock_job.state = 'DONE'
-        mock_job.results.return_value = self._mock_results(
+        mock_job.result.return_value = self._mock_results(
             rows=rows, schema=schema,
             num_dml_affected_rows=num_dml_affected_rows)
         return mock_job
@@ -218,6 +218,24 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(row, ('howdy', 'y\'all', 2))
         row = cursor.fetchone()
         self.assertIsNone(row)
+
+    def test_execute_raises_if_result_raises(self):
+        import google.cloud.exceptions
+
+        from google.cloud.bigquery import client
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.dbapi import connect
+        from google.cloud.bigquery.dbapi import exceptions
+
+        job = mock.create_autospec(job.QueryJob)
+        job.result.side_effect = google.cloud.exceptions.GoogleCloudError('')
+        client = mock.create_autospec(client.Client)
+        client.run_async_query.return_value = job
+        connection = connect(client)
+        cursor = connection.cursor()
+
+        with self.assertRaises(exceptions.DatabaseError):
+            cursor.execute('SELECT 1')
 
     def test_executemany_w_dml(self):
         from google.cloud.bigquery.dbapi import connect
