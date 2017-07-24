@@ -16,7 +16,6 @@
 
 import collections
 import threading
-import warnings
 
 import six
 from six.moves import http_client
@@ -1263,21 +1262,6 @@ class QueryJob(_AsyncJob):
         """
         from google.cloud.bigquery.query import QueryResults
         return QueryResults.from_query_job(self)
-
-    def results(self):
-        """DEPRECATED.
-
-        This method is deprecated. Use :meth:`query_results` or :meth:`result`.
-
-        Construct a QueryResults instance, bound to this job.
-
-        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
-        :returns: The query results.
-        """
-        warnings.warn(
-            'QueryJob.results() is deprecated. Please use query_results() or '
-            'result().', DeprecationWarning)
-        return self.query_results()
 
     def result(self, timeout=None):
         """Start the job and wait for it to complete and get the result.
