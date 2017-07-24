@@ -16,46 +16,9 @@ import datetime
 import math
 import unittest
 
-import mock
-
 import google.cloud._helpers
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
-
-
-class Test_wait_for_job(unittest.TestCase):
-
-    def _mock_job(self):
-        from google.cloud.bigquery import job
-        mock_job = mock.create_autospec(job.QueryJob)
-        mock_job.state = 'RUNNING'
-        mock_job._mocked_iterations = 0
-
-        def mock_reload():
-            mock_job._mocked_iterations += 1
-            if mock_job._mocked_iterations >= 2:
-                mock_job.state = 'DONE'
-
-        mock_job.reload.side_effect = mock_reload
-        return mock_job
-
-    def _call_fut(self, job):
-        from google.cloud.bigquery.dbapi._helpers import wait_for_job
-        with mock.patch('time.sleep'):
-            wait_for_job(job)
-
-    def test_wo_error(self):
-        mock_job = self._mock_job()
-        mock_job.error_result = None
-        self._call_fut(mock_job)
-        self.assertEqual('DONE', mock_job.state)
-
-    def test_w_error(self):
-        from google.cloud.bigquery.dbapi import exceptions
-        mock_job = self._mock_job()
-        mock_job.error_result = {'reason': 'invalidQuery'}
-        self.assertRaises(exceptions.DatabaseError, self._call_fut, mock_job)
-        self.assertEqual('DONE', mock_job.state)
 
 
 class TestQueryParameters(unittest.TestCase):

@@ -21,7 +21,7 @@ import six
 
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
-
+import google.cloud.exceptions
 
 # Per PEP 249: A 7-item sequence containing information describing one result
 # column. The first two items (name and type_code) are mandatory, the other
@@ -148,9 +148,11 @@ class Cursor(object):
             formatted_operation,
             query_parameters=query_parameters)
         query_job.use_legacy_sql = False
-        query_job.begin()
-        _helpers.wait_for_job(query_job)
-        query_results = query_job.results()
+
+        try:
+            query_results = query_job.result()
+        except google.cloud.exceptions.GoogleCloudError:
+            raise exceptions.DatabaseError(query_job.errors)
 
         # Force the iterator to run because the query_results doesn't
         # have the total_rows populated. See:
