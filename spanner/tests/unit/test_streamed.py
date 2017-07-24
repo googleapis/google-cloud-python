@@ -619,6 +619,28 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.resume_token, result_set.resume_token)
         self.assertEqual(source._transaction_id, TXN_ID)
 
+    def test_consume_next_first_set_partial_existing_txn_id(self):
+        TXN_ID = b'DEADBEEF'
+        FIELDS = [
+            self._make_scalar_field('full_name', 'STRING'),
+            self._make_scalar_field('age', 'INT64'),
+            self._make_scalar_field('married', 'BOOL'),
+        ]
+        metadata = self._make_result_set_metadata(
+            FIELDS, transaction_id=b'')
+        BARE = [u'Phred Phlyntstone', 42]
+        VALUES = [self._make_value(bare) for bare in BARE]
+        result_set = self._make_partial_result_set(VALUES, metadata=metadata)
+        iterator = _MockCancellableIterator(result_set)
+        source = mock.Mock(_transaction_id=TXN_ID, spec=['_transaction_id'])
+        streamed = self._make_one(iterator, source=source)
+        streamed.consume_next()
+        self.assertEqual(streamed.rows, [])
+        self.assertEqual(streamed._current_row, BARE)
+        self.assertEqual(streamed.metadata, metadata)
+        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(source._transaction_id, TXN_ID)
+
     def test_consume_next_w_partial_result(self):
         FIELDS = [
             self._make_scalar_field('full_name', 'STRING'),

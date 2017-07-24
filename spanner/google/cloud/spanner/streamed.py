@@ -136,8 +136,9 @@ class StreamedResultSet(object):
         if self._metadata is None:  # first response
             metadata = self._metadata = response.metadata
 
-            if self._source is not None:
-                self._source._transaction_id = metadata.transaction.id
+            source = self._source
+            if source is not None and source._transaction_id is None:
+                source._transaction_id = metadata.transaction.id
 
         if response.HasField('stats'):  # last response
             self._stats = response.stats
