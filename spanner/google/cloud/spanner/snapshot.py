@@ -35,6 +35,7 @@ class _SnapshotBase(_SessionWrapper):
     :param session: the session used to perform the commit
     """
     _multi_use = False
+    _read_request_count = 0
 
     def _make_txn_selector(self):  # pylint: disable=redundant-returns-doc
         """Helper for :meth:`read` / :meth:`execute_sql`.
@@ -72,7 +73,11 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
+        :raises: ValueError for reuse of single-use snapshots.
         """
+        if not self._multi_use and self._read_request_count > 0:
+            raise ValueError("Cannot re-use single-use snapshot.")
+
         database = self._session._database
         api = database.spanner_api
         options = _options_with_prefix(database.name)
@@ -82,6 +87,8 @@ class _SnapshotBase(_SessionWrapper):
             self._session.name, table, columns, keyset.to_pb(),
             transaction=transaction, index=index, limit=limit,
             resume_token=resume_token, options=options)
+
+        self._read_request_count += 1
 
         if self._multi_use:
             return StreamedResultSet(iterator, source=self)
@@ -114,7 +121,11 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
+        :raises: ValueError for reuse of single-use snapshots.
         """
+        if not self._multi_use and self._read_request_count > 0:
+            raise ValueError("Cannot re-use single-use snapshot.")
+
         if params is not None:
             if param_types is None:
                 raise ValueError(
@@ -132,6 +143,8 @@ class _SnapshotBase(_SessionWrapper):
             self._session.name, sql,
             transaction=transaction, params=params_pb, param_types=param_types,
             query_mode=query_mode, resume_token=resume_token, options=options)
+
+        self._read_request_count += 1
 
         if self._multi_use:
             return StreamedResultSet(iterator, source=self)
@@ -239,7 +252,10 @@ class Snapshot(_SnapshotBase):
             raise ValueError("Cannot call 'begin' single-use snapshots")
 
         if self._transaction_id is not None:
-            raise ValueError("Transaction already begun")
+            raise ValueError("Read-only transaction already begun")
+
+        if self._read_request_count > 0:
+            raise ValueError("Read-only transaction already pending")
 
         database = self._session._database
         api = database.spanner_api
