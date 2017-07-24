@@ -53,7 +53,7 @@ def lint(session):
     session.install(
         'flake8', 'flake8-import-order', 'pylint', 'gcp-devrel-py-tools')
     session.install('.')
-    session.run('flake8', 'google/cloud/core')
+    session.run('flake8', 'google', 'tests')
     session.run(
         'gcp-devrel-py-tools', 'run-pylint',
         '--config', 'pylint.config.py',

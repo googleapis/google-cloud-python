@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import six
 
 
 class Test_get_credentials(unittest.TestCase):
@@ -169,12 +170,10 @@ class Test__get_expiration_seconds(unittest.TestCase):
         self.assertEqual(self._call_fut(123), 123)
 
     def test_w_long(self):
-        try:
-            long
-        except NameError:  # pragma: NO COVER Py3K
-            pass
-        else:
-            self.assertEqual(self._call_fut(long(123)), 123)
+        if six.PY3:
+            raise unittest.SkipTest('No long on Python 3')
+
+        self.assertEqual(self._call_fut(long(123)), 123)  # noqa: F821
 
     def test_w_naive_datetime(self):
         import datetime

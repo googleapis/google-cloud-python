@@ -25,20 +25,20 @@ import os
 import re
 from threading import local as Local
 
+import google_auth_httplib2
+import httplib2
+import six
+from six.moves import http_client
+
 import google.auth
 from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
-import google_auth_httplib2
 
 try:
     import grpc
     import google.auth.transport.grpc
 except ImportError:  # pragma: NO COVER
     grpc = None
-
-import httplib2
-import six
-from six.moves import http_client
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.

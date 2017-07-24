@@ -18,13 +18,13 @@ import io
 import json
 from pickle import PicklingError
 
-import google.auth.credentials
-from google.oauth2 import service_account
 import google_auth_httplib2
 import six
 
+import google.auth.credentials
 from google.cloud._helpers import _determine_default_project
 from google.cloud.credentials import get_credentials
+from google.oauth2 import service_account
 
 
 _GOOGLE_AUTH_CREDENTIALS_HELP = (
