@@ -371,10 +371,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     BYTES_1 = b'Ymlu'
     BYTES_2 = b'Ym9vdHM='
     ALL_TYPES_ROWDATA = (
+        ([], False, None, None, 0.0, None, None, None),
         ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
         ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
         ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
-        ([], False, None, None, float('-inf'), 207, None, None),
+        ([3, None, 9], False, None, None, float('-inf'), 207, None, None),
         ([], False, None, None, float('nan'), 1207, None, None),
         ([], False, None, None, OTHER_NAN, 2000, None, NANO_TIME),
     )
@@ -903,7 +904,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             params={'lower': 0.0, 'upper': 1.0},
             param_types={
                 'lower': Type(code=FLOAT64), 'upper': Type(code=FLOAT64)},
-            expected=[(19,)],
+            expected=[(None,), (19,)],
         )
 
         # Find -inf
