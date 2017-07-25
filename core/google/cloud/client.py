@@ -23,7 +23,7 @@ import six
 
 import google.auth
 import google.auth.credentials
-from google.cloud._helpers import _determine_default_project
+from google.cloud import _helpers
 from google.oauth2 import service_account
 
 
@@ -34,54 +34,7 @@ _GOOGLE_AUTH_CREDENTIALS_HELP = (
 )
 
 
-class _ClientFactoryMixin(object):
-    """Mixin to allow factories that create credentials.
-
-    .. note::
-
-        This class is virtual.
-    """
-
-    _SET_PROJECT = False
-
-    @classmethod
-    def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
-        """Factory to retrieve JSON credentials while creating client.
-
-        :type json_credentials_path: str
-        :param json_credentials_path: The path to a private key file (this file
-                                      was given to you when you created the
-                                      service account). This file must contain
-                                      a JSON object with a private key and
-                                      other credentials information (downloaded
-                                      from the Google APIs console).
-
-        :type args: tuple
-        :param args: Remaining positional arguments to pass to constructor.
-
-        :type kwargs: dict
-        :param kwargs: Remaining keyword arguments to pass to constructor.
-
-        :rtype: :class:`_ClientFactoryMixin`
-        :returns: The client created with the retrieved JSON credentials.
-        :raises TypeError: if there is a conflict with the kwargs
-                 and the credentials created by the factory.
-        """
-        if 'credentials' in kwargs:
-            raise TypeError('credentials must not be in keyword arguments')
-        with io.open(json_credentials_path, 'r', encoding='utf-8') as json_fi:
-            credentials_info = json.load(json_fi)
-        credentials = service_account.Credentials.from_service_account_info(
-            credentials_info)
-        if cls._SET_PROJECT:
-            if 'project' not in kwargs:
-                kwargs['project'] = credentials_info.get('project_id')
-
-        kwargs['credentials'] = credentials
-        return cls(*args, **kwargs)
-
-
-class Client(_ClientFactoryMixin):
+class Client(object):
     """Client to bundle configuration needed for API requests.
 
     Stores ``credentials`` and an HTTP object so that subclasses
@@ -123,6 +76,8 @@ class Client(_ClientFactoryMixin):
                   change in the future.
     """
 
+    _SET_PROJECT = False
+
     SCOPE = None
     """The scopes required for authenticating with a service.
 
@@ -159,38 +114,44 @@ class Client(_ClientFactoryMixin):
                 self._credentials)
         return self._http_internal
 
+    @classmethod
+    def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
+        """Factory to retrieve JSON credentials while creating client.
 
-class _ClientProjectMixin(object):
-    """Mixin to allow setting the project on the client.
+        :type json_credentials_path: str
+        :param json_credentials_path: The path to a private key file (this file
+                                      was given to you when you created the
+                                      service account). This file must contain
+                                      a JSON object with a private key and
+                                      other credentials information (downloaded
+                                      from the Google APIs console).
 
-    :type project: str
-    :param project: the project which the client acts on behalf of. If not
-                    passed falls back to the default inferred from the
-                    environment.
+        :type args: tuple
+        :param args: Remaining positional arguments to pass to constructor.
 
-    :raises: :class:`EnvironmentError` if the project is neither passed in nor
-             set in the environment. :class:`ValueError` if the project value
-             is invalid.
-    """
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to pass to constructor.
 
-    def __init__(self, project=None):
-        project = self._determine_default(project)
-        if project is None:
-            raise EnvironmentError('Project was not passed and could not be '
-                                   'determined from the environment.')
-        if isinstance(project, six.binary_type):
-            project = project.decode('utf-8')
-        if not isinstance(project, six.string_types):
-            raise ValueError('Project must be a string.')
-        self.project = project
+        :rtype: :class:`Client`
+        :returns: The client created with the retrieved JSON credentials.
+        :raises TypeError: if there is a conflict with the kwargs
+                 and the credentials created by the factory.
+        """
+        if 'credentials' in kwargs:
+            raise TypeError('credentials must not be in keyword arguments')
+        with io.open(json_credentials_path, 'r', encoding='utf-8') as json_fi:
+            credentials_info = json.load(json_fi)
+        credentials = service_account.Credentials.from_service_account_info(
+            credentials_info)
+        if cls._SET_PROJECT:
+            if 'project' not in kwargs:
+                kwargs['project'] = credentials_info.get('project_id')
 
-    @staticmethod
-    def _determine_default(project):
-        """Helper:  use default project detection."""
-        return _determine_default_project(project)
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
 
 
-class ClientWithProject(Client, _ClientProjectMixin):
+class ClientWithProject(Client):
     """Client that also stores a project.
 
     :type project: str
@@ -213,12 +174,23 @@ class ClientWithProject(Client, _ClientProjectMixin):
                   This parameter should be considered private, and could
                   change in the future.
 
-    :raises: :class:`ValueError` if the project is neither passed in nor
-             set in the environment.
+    :raises EnvironmentError: If the project is neither passed in nor
+                              set in the environment.
     """
 
     _SET_PROJECT = True  # Used by from_service_account_json()
 
     def __init__(self, project=None, credentials=None, _http=None):
-        _ClientProjectMixin.__init__(self, project=project)
-        Client.__init__(self, credentials=credentials, _http=_http)
+        super(ClientWithProject, self).__init__(
+            credentials=credentials, _http=_http)
+
+        project = self._determine_default(project)
+        if project is None:
+            raise EnvironmentError('Project was not passed and could not be '
+                                   'determined from the environment.')
+        self.project = _helpers._bytes_to_unicode(project)
+
+    @staticmethod
+    def _determine_default(project):
+        """Helper:  use default project detection."""
+        return _helpers._determine_default_project(project)
