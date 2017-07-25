@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.schema &#8212; google-cloud 0.26.1 documentation</title>
+    <title>google.cloud.bigquery.schema &#8212; google-cloud 0.26.2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.1',
+        VERSION:     '0.26.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -68,30 +68,97 @@
 <span class="sd">                       &#39;FLOAT&#39;, &#39;BOOLEAN&#39;, &#39;TIMESTAMP&#39; or &#39;RECORD&#39;).</span>
 
 <span class="sd">    :type mode: str</span>
-<span class="sd">    :param mode: the type of the field (one of &#39;NULLABLE&#39;, &#39;REQUIRED&#39;,</span>
+<span class="sd">    :param mode: the mode of the field (one of &#39;NULLABLE&#39;, &#39;REQUIRED&#39;,</span>
 <span class="sd">                 or &#39;REPEATED&#39;).</span>
 
 <span class="sd">    :type description: str</span>
 <span class="sd">    :param description: optional description for the field.</span>
 
-<span class="sd">    :type fields: list of :class:`SchemaField`, or None</span>
+<span class="sd">    :type fields: tuple of :class:`SchemaField`</span>
 <span class="sd">    :param fields: subfields (requires ``field_type`` of &#39;RECORD&#39;).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;NULLABLE&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span> <span class="o">=</span> <span class="n">field_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">=</span> <span class="n">fields</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;NULLABLE&#39;</span><span class="p">,</span>
+                 <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field_type</span> <span class="o">=</span> <span class="n">field_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str: The name of the field.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str: The type of the field.</span>
+
+<span class="sd">        Will be one of &#39;STRING&#39;, &#39;INTEGER&#39;, &#39;FLOAT&#39;, &#39;BOOLEAN&#39;,</span>
+<span class="sd">        &#39;TIMESTAMP&#39; or &#39;RECORD&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field_type</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str: The mode of the field.</span>
+
+<span class="sd">        Will be one of &#39;NULLABLE&#39;, &#39;REQUIRED&#39;, or &#39;REPEATED&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_nullable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check whether &#39;mode&#39; is &#39;nullable&#39;.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s1">&#39;NULLABLE&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Optional[str]: Description for the field.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;tuple: Subfields contained in this field.</span>
+
+<span class="sd">        If ``field_type`` is not &#39;RECORD&#39;, this property must be</span>
+<span class="sd">        empty / unset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span>
+
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that unique-ly describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this :class:`SchemaField`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_field_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">mode</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">description</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;SchemaField</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
 </pre></div>
 
           </div>
@@ -141,7 +208,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>

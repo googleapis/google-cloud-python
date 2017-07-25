@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.instance &#8212; google-cloud 0.26.1 documentation</title>
+    <title>google.cloud.spanner.instance &#8212; google-cloud 0.26.2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.1',
+        VERSION:     '0.26.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -70,7 +70,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">Conflict</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">GAXIterator</span>
-<span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">register_type</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner.database</span> <span class="k">import</span> <span class="n">Database</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner.pool</span> <span class="k">import</span> <span class="n">BurstyPool</span>
@@ -82,10 +81,6 @@
     <span class="sa">r</span><span class="s1">&#39;instances/(?P&lt;instance_id&gt;[a-z][-a-z0-9]*)$&#39;</span><span class="p">)</span>
 
 <span class="n">DEFAULT_NODE_COUNT</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="n">register_type</span><span class="p">(</span><span class="n">admin_v1_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">)</span>
-<span class="n">register_type</span><span class="p">(</span><span class="n">admin_v1_pb2</span><span class="o">.</span><span class="n">CreateInstanceMetadata</span><span class="p">)</span>
-<span class="n">register_type</span><span class="p">(</span><span class="n">admin_v1_pb2</span><span class="o">.</span><span class="n">UpdateInstanceMetadata</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Instance"><a class="viewcode-back" href="../../../../spanner/instance-api.html#google.cloud.spanner.instance.Instance">[docs]</a><span class="k">class</span> <span class="nc">Instance</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -246,7 +241,7 @@
 
 <span class="sd">           before calling :meth:`create`.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.operation.Operation`</span>
+<span class="sd">        :rtype: :class:`google.cloud.future.operation.Operation`</span>
 <span class="sd">        :returns: an operation instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_api</span>
@@ -270,7 +265,6 @@
                 <span class="k">raise</span> <span class="n">Conflict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">raise</span>
 
-        <span class="n">future</span><span class="o">.</span><span class="n">caller_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;request_type&#39;</span><span class="p">:</span> <span class="s1">&#39;CreateInstance&#39;</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">future</span></div>
 
 <div class="viewcode-block" id="Instance.exists"><a class="viewcode-back" href="../../../../spanner/instance-api.html#google.cloud.spanner.instance.Instance.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -327,7 +321,7 @@
 
 <span class="sd">            before calling :meth:`update`.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.operation.Operation`</span>
+<span class="sd">        :rtype: :class:`google.cloud.future.operation.Operation`</span>
 <span class="sd">        :returns: an operation instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_api</span>
@@ -351,7 +345,6 @@
                 <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">raise</span>
 
-        <span class="n">future</span><span class="o">.</span><span class="n">caller_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;request_type&#39;</span><span class="p">:</span> <span class="s1">&#39;UpdateInstance&#39;</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">future</span></div>
 
 <div class="viewcode-block" id="Instance.delete"><a class="viewcode-back" href="../../../../spanner/instance-api.html#google.cloud.spanner.instance.Instance.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -488,7 +481,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>

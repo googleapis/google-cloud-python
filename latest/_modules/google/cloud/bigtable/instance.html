@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.instance &#8212; google-cloud 0.26.1 documentation</title>
+    <title>google.cloud.bigtable.instance &#8212; google-cloud 0.26.2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.1',
+        VERSION:     '0.26.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -68,17 +68,12 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.cluster</span> <span class="k">import</span> <span class="n">Cluster</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.cluster</span> <span class="k">import</span> <span class="n">DEFAULT_SERVE_NODES</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.table</span> <span class="k">import</span> <span class="n">Table</span>
-<span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">Operation</span>
-<span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">register_type</span>
+<span class="kn">from</span> <span class="nn">google.cloud.future</span> <span class="k">import</span> <span class="n">operation</span>
 
 
 <span class="n">_EXISTING_INSTANCE_LOCATION_ID</span> <span class="o">=</span> <span class="s1">&#39;see-existing-cluster&#39;</span>
 <span class="n">_INSTANCE_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^projects/(?P&lt;project&gt;[^/]+)/&#39;</span>
                                <span class="sa">r</span><span class="s1">&#39;instances/(?P&lt;instance_id&gt;[a-z][-a-z0-9]*)$&#39;</span><span class="p">)</span>
-
-
-<span class="n">register_type</span><span class="p">(</span><span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">CreateInstanceMetadata</span><span class="p">)</span>
-<span class="n">register_type</span><span class="p">(</span><span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_prepare_create_request</span><span class="p">(</span><span class="n">instance</span><span class="p">):</span>
@@ -274,10 +269,12 @@
         <span class="c1"># We expect a `google.longrunning.operations_pb2.Operation`.</span>
         <span class="n">operation_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_stub</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
 
-        <span class="n">operation</span> <span class="o">=</span> <span class="n">Operation</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
-        <span class="n">operation</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="n">operation</span><span class="o">.</span><span class="n">caller_metadata</span><span class="p">[</span><span class="s1">&#39;request_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;CreateInstance&#39;</span>
-        <span class="k">return</span> <span class="n">operation</span></div>
+        <span class="n">operation_future</span> <span class="o">=</span> <span class="n">operation</span><span class="o">.</span><span class="n">from_grpc</span><span class="p">(</span>
+            <span class="n">operation_pb</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_operations_stub</span><span class="p">,</span>
+            <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">,</span>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">CreateInstanceMetadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">operation_future</span></div>
 
 <div class="viewcode-block" id="Instance.update"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update this instance.</span>
@@ -442,7 +439,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>

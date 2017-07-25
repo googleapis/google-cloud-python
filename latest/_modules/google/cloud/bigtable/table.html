@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.table &#8212; google-cloud 0.26.1 documentation</title>
+    <title>google.cloud.bigtable.table &#8212; google-cloud 0.26.2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.1',
+        VERSION:     '0.26.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -223,7 +223,7 @@
             <span class="n">table_pb</span> <span class="o">=</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">Table</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">col_fam</span> <span class="ow">in</span> <span class="n">column_families</span><span class="p">:</span>
                 <span class="n">curr_id</span> <span class="o">=</span> <span class="n">col_fam</span><span class="o">.</span><span class="n">column_family_id</span>
-                <span class="n">table_pb</span><span class="o">.</span><span class="n">column_families</span><span class="p">[</span><span class="n">curr_id</span><span class="p">]</span><span class="o">.</span><span class="n">MergeFrom</span><span class="p">(</span><span class="n">col_fam</span><span class="o">.</span><span class="n">to_pb</span><span class="p">())</span>
+                <span class="n">table_pb</span><span class="o">.</span><span class="n">column_families</span><span class="p">[</span><span class="n">curr_id</span><span class="p">]</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">col_fam</span><span class="o">.</span><span class="n">to_pb</span><span class="p">())</span>
 
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">table_admin_messages_v2_pb2</span><span class="o">.</span><span class="n">CreateTableRequest</span><span class="p">(</span>
             <span class="n">initial_splits</span><span class="o">=</span><span class="n">initial_split_keys</span> <span class="ow">or</span> <span class="p">[],</span>
@@ -573,7 +573,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech/usage.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
