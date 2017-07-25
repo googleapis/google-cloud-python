@@ -1400,6 +1400,11 @@ class Blob(_PropertyMixin):
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
+        :setter: Update arbitrary/application specific metadata for the
+                 object.
+        :getter: Retrieve arbitrary/application specific metadata for
+                 the object.
+
         :rtype: dict or ``NoneType``
         :returns: The metadata associated with the blob or ``None`` if the
                   property is not set locally.
