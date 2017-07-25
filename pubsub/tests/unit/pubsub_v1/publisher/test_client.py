@@ -121,3 +121,18 @@ def test_publish_attrs_type_error():
     client = publisher.Client()
     with pytest.raises(TypeError):
         client.publish('topic_name', b'foo', answer=42)
+
+
+def test_gapic_instance_method():
+    client = publisher.Client()
+    with mock.patch.object(client.api, '_create_topic', autospec=True) as ct:
+        client.create_topic('projects/foo/topics/bar')
+        assert ct.call_count == 1
+        _, args, _ = ct.mock_calls[0]
+        assert args[0] == types.Topic(name='projects/foo/topics/bar')
+
+
+def test_gapic_class_method():
+    client = publisher.Client()
+    answer = client.topic_path('foo', 'bar')
+    assert answer == 'projects/foo/topics/bar'

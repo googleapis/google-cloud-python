@@ -110,3 +110,44 @@ def test_exception_timeout():
         # only three seconds were left before the timeout was to be hit).
         assert sleep.call_count == 4
         assert sleep.mock_calls[0]
+
+
+def test_result_no_error():
+    batch = create_batch(status='success')
+    future = create_future(batch=batch)
+    batch.message_ids[hash(future)] = '42'
+    assert future.result() == '42'
+
+
+def test_result_with_error():
+    batch = create_batch(status='error')
+    batch.error = RuntimeError('Something really bad happened.')
+    future = create_future(batch=batch)
+    with pytest.raises(RuntimeError):
+        future.result()
+
+
+def test_add_done_callback_pending_batch():
+    future = create_future()
+    callback = mock.Mock()
+    future.add_done_callback(callback)
+    assert len(future._callbacks) == 1
+    assert callback in future._callbacks
+    assert callback.call_count == 0
+
+
+def test_add_done_callback_completed_batch():
+    batch = create_batch(status='success')
+    future = create_future(batch=batch)
+    callback = mock.Mock()
+    future.add_done_callback(callback)
+    callback.assert_called_once_with(future)
+
+
+def test_trigger():
+    future = create_future()
+    callback = mock.Mock()
+    future.add_done_callback(callback)
+    assert callback.call_count == 0
+    future._trigger()
+    callback.assert_called_once_with(future)
