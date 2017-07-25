@@ -21,9 +21,9 @@ from pickle import PicklingError
 import google_auth_httplib2
 import six
 
+import google.auth
 import google.auth.credentials
 from google.cloud._helpers import _determine_default_project
-from google.cloud.credentials import get_credentials
 from google.oauth2 import service_account
 
 
@@ -135,7 +135,7 @@ class Client(_ClientFactoryMixin):
                     credentials, google.auth.credentials.Credentials)):
             raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
         if credentials is None and _http is None:
-            credentials = get_credentials()
+            credentials, _ = google.auth.default()
         self._credentials = google.auth.credentials.with_scopes_if_required(
             credentials, self.SCOPE)
         self._http_internal = _http

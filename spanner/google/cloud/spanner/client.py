@@ -24,6 +24,7 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner.database.Database`
 """
 
+import google.auth
 import google.auth.credentials
 from google.gax import INITIAL_PAGE
 # pylint: disable=line-too-long
@@ -36,7 +37,6 @@ from google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client import (
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import _ClientFactoryMixin
 from google.cloud.client import _ClientProjectMixin
-from google.cloud.credentials import get_credentials
 from google.cloud.iterator import GAXIterator
 from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
@@ -109,7 +109,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
         _ClientProjectMixin.__init__(self, project=project)
         if credentials is None:
-            credentials = get_credentials()
+            credentials, _ = google.auth.default()
 
         scopes = [
             SPANNER_ADMIN_SCOPE,
