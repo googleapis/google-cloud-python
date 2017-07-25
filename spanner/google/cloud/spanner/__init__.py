@@ -36,5 +36,19 @@ from google.cloud.spanner.pool import BurstyPool
 from google.cloud.spanner.pool import FixedSizePool
 
 
-__all__ = ['__version__', 'AbstractSessionPool', 'BurstyPool', 'Client',
-           'FixedSizePool', 'KeyRange', 'KeySet']
+__all__ = [
+    '__version__',
+    'AbstractSessionPool',
+    'BOOL_PARAM_TYPE',
+    'BYTES_PARAM_TYPE',
+    'BurstyPool',
+    'Client',
+    'DATE_PARAM_TYPE',
+    'FLOAT64_PARAM_TYPE',
+    'FixedSizePool',
+    'INT64_PARAM_TYPE',
+    'KeyRange',
+    'KeySet',
+    'STRING_PARAM_TYPE',
+    'TIMESTAMP_PARAM_TYPE',
+]
