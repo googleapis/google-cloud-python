@@ -31,6 +31,7 @@ In the hierarchy of API concepts
 
 import os
 
+import google.auth
 import google.auth.credentials
 from google.gax.utils import metrics
 from google.longrunning import operations_grpc
@@ -40,7 +41,6 @@ from google.cloud._helpers import make_secure_stub
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import _ClientFactoryMixin
 from google.cloud.client import _ClientProjectMixin
-from google.cloud.credentials import get_credentials
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from google.cloud.bigtable import __version__
@@ -211,7 +211,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
                  read_only=False, admin=False, user_agent=DEFAULT_USER_AGENT):
         _ClientProjectMixin.__init__(self, project=project)
         if credentials is None:
-            credentials = get_credentials()
+            credentials, _ = google.auth.default()
 
         if read_only and admin:
             raise ValueError('A read-only client cannot also perform'
