@@ -25,19 +25,6 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-class Test_ClientFactoryMixin(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.client import _ClientFactoryMixin
-
-        return _ClientFactoryMixin
-
-    def test_virtual(self):
-        klass = self._get_target_class()
-        self.assertFalse('__init__' in klass.__dict__)
-
-
 class TestClient(unittest.TestCase):
 
     @staticmethod
