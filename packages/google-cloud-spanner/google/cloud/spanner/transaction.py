@@ -93,6 +93,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         options = _options_with_prefix(database.name)
         api.rollback(self._session.name, self._id, options=options)
         self._rolled_back = True
+        del self._session._transaction
 
     def commit(self):
         """Commit mutations to the database.
@@ -114,6 +115,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             transaction_id=self._id, options=options)
         self.committed = _pb_timestamp_to_datetime(
             response.commit_timestamp)
+        del self._session._transaction
         return self.committed
 
     def __enter__(self):

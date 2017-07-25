@@ -302,7 +302,6 @@ class Session(object):
                 continue
             except Exception:
                 txn.rollback()
-                del self._transaction
                 raise
 
             try:
@@ -312,7 +311,6 @@ class Session(object):
                 del self._transaction
             else:
                 committed = txn.committed
-                del self._transaction
                 return committed
 
 

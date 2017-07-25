@@ -42,8 +42,10 @@ class TestTransaction(unittest.TestCase):
 
         return Transaction
 
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, session, *args, **kwargs):
+        transaction = self._getTargetClass()(session, *args, **kwargs)
+        session._transaction = transaction
+        return transaction
 
     def test_ctor_defaults(self):
         session = _Session()
@@ -208,6 +210,7 @@ class TestTransaction(unittest.TestCase):
         transaction.rollback()
 
         self.assertTrue(transaction._rolled_back)
+        self.assertIsNone(session._transaction)
 
         session_id, txn_id, options = api._rolled_back
         self.assertEqual(session_id, session.name)
@@ -290,6 +293,7 @@ class TestTransaction(unittest.TestCase):
         transaction.commit()
 
         self.assertEqual(transaction.committed, now)
+        self.assertIsNone(session._transaction)
 
         session_id, mutations, txn_id, options = api._committed
         self.assertEqual(session_id, session.name)
@@ -367,6 +371,8 @@ class _Database(object):
 
 
 class _Session(object):
+
+    _transaction = None
 
     def __init__(self, database=None, name=TestTransaction.SESSION_NAME):
         self._database = database
