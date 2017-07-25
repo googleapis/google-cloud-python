@@ -35,8 +35,7 @@ from google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client import (
 # pylint: enable=line-too-long
 
 from google.cloud._http import DEFAULT_USER_AGENT
-from google.cloud.client import _ClientFactoryMixin
-from google.cloud.client import _ClientProjectMixin
+from google.cloud.client import ClientWithProject
 from google.cloud.iterator import GAXIterator
 from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
@@ -73,13 +72,13 @@ class InstanceConfig(object):
         return cls(config_pb.name, config_pb.display_name)
 
 
-class Client(_ClientFactoryMixin, _ClientProjectMixin):
+class Client(ClientWithProject):
     """Client for interacting with Cloud Spanner API.
 
     .. note::
 
         Since the Cloud Spanner API requires the gRPC transport, no
-        ``http`` argument is accepted by this class.
+        ``_http`` argument is accepted by this class.
 
     :type project: :class:`str` or :func:`unicode <unicode>`
     :param project: (Optional) The ID of the project which owns the
@@ -104,21 +103,16 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     _database_admin_api = None
     _SET_PROJECT = True  # Used by from_service_account_json()
 
+    SCOPE = (SPANNER_ADMIN_SCOPE,)
+    """The scopes required for Google Cloud Spanner."""
+
     def __init__(self, project=None, credentials=None,
                  user_agent=DEFAULT_USER_AGENT):
-
-        _ClientProjectMixin.__init__(self, project=project)
-        if credentials is None:
-            credentials, _ = google.auth.default()
-
-        scopes = [
-            SPANNER_ADMIN_SCOPE,
-        ]
-
-        credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, scopes)
-
-        self._credentials = credentials
+        # NOTE: This API has no use for the _http argument, but sending it
+        #       will have no impact since the _http() @property only lazily
+        #       creates a working HTTP object.
+        super(Client, self).__init__(
+            project=project, credentials=credentials, _http=None)
         self.user_agent = user_agent
 
     @property
