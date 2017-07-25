@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+import os
 
 import nox
 
@@ -29,16 +30,26 @@ def unit_tests(session, python_version):
     session.virtualenv_dirname = 'unit-' + python_version
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov',
-                    'grpcio >= 1.0.2')
+    session.install(
+        'mock',
+        'pytest',
+        'pytest-cov',
+        'grpcio >= 1.0.2',
+    )
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
     session.run(
-        'py.test', '--quiet',
-        '--cov=google.cloud', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
+        'py.test',
+        '--quiet',
+        '--cov=google.cloud',
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        '--cov-fail-under=97',
+        os.path.join('tests', 'unit'),
+        *session.posargs
     )
 
 
