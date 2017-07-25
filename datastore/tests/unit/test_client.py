@@ -148,22 +148,16 @@ class TestClient(unittest.TestCase):
 
         other = 'other'
         creds = _make_credentials()
-        default_called = []
-
-        def fallback_mock(project):
-            default_called.append(project)
-            return project or other
 
         klass = self._get_target_class()
         patch1 = mock.patch(
             'google.cloud.datastore.client._determine_default_project',
-            new=fallback_mock)
+            return_value=other)
         patch2 = mock.patch(
-            'google.cloud.client.get_credentials',
-            return_value=creds)
+            'google.auth.default', return_value=(creds, None))
 
-        with patch1:
-            with patch2:
+        with patch1 as _determine_default_project:
+            with patch2 as default:
                 client = klass()
 
         self.assertEqual(client.project, other)
@@ -174,7 +168,9 @@ class TestClient(unittest.TestCase):
 
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
-        self.assertEqual(default_called, [None])
+
+        default.assert_called_once_with()
+        _determine_default_project.assert_called_once_with(None)
 
     def test_constructor_w_explicit_inputs(self):
         from google.cloud.datastore.client import _DATASTORE_BASE_URL
