@@ -88,18 +88,16 @@ class TestClient(unittest.TestCase):
                                       user_agent=CUSTOM_USER_AGENT)
 
     def test_constructor_implicit_credentials(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import client as MUT
-
         creds = _make_credentials()
 
-        def mock_get_credentials():
-            return creds
-
-        with _Monkey(MUT, get_credentials=mock_get_credentials):
+        patch = mock.patch(
+            'google.auth.default', return_value=(creds, None))
+        with patch as default:
             self._constructor_test_helper(
                 None, None,
                 expected_creds=creds.with_scopes.return_value)
+
+        default.assert_called_once_with()
 
     def test_constructor_credentials_wo_create_scoped(self):
         creds = _make_credentials()
