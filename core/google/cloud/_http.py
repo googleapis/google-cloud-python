@@ -135,7 +135,7 @@ class JSONConnection(Connection):
 
         query_params = query_params or {}
         if query_params:
-            url += '?' + urlencode(query_params)
+            url += '?' + urlencode(query_params, doseq=True)
 
         return url
 
