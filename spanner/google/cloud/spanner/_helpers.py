@@ -31,6 +31,16 @@ from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import UTC
 
 
+# Scalar paramter types
+STRING_PARAM_TYPE = type_pb2.Type(code=type_pb2.STRING)
+BYTES_PARAM_TYPE = type_pb2.Type(code=type_pb2.BYTES)
+BOOL_PARAM_TYPE = type_pb2.Type(code=type_pb2.BOOL)
+INT64_PARAM_TYPE = type_pb2.Type(code=type_pb2.INT64)
+FLOAT64_PARAM_TYPE = type_pb2.Type(code=type_pb2.FLOAT64)
+DATE_PARAM_TYPE = type_pb2.Type(code=type_pb2.DATE)
+TIMESTAMP_PARAM_TYPE = type_pb2.Type(code=type_pb2.TIMESTAMP)
+
+
 class TimestampWithNanoseconds(datetime.datetime):
     """Track nanosecond in addition to normal datetime attrs.
 
