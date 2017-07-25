@@ -47,12 +47,12 @@ from google.resumable_media.requests import ResumableUpload
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
-from google.cloud.credentials import generate_signed_url
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import make_exception
 from google.cloud.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage._signing import generate_signed_url
 from google.cloud.storage.acl import ObjectACL
 
 
