@@ -134,9 +134,7 @@ class BasePolicy(object):
                 and blocks if there are no outstanding requests (until such
                 time as there are).
         """
-        return self._client.api.streaming_pull(request_generator,
-            options=gax.CallOptions(timeout=600),
-        )
+        return self._client.api.streaming_pull(request_generator)
 
     def drop(self, ack_id):
         """Remove the given ack ID from lease management.
