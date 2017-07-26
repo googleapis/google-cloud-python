@@ -90,4 +90,4 @@ Examples
   traces = client.list_traces()
 
   for trace in traces:
-      print trace
+      print(trace)
