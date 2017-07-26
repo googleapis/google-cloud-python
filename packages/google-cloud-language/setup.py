@@ -52,7 +52,12 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.25.0, < 0.26dev',
+    'google-gax >= 0.15.13, < 0.16dev',
+    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]
+EXTRAS_REQUIRE = {
+    ':python_version<"3.4"': ['enum34'],
+}
 
 setup(
     name='google-cloud-language',
@@ -62,8 +67,13 @@ setup(
     namespace_packages=[
         'google',
         'google.cloud',
+        'google.cloud.gapic',
+        'google.cloud.gapic.language',
+        'google.cloud.proto',
+        'google.cloud.proto.language',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIRE,
     **SETUP_BASE
 )
