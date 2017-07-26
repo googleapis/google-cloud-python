@@ -91,7 +91,7 @@ class Histogram(object):
         """
         if len(self._data) == 0:
             return 600
-        return next(iter(reversed(list(self._data.keys()))))
+        return next(iter(reversed(sorted(self._data.keys()))))
 
     @property
     def min(self):
@@ -104,7 +104,7 @@ class Histogram(object):
         """
         if len(self._data) == 0:
             return 10
-        return next(iter(self._data.keys()))
+        return next(iter(sorted(self._data.keys())))
 
     def add(self, value):
         """Add the value to this histogram.
@@ -143,11 +143,11 @@ class Histogram(object):
         target = len(self) - len(self) * (percent / 100)
 
         # Iterate over the values in reverse, dropping the target by the
-        # number of times each value has been seen. When the target reaches
+        # number of times each value has been seen. When the target passes
         # 0, return the value we are currently viewing.
-        for k in reversed(list(self._data.keys())):
+        for k in reversed(sorted(self._data.keys())):
             target -= self._data[k]
-            if target <= 0:
+            if target < 0:
                 return k
 
         # The only way to get here is if there was no data.
