@@ -32,8 +32,11 @@ class StreamedResultSet(object):
         Iterator yielding
         :class:`google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet`
         instances.
+
+    :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`
+    :param source: Snapshot from which the result set was fetched.
     """
-    def __init__(self, response_iterator):
+    def __init__(self, response_iterator, source=None):
         self._response_iterator = response_iterator
         self._rows = []             # Fully-processed rows
         self._counter = 0           # Counter for processed responses
@@ -42,6 +45,7 @@ class StreamedResultSet(object):
         self._resume_token = None   # To resume from last received PRS
         self._current_row = []      # Accumulated values for incomplete row
         self._pending_chunk = None  # Incomplete value
+        self._source = source       # Source snapshot
 
     @property
     def rows(self):
@@ -130,7 +134,11 @@ class StreamedResultSet(object):
         self._resume_token = response.resume_token
 
         if self._metadata is None:  # first response
-            self._metadata = response.metadata
+            metadata = self._metadata = response.metadata
+
+            source = self._source
+            if source is not None and source._transaction_id is None:
+                source._transaction_id = metadata.transaction.id
 
         if response.HasField('stats'):  # last response
             self._stats = response.stats
