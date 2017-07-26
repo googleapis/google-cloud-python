@@ -175,19 +175,20 @@ class Client(ClientWithProject):
         :rtype: :class:`.Client`
         :returns: A copy of the current client.
         """
-        credentials = self._credentials
-        copied_creds = credentials.create_scoped(credentials.scopes)
         return self.__class__(
-            self.project,
-            copied_creds,
-            self.user_agent,
+            project=self.project,
+            credentials=self._credentials,
+            user_agent=self.user_agent,
         )
 
     def list_instance_configs(self, page_size=None, page_token=None):
         """List available instance configurations for the client's project.
 
-        See
-        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstanceConfigs
+        .. _RPC docs: https://cloud.google.com/spanner/docs/reference/rpc/\
+                      google.spanner.admin.instance.v1#google.spanner.admin.\
+                      instance.v1.InstanceAdmin.ListInstanceConfigs
+
+        See `RPC docs`_.
 
         :type page_size: int
         :param page_size: (Optional) Maximum number of results to return.
