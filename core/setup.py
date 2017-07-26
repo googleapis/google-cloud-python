@@ -51,11 +51,10 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'httplib2 >= 0.9.1',
     'googleapis-common-protos >= 1.3.4',
     'protobuf >= 3.0.0',
     'google-auth >= 0.4.0, < 2.0.0dev',
-    'google-auth-httplib2',
+    'requests',  # TODO: pin version
     'six',
     'tenacity >= 4.0.0, <5.0.0dev'
 ]

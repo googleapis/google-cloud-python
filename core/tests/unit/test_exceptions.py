@@ -12,139 +12,116 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+import json
+
+import requests
+from six.moves import http_client
+
+from google.cloud import exceptions
 
 
-class Test_GoogleCloudError(unittest.TestCase):
+def test_create_google_cloud_error():
+    exception = exceptions.GoogleCloudError('Testing')
+    exception.code = 600
+    assert str(exception) == '600 Testing'
+    assert exception.message == 'Testing'
+    assert exception.errors == []
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.exceptions import GoogleCloudError
 
-        return GoogleCloudError
+def test_create_google_cloud_error_with_args():
+    error = {
+        'domain': 'global',
+        'location': 'test',
+        'locationType': 'testing',
+        'message': 'Testing',
+        'reason': 'test',
+    }
+    exception = exceptions.GoogleCloudError('Testing', [error])
+    exception.code = 600
+    assert str(exception) == '600 Testing'
+    assert exception.message == 'Testing'
+    assert exception.errors == [error]
 
-    def _make_one(self, message, errors=()):
-        return self._get_target_class()(message, errors=errors)
 
-    def test_ctor_defaults(self):
-        e = self._make_one('Testing')
-        e.code = 600
-        self.assertEqual(str(e), '600 Testing')
-        self.assertEqual(e.message, 'Testing')
-        self.assertEqual(list(e.errors), [])
+def test_from_http_status():
+    message = 'message'
+    exception = exceptions.from_http_status(http_client.NOT_FOUND, message)
+    assert exception.code == http_client.NOT_FOUND
+    assert exception.message == message
+    assert exception.errors == []
 
-    def test_ctor_explicit(self):
-        ERROR = {
-            'domain': 'global',
-            'location': 'test',
-            'locationType': 'testing',
-            'message': 'Testing',
-            'reason': 'test',
+
+def test_from_http_status_with_errors():
+    message = 'message'
+    errors = ['1', '2']
+    exception = exceptions.from_http_status(
+        http_client.NOT_FOUND, message, errors=errors)
+
+    assert isinstance(exception, exceptions.NotFound)
+    assert exception.code == http_client.NOT_FOUND
+    assert exception.message == message
+    assert exception.errors == errors
+
+
+def test_from_http_status_unknown_code():
+    message = 'message'
+    status_code = 156
+    exception = exceptions.from_http_status(status_code, message)
+    assert exception.code == status_code
+    assert exception.message == message
+
+
+def make_response(content):
+    response = requests.Response()
+    response._content = content
+    response.status_code = http_client.NOT_FOUND
+    response.request = requests.Request(
+        method='POST', url='https://example.com').prepare()
+    return response
+
+
+def test_from_http_response_no_content():
+    response = make_response(None)
+
+    exception = exceptions.from_http_response(response)
+
+    assert isinstance(exception, exceptions.NotFound)
+    assert exception.code == http_client.NOT_FOUND
+    assert exception.message == 'POST https://example.com/: unknown error'
+    assert exception.response == response
+
+
+def test_from_http_response_text_content():
+    response = make_response(b'message')
+
+    exception = exceptions.from_http_response(response)
+
+    assert isinstance(exception, exceptions.NotFound)
+    assert exception.code == http_client.NOT_FOUND
+    assert exception.message == 'POST https://example.com/: message'
+
+
+def test_from_http_response_json_content():
+    response = make_response(json.dumps({
+        'error': {
+            'message': 'json message',
+            'errors': ['1', '2']
         }
-        e = self._make_one('Testing', [ERROR])
-        e.code = 600
-        self.assertEqual(str(e), '600 Testing')
-        self.assertEqual(e.message, 'Testing')
-        self.assertEqual(list(e.errors), [ERROR])
+    }).encode('utf-8'))
+
+    exception = exceptions.from_http_response(response)
+
+    assert isinstance(exception, exceptions.NotFound)
+    assert exception.code == http_client.NOT_FOUND
+    assert exception.message == 'POST https://example.com/: json message'
+    assert exception.errors == ['1', '2']
 
 
-class Test_make_exception(unittest.TestCase):
+def test_from_http_response_bad_json_content():
+    response = make_response(json.dumps({'meep': 'moop'}).encode('utf-8'))
 
-    def _call_fut(self, response, content, error_info=None, use_json=True):
-        from google.cloud.exceptions import make_exception
+    exception = exceptions.from_http_response(response)
 
-        return make_exception(response, content, error_info=error_info,
-                              use_json=use_json)
-
-    def test_hit_w_content_as_str(self):
-        from google.cloud.exceptions import NotFound
-
-        response = _Response(404)
-        content = b'{"error": {"message": "Not Found"}}'
-        exception = self._call_fut(response, content)
-        self.assertIsInstance(exception, NotFound)
-        self.assertEqual(exception.message, 'Not Found')
-        self.assertEqual(list(exception.errors), [])
-
-    def test_hit_w_content_as_unicode(self):
-        import six
-        from google.cloud._helpers import _to_bytes
-        from google.cloud.exceptions import NotFound
-
-        error_message = u'That\u2019s not found.'
-        expected = u'404 %s' % (error_message,)
-
-        response = _Response(404)
-        content = u'{"error": {"message": "%s" }}' % (error_message,)
-
-        exception = self._call_fut(response, content)
-        if six.PY2:
-            self.assertEqual(str(exception),
-                             _to_bytes(expected, encoding='utf-8'))
-        else:  # pragma: NO COVER
-            self.assertEqual(str(exception), expected)
-
-        self.assertIsInstance(exception, NotFound)
-        self.assertEqual(exception.message, error_message)
-        self.assertEqual(list(exception.errors), [])
-
-    def test_hit_w_content_as_unicode_as_py3(self):
-        import six
-        from google.cloud._testing import _Monkey
-        from google.cloud.exceptions import NotFound
-
-        error_message = u'That is not found.'
-        expected = u'404 %s' % (error_message,)
-
-        with _Monkey(six, PY2=False):
-            response = _Response(404)
-            content = u'{"error": {"message": "%s" }}' % (error_message,)
-            exception = self._call_fut(response, content)
-
-            self.assertIsInstance(exception, NotFound)
-            self.assertEqual(exception.message, error_message)
-            self.assertEqual(list(exception.errors), [])
-            self.assertEqual(str(exception), expected)
-
-    def test_miss_w_content_as_dict(self):
-        from google.cloud.exceptions import GoogleCloudError
-
-        ERROR = {
-            'domain': 'global',
-            'location': 'test',
-            'locationType': 'testing',
-            'message': 'Testing',
-            'reason': 'test',
-        }
-        response = _Response(600)
-        content = {"error": {"message": "Unknown Error", "errors": [ERROR]}}
-        exception = self._call_fut(response, content)
-        self.assertIsInstance(exception, GoogleCloudError)
-        self.assertEqual(exception.message, 'Unknown Error')
-        self.assertEqual(list(exception.errors), [ERROR])
-
-    def test_html_when_json_expected(self):
-        from google.cloud.exceptions import NotFound
-
-        response = _Response(NotFound.code)
-        content = '<html><body>404 Not Found</body></html>'
-        exception = self._call_fut(response, content, use_json=True)
-        self.assertIsInstance(exception, NotFound)
-        self.assertEqual(exception.message, content)
-        self.assertEqual(list(exception.errors), [])
-
-    def test_without_use_json(self):
-        from google.cloud.exceptions import TooManyRequests
-
-        content = u'error-content'
-        response = _Response(TooManyRequests.code)
-        exception = self._call_fut(response, content, use_json=False)
-
-        self.assertIsInstance(exception, TooManyRequests)
-        self.assertEqual(exception.message, content)
-        self.assertEqual(list(exception.errors), [])
-
-
-class _Response(object):
-    def __init__(self, status):
-        self.status = status
+    assert isinstance(exception, exceptions.NotFound)
+    assert exception.code == http_client.NOT_FOUND
+    assert exception.message == 'POST https://example.com/: unknown error'
