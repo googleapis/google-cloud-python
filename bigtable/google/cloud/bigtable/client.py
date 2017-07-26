@@ -211,13 +211,17 @@ class Client(ClientWithProject):
             raise ValueError('A read-only client cannot also perform'
                              'administrative actions.')
 
+        # NOTE: We set the scopes **before** calling the parent constructor.
+        #       It **may** use those scopes in ``with_scopes_if_required``.
+        self._read_only = bool(read_only)
+        self._admin = bool(admin)
+        self.SCOPE = self._get_scopes()
+
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=None)
-        self._read_only = bool(read_only)
-        self._admin = bool(admin)
         self.user_agent = user_agent
         self.emulator_host = os.getenv(BIGTABLE_EMULATOR)
 
@@ -228,21 +232,21 @@ class Client(ClientWithProject):
             self._operations_stub_internal = _make_operations_stub(self)
             self._table_stub_internal = _make_table_stub(self)
 
-        self._set_scopes()
+    def _get_scopes(self):
+        """Get the scopes corresponding to admin / read-only state.
 
-    def _set_scopes(self):
-        """Set the scopes on the current credentials."""
-        scopes = []
+        Returns:
+            Tuple[str, ...]: The tuple of scopes.
+        """
         if self._read_only:
-            scopes.append(READ_ONLY_SCOPE)
+            scopes = (READ_ONLY_SCOPE,)
         else:
-            scopes.append(DATA_SCOPE)
+            scopes = (DATA_SCOPE,)
 
         if self._admin:
-            scopes.append(ADMIN_SCOPE)
+            scopes += (ADMIN_SCOPE,)
 
-        self._credentials = google.auth.credentials.with_scopes_if_required(
-            self._credentials, scopes)
+        return scopes
 
     def copy(self):
         """Make a copy of this client.
