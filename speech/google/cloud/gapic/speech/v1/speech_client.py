@@ -124,7 +124,7 @@ class SpeechClient(object):
 
         # Finally, track the GAPIC package version.
         metrics_headers['gapic'] = pkg_resources.get_distribution(
-            'gapic-google-cloud-speech-v1', ).version
+            'google-cloud-speech', ).version
 
         # Load the configuration defaults.
         default_client_config = json.loads(
