@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
+    'author_email': 'googleapis-publisher@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -51,14 +51,14 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.24.0, < 0.25dev',
+    'google-cloud-core >= 0.25.0, < 0.26dev',
     'grpcio >= 1.2.0, < 2.0dev',
     'gapic-google-cloud-logging-v2 >= 0.91.0, < 0.92dev',
 ]
 
 setup(
     name='google-cloud-logging',
-    version='1.0.0',
+    version='1.1.0',
     description='Python Client for Stackdriver Logging',
     long_description=README,
     namespace_packages=[

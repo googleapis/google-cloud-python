@@ -16,8 +16,8 @@
 
 import json
 import platform
-from pkg_resources import get_distribution
 
+from pkg_resources import get_distribution
 import six
 from six.moves.urllib.parse import urlencode
 
@@ -135,7 +135,7 @@ class JSONConnection(Connection):
 
         query_params = query_params or {}
         if query_params:
-            url += '?' + urlencode(query_params)
+            url += '?' + urlencode(query_params, doseq=True)
 
         return url
 
@@ -279,7 +279,9 @@ class JSONConnection(Connection):
             can allow custom behavior, for example, to defer an HTTP request
             and complete initialization of the object at a later time.
 
-        :raises: Exception if the response code is not 200 OK.
+        :raises ~google.cloud.exceptions.GoogleCloudError: if the response code
+            is not 200 OK.
+        :raises TypeError: if the response content type is not JSON.
         :rtype: dict or str
         :returns: The API response payload, either as a raw string or
                   a dictionary if the response is valid JSON.

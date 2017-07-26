@@ -9,7 +9,7 @@ Python Client for Google Cloud Storage
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage/client.html
 
 Quick Start
 -----------
@@ -26,7 +26,7 @@ possible. Check out the `Authentication section`_ in our documentation to
 learn more. You may also find the `authentication document`_ shared by all
 the ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Using the API
@@ -43,7 +43,7 @@ via direct download.
 See the ``google-cloud-python`` API `storage documentation`_ to learn how to
 connect to Cloud Storage using this Client Library.
 
-.. _storage documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
+.. _storage documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage/client.html
 
 You need to create a Google Cloud Storage bucket to use this client library.
 Follow along with the `official Google Cloud Storage documentation`_ to learn
@@ -64,6 +64,6 @@ how to create a bucket.
     blob2.upload_from_filename(filename='/local/path.txt')
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
-   :target: https://pypi.python.org/pypi/google-cloud-storage
+   :target: https://pypi.org/project/google-cloud-storage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg
-   :target: https://pypi.python.org/pypi/google-cloud-storage
+   :target: https://pypi.org/project/google-cloud-storage/

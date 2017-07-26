@@ -16,6 +16,8 @@ import os
 import time
 import unittest
 
+import six
+
 from google.cloud import exceptions
 from google.cloud import speech
 from google.cloud import storage
@@ -158,11 +160,11 @@ class TestSpeechClient(unittest.TestCase):
             content = file_obj.read()
 
         results = self._make_sync_request(content=content,
-                                          max_alternatives=2)
+                                          max_alternatives=1)
         self.assertEqual(len(results), 1)
         alternatives = results[0].alternatives
-        self.assertEqual(len(alternatives), 2)
-        self._check_results(alternatives, 2)
+        self.assertEqual(len(alternatives), 1)
+        self._check_results(alternatives, 1)
 
     def test_sync_recognize_gcs_file(self):
         bucket_name = Config.TEST_BUCKET.name
@@ -183,12 +185,12 @@ class TestSpeechClient(unittest.TestCase):
             content = file_obj.read()
 
         operation = self._make_async_request(content=content,
-                                             max_alternatives=2)
+                                             max_alternatives=1)
         _wait_until_complete(operation)
         self.assertEqual(len(operation.results), 1)
         alternatives = operation.results[0].alternatives
-        self.assertEqual(len(alternatives), 2)
-        self._check_results(alternatives, 2)
+        self.assertEqual(len(alternatives), 1)
+        self._check_results(alternatives, 1)
 
     def test_async_recognize_gcs_file(self):
         bucket_name = Config.TEST_BUCKET.name
@@ -200,13 +202,13 @@ class TestSpeechClient(unittest.TestCase):
 
         source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
         operation = self._make_async_request(source_uri=source_uri,
-                                             max_alternatives=2)
+                                             max_alternatives=1)
 
         _wait_until_complete(operation)
         self.assertEqual(len(operation.results), 1)
         alternatives = operation.results[0].alternatives
-        self.assertEqual(len(alternatives), 2)
-        self._check_results(alternatives, 2)
+        self.assertEqual(len(alternatives), 1)
+        self._check_results(alternatives, 1)
 
     def test_stream_recognize(self):
         if not Config.USE_GRPC:
@@ -220,18 +222,17 @@ class TestSpeechClient(unittest.TestCase):
         if not Config.USE_GRPC:
             self.skipTest('gRPC is required for Speech Streaming Recognize.')
 
-        # These extra words are interim_results that the API returns as it's
-        # deciphering the speech audio. This has a high probability of becoming
-        # out of date and causing the test to fail.
-        extras = ' Google Now who hello thank you for you for use hello '
+        # Just test that the iterim results exist; the exact value can and
+        # does change, so writing a test for it is difficult.
         with open(AUDIO_FILE, 'rb') as file_obj:
             recognize = self._make_streaming_request(file_obj,
                                                      interim_results=True)
             responses = list(recognize)
             for response in responses:
-                if response.alternatives[0].transcript:
-                    self.assertIn(response.alternatives[0].transcript,
-                                  extras + self.ASSERT_TEXT)
+                self.assertIsInstance(
+                    response.alternatives[0].transcript,
+                    six.text_type,
+                )
 
             self.assertGreater(len(responses), 5)
             self._check_results(responses[-1].alternatives)

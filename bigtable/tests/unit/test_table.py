@@ -255,7 +255,7 @@ class TestTable(unittest.TestCase):
             for cf in column_families:
                 cf_pb = table_pb.column_families[cf.column_family_id]
                 if cf.gc_rule is not None:
-                    cf_pb.gc_rule.MergeFrom(cf.gc_rule.to_pb())
+                    cf_pb.gc_rule.CopyFrom(cf.gc_rule.to_pb())
         request_pb = _CreateTableRequestPB(
             initial_splits=splits_pb,
             parent=self.INSTANCE_NAME,

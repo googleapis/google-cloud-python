@@ -88,9 +88,9 @@ class TestQueryResults(unittest.TestCase):
                 self.assertEqual(found.mode, expected['mode'])
                 self.assertEqual(found.description,
                                  expected.get('description'))
-                self.assertEqual(found.fields, expected.get('fields'))
+                self.assertEqual(found.fields, expected.get('fields', ()))
         else:
-            self.assertIsNone(query.schema)
+            self.assertEqual(query.schema, ())
 
     def _verifyRows(self, query, resource):
         expected = resource.get('rows')
@@ -166,7 +166,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertIsNone(query.page_token)
         self.assertEqual(query.query_parameters, [])
         self.assertEqual(query.rows, [])
-        self.assertIsNone(query.schema)
+        self.assertEqual(query.schema, ())
         self.assertIsNone(query.total_rows)
         self.assertIsNone(query.total_bytes_processed)
         self.assertEqual(query.udf_resources, [])

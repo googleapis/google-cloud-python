@@ -414,13 +414,12 @@ class QueryResults(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :rtype: tuple
-        :returns: ``(row_data, total_rows, page_token)``, where ``row_data``
-                  is a list of tuples, one per result row, containing only
-                  the values;  ``total_rows`` is a count of the total number
-                  of rows in the table;  and ``page_token`` is an opaque
-                  string which can be used to fetch the next batch of rows
-                  (``None`` if no further batches can be fetched).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of row data :class:`tuple`s. During each page, the
+                  iterator will have the ``total_rows`` attribute set,
+                  which counts the total number of rows **in the result
+                  set** (this is distinct from the total number of rows in
+                  the current page: ``iterator.page.num_items``).
         :raises: ValueError if the query has not yet been executed.
         """
         if self.name is None:

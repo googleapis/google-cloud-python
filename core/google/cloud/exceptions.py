@@ -22,16 +22,17 @@ from __future__ import absolute_import
 
 import copy
 import json
+
 import six
 
 from google.cloud._helpers import _to_bytes
-
-_HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
 try:
     from grpc._channel import _Rendezvous
 except ImportError:  # pragma: NO COVER
     _Rendezvous = None
+
+_HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
 
 # pylint: disable=invalid-name

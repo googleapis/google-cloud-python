@@ -30,10 +30,13 @@ def unit_tests(session, python_version):
     # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
 
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-' + python_version
+
     # Install all test dependencies, then install this package in-place.
     session.install(
         'mock', 'pytest', 'pytest-cov',
-        'flask', 'django', *LOCAL_DEPS)
+        'flask', 'webapp2', 'webob', 'django', *LOCAL_DEPS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -52,10 +55,13 @@ def system_tests(session, python_version):
 
     # Sanity check: Only run system tests if the environment variable is set.
     if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
-        return
+        session.skip('Credentials must be set via environment variable.')
 
     # Run the system tests against latest Python 2 and Python 3 only.
     session.interpreter = 'python{}'.format(python_version)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'sys-' + python_version
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
@@ -70,21 +76,32 @@ def system_tests(session, python_version):
 
 @nox.session
 def lint(session):
-    """Run flake8.
+    """Run linters.
 
-    Returns a failure if flake8 finds linting errors or sufficiently
+    Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8', *LOCAL_DEPS)
+    session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google/cloud/logging')
+    session.run(
+        'gcp-devrel-py-tools', 'run-pylint',
+        '--config', 'pylint.config.py',
+        '--library-filesets', 'google',
+        '--test-filesets', 'tests',
+        # Temporarily allow this to fail.
+        success_codes=range(0, 100))
 
 
 @nox.session
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'setup'
+
     session.install('docutils', 'Pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')

@@ -47,12 +47,12 @@ from google.resumable_media.requests import ResumableUpload
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
-from google.cloud.credentials import generate_signed_url
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import make_exception
 from google.cloud.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage._signing import generate_signed_url
 from google.cloud.storage.acl import ObjectACL
 
 
@@ -113,7 +113,7 @@ class Blob(_PropertyMixin):
     :type encryption_key: bytes
     :param encryption_key:
         Optional 32 byte encryption key for customer-supplied encryption.
-        See https://cloud.google.com/storage/docs/encryption#customer-supplied
+        See https://cloud.google.com/storage/docs/encryption#customer-supplied.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -223,16 +223,6 @@ class Blob(_PropertyMixin):
         return self.bucket.client
 
     @property
-    def user_project(self):
-        """Project ID used for API requests made via this blob.
-
-        Derived from bucket's value.
-
-        :rtype: str
-        """
-        return self.bucket.user_project
-
-    @property
     def public_url(self):
         """The public URL for this blob's object.
 
@@ -340,14 +330,10 @@ class Blob(_PropertyMixin):
         :returns: True if the blob exists in Cloud Storage.
         """
         client = self._require_client(client)
-        # We only need the status code (200 or not) so we seek to
-        # minimize the returned payload.
-        query_params = {'fields': 'name'}
-
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-
         try:
+            # We only need the status code (200 or not) so we seek to
+            # minimize the returned payload.
+            query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client._connection.api_request(
@@ -382,6 +368,7 @@ class Blob(_PropertyMixin):
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
         :rtype transport:
             :class:`~google.auth.transport.requests.AuthorizedSession`
         :returns: The transport (with credentials) that will
@@ -407,8 +394,6 @@ class Blob(_PropertyMixin):
             download_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
             if self.generation is not None:
                 download_url += u'&generation={:d}'.format(self.generation)
-            if self.user_project is not None:
-                download_url += u'&userProject={}'.format(self.user_project)
             return download_url
         else:
             return self.media_link
@@ -660,10 +645,6 @@ class Blob(_PropertyMixin):
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
-
-        if self.user_project is not None:
-            upload_url += '&userProject={}'.format(self.user_project)
-
         upload = MultipartUpload(upload_url, headers=headers)
 
         if num_retries is not None:
@@ -736,10 +717,6 @@ class Blob(_PropertyMixin):
 
         upload_url = _RESUMABLE_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
-
-        if self.user_project is not None:
-            upload_url += '&userProject={}'.format(self.user_project)
-
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
 
         if num_retries is not None:
@@ -1093,16 +1070,9 @@ class Blob(_PropertyMixin):
                   the ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
-
-        query_params = {}
-
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-
         info = client._connection.api_request(
             method='GET',
             path='%s/iam' % (self.path,),
-            query_params=query_params,
             _target_object=None)
         return Policy.from_api_repr(info)
 
@@ -1125,18 +1095,11 @@ class Blob(_PropertyMixin):
                   the ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
-
-        query_params = {}
-
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-
         resource = policy.to_api_repr()
         resource['resourceId'] = self.path
         info = client._connection.api_request(
             method='PUT',
             path='%s/iam' % (self.path,),
-            query_params=query_params,
             data=resource,
             _target_object=None)
         return Policy.from_api_repr(info)
@@ -1160,17 +1123,12 @@ class Blob(_PropertyMixin):
                   request.
         """
         client = self._require_client(client)
-        query_params = {'permissions': permissions}
-
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-
+        query = {'permissions': permissions}
         path = '%s/iam/testPermissions' % (self.path,)
         resp = client._connection.api_request(
             method='GET',
             path=path,
-            query_params=query_params)
-
+            query_params=query)
         return resp.get('permissions', [])
 
     def make_public(self, client=None):
@@ -1200,22 +1158,13 @@ class Blob(_PropertyMixin):
         """
         if self.content_type is None:
             raise ValueError("Destination 'content_type' not set.")
-
         client = self._require_client(client)
-        query_params = {}
-
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-
         request = {
             'sourceObjects': [{'name': source.name} for source in sources],
             'destination': self._properties.copy(),
         }
         api_response = client._connection.api_request(
-            method='POST',
-            path=self.path + '/compose',
-            query_params=query_params,
-            data=request,
+            method='POST', path=self.path + '/compose', data=request,
             _target_object=self)
         self._set_properties(api_response)
 
@@ -1247,20 +1196,14 @@ class Blob(_PropertyMixin):
         headers.update(_get_encryption_headers(
             source._encryption_key, source=True))
 
-        query_params = {}
-
         if token:
-            query_params['rewriteToken'] = token
-
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
+            query_params = {'rewriteToken': token}
+        else:
+            query_params = {}
 
         api_response = client._connection.api_request(
-            method='POST',
-            path=source.path + '/rewriteTo' + self.path,
-            query_params=query_params,
-            data=self._properties,
-            headers=headers,
+            method='POST', path=source.path + '/rewriteTo' + self.path,
+            query_params=query_params, data=self._properties, headers=headers,
             _target_object=self)
         rewritten = int(api_response['totalBytesRewritten'])
         size = int(api_response['objectSize'])
@@ -1291,22 +1234,13 @@ class Blob(_PropertyMixin):
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
         client = self._require_client(client)
-
-        query_params = {}
-
-        if self.user_project is not None:
-            query_params['userProject'] = self.user_project
-
         headers = _get_encryption_headers(self._encryption_key)
         headers.update(_get_encryption_headers(
             self._encryption_key, source=True))
 
         api_response = client._connection.api_request(
-            method='POST',
-            path=self.path + '/rewriteTo' + self.path,
-            query_params=query_params,
-            data={'storageClass': new_class},
-            headers=headers,
+            method='POST', path=self.path + '/rewriteTo' + self.path,
+            data={'storageClass': new_class}, headers=headers,
             _target_object=self)
         self._set_properties(api_response['resource'])
 
@@ -1465,6 +1399,11 @@ class Blob(_PropertyMixin):
         """Retrieve arbitrary/application specific metadata for the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :setter: Update arbitrary/application specific metadata for the
+                 object.
+        :getter: Retrieve arbitrary/application specific metadata for
+                 the object.
 
         :rtype: dict or ``NoneType``
         :returns: The metadata associated with the blob or ``None`` if the

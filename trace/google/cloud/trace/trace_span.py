@@ -105,11 +105,11 @@ class TraceSpan(object):
         self._child_spans.append(child_span)
         return child_span
 
-    def set_start_time(self):
+    def start(self):
         """Set the start time for a span."""
         self.start_time = datetime.utcnow().isoformat() + 'Z'
 
-    def set_end_time(self):
+    def end(self):
         """Set the end time for a span."""
         self.end_time = datetime.utcnow().isoformat() + 'Z'
 
@@ -119,11 +119,11 @@ class TraceSpan(object):
         yield self
 
     def __enter__(self):
-        self.set_start_time()
+        self.start()
         return self
 
     def __exit__(self, exception_type, exception_value, traceback):
-        self.set_end_time()
+        self.end()
 
 
 def generate_span_id():

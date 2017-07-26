@@ -9,7 +9,7 @@ Python Client for Google Cloud Pub / Sub
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub-usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub/usage.html
 
 Quick Start
 -----------
@@ -26,7 +26,7 @@ possible. Check out the `Authentication section`_ in our documentation to
 learn more. You may also find the `authentication document`_ shared by all
 the ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Using the API
@@ -45,7 +45,7 @@ independently written applications.
 See the ``google-cloud-python`` API `Pub/Sub documentation`_ to learn how to connect
 to Cloud Pub/Sub using this Client Library.
 
-.. _Pub/Sub documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub-usage.html
+.. _Pub/Sub documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub/usage.html
 
 To get started with this API, you'll need to create
 
@@ -61,6 +61,6 @@ To get started with this API, you'll need to create
                   attr1='value1', attr2='value2')
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
-   :target: https://pypi.python.org/pypi/google-cloud-pubsub
+   :target: https://pypi.org/project/google-cloud-pubsub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
-   :target: https://pypi.python.org/pypi/google-cloud-pubsub
+   :target: https://pypi.org/project/google-cloud-pubsub/

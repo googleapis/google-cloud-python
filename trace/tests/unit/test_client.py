@@ -62,6 +62,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(api, api_obj)
         self.assertEqual(clients, [client])
 
+<<<<<<< HEAD
     def test_trace_default(self):
         from google.cloud.trace.trace import Trace
 
@@ -88,6 +89,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(result_trace.project_id, self.project)
         self.assertEqual(result_trace.trace_id, trace_id)
 
+=======
+>>>>>>> e273319dfff93228889024f6194da48616a20e21
     def test_patch_traces_default(self):
         from google.cloud.trace._gax import _TraceAPI
 
