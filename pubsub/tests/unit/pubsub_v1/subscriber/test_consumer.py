@@ -92,7 +92,6 @@ def test_blocking_consume_keyboard_interrupt():
 @mock.patch.object(thread.Policy, 'on_exception', autospec=True)
 def test_blocking_consume_exception_reraise(on_exc, on_res, call_rpc):
     consumer = create_consumer()
-    Policy = type(consumer._policy)
 
     # Establish that we get responses until we are sent the exiting event.
     call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
