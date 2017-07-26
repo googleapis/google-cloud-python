@@ -33,19 +33,21 @@ Authentication and Configuration
   this will be detected automatically.
 
 - After configuring your environment, create a
-  :class:`~google.cloud.vision.client.Client`.
+  :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.
 
 .. code-block:: python
 
      >>> from google.cloud import vision
      >>> client = vision.ImageAnnotatorClient()
 
-or pass in ``credentials`` and ``project`` explicitly.
+or pass in ``credentials`` explicitly.
 
 .. code-block:: python
 
      >>> from google.cloud import vision
-     >>> client = vision.Client(project='my-project', credentials=creds)
+     >>> client = vision.ImageAnnotatorClient(
+     ...     credentials=creds,
+     ... )
 
 
 *****************
@@ -127,5 +129,5 @@ API Reference
 .. toctree::
   :maxdepth: 2
 
-  gapic/api
-  gapic/types
+  gapic/v1/api
+  gapic/v1/types
