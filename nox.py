@@ -34,7 +34,7 @@ def docs(session):
         'core/', 'bigquery/', 'bigtable/', 'datastore/', 'dns/', 'language/',
         'logging/', 'error_reporting/', 'monitoring/', 'pubsub/',
         'resource_manager/', 'runtimeconfig/', 'spanner/', 'speech/',
-        'storage/', 'translate/', 'vision/',
+        'storage/', 'trace/', 'translate/', 'vision/',
     )
     session.install('-e', '.')
 
