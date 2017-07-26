@@ -589,7 +589,7 @@ class LoadTableFromStorageJob(_AsyncJob):
         else:
             if not all(isinstance(field, SchemaField) for field in value):
                 raise ValueError('Schema items must be fields')
-            if self._configuration is not None and self.autodetect:
+            if self.autodetect:
                 raise ValueError(
                     'Schema can not be set if `autodetect` property is True')
 
