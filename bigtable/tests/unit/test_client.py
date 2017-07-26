@@ -256,170 +256,215 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
-    def _make_oneWithMocks(self, *args, **kwargs):
-        from google.cloud._testing import _Monkey
-        from google.cloud.bigtable import client as MUT
+    @mock.patch('google.cloud.bigtable.client._make_table_stub')
+    @mock.patch('google.cloud.bigtable.client._make_operations_stub')
+    @mock.patch('google.cloud.bigtable.client._make_instance_stub')
+    @mock.patch('google.cloud.bigtable.client._make_data_stub')
+    def _make_one_with_mocks(
+            self, _make_data_stub, _make_instance_stub,
+            _make_operations_stub, _make_table_stub,
+            *args, **kwargs):
+        return self._make_one(*args, **kwargs)
 
-        mock_make_data_stub = _MakeStubMock()
-        mock_make_instance_stub = _MakeStubMock()
-        mock_make_operations_stub = _MakeStubMock()
-        mock_make_table_stub = _MakeStubMock()
-        with _Monkey(MUT, _make_data_stub=mock_make_data_stub,
-                     _make_instance_stub=mock_make_instance_stub,
-                     _make_operations_stub=mock_make_operations_stub,
-                     _make_table_stub=mock_make_table_stub):
-            return self._make_one(*args, **kwargs)
-
-    def _constructor_test_helper(self, expected_scopes, creds,
-                                 read_only=False, admin=False,
-                                 user_agent=None, expected_creds=None):
-        from google.cloud._testing import _Monkey
-        from google.cloud.bigtable import client as MUT
-
-        user_agent = user_agent or MUT.DEFAULT_USER_AGENT
-
-        mock_make_data_stub = _MakeStubMock()
-        mock_make_instance_stub = _MakeStubMock()
-        mock_make_operations_stub = _MakeStubMock()
-        mock_make_table_stub = _MakeStubMock()
-        with _Monkey(MUT, _make_data_stub=mock_make_data_stub,
-                     _make_instance_stub=mock_make_instance_stub,
-                     _make_operations_stub=mock_make_operations_stub,
-                     _make_table_stub=mock_make_table_stub):
-            client = self._make_one(project=self.PROJECT, credentials=creds,
-                                    read_only=read_only, admin=admin,
-                                    user_agent=user_agent)
-
-        # Verify the mocks.
-        self.assertEqual(mock_make_data_stub.calls, [client])
-        if admin:
-            self.assertSequenceEqual(mock_make_instance_stub.calls, [client])
-            self.assertSequenceEqual(mock_make_operations_stub.calls, [client])
-            self.assertSequenceEqual(mock_make_table_stub.calls, [client])
-        else:
-            self.assertSequenceEqual(mock_make_instance_stub.calls, [])
-            self.assertSequenceEqual(mock_make_operations_stub.calls, [])
-            self.assertSequenceEqual(mock_make_table_stub.calls, [])
-
-        expected_creds = expected_creds or creds.with_scopes.return_value
-        self.assertIs(client._credentials, expected_creds)
-
-        if expected_scopes is not None:
-            creds.with_scopes.assert_called_once_with(expected_scopes)
-
-        self.assertEqual(client.project, self.PROJECT)
-        self.assertEqual(client.user_agent, user_agent)
-        # Check gRPC stubs (or mocks of them) are set
-        self.assertIs(client._data_stub, mock_make_data_stub.result)
-        if admin:
-            self.assertIs(client._instance_stub_internal,
-                          mock_make_instance_stub.result)
-            self.assertIs(client._operations_stub_internal,
-                          mock_make_operations_stub.result)
-            self.assertIs(client._table_stub_internal,
-                          mock_make_table_stub.result)
-        else:
-            self.assertIsNone(client._instance_stub_internal)
-            self.assertIsNone(client._operations_stub_internal)
-            self.assertIsNone(client._table_stub_internal)
-
-    def test_constructor_default_scopes(self):
-        from google.cloud.bigtable import client as MUT
-
-        expected_scopes = [MUT.DATA_SCOPE]
-        creds = _make_credentials()
-        self._constructor_test_helper(expected_scopes, creds)
-
-    def test_constructor_custom_user_agent(self):
-        from google.cloud.bigtable import client as MUT
-
-        CUSTOM_USER_AGENT = 'custom-application'
-        expected_scopes = [MUT.DATA_SCOPE]
-        creds = _make_credentials()
-        self._constructor_test_helper(expected_scopes, creds,
-                                      user_agent=CUSTOM_USER_AGENT)
-
-    def test_constructor_with_admin(self):
-        from google.cloud.bigtable import client as MUT
-
-        expected_scopes = [MUT.DATA_SCOPE, MUT.ADMIN_SCOPE]
-        creds = _make_credentials()
-        self._constructor_test_helper(expected_scopes, creds, admin=True)
-
-    def test_constructor_with_read_only(self):
-        from google.cloud.bigtable import client as MUT
-
-        expected_scopes = [MUT.READ_ONLY_SCOPE]
-        creds = _make_credentials()
-        self._constructor_test_helper(expected_scopes, creds, read_only=True)
-
-    def test_constructor_both_admin_and_read_only(self):
-        creds = _make_credentials()
-        with self.assertRaises(ValueError):
-            self._constructor_test_helper([], creds, admin=True,
-                                          read_only=True)
-
-    def test_constructor_implicit_credentials(self):
+    @mock.patch('google.cloud.bigtable.client._make_table_stub')
+    @mock.patch('google.cloud.bigtable.client._make_operations_stub')
+    @mock.patch('google.cloud.bigtable.client._make_instance_stub')
+    @mock.patch('google.cloud.bigtable.client._make_data_stub')
+    def test_constructor_default_scopes(
+            self, _make_data_stub, _make_instance_stub,
+            _make_operations_stub, _make_table_stub):
         from google.cloud.bigtable.client import DATA_SCOPE
 
-        creds = _make_credentials()
-        expected_scopes = [DATA_SCOPE]
-
-        patch = mock.patch(
-            'google.auth.default', return_value=(creds, None))
-        with patch as default:
-            self._constructor_test_helper(
-                None, None,
-                expected_creds=creds.with_scopes.return_value)
-
-        default.assert_called_once_with()
-        creds.with_scopes.assert_called_once_with(expected_scopes)
-
-    def test_constructor_credentials_wo_create_scoped(self):
-        creds = _make_credentials()
-        expected_scopes = None
-        self._constructor_test_helper(expected_scopes, creds)
-
-    def _copy_test_helper(self, read_only=False, admin=False):
-        from google.cloud._testing import _Monkey
-        from google.cloud.bigtable import client as MUT
-
+        expected_scopes = (DATA_SCOPE,)
         credentials = _make_credentials()
-        client = self._make_oneWithMocks(
-            project=self.PROJECT,
-            credentials=credentials,
-            read_only=read_only,
-            admin=admin,
-            user_agent=self.USER_AGENT)
-        # Put some fake stubs in place so that we can verify they don't
-        # get copied. In the admin=False case, only the data stub will
-        # not be None, so we over-ride all the internal values.
-        client._data_stub = object()
-        client._instance_stub_internal = object()
-        client._operations_stub_internal = object()
-        client._table_stub_internal = object()
+        custom_user_agent = 'custom-application'
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials,
+            user_agent=custom_user_agent)
 
-        mock_make_data_stub = _MakeStubMock()
-        mock_make_instance_stub = _MakeStubMock()
-        mock_make_operations_stub = _MakeStubMock()
-        mock_make_table_stub = _MakeStubMock()
-        with _Monkey(MUT, _make_data_stub=mock_make_data_stub,
-                     _make_instance_stub=mock_make_instance_stub,
-                     _make_operations_stub=mock_make_operations_stub,
-                     _make_table_stub=mock_make_table_stub):
-            new_client = client.copy()
+        self.assertEqual(client.project, self.PROJECT)
+        self.assertIs(
+            client._credentials, credentials.with_scopes.return_value)
+        self.assertIsNone(client._http_internal)
+        self.assertFalse(client._read_only)
+        self.assertFalse(client._admin)
+        self.assertEqual(client.SCOPE, expected_scopes)
+        self.assertEqual(client.user_agent, custom_user_agent)
+        self.assertIsNone(client.emulator_host)
+        self.assertIs(client._data_stub, _make_data_stub.return_value)
+        self.assertIsNone(client._instance_stub_internal)
+        self.assertIsNone(client._operations_stub_internal)
+        self.assertIsNone(client._table_stub_internal)
+
+        # Check mocks.
+        credentials.with_scopes.assert_called_once_with(expected_scopes)
+        _make_data_stub.assert_called_once_with(client)
+        _make_instance_stub.assert_not_called()
+        _make_operations_stub.assert_not_called()
+        _make_table_stub.assert_not_called()
+
+    @mock.patch('google.cloud.bigtable.client._make_table_stub')
+    @mock.patch('google.cloud.bigtable.client._make_operations_stub')
+    @mock.patch('google.cloud.bigtable.client._make_instance_stub')
+    @mock.patch('google.cloud.bigtable.client._make_data_stub')
+    def test_constructor_with_admin(
+            self, _make_data_stub, _make_instance_stub,
+            _make_operations_stub, _make_table_stub):
+        from google.cloud._http import DEFAULT_USER_AGENT
+        from google.cloud.bigtable.client import ADMIN_SCOPE
+        from google.cloud.bigtable.client import DATA_SCOPE
+
+        expected_scopes = (DATA_SCOPE, ADMIN_SCOPE)
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, admin=True)
+
+        self.assertEqual(client.project, self.PROJECT)
+        self.assertIs(
+            client._credentials, credentials.with_scopes.return_value)
+        self.assertIsNone(client._http_internal)
+        self.assertFalse(client._read_only)
+        self.assertTrue(client._admin)
+        self.assertEqual(client.SCOPE, expected_scopes)
+        self.assertEqual(client.user_agent, DEFAULT_USER_AGENT)
+        self.assertIsNone(client.emulator_host)
+        self.assertIs(client._data_stub, _make_data_stub.return_value)
+        self.assertIs(
+            client._instance_stub_internal, _make_instance_stub.return_value)
+        self.assertIs(
+            client._operations_stub_internal,
+            _make_operations_stub.return_value)
+        self.assertIs(
+            client._table_stub_internal, _make_table_stub.return_value)
+
+        # Check mocks.
+        credentials.with_scopes.assert_called_once_with(expected_scopes)
+        _make_data_stub.assert_called_once_with(client)
+        _make_instance_stub.assert_called_once_with(client)
+        _make_operations_stub.assert_called_once_with(client)
+        _make_table_stub.assert_called_once_with(client)
+
+    def test_constructor_both_admin_and_read_only(self):
+        credentials = _make_credentials()
+        with self.assertRaises(ValueError):
+            self._make_one(
+                project=self.PROJECT, credentials=credentials,
+                admin=True, read_only=True)
+
+    def test__get_scopes_default(self):
+        from google.cloud.bigtable.client import DATA_SCOPE
+
+        client = self._make_one(
+            project=self.PROJECT, credentials=_make_credentials())
+        self.assertEqual(client._get_scopes(), (DATA_SCOPE,))
+
+    def test__get_scopes_admin(self):
+        from google.cloud.bigtable.client import ADMIN_SCOPE
+        from google.cloud.bigtable.client import DATA_SCOPE
+
+        client = self._make_one(
+            project=self.PROJECT, credentials=_make_credentials(),
+            admin=True)
+        expected_scopes = (DATA_SCOPE, ADMIN_SCOPE)
+        self.assertEqual(client._get_scopes(), expected_scopes)
+
+    def test__get_scopes_read_only(self):
+        from google.cloud.bigtable.client import READ_ONLY_SCOPE
+
+        client = self._make_one(
+            project=self.PROJECT, credentials=_make_credentials(),
+            read_only=True)
+        self.assertEqual(client._get_scopes(), (READ_ONLY_SCOPE,))
+
+    def _copy_helper_check_stubs(self, client, new_client):
+        if client._admin:
+            # Check the instance stub.
+            self.assertIs(
+                client._instance_stub_internal, mock.sentinel.inst_stub1)
+            self.assertIs(
+                new_client._instance_stub_internal, mock.sentinel.inst_stub2)
+            self.assertIsNot(
+                new_client._instance_stub_internal,
+                client._instance_stub_internal)
+            # Check the operations stub.
+            self.assertIs(
+                client._operations_stub_internal, mock.sentinel.ops_stub1)
+            self.assertIs(
+                new_client._operations_stub_internal, mock.sentinel.ops_stub2)
+            self.assertIsNot(
+                new_client._operations_stub_internal,
+                client._operations_stub_internal)
+            # Check the table stub.
+            self.assertIs(
+                client._table_stub_internal, mock.sentinel.table_stub1)
+            self.assertIs(
+                new_client._table_stub_internal, mock.sentinel.table_stub2)
+            self.assertIsNot(
+                new_client._table_stub_internal, client._table_stub_internal)
+        else:
+            # Check the instance stub.
+            self.assertIsNone(client._instance_stub_internal)
+            self.assertIsNone(new_client._instance_stub_internal)
+            # Check the operations stub.
+            self.assertIsNone(client._operations_stub_internal)
+            self.assertIsNone(new_client._operations_stub_internal)
+            # Check the table stub.
+            self.assertIsNone(client._table_stub_internal)
+            self.assertIsNone(new_client._table_stub_internal)
+
+    @mock.patch(
+        'google.cloud.bigtable.client._make_table_stub',
+        side_effect=[mock.sentinel.table_stub1, mock.sentinel.table_stub2],
+    )
+    @mock.patch(
+        'google.cloud.bigtable.client._make_operations_stub',
+        side_effect=[mock.sentinel.ops_stub1, mock.sentinel.ops_stub2],
+    )
+    @mock.patch(
+        'google.cloud.bigtable.client._make_instance_stub',
+        side_effect=[mock.sentinel.inst_stub1, mock.sentinel.inst_stub2],
+    )
+    @mock.patch(
+        'google.cloud.bigtable.client._make_data_stub',
+        side_effect=[mock.sentinel.data_stub1, mock.sentinel.data_stub2],
+    )
+    def _copy_test_helper(
+            self, _make_data_stub, _make_instance_stub,
+            _make_operations_stub, _make_table_stub, **kwargs):
+        credentials = _make_credentials()
+        # Make sure it "already" is scoped.
+        credentials.requires_scopes = False
+
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, **kwargs)
+        self.assertIs(client._credentials, credentials)
+
+        new_client = client.copy()
         self.assertEqual(new_client._admin, client._admin)
         self.assertEqual(new_client._credentials, client._credentials)
         self.assertEqual(new_client.project, client.project)
         self.assertEqual(new_client.user_agent, client.user_agent)
         # Make sure stubs are not preserved.
-        self.assertNotEqual(new_client._data_stub, client._data_stub)
-        self.assertNotEqual(new_client._instance_stub_internal,
-                            client._instance_stub_internal)
-        self.assertNotEqual(new_client._operations_stub_internal,
-                            client._operations_stub_internal)
-        self.assertNotEqual(new_client._table_stub_internal,
-                            client._table_stub_internal)
+        self.assertIs(client._data_stub, mock.sentinel.data_stub1)
+        self.assertIs(new_client._data_stub, mock.sentinel.data_stub2)
+        self.assertIsNot(new_client._data_stub, client._data_stub)
+        self._copy_helper_check_stubs(client, new_client)
+
+        # Check mocks.
+        credentials.with_scopes.assert_not_called()
+        stub_calls = [
+            mock.call(client),
+            mock.call(new_client),
+        ]
+        self.assertEqual(_make_data_stub.mock_calls, stub_calls)
+        if client._admin:
+            self.assertEqual(_make_instance_stub.mock_calls, stub_calls)
+            self.assertEqual(_make_operations_stub.mock_calls, stub_calls)
+            self.assertEqual(_make_table_stub.mock_calls, stub_calls)
+        else:
+            _make_instance_stub.assert_not_called()
+            _make_operations_stub.assert_not_called()
+            _make_table_stub.assert_not_called()
 
     def test_copy(self):
         self._copy_test_helper()
@@ -433,61 +478,61 @@ class TestClient(unittest.TestCase):
     def test_credentials_getter(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_oneWithMocks(project=project,
-                                         credentials=credentials)
+        client = self._make_one_with_mocks(
+            project=project, credentials=credentials)
         self.assertIs(client.credentials, credentials.with_scopes.return_value)
 
     def test_project_name_property(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_oneWithMocks(project=project,
-                                         credentials=credentials)
+        client = self._make_one_with_mocks(
+            project=project, credentials=credentials)
         project_name = 'projects/' + project
         self.assertEqual(client.project_name, project_name)
 
     def test_instance_stub_getter(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_oneWithMocks(project=project,
-                                         credentials=credentials, admin=True)
+        client = self._make_one_with_mocks(
+            project=project, credentials=credentials, admin=True)
         self.assertIs(client._instance_stub, client._instance_stub_internal)
 
     def test_instance_stub_non_admin_failure(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_oneWithMocks(project=project,
-                                         credentials=credentials, admin=False)
+        client = self._make_one_with_mocks(
+            project=project, credentials=credentials, admin=False)
         with self.assertRaises(ValueError):
             getattr(client, '_instance_stub')
 
     def test_operations_stub_getter(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_oneWithMocks(project=project,
-                                         credentials=credentials, admin=True)
+        client = self._make_one_with_mocks(
+            project=project, credentials=credentials, admin=True)
         self.assertIs(client._operations_stub,
                       client._operations_stub_internal)
 
     def test_operations_stub_non_admin_failure(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_oneWithMocks(project=project,
-                                         credentials=credentials, admin=False)
+        client = self._make_one_with_mocks(
+            project=project, credentials=credentials, admin=False)
         with self.assertRaises(ValueError):
             getattr(client, '_operations_stub')
 
     def test_table_stub_getter(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_oneWithMocks(project=project,
-                                         credentials=credentials, admin=True)
+        client = self._make_one_with_mocks(
+            project=project, credentials=credentials, admin=True)
         self.assertIs(client._table_stub, client._table_stub_internal)
 
     def test_table_stub_non_admin_failure(self):
         credentials = _make_credentials()
         project = 'PROJECT'
-        client = self._make_oneWithMocks(project=project,
-                                         credentials=credentials, admin=False)
+        client = self._make_one_with_mocks(
+            project=project, credentials=credentials, admin=False)
         with self.assertRaises(ValueError):
             getattr(client, '_table_stub')
 
@@ -501,8 +546,8 @@ class TestClient(unittest.TestCase):
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
         credentials = _make_credentials()
-        client = self._make_oneWithMocks(project=PROJECT,
-                                         credentials=credentials)
+        client = self._make_one_with_mocks(
+            project=PROJECT, credentials=credentials)
 
         instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
 
@@ -523,8 +568,8 @@ class TestClient(unittest.TestCase):
         LOCATION_ID = 'locname'
         SERVE_NODES = 5
         credentials = _make_credentials()
-        client = self._make_oneWithMocks(project=PROJECT,
-                                         credentials=credentials)
+        client = self._make_one_with_mocks(
+            project=PROJECT, credentials=credentials)
 
         instance = client.instance(
             INSTANCE_ID, display_name=DISPLAY_NAME,
@@ -554,7 +599,7 @@ class TestClient(unittest.TestCase):
             'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID2)
 
         credentials = _make_credentials()
-        client = self._make_oneWithMocks(
+        client = self._make_one_with_mocks(
             project=self.PROJECT,
             credentials=credentials,
             admin=True,
@@ -609,14 +654,3 @@ class _Client(object):
         self.credentials = credentials
         self.user_agent = user_agent
         self.emulator_host = emulator_host
-
-
-class _MakeStubMock(object):
-
-    def __init__(self):
-        self.result = object()
-        self.calls = []
-
-    def __call__(self, client):
-        self.calls.append(client)
-        return self.result

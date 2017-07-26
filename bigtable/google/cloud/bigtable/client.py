@@ -31,16 +31,13 @@ In the hierarchy of API concepts
 
 import os
 
-import google.auth
-import google.auth.credentials
 from google.gax.utils import metrics
 from google.longrunning import operations_grpc
 
 from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
 from google.cloud._http import DEFAULT_USER_AGENT
-from google.cloud.client import _ClientFactoryMixin
-from google.cloud.client import _ClientProjectMixin
+from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from google.cloud.bigtable import __version__
@@ -166,13 +163,13 @@ def _make_table_stub(client):
             client.emulator_host)
 
 
-class Client(_ClientFactoryMixin, _ClientProjectMixin):
+class Client(ClientWithProject):
     """Client for interacting with Google Cloud Bigtable API.
 
     .. note::
 
         Since the Cloud Bigtable API requires the gRPC transport, no
-        ``http`` argument is accepted by this class.
+        ``_http`` argument is accepted by this class.
 
     :type project: :class:`str` or :func:`unicode <unicode>`
     :param project: (Optional) The ID of the project which owns the
@@ -209,31 +206,21 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
     def __init__(self, project=None, credentials=None,
                  read_only=False, admin=False, user_agent=DEFAULT_USER_AGENT):
-        _ClientProjectMixin.__init__(self, project=project)
-        if credentials is None:
-            credentials, _ = google.auth.default()
-
         if read_only and admin:
             raise ValueError('A read-only client cannot also perform'
                              'administrative actions.')
 
-        scopes = []
-        if read_only:
-            scopes.append(READ_ONLY_SCOPE)
-        else:
-            scopes.append(DATA_SCOPE)
-
+        # NOTE: We set the scopes **before** calling the parent constructor.
+        #       It **may** use those scopes in ``with_scopes_if_required``.
         self._read_only = bool(read_only)
-
-        if admin:
-            scopes.append(ADMIN_SCOPE)
-
         self._admin = bool(admin)
+        self.SCOPE = self._get_scopes()
 
-        credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, scopes)
-
-        self._credentials = credentials
+        # NOTE: This API has no use for the _http argument, but sending it
+        #       will have no impact since the _http() @property only lazily
+        #       creates a working HTTP object.
+        super(Client, self).__init__(
+            project=project, credentials=credentials, _http=None)
         self.user_agent = user_agent
         self.emulator_host = os.getenv(BIGTABLE_EMULATOR)
 
@@ -243,6 +230,22 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
             self._instance_stub_internal = _make_instance_stub(self)
             self._operations_stub_internal = _make_operations_stub(self)
             self._table_stub_internal = _make_table_stub(self)
+
+    def _get_scopes(self):
+        """Get the scopes corresponding to admin / read-only state.
+
+        Returns:
+            Tuple[str, ...]: The tuple of scopes.
+        """
+        if self._read_only:
+            scopes = (READ_ONLY_SCOPE,)
+        else:
+            scopes = (DATA_SCOPE,)
+
+        if self._admin:
+            scopes += (ADMIN_SCOPE,)
+
+        return scopes
 
     def copy(self):
         """Make a copy of this client.
