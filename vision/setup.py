@@ -26,7 +26,7 @@ with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.25.0, < 0.26dev',
-    'google-gax >= 0.15.7, < 0.16dev',
+    'google-gax >= 0.15.13, < 0.16dev',
     'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]
 EXTRAS_REQUIRE = {
