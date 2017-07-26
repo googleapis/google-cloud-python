@@ -62,32 +62,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(api, api_obj)
         self.assertEqual(clients, [client])
 
-    def test_trace_default(self):
-        from google.cloud.trace.trace import Trace
-
-        trace_id = '5e6e73b4131303cb6f5c9dfbaf104e33'
-        credentials = _make_credentials()
-        client = self._make_one(project=self.project, credentials=credentials)
-        result_trace = client.trace(trace_id=trace_id)
-
-        self.assertIsInstance(result_trace, Trace)
-        self.assertIs(result_trace.client, client)
-        self.assertEqual(result_trace.project_id, self.project)
-        self.assertEqual(result_trace.trace_id, trace_id)
-
-    def test_trace_explicit(self):
-        from google.cloud.trace.trace import Trace
-
-        trace_id = '5e6e73b4131303cb6f5c9dfbaf104e33'
-        credentials = _make_credentials()
-        client = self._make_one(project=self.project, credentials=credentials)
-        result_trace = client.trace(project_id=self.project, trace_id=trace_id)
-
-        self.assertIsInstance(result_trace, Trace)
-        self.assertIs(result_trace.client, client)
-        self.assertEqual(result_trace.project_id, self.project)
-        self.assertEqual(result_trace.trace_id, trace_id)
-
     def test_patch_traces_default(self):
         from google.cloud.trace._gax import _TraceAPI
 

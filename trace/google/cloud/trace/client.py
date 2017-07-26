@@ -15,7 +15,6 @@
 """Client for interacting with the Stackdriver Trace API."""
 
 from google.cloud.trace._gax import make_gax_trace_api
-from google.cloud.trace.trace import Trace
 from google.cloud.client import ClientWithProject
 from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -49,24 +48,6 @@ class Client(ClientWithProject):
         """
         self._trace_api = make_gax_trace_api(self)
         return self._trace_api
-
-    def trace(self, project_id=None, trace_id=None):
-        """Initialize a new trace instance.
-
-        :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data
-                           is stored.
-
-        :type trace_id: str
-        :param trace_id: ID of the trace. 32 digits uuid.
-
-        :rtype: :class:`~google.cloud.trace.trace.Trace`
-        :returns: A Trace instance.
-        """
-        if project_id is None:
-            project_id = self.project
-
-        return Trace(client=self, project_id=project_id, trace_id=trace_id)
 
     def patch_traces(self, traces, project_id=None, options=None):
         """Sends new traces to Stackdriver Trace or updates existing traces.
