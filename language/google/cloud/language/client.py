@@ -52,6 +52,16 @@ class Client(client_module.Client):
     }
 
     def __init__(self, credentials=None, api_version='v1', _http=None):
+
+        # Add a deprecation warning for this class.
+        warnings.warn(
+            'This client class and objects that derive from it have been '
+            'deprecated. Use `google.cloud.language.LanguageServiceClient` '
+            '(provided by this package) instead. This client will be removed '
+            'in a future release.',
+            DeprecationWarning,
+        )
+
         super(Client, self).__init__(
             credentials=credentials, _http=_http)
         ConnectionClass = self._CONNECTION_CLASSES[api_version]
