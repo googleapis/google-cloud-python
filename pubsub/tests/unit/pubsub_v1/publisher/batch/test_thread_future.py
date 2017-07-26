@@ -139,14 +139,14 @@ def test_add_done_callback_pending_batch():
 def test_add_done_callback_completed_batch():
     batch = create_batch(status='success')
     future = create_future(batch=batch)
-    callback = mock.Mock()
+    callback = mock.Mock(spec=())
     future.add_done_callback(callback)
     callback.assert_called_once_with(future)
 
 
 def test_trigger():
     future = create_future()
-    callback = mock.Mock()
+    callback = mock.Mock(spec=())
     future.add_done_callback(callback)
     assert callback.call_count == 0
     future._trigger()

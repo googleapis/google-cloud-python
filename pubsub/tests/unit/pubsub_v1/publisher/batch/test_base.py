@@ -42,6 +42,7 @@ def test_len():
     batch.publish(types.PubsubMessage(data=b'foo'))
     assert len(batch) == 1
 
+
 def test_will_accept():
     batch = create_batch(status=Batch.Status.ACCEPTING_MESSAGES)
     message = types.PubsubMessage()
