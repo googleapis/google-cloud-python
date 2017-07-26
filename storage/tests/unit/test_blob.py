@@ -141,19 +141,6 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
         self.assertEqual(blob.path, '/b/name/o/Caf%C3%A9')
 
-    def test_client(self):
-        blob_name = 'BLOB'
-        bucket = _Bucket()
-        blob = self._make_one(blob_name, bucket=bucket)
-        self.assertIs(blob.client, bucket.client)
-
-    def test_user_project(self):
-        user_project = 'user-project-123'
-        blob_name = 'BLOB'
-        bucket = _Bucket(user_project=user_project)
-        blob = self._make_one(blob_name, bucket=bucket)
-        self.assertEqual(blob.user_project, user_project)
-
     def test_public_url(self):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
@@ -317,31 +304,16 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket(client)
         blob = self._make_one(NONESUCH, bucket=bucket)
         self.assertFalse(blob.exists())
-        self.assertEqual(len(connection._requested), 1)
-        self.assertEqual(connection._requested[0], {
-            'method': 'GET',
-            'path': '/b/name/o/{}'.format(NONESUCH),
-            'query_params': {'fields': 'name'},
-            '_target_object': None,
-        })
 
-    def test_exists_hit_w_user_project(self):
+    def test_exists_hit(self):
         BLOB_NAME = 'blob-name'
-        USER_PROJECT = 'user-project-123'
         found_response = ({'status': http_client.OK}, b'')
         connection = _Connection(found_response)
         client = _Client(connection)
-        bucket = _Bucket(client, user_project=USER_PROJECT)
+        bucket = _Bucket(client)
         blob = self._make_one(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         self.assertTrue(blob.exists())
-        self.assertEqual(len(connection._requested), 1)
-        self.assertEqual(connection._requested[0], {
-            'method': 'GET',
-            'path': '/b/name/o/{}'.format(BLOB_NAME),
-            'query_params': {'fields': 'name', 'userProject': USER_PROJECT},
-            '_target_object': None,
-        })
 
     def test_delete(self):
         BLOB_NAME = 'blob-name'
@@ -377,7 +349,7 @@ class Test_Blob(unittest.TestCase):
 
     def test__get_download_url_on_the_fly(self):
         blob_name = 'bzzz-fly.txt'
-        bucket = _Bucket(name='buhkit')
+        bucket = mock.Mock(path='/b/buhkit', spec=['path'])
         blob = self._make_one(blob_name, bucket=bucket)
 
         self.assertIsNone(blob.media_link)
@@ -389,7 +361,7 @@ class Test_Blob(unittest.TestCase):
 
     def test__get_download_url_on_the_fly_with_generation(self):
         blob_name = 'pretend.txt'
-        bucket = _Bucket(name='fictional')
+        bucket = mock.Mock(path='/b/fictional', spec=['path'])
         blob = self._make_one(blob_name, bucket=bucket)
         generation = 1493058489532987
         # Set the media link on the blob
@@ -400,20 +372,6 @@ class Test_Blob(unittest.TestCase):
         expected_url = (
             'https://www.googleapis.com/download/storage/v1/b/'
             'fictional/o/pretend.txt?alt=media&generation=1493058489532987')
-        self.assertEqual(download_url, expected_url)
-
-    def test__get_download_url_on_the_fly_with_user_project(self):
-        blob_name = 'pretend.txt'
-        user_project = 'user-project-123'
-        bucket = _Bucket(name='fictional', user_project=user_project)
-        blob = self._make_one(blob_name, bucket=bucket)
-
-        self.assertIsNone(blob.media_link)
-        download_url = blob._get_download_url()
-        expected_url = (
-            'https://www.googleapis.com/download/storage/v1/b/'
-            'fictional/o/pretend.txt?alt=media&userProject={}'.format(
-                user_project))
         self.assertEqual(download_url, expected_url)
 
     @staticmethod
@@ -807,8 +765,8 @@ class Test_Blob(unittest.TestCase):
         return fake_transport
 
     def _do_multipart_success(self, mock_get_boundary, size=None,
-                              num_retries=None, user_project=None):
-        bucket = _Bucket(name='w00t', user_project=user_project)
+                              num_retries=None):
+        bucket = mock.Mock(path='/b/w00t', spec=[u'path'])
         blob = self._make_one(u'blob-name', bucket=bucket)
         self.assertIsNone(blob.chunk_size)
 
@@ -817,7 +775,7 @@ class Test_Blob(unittest.TestCase):
         blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
         # Create some mock arguments.
-        client = mock.sentinel.mock
+        client = mock.sentinel.client
         data = b'data here hear hier'
         stream = io.BytesIO(data)
         content_type = u'application/xml'
@@ -840,8 +798,6 @@ class Test_Blob(unittest.TestCase):
             'https://www.googleapis.com/upload/storage/v1' +
             bucket.path +
             '/o?uploadType=multipart')
-        if user_project is not None:
-            upload_url += '&userProject={}'.format(user_project)
         payload = (
             b'--==0==\r\n' +
             b'content-type: application/json; charset=UTF-8\r\n\r\n' +
@@ -866,13 +822,6 @@ class Test_Blob(unittest.TestCase):
 
     @mock.patch(u'google.resumable_media._upload.get_boundary',
                 return_value=b'==0==')
-    def test__do_multipart_upload_with_user_project(self, mock_get_boundary):
-        user_project = 'user-project-123'
-        self._do_multipart_success(
-            mock_get_boundary, user_project=user_project)
-
-    @mock.patch(u'google.resumable_media._upload.get_boundary',
-                return_value=b'==0==')
     def test__do_multipart_upload_with_retry(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, num_retries=8)
 
@@ -892,12 +841,11 @@ class Test_Blob(unittest.TestCase):
             'was specified but the file-like object only had', exc_contents)
         self.assertEqual(stream.tell(), len(data))
 
-    def _initiate_resumable_helper(
-            self, size=None, extra_headers=None, chunk_size=None,
-            num_retries=None, user_project=None):
+    def _initiate_resumable_helper(self, size=None, extra_headers=None,
+                                   chunk_size=None, num_retries=None):
         from google.resumable_media.requests import ResumableUpload
 
-        bucket = _Bucket(name='whammy', user_project=user_project)
+        bucket = mock.Mock(path='/b/whammy', spec=[u'path'])
         blob = self._make_one(u'blob-name', bucket=bucket)
         blob.metadata = {'rook': 'takes knight'}
         blob.chunk_size = 3 * blob._CHUNK_SIZE_MULTIPLE
@@ -917,7 +865,7 @@ class Test_Blob(unittest.TestCase):
         blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
         # Create some mock arguments and call the method under test.
-        client = mock.sentinel.mock
+        client = mock.sentinel.client
         data = b'hello hallo halo hi-low'
         stream = io.BytesIO(data)
         content_type = u'text/plain'
@@ -931,8 +879,6 @@ class Test_Blob(unittest.TestCase):
             'https://www.googleapis.com/upload/storage/v1' +
             bucket.path +
             '/o?uploadType=resumable')
-        if user_project is not None:
-            upload_url += '&userProject={}'.format(user_project)
         self.assertEqual(upload.upload_url, upload_url)
         if extra_headers is None:
             self.assertEqual(upload._headers, {})
@@ -985,10 +931,6 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_size(self):
         self._initiate_resumable_helper(size=10000)
 
-    def test__initiate_resumable_upload_with_user_project(self):
-        user_project = 'user-project-123'
-        self._initiate_resumable_helper(user_project=user_project)
-
     def test__initiate_resumable_upload_with_chunk_size(self):
         one_mb = 1048576
         self._initiate_resumable_helper(chunk_size=one_mb)
@@ -1012,7 +954,8 @@ class Test_Blob(unittest.TestCase):
             resumable_media.PERMANENT_REDIRECT, headers2)
         json_body = '{{"size": "{:d}"}}'.format(total_bytes)
         fake_response3 = self._mock_requests_response(
-            http_client.OK, headers3, content=json_body)
+            http_client.OK, headers3,
+            content=json_body.encode('utf-8'))
 
         responses = [fake_response1, fake_response2, fake_response3]
         fake_transport.request.side_effect = responses
@@ -1068,7 +1011,7 @@ class Test_Blob(unittest.TestCase):
             'PUT', resumable_url, data=payload, headers=expected_headers)
 
     def _do_resumable_helper(self, use_size=False, num_retries=None):
-        bucket = _Bucket(name='yesterday')
+        bucket = mock.Mock(path='/b/yesterday', spec=[u'path'])
         blob = self._make_one(u'blob-name', bucket=bucket)
         blob.chunk_size = blob._CHUNK_SIZE_MULTIPLE
         self.assertIsNotNone(blob.chunk_size)
@@ -1090,7 +1033,7 @@ class Test_Blob(unittest.TestCase):
         blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
         # Create some mock arguments and call the method under test.
-        client = mock.sentinel.mock
+        client = mock.sentinel.client
         stream = io.BytesIO(data)
         content_type = u'text/html'
         response = blob._do_resumable_upload(
@@ -1219,7 +1162,7 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = u'Someone is already in this spot.'
+        message = b'Someone is already in this spot.'
         response = mock.Mock(
             content=message, status_code=http_client.CONFLICT,
             spec=[u'content', u'status_code'])
@@ -1228,7 +1171,7 @@ class Test_Blob(unittest.TestCase):
         with self.assertRaises(exceptions.Conflict) as exc_info:
             self._upload_from_file_helper(side_effect=side_effect)
 
-        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
         self.assertEqual(exc_info.exception.errors, [])
 
     def _do_upload_mock_call_helper(self, blob, client, content_type, size):
@@ -1311,7 +1254,7 @@ class Test_Blob(unittest.TestCase):
 
     def _create_resumable_upload_session_helper(self, origin=None,
                                                 side_effect=None):
-        bucket = _Bucket(name='alex-trebek')
+        bucket = mock.Mock(path='/b/alex-trebek', spec=[u'path'])
         blob = self._make_one('blob-name', bucket=bucket)
         chunk_size = 99 * blob._CHUNK_SIZE_MULTIPLE
         blob.chunk_size = chunk_size
@@ -1328,7 +1271,7 @@ class Test_Blob(unittest.TestCase):
         # Create some mock arguments and call the method under test.
         content_type = u'text/plain'
         size = 10000
-        client = mock.sentinel.mock
+        client = mock.sentinel.client
         new_url = blob.create_resumable_upload_session(
             content_type=content_type, size=size,
             origin=origin, client=client)
@@ -1365,7 +1308,7 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = u'5-oh-3 woe is me.'
+        message = b'5-oh-3 woe is me.'
         response = mock.Mock(
             content=message, status_code=http_client.SERVICE_UNAVAILABLE,
             spec=[u'content', u'status_code'])
@@ -1375,7 +1318,7 @@ class Test_Blob(unittest.TestCase):
             self._create_resumable_upload_session_helper(
                 side_effect=side_effect)
 
-        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_get_iam_policy(self):
@@ -1422,49 +1365,8 @@ class Test_Blob(unittest.TestCase):
 
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0], {
-            'method': 'GET',
-            'path': '%s/iam' % (PATH,),
-            'query_params': {},
-            '_target_object': None,
-        })
-
-    def test_get_iam_policy_w_user_project(self):
-        from google.cloud.iam import Policy
-
-        BLOB_NAME = 'blob-name'
-        USER_PROJECT = 'user-project-123'
-        PATH = '/b/name/o/%s' % (BLOB_NAME,)
-        ETAG = 'DEADBEEF'
-        VERSION = 17
-        RETURNED = {
-            'resourceId': PATH,
-            'etag': ETAG,
-            'version': VERSION,
-            'bindings': [],
-        }
-        after = ({'status': http_client.OK}, RETURNED)
-        EXPECTED = {}
-        connection = _Connection(after)
-        client = _Client(connection)
-        bucket = _Bucket(client=client, user_project=USER_PROJECT)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-
-        policy = blob.get_iam_policy()
-
-        self.assertIsInstance(policy, Policy)
-        self.assertEqual(policy.etag, RETURNED['etag'])
-        self.assertEqual(policy.version, RETURNED['version'])
-        self.assertEqual(dict(policy), EXPECTED)
-
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0], {
-            'method': 'GET',
-            'path': '%s/iam' % (PATH,),
-            'query_params': {'userProject': USER_PROJECT},
-            '_target_object': None,
-        })
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
 
     def test_set_iam_policy(self):
         import operator
@@ -1513,7 +1415,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PUT')
         self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
-        self.assertEqual(kw[0]['query_params'], {})
         sent = kw[0]['data']
         self.assertEqual(sent['resourceId'], PATH)
         self.assertEqual(len(sent['bindings']), len(BINDINGS))
@@ -1524,41 +1425,6 @@ class Test_Blob(unittest.TestCase):
             self.assertEqual(found['role'], expected['role'])
             self.assertEqual(
                 sorted(found['members']), sorted(expected['members']))
-
-    def test_set_iam_policy_w_user_project(self):
-        from google.cloud.iam import Policy
-
-        BLOB_NAME = 'blob-name'
-        USER_PROJECT = 'user-project-123'
-        PATH = '/b/name/o/%s' % (BLOB_NAME,)
-        ETAG = 'DEADBEEF'
-        VERSION = 17
-        BINDINGS = []
-        RETURNED = {
-            'etag': ETAG,
-            'version': VERSION,
-            'bindings': BINDINGS,
-        }
-        after = ({'status': http_client.OK}, RETURNED)
-        policy = Policy()
-
-        connection = _Connection(after)
-        client = _Client(connection)
-        bucket = _Bucket(client=client, user_project=USER_PROJECT)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-
-        returned = blob.set_iam_policy(policy)
-
-        self.assertEqual(returned.etag, ETAG)
-        self.assertEqual(returned.version, VERSION)
-        self.assertEqual(dict(returned), dict(policy))
-
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PUT')
-        self.assertEqual(kw[0]['path'], '%s/iam' % (PATH,))
-        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
-        self.assertEqual(kw[0]['data'], {'resourceId': PATH})
 
     def test_test_iam_permissions(self):
         from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
@@ -1589,39 +1455,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '%s/iam/testPermissions' % (PATH,))
         self.assertEqual(kw[0]['query_params'], {'permissions': PERMISSIONS})
-
-    def test_test_iam_permissions_w_user_project(self):
-        from google.cloud.storage.iam import STORAGE_OBJECTS_LIST
-        from google.cloud.storage.iam import STORAGE_BUCKETS_GET
-        from google.cloud.storage.iam import STORAGE_BUCKETS_UPDATE
-
-        BLOB_NAME = 'blob-name'
-        USER_PROJECT = 'user-project-123'
-        PATH = '/b/name/o/%s' % (BLOB_NAME,)
-        PERMISSIONS = [
-            STORAGE_OBJECTS_LIST,
-            STORAGE_BUCKETS_GET,
-            STORAGE_BUCKETS_UPDATE,
-        ]
-        ALLOWED = PERMISSIONS[1:]
-        RETURNED = {'permissions': ALLOWED}
-        after = ({'status': http_client.OK}, RETURNED)
-        connection = _Connection(after)
-        client = _Client(connection)
-        bucket = _Bucket(client=client, user_project=USER_PROJECT)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
-
-        allowed = blob.test_iam_permissions(PERMISSIONS)
-
-        self.assertEqual(allowed, ALLOWED)
-
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '%s/iam/testPermissions' % (PATH,))
-        self.assertEqual(
-            kw[0]['query_params'],
-            {'permissions': PERMISSIONS, 'userProject': USER_PROJECT})
 
     def test_make_public(self):
         from google.cloud.storage.acl import _ACLEntity
@@ -1657,18 +1490,17 @@ class Test_Blob(unittest.TestCase):
         with self.assertRaises(ValueError):
             destination.compose(sources=[source_1, source_2])
 
-    def test_compose_minimal_w_user_project(self):
+    def test_compose_minimal(self):
         SOURCE_1 = 'source-1'
         SOURCE_2 = 'source-2'
         DESTINATION = 'destinaton'
         RESOURCE = {
             'etag': 'DEADBEEF'
         }
-        USER_PROJECT = 'user-project-123'
         after = ({'status': http_client.OK}, RESOURCE)
         connection = _Connection(after)
         client = _Client(connection)
-        bucket = _Bucket(client=client, user_project=USER_PROJECT)
+        bucket = _Bucket(client=client)
         source_1 = self._make_one(SOURCE_1, bucket=bucket)
         source_2 = self._make_one(SOURCE_2, bucket=bucket)
         destination = self._make_one(DESTINATION, bucket=bucket)
@@ -1678,23 +1510,20 @@ class Test_Blob(unittest.TestCase):
 
         self.assertEqual(destination.etag, 'DEADBEEF')
 
+        SENT = {
+            'sourceObjects': [
+                {'name': source_1.name},
+                {'name': source_2.name},
+            ],
+            'destination': {
+                'contentType': 'text/plain',
+            },
+        }
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0], {
-            'method': 'POST',
-            'path': '/b/name/o/%s/compose' % DESTINATION,
-            'query_params': {'userProject': USER_PROJECT},
-            'data':  {
-                'sourceObjects': [
-                    {'name': source_1.name},
-                    {'name': source_2.name},
-                ],
-                'destination': {
-                    'contentType': 'text/plain',
-                },
-            },
-            '_target_object': destination,
-        })
+        self.assertEqual(kw[0]['method'], 'POST')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/compose' % DESTINATION)
+        self.assertEqual(kw[0]['data'], SENT)
 
     def test_compose_w_additional_property_changes(self):
         SOURCE_1 = 'source-1'
@@ -1718,27 +1547,24 @@ class Test_Blob(unittest.TestCase):
 
         self.assertEqual(destination.etag, 'DEADBEEF')
 
+        SENT = {
+            'sourceObjects': [
+                {'name': source_1.name},
+                {'name': source_2.name},
+            ],
+            'destination': {
+                'contentType': 'text/plain',
+                'contentLanguage': 'en-US',
+                'metadata': {
+                    'my-key': 'my-value',
+                }
+            },
+        }
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0], {
-            'method': 'POST',
-            'path': '/b/name/o/%s/compose' % DESTINATION,
-            'query_params': {},
-            'data':  {
-                'sourceObjects': [
-                    {'name': source_1.name},
-                    {'name': source_2.name},
-                ],
-                'destination': {
-                    'contentType': 'text/plain',
-                    'contentLanguage': 'en-US',
-                    'metadata': {
-                        'my-key': 'my-value',
-                    }
-                },
-            },
-            '_target_object': destination,
-        })
+        self.assertEqual(kw[0]['method'], 'POST')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/compose' % DESTINATION)
+        self.assertEqual(kw[0]['data'], SENT)
 
     def test_rewrite_response_without_resource(self):
         SOURCE_BLOB = 'source'
@@ -1810,7 +1636,7 @@ class Test_Blob(unittest.TestCase):
         self.assertNotIn('X-Goog-Encryption-Key', headers)
         self.assertNotIn('X-Goog-Encryption-Key-Sha256', headers)
 
-    def test_rewrite_same_name_no_old_key_new_key_done_w_user_project(self):
+    def test_rewrite_same_name_no_old_key_new_key_done(self):
         import base64
         import hashlib
 
@@ -1819,7 +1645,6 @@ class Test_Blob(unittest.TestCase):
         KEY_HASH = hashlib.sha256(KEY).digest()
         KEY_HASH_B64 = base64.b64encode(KEY_HASH).rstrip().decode('ascii')
         BLOB_NAME = 'blob'
-        USER_PROJECT = 'user-project-123'
         RESPONSE = {
             'totalBytesRewritten': 42,
             'objectSize': 42,
@@ -1829,7 +1654,7 @@ class Test_Blob(unittest.TestCase):
         response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
-        bucket = _Bucket(client=client, user_project=USER_PROJECT)
+        bucket = _Bucket(client=client)
         plain = self._make_one(BLOB_NAME, bucket=bucket)
         encrypted = self._make_one(BLOB_NAME, bucket=bucket,
                                    encryption_key=KEY)
@@ -1845,7 +1670,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'POST')
         PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
         self.assertEqual(kw[0]['path'], PATH)
-        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
+        self.assertEqual(kw[0]['query_params'], {})
         SENT = {}
         self.assertEqual(kw[0]['data'], SENT)
 
@@ -1948,7 +1773,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'POST')
         PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
         self.assertEqual(kw[0]['path'], PATH)
-        self.assertEqual(kw[0]['query_params'], {})
+        self.assertNotIn('query_params', kw[0])
         SENT = {'storageClass': STORAGE_CLASS}
         self.assertEqual(kw[0]['data'], SENT)
 
@@ -1962,7 +1787,7 @@ class Test_Blob(unittest.TestCase):
         self.assertNotIn('X-Goog-Encryption-Key', headers)
         self.assertNotIn('X-Goog-Encryption-Key-Sha256', headers)
 
-    def test_update_storage_class_w_encryption_key_w_user_project(self):
+    def test_update_storage_class_w_encryption_key(self):
         import base64
         import hashlib
 
@@ -1973,14 +1798,13 @@ class Test_Blob(unittest.TestCase):
         BLOB_KEY_HASH_B64 = base64.b64encode(
             BLOB_KEY_HASH).rstrip().decode('ascii')
         STORAGE_CLASS = u'NEARLINE'
-        USER_PROJECT = 'user-project-123'
         RESPONSE = {
             'resource': {'storageClass': STORAGE_CLASS},
         }
         response = ({'status': http_client.OK}, RESPONSE)
         connection = _Connection(response)
         client = _Client(connection)
-        bucket = _Bucket(client=client, user_project=USER_PROJECT)
+        bucket = _Bucket(client=client)
         blob = self._make_one(
             BLOB_NAME, bucket=bucket, encryption_key=BLOB_KEY)
 
@@ -1993,7 +1817,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'POST')
         PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
         self.assertEqual(kw[0]['path'], PATH)
-        self.assertEqual(kw[0]['query_params'], {'userProject': USER_PROJECT})
+        self.assertNotIn('query_params', kw[0])
         SENT = {'storageClass': STORAGE_CLASS}
         self.assertEqual(kw[0]['data'], SENT)
 
@@ -2415,17 +2239,18 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         return exc_info
 
     def test_default(self):
-        message = u'Failure'
+        message = b'Failure'
         exc_info = self._helper(message)
-        self.assertEqual(exc_info.exception.message, message)
+        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_with_error_info(self):
-        message = u'Eeek bad.'
+        message = b'Eeek bad.'
         error_info = 'http://test.invalid'
         exc_info = self._helper(message, error_info=error_info)
 
-        full_message = u'{} ({})'.format(message, error_info)
+        message_str = message.decode('utf-8')
+        full_message = u'{} ({})'.format(message_str, error_info)
         self.assertEqual(exc_info.exception.message, full_message)
         self.assertEqual(exc_info.exception.errors, [])
 
@@ -2457,7 +2282,7 @@ class _Connection(object):
 
 class _Bucket(object):
 
-    def __init__(self, client=None, name='name', user_project=None):
+    def __init__(self, client=None, name='name'):
         if client is None:
             connection = _Connection()
             client = _Client(connection)
@@ -2467,7 +2292,6 @@ class _Bucket(object):
         self._deleted = []
         self.name = name
         self.path = '/b/' + name
-        self.user_project = user_project
 
     def delete_blob(self, blob_name, client=None):
         del self._blobs[blob_name]

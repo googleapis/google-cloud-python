@@ -18,19 +18,19 @@ import io
 import json
 from pickle import PicklingError
 
-import google.auth.credentials
-from google.oauth2 import service_account
 import google_auth_httplib2
 import six
 
+import google.auth
+import google.auth.credentials
 from google.cloud._helpers import _determine_default_project
-from google.cloud.credentials import get_credentials
+from google.oauth2 import service_account
 
 
 _GOOGLE_AUTH_CREDENTIALS_HELP = (
     'This library only supports credentials from google-auth-library-python. '
-    'See https://google-cloud-python.readthedocs.io/en/latest/'
-    'google-cloud-auth.html for help on authentication with this library.'
+    'See https://google-cloud-python.readthedocs.io/en/latest/core/auth.html '
+    'for help on authentication with this library.'
 )
 
 
@@ -64,7 +64,7 @@ class _ClientFactoryMixin(object):
 
         :rtype: :class:`_ClientFactoryMixin`
         :returns: The client created with the retrieved JSON credentials.
-        :raises: :class:`TypeError` if there is a conflict with the kwargs
+        :raises TypeError: if there is a conflict with the kwargs
                  and the credentials created by the factory.
         """
         if 'credentials' in kwargs:
@@ -135,7 +135,7 @@ class Client(_ClientFactoryMixin):
                     credentials, google.auth.credentials.Credentials)):
             raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
         if credentials is None and _http is None:
-            credentials = get_credentials()
+            credentials, _ = google.auth.default()
         self._credentials = google.auth.credentials.with_scopes_if_required(
             credentials, self.SCOPE)
         self._http_internal = _http

@@ -12,7 +12,7 @@
   resource-manager/api
   runtimeconfig/usage
   spanner/usage
-  speech/usage
+  speech/index
   error-reporting/usage
   monitoring/usage
   logging/usage
@@ -37,7 +37,7 @@ Cloud Datastore
 
 `Google Cloud Datastore`_ is a fully managed, schemaless database for storing non-relational data.
 
-.. _Google Cloud Datastore: https://developers.google.com/datastore/
+.. _Google Cloud Datastore: https://cloud.google.com/datastore/
 
 .. code-block:: python
 
@@ -56,7 +56,7 @@ Cloud Storage
 
 `Google Cloud Storage`_ allows you to store data on Google infrastructure.
 
-.. _Google Cloud Storage: https://developers.google.com/storage/
+.. _Google Cloud Storage: https://cloud.google.com/storage/
 
 .. code-block:: python
 
@@ -73,4 +73,4 @@ Resources
 * `GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>`__
 * `Issues <https://github.com/GoogleCloudPlatform/google-cloud-python/issues>`__
 * `Stack Overflow <http://stackoverflow.com/questions/tagged/google-cloud-python>`__
-* `PyPI <https://pypi.python.org/pypi/google-cloud>`__
+* `PyPI <https://pypi.org/project/google-cloud/>`__

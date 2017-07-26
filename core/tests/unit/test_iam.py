@@ -200,7 +200,6 @@ class TestPolicy(unittest.TestCase):
                 {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
-        empty = frozenset()
         klass = self._get_target_class()
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'DEADBEEF')

@@ -17,7 +17,6 @@
 This module is not part of the public API surface.
 """
 
-# Avoid the grpc and google.cloud.grpc collision.
 from __future__ import absolute_import
 
 import calendar
@@ -26,20 +25,20 @@ import os
 import re
 from threading import local as Local
 
+import google_auth_httplib2
+import httplib2
+import six
+from six.moves import http_client
+
 import google.auth
 from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
-import google_auth_httplib2
 
 try:
     import grpc
     import google.auth.transport.grpc
 except ImportError:  # pragma: NO COVER
     grpc = None
-
-import httplib2
-import six
-from six.moves import http_client
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
@@ -104,7 +103,7 @@ class _LocalStack(Local):
         :rtype: object
         :returns: the top-most item, or None if the stack is empty.
         """
-        if len(self._stack) > 0:
+        if self._stack:
             return self._stack[-1]
 
 
@@ -377,6 +376,29 @@ def _bytes_to_unicode(value):
         return result
     else:
         raise ValueError('%r could not be converted to unicode' % (value,))
+
+
+def _from_any_pb(pb_type, any_pb):
+    """Converts an Any protobuf to the specified message type
+
+    Args:
+        pb_type (type): the type of the message that any_pb stores an instance
+            of.
+        any_pb (google.protobuf.any_pb2.Any): the object to be converted.
+
+    Returns:
+        pb_type: An instance of the pb_type message.
+
+    Raises:
+        TypeError: if the message could not be converted.
+    """
+    msg = pb_type()
+    if not any_pb.Unpack(msg):
+        raise TypeError(
+            'Could not convert {} to {}'.format(
+                any_pb.__class__.__name__, pb_type.__name__))
+
+    return msg
 
 
 def _pb_timestamp_to_datetime(timestamp_pb):

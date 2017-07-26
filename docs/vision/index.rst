@@ -33,19 +33,21 @@ Authentication and Configuration
   this will be detected automatically.
 
 - After configuring your environment, create a
-  :class:`~google.cloud.vision.client.Client`.
+  :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.
 
 .. code-block:: python
 
      >>> from google.cloud import vision
      >>> client = vision.ImageAnnotatorClient()
 
-or pass in ``credentials`` and ``project`` explicitly.
+or pass in ``credentials`` explicitly.
 
 .. code-block:: python
 
      >>> from google.cloud import vision
-     >>> client = vision.Client(project='my-project', credentials=creds)
+     >>> client = vision.ImageAnnotatorClient(
+     ...     credentials=creds,
+     ... )
 
 
 *****************
@@ -91,7 +93,7 @@ for it using our direct methods:
     ... })
     >>> len(response.annotations)
     1
-    >>> for face in resposne.annotations[0].faces:
+    >>> for face in response.annotations[0].faces:
     ...     print(face.joy)
     Likelihood.VERY_LIKELY
     Likelihood.VERY_LIKELY
@@ -103,7 +105,7 @@ No results found
 ****************
 
 If no results for the detection performed can be extracted from the image, then
-an empty list is returned. This behavior is similiar with all detection types.
+an empty list is returned. This behavior is similar with all detection types.
 
 
 Example with :meth:`~google.cloud.vision.ImageAnnotatorClient.logo_detection`:
@@ -127,5 +129,5 @@ API Reference
 .. toctree::
   :maxdepth: 2
 
-  gapic/api
-  gapic/types
+  gapic/v1/api
+  gapic/v1/types

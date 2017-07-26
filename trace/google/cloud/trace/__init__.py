@@ -13,8 +13,6 @@
 # limitations under the License.
 
 from google.cloud.trace.client import Client
-from google.cloud.trace.trace import Trace
-from google.cloud.trace.trace_span import TraceSpan
 
 
-__all__ = ['Client', 'Trace', 'TraceSpan']
+__all__ = ['Client']
