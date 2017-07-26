@@ -190,8 +190,8 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.allow_quoted_newlines)
         if 'autodetect' in config:
-            self.assertEqual(job.autodetect,
-                             config['autodetect'])
+            self.assertEqual(
+                job.autodetect, config['autodetect'])
         else:
             self.assertIsNone(job.autodetect)
         if 'ignoreUnknownValues' in config:
@@ -533,26 +533,22 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_autodetect(self):
-        PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
-        RESOURCE['configuration']['load']['autodetect'] = True
+        path = '/projects/{}/jobs'.format(self.PROJECT)
+        resource = self._makeResource()
+        resource['configuration']['load']['autodetect'] = True
         # Ensure None for missing server-set props
-        del RESOURCE['statistics']['creationTime']
-        del RESOURCE['etag']
-        del RESOURCE['selfLink']
-        del RESOURCE['user_email']
-        conn = _Connection(RESOURCE)
+        del resource['statistics']['creationTime']
+        del resource['etag']
+        del resource['selfLink']
+        del resource['user_email']
+        conn = _Connection(resource)
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
         job.autodetect = True
         job.begin()
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        SENT = {
+        sent = {
             'jobReference': {
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_NAME,
@@ -569,8 +565,13 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                 },
             },
         }
-        self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(job, RESOURCE)
+        expected_request = {
+            'method': 'POST',
+            'path': path,
+            'data': sent,
+        }
+        self.assertEqual(conn._requested, [expected_request])
+        self._verifyResourceProperties(job, resource)
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.schema import SchemaField

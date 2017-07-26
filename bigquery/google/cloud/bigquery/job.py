@@ -83,8 +83,8 @@ def _error_result_to_exception(error_result):
 class AutoDetectSchema(_TypedProperty):
     """Typed Property for ``autodetect`` properties.
 
-       :raises: ValueError on `set` operation if `instance.schema`
-                is already defined.
+    :raises ValueError: on ``set`` operation if ``instance.schema``
+                        is already defined.
     """
     def __set__(self, instance, value):
         self._validate(value)
@@ -559,9 +559,10 @@ class LoadTableFromStorageJob(_AsyncJob):
         super(LoadTableFromStorageJob, self).__init__(name, client)
         self.destination = destination
         self.source_uris = source_uris
-        # Let the @property do validation.
-        self.schema = schema
         self._configuration = _LoadConfiguration()
+        # Let the @property do validation. This must occur after all other
+        # attributes have been set.
+        self.schema = schema
 
     @property
     def schema(self):
@@ -579,18 +580,18 @@ class LoadTableFromStorageJob(_AsyncJob):
         :type value: list of :class:`SchemaField`
         :param value: fields describing the schema
 
-        :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not a SchemaField
+        :raises TypeError: If ``value`is not a sequence.
+        :raises ValueError: If any item in the sequence is not
+                            a ``SchemaField``.
         """
         if not value:
-            self._schema = tuple()
+            self._schema = ()
         else:
             if not all(isinstance(field, SchemaField) for field in value):
                 raise ValueError('Schema items must be fields')
-            if getattr(self, '_configuration', None):
-                if self.autodetect:
-                    raise ValueError('Schema can not be set if '
-                                     '`autodetect` property is True')
+            if self._configuration is not None and self.autodetect:
+                raise ValueError(
+                    'Schema can not be set if `autodetect` property is True')
 
             self._schema = tuple(value)
 
