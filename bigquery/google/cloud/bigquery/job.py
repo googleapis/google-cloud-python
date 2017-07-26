@@ -83,7 +83,7 @@ def _error_result_to_exception(error_result):
 class AutoDetectSchema(_TypedProperty):
     """Typed Property for ``autodetect`` properties.
 
-       :raises: ValueError on `set` operation if `self.schema`
+       :raises: ValueError on `set` operation if `instance.schema`
                 is already defined.
     """
     def __set__(self, instance, value):
@@ -519,7 +519,7 @@ class _LoadConfiguration(object):
     """
     _allow_jagged_rows = None
     _allow_quoted_newlines = None
-    _autodetect_schema = None
+    _autodetect = None
     _create_disposition = None
     _encoding = None
     _field_delimiter = None
@@ -588,9 +588,9 @@ class LoadTableFromStorageJob(_AsyncJob):
             if not all(isinstance(field, SchemaField) for field in value):
                 raise ValueError('Schema items must be fields')
             if getattr(self, '_configuration', None):
-                if self.autodetect_schema:
+                if self.autodetect:
                     raise ValueError('Schema can not be set if '
-                                     '`autodetect_schema` property is True')
+                                     '`autodetect` property is True')
 
             self._schema = tuple(value)
 
@@ -648,7 +648,7 @@ class LoadTableFromStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
     """
 
-    autodetect_schema = AutoDetectSchema('autodetect_schema', bool)
+    autodetect = AutoDetectSchema('autodetect', bool)
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect
     """
@@ -704,8 +704,8 @@ class LoadTableFromStorageJob(_AsyncJob):
             configuration['allowJaggedRows'] = self.allow_jagged_rows
         if self.allow_quoted_newlines is not None:
             configuration['allowQuotedNewlines'] = self.allow_quoted_newlines
-        if self.autodetect_schema is not None:
-            configuration['autodetect'] = self.autodetect_schema
+        if self.autodetect is not None:
+            configuration['autodetect'] = self.autodetect
         if self.create_disposition is not None:
             configuration['createDisposition'] = self.create_disposition
         if self.encoding is not None:

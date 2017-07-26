@@ -550,7 +550,7 @@ class TestBigQuery(unittest.TestCase):
 
         job = Config.CLIENT.load_table_from_storage(
             'bq_load_storage_test_' + local_id, table, GS_URL)
-        job.autodetect_schema = True
+        job.autodetect = True
 
         job.begin()
 

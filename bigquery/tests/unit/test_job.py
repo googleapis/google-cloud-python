@@ -190,10 +190,10 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.allow_quoted_newlines)
         if 'autodetect' in config:
-            self.assertEqual(job.autodetect_schema,
+            self.assertEqual(job.autodetect,
                              config['autodetect'])
         else:
-            self.assertIsNone(job.autodetect_schema)
+            self.assertIsNone(job.autodetect)
         if 'ignoreUnknownValues' in config:
             self.assertEqual(job.ignore_unknown_values,
                              config['ignoreUnknownValues'])
@@ -282,7 +282,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         # set/read from resource['configuration']['load']
         self.assertIsNone(job.allow_jagged_rows)
         self.assertIsNone(job.allow_quoted_newlines)
-        self.assertIsNone(job.autodetect_schema)
+        self.assertIsNone(job.autodetect)
         self.assertIsNone(job.create_disposition)
         self.assertIsNone(job.encoding)
         self.assertIsNone(job.field_delimiter)
@@ -339,12 +339,12 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         table = _Table()
         full_name = SchemaField('full_name', 'STRING')
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.autodetect_schema = False
+        job.autodetect = False
         job.schema = [full_name]
         self.assertEqual(job.schema, [full_name])
 
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.autodetect_schema = True
+        job.autodetect = True
         with self.assertRaises(ValueError):
             job.schema = [full_name]
 
@@ -356,16 +356,16 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         full_name = SchemaField('full_name', 'STRING')
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
 
-        job.autodetect_schema = True
+        job.autodetect = True
         job.schema = []
         self.assertEqual(job.schema, [])
 
-        job.autodetect_schema = False
+        job.autodetect = False
         job.schema = [full_name]
-        self.assertEqual(job.autodetect_schema, False)
+        self.assertEqual(job.autodetect, False)
 
         with self.assertRaises(ValueError):
-            job.autodetect_schema = True
+            job.autodetect = True
 
     def test_props_set_by_server(self):
         import datetime
@@ -545,7 +545,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.autodetect_schema = True
+        job.autodetect = True
         job.begin()
 
         self.assertEqual(len(conn._requested), 1)
