@@ -31,7 +31,6 @@ In the hierarchy of API concepts
 
 import os
 
-import google.auth.credentials
 from google.gax.utils import metrics
 from google.longrunning import operations_grpc
 

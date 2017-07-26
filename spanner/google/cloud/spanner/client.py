@@ -24,8 +24,6 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner.database.Database`
 """
 
-import google.auth
-import google.auth.credentials
 from google.gax import INITIAL_PAGE
 # pylint: disable=line-too-long
 from google.cloud.gapic.spanner_admin_database.v1.database_admin_client import (  # noqa
