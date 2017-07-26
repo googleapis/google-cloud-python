@@ -225,6 +225,21 @@ class TestSession(unittest.TestCase):
         self.assertIsInstance(snapshot, Snapshot)
         self.assertIs(snapshot._session, session)
         self.assertTrue(snapshot._strong)
+        self.assertFalse(snapshot._multi_use)
+
+    def test_snapshot_created_w_multi_use(self):
+        from google.cloud.spanner.snapshot import Snapshot
+
+        database = _Database(self.DATABASE_NAME)
+        session = self._make_one(database)
+        session._session_id = 'DEADBEEF'  # emulate 'session.create()'
+
+        snapshot = session.snapshot(multi_use=True)
+
+        self.assertIsInstance(snapshot, Snapshot)
+        self.assertTrue(snapshot._session is session)
+        self.assertTrue(snapshot._strong)
+        self.assertTrue(snapshot._multi_use)
 
     def test_read_not_created(self):
         from google.cloud.spanner.keyset import KeySet
@@ -403,7 +418,7 @@ class TestSession(unittest.TestCase):
         session = self._make_one(database)
         session._session_id = 'DEADBEEF'
         begun_txn = session._transaction = Transaction(session)
-        begun_txn._id = b'FACEDACE'
+        begun_txn._transaction_id = b'FACEDACE'
 
         called_with = []
 

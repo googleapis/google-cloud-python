@@ -682,12 +682,9 @@ class TestDatabase(_BaseTest):
         checkout = database.snapshot()
         self.assertIsInstance(checkout, SnapshotCheckout)
         self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
+        self.assertEqual(checkout._kw, {})
 
-    def test_snapshot_w_read_timestamp(self):
+    def test_snapshot_w_read_timestamp_and_multi_use(self):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.spanner.database import SnapshotCheckout
@@ -700,78 +697,12 @@ class TestDatabase(_BaseTest):
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        checkout = database.snapshot(read_timestamp=now)
+        checkout = database.snapshot(read_timestamp=now, multi_use=True)
 
         self.assertIsInstance(checkout, SnapshotCheckout)
         self.assertIs(checkout._database, database)
-        self.assertEqual(checkout._read_timestamp, now)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-    def test_snapshot_w_min_read_timestamp(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot(min_read_timestamp=now)
-
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertEqual(checkout._min_read_timestamp, now)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-    def test_snapshot_w_max_staleness(self):
-        import datetime
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        staleness = datetime.timedelta(seconds=1, microseconds=234567)
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot(max_staleness=staleness)
-
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertEqual(checkout._max_staleness, staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-    def test_snapshot_w_exact_staleness(self):
-        import datetime
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        staleness = datetime.timedelta(seconds=1, microseconds=234567)
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot(exact_staleness=staleness)
-
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertEqual(checkout._exact_staleness, staleness)
+        self.assertEqual(
+            checkout._kw, {'read_timestamp': now, 'multi_use': True})
 
 
 class TestBatchCheckout(_BaseTest):
@@ -862,20 +793,18 @@ class TestSnapshotCheckout(_BaseTest):
 
         checkout = self._make_one(database)
         self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
+        self.assertEqual(checkout._kw, {})
 
         with checkout as snapshot:
             self.assertIsNone(pool._session)
             self.assertIsInstance(snapshot, Snapshot)
             self.assertIs(snapshot._session, session)
             self.assertTrue(snapshot._strong)
+            self.assertFalse(snapshot._multi_use)
 
         self.assertIs(pool._session, session)
 
-    def test_ctor_w_read_timestamp(self):
+    def test_ctor_w_read_timestamp_and_multi_use(self):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.spanner.snapshot import Snapshot
@@ -886,99 +815,17 @@ class TestSnapshotCheckout(_BaseTest):
         pool = database._pool = _Pool()
         pool.put(session)
 
-        checkout = self._make_one(database, read_timestamp=now)
+        checkout = self._make_one(database, read_timestamp=now, multi_use=True)
         self.assertIs(checkout._database, database)
-        self.assertEqual(checkout._read_timestamp, now)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
+        self.assertEqual(checkout._kw,
+                         {'read_timestamp': now, 'multi_use': True})
 
         with checkout as snapshot:
             self.assertIsNone(pool._session)
             self.assertIsInstance(snapshot, Snapshot)
             self.assertIs(snapshot._session, session)
-            self.assertFalse(snapshot._strong)
             self.assertEqual(snapshot._read_timestamp, now)
-
-        self.assertIs(pool._session, session)
-
-    def test_ctor_w_min_read_timestamp(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud.spanner.snapshot import Snapshot
-
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        database = _Database(self.DATABASE_NAME)
-        session = _Session(database)
-        pool = database._pool = _Pool()
-        pool.put(session)
-
-        checkout = self._make_one(database, min_read_timestamp=now)
-        self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertEqual(checkout._min_read_timestamp, now)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-        with checkout as snapshot:
-            self.assertIsNone(pool._session)
-            self.assertIsInstance(snapshot, Snapshot)
-            self.assertIs(snapshot._session, session)
-            self.assertFalse(snapshot._strong)
-            self.assertEqual(snapshot._min_read_timestamp, now)
-
-        self.assertIs(pool._session, session)
-
-    def test_ctor_w_max_staleness(self):
-        import datetime
-        from google.cloud.spanner.snapshot import Snapshot
-
-        staleness = datetime.timedelta(seconds=1, microseconds=234567)
-        database = _Database(self.DATABASE_NAME)
-        session = _Session(database)
-        pool = database._pool = _Pool()
-        pool.put(session)
-
-        checkout = self._make_one(database, max_staleness=staleness)
-        self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertEqual(checkout._max_staleness, staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-        with checkout as snapshot:
-            self.assertIsNone(pool._session)
-            self.assertIsInstance(snapshot, Snapshot)
-            self.assertIs(snapshot._session, session)
-            self.assertFalse(snapshot._strong)
-            self.assertEqual(snapshot._max_staleness, staleness)
-
-        self.assertIs(pool._session, session)
-
-    def test_ctor_w_exact_staleness(self):
-        import datetime
-        from google.cloud.spanner.snapshot import Snapshot
-
-        staleness = datetime.timedelta(seconds=1, microseconds=234567)
-        database = _Database(self.DATABASE_NAME)
-        session = _Session(database)
-        pool = database._pool = _Pool()
-        pool.put(session)
-
-        checkout = self._make_one(database, exact_staleness=staleness)
-
-        self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertEqual(checkout._exact_staleness, staleness)
-
-        with checkout as snapshot:
-            self.assertIsNone(pool._session)
-            self.assertIsInstance(snapshot, Snapshot)
-            self.assertIs(snapshot._session, session)
-            self.assertFalse(snapshot._strong)
-            self.assertEqual(snapshot._exact_staleness, staleness)
+            self.assertTrue(snapshot._multi_use)
 
         self.assertIs(pool._session, session)
 

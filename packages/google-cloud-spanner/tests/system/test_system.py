@@ -18,6 +18,7 @@ import operator
 import os
 import struct
 import threading
+import time
 import unittest
 
 from google.cloud.proto.spanner.v1.type_pb2 import ARRAY
@@ -687,6 +688,56 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows, all_data_rows)
 
+    def test_multiuse_snapshot_read_isolation_strong(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        strong = session.snapshot(multi_use=True)
+
+        before = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
+
+    def test_multiuse_snapshot_read_isolation_read_timestamp(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        read_ts = session.snapshot(read_timestamp=committed, multi_use=True)
+
+        before = list(read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
+
+    def test_multiuse_snapshot_read_isolation_exact_staleness(self):
+        ROW_COUNT = 40
+
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+
+        time.sleep(1)
+        delta = datetime.timedelta(microseconds=1000)
+
+        exact = session.snapshot(exact_staleness=delta, multi_use=True)
+
+        before = list(exact.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(exact.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
+
     def test_read_w_manual_consume(self):
         ROW_COUNT = 4000
         session, committed = self._set_up_table(ROW_COUNT)
@@ -778,7 +829,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         START = 1000
         END = 2000
         session, committed = self._set_up_table(ROW_COUNT)
-        snapshot = session.snapshot(read_timestamp=committed)
+        snapshot = session.snapshot(read_timestamp=committed, multi_use=True)
         all_data_rows = list(self._row_data(ROW_COUNT))
 
         closed_closed = KeyRange(start_closed=[START], end_closed=[END])
@@ -836,6 +887,22 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             sql, params=params, param_types=param_types))
         self._check_row_data(rows, expected=expected)
 
+    def test_multiuse_snapshot_execute_sql_isolation_strong(self):
+        ROW_COUNT = 40
+        SQL = 'SELECT * FROM {}'.format(self.TABLE)
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        strong = session.snapshot(multi_use=True)
+
+        before = list(strong.execute_sql(SQL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(strong.execute_sql(SQL))
+        self._check_row_data(after, all_data_rows)
+
     def test_execute_sql_returning_array_of_struct(self):
         SQL = (
             "SELECT ARRAY(SELECT AS STRUCT C1, C2 "
@@ -868,7 +935,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 self.ALL_TYPES_COLUMNS,
                 self.ALL_TYPES_ROWDATA)
 
-        snapshot = session.snapshot(read_timestamp=batch.committed)
+        snapshot = session.snapshot(
+            read_timestamp=batch.committed, multi_use=True)
 
         # Cannot equality-test array values.  See below for a test w/
         # array of IDs.
