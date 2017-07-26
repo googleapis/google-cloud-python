@@ -18,9 +18,9 @@ class RecognitionConfig(object):
     class AudioEncoding(object):
         """
         Audio encoding of the data sent in the audio message. All encodings support
-        only 1 channel (mono) audio. Only ``FLAC`` includes a header that describes
-        the bytes of audio that follow the header. The other encodings are raw
-        audio bytes with no header.
+        only 1 channel (mono) audio. Only ``FLAC`` and ``WAV`` include a header that
+        describes the bytes of audio that follow the header. The other encodings
+        are raw audio bytes with no header.
 
         For best results, the audio source should be captured and transmitted using
         a lossless encoding (``FLAC`` or ``LINEAR16``). Recognition accuracy may be

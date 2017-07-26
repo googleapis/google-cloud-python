@@ -124,7 +124,7 @@ class SpeechClient(object):
 
         # Finally, track the GAPIC package version.
         metrics_headers['gapic'] = pkg_resources.get_distribution(
-            'google-cloud-speech', ).version
+            'gapic-google-cloud-speech-v1', ).version
 
         # Load the configuration defaults.
         default_client_config = json.loads(
@@ -197,7 +197,6 @@ class SpeechClient(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        # Create the request object.
         request = cloud_speech_pb2.RecognizeRequest(config=config, audio=audio)
         return self._recognize(request, options)
 
@@ -244,7 +243,6 @@ class SpeechClient(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        # Create the request object.
         request = cloud_speech_pb2.LongRunningRecognizeRequest(
             config=config, audio=audio)
         return google.gax._OperationFuture(
