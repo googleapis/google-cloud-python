@@ -292,7 +292,7 @@ class JSONConnection(Connection):
         if not 200 <= response.status_code < 300:
             raise exceptions.from_http_response(response)
 
-        if expect_json:
+        if expect_json and response.content:
             return response.json()
         else:
             return response.content
