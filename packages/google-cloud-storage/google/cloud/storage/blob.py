@@ -34,7 +34,6 @@ import os
 import time
 import warnings
 
-import httplib2
 from six.moves.urllib.parse import quote
 
 import google.auth.transport.requests
@@ -44,11 +43,11 @@ from google.resumable_media.requests import Download
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+from google.cloud import exceptions
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
 from google.cloud.exceptions import NotFound
-from google.cloud.exceptions import make_exception
 from google.cloud.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
@@ -469,7 +468,7 @@ class Blob(_PropertyMixin):
         try:
             self._do_download(transport, file_obj, download_url, headers)
         except resumable_media.InvalidResponse as exc:
-            _raise_from_invalid_response(exc, download_url)
+            _raise_from_invalid_response(exc)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -1598,20 +1597,14 @@ def _maybe_rewind(stream, rewind=False):
         stream.seek(0, os.SEEK_SET)
 
 
-def _raise_from_invalid_response(error, error_info=None):
+def _raise_from_invalid_response(error):
     """Re-wrap and raise an ``InvalidResponse`` exception.
 
     :type error: :exc:`google.resumable_media.InvalidResponse`
     :param error: A caught exception from the ``google-resumable-media``
                   library.
 
-    :type error_info: str
-    :param error_info: (Optional) Extra information about the failed request.
-
     :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding
              to the failed status code
     """
-    response = error.response
-    faux_response = httplib2.Response({'status': response.status_code})
-    raise make_exception(faux_response, response.content,
-                         error_info=error_info, use_json=False)
+    raise exceptions.from_http_response(error.response)

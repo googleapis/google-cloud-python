@@ -376,9 +376,15 @@ class Test_Blob(unittest.TestCase):
 
     @staticmethod
     def _mock_requests_response(status_code, headers, content=b''):
-        return mock.Mock(
-            content=content, headers=headers, status_code=status_code,
-            spec=['content', 'headers', 'status_code'])
+        import requests
+
+        response = requests.Response()
+        response.status_code = status_code
+        response.headers.update(headers)
+        response._content = content
+        response.request = requests.Request(
+            'POST', 'http://example.com').prepare()
+        return response
 
     def _mock_download_transport(self):
         fake_transport = mock.Mock(spec=['request'])
@@ -1159,19 +1165,23 @@ class Test_Blob(unittest.TestCase):
         assert stream.tell() == 0
 
     def test_upload_from_file_failure(self):
+        import requests
+
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
         message = b'Someone is already in this spot.'
-        response = mock.Mock(
-            content=message, status_code=http_client.CONFLICT,
-            spec=[u'content', u'status_code'])
+        response = requests.Response()
+        response._content = message
+        response.status_code = http_client.CONFLICT
+        response.request = requests.Request(
+            'POST', 'http://example.com').prepare()
         side_effect = InvalidResponse(response)
 
         with self.assertRaises(exceptions.Conflict) as exc_info:
             self._upload_from_file_helper(side_effect=side_effect)
 
-        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
+        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def _do_upload_mock_call_helper(self, blob, client, content_type, size):
@@ -1309,16 +1319,16 @@ class Test_Blob(unittest.TestCase):
         from google.cloud import exceptions
 
         message = b'5-oh-3 woe is me.'
-        response = mock.Mock(
+        response = self._mock_requests_response(
             content=message, status_code=http_client.SERVICE_UNAVAILABLE,
-            spec=[u'content', u'status_code'])
+            headers={})
         side_effect = InvalidResponse(response)
 
         with self.assertRaises(exceptions.ServiceUnavailable) as exc_info:
             self._create_resumable_upload_session_helper(
                 side_effect=side_effect)
 
-        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
+        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_get_iam_policy(self):
@@ -2225,12 +2235,16 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         return _raise_from_invalid_response(*args, **kwargs)
 
     def _helper(self, message, **kwargs):
+        import requests
+
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        response = mock.Mock(
-            content=message, status_code=http_client.BAD_REQUEST,
-            spec=[u'content', u'status_code'])
+        response = requests.Response()
+        response.request = requests.Request(
+            'GET', 'http://example.com').prepare()
+        response.status_code = http_client.BAD_REQUEST
+        response._content = message
         error = InvalidResponse(response)
 
         with self.assertRaises(exceptions.BadRequest) as exc_info:
@@ -2241,17 +2255,9 @@ class Test__raise_from_invalid_response(unittest.TestCase):
     def test_default(self):
         message = b'Failure'
         exc_info = self._helper(message)
-        self.assertEqual(exc_info.exception.message, message.decode('utf-8'))
-        self.assertEqual(exc_info.exception.errors, [])
-
-    def test_with_error_info(self):
-        message = b'Eeek bad.'
-        error_info = 'http://test.invalid'
-        exc_info = self._helper(message, error_info=error_info)
-
         message_str = message.decode('utf-8')
-        full_message = u'{} ({})'.format(message_str, error_info)
-        self.assertEqual(exc_info.exception.message, full_message)
+        expected = 'GET http://example.com/: {}'.format(message_str)
+        self.assertEqual(exc_info.exception.message, expected)
         self.assertEqual(exc_info.exception.errors, [])
 
 
