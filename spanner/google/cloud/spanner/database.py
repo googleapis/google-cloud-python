@@ -99,9 +99,8 @@ class Database(object):
 
         :rtype: :class:`Database`
         :returns: The database parsed from the protobuf response.
-        :raises:
-            :class:`ValueError <exceptions.ValueError>` if the instance
-            name does not match the expected format
+        :raises ValueError:
+            if the instance name does not match the expected format
             or if the parsed project ID does not match the project ID
             on the instance's client, or if the parsed instance ID does
             not match the instance's ID.
@@ -175,6 +174,13 @@ class Database(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase
+
+        :rtype: :class:`~google.cloud.future.operation.Operation`
+        :returns: a future used to poll the status of the create request
+        :raises Conflict: if the database already exists
+        :raises NotFound: if the instance owning the database does not exist
+        :raises GaxError:
+            for errors other than ``ALREADY_EXISTS`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -205,6 +211,11 @@ class Database(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
+
+        :rtype: bool
+        :returns: True if the database exists, else false.
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -224,6 +235,10 @@ class Database(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
+
+        :raises NotFound: if the database does not exist
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -246,6 +261,9 @@ class Database(object):
 
         :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
+        :raises NotFound: if the database does not exist
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         client = self._instance._client
         api = client.database_admin_api
@@ -474,6 +492,9 @@ def _check_ddl_statements(value):
 
     :rtype: tuple
     :returns: tuple of validated DDL statement strings.
+    :raises ValueError:
+        if elements in ``value`` are not strings, or if ``value`` contains
+        a ``CREATE DATABASE`` statement.
     """
     if not all(isinstance(line, six.string_types) for line in value):
         raise ValueError("Pass a list of strings")
