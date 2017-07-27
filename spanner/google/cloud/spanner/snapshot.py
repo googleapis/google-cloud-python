@@ -74,8 +74,9 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
-        :raises: ValueError for reuse of single-use snapshots, or if a
-                 transaction ID is pending for multiple-use snapshots.
+        :raises ValueError:
+            for reuse of single-use snapshots, or if a transaction ID is
+            already pending for multiple-use snapshots.
         """
         if self._read_request_count > 0:
             if not self._multi_use:
@@ -126,8 +127,9 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
-        :raises: ValueError for reuse of single-use snapshots, or if a
-                 transaction ID is pending for multiple-use snapshots.
+        :raises ValueError:
+            for reuse of single-use snapshots, or if a transaction ID is
+            already pending for multiple-use snapshots.
         """
         if self._read_request_count > 0:
             if not self._multi_use:
@@ -248,12 +250,12 @@ class Snapshot(_SnapshotBase):
             return TransactionSelector(single_use=options)
 
     def begin(self):
-        """Begin a transaction on the database.
+        """Begin a read-only transaction on the database.
 
         :rtype: bytes
         :returns: the ID for the newly-begun transaction.
-        :raises: ValueError if the transaction is already begun, committed,
-                 or rolled back.
+        :raises ValueError:
+            if the transaction is already begun, committed, or rolled back.
         """
         if not self._multi_use:
             raise ValueError("Cannot call 'begin' single-use snapshots")

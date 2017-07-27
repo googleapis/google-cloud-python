@@ -60,8 +60,8 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         :rtype: bytes
         :returns: the ID for the newly-begun transaction.
-        :raises: ValueError if the transaction is already begun, committed,
-                 or rolled back.
+        :raises ValueError:
+            if the transaction is already begun, committed, or rolled back.
         """
         if self._transaction_id is not None:
             raise ValueError("Transaction already begun")
@@ -97,11 +97,11 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         :rtype: datetime
         :returns: timestamp of the committed changes.
-        :raises: :exc:`ValueError` if there are no mutations to commit.
+        :raises ValueError: if there are no mutations to commit.
         """
         self._check_state()
 
-        if len(self._mutations) == 0:
+        if not self._mutations:
             raise ValueError("No mutations to commit")
 
         database = self._session._database
