@@ -55,7 +55,7 @@ class GoogleCloudError(Exception):
         super(GoogleCloudError, self).__init__(message)
         self.message = message
         if errors is None:
-            errors = ()
+            errors = []
         self._errors = errors
 
     def __str__(self):
