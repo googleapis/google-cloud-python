@@ -18,9 +18,9 @@ Google Cloud Python Client
 The following client libraries have **GA** support:
 
 -  `Google Cloud Datastore`_ (`Datastore README`_)
--  `Stackdriver Logging`_ (`Logging README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
+-  `Stackdriver Logging`_ (`Logging README`_)
 
 **GA** (general availability) indicates that the client library for a
 particular service is stable, and that the code surface will not change in
@@ -32,9 +32,9 @@ priority.
 The following client libraries have **beta** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
--  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
+-  `Google Cloud Vision`_ (`Vision README`_)
 
 **Beta** indicates that the client library for a particular service is
 mostly stable and is being prepared for release. Issues and requests
@@ -43,16 +43,16 @@ against beta libraries are addressed with a higher priority.
 This client library has **alpha** support for the following Google
 Cloud Platform services:
 
+-  `Google Cloud Bigtable`_ (`Bigtable README`_)
+-  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
+-  `Google Cloud DNS`_ (`DNS README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
--  `Stackdriver Monitoring`_ (`Monitoring README`_)
--  `Google Cloud Bigtable`_ (`Bigtable README`_)
--  `Google Cloud DNS`_ (`DNS README`_)
--  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
--  `Google Cloud Speech`_ (`Speech README`_)
--  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
--  `Cloud Spanner`_ (`Cloud Spanner README`_)
+-  `Google Cloud Spanner`_ (`Spanner README`_)
+-  `Google Cloud Speech`_ (`Speech README`_)
+-  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
+-  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
 **Alpha** indicates that the client library for a particular service is
 still a work-in-progress and is more likely to get backwards-incompatible
@@ -90,8 +90,8 @@ updates. See `versioning`_ for more details.
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 .. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
-.. _Cloud Spanner: https://pypi.python.org/pypi/google-cloud-spanner
-.. _Cloud Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
+.. _Google Cloud Spanner: https://pypi.python.org/pypi/google-cloud-spanner
+.. _Spanner README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/spanner
 .. _Google Cloud Video Intelligence: https://pypi.python.org/pypi/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/videointelligence
 .. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
