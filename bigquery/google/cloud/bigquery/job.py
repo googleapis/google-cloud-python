@@ -76,7 +76,6 @@ def _error_result_to_exception(error_result):
     reason = error_result.get('reason')
     status_code = _ERROR_REASON_TO_EXCEPTION.get(
         reason, http_client.INTERNAL_SERVER_ERROR)
-    # make_exception expects an httplib2 response object.
     return exceptions.from_http_status(
         status_code, error_result.get('message', ''), errors=[error_result])
 

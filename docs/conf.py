@@ -295,14 +295,11 @@ texinfo_documents = [
 autoclass_content = 'both'
 
 # Configuration for intersphinx:
-# Refer to the Python standard library and the oauth2client and
-# httplib2 libraries.
 intersphinx_mapping = {
     'google-auth': ('https://google-auth.readthedocs.io/en/stable', None),
     'google-gax': ('https://gax-python.readthedocs.io/en/latest/', None),
     'grpc': ('http://www.grpc.io/grpc/python/', None),
-    'httplib2': ('http://httplib2.readthedocs.io/en/latest/', None),
+    'requests': ('http://docs.python-requests.org/en/master/', None),
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None),
     'python': ('https://docs.python.org/3', None),
-    'oauth2client': ('http://oauth2client.readthedocs.io/en/latest', None),
 }
