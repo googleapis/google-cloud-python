@@ -132,17 +132,17 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=credentials)
         self.assertIsNone(client._http_internal)
 
-        patch = mock.patch('google_auth_httplib2.AuthorizedHttp',
-                           return_value=mock.sentinel.http)
-        with patch as mocked:
+        authorized_session_patch = mock.patch(
+            'google.auth.transport.requests.AuthorizedSession',
+            return_value=mock.sentinel.http)
+        with authorized_session_patch as AuthorizedSession:
             self.assertIs(client._http, mock.sentinel.http)
             # Check the mock.
-            mocked.assert_called_once_with(credentials)
-            self.assertEqual(mocked.call_count, 1)
+            AuthorizedSession.assert_called_once_with(credentials)
             # Make sure the cached value is used on subsequent access.
             self.assertIs(client._http_internal, mock.sentinel.http)
             self.assertIs(client._http, mock.sentinel.http)
-            self.assertEqual(mocked.call_count, 1)
+            self.assertEqual(AuthorizedSession.call_count, 1)
 
 
 class TestClientWithProject(unittest.TestCase):

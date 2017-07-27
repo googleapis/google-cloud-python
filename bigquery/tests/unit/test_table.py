@@ -1744,9 +1744,11 @@ class TestTableUpload(object):
     def _make_response(status_code, content='', headers={}):
         """Make a mock HTTP response."""
         import requests
-        response = mock.create_autospec(requests.Response, instance=True)
-        response.content = content.encode('utf-8')
-        response.headers = headers
+        response = requests.Response()
+        response.request = requests.Request(
+            'POST', 'http://example.com').prepare()
+        response._content = content.encode('utf-8')
+        response.headers.update(headers)
         response.status_code = status_code
         return response
 
@@ -1921,7 +1923,7 @@ class TestTableUpload(object):
             table.upload_from_file(
                 file_obj, source_format='CSV', rewind=True)
 
-        assert exc_info.value.message == response.content.decode('utf-8')
+        assert response.text in exc_info.value.message
         assert exc_info.value.errors == []
 
     def test_upload_from_file_bad_mode(self):

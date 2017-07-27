@@ -17,7 +17,6 @@
 import datetime
 import os
 
-import httplib2
 import six
 
 import google.auth.transport.requests
@@ -25,10 +24,9 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+from google.cloud import exceptions
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
-from google.cloud.exceptions import NotFound
-from google.cloud.exceptions import make_exception
 from google.cloud.iterator import HTTPIterator
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery._helpers import _item_to_row
@@ -474,7 +472,7 @@ class Table(object):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: httplib2.Response
+        :type api_response: dict
         :param api_response: response returned from an API call
         """
         self._properties.clear()
@@ -563,7 +561,7 @@ class Table(object):
         try:
             client._connection.api_request(method='GET', path=self.path,
                                            query_params={'fields': 'id'})
-        except NotFound:
+        except exceptions.NotFound:
             return False
         else:
             return True
@@ -1113,7 +1111,7 @@ class Table(object):
                 client, file_obj, metadata, size, num_retries)
             return client.job_from_resource(created_json)
         except resumable_media.InvalidResponse as exc:
-            _raise_from_invalid_response(exc)
+            raise exceptions.from_http_response(exc.response)
     # pylint: enable=too-many-arguments,too-many-locals
 
 
@@ -1298,22 +1296,3 @@ def _get_upload_metadata(source_format, schema, dataset, name):
             'load': load_config,
         },
     }
-
-
-def _raise_from_invalid_response(error, error_info=None):
-    """Re-wrap and raise an ``InvalidResponse`` exception.
-
-    :type error: :exc:`google.resumable_media.InvalidResponse`
-    :param error: A caught exception from the ``google-resumable-media``
-                  library.
-
-    :type error_info: str
-    :param error_info: (Optional) Extra information about the failed request.
-
-    :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding
-             to the failed status code
-    """
-    response = error.response
-    faux_response = httplib2.Response({'status': response.status_code})
-    raise make_exception(faux_response, response.content,
-                         error_info=error_info, use_json=False)
