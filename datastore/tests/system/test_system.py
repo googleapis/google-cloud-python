@@ -16,7 +16,7 @@ import datetime
 import os
 import unittest
 
-import httplib2
+import requests
 import six
 
 from google.cloud._helpers import UTC
@@ -57,7 +57,7 @@ def setUpModule():
         Config.CLIENT = datastore.Client(namespace=test_namespace)
     else:
         credentials = EmulatorCreds()
-        http = httplib2.Http()  # Un-authorized.
+        http = requests.Session()  # Un-authorized.
         Config.CLIENT = datastore.Client(project=emulator_dataset,
                                          namespace=test_namespace,
                                          credentials=credentials,
