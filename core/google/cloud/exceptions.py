@@ -51,11 +51,9 @@ class GoogleCloudError(Exception):
     See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
     """
 
-    def __init__(self, message, errors=None):
+    def __init__(self, message, errors=()):
         super(GoogleCloudError, self).__init__(message)
         self.message = message
-        if errors is None:
-            errors = []
         self._errors = errors
 
     def __str__(self):
@@ -187,7 +185,7 @@ class GatewayTimeout(ServerError):
     code = 504
 
 
-def from_http_status(status_code, message, errors=None):
+def from_http_status(status_code, message, errors=()):
     """Create a :class:`GoogleCloudError` from an HTTP status code.
 
     Args:
