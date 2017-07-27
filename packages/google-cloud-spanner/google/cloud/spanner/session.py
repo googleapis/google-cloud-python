@@ -78,6 +78,7 @@ class Session(object):
 
         :rtype: str
         :returns: The session name.
+        :raises ValueError: if session is not yet created
         """
         if self._session_id is None:
             raise ValueError('No session ID set by back-end')
@@ -106,6 +107,8 @@ class Session(object):
 
         :rtype: bool
         :returns: True if the session exists on the back-end, else False.
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         if self._session_id is None:
             return False
@@ -126,7 +129,10 @@ class Session(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession
 
-        :raises: :exc:`ValueError` if :attr:`session_id` is not already set.
+        :raises ValueError: if :attr:`session_id` is not already set.
+        :raises NotFound: if the session does not exist
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         if self._session_id is None:
             raise ValueError('Session ID not set by back-end')
@@ -151,7 +157,7 @@ class Session(object):
 
         :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`
         :returns: a snapshot bound to this session
-        :raises: :exc:`ValueError` if the session has not yet been created.
+        :raises ValueError: if the session has not yet been created.
         """
         if self._session_id is None:
             raise ValueError("Session has not been created.")
@@ -223,7 +229,7 @@ class Session(object):
 
         :rtype: :class:`~google.cloud.spanner.batch.Batch`
         :returns: a batch bound to this session
-        :raises: :exc:`ValueError` if the session has not yet been created.
+        :raises ValueError: if the session has not yet been created.
         """
         if self._session_id is None:
             raise ValueError("Session has not been created.")
@@ -235,7 +241,7 @@ class Session(object):
 
         :rtype: :class:`~google.cloud.spanner.transaction.Transaction`
         :returns: a transaction bound to this session
-        :raises: :exc:`ValueError` if the session has not yet been created.
+        :raises ValueError: if the session has not yet been created.
         """
         if self._session_id is None:
             raise ValueError("Session has not been created.")
@@ -264,6 +270,8 @@ class Session(object):
 
         :rtype: :class:`datetime.datetime`
         :returns: timestamp of committed transaction
+        :raises Exception:
+            reraises any non-ABORT execptions raised by ``func``.
         """
         deadline = time.time() + kw.pop(
             'timeout_secs', DEFAULT_RETRY_TIMEOUT_SECS)

@@ -38,6 +38,7 @@ class TimestampWithNanoseconds(datetime.datetime):
     """
     __slots__ = ('_nanosecond',)
 
+    # pylint: disable=arguments-differ
     def __new__(cls, *args, **kw):
         nanos = kw.pop('nanosecond', 0)
         if nanos > 0:
@@ -48,6 +49,7 @@ class TimestampWithNanoseconds(datetime.datetime):
         inst = datetime.datetime.__new__(cls, *args, **kw)
         inst._nanosecond = nanos or 0
         return inst
+    # pylint: disable=arguments-differ
 
     @property
     def nanosecond(self):
@@ -74,6 +76,7 @@ class TimestampWithNanoseconds(datetime.datetime):
 
         :rtype: :class:`TimestampWithNanoseconds`
         :returns: an instance matching the timestamp string
+        :raises ValueError: if ``stamp`` does not match the expected format
         """
         with_nanos = _RFC3339_NANOS.match(stamp)
         if with_nanos is None:
@@ -110,7 +113,7 @@ def _try_to_coerce_bytes(bytestring):
                          'base64-encoded bytes.')
 
 
-# pylint: disable=too-many-return-statements
+# pylint: disable=too-many-return-statements,too-many-branches
 def _make_value_pb(value):
     """Helper for :func:`_make_list_value_pbs`.
 
@@ -119,7 +122,7 @@ def _make_value_pb(value):
 
     :rtype: :class:`~google.protobuf.struct_pb2.Value`
     :returns: value protobufs
-    :raises: :exc:`ValueError` if value is not of a known scalar type.
+    :raises ValueError: if value is not of a known scalar type.
     """
     if value is None:
         return Value(null_value='NULL_VALUE')
@@ -150,7 +153,7 @@ def _make_value_pb(value):
     if isinstance(value, six.text_type):
         return Value(string_value=value)
     raise ValueError("Unknown type: %s" % (value,))
-# pylint: enable=too-many-return-statements
+# pylint: enable=too-many-return-statements,too-many-branches
 
 
 def _make_list_value_pb(values):
@@ -189,7 +192,7 @@ def _parse_value_pb(value_pb, field_type):
 
     :rtype: varies on field_type
     :returns: value extracted from value_pb
-    :raises: ValueError if uknown type is passed
+    :raises ValueError: if unknown type is passed
     """
     if value_pb.HasField('null_value'):
         return None

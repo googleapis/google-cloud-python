@@ -163,7 +163,7 @@ class StreamedResultSet(object):
     def __iter__(self):
         iter_rows, self._rows[:] = self._rows[:], ()
         while True:
-            if len(iter_rows) == 0:
+            if not iter_rows:
                 self.consume_next()  # raises StopIteration
                 iter_rows, self._rows[:] = self._rows[:], ()
             while iter_rows:

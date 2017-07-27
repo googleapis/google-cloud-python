@@ -39,6 +39,8 @@ class AbstractSessionPool(object):
 
         Concrete implementations of this method may pre-fill the pool
         using the database.
+
+        :raises NotImplementedError: abstract method
         """
         raise NotImplementedError()
 
@@ -48,6 +50,8 @@ class AbstractSessionPool(object):
         Concrete implementations of this method are allowed to raise an
         error to signal that the pool is exhausted, or to block until a
         session is available.
+
+        :raises NotImplementedError: abstract method
         """
         raise NotImplementedError()
 
@@ -60,6 +64,8 @@ class AbstractSessionPool(object):
         Concrete implementations of this method are allowed to raise an
         error to signal that the pool is full, or to block until it is
         not full.
+
+        :raises NotImplementedError: abstract method
         """
         raise NotImplementedError()
 
@@ -69,6 +75,8 @@ class AbstractSessionPool(object):
         Concrete implementations of this method are allowed to raise an
         error to signal that the pool is full, or to block until it is
         not full.
+
+        :raises NotImplementedError: abstract method
         """
         raise NotImplementedError()
 
