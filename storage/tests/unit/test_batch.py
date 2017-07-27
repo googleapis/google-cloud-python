@@ -142,8 +142,9 @@ class TestBatch(unittest.TestCase):
 
         # Check the respone
         self.assertEqual(response.status_code, 204)
-        self.assertIsInstance(response.content(), _FutureDict)
-        self.assertIs(target._properties, response.content())
+        self.assertIsInstance(response.json(), _FutureDict)
+        self.assertIsInstance(response.content, _FutureDict)
+        self.assertIs(target._properties, response.content)
 
         # The real http request should not have been called yet.
         http.request.assert_not_called()
@@ -170,8 +171,8 @@ class TestBatch(unittest.TestCase):
             'POST', url, data={'foo': 1}, target_object=target)
 
         self.assertEqual(response.status_code, 204)
-        self.assertIsInstance(response.content(), _FutureDict)
-        self.assertIs(target._properties, response.content())
+        self.assertIsInstance(response.content, _FutureDict)
+        self.assertIs(target._properties, response.content)
 
         # The real http request should not have been called yet.
         http.request.assert_not_called()
@@ -196,8 +197,8 @@ class TestBatch(unittest.TestCase):
             'PATCH', url, data={'foo': 1}, target_object=target)
 
         self.assertEqual(response.status_code, 204)
-        self.assertIsInstance(response.content(), _FutureDict)
-        self.assertIs(target._properties, response.content())
+        self.assertIsInstance(response.content, _FutureDict)
+        self.assertIs(target._properties, response.content)
 
         # The real http request should not have been called yet.
         http.request.assert_not_called()
@@ -221,8 +222,8 @@ class TestBatch(unittest.TestCase):
 
         # Check the respone
         self.assertEqual(response.status_code, 204)
-        self.assertIsInstance(response.content(), _FutureDict)
-        self.assertIs(target._properties, response.content())
+        self.assertIsInstance(response.content, _FutureDict)
+        self.assertIs(target._properties, response.content)
 
         # The real http request should not have been called yet.
         http.request.assert_not_called()

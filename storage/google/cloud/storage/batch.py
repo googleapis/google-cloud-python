@@ -26,6 +26,7 @@ import json
 import requests
 import six
 
+from google.cloud import _helpers
 from google.cloud import exceptions
 from google.cloud.storage._http import Connection
 
@@ -284,9 +285,8 @@ def _generate_faux_mime_message(parser, response):
     # We coerce to bytes to get consistent concat across
     # Py2 and Py3. Percent formatting is insufficient since
     # it includes the b in Py3.
-    content_type = response.headers.get('content-type', '')
-    if not isinstance(content_type, six.binary_type):
-        content_type = content_type.encode('utf-8')
+    content_type = _helpers._to_bytes(
+        response.headers.get('content-type', ''))
 
     faux_message = b''.join([
         b'Content-Type: ',
