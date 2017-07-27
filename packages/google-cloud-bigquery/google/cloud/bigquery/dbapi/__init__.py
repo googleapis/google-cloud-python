@@ -55,8 +55,8 @@ from google.cloud.bigquery.dbapi.types import STRING
 
 apilevel = '2.0'
 
-# Threads may share the module, but not connections.
-threadsafety = 1
+# Threads may share the module and connections, but not cursors.
+threadsafety = 2
 
 paramstyle = 'pyformat'
 
