@@ -1,7 +1,7 @@
 Getting started
 ===============
 
-gapic-google-cloud-trace-v1 will allow you to connect to the `Stackdriver Trace API`_ and access all its methods. In order to achieve this, you need to set up authentication as well as install the library locally.
+google-cloud-trace will allow you to connect to the `Stackdriver Trace API`_ and access all its methods. In order to achieve this, you need to set up authentication as well as install the library locally.
 
 .. _`Stackdriver Trace API`: https://developers.google.com/apis-explorer/?hl=en_US#p/cloudtrace/v1/
 
@@ -29,7 +29,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install gapic-google-cloud-trace-v1
+    <your-env>/bin/pip install google-cloud-trace
 
 Windows
 ~~~~~~~
@@ -39,7 +39,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install gapic-google-cloud-trace-v1
+    <your-env>\Scripts\pip.exe install google-cloud-trace
 
 
 Using the API
@@ -74,5 +74,20 @@ At this point you are all set to continue.
 Examples
 ~~~~~~~~
 
-To see example usage, please read through the :doc:`API reference </apis>`.  The
-documentation for each API method includes simple examples.
+.. code-block:: python
+
+  from google.cloud.trace import client
+
+  client = client.Client(project_id='your_project_id')
+
+  # Patch traces, traces should be a dict
+  client.patch_traces(traces=traces)
+
+  # Get trace
+  client.get_trace(trace_id='your_trace_id')
+
+  # List traces
+  traces = client.list_traces()
+
+  for trace in traces:
+      print(trace)
