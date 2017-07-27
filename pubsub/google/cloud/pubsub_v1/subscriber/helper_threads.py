@@ -43,6 +43,9 @@ class HelperThreadRegistry(object):
     def __init__(self):
         self._helper_threads = {}
 
+    def __contains__(self, needle):
+        return needle in self._helper_threads
+
     def start(self, name, queue, target, *args, **kwargs):
         """Create and start a helper thread.
 

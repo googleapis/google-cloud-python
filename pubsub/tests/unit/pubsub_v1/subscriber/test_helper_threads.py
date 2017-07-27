@@ -106,6 +106,4 @@ def test_queue_callback_thread():
 
         # Assert that we got the expected calls.
         assert get.call_count == 2
-        assert get.mock_calls[0][1][0] == mock.sentinel.A
-        assert get.mock_calls[1][1][0] == helper_threads.STOP
         callback.assert_called_once_with(mock.sentinel.A)

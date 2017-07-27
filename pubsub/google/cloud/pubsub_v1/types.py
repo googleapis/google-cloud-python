@@ -21,6 +21,7 @@ import psutil
 
 from google.cloud.proto.pubsub.v1 import pubsub_pb2
 from google.gax.utils.messages import get_messages
+from google.protobuf import timestamp_pb2
 
 
 # Define the default values for batching.
@@ -51,7 +52,12 @@ FlowControl.__new__.__defaults__ = (
 )
 
 
-names = ['BatchSettings', 'FlowControl']
+# Pub/Sub uses timestamps from the common protobuf package.
+# Do not make users import from there.
+Timestamp = timestamp_pb2.Timestamp
+
+
+names = ['BatchSettings', 'FlowControl', 'Timestamp']
 for name, message in get_messages(pubsub_pb2).items():
     setattr(sys.modules[__name__], name, message)
     names.append(name)
