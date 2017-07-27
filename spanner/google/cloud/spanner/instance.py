@@ -109,11 +109,10 @@ class Instance(object):
 
         :rtype: :class:`Instance`
         :returns: The instance parsed from the protobuf response.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the instance
-                 name does not match
-                 ``projects/{project}/instances/{instance_id}``
-                 or if the parsed project ID does not match the project ID
-                 on the client.
+        :raises ValueError:
+            if the instance name does not match
+            ``projects/{project}/instances/{instance_id}`` or if the parsed
+            project ID does not match the project ID on the client.
         """
         match = _INSTANCE_NAME_RE.match(instance_pb.name)
         if match is None:
@@ -201,6 +200,9 @@ class Instance(object):
 
         :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
+        :raises Conflict: if the instance already exists
+        :raises GaxError:
+            for errors other than ``ALREADY_EXISTS`` returned from the call
         """
         api = self._client.instance_admin_api
         instance_pb = admin_v1_pb2.Instance(
@@ -230,6 +232,11 @@ class Instance(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig
+
+        :rtype: bool
+        :returns: True if the instance exists, else false
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._client.instance_admin_api
         options = _options_with_prefix(self.name)
@@ -248,6 +255,9 @@ class Instance(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig
+
+        :raises NotFound: if the instance does not exist
+        :raises GaxError: for other errors returned from the call
         """
         api = self._client.instance_admin_api
         options = _options_with_prefix(self.name)
@@ -281,6 +291,8 @@ class Instance(object):
 
         :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
+        :raises NotFound: if the instance does not exist
+        :raises GaxError: for other errors returned from the call
         """
         api = self._client.instance_admin_api
         instance_pb = admin_v1_pb2.Instance(
