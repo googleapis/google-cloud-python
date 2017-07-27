@@ -14,7 +14,6 @@
 
 """Define API Jobs."""
 
-import collections
 import threading
 
 import six
@@ -58,8 +57,6 @@ _ERROR_REASON_TO_EXCEPTION = {
     'tableUnavailable': http_client.BAD_REQUEST,
 }
 
-_FakeResponse = collections.namedtuple('_FakeResponse', ['status'])
-
 
 def _error_result_to_exception(error_result):
     """Maps BigQuery error reasons to an exception.
@@ -80,12 +77,8 @@ def _error_result_to_exception(error_result):
     status_code = _ERROR_REASON_TO_EXCEPTION.get(
         reason, http_client.INTERNAL_SERVER_ERROR)
     # make_exception expects an httplib2 response object.
-    fake_response = _FakeResponse(status=status_code)
-    return exceptions.make_exception(
-        fake_response,
-        error_result.get('message', ''),
-        error_info=error_result,
-        use_json=False)
+    return exceptions.from_http_status(
+        status_code, error_result.get('message', ''), errors=[error_result])
 
 
 class Compression(_EnumProperty):
@@ -307,7 +300,7 @@ class _AsyncJob(google.cloud.future.polling.PollingFuture):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: httplib2.Response
+        :type api_response: dict
         :param api_response: response returned from an API call
         """
         cleaned = api_response.copy()

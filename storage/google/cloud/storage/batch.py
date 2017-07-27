@@ -119,14 +119,16 @@ class _FutureDict(object):
 
 
 class _FutureResponse(requests.Response):
+    """Reponse that returns a placeholder dictionary for a batched requests."""
     def __init__(self, future_dict):
         super(_FutureResponse, self).__init__()
         self._future_dict = future_dict
         self.status_code = 204
 
     def json(self):
-        raise ValueError()
+        return self._future_dict
 
+    @property
     def content(self):
         return self._future_dict
 
@@ -303,7 +305,7 @@ def _unpack_batch_response(response):
     """Convert requests.Response -> [(headers, payload)].
 
     Creates a generator of tuples of emulating the responses to
-    :meth:`httplib2.Http.request` (a pair of headers and payload).
+    :meth:`requests.Session.request`.
 
     :type response: :class:`requests.Response`
     :param response: HTTP response / headers from a request.
