@@ -18,10 +18,9 @@ import json
 import platform
 
 from pkg_resources import get_distribution
-import six
 from six.moves.urllib.parse import urlencode
 
-from google.cloud.exceptions import make_exception
+from google.cloud import exceptions
 
 
 API_BASE_URL = 'https://www.googleapis.com'
@@ -67,8 +66,9 @@ class Connection(object):
     def http(self):
         """A getter for the HTTP transport used in talking to the API.
 
-        :rtype: :class:`httplib2.Http`
-        :returns: A Http object used to transport data.
+        Returns:
+            google.auth.transport.requests.AuthorizedSession:
+                A :class:`requests.Session` instance.
         """
         return self._client._http
 
@@ -168,22 +168,12 @@ class JSONConnection(Connection):
             custom behavior, for example, to defer an HTTP request and complete
             initialization of the object at a later time.
 
-        :rtype: tuple of ``response`` (a dictionary of sorts)
-                and ``content`` (a string).
-        :returns: The HTTP response object and the content of the response,
-                  returned by :meth:`_do_request`.
+        :rtype: :class:`requests.Response`
+        :returns: The HTTP response.
         """
         headers = headers or {}
         headers.update(self._EXTRA_HEADERS)
         headers['Accept-Encoding'] = 'gzip'
-
-        if data:
-            content_length = len(str(data))
-        else:
-            content_length = 0
-
-        # NOTE: str is intended, bytes are sufficient for headers.
-        headers['Content-Length'] = str(content_length)
 
         if content_type:
             headers['Content-Type'] = content_type
@@ -215,12 +205,11 @@ class JSONConnection(Connection):
             (Optional) Unused ``target_object`` here but may be used by a
             superclass.
 
-        :rtype: tuple of ``response`` (a dictionary of sorts)
-                and ``content`` (a string).
-        :returns: The HTTP response object and the content of the response.
+        :rtype: :class:`requests.Response`
+        :returns: The HTTP response.
         """
-        return self.http.request(uri=url, method=method, headers=headers,
-                                 body=data)
+        return self.http.request(
+            url=url, method=method, headers=headers, data=data)
 
     def api_request(self, method, path, query_params=None,
                     data=None, content_type=None, headers=None,
@@ -281,7 +270,7 @@ class JSONConnection(Connection):
 
         :raises ~google.cloud.exceptions.GoogleCloudError: if the response code
             is not 200 OK.
-        :raises TypeError: if the response content type is not JSON.
+        :raises ValueError: if the response content type is not JSON.
         :rtype: dict or str
         :returns: The API response payload, either as a raw string or
                   a dictionary if the response is valid JSON.
@@ -296,21 +285,14 @@ class JSONConnection(Connection):
             data = json.dumps(data)
             content_type = 'application/json'
 
-        response, content = self._make_request(
+        response = self._make_request(
             method=method, url=url, data=data, content_type=content_type,
             headers=headers, target_object=_target_object)
 
-        if not 200 <= response.status < 300:
-            raise make_exception(response, content,
-                                 error_info=method + ' ' + url)
+        if not 200 <= response.status_code < 300:
+            raise exceptions.from_http_response(response)
 
-        string_or_bytes = (six.binary_type, six.text_type)
-        if content and expect_json and isinstance(content, string_or_bytes):
-            content_type = response.get('content-type', '')
-            if not content_type.startswith('application/json'):
-                raise TypeError('Expected JSON, got %s' % content_type)
-            if isinstance(content, six.binary_type):
-                content = content.decode('utf-8')
-            return json.loads(content)
-
-        return content
+        if expect_json and response.content:
+            return response.json()
+        else:
+            return response.content

@@ -19,7 +19,7 @@ import unittest
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from grpc import StatusCode
-import httplib2
+import requests
 
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from google.cloud.exceptions import Conflict
@@ -53,9 +53,9 @@ def setUpModule():
     Config.IN_EMULATOR = os.getenv(PUBSUB_EMULATOR) is not None
     if Config.IN_EMULATOR:
         credentials = EmulatorCreds()
-        http = httplib2.Http()  # Un-authorized.
-        Config.CLIENT = client.Client(credentials=credentials,
-                                      _http=http)
+        http = requests.Session()  # Un-authorized.
+        Config.CLIENT = client.Client(
+            credentials=credentials, _http=http)
     else:
         Config.CLIENT = client.Client()
 

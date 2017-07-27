@@ -25,12 +25,11 @@ import os
 import re
 from threading import local as Local
 
-import google_auth_httplib2
-import httplib2
 import six
 from six.moves import http_client
 
 import google.auth
+import google.auth.transport.requests
 from google.protobuf import duration_pb2
 from google.protobuf import timestamp_pb2
 
@@ -550,7 +549,7 @@ def make_secure_channel(credentials, user_agent, host, extra_options=()):
     :returns: gRPC secure channel with credentials attached.
     """
     target = '%s:%d' % (host, http_client.HTTPS_PORT)
-    http_request = google_auth_httplib2.Request(http=httplib2.Http())
+    http_request = google.auth.transport.requests.Request()
 
     user_agent_option = ('grpc.primary_user_agent', user_agent)
     options = (user_agent_option,) + extra_options

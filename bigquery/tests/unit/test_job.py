@@ -31,7 +31,7 @@ class Test__error_result_to_exception(unittest.TestCase):
         exception = self._call_fut(error_result)
         self.assertEqual(exception.code, http_client.BAD_REQUEST)
         self.assertTrue(exception.message.startswith('bad request'))
-        self.assertIn("'reason': 'invalid'", exception.message)
+        self.assertIn(error_result, exception.errors)
 
     def test_missing_reason(self):
         error_result = {}

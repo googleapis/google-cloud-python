@@ -39,7 +39,7 @@ _CLIENT_INFO = connection_module.CLIENT_INFO_TEMPLATE.format(__version__)
 def _request(http, project, method, data, base_url):
     """Make a request over the Http transport to the Cloud Datastore API.
 
-    :type http: :class:`~httplib2.Http`
+    :type http: :class:`requests.Session`
     :param http: HTTP object to make requests.
 
     :type project: str
@@ -63,27 +63,26 @@ def _request(http, project, method, data, base_url):
     """
     headers = {
         'Content-Type': 'application/x-protobuf',
-        'Content-Length': str(len(data)),
         'User-Agent': connection_module.DEFAULT_USER_AGENT,
         connection_module.CLIENT_INFO_HEADER: _CLIENT_INFO,
     }
     api_url = build_api_url(project, method, base_url)
-    headers, content = http.request(
-        uri=api_url, method='POST', headers=headers, body=data)
 
-    status = headers['status']
-    if status != '200':
-        error_status = status_pb2.Status.FromString(content)
-        raise exceptions.make_exception(
-            headers, error_status.message, use_json=False)
+    response = http.request(
+        url=api_url, method='POST', headers=headers, data=data)
 
-    return content
+    if response.status_code != 200:
+        error_status = status_pb2.Status.FromString(response.content)
+        raise exceptions.from_http_status(
+            response.status_code, error_status.message, errors=[error_status])
+
+    return response.content
 
 
 def _rpc(http, project, method, base_url, request_pb, response_pb_cls):
     """Make a protobuf RPC request.
 
-    :type http: :class:`~httplib2.Http`
+    :type http: :class:`requests.Session`
     :param http: HTTP object to make requests.
 
     :type project: str

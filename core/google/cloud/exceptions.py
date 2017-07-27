@@ -21,7 +21,6 @@ See https://cloud.google.com/storage/docs/json_api/v1/status-codes
 from __future__ import absolute_import
 
 import copy
-import json
 
 import six
 
@@ -186,56 +185,55 @@ class GatewayTimeout(ServerError):
     code = 504
 
 
-def make_exception(response, content, error_info=None, use_json=True):
-    """Factory:  create exception based on HTTP response code.
+def from_http_status(status_code, message, errors=()):
+    """Create a :class:`GoogleCloudError` from an HTTP status code.
 
-    :type response: :class:`httplib2.Response` or other HTTP response object
-    :param response: A response object that defines a status code as the
-                     status attribute.
+    Args:
+        status_code (int): The HTTP status code.
+        message (str): The exception message.
+        errors (Sequence[Any]): A list of additional error information.
 
-    :type content: str or dictionary
-    :param content: The body of the HTTP error response.
-
-    :type error_info: str
-    :param error_info: Optional string giving extra information about the
-                       failed request.
-
-    :type use_json: bool
-    :param use_json: Flag indicating if ``content`` is expected to be JSON.
-
-    :rtype: instance of :class:`GoogleCloudError`, or a concrete subclass.
-    :returns: Exception specific to the error response.
+    Returns:
+        GoogleCloudError: An instance of the appropriate subclass of
+            :class:`GoogleCloudError`.
     """
-    if isinstance(content, six.binary_type):
-        content = content.decode('utf-8')
+    error_class = _HTTP_CODE_TO_EXCEPTION.get(status_code, GoogleCloudError)
+    error = error_class(message, errors)
 
-    if isinstance(content, six.string_types):
-        payload = None
-        if use_json:
-            try:
-                payload = json.loads(content)
-            except ValueError:
-                # Expected JSON but received something else.
-                pass
-        if payload is None:
-            payload = {'error': {'message': content}}
-    else:
-        payload = content
+    if error.code is None:
+        error.code = status_code
 
-    message = payload.get('error', {}).get('message', '')
+    return error
+
+
+def from_http_response(response):
+    """Create a :class:`GoogleCloudError` from a :class:`requests.Response`.
+
+    Args:
+        response (requests.Response): The HTTP response.
+
+    Returns:
+        GoogleCloudError: An instance of the appropriate subclass of
+            :class:`GoogleCloudError`, with the message and errors populated
+            from the response.
+    """
+    try:
+        payload = response.json()
+    except ValueError:
+        payload = {'error': {'message': response.text or 'unknown error'}}
+
+    error_message = payload.get('error', {}).get('message', 'unknown error')
     errors = payload.get('error', {}).get('errors', ())
 
-    if error_info is not None:
-        message += ' (%s)' % (error_info,)
+    message = '{method} {url}: {error}'.format(
+        method=response.request.method,
+        url=response.request.url,
+        error=error_message)
 
-    try:
-        klass = _HTTP_CODE_TO_EXCEPTION[response.status]
-    except KeyError:
-        error = GoogleCloudError(message, errors)
-        error.code = response.status
-    else:
-        error = klass(message, errors)
-    return error
+    exception = from_http_status(
+        response.status_code, message, errors=errors)
+    exception.response = response
+    return exception
 
 
 def _walk_subclasses(klass):

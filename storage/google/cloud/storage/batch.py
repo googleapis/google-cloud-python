@@ -23,10 +23,11 @@ from email.parser import Parser
 import io
 import json
 
-import httplib2
+import requests
 import six
 
-from google.cloud.exceptions import make_exception
+from google.cloud import _helpers
+from google.cloud import exceptions
 from google.cloud.storage._http import Connection
 
 
@@ -68,11 +69,6 @@ class MIMEApplicationHTTP(MIMEApplication):
         else:  # pragma: NO COVER  Python3
             super_init = super(MIMEApplicationHTTP, self).__init__
             super_init(payload, 'http', encode_noop)
-
-
-class NoContent(object):
-    """Emulate an HTTP '204 No Content' response."""
-    status = 204
 
 
 class _FutureDict(object):
@@ -123,6 +119,21 @@ class _FutureDict(object):
         raise KeyError('Cannot set %r -> %r on a future' % (key, value))
 
 
+class _FutureResponse(requests.Response):
+    """Reponse that returns a placeholder dictionary for a batched requests."""
+    def __init__(self, future_dict):
+        super(_FutureResponse, self).__init__()
+        self._future_dict = future_dict
+        self.status_code = 204
+
+    def json(self):
+        return self._future_dict
+
+    @property
+    def content(self):
+        return self._future_dict
+
+
 class Batch(Connection):
     """Proxy an underlying connection, batching up change operations.
 
@@ -171,7 +182,7 @@ class Batch(Connection):
         self._target_objects.append(target_object)
         if target_object is not None:
             target_object._properties = result
-        return NoContent(), result
+        return _FutureResponse(result)
 
     def _prepare_batch_request(self):
         """Prepares headers and body for a batch request.
@@ -218,17 +229,18 @@ class Batch(Connection):
         if len(self._target_objects) != len(responses):
             raise ValueError('Expected a response for every request.')
 
-        for target_object, sub_response in zip(self._target_objects,
-                                               responses):
-            resp_headers, sub_payload = sub_response
-            if not 200 <= resp_headers.status < 300:
-                exception_args = exception_args or (resp_headers,
-                                                    sub_payload)
+        for target_object, subresponse in zip(
+                self._target_objects, responses):
+            if not 200 <= subresponse.status_code < 300:
+                exception_args = exception_args or subresponse
             elif target_object is not None:
-                target_object._properties = sub_payload
+                try:
+                    target_object._properties = subresponse.json()
+                except ValueError:
+                    target_object._properties = subresponse.content
 
         if exception_args is not None:
-            raise make_exception(*exception_args)
+            raise exceptions.from_http_response(exception_args)
 
     def finish(self):
         """Submit a single `multipart/mixed` request with deferred requests.
@@ -243,9 +255,9 @@ class Batch(Connection):
         # Use the private ``_base_connection`` rather than the property
         # ``_connection``, since the property may be this
         # current batch.
-        response, content = self._client._base_connection._make_request(
+        response = self._client._base_connection._make_request(
             'POST', url, data=body, headers=headers)
-        responses = list(_unpack_batch_response(response, content))
+        responses = list(_unpack_batch_response(response))
         self._finish_futures(responses)
         return responses
 
@@ -265,7 +277,7 @@ class Batch(Connection):
             self._client._pop_batch()
 
 
-def _generate_faux_mime_message(parser, response, content):
+def _generate_faux_mime_message(parser, response):
     """Convert response, content -> (multipart) email.message.
 
     Helper for _unpack_batch_response.
@@ -273,16 +285,14 @@ def _generate_faux_mime_message(parser, response, content):
     # We coerce to bytes to get consistent concat across
     # Py2 and Py3. Percent formatting is insufficient since
     # it includes the b in Py3.
-    if not isinstance(content, six.binary_type):
-        content = content.encode('utf-8')
-    content_type = response['content-type']
-    if not isinstance(content_type, six.binary_type):
-        content_type = content_type.encode('utf-8')
+    content_type = _helpers._to_bytes(
+        response.headers.get('content-type', ''))
+
     faux_message = b''.join([
         b'Content-Type: ',
         content_type,
         b'\nMIME-Version: 1.0\n\n',
-        content,
+        response.content,
     ])
 
     if six.PY2:
@@ -291,20 +301,17 @@ def _generate_faux_mime_message(parser, response, content):
         return parser.parsestr(faux_message.decode('utf-8'))
 
 
-def _unpack_batch_response(response, content):
-    """Convert response, content -> [(headers, payload)].
+def _unpack_batch_response(response):
+    """Convert requests.Response -> [(headers, payload)].
 
     Creates a generator of tuples of emulating the responses to
-    :meth:`httplib2.Http.request` (a pair of headers and payload).
+    :meth:`requests.Session.request`.
 
-    :type response: :class:`httplib2.Response`
+    :type response: :class:`requests.Response`
     :param response: HTTP response / headers from a request.
-
-    :type content: str
-    :param content: Response payload with a batch response.
     """
     parser = Parser()
-    message = _generate_faux_mime_message(parser, response, content)
+    message = _generate_faux_mime_message(parser, response)
 
     if not isinstance(message._payload, list):
         raise ValueError('Bad response:  not multi-part')
@@ -314,10 +321,15 @@ def _unpack_batch_response(response, content):
         _, status, _ = status_line.split(' ', 2)
         sub_message = parser.parsestr(rest)
         payload = sub_message._payload
-        ctype = sub_message['Content-Type']
         msg_headers = dict(sub_message._headers)
-        msg_headers['status'] = status
-        headers = httplib2.Response(msg_headers)
-        if ctype and ctype.startswith('application/json'):
-            payload = json.loads(payload)
-        yield headers, payload
+        content_id = msg_headers.get('Content-ID')
+
+        subresponse = requests.Response()
+        subresponse.request = requests.Request(
+            method='BATCH',
+            url='contentid://{}'.format(content_id)).prepare()
+        subresponse.status_code = int(status)
+        subresponse.headers.update(msg_headers)
+        subresponse._content = payload.encode('utf-8')
+
+        yield subresponse
