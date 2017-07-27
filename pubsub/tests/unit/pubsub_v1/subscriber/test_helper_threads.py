@@ -27,3 +27,85 @@ def test_start():
     with mock.patch.object(threading.Thread, 'start', autospec=True) as start:
         registry.start('foo', queue_, target)
         assert start.called
+
+
+def test_stop_noop():
+    registry = helper_threads.HelperThreadRegistry()
+    assert len(registry._helper_threads) == 0
+    registry.stop('foo')
+    assert len(registry._helper_threads) == 0
+
+
+def test_stop_dead_thread():
+    registry = helper_threads.HelperThreadRegistry()
+    registry._helper_threads['foo'] = helper_threads._HelperThread(
+        name='foo',
+        queue=None,
+        thread=threading.Thread(target=lambda: None),
+    )
+    assert len(registry._helper_threads) == 1
+    registry.stop('foo')
+    assert len(registry._helper_threads) == 0
+
+
+@mock.patch.object(queue.Queue, 'put')
+@mock.patch.object(threading.Thread, 'is_alive')
+@mock.patch.object(threading.Thread, 'join')
+def test_stop_alive_thread(join, is_alive, put):
+    is_alive.return_value = True
+
+    # Set up a registry with a helper thread in it.
+    registry = helper_threads.HelperThreadRegistry()
+    registry._helper_threads['foo'] = helper_threads._HelperThread(
+        name='foo',
+        queue=queue.Queue(),
+        thread=threading.Thread(target=lambda: None),
+    )
+
+    # Assert that the helper thread is present, and removed correctly
+    # on stop.
+    assert len(registry._helper_threads) == 1
+    registry.stop('foo')
+    assert len(registry._helper_threads) == 0
+
+    # Assert that all of our mocks were called in the expected manner.
+    is_alive.assert_called_once_with()
+    join.assert_called_once_with()
+    put.assert_called_once_with(helper_threads.STOP)
+
+
+def test_stop_all():
+    registry = helper_threads.HelperThreadRegistry()
+    registry._helper_threads['foo'] = helper_threads._HelperThread(
+        name='foo',
+        queue=None,
+        thread=threading.Thread(target=lambda: None),
+    )
+    assert len(registry._helper_threads) == 1
+    registry.stop_all()
+    assert len(registry._helper_threads) == 0
+
+
+def test_stop_all_noop():
+    registry = helper_threads.HelperThreadRegistry()
+    assert len(registry._helper_threads) == 0
+    registry.stop_all()
+    assert len(registry._helper_threads) == 0
+
+
+def test_queue_callback_thread():
+    queue_ = queue.Queue()
+    callback = mock.Mock(spec=())
+    qct = helper_threads.QueueCallbackThread(queue_, callback)
+
+    # Set up an appropriate mock for the queue, and call the queue callback
+    # thread.
+    with mock.patch.object(queue.Queue, 'get') as get:
+        get.side_effect = (mock.sentinel.A, helper_threads.STOP)
+        qct()
+
+        # Assert that we got the expected calls.
+        assert get.call_count == 2
+        assert get.mock_calls[0][1][0] == mock.sentinel.A
+        assert get.mock_calls[1][1][0] == helper_threads.STOP
+        callback.assert_called_once_with(mock.sentinel.A)

@@ -80,7 +80,7 @@ class HelperThreadRegistry(object):
         """
         # Attempt to retrieve the thread; if it is gone already, no-op.
         helper_thread = self._helper_threads.get(name)
-        if helper_thread.thread is None:
+        if helper_thread is None:
             return
 
         # Join the thread if it is still alive.
