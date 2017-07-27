@@ -18,11 +18,11 @@ import io
 import json
 from pickle import PicklingError
 
-import google_auth_httplib2
 import six
 
 import google.auth
 import google.auth.credentials
+import google.auth.transport.requests
 from google.cloud._helpers import _determine_default_project
 from google.oauth2 import service_account
 
@@ -87,25 +87,12 @@ class Client(_ClientFactoryMixin):
     Stores ``credentials`` and an HTTP object so that subclasses
     can pass them along to a connection class.
 
-    If no value is passed in for ``_http``, a :class:`httplib2.Http` object
+    If no value is passed in for ``_http``, a :class:`requests.Session` object
     will be created and authorized with the ``credentials``. If not, the
     ``credentials`` and ``_http`` need not be related.
 
     Callers and subclasses may seek to use the private key from
     ``credentials`` to sign data.
-
-    A custom (non-``httplib2``) HTTP object must have a ``request`` method
-    which accepts the following arguments:
-
-    * ``uri``
-    * ``method``
-    * ``body``
-    * ``headers``
-
-    In addition, ``redirections`` and ``connection_type`` may be used.
-
-    A custom ``_http`` object will also need to be able to add a bearer token
-    to API requests and handle token refresh on 401 errors.
 
     :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
@@ -113,10 +100,10 @@ class Client(_ClientFactoryMixin):
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type _http: :class:`~httplib2.Http`
+    :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
                   that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                  :meth:`requests.Session.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
@@ -151,12 +138,13 @@ class Client(_ClientFactoryMixin):
     def _http(self):
         """Getter for object used for HTTP transport.
 
-        :rtype: :class:`~httplib2.Http`
+        :rtype: :class:`~requests.Session`
         :returns: An HTTP object.
         """
         if self._http_internal is None:
-            self._http_internal = google_auth_httplib2.AuthorizedHttp(
-                self._credentials)
+            self._http_internal = (
+                google.auth.transport.requests.AuthorizedSession(
+                    self._credentials))
         return self._http_internal
 
 
@@ -204,10 +192,10 @@ class ClientWithProject(Client, _ClientProjectMixin):
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type _http: :class:`~httplib2.Http`
+    :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
                   that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                  :meth:`~requests.Session.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could

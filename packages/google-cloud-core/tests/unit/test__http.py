@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import unittest
 
 import mock
+import requests
+from six.moves import http_client
 
 
 class TestConnection(unittest.TestCase):
@@ -52,7 +55,24 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn.USER_AGENT, expected_ua)
 
 
+def make_response(status=http_client.OK, content=b'', headers={}):
+    response = requests.Response()
+    response.status_code = status
+    response._content = content
+    response.headers = headers
+    response.request = requests.Request()
+    return response
+
+
+def make_requests_session(responses):
+    session = mock.create_autospec(requests.Session, instance=True)
+    session.request.side_effect = responses
+    return session
+
+
 class TestJSONConnection(unittest.TestCase):
+    JSON_HEADERS = {'content-type': 'application/json'}
+    EMPTY_JSON_RESPONSE = make_response(content=b'{}', headers=JSON_HEADERS)
 
     @staticmethod
     def _get_target_class():
@@ -119,129 +139,123 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(parms['qux'], ['quux', 'corge'])
 
     def test__make_request_no_data_no_content_type_no_headers(self):
-        http = _Http(
-            {'status': '200', 'content-type': 'text/plain'},
-            b'',
-        )
+        http = make_requests_session([make_response()])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        URI = 'http://example.com/test'
-        headers, content = conn._make_request('GET', URI)
-        self.assertEqual(headers['status'], '200')
-        self.assertEqual(headers['content-type'], 'text/plain')
-        self.assertEqual(content, b'')
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertIsNone(http._called_with['body'])
+        url = 'http://example.com/test'
+
+        response = conn._make_request('GET', url)
+
+        self.assertEqual(response.status_code, http_client.OK)
+        self.assertEqual(response.content, b'')
+
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': '0',
             'User-Agent': conn.USER_AGENT,
         }
-        self.assertEqual(http._called_with['headers'], expected_headers)
+        http.request.assert_called_once_with(
+            method='GET', url=url, headers=expected_headers, data=None)
 
     def test__make_request_w_data_no_extra_headers(self):
-        http = _Http(
-            {'status': '200', 'content-type': 'text/plain'},
-            b'',
-        )
+        http = make_requests_session([make_response()])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        URI = 'http://example.com/test'
-        conn._make_request('GET', URI, {}, 'application/json')
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['body'], {})
+        url = 'http://example.com/test'
+        data = b'data'
+
+        conn._make_request('GET', url, data, 'application/json')
+
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': '0',
             'Content-Type': 'application/json',
             'User-Agent': conn.USER_AGENT,
         }
-        self.assertEqual(http._called_with['headers'], expected_headers)
+        http.request.assert_called_once_with(
+            method='GET', url=url, headers=expected_headers, data=data)
 
     def test__make_request_w_extra_headers(self):
-        http = _Http(
-            {'status': '200', 'content-type': 'text/plain'},
-            b'',
-        )
+        http = make_requests_session([make_response()])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_one(client)
-        URI = 'http://example.com/test'
-        conn._make_request('GET', URI, headers={'X-Foo': 'foo'})
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertIsNone(http._called_with['body'])
+
+        url = 'http://example.com/test'
+        conn._make_request('GET', url, headers={'X-Foo': 'foo'})
+
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': '0',
             'X-Foo': 'foo',
             'User-Agent': conn.USER_AGENT,
         }
-        self.assertEqual(http._called_with['headers'], expected_headers)
+        http.request.assert_called_once_with(
+            method='GET', url=url, headers=expected_headers, data=None)
 
     def test_api_request_defaults(self):
-        http = _Http(
-            {'status': '200', 'content-type': 'application/json'},
-            b'{}',
-        )
+        http = make_requests_session([
+            make_response(content=b'{}', headers=self.JSON_HEADERS)])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
-        PATH = '/path/required'
-        # Intended to emulate self.mock_template
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'mock',
-            '%s%s' % (conn.API_VERSION, PATH),
-        ])
-        self.assertEqual(conn.api_request('GET', PATH), {})
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertIsNone(http._called_with['body'])
+        path = '/path/required'
+
+        self.assertEqual(conn.api_request('GET', path), {})
+
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': '0',
             'User-Agent': conn.USER_AGENT,
         }
-        self.assertEqual(http._called_with['headers'], expected_headers)
+        expected_url = '{base}/mock/{version}{path}'.format(
+            base=conn.API_BASE_URL,
+            version=conn.API_VERSION,
+            path=path)
+        http.request.assert_called_once_with(
+            method='GET',
+            url=expected_url,
+            headers=expected_headers,
+            data=None)
 
     def test_api_request_w_non_json_response(self):
-        http = _Http(
-            {'status': '200', 'content-type': 'text/plain'},
-            b'CONTENT',
-        )
+        http = make_requests_session([
+            make_response(content=b'content')])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
 
-        self.assertRaises(TypeError, conn.api_request, 'GET', '/')
+        with self.assertRaises(ValueError):
+            conn.api_request('GET', '/')
 
     def test_api_request_wo_json_expected(self):
-        http = _Http(
-            {'status': '200', 'content-type': 'text/plain'},
-            b'CONTENT',
-        )
+        http = make_requests_session([
+            make_response(content=b'content')])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
-        self.assertEqual(conn.api_request('GET', '/', expect_json=False),
-                         b'CONTENT')
+
+        result = conn.api_request('GET', '/', expect_json=False)
+
+        self.assertEqual(result, b'content')
 
     def test_api_request_w_query_params(self):
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlsplit
 
-        http = _Http(
-            {'status': '200', 'content-type': 'application/json'},
-            b'{}',
-        )
+        http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
-        self.assertEqual(conn.api_request('GET', '/', {
+
+        result = conn.api_request('GET', '/', {
             'foo': 'bar',
             'baz': ['qux', 'quux']
-        }), {})
-        self.assertEqual(http._called_with['method'], 'GET')
-        uri = http._called_with['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
+        })
+
+        self.assertEqual(result, {})
+
+        expected_headers = {
+            'Accept-Encoding': 'gzip',
+            'User-Agent': conn.USER_AGENT,
+        }
+        http.request.assert_called_once_with(
+            method='GET', url=mock.ANY, headers=expected_headers,
+            data=None)
+
+        url = http.request.call_args[1]['url']
+        scheme, netloc, path, qs, _ = urlsplit(url)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
         # Intended to emulate self.mock_template
         PATH = '/'.join([
@@ -254,175 +268,84 @@ class TestJSONConnection(unittest.TestCase):
         parms = dict(parse_qs(qs))
         self.assertEqual(parms['foo'], ['bar'])
         self.assertEqual(parms['baz'], ['qux', 'quux'])
-        self.assertIsNone(http._called_with['body'])
-        expected_headers = {
-            'Accept-Encoding': 'gzip',
-            'Content-Length': '0',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_w_headers(self):
-        from six.moves.urllib.parse import urlsplit
-
-        http = _Http(
-            {'status': '200', 'content-type': 'application/json'},
-            b'{}',
-        )
+        http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
-        self.assertEqual(
-            conn.api_request('GET', '/', headers={'X-Foo': 'bar'}), {})
-        self.assertEqual(http._called_with['method'], 'GET')
-        uri = http._called_with['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
-        # Intended to emulate self.mock_template
-        PATH = '/'.join([
-            '',
-            'mock',
-            conn.API_VERSION,
-            '',
-        ])
-        self.assertEqual(path, PATH)
-        self.assertEqual(qs, '')
-        self.assertIsNone(http._called_with['body'])
+
+        result = conn.api_request('GET', '/', headers={'X-Foo': 'bar'})
+        self.assertEqual(result, {})
+
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': '0',
             'User-Agent': conn.USER_AGENT,
             'X-Foo': 'bar',
         }
-        self.assertEqual(http._called_with['headers'], expected_headers)
+        http.request.assert_called_once_with(
+            method='GET', url=mock.ANY, headers=expected_headers,
+            data=None)
 
     def test_api_request_w_extra_headers(self):
-        from six.moves.urllib.parse import urlsplit
-
-        http = _Http(
-            {'status': '200', 'content-type': 'application/json'},
-            b'{}',
-        )
+        http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
         conn._EXTRA_HEADERS = {
             'X-Baz': 'dax-quux',
             'X-Foo': 'not-bar',  # Collision with ``headers``.
         }
-        self.assertEqual(
-            conn.api_request('GET', '/', headers={'X-Foo': 'bar'}), {})
-        self.assertEqual(http._called_with['method'], 'GET')
-        uri = http._called_with['uri']
-        scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
-        # Intended to emulate self.mock_template
-        PATH = '/'.join([
-            '',
-            'mock',
-            conn.API_VERSION,
-            '',
-        ])
-        self.assertEqual(path, PATH)
-        self.assertEqual(qs, '')
-        self.assertIsNone(http._called_with['body'])
+
+        result = conn.api_request('GET', '/', headers={'X-Foo': 'bar'})
+
+        self.assertEqual(result, {})
+
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': '0',
             'User-Agent': conn.USER_AGENT,
             'X-Foo': 'not-bar',  # The one passed-in is overridden.
             'X-Baz': 'dax-quux',
         }
-        self.assertEqual(http._called_with['headers'], expected_headers)
+        http.request.assert_called_once_with(
+            method='GET', url=mock.ANY, headers=expected_headers,
+            data=None)
 
     def test_api_request_w_data(self):
-        import json
-
-        DATA = {'foo': 'bar'}
-        DATAJ = json.dumps(DATA)
-        http = _Http(
-            {'status': '200', 'content-type': 'application/json'},
-            b'{}',
-        )
+        http = make_requests_session([self.EMPTY_JSON_RESPONSE])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
-        # Intended to emulate self.mock_template
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'mock',
-            conn.API_VERSION,
-            '',
-        ])
-        self.assertEqual(conn.api_request('POST', '/', data=DATA), {})
-        self.assertEqual(http._called_with['method'], 'POST')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['body'], DATAJ)
+
+        data = {'foo': 'bar'}
+        self.assertEqual(conn.api_request('POST', '/', data=data), {})
+
+        expected_data = json.dumps(data)
+
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': str(len(DATAJ)),
             'Content-Type': 'application/json',
             'User-Agent': conn.USER_AGENT,
         }
-        self.assertEqual(http._called_with['headers'], expected_headers)
+
+        http.request.assert_called_once_with(
+            method='POST', url=mock.ANY, headers=expected_headers,
+            data=expected_data)
 
     def test_api_request_w_404(self):
-        from google.cloud.exceptions import NotFound
+        from google.cloud import exceptions
 
-        http = _Http(
-            {'status': '404', 'content-type': 'text/plain'},
-            b'{}'
-        )
+        http = make_requests_session([make_response(http_client.NOT_FOUND)])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
-        self.assertRaises(NotFound, conn.api_request, 'GET', '/')
+
+        with self.assertRaises(exceptions.NotFound):
+            conn.api_request('GET', '/')
 
     def test_api_request_w_500(self):
-        from google.cloud.exceptions import InternalServerError
+        from google.cloud import exceptions
 
-        http = _Http(
-            {'status': '500', 'content-type': 'text/plain'},
-            b'{}',
-        )
-        client = mock.Mock(_http=http, spec=['_http'])
-        conn = self._make_mock_one(client)
-        self.assertRaises(InternalServerError, conn.api_request, 'GET', '/')
-
-    def test_api_request_non_binary_response(self):
-        http = _Http(
-            {'status': '200', 'content-type': 'application/json'},
-            u'{}',
-        )
+        http = make_requests_session([
+            make_response(http_client.INTERNAL_SERVER_ERROR)])
         client = mock.Mock(_http=http, spec=['_http'])
         conn = self._make_mock_one(client)
 
-        result = conn.api_request('GET', '/')
-        # Intended to emulate self.mock_template
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'mock',
-            conn.API_VERSION,
-            '',
-        ])
-        self.assertEqual(result, {})
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertIsNone(http._called_with['body'])
-        expected_headers = {
-            'Accept-Encoding': 'gzip',
-            'Content-Length': '0',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(http._called_with['headers'], expected_headers)
-
-
-class _Http(object):
-
-    _called_with = None
-
-    def __init__(self, headers, content):
-        from httplib2 import Response
-
-        self._response = Response(headers)
-        self._content = content
-
-    def request(self, **kw):
-        self._called_with = kw
-        return self._response, self._content
+        with self.assertRaises(exceptions.InternalServerError):
+            conn.api_request('GET', '/')
