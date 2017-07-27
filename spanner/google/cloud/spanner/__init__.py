@@ -18,14 +18,6 @@
 import pkg_resources
 __version__ = pkg_resources.get_distribution('google-cloud-spanner').version
 
-from google.cloud.spanner._helpers import BOOL_PARAM_TYPE
-from google.cloud.spanner._helpers import BYTES_PARAM_TYPE
-from google.cloud.spanner._helpers import DATE_PARAM_TYPE
-from google.cloud.spanner._helpers import FLOAT64_PARAM_TYPE
-from google.cloud.spanner._helpers import INT64_PARAM_TYPE
-from google.cloud.spanner._helpers import STRING_PARAM_TYPE
-from google.cloud.spanner._helpers import TIMESTAMP_PARAM_TYPE
-
 from google.cloud.spanner.client import Client
 
 from google.cloud.spanner.keyset import KeyRange
@@ -34,6 +26,14 @@ from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import AbstractSessionPool
 from google.cloud.spanner.pool import BurstyPool
 from google.cloud.spanner.pool import FixedSizePool
+
+from google.cloud.spanner.types import BOOL_PARAM_TYPE
+from google.cloud.spanner.types import BYTES_PARAM_TYPE
+from google.cloud.spanner.types import DATE_PARAM_TYPE
+from google.cloud.spanner.types import FLOAT64_PARAM_TYPE
+from google.cloud.spanner.types import INT64_PARAM_TYPE
+from google.cloud.spanner.types import STRING_PARAM_TYPE
+from google.cloud.spanner.types import TIMESTAMP_PARAM_TYPE
 
 
 __all__ = [
