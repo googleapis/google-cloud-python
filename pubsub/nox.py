@@ -94,6 +94,5 @@ def cover(session):
     """
     session.interpreter = 'python3.6'
     session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'html', '--fail-under=0')
-    # session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase', success_codes=(0, 1))
+    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
+    session.run('coverage', 'erase')

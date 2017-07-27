@@ -40,7 +40,6 @@ class Policy(base.BasePolicy):
         self._callback = lambda message: None
 
         # Create a manager for keeping track of shared state.
-        self._managed_ack_ids = set()
         self._request_queue = queue.Queue()
 
         # Call the superclass constructor.

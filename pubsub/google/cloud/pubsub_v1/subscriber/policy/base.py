@@ -21,8 +21,6 @@ import time
 
 import six
 
-from google import gax
-
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import consumer
 from google.cloud.pubsub_v1.subscriber import histogram
@@ -81,7 +79,11 @@ class BasePolicy(object):
         Returns:
             int: The correct ack deadline.
         """
-        if len(self.histogram) > self._last_histogram_size * 2:
+        target = min([
+            self._last_histogram_size * 2,
+            self._last_histogram_size + 100,
+        ])
+        if len(self.histogram) > target:
             self._ack_deadline = self.histogram.percentile(percent=99)
         return self._ack_deadline
 
@@ -220,7 +222,7 @@ class BasePolicy(object):
         Args:
             ack_id (str): The ack ID.
         """
-        return self.modify_ack_deadline(ack_id, 0)
+        return self.modify_ack_deadline(ack_id=ack_id, seconds=0)
 
     @abc.abstractmethod
     def on_response(self, response):
