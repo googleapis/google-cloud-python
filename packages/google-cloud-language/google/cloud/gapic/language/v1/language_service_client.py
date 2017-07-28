@@ -184,12 +184,11 @@ class LanguageServiceClient(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        # Create the request object.
         request = language_service_pb2.AnalyzeSentimentRequest(
             document=document, encoding_type=encoding_type)
         return self._analyze_sentiment(request, options)
 
-    def analyze_entities(self, document, encoding_type, options=None):
+    def analyze_entities(self, document, encoding_type=None, options=None):
         """
         Finds named entities (currently proper names and common nouns) in the text
         along with entity types, salience, mentions for each entity, and
@@ -197,12 +196,10 @@ class LanguageServiceClient(object):
 
         Example:
           >>> from google.cloud.gapic.language.v1 import language_service_client
-          >>> from google.cloud.gapic.language.v1 import enums
           >>> from google.cloud.proto.language.v1 import language_service_pb2
           >>> client = language_service_client.LanguageServiceClient()
           >>> document = language_service_pb2.Document()
-          >>> encoding_type = enums.EncodingType.NONE
-          >>> response = client.analyze_entities(document, encoding_type)
+          >>> response = client.analyze_entities(document)
 
         Args:
           document (:class:`google.cloud.proto.language.v1.language_service_pb2.Document`): Input document.
@@ -217,12 +214,11 @@ class LanguageServiceClient(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        # Create the request object.
         request = language_service_pb2.AnalyzeEntitiesRequest(
             document=document, encoding_type=encoding_type)
         return self._analyze_entities(request, options)
 
-    def analyze_syntax(self, document, encoding_type, options=None):
+    def analyze_syntax(self, document, encoding_type=None, options=None):
         """
         Analyzes the syntax of the text and provides sentence boundaries and
         tokenization along with part of speech tags, dependency trees, and other
@@ -230,12 +226,10 @@ class LanguageServiceClient(object):
 
         Example:
           >>> from google.cloud.gapic.language.v1 import language_service_client
-          >>> from google.cloud.gapic.language.v1 import enums
           >>> from google.cloud.proto.language.v1 import language_service_pb2
           >>> client = language_service_client.LanguageServiceClient()
           >>> document = language_service_pb2.Document()
-          >>> encoding_type = enums.EncodingType.NONE
-          >>> response = client.analyze_syntax(document, encoding_type)
+          >>> response = client.analyze_syntax(document)
 
         Args:
           document (:class:`google.cloud.proto.language.v1.language_service_pb2.Document`): Input document.
@@ -250,25 +244,26 @@ class LanguageServiceClient(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        # Create the request object.
         request = language_service_pb2.AnalyzeSyntaxRequest(
             document=document, encoding_type=encoding_type)
         return self._analyze_syntax(request, options)
 
-    def annotate_text(self, document, features, encoding_type, options=None):
+    def annotate_text(self,
+                      document,
+                      features,
+                      encoding_type=None,
+                      options=None):
         """
         A convenience method that provides all the features that analyzeSentiment,
         analyzeEntities, and analyzeSyntax provide in one call.
 
         Example:
           >>> from google.cloud.gapic.language.v1 import language_service_client
-          >>> from google.cloud.gapic.language.v1 import enums
           >>> from google.cloud.proto.language.v1 import language_service_pb2
           >>> client = language_service_client.LanguageServiceClient()
           >>> document = language_service_pb2.Document()
           >>> features = language_service_pb2.AnnotateTextRequest.Features()
-          >>> encoding_type = enums.EncodingType.NONE
-          >>> response = client.annotate_text(document, features, encoding_type)
+          >>> response = client.annotate_text(document, features)
 
         Args:
           document (:class:`google.cloud.proto.language.v1.language_service_pb2.Document`): Input document.
@@ -284,7 +279,6 @@ class LanguageServiceClient(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        # Create the request object.
         request = language_service_pb2.AnnotateTextRequest(
             document=document, features=features, encoding_type=encoding_type)
         return self._annotate_text(request, options)
