@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import csv
 import datetime
 import json
 import operator
@@ -20,6 +21,8 @@ import os
 import time
 import unittest
 import uuid
+
+import six
 
 from google.cloud import bigquery
 from google.cloud._helpers import UTC
@@ -290,8 +293,6 @@ class TestBigQuery(unittest.TestCase):
 
     @staticmethod
     def _fetch_single_page(table):
-        import six
-
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
         return list(page)
@@ -341,7 +342,6 @@ class TestBigQuery(unittest.TestCase):
                          sorted(ROWS, key=by_age))
 
     def test_load_table_from_local_file_then_dump_table(self):
-        import csv
         from google.cloud._testing import _NamedTemporaryFile
 
         ROWS = [
@@ -432,7 +432,6 @@ class TestBigQuery(unittest.TestCase):
                          sorted(ROWS, key=by_wavelength))
 
     def test_load_table_from_storage_then_dump_table(self):
-        import csv
         from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.storage import Client as StorageClient
 
@@ -448,11 +447,11 @@ class TestBigQuery(unittest.TestCase):
         ]
         TABLE_NAME = 'test_table'
 
-        s_client = StorageClient()
+        storage_client = StorageClient()
 
         # In the **very** rare case the bucket name is reserved, this
         # fails with a ConnectionError.
-        bucket = s_client.create_bucket(BUCKET_NAME)
+        bucket = storage_client.create_bucket(BUCKET_NAME)
         self.to_delete.append(bucket)
 
         blob = bucket.blob(BLOB_NAME)
@@ -500,6 +499,75 @@ class TestBigQuery(unittest.TestCase):
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
+
+    def test_load_table_from_storage_w_autodetect_schema(self):
+        from google.cloud._testing import _NamedTemporaryFile
+        from google.cloud.storage import Client as StorageClient
+        from google.cloud.bigquery import SchemaField
+
+        local_id = unique_resource_id()
+        bucket_name = 'bq_load_test' + local_id
+        blob_name = 'person_ages.csv'
+        gs_url = 'gs://{}/{}'.format(bucket_name, blob_name)
+        rows = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ] * 100  # BigQuery internally uses the first 100 rows to detect schema
+        table_name = 'test_table'
+
+        storage_client = StorageClient()
+
+        # In the **very** rare case the bucket name is reserved, this
+        # fails with a ConnectionError.
+        bucket = storage_client.create_bucket(bucket_name)
+        self.to_delete.append(bucket)
+
+        blob = bucket.blob(blob_name)
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(('Full Name', 'Age'))
+                writer.writerows(rows)
+
+            with open(temp.name, 'rb') as csv_read:
+                blob.upload_from_file(csv_read, content_type='text/csv')
+
+        self.to_delete.insert(0, blob)
+
+        dataset = Config.CLIENT.dataset(
+            _make_dataset_name('load_gcs_then_dump'))
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        table = dataset.table(table_name)
+        self.to_delete.insert(0, table)
+
+        job = Config.CLIENT.load_table_from_storage(
+            'bq_load_storage_test_' + local_id, table, gs_url)
+        job.autodetect = True
+
+        job.begin()
+
+        # Allow for 90 seconds of "warm up" before rows visible.  See
+        # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
+        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
+
+        table.reload()
+        field_name = SchemaField(
+            u'Full_Name', u'string', u'NULLABLE', None, ())
+        field_age = SchemaField(u'Age', u'integer', u'NULLABLE', None, ())
+        self.assertEqual(table.schema, [field_name, field_age])
+
+        actual_rows = self._fetch_single_page(table)
+        by_age = operator.itemgetter(1)
+        self.assertEqual(
+            sorted(actual_rows, key=by_age), sorted(rows, key=by_age))
 
     def test_job_cancel(self):
         DATASET_NAME = _make_dataset_name('job_cancel')
@@ -674,7 +742,6 @@ class TestBigQuery(unittest.TestCase):
             self.assertIsNone(row)
 
     def _load_table_for_dml(self, rows, dataset_name, table_name):
-        import csv
         from google.cloud._testing import _NamedTemporaryFile
 
         dataset = Config.CLIENT.dataset(dataset_name)
