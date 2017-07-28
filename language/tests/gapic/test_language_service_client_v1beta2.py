@@ -18,7 +18,6 @@ import unittest
 
 from google.gax import errors
 
-from google.cloud.gapic.language.v1beta2 import enums
 from google.cloud.gapic.language.v1beta2 import language_service_client
 from google.cloud.proto.language.v1beta2 import language_service_pb2
 
@@ -86,7 +85,6 @@ class TestLanguageServiceClient(unittest.TestCase):
 
         # Mock request
         document = language_service_pb2.Document()
-        encoding_type = enums.EncodingType.NONE
 
         # Mock response
         language = 'language-1613589672'
@@ -94,7 +92,7 @@ class TestLanguageServiceClient(unittest.TestCase):
             language=language)
         grpc_stub.AnalyzeEntities.return_value = expected_response
 
-        response = client.analyze_entities(document, encoding_type)
+        response = client.analyze_entities(document)
         self.assertEqual(expected_response, response)
 
         grpc_stub.AnalyzeEntities.assert_called_once()
@@ -105,7 +103,7 @@ class TestLanguageServiceClient(unittest.TestCase):
         actual_request = args[0]
 
         expected_request = language_service_pb2.AnalyzeEntitiesRequest(
-            document=document, encoding_type=encoding_type)
+            document=document)
         self.assertEqual(expected_request, actual_request)
 
     @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
@@ -119,13 +117,11 @@ class TestLanguageServiceClient(unittest.TestCase):
 
         # Mock request
         document = language_service_pb2.Document()
-        encoding_type = enums.EncodingType.NONE
 
         # Mock exception response
         grpc_stub.AnalyzeEntities.side_effect = CustomException()
 
-        self.assertRaises(errors.GaxError, client.analyze_entities, document,
-                          encoding_type)
+        self.assertRaises(errors.GaxError, client.analyze_entities, document)
 
     @mock.patch('google.gax.config.create_stub', spec=True)
     def test_analyze_entity_sentiment(self, mock_create_stub):
@@ -137,7 +133,6 @@ class TestLanguageServiceClient(unittest.TestCase):
 
         # Mock request
         document = language_service_pb2.Document()
-        encoding_type = enums.EncodingType.NONE
 
         # Mock response
         language = 'language-1613589672'
@@ -145,7 +140,7 @@ class TestLanguageServiceClient(unittest.TestCase):
             language=language)
         grpc_stub.AnalyzeEntitySentiment.return_value = expected_response
 
-        response = client.analyze_entity_sentiment(document, encoding_type)
+        response = client.analyze_entity_sentiment(document)
         self.assertEqual(expected_response, response)
 
         grpc_stub.AnalyzeEntitySentiment.assert_called_once()
@@ -156,7 +151,7 @@ class TestLanguageServiceClient(unittest.TestCase):
         actual_request = args[0]
 
         expected_request = language_service_pb2.AnalyzeEntitySentimentRequest(
-            document=document, encoding_type=encoding_type)
+            document=document)
         self.assertEqual(expected_request, actual_request)
 
     @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
@@ -170,13 +165,12 @@ class TestLanguageServiceClient(unittest.TestCase):
 
         # Mock request
         document = language_service_pb2.Document()
-        encoding_type = enums.EncodingType.NONE
 
         # Mock exception response
         grpc_stub.AnalyzeEntitySentiment.side_effect = CustomException()
 
         self.assertRaises(errors.GaxError, client.analyze_entity_sentiment,
-                          document, encoding_type)
+                          document)
 
     @mock.patch('google.gax.config.create_stub', spec=True)
     def test_analyze_syntax(self, mock_create_stub):
@@ -188,7 +182,6 @@ class TestLanguageServiceClient(unittest.TestCase):
 
         # Mock request
         document = language_service_pb2.Document()
-        encoding_type = enums.EncodingType.NONE
 
         # Mock response
         language = 'language-1613589672'
@@ -196,7 +189,7 @@ class TestLanguageServiceClient(unittest.TestCase):
             language=language)
         grpc_stub.AnalyzeSyntax.return_value = expected_response
 
-        response = client.analyze_syntax(document, encoding_type)
+        response = client.analyze_syntax(document)
         self.assertEqual(expected_response, response)
 
         grpc_stub.AnalyzeSyntax.assert_called_once()
@@ -207,7 +200,7 @@ class TestLanguageServiceClient(unittest.TestCase):
         actual_request = args[0]
 
         expected_request = language_service_pb2.AnalyzeSyntaxRequest(
-            document=document, encoding_type=encoding_type)
+            document=document)
         self.assertEqual(expected_request, actual_request)
 
     @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
@@ -221,13 +214,11 @@ class TestLanguageServiceClient(unittest.TestCase):
 
         # Mock request
         document = language_service_pb2.Document()
-        encoding_type = enums.EncodingType.NONE
 
         # Mock exception response
         grpc_stub.AnalyzeSyntax.side_effect = CustomException()
 
-        self.assertRaises(errors.GaxError, client.analyze_syntax, document,
-                          encoding_type)
+        self.assertRaises(errors.GaxError, client.analyze_syntax, document)
 
     @mock.patch('google.gax.config.create_stub', spec=True)
     def test_annotate_text(self, mock_create_stub):
@@ -240,7 +231,6 @@ class TestLanguageServiceClient(unittest.TestCase):
         # Mock request
         document = language_service_pb2.Document()
         features = language_service_pb2.AnnotateTextRequest.Features()
-        encoding_type = enums.EncodingType.NONE
 
         # Mock response
         language = 'language-1613589672'
@@ -248,7 +238,7 @@ class TestLanguageServiceClient(unittest.TestCase):
             language=language)
         grpc_stub.AnnotateText.return_value = expected_response
 
-        response = client.annotate_text(document, features, encoding_type)
+        response = client.annotate_text(document, features)
         self.assertEqual(expected_response, response)
 
         grpc_stub.AnnotateText.assert_called_once()
@@ -259,7 +249,7 @@ class TestLanguageServiceClient(unittest.TestCase):
         actual_request = args[0]
 
         expected_request = language_service_pb2.AnnotateTextRequest(
-            document=document, features=features, encoding_type=encoding_type)
+            document=document, features=features)
         self.assertEqual(expected_request, actual_request)
 
     @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
@@ -274,10 +264,9 @@ class TestLanguageServiceClient(unittest.TestCase):
         # Mock request
         document = language_service_pb2.Document()
         features = language_service_pb2.AnnotateTextRequest.Features()
-        encoding_type = enums.EncodingType.NONE
 
         # Mock exception response
         grpc_stub.AnnotateText.side_effect = CustomException()
 
         self.assertRaises(errors.GaxError, client.annotate_text, document,
-                          features, encoding_type)
+                          features)
