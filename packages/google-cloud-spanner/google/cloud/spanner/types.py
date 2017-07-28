@@ -25,3 +25,44 @@ INT64_PARAM_TYPE = type_pb2.Type(code=type_pb2.INT64)
 FLOAT64_PARAM_TYPE = type_pb2.Type(code=type_pb2.FLOAT64)
 DATE_PARAM_TYPE = type_pb2.Type(code=type_pb2.DATE)
 TIMESTAMP_PARAM_TYPE = type_pb2.Type(code=type_pb2.TIMESTAMP)
+
+
+def ArrayParamType(element_type):  # pylint: disable=invalid-name
+    """Construct an array paramter type description protobuf.
+
+    :type element_type: :class:`type_pb2.Type`
+    :param element_type: the type of elements of the array
+
+    :rtype: :class:`type_pb2.Type`
+    :returns: the appropriate array-type protobuf
+    """
+    return type_pb2.Type(code=type_pb2.ARRAY, array_element_type=element_type)
+
+
+def StructField(name, field_type):  # pylint: disable=invalid-name
+    """Construct a field description protobuf.
+
+    :type name: str
+    :param name: the name of the field
+
+    :type field_type: :class:`type_pb2.Type`
+    :param field_type: the type of the field
+
+    :rtype: :class:`type_pb2.StructType.Field`
+    :returns: the appropriate array-type protobuf
+    """
+    return type_pb2.StructType.Field(name=name, type=field_type)
+
+
+def StructParamType(fields):  # pylint: disable=invalid-name
+    """Construct a struct paramter type description protobuf.
+
+    :type fields: list of :class:`type_pb2.StructType.Field`
+    :param fields: the fields of the struct
+
+    :rtype: :class:`type_pb2.Type`
+    :returns: the appropriate struct-type protobuf
+    """
+    return type_pb2.Type(
+        code=type_pb2.STRUCT,
+        struct_type=type_pb2.StructType(fields=fields))

@@ -27,18 +27,22 @@ from google.cloud.spanner.pool import AbstractSessionPool
 from google.cloud.spanner.pool import BurstyPool
 from google.cloud.spanner.pool import FixedSizePool
 
+from google.cloud.spanner.types import ArrayParamType
 from google.cloud.spanner.types import BOOL_PARAM_TYPE
 from google.cloud.spanner.types import BYTES_PARAM_TYPE
 from google.cloud.spanner.types import DATE_PARAM_TYPE
 from google.cloud.spanner.types import FLOAT64_PARAM_TYPE
 from google.cloud.spanner.types import INT64_PARAM_TYPE
 from google.cloud.spanner.types import STRING_PARAM_TYPE
+from google.cloud.spanner.types import StructField
+from google.cloud.spanner.types import StructParamType
 from google.cloud.spanner.types import TIMESTAMP_PARAM_TYPE
 
 
 __all__ = [
     '__version__',
     'AbstractSessionPool',
+    'ArrayParamType',
     'BOOL_PARAM_TYPE',
     'BYTES_PARAM_TYPE',
     'BurstyPool',
@@ -50,5 +54,7 @@ __all__ = [
     'KeyRange',
     'KeySet',
     'STRING_PARAM_TYPE',
+    'StructField',
+    'StructParamType',
     'TIMESTAMP_PARAM_TYPE',
 ]
