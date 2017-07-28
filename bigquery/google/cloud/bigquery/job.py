@@ -80,6 +80,20 @@ def _error_result_to_exception(error_result):
         status_code, error_result.get('message', ''), errors=[error_result])
 
 
+class AutoDetectSchema(_TypedProperty):
+    """Typed Property for ``autodetect`` properties.
+
+    :raises ValueError: on ``set`` operation if ``instance.schema``
+                        is already defined.
+    """
+    def __set__(self, instance, value):
+        self._validate(value)
+        if instance.schema:
+            raise ValueError('A schema should not be already defined '
+                             'when using schema auto-detection')
+        setattr(instance._configuration, self._backing_name, value)
+
+
 class Compression(_EnumProperty):
     """Pseudo-enum for ``compression`` properties."""
     GZIP = 'GZIP'
@@ -505,6 +519,7 @@ class _LoadConfiguration(object):
     """
     _allow_jagged_rows = None
     _allow_quoted_newlines = None
+    _autodetect = None
     _create_disposition = None
     _encoding = None
     _field_delimiter = None
@@ -544,9 +559,10 @@ class LoadTableFromStorageJob(_AsyncJob):
         super(LoadTableFromStorageJob, self).__init__(name, client)
         self.destination = destination
         self.source_uris = source_uris
-        # Let the @property do validation.
-        self.schema = schema
         self._configuration = _LoadConfiguration()
+        # Let the @property do validation. This must occur after all other
+        # attributes have been set.
+        self.schema = schema
 
     @property
     def schema(self):
@@ -564,12 +580,20 @@ class LoadTableFromStorageJob(_AsyncJob):
         :type value: list of :class:`SchemaField`
         :param value: fields describing the schema
 
-        :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not a SchemaField
+        :raises TypeError: If ``value`is not a sequence.
+        :raises ValueError: If any item in the sequence is not
+                            a ``SchemaField``.
         """
-        if not all(isinstance(field, SchemaField) for field in value):
-            raise ValueError('Schema items must be fields')
-        self._schema = tuple(value)
+        if not value:
+            self._schema = ()
+        else:
+            if not all(isinstance(field, SchemaField) for field in value):
+                raise ValueError('Schema items must be fields')
+            if self.autodetect:
+                raise ValueError(
+                    'Schema can not be set if `autodetect` property is True')
+
+            self._schema = tuple(value)
 
     @property
     def input_file_bytes(self):
@@ -625,6 +649,11 @@ class LoadTableFromStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
     """
 
+    autodetect = AutoDetectSchema('autodetect', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect
+    """
+
     create_disposition = CreateDisposition('create_disposition')
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition
@@ -676,6 +705,8 @@ class LoadTableFromStorageJob(_AsyncJob):
             configuration['allowJaggedRows'] = self.allow_jagged_rows
         if self.allow_quoted_newlines is not None:
             configuration['allowQuotedNewlines'] = self.allow_quoted_newlines
+        if self.autodetect is not None:
+            configuration['autodetect'] = self.autodetect
         if self.create_disposition is not None:
             configuration['createDisposition'] = self.create_disposition
         if self.encoding is not None:
