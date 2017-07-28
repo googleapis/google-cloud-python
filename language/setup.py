@@ -61,7 +61,7 @@ EXTRAS_REQUIRE = {
 
 setup(
     name='google-cloud-language',
-    version='0.26.0',
+    version='0.26.1',
     description='Python Client for Google Cloud Natural Language',
     long_description=README,
     namespace_packages=[
