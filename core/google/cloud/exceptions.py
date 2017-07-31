@@ -301,3 +301,5 @@ if _HAVE_GRPC:
         StatusCode.UNAVAILABLE: ServiceUnavailable,
         StatusCode.DATA_LOSS: InternalServerError,
     }
+else:  # pragma: NO COVER  (GAX/gRPC always present for testing)
+    pass
