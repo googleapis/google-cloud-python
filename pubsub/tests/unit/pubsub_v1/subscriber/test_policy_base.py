@@ -62,10 +62,22 @@ def test_subscription():
 def test_ack():
     policy = create_policy()
     with mock.patch.object(policy._consumer, 'send_request') as send_request:
+        policy.ack('ack_id_string', 20)
+        send_request.assert_called_once_with(types.StreamingPullRequest(
+            ack_ids=['ack_id_string'],
+        ))
+    assert len(policy.histogram) == 1
+    assert 20 in policy.histogram
+
+
+def test_ack_no_time():
+    policy = create_policy()
+    with mock.patch.object(policy._consumer, 'send_request') as send_request:
         policy.ack('ack_id_string')
         send_request.assert_called_once_with(types.StreamingPullRequest(
             ack_ids=['ack_id_string'],
         ))
+    assert len(policy.histogram) == 0
 
 
 def test_call_rpc():

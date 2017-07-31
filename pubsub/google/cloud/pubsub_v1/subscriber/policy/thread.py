@@ -39,7 +39,7 @@ class Policy(base.BasePolicy):
         # Default the callback to a no-op; it is provided by `.open`.
         self._callback = lambda message: None
 
-        # Create a manager for keeping track of shared state.
+        # Create a queue for keeping track of shared state.
         self._request_queue = queue.Queue()
 
         # Call the superclass constructor.
@@ -113,5 +113,5 @@ class Policy(base.BasePolicy):
         """
         for msg in response.received_messages:
             logger.debug('New message received from Pub/Sub: %r', msg)
-            message = Message(self, msg.ack_id, msg.message)
+            message = Message(msg.message, msg.ack_id, self._request_queue)
             self._executor.submit(self._callback, message)

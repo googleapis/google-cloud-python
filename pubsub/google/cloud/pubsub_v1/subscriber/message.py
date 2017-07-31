@@ -42,7 +42,7 @@ class Message(object):
         publish_time (datetime): The time that this message was originally
             published.
     """
-    def __init__(self, policy, ack_id, message):
+    def __init__(self, message, ack_id, request_queue):
         """Construct the Message.
 
         .. note::
@@ -51,16 +51,16 @@ class Message(object):
             responsibility of :class:`BasePolicy` subclasses to do so.
 
         Args:
-            policy (~.pubsub_v1.subscriber.policy.BasePolicy): The policy
-                that created this message, and understands how to handle
-                actions from that message (e.g. acks).
-            ack_id (str): The ack_id received from Pub/Sub.
             message (~.pubsub_v1.types.PubsubMessage): The message received
                 from Pub/Sub.
+            ack_id (str): The ack_id received from Pub/Sub.
+            request_queue (queue.Queue): A queue provided by the policy that
+                can accept requests; the policy is responsible for handling
+                those requests.
         """
-        self._policy = policy
-        self._ack_id = ack_id
         self._message = message
+        self._ack_id = ack_id
+        self._request_queue = request_queue
         self.message_id = message.message_id
 
         # The instantiation time is the time that this message
@@ -127,8 +127,7 @@ class Message(object):
             receive any given message more than once.
         """
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
-        self._policy.histogram.add(time_to_ack)
-        self._policy.ack(self._ack_id)
+        self._request_queue.put(('ack', self._ack_id, time_to_ack))
         self.drop()
 
     def drop(self):
@@ -144,7 +143,7 @@ class Message(object):
             both call this one. You probably do not want to call this method
             directly.
         """
-        self._policy.drop(self._ack_id)
+        self._request_queue.put(('drop', self._ack_id))
 
     def lease(self):
         """Inform the policy to lease this message continually.
@@ -153,7 +152,7 @@ class Message(object):
             This method is called by the constructor, and you should never
             need to call it manually.
         """
-        self._policy.lease(self._ack_id)
+        self._request_queue.put(('lease', self._ack_id))
 
     def modify_ack_deadline(self, seconds):
         """Set the deadline for acknowledgement to the given value.
@@ -173,7 +172,7 @@ class Message(object):
                 to. This should be between 0 and 600. Due to network latency,
                 values below 10 are advised against.
         """
-        self._policy.modify_ack_deadline(self._ack_id, seconds)
+        self._request_queue.put(('modify_ack_deadline', self._ack_id, seconds))
 
     def nack(self):
         """Decline to acknowldge the given message.

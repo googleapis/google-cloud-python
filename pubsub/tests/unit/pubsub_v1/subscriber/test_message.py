@@ -12,28 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import queue
 import time
 
 import mock
 
-from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import message
-from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 def create_message(data, ack_id='ACKID', **attrs):
-    client = subscriber.Client()
-    policy = thread.Policy(client, 'sub_name')
     with mock.patch.object(message.Message, 'lease') as lease:
         with mock.patch.object(time, 'time') as time_:
             time_.return_value = 1335020400
-            msg = message.Message(policy, ack_id, types.PubsubMessage(
+            msg = message.Message(types.PubsubMessage(
                 attributes=attrs,
                 data=data,
                 message_id='message_id',
                 publish_time=types.Timestamp(seconds=1335020400 - 86400),
-            ))
+            ), ack_id, queue.Queue())
             lease.assert_called_once_with()
             return msg
 
@@ -55,32 +52,32 @@ def test_publish_time():
 
 def test_ack():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
-    with mock.patch.object(thread.Policy, 'ack') as ack:
+    with mock.patch.object(msg._request_queue, 'put') as put:
         with mock.patch.object(message.Message, 'drop') as drop:
             msg.ack()
-            ack.assert_called_once_with('bogus_ack_id')
+            put.assert_called_once_with(('ack', 'bogus_ack_id', mock.ANY))
             drop.assert_called_once_with()
 
 
 def test_drop():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
-    with mock.patch.object(thread.Policy, 'drop') as drop:
+    with mock.patch.object(msg._request_queue, 'put') as put:
         msg.drop()
-        drop.assert_called_once_with('bogus_ack_id')
+        put.assert_called_once_with(('drop', 'bogus_ack_id'))
 
 
 def test_lease():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
-    with mock.patch.object(thread.Policy, 'lease') as lease:
+    with mock.patch.object(msg._request_queue, 'put') as put:
         msg.lease()
-        lease.assert_called_once_with('bogus_ack_id')
+        put.assert_called_once_with(('lease', 'bogus_ack_id'))
 
 
 def test_modify_ack_deadline():
-    msg = create_message(b'foo', ack_id='bogus_ack_id')
-    with mock.patch.object(thread.Policy, 'modify_ack_deadline') as mad:
+    msg = create_message(b'foo', ack_id='bogus_id')
+    with mock.patch.object(msg._request_queue, 'put') as put:
         msg.modify_ack_deadline(60)
-        mad.assert_called_once_with('bogus_ack_id', 60)
+        put.assert_called_once_with(('modify_ack_deadline', 'bogus_id', 60))
 
 
 def test_nack():

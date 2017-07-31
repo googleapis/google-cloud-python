@@ -119,12 +119,17 @@ class BasePolicy(object):
         """
         return self._subscription
 
-    def ack(self, ack_id):
+    def ack(self, ack_id, time_to_ack=None):
         """Acknowledge the message corresponding to the given ack_id.
 
         Args:
             ack_id (str): The ack ID.
+            time_to_ack (int): The time it took to ack the message, measured
+                from when it was received from the subscription. This is used
+                to improve the automatic ack timing.
         """
+        if time_to_ack is not None:
+            self.histogram.add(int(time_to_ack))
         request = types.StreamingPullRequest(ack_ids=[ack_id])
         self._consumer.send_request(request)
 
