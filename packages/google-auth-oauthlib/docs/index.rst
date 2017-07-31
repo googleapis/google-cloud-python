@@ -17,7 +17,7 @@ Installing
 
 google-auth can be installed with `pip`_::
 
-    $ pip install --upgrade google-auth-oauthlib2
+    $ pip install --upgrade google-auth-oauthlib
 
 google-auth-oauthlib is open-source, so you can alternatively grab the source
 code from `GitHub`_ and install from source.
