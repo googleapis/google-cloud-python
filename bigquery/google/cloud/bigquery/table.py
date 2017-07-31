@@ -19,7 +19,6 @@ import os
 
 import six
 
-import google.auth.transport.requests
 from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
