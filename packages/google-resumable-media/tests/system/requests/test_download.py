@@ -34,6 +34,8 @@ IMG_FILES = (
 PLAIN_TEXT = u'text/plain'
 ENCRYPTED_ERR = (
     b'The target object is encrypted by a customer-supplied encryption key.')
+NO_BODY_ERR = (
+    u'The content for this response was already consumed')
 
 
 @pytest.fixture(scope=u'module')
@@ -96,6 +98,29 @@ def test_download_full(add_files, authorized_transport):
         response = download.consume(authorized_transport)
         assert response.status_code == http_client.OK
         assert response.content == actual_contents
+        check_tombstoned(download, authorized_transport)
+
+
+def test_download_to_stream(add_files, authorized_transport):
+    for img_file in IMG_FILES:
+        with open(img_file, u'rb') as file_obj:
+            actual_contents = file_obj.read()
+
+        blob_name = os.path.basename(img_file)
+
+        # Create the actual download object.
+        media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
+        stream = io.BytesIO()
+        download = resumable_requests.Download(media_url, stream=stream)
+        # Consume the resource.
+        response = download.consume(authorized_transport)
+        assert response.status_code == http_client.OK
+        with pytest.raises(RuntimeError) as exc_info:
+            getattr(response, u'content')
+        assert exc_info.value.args == (NO_BODY_ERR,)
+        assert response._content is False
+        assert response._content_consumed is True
+        assert stream.getvalue() == actual_contents
         check_tombstoned(download, authorized_transport)
 
 
