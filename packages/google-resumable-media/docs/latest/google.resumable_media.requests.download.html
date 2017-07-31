@@ -282,7 +282,7 @@ make authenticated requests.</td>
 
 <dl class="class">
 <dt id="google.resumable_media.requests.download.Download">
-<em class="property">class </em><code class="descclassname">google.resumable_media.requests.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>start=None</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.Download" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">google.resumable_media.requests.download.</code><code class="descname">Download</code><span class="sig-paren">(</span><em>media_url</em>, <em>stream=None</em>, <em>start=None</em>, <em>end=None</em>, <em>headers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.Download" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media.requests._helpers.RequestsMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.resumable_media._download.Download</span></code></p>
 <p>Helper to manage downloading a resource from a Google API.</p>
 <p>“Slices” of the resource can be retrieved by specifying a range
@@ -294,6 +294,8 @@ with <code class="docutils literal"><span class="pre">start</span></code> and / 
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>media_url</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The URL containing the media to be downloaded.</li>
+<li><strong>stream</strong> (<em>IO</em><em>[</em><a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a><em>]</em>) – A write-able stream (i.e. file-like object) that
+the downloaded resource can be written to.</li>
 <li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The first byte in a range to be downloaded. If not
 provided, but <code class="docutils literal"><span class="pre">end</span></code> is provided, will download from the
 beginning to <code class="docutils literal"><span class="pre">end</span></code> of the media.</li>
