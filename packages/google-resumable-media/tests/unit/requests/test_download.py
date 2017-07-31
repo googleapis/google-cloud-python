@@ -28,23 +28,66 @@ EXAMPLE_URL = (
 
 class TestDownload(object):
 
-    def _consume_helper(self, end=65536, headers=None):
-        download = download_mod.Download(EXAMPLE_URL, end=end, headers=headers)
+    def test__write_to_stream(self):
+        stream = io.BytesIO()
+        download = download_mod.Download(EXAMPLE_URL, stream=stream)
+
+        chunk1 = b'right now, '
+        chunk2 = b'but a little later'
+        response = _mock_response(chunks=[chunk1, chunk2])
+
+        ret_val = download._write_to_stream(response)
+        assert ret_val is None
+
+        assert stream.getvalue() == chunk1 + chunk2
+
+        # Check mocks.
+        response.__enter__.assert_called_once_with()
+        response.__exit__.assert_called_once_with(None, None, None)
+        response.iter_content.assert_called_once_with(
+            chunk_size=download_mod._SINGLE_GET_CHUNK_SIZE,
+            decode_unicode=False)
+
+    def _consume_helper(self, stream=None, end=65536, headers=None, chunks=()):
+        download = download_mod.Download(
+            EXAMPLE_URL, stream=stream, end=end, headers=headers)
         transport = mock.Mock(spec=[u'request'])
-        transport.request.return_value = mock.Mock(
-            status_code=int(http_client.OK), spec=[u'status_code'])
+        transport.request.return_value = _mock_response(chunks=chunks)
 
         assert not download.finished
         ret_val = download.consume(transport)
         assert ret_val is transport.request.return_value
+
+        called_kwargs = {u'data': None, u'headers': download._headers}
+        if chunks:
+            assert stream is not None
+            called_kwargs[u'stream'] = True
         transport.request.assert_called_once_with(
-            u'GET', EXAMPLE_URL, data=None, headers=download._headers)
+            u'GET', EXAMPLE_URL, **called_kwargs)
+
         range_bytes = u'bytes={:d}-{:d}'.format(0, end)
         assert download._headers[u'range'] == range_bytes
         assert download.finished
 
+        return transport
+
     def test_consume(self):
         self._consume_helper()
+
+    def test_consume_with_stream(self):
+        stream = io.BytesIO()
+        chunks = (b'up down ', b'charlie ', b'brown')
+        transport = self._consume_helper(stream=stream, chunks=chunks)
+
+        assert stream.getvalue() == b''.join(chunks)
+
+        # Check mocks.
+        response = transport.request.return_value
+        response.__enter__.assert_called_once_with()
+        response.__exit__.assert_called_once_with(None, None, None)
+        response.iter_content.assert_called_once_with(
+            chunk_size=download_mod._SINGLE_GET_CHUNK_SIZE,
+            decode_unicode=False)
 
     def test_consume_with_headers(self):
         headers = {}  # Empty headers
@@ -121,3 +164,21 @@ class TestChunkedDownload(object):
         assert not download.finished
         assert download.bytes_downloaded == chunk_size
         assert download.total_bytes == total_bytes
+
+
+def _mock_response(status_code=http_client.OK, chunks=()):
+    if chunks:
+        response = mock.MagicMock(
+            status_code=int(status_code),
+            spec=[u'__enter__', u'__exit__', u'iter_content', u'status_code'],
+        )
+        # i.e. context manager returns ``self``.
+        response.__enter__.return_value = response
+        response.__exit__.return_value = None
+        response.iter_content.return_value = iter(chunks)
+        return response
+    else:
+        return mock.Mock(
+            status_code=int(status_code),
+            spec=[u'status_code'],
+        )

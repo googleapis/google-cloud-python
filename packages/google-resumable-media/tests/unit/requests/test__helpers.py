@@ -43,11 +43,13 @@ def test_http_request():
     data = mock.sentinel.data
     headers = {u'one': u'fish', u'blue': u'fish'}
     ret_val = _helpers.http_request(
-        transport, method, url, data=data, headers=headers)
+        transport, method, url, data=data, headers=headers,
+        extra1=b'work', extra2=125.5)
 
     assert ret_val is responses[0]
     transport.request.assert_called_once_with(
-        method, url, data=data, headers=headers)
+        method, url, data=data, headers=headers,
+        extra1=b'work', extra2=125.5)
 
 
 def _make_response(status_code):

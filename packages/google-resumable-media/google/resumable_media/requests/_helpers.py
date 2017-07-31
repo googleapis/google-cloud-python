@@ -73,7 +73,7 @@ class RequestsMixin(object):
 
 
 def http_request(transport, method, url, data=None, headers=None,
-                 retry_strategy=_DEFAULT_RETRY_STRATEGY):
+                 retry_strategy=_DEFAULT_RETRY_STRATEGY, **transport_kwargs):
     """Make an HTTP request.
 
     Args:
@@ -88,11 +88,14 @@ def http_request(transport, method, url, data=None, headers=None,
             may also add additional headers).
         retry_strategy (~google.resumable_media.common.RetryStrategy): The
             strategy to use if the request fails and must be retried.
+        transport_kwargs (Dict[str, str]): Extra keyword arguments to be
+            passed along to ``transport.request``.
 
     Returns:
         ~requests.Response: The return value of ``transport.request()``.
     """
     func = functools.partial(
-        transport.request, method, url, data=data, headers=headers)
+        transport.request, method, url, data=data, headers=headers,
+        **transport_kwargs)
     return _helpers.wait_and_retry(
         func, RequestsMixin._get_status_code, retry_strategy)

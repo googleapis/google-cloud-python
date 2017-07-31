@@ -19,6 +19,9 @@ from google.resumable_media import _download
 from google.resumable_media.requests import _helpers
 
 
+_SINGLE_GET_CHUNK_SIZE = 8192
+
+
 class Download(_helpers.RequestsMixin, _download.Download):
     """Helper to manage downloading a resource from a Google API.
 
@@ -45,8 +48,28 @@ class Download(_helpers.RequestsMixin, _download.Download):
         end (Optional[int]): The last byte in a range to be downloaded.
     """
 
+    def _write_to_stream(self, response):
+        """Write response body to a write-able stream.
+
+        .. note:
+
+            This method assumes that the ``_stream`` attribute is set on the
+            current download.
+
+        Args:
+            response (~requests.Response): The HTTP response object.
+        """
+        with response:
+            body_iter = response.iter_content(
+                chunk_size=_SINGLE_GET_CHUNK_SIZE, decode_unicode=False)
+            for chunk in body_iter:
+                self._stream.write(chunk)
+
     def consume(self, transport):
         """Consume the resource to be downloaded.
+
+        If a ``stream`` is attached to this download, then the downloaded
+        resource will be written to the stream.
 
         Args:
             transport (~requests.Session): A ``requests`` object which can
@@ -61,9 +84,20 @@ class Download(_helpers.RequestsMixin, _download.Download):
         """
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
+        request_kwargs = {
+            u'data': payload,
+            u'headers': headers,
+            u'retry_strategy': self._retry_strategy,
+        }
+        if self._stream is not None:
+            request_kwargs[u'stream'] = True
+
         result = _helpers.http_request(
-            transport, method, url, data=payload, headers=headers,
-            retry_strategy=self._retry_strategy)
+            transport, method, url, **request_kwargs)
+
+        if self._stream is not None:
+            self._write_to_stream(result)
+
         self._process_response(result)
         return result
 
