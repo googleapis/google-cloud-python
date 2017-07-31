@@ -19,6 +19,7 @@ import pkg_resources
 from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
+from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -35,9 +36,6 @@ class Client(object):
     get sensible defaults.
 
     Args:
-        flow_control (~.pubsub_v1.types.FlowControl): The flow control
-            settings. Use this to prevent situations where you are
-            inundated with too many messages at once.
         policy_class (class): A class that describes how to handle
             subscriptions. You may subclass the
             :class:`.pubsub_v1.subscriber.policy.base.BasePolicy`
@@ -50,8 +48,7 @@ class Client(object):
             Generally, you should not need to set additional keyword
             arguments.
     """
-    def __init__(self, flow_control=(), policy_class=thread.Policy,
-                 **kwargs):
+    def __init__(self, policy_class=thread.Policy, **kwargs):
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         kwargs['lib_name'] = 'gccl'
@@ -62,7 +59,7 @@ class Client(object):
         # messages.
         self._policy_class = policy_class
 
-    def subscribe(self, subscription, callback=None):
+    def subscribe(self, subscription, callback=None, flow_control=()):
         """Return a representation of an individual subscription.
 
         This method creates and returns a ``Consumer`` object (that is, a
@@ -94,7 +91,8 @@ class Client(object):
             ~.pubsub_v1.subscriber.consumer.base.BaseConsumer: An instance
                 of the defined ``consumer_class`` on the client.
         """
-        subscr = self._policy_class(self, subscription)
+        flow_control = types.FlowControl(*flow_control)
+        subscr = self._policy_class(self, subscription, flow_control)
         if callable(callback):
             subscr.open(callback)
         return subscr

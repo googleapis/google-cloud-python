@@ -41,7 +41,8 @@ class BasePolicy(object):
     subclasses may be passed as the ``policy_class`` argument to
     :class:`~.pubsub_v1.client.SubscriberClient`.
     """
-    def __init__(self, client, subscription, histogram_data=None):
+    def __init__(self, client, subscription,
+                 flow_control=types.FlowControl(), histogram_data=None):
         """Instantiate the policy.
 
         Args:
@@ -50,6 +51,8 @@ class BasePolicy(object):
             subscription (str): The name of the subscription. The canonical
                 format for this is
                 ``projects/{project}/subscriptions/{subscription}``.
+            flow_control (~.pubsub_v1.types.FlowControl): The flow control
+                settings.
             histogram_data (dict): Optional: A structure to store the histogram
                 data for predicting appropriate ack times. If set, this should
                 be a dictionary-like object.
@@ -66,6 +69,7 @@ class BasePolicy(object):
         self._consumer = consumer.Consumer(self)
         self._ack_deadline = 10
         self._last_histogram_size = 0
+        self.flow_control = flow_control
         self.histogram = histogram.Histogram(data=histogram_data)
 
     @property

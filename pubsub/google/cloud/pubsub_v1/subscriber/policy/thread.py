@@ -21,6 +21,7 @@ import threading
 
 import grpc
 
+from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import helper_threads
 from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
@@ -35,7 +36,18 @@ class Policy(base.BasePolicy):
     This consumer handles the connection to the Pub/Sub service and all of
     the concurrency needs.
     """
-    def __init__(self, client, subscription):
+    def __init__(self, client, subscription, flow_control=types.FlowControl()):
+        """Instantiate the policy.
+
+        Args:
+            client (~.pubsub_v1.subscriber.client): The subscriber client used
+                to create this instance.
+            subscription (str): The name of the subscription. The canonical
+                format for this is
+                ``projects/{project}/subscriptions/{subscription}``.
+            flow_control (~.pubsub_v1.types.FlowControl): The flow control
+                settings.
+        """
         # Default the callback to a no-op; it is provided by `.open`.
         self._callback = lambda message: None
 
@@ -43,7 +55,11 @@ class Policy(base.BasePolicy):
         self._request_queue = queue.Queue()
 
         # Call the superclass constructor.
-        super(Policy, self).__init__(client, subscription)
+        super(Policy, self).__init__(
+            client=client,
+            flow_control=flow_control,
+            subscription=subscription,
+        )
 
         # Also maintain a request queue and an executor.
         logger.debug('Creating callback requests thread (not starting).')
