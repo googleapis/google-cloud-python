@@ -37,6 +37,8 @@ class DownloadBase(object):
 
     Args:
         media_url (str): The URL containing the media to be downloaded.
+        stream (IO[bytes]): A write-able stream (i.e. file-like object) that
+            the downloaded resource can be written to.
         start (int): The first byte in a range to be downloaded.
         end (int): The last byte in a range to be downloaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
@@ -48,8 +50,10 @@ class DownloadBase(object):
         end (Optional[int]): The last byte in a range to be downloaded.
     """
 
-    def __init__(self, media_url, start=None, end=None, headers=None):
+    def __init__(self, media_url, stream=None,
+                 start=None, end=None, headers=None):
         self.media_url = media_url
+        self._stream = stream
         self.start = start
         self.end = end
         if headers is None:
@@ -109,6 +113,8 @@ class Download(DownloadBase):
 
     Args:
         media_url (str): The URL containing the media to be downloaded.
+        stream (IO[bytes]): A write-able stream (i.e. file-like object) that
+            the downloaded resource can be written to.
         start (int): The first byte in a range to be downloaded. If not
             provided, but ``end`` is provided, will download from the
             beginning to ``end`` of the media.
@@ -166,6 +172,9 @@ class Download(DownloadBase):
     def consume(self, transport):
         """Consume the resource to be downloaded.
 
+        If a ``stream`` is attached to this download, then the downloaded
+        resource will be written to the stream.
+
         Args:
             transport (object): An object which can make authenticated
                 requests.
@@ -211,9 +220,8 @@ class ChunkedDownload(DownloadBase):
                 u'On a chunked download the starting '
                 u'value cannot be negative.')
         super(ChunkedDownload, self).__init__(
-            media_url, start=start, end=end, headers=headers)
+            media_url, stream=stream, start=start, end=end, headers=headers)
         self.chunk_size = chunk_size
-        self._stream = stream
         self._bytes_downloaded = 0
         self._total_bytes = None
         self._invalid = False

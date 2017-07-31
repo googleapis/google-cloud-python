@@ -28,6 +28,8 @@ class Download(_helpers.RequestsMixin, _download.Download):
 
     Args:
         media_url (str): The URL containing the media to be downloaded.
+        stream (IO[bytes]): A write-able stream (i.e. file-like object) that
+            the downloaded resource can be written to.
         start (int): The first byte in a range to be downloaded. If not
             provided, but ``end`` is provided, will download from the
             beginning to ``end`` of the media.

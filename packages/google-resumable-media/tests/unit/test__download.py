@@ -32,6 +32,7 @@ class TestDownloadBase(object):
     def test_constructor_defaults(self):
         download = _download.DownloadBase(EXAMPLE_URL)
         assert download.media_url == EXAMPLE_URL
+        assert download._stream is None
         assert download.start is None
         assert download.end is None
         assert download._headers == {}
@@ -43,8 +44,10 @@ class TestDownloadBase(object):
         end = 10001
         headers = {u'foof': u'barf'}
         download = _download.DownloadBase(
-            EXAMPLE_URL, start=start, end=end, headers=headers)
+            EXAMPLE_URL, stream=mock.sentinel.stream,
+            start=start, end=end, headers=headers)
         assert download.media_url == EXAMPLE_URL
+        assert download._stream is mock.sentinel.stream
         assert download.start == start
         assert download.end == end
         assert download._headers is headers
