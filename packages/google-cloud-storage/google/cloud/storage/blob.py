@@ -36,7 +36,6 @@ import warnings
 
 from six.moves.urllib.parse import quote
 
-import google.auth.transport.requests
 from google import resumable_media
 from google.resumable_media.requests import ChunkedDownload
 from google.resumable_media.requests import Download
@@ -361,8 +360,8 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name, client=client)
 
-    def _make_transport(self, client):
-        """Make an authenticated transport with a client's credentials.
+    def _get_transport(self, client):
+        """Return the client's transport.
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
@@ -374,10 +373,7 @@ class Blob(_PropertyMixin):
                   make authenticated requests.
         """
         client = self._require_client(client)
-        # Create a ``requests`` transport with the client's credentials.
-        transport = google.auth.transport.requests.AuthorizedSession(
-            client._credentials)
-        return transport
+        return client._http
 
     def _get_download_url(self):
         """Get the download URL for the current blob.
@@ -463,7 +459,7 @@ class Blob(_PropertyMixin):
         """
         download_url = self._get_download_url()
         headers = _get_encryption_headers(self._encryption_key)
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
 
         try:
             self._do_download(transport, file_obj, download_url, headers)
@@ -638,7 +634,7 @@ class Blob(_PropertyMixin):
                 msg = _READ_LESS_THAN_SIZE.format(size, len(data))
                 raise ValueError(msg)
 
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
 
@@ -708,7 +704,7 @@ class Blob(_PropertyMixin):
         if chunk_size is None:
             chunk_size = self.chunk_size
 
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
         if extra_headers is not None:
