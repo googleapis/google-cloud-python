@@ -105,8 +105,8 @@ class Policy(base.BasePolicy):
 
     def on_callback_request(self, callback_request):
         """Map the callback request to the appropriate GRPC request."""
-        action, args = callback_request[0], callback_request[1:]
-        getattr(self, action)(*args)
+        action, kwargs = callback_request[0], callback_request[1]
+        getattr(self, action)(**kwargs)
 
     def on_exception(self, exception):
         """Bubble the exception.

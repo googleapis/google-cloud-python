@@ -61,8 +61,8 @@ def test_open(thread_start, htr_start):
 def test_on_callback_request():
     policy = create_policy()
     with mock.patch.object(policy, 'call_rpc') as call_rpc:
-        policy.on_callback_request(('call_rpc', 'something', 42))
-        call_rpc.assert_called_once_with('something', 42)
+        policy.on_callback_request(('call_rpc', {'something': 42}))
+        call_rpc.assert_called_once_with(something=42)
 
 
 def test_on_exception_deadline_exceeded():

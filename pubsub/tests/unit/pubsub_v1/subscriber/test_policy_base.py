@@ -90,8 +90,15 @@ def test_call_rpc():
 def test_drop():
     policy = create_policy()
     policy.managed_ack_ids.add('ack_id_string')
-    policy.drop('ack_id_string')
+    policy._bytes = 20
+    policy.drop('ack_id_string', 20)
     assert len(policy.managed_ack_ids) == 0
+    assert policy._bytes == 0
+
+    # Do this again to establish idempotency.
+    policy.drop('ack_id_string', 20)
+    assert len(policy.managed_ack_ids) == 0
+    assert policy._bytes == 0
 
 
 def test_modify_ack_deadline():
@@ -113,7 +120,7 @@ def test_maintain_leases_inactive_consumer():
 def test_maintain_leases_ack_ids():
     policy = create_policy()
     policy._consumer.active = True
-    policy.lease('my ack id')
+    policy.lease('my ack id', 50)
 
     # Mock the sleep object.
     with mock.patch.object(time, 'sleep', autospec=True) as sleep:
@@ -142,6 +149,18 @@ def test_maintain_leases_no_ack_ids():
         sleep.side_effect = trigger_inactive
         policy.maintain_leases()
         sleep.assert_called()
+
+
+def test_lease():
+    policy = create_policy()
+    policy.lease('ack_id_string', 20)
+    assert len(policy.managed_ack_ids) == 1
+    assert policy._bytes == 20
+
+    # Do this again to prove idempotency.
+    policy.lease('ack_id_string', 20)
+    assert len(policy.managed_ack_ids) == 1
+    assert policy._bytes == 20
 
 
 def test_nack():

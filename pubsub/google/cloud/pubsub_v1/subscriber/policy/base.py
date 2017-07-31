@@ -69,6 +69,7 @@ class BasePolicy(object):
         self._consumer = consumer.Consumer(self)
         self._ack_deadline = 10
         self._last_histogram_size = 0
+        self._bytes = 0
         self.flow_control = flow_control
         self.histogram = histogram.Histogram(data=histogram_data)
 
@@ -147,21 +148,28 @@ class BasePolicy(object):
         """
         return self._client.api.streaming_pull(request_generator)
 
-    def drop(self, ack_id):
+    def drop(self, ack_id, byte_size):
         """Remove the given ack ID from lease management.
 
         Args:
             ack_id (str): The ack ID.
+            byte_size (int): The size of the PubSub message, in bytes.
         """
-        self.managed_ack_ids.remove(ack_id)
+        if ack_id in self.managed_ack_ids:
+            self.managed_ack_ids.remove(ack_id)
+            self._bytes -= byte_size
+            self._bytes = min([self._bytes, 0])
 
-    def lease(self, ack_id):
+    def lease(self, ack_id, byte_size):
         """Add the given ack ID to lease management.
 
         Args:
             ack_id (str): The ack ID.
+            byte_size (int): The size of the PubSub message, in bytes.
         """
-        self.managed_ack_ids.add(ack_id)
+        if ack_id not in self.managed_ack_ids:
+            self.managed_ack_ids.add(ack_id)
+            self._bytes += byte_size
 
     def maintain_leases(self):
         """Maintain all of the leases being managed by the policy.

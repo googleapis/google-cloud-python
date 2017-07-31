@@ -55,7 +55,10 @@ def test_ack():
     with mock.patch.object(msg._request_queue, 'put') as put:
         with mock.patch.object(message.Message, 'drop') as drop:
             msg.ack()
-            put.assert_called_once_with(('ack', 'bogus_ack_id', mock.ANY))
+            put.assert_called_once_with(('ack', {
+                'ack_id': 'bogus_ack_id',
+                'time_to_ack': mock.ANY,
+            }))
             drop.assert_called_once_with()
 
 
@@ -63,21 +66,30 @@ def test_drop():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
         msg.drop()
-        put.assert_called_once_with(('drop', 'bogus_ack_id'))
+        put.assert_called_once_with(('drop', {
+            'ack_id': 'bogus_ack_id',
+            'byte_size': 25,
+        }))
 
 
 def test_lease():
     msg = create_message(b'foo', ack_id='bogus_ack_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
         msg.lease()
-        put.assert_called_once_with(('lease', 'bogus_ack_id'))
+        put.assert_called_once_with(('lease', {
+            'ack_id': 'bogus_ack_id',
+            'byte_size': 25,
+        }))
 
 
 def test_modify_ack_deadline():
     msg = create_message(b'foo', ack_id='bogus_id')
     with mock.patch.object(msg._request_queue, 'put') as put:
         msg.modify_ack_deadline(60)
-        put.assert_called_once_with(('modify_ack_deadline', 'bogus_id', 60))
+        put.assert_called_once_with(('modify_ack_deadline', {
+            'ack_id': 'bogus_id',
+            'seconds': 60,
+        }))
 
 
 def test_nack():
