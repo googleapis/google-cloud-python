@@ -1561,14 +1561,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test__make_transport(self, session_factory):
-        client = mock.Mock(spec=[u'_credentials'])
+    def test__get_transport(self):
+        client = mock.Mock(spec=[u'_credentials', '_http'])
+        client._http = mock.sentinel.http
         table = self._make_one(self.TABLE_NAME, None)
-        transport = table._make_transport(client)
 
-        self.assertIs(transport, session_factory.return_value)
-        session_factory.assert_called_once_with(client._credentials)
+        transport = table._get_transport(client)
+
+        self.assertIs(transport, mock.sentinel.http)
 
     @staticmethod
     def _mock_requests_response(status_code, headers, content=b''):
@@ -1600,8 +1600,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         response_headers = {'location': resumable_url}
         fake_transport = self._mock_transport(
             http_client.OK, response_headers)
-        table._make_transport = mock.Mock(
-            return_value=fake_transport, spec=[])
+        client._http = fake_transport
 
         # Create some mock arguments and call the method under test.
         data = b'goodbye gudbi gootbee'
@@ -1640,7 +1639,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(stream.tell(), 0)
 
         # Check the mocks.
-        table._make_transport.assert_called_once_with(client)
         request_headers = expected_headers.copy()
         request_headers['x-upload-content-type'] = _GENERIC_CONTENT_TYPE
         fake_transport.request.assert_called_once_with(
@@ -1668,7 +1666,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         # Create mocks to be checked for doing transport.
         fake_transport = self._mock_transport(http_client.OK, {})
-        table._make_transport = mock.Mock(return_value=fake_transport, spec=[])
+        client._http = fake_transport
 
         # Create some mock arguments.
         data = b'Bzzzz-zap \x00\x01\xf4'
@@ -1682,7 +1680,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         # Check the mocks and the returned value.
         self.assertIs(response, fake_transport.request.return_value)
         self.assertEqual(stream.tell(), size)
-        table._make_transport.assert_called_once_with(client)
         get_boundary.assert_called_once_with()
 
         upload_url = (
@@ -1723,7 +1720,7 @@ class TestTableUpload(object):
     #       rather than `unittest`-style.
 
     @staticmethod
-    def _make_table():
+    def _make_table(transport=None):
         from google.cloud.bigquery import _http
         from google.cloud.bigquery import client
         from google.cloud.bigquery import dataset
@@ -1733,6 +1730,7 @@ class TestTableUpload(object):
         client = mock.create_autospec(client.Client, instance=True)
         client._connection = connection
         client._credentials = mock.sentinel.credentials
+        client._http = transport
         client.project = 'project_id'
 
         dataset = dataset.Dataset('test_dataset', client)
@@ -1955,57 +1953,54 @@ class TestTableUpload(object):
         return [initial_response, data_response, final_response]
 
     @staticmethod
-    def _make_transport_patch(table, responses=None):
-        """Patch a table's _make_transport method to return given responses."""
+    def _make_transport(responses=None):
         import google.auth.transport.requests
 
         transport = mock.create_autospec(
             google.auth.transport.requests.AuthorizedSession, instance=True)
         transport.request.side_effect = responses
-        return mock.patch.object(
-            table, '_make_transport', return_value=transport, autospec=True)
+        return transport
 
     def test__do_resumable_upload(self):
-        table = self._make_table()
         file_obj = self._make_file_obj()
         file_obj_len = len(file_obj.getvalue())
-        responses = self._make_resumable_upload_responses(file_obj_len)
+        transport = self._make_transport(
+            self._make_resumable_upload_responses(file_obj_len))
+        table = self._make_table(transport)
 
-        with self._make_transport_patch(table, responses) as transport:
-            result = table._do_resumable_upload(
-                table._dataset._client,
-                file_obj,
-                self.EXPECTED_CONFIGURATION,
-                None)
+        result = table._do_resumable_upload(
+            table._dataset._client,
+            file_obj,
+            self.EXPECTED_CONFIGURATION,
+            None)
 
         content = result.content.decode('utf-8')
         assert json.loads(content) == {'size': file_obj_len}
 
         # Verify that configuration data was passed in with the initial
         # request.
-        transport.return_value.request.assert_any_call(
+        transport.request.assert_any_call(
             'POST',
             mock.ANY,
             data=json.dumps(self.EXPECTED_CONFIGURATION).encode('utf-8'),
             headers=mock.ANY)
 
     def test__do_multipart_upload(self):
-        table = self._make_table()
+        transport = self._make_transport([self._make_response(http_client.OK)])
+        table = self._make_table(transport)
         file_obj = self._make_file_obj()
         file_obj_len = len(file_obj.getvalue())
-        responses = [self._make_response(http_client.OK)]
 
-        with self._make_transport_patch(table, responses) as transport:
-            table._do_multipart_upload(
-                table._dataset._client,
-                file_obj,
-                self.EXPECTED_CONFIGURATION,
-                file_obj_len,
-                None)
+        table._do_multipart_upload(
+            table._dataset._client,
+            file_obj,
+            self.EXPECTED_CONFIGURATION,
+            file_obj_len,
+            None)
 
         # Verify that configuration data was passed in with the initial
         # request.
-        request_args = transport.return_value.request.mock_calls[0][2]
+        request_args = transport.request.mock_calls[0][2]
         request_data = request_args['data'].decode('utf-8')
         request_headers = request_args['headers']
 

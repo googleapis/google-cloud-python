@@ -19,7 +19,6 @@ import os
 
 import six
 
-import google.auth.transport.requests
 from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
@@ -823,8 +822,8 @@ class Table(object):
 
         return errors
 
-    def _make_transport(self, client):
-        """Make an authenticated transport with a client's credentials.
+    def _get_transport(self, client):
+        """Return the client's transport.
 
         :type client: :class:`~google.cloud.bigquery.client.Client`
         :param client: The client to use.
@@ -834,10 +833,7 @@ class Table(object):
         :returns: The transport (with credentials) that will
                   make authenticated requests.
         """
-        # Create a ``requests`` transport with the client's credentials.
-        transport = google.auth.transport.requests.AuthorizedSession(
-            client._credentials)
-        return transport
+        return client._http
 
     def _initiate_resumable_upload(self, client, stream,
                                    metadata, num_retries):
@@ -865,7 +861,7 @@ class Table(object):
             * The ``transport`` used to initiate the upload.
         """
         chunk_size = _DEFAULT_CHUNKSIZE
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         headers = _get_upload_headers(client._connection.USER_AGENT)
         upload_url = _RESUMABLE_URL_TEMPLATE.format(project=self.project)
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
@@ -941,7 +937,7 @@ class Table(object):
             msg = _READ_LESS_THAN_SIZE.format(size, len(data))
             raise ValueError(msg)
 
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         headers = _get_upload_headers(client._connection.USER_AGENT)
 
         upload_url = _MULTIPART_URL_TEMPLATE.format(project=self.project)
