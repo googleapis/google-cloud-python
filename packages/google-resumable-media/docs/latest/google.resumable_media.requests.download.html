@@ -331,6 +331,8 @@ be sent with the request, e.g. headers for encrypted data.</li>
 <dt id="google.resumable_media.requests.download.Download.consume">
 <code class="descname">consume</code><span class="sig-paren">(</span><em>transport</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.requests.download.Download.consume" title="Permalink to this definition">¶</a></dt>
 <dd><p>Consume the resource to be downloaded.</p>
+<p>If a <code class="docutils literal"><span class="pre">stream</span></code> is attached to this download, then the downloaded
+resource will be written to the stream.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
