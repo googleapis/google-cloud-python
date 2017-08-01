@@ -57,9 +57,9 @@ def test_ack():
             msg.ack()
             put.assert_called_once_with(('ack', {
                 'ack_id': 'bogus_ack_id',
+                'byte_size': 25,
                 'time_to_ack': mock.ANY,
             }))
-            drop.assert_called_once_with()
 
 
 def test_drop():
@@ -93,9 +93,10 @@ def test_modify_ack_deadline():
 
 
 def test_nack():
-    msg = create_message(b'foo')
-    with mock.patch.object(message.Message, 'modify_ack_deadline') as mad:
-        with mock.patch.object(message.Message, 'drop') as drop:
-            msg.nack()
-            mad.assert_called_once_with(seconds=0)
-            drop.assert_called_once_with()
+    msg = create_message(b'foo', ack_id='bogus_id')
+    with mock.patch.object(msg._request_queue, 'put') as put:
+        msg.nack()
+        put.assert_called_once_with(('nack', {
+            'ack_id': 'bogus_id',
+            'byte_size': 25,
+        }))

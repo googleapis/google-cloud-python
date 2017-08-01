@@ -200,10 +200,11 @@ class Consumer(object):
         """
         # First, yield the initial request. This occurs on every new
         # connection, fundamentally including a resumed connection.
+        initial_request = self._policy.get_initial_request(ack_queue=True)
         _LOGGER.debug('Sending initial request: {initial_request}'.format(
-            initial_request=self._policy.initial_request,
+            initial_request=initial_request,
         ))
-        yield self._policy.initial_request
+        yield initial_request
 
         # Now yield each of the items on the request queue, and block if there
         # are none. This can and must block to keep the stream open.

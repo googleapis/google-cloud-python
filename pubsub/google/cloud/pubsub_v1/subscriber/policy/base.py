@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division
 
 import abc
 import logging
@@ -69,9 +69,14 @@ class BasePolicy(object):
         self._consumer = consumer.Consumer(self)
         self._ack_deadline = 10
         self._last_histogram_size = 0
-        self._bytes = 0
         self.flow_control = flow_control
         self.histogram = histogram.Histogram(data=histogram_data)
+
+        # These are for internal flow control tracking.
+        # They should not need to be used by subclasses.
+        self._bytes = 0
+        self._ack_on_resume = set()
+        self._paused = False
 
     @property
     def ack_deadline(self):
@@ -93,18 +98,6 @@ class BasePolicy(object):
         return self._ack_deadline
 
     @property
-    def initial_request(self):
-        """Return the initial request.
-
-        This defines the initial request that must always be sent to Pub/Sub
-        immediately upon opening the subscription.
-        """
-        return types.StreamingPullRequest(
-            stream_ack_deadline_seconds=self.histogram.percentile(99),
-            subscription=self.subscription,
-        )
-
-    @property
     def managed_ack_ids(self):
         """Return the ack IDs currently being managed by the policy.
 
@@ -124,7 +117,29 @@ class BasePolicy(object):
         """
         return self._subscription
 
-    def ack(self, ack_id, time_to_ack=None):
+    @property
+    def _load(self):
+        """Return the current load.
+
+        The load is represented as a float, where 1.0 represents having
+        hit one of the flow control limits, and values between 0.0 and 1.0
+        represent how close we are to them. (0.5 means we have exactly half
+        of what the flow control setting allows, for example.)
+
+        There are (currently) two flow control settings; this property
+        computes how close the subscriber is to each of them, and returns
+        whichever value is higher. (It does not matter that we have lots of
+        running room on setting A if setting B is over.)
+
+        Returns:
+            float: The load value.
+        """
+        return max([
+            len(self.managed_ack_ids) / self.flow_control.max_messages,
+            self._bytes / self.flow_control.max_bytes,
+        ])
+
+    def ack(self, ack_id, time_to_ack=None, byte_size=None):
         """Acknowledge the message corresponding to the given ack_id.
 
         Args:
@@ -132,11 +147,24 @@ class BasePolicy(object):
             time_to_ack (int): The time it took to ack the message, measured
                 from when it was received from the subscription. This is used
                 to improve the automatic ack timing.
+            byte_size (int): The size of the PubSub message, in bytes.
         """
+        # If we got timing information, add it to the histogram.
         if time_to_ack is not None:
             self.histogram.add(int(time_to_ack))
-        request = types.StreamingPullRequest(ack_ids=[ack_id])
-        self._consumer.send_request(request)
+
+        # Send the request to ack the message.
+        # However, if the consumer is inactive, then queue the ack_id here
+        # instead; it will be acked as part of the initial request when the
+        # consumer is started again.
+        if self._consumer.active:
+            request = types.StreamingPullRequest(ack_ids=[ack_id])
+            self._consumer.send_request(request)
+        else:
+            self._ack_on_resume.add(ack_id)
+
+        # Remove the message from lease management.
+        self.drop(ack_id=ack_id, byte_size=byte_size)
 
     def call_rpc(self, request_generator):
         """Invoke the Pub/Sub streaming pull RPC.
@@ -155,10 +183,69 @@ class BasePolicy(object):
             ack_id (str): The ack ID.
             byte_size (int): The size of the PubSub message, in bytes.
         """
+        # Remove the ack ID from lease management, and decrement the
+        # byte counter.
         if ack_id in self.managed_ack_ids:
             self.managed_ack_ids.remove(ack_id)
             self._bytes -= byte_size
             self._bytes = min([self._bytes, 0])
+
+        # If we have been paused by flow control, check and see if we are
+        # back within our limits.
+        #
+        # In order to not thrash too much, require us to have passed below
+        # the resume threshold (80% by default) of each flow control setting
+        # before restarting.
+        if self._paused and self._load < self.flow_control.resume_threshold:
+            self._paused = False
+            self.open(self._callback)
+
+    def get_initial_request(self, ack_queue=False):
+        """Return the initial request.
+
+        This defines the initial request that must always be sent to Pub/Sub
+        immediately upon opening the subscription.
+
+        Args:
+            ack_queue (bool): Whether to include any acks that were sent
+                while the connection was paused.
+
+        Returns:
+            ~.pubsub_v1.types.StreamingPullRequest: A request suitable
+                for being the first request on the stream (and not suitable
+                for any other purpose).
+
+        .. note::
+            If ``ack_queue`` is set to True, this includes the ack_ids, but
+            also clears the internal set.
+
+            This means that calls to :meth:`get_initial_request` with
+            ``ack_queue`` set to True are not idempotent.
+        """
+        # Any ack IDs that are under lease management and not being acked
+        # need to have their deadline extended immediately.
+        ack_ids = set()
+        lease_ids = self.managed_ack_ids
+        if ack_queue:
+            ack_ids = self._ack_on_resume
+            lease_ids = lease_ids.difference(ack_ids)
+
+        # Put the request together.
+        request = types.StreamingPullRequest(
+            ack_ids=list(ack_ids),
+            modify_deadline_ack_ids=list(lease_ids),
+            modify_deadline_seconds=[self.ack_deadline] * len(lease_ids),
+            stream_ack_deadline_seconds=self.histogram.percentile(99),
+            subscription=self.subscription,
+        )
+
+        # Clear the ack_ids set.
+        # Note: If `ack_queue` is False, this just ends up being a no-op,
+        # since the set is just an empty set.
+        ack_ids.clear()
+
+        # Return the initial request.
+        return request
 
     def lease(self, ack_id, byte_size):
         """Add the given ack ID to lease management.
@@ -167,9 +254,17 @@ class BasePolicy(object):
             ack_id (str): The ack ID.
             byte_size (int): The size of the PubSub message, in bytes.
         """
+        # Add the ack ID to the set of managed ack IDs, and increment
+        # the size counter.
         if ack_id not in self.managed_ack_ids:
             self.managed_ack_ids.add(ack_id)
             self._bytes += byte_size
+
+        # Sanity check: Do we have too many things in our inventory?
+        # If we do, we need to stop the stream.
+        if self._load >= 1.0:
+            self._paused = True
+            self.close()
 
     def maintain_leases(self):
         """Maintain all of the leases being managed by the policy.
@@ -202,7 +297,7 @@ class BasePolicy(object):
         # it is more efficient to make a single request.
         ack_ids = list(self.managed_ack_ids)
         logger.debug('Renewing lease for %d ack IDs.' % len(ack_ids))
-        if len(ack_ids) > 0:
+        if len(ack_ids) > 0 and self._consumer.active:
             request = types.StreamingPullRequest(
                 modify_deadline_ack_ids=ack_ids,
                 modify_deadline_seconds=[p99] * len(ack_ids),
@@ -233,13 +328,33 @@ class BasePolicy(object):
         )
         self._consumer.send_request(request)
 
-    def nack(self, ack_id):
+    def nack(self, ack_id, byte_size=None):
         """Explicitly deny receipt of a message.
 
         Args:
             ack_id (str): The ack ID.
+            byte_size (int): The size of the PubSub message, in bytes.
         """
-        return self.modify_ack_deadline(ack_id=ack_id, seconds=0)
+        self.modify_ack_deadline(ack_id=ack_id, seconds=0)
+        self.drop(ack_id=ack_id, byte_size=byte_size)
+
+    @abc.abstractmethod
+    def close(self):
+        """Close the existing connection."""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def on_exception(self, exception):
+        """Called when a gRPC exception occurs.
+
+        If this method does nothing, then the stream is re-started. If this
+        raises an exception, it will stop the consumer thread.
+        This is executed on the response consumer helper thread.
+
+        Args:
+            exception (Exception): The exception raised by the RPC.
+        """
+        raise NotImplementedError
 
     @abc.abstractmethod
     def on_response(self, response):
@@ -259,19 +374,6 @@ class BasePolicy(object):
 
         Args:
             response (Any): The protobuf response from the RPC.
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def on_exception(self, exception):
-        """Called when a gRPC exception occurs.
-
-        If this method does nothing, then the stream is re-started. If this
-        raises an exception, it will stop the consumer thread.
-        This is executed on the response consumer helper thread.
-
-        Args:
-            exception (Exception): The exception raised by the RPC.
         """
         raise NotImplementedError
 

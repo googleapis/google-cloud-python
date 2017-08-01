@@ -44,11 +44,12 @@ BatchSettings.__new__.__defaults__ = (
 # these settings can be altered to tweak Pub/Sub behavior.
 # The defaults should be fine for most use cases.
 FlowControl = collections.namedtuple('FlowControl',
-    ['max_bytes', 'max_messages'],
+    ['max_bytes', 'max_messages', 'resume_threshold'],
 )
 FlowControl.__new__.__defaults__ = (
     psutil.virtual_memory().total * 0.2,  # max_bytes: 20% of total RAM
     float('inf'),                         # max_messages: no limit
+    0.8,                                  # resume_threshold: 80%
 )
 
 
