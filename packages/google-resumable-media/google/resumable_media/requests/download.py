@@ -95,10 +95,11 @@ class Download(_helpers.RequestsMixin, _download.Download):
         result = _helpers.http_request(
             transport, method, url, **request_kwargs)
 
+        self._process_response(result)
+
         if self._stream is not None:
             self._write_to_stream(result)
 
-        self._process_response(result)
         return result
 
 
