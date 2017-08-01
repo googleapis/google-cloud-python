@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v1.0.2
+------
+
+- Fixed a bug where the Cloud SDK executable could not be found on Windows, leading to project ID detection failing. (#179)
+- Fixed a bug where the timeout argument wasn't being passed through the httplib transport correctly. (#175)
+- Added documentation for using the library on Google App Engine standard. (#172)
+- Testing style updates. (#168)
+- Added documentation around the oauth2client deprecation. (#165)
+- Fixed a few lint issues caught by newer versions of pylint. (#166)
+
 v1.0.1
 ------
 
