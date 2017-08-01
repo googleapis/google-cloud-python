@@ -65,6 +65,24 @@ def test_get_project_id_call_error(check_output):
     assert check_output.called
 
 
+@mock.patch('os.name', new='nt')
+def test_get_project_id_windows():
+    check_output_patch = mock.patch(
+        'subprocess.check_output', autospec=True,
+        return_value=CLOUD_SDK_CONFIG_FILE_DATA)
+
+    with check_output_patch as check_output:
+        project_id = _cloud_sdk.get_project_id()
+
+    assert project_id == 'example-project'
+    assert check_output.called
+    # Make sure the executable is `gcloud.cmd`.
+    args = check_output.call_args[0]
+    command = args[0]
+    executable = command[0]
+    assert executable == 'gcloud.cmd'
+
+
 @mock.patch(
     'google.auth._cloud_sdk.get_config_path', autospec=True)
 def test_get_application_default_credentials_path(get_config_dir):

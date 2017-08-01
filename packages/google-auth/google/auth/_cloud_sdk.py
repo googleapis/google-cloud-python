@@ -33,9 +33,11 @@ _WINDOWS_CONFIG_ROOT_ENV_VAR = 'APPDATA'
 # The name of the file in the Cloud SDK config that contains default
 # credentials.
 _CREDENTIALS_FILENAME = 'application_default_credentials.json'
+# The name of the Cloud SDK shell script
+_CLOUD_SDK_POSIX_COMMAND = 'gcloud'
+_CLOUD_SDK_WINDOWS_COMMAND = 'gcloud.cmd'
 # The command to get the Cloud SDK configuration
-_CLOUD_SDK_CONFIG_COMMAND = (
-    'gcloud', 'config', 'config-helper', '--format', 'json')
+_CLOUD_SDK_CONFIG_COMMAND = ('config', 'config-helper', '--format', 'json')
 
 
 def get_config_path():
@@ -114,10 +116,14 @@ def get_project_id():
     Returns:
         Optional[str]: The project ID.
     """
+    if os.name == 'nt':
+        command = _CLOUD_SDK_WINDOWS_COMMAND
+    else:
+        command = _CLOUD_SDK_POSIX_COMMAND
 
     try:
         output = subprocess.check_output(
-            _CLOUD_SDK_CONFIG_COMMAND,
+            (command,) + _CLOUD_SDK_CONFIG_COMMAND,
             stderr=subprocess.STDOUT)
     except (subprocess.CalledProcessError, OSError, IOError):
         return None
