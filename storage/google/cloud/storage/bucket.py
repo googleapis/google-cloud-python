@@ -544,6 +544,19 @@ class Bucket(_PropertyMixin):
         See http://www.w3.org/TR/cors/ and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
+        .. note::
+
+           The getter for this property returns a list which contains
+           *copies* of the bucket's CORS policy mappings.  Mutating the list
+           or one of its dicts has no effect unless you then re-assign the
+           dict via the setter.  E.g.:
+
+           >>> policies = bucket.cors
+           >>> policies.append({'origin': '/foo', ...})
+           >>> policies[1]['maxAgeSeconds'] = 3600
+           >>> del policies[0]
+           >>> bucket.cors = policies
+
         :setter: Set CORS policies for this bucket.
         :getter: Gets the CORS policies for this bucket.
 
@@ -567,10 +580,21 @@ class Bucket(_PropertyMixin):
 
     @property
     def labels(self):
-        """Retrieve or set CORS policies configured for this bucket.
+        """Retrieve or set labels assigned to this bucket.
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets#labels
+
+        .. note::
+
+           The getter for this property returns a dict which is a *copy*
+           of the bucket's labels.  Mutating that dict has no effect unless
+           you then re-assign the dict via the setter.  E.g.:
+
+           >>> labels = bucket.labels
+           >>> labels['new_key'] = 'some-label'
+           >>> del labels['old_key']
+           >>> bucket.labels = labels
 
         :setter: Set labels for this bucket.
         :getter: Gets the labels for this bucket.
@@ -585,7 +609,7 @@ class Bucket(_PropertyMixin):
 
     @labels.setter
     def labels(self, mapping):
-        """Set CORS policies configured for this bucket.
+        """Set labels assigned to this bucket.
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets#labels
@@ -626,6 +650,19 @@ class Bucket(_PropertyMixin):
 
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        .. note::
+
+           The getter for this property returns a list which contains
+           *copies* of the bucket's lifecycle rules mappings.  Mutating the
+           list or one of its dicts has no effect unless you then re-assign
+           the dict via the setter.  E.g.:
+
+           >>> rules = bucket.lifecycle_rules
+           >>> rules.append({'origin': '/foo', ...})
+           >>> rules[1]['rule']['action']['type'] = 'Delete'
+           >>> del rules[0]
+           >>> bucket.lifecycle_rules = rules
 
         :setter: Set lifestyle rules for this bucket.
         :getter: Gets the lifestyle rules for this bucket.
