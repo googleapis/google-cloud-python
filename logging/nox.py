@@ -74,9 +74,10 @@ def system_tests(session, python_version):
     session.run(
         'py.test',
         '-vvv',
+        '-s',
         'tests/system.py',
         *session.posargs,
-        success_codes=range(0, 100),
+        success_codes=range(0, 100)
     )
 
 
