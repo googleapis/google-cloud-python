@@ -414,9 +414,8 @@ class Blob(_PropertyMixin):
         :param headers: Optional headers to be sent with the request(s).
         """
         if self.chunk_size is None:
-            download = Download(download_url, headers=headers)
-            response = download.consume(transport)
-            file_obj.write(response.content)
+            download = Download(download_url, stream=file_obj, headers=headers)
+            download.consume(transport)
         else:
             download = ChunkedDownload(
                 download_url, self.chunk_size, file_obj, headers=headers)
