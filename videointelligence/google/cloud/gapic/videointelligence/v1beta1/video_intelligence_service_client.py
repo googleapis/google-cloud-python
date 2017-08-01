@@ -225,7 +225,6 @@ class VideoIntelligenceServiceClient(object):
           :exc:`google.gax.errors.GaxError` if the RPC is aborted.
           :exc:`ValueError` if the parameters are invalid.
         """
-        # Create the request object.
         request = video_intelligence_pb2.AnnotateVideoRequest(
             input_uri=input_uri,
             features=features,

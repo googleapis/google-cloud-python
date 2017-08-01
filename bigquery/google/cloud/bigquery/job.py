@@ -14,8 +14,12 @@
 
 """Define API Jobs."""
 
-import six
+import threading
 
+import six
+from six.moves import http_client
+
+from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.bigquery.dataset import Dataset
@@ -27,6 +31,67 @@ from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
 from google.cloud.bigquery._helpers import _TypedProperty
+import google.cloud.future.polling
+
+_DONE_STATE = 'DONE'
+_STOPPED_REASON = 'stopped'
+
+_ERROR_REASON_TO_EXCEPTION = {
+    'accessDenied': http_client.FORBIDDEN,
+    'backendError': http_client.INTERNAL_SERVER_ERROR,
+    'billingNotEnabled': http_client.FORBIDDEN,
+    'billingTierLimitExceeded': http_client.BAD_REQUEST,
+    'blocked': http_client.FORBIDDEN,
+    'duplicate': http_client.CONFLICT,
+    'internalError': http_client.INTERNAL_SERVER_ERROR,
+    'invalid': http_client.BAD_REQUEST,
+    'invalidQuery': http_client.BAD_REQUEST,
+    'notFound': http_client.NOT_FOUND,
+    'notImplemented': http_client.NOT_IMPLEMENTED,
+    'quotaExceeded': http_client.FORBIDDEN,
+    'rateLimitExceeded': http_client.FORBIDDEN,
+    'resourceInUse': http_client.BAD_REQUEST,
+    'resourcesExceeded': http_client.BAD_REQUEST,
+    'responseTooLarge': http_client.FORBIDDEN,
+    'stopped': http_client.OK,
+    'tableUnavailable': http_client.BAD_REQUEST,
+}
+
+
+def _error_result_to_exception(error_result):
+    """Maps BigQuery error reasons to an exception.
+
+    The reasons and their matching HTTP status codes are documented on
+    the `troubleshooting errors`_ page.
+
+    .. _troubleshooting errors: https://cloud.google.com/bigquery\
+        /troubleshooting-errors
+
+    :type error_result: Mapping[str, str]
+    :param error_result: The error result from BigQuery.
+
+    :rtype google.cloud.exceptions.GoogleCloudError:
+    :returns: The mapped exception.
+    """
+    reason = error_result.get('reason')
+    status_code = _ERROR_REASON_TO_EXCEPTION.get(
+        reason, http_client.INTERNAL_SERVER_ERROR)
+    return exceptions.from_http_status(
+        status_code, error_result.get('message', ''), errors=[error_result])
+
+
+class AutoDetectSchema(_TypedProperty):
+    """Typed Property for ``autodetect`` properties.
+
+    :raises ValueError: on ``set`` operation if ``instance.schema``
+                        is already defined.
+    """
+    def __set__(self, instance, value):
+        self._validate(value)
+        if instance.schema:
+            raise ValueError('A schema should not be already defined '
+                             'when using schema auto-detection')
+        setattr(instance._configuration, self._backing_name, value)
 
 
 class Compression(_EnumProperty):
@@ -82,16 +147,23 @@ class WriteDisposition(_EnumProperty):
     ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
 
 
-class _BaseJob(object):
-    """Base class for jobs.
+class _AsyncJob(google.cloud.future.polling.PollingFuture):
+    """Base class for asynchronous jobs.
+
+    :type name: str
+    :param name: the name of the job
 
     :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
-    def __init__(self, client):
+    def __init__(self, name, client):
+        super(_AsyncJob, self).__init__()
+        self.name = name
         self._client = client
         self._properties = {}
+        self._result_set = False
+        self._completion_lock = threading.Lock()
 
     @property
     def project(self):
@@ -116,21 +188,6 @@ class _BaseJob(object):
         if client is None:
             client = self._client
         return client
-
-
-class _AsyncJob(_BaseJob):
-    """Base class for asynchronous jobs.
-
-    :type name: str
-    :param name: the name of the job
-
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
-    """
-    def __init__(self, name, client):
-        super(_AsyncJob, self).__init__(client)
-        self.name = name
 
     @property
     def job_type(self):
@@ -256,7 +313,7 @@ class _AsyncJob(_BaseJob):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: httplib2.Response
+        :type api_response: dict
         :param api_response: response returned from an API call
         """
         cleaned = api_response.copy()
@@ -272,6 +329,9 @@ class _AsyncJob(_BaseJob):
 
         self._properties.clear()
         self._properties.update(cleaned)
+
+        # For Future interface
+        self._set_future_result()
 
     @classmethod
     def _get_resource_config(cls, resource):
@@ -301,7 +361,7 @@ class _AsyncJob(_BaseJob):
     def begin(self, client=None):
         """API call:  begin the job via a POST request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -345,7 +405,7 @@ class _AsyncJob(_BaseJob):
             return True
 
     def reload(self, client=None):
-        """API call:  refresh job properties via a GET request
+        """API call:  refresh job properties via a GET request.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
@@ -371,12 +431,85 @@ class _AsyncJob(_BaseJob):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
+
+        :rtype: bool
+        :returns: Boolean indicating that the cancel request was sent.
         """
         client = self._require_client(client)
 
         api_response = client._connection.api_request(
             method='POST', path='%s/cancel' % (self.path,))
         self._set_properties(api_response['job'])
+        # The Future interface requires that we return True if the *attempt*
+        # to cancel was successful.
+        return True
+
+    # The following methods implement the PollingFuture interface. Note that
+    # the methods above are from the pre-Future interface and are left for
+    # compatibility. The only "overloaded" method is :meth:`cancel`, which
+    # satisfies both interfaces.
+
+    def _set_future_result(self):
+        """Set the result or exception from the job if it is complete."""
+        # This must be done in a lock to prevent the polling thread
+        # and main thread from both executing the completion logic
+        # at the same time.
+        with self._completion_lock:
+            # If the operation isn't complete or if the result has already been
+            # set, do not call set_result/set_exception again.
+            # Note: self._result_set is set to True in set_result and
+            # set_exception, in case those methods are invoked directly.
+            if self.state != _DONE_STATE or self._result_set:
+                return
+
+            if self.error_result is not None:
+                exception = _error_result_to_exception(self.error_result)
+                self.set_exception(exception)
+            else:
+                self.set_result(self)
+
+    def done(self):
+        """Refresh the job and checks if it is complete.
+
+        :rtype: bool
+        :returns: True if the job is complete, False otherwise.
+        """
+        # Do not refresh is the state is already done, as the job will not
+        # change once complete.
+        if self.state != _DONE_STATE:
+            self.reload()
+        return self.state == _DONE_STATE
+
+    def result(self, timeout=None):
+        """Start the job and wait for it to complete and get the result.
+
+        :type timeout: int
+        :param timeout: How long to wait for job to complete before raising
+            a :class:`TimeoutError`.
+
+        :rtype: _AsyncJob
+        :returns: This instance.
+
+        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
+            failed or  :class:`TimeoutError` if the job did not complete in the
+            given timeout.
+        """
+        if self.state is None:
+            self.begin()
+        return super(_AsyncJob, self).result(timeout=timeout)
+
+    def cancelled(self):
+        """Check if the job has been cancelled.
+
+        This always returns False. It's not possible to check if a job was
+        cancelled in the API. This method is here to satisfy the interface
+        for :class:`google.cloud.future.Future`.
+
+        :rtype: bool
+        :returns: False
+        """
+        return (self.error_result is not None
+                and self.error_result.get('reason') == _STOPPED_REASON)
 
 
 class _LoadConfiguration(object):
@@ -386,6 +519,7 @@ class _LoadConfiguration(object):
     """
     _allow_jagged_rows = None
     _allow_quoted_newlines = None
+    _autodetect = None
     _create_disposition = None
     _encoding = None
     _field_delimiter = None
@@ -425,9 +559,10 @@ class LoadTableFromStorageJob(_AsyncJob):
         super(LoadTableFromStorageJob, self).__init__(name, client)
         self.destination = destination
         self.source_uris = source_uris
-        # Let the @property do validation.
-        self.schema = schema
         self._configuration = _LoadConfiguration()
+        # Let the @property do validation. This must occur after all other
+        # attributes have been set.
+        self.schema = schema
 
     @property
     def schema(self):
@@ -445,12 +580,20 @@ class LoadTableFromStorageJob(_AsyncJob):
         :type value: list of :class:`SchemaField`
         :param value: fields describing the schema
 
-        :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not a SchemaField
+        :raises TypeError: If ``value`is not a sequence.
+        :raises ValueError: If any item in the sequence is not
+                            a ``SchemaField``.
         """
-        if not all(isinstance(field, SchemaField) for field in value):
-            raise ValueError('Schema items must be fields')
-        self._schema = tuple(value)
+        if not value:
+            self._schema = ()
+        else:
+            if not all(isinstance(field, SchemaField) for field in value):
+                raise ValueError('Schema items must be fields')
+            if self.autodetect:
+                raise ValueError(
+                    'Schema can not be set if `autodetect` property is True')
+
+            self._schema = tuple(value)
 
     @property
     def input_file_bytes(self):
@@ -497,57 +640,62 @@ class LoadTableFromStorageJob(_AsyncJob):
             return int(statistics['load']['outputRows'])
 
     allow_jagged_rows = _TypedProperty('allow_jagged_rows', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowJaggedRows
     """
 
     allow_quoted_newlines = _TypedProperty('allow_quoted_newlines', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
     """
 
+    autodetect = AutoDetectSchema('autodetect', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect
+    """
+
     create_disposition = CreateDisposition('create_disposition')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition
     """
 
     encoding = Encoding('encoding')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.encoding
     """
 
     field_delimiter = _TypedProperty('field_delimiter', six.string_types)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.fieldDelimiter
     """
 
     ignore_unknown_values = _TypedProperty('ignore_unknown_values', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.ignoreUnknownValues
     """
 
     max_bad_records = _TypedProperty('max_bad_records', six.integer_types)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
     """
 
     quote_character = _TypedProperty('quote_character', six.string_types)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
     """
 
     skip_leading_rows = _TypedProperty('skip_leading_rows', six.integer_types)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
     """
 
     source_format = SourceFormat('source_format')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceFormat
     """
 
     write_disposition = WriteDisposition('write_disposition')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
     """
 
@@ -557,6 +705,8 @@ class LoadTableFromStorageJob(_AsyncJob):
             configuration['allowJaggedRows'] = self.allow_jagged_rows
         if self.allow_quoted_newlines is not None:
             configuration['allowQuotedNewlines'] = self.allow_quoted_newlines
+        if self.autodetect is not None:
+            configuration['autodetect'] = self.autodetect
         if self.create_disposition is not None:
             configuration['createDisposition'] = self.create_disposition
         if self.encoding is not None:
@@ -672,12 +822,12 @@ class CopyJob(_AsyncJob):
         self._configuration = _CopyConfiguration()
 
     create_disposition = CreateDisposition('create_disposition')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.createDisposition
     """
 
     write_disposition = WriteDisposition('write_disposition')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition
     """
 
@@ -795,22 +945,22 @@ class ExtractTableToStorageJob(_AsyncJob):
         self._configuration = _ExtractConfiguration()
 
     compression = Compression('compression')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.compression
     """
 
     destination_format = DestinationFormat('destination_format')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat
     """
 
     field_delimiter = _TypedProperty('field_delimiter', six.string_types)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.fieldDelimiter
     """
 
     print_header = _TypedProperty('print_header', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader
     """
 
@@ -936,32 +1086,32 @@ class QueryJob(_AsyncJob):
         self._configuration = _AsyncQueryConfiguration()
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults
     """
 
     create_disposition = CreateDisposition('create_disposition')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
     """
 
     default_dataset = _TypedProperty('default_dataset', Dataset)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.defaultDataset
     """
 
     destination = _TypedProperty('destination', Table)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
     """
 
     flatten_results = _TypedProperty('flatten_results', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults
     """
 
     priority = QueryPriority('priority')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
     """
 
@@ -970,34 +1120,34 @@ class QueryJob(_AsyncJob):
     udf_resources = UDFResourcesProperty()
 
     use_query_cache = _TypedProperty('use_query_cache', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache
     """
 
     use_legacy_sql = _TypedProperty('use_legacy_sql', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/\
     reference/v2/jobs#configuration.query.useLegacySql
     """
 
     dry_run = _TypedProperty('dry_run', bool)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/\
     reference/rest/v2/jobs#configuration.dryRun
     """
 
     write_disposition = WriteDisposition('write_disposition')
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
     """
 
     maximum_billing_tier = _TypedProperty('maximum_billing_tier', int)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
     """
 
     maximum_bytes_billed = _TypedProperty('maximum_bytes_billed', int)
-    """See:
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
     """
 
@@ -1127,7 +1277,7 @@ class QueryJob(_AsyncJob):
         job._set_properties(resource)
         return job
 
-    def results(self):
+    def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
         :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
@@ -1135,3 +1285,21 @@ class QueryJob(_AsyncJob):
         """
         from google.cloud.bigquery.query import QueryResults
         return QueryResults.from_query_job(self)
+
+    def result(self, timeout=None):
+        """Start the job and wait for it to complete and get the result.
+
+        :type timeout: int
+        :param timeout: How long to wait for job to complete before raising
+            a :class:`TimeoutError`.
+
+        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
+        :returns: The query results.
+
+        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
+            failed or  :class:`TimeoutError` if the job did not complete in the
+            given timeout.
+        """
+        super(QueryJob, self).result(timeout=timeout)
+        # Return a QueryResults instance instead of returning the job.
+        return self.query_results()

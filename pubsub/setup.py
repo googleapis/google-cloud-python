@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'googleapis-packages@google.com',
+    'author_email': 'googleapis-publisher@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -60,7 +60,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-pubsub',
-    version='0.26.0',
+    version='0.27.0',
     description='Python Client for Google Cloud Pub/Sub',
     long_description=README,
     namespace_packages=[

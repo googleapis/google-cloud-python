@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
+    'author_email': 'googleapis-publisher@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -51,7 +51,7 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.24.1, < 0.25dev',
+    'google-cloud-core >= 0.25.0, < 0.26dev',
     'grpcio >= 1.2.0, < 2.0dev',
     'gapic-google-cloud-spanner-v1 >= 0.15.0, < 0.16dev',
     'gapic-google-cloud-spanner-admin-database-v1 >= 0.15.0, < 0.16dev',
@@ -60,7 +60,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-spanner',
-    version='0.24.2',
+    version='0.25.0',
     description='Python Client for Cloud Spanner',
     long_description=README,
     namespace_packages=[

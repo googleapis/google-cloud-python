@@ -336,7 +336,7 @@ def table_update(client, to_delete):
 
 
 def _warm_up_inserted_table_data(table):
-    # Allow for 90 seconds of "warm up" before rows visible.  See:
+    # Allow for 90 seconds of "warm up" before rows visible.  See
     # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
     rows = ()
     counter = 18
@@ -520,8 +520,8 @@ def client_run_sync_query_paged(client, _):
 
     all_rows = []
 
-    def do_something_with(rows):
-        all_rows.extend(rows)
+    def do_something_with(row):
+        all_rows.append(row)
 
     # [START client_run_sync_query_paged]
     query = client.run_sync_query(LIMITED)
@@ -534,18 +534,12 @@ def client_run_sync_query_paged(client, _):
     assert len(query.rows) == PAGE_SIZE
     assert [field.name for field in query.schema] == ['name']
 
-    rows = query.rows
-    token = query.page_token
-
-    while True:
-        do_something_with(rows)
-        if token is None:
-            break
-        rows, total_count, token = query.fetch_data(
-            page_token=token)       # API request
+    iterator = query.fetch_data()   # API request(s) during iteration
+    for row in iterator:
+        do_something_with(row)
     # [END client_run_sync_query_paged]
 
-    assert total_count == LIMIT
+    assert iterator.total_rows == LIMIT
     assert len(all_rows) == LIMIT
 
 
@@ -556,8 +550,8 @@ def client_run_sync_query_timeout(client, _):
 
     all_rows = []
 
-    def do_something_with(rows):
-        all_rows.extend(rows)
+    def do_something_with(row):
+        all_rows.append(row)
 
     # [START client_run_sync_query_timeout]
     query = client.run_sync_query(QUERY)
@@ -578,16 +572,12 @@ def client_run_sync_query_timeout(client, _):
 
     assert job.state == u'DONE'
 
-    rows, total_count, token = query.fetch_data()  # API request
-    while True:
-        do_something_with(rows)
-        if token is None:
-            break
-        rows, total_count, token = query.fetch_data(
-            page_token=token)  # API request
+    iterator = query.fetch_data()         # API request(s) during iteration
+    for row in iterator:
+        do_something_with(row)
     # [END client_run_sync_query_timeout]
 
-    assert len(all_rows) == total_count
+    assert len(all_rows) == iterator.total_rows
 
 
 def _find_examples():

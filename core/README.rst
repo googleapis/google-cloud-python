@@ -9,7 +9,7 @@ used by all of the ``google-cloud-*``.
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/google-cloud-api.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/core/modules.html
 
 Quick Start
 -----------
@@ -19,6 +19,6 @@ Quick Start
     $ pip install --upgrade google-cloud-core
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-core.svg
-   :target: https://pypi.python.org/pypi/google-cloud-core
+   :target: https://pypi.org/project/google-cloud-core/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-core.svg
-   :target: https://pypi.python.org/pypi/google-cloud-core
+   :target: https://pypi.org/project/google-cloud-core/

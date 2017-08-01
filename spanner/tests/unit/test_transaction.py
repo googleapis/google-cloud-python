@@ -42,16 +42,19 @@ class TestTransaction(unittest.TestCase):
 
         return Transaction
 
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, session, *args, **kwargs):
+        transaction = self._getTargetClass()(session, *args, **kwargs)
+        session._transaction = transaction
+        return transaction
 
     def test_ctor_defaults(self):
         session = _Session()
         transaction = self._make_one(session)
-        self.assertTrue(transaction._session is session)
-        self.assertIsNone(transaction._id)
+        self.assertIs(transaction._session, session)
+        self.assertIsNone(transaction._transaction_id)
         self.assertIsNone(transaction.committed)
-        self.assertEqual(transaction._rolled_back, False)
+        self.assertFalse(transaction._rolled_back)
+        self.assertTrue(transaction._multi_use)
 
     def test__check_state_not_begun(self):
         session = _Session()
@@ -62,7 +65,7 @@ class TestTransaction(unittest.TestCase):
     def test__check_state_already_committed(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = b'DEADBEEF'
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction.committed = object()
         with self.assertRaises(ValueError):
             transaction._check_state()
@@ -70,7 +73,7 @@ class TestTransaction(unittest.TestCase):
     def test__check_state_already_rolled_back(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = b'DEADBEEF'
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction._rolled_back = True
         with self.assertRaises(ValueError):
             transaction._check_state()
@@ -78,20 +81,20 @@ class TestTransaction(unittest.TestCase):
     def test__check_state_ok(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = b'DEADBEEF'
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction._check_state()  # does not raise
 
     def test__make_txn_selector(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         selector = transaction._make_txn_selector()
         self.assertEqual(selector.id, self.TRANSACTION_ID)
 
     def test_begin_already_begun(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         with self.assertRaises(ValueError):
             transaction.begin()
 
@@ -141,7 +144,7 @@ class TestTransaction(unittest.TestCase):
         txn_id = transaction.begin()
 
         self.assertEqual(txn_id, self.TRANSACTION_ID)
-        self.assertEqual(transaction._id, self.TRANSACTION_ID)
+        self.assertEqual(transaction._transaction_id, self.TRANSACTION_ID)
 
         session_id, txn_options, options = api._begun
         self.assertEqual(session_id, session.name)
@@ -158,7 +161,7 @@ class TestTransaction(unittest.TestCase):
     def test_rollback_already_committed(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction.committed = object()
         with self.assertRaises(ValueError):
             transaction.rollback()
@@ -166,7 +169,7 @@ class TestTransaction(unittest.TestCase):
     def test_rollback_already_rolled_back(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction._rolled_back = True
         with self.assertRaises(ValueError):
             transaction.rollback()
@@ -179,7 +182,7 @@ class TestTransaction(unittest.TestCase):
             _random_gax_error=True)
         session = _Session(database)
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction.insert(TABLE_NAME, COLUMNS, VALUES)
 
         with self.assertRaises(GaxError):
@@ -202,12 +205,13 @@ class TestTransaction(unittest.TestCase):
             _rollback_response=empty_pb)
         session = _Session(database)
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction.replace(TABLE_NAME, COLUMNS, VALUES)
 
         transaction.rollback()
 
         self.assertTrue(transaction._rolled_back)
+        self.assertIsNone(session._transaction)
 
         session_id, txn_id, options = api._rolled_back
         self.assertEqual(session_id, session.name)
@@ -224,7 +228,7 @@ class TestTransaction(unittest.TestCase):
     def test_commit_already_committed(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction.committed = object()
         with self.assertRaises(ValueError):
             transaction.commit()
@@ -232,7 +236,7 @@ class TestTransaction(unittest.TestCase):
     def test_commit_already_rolled_back(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction._rolled_back = True
         with self.assertRaises(ValueError):
             transaction.commit()
@@ -240,7 +244,7 @@ class TestTransaction(unittest.TestCase):
     def test_commit_no_mutations(self):
         session = _Session()
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         with self.assertRaises(ValueError):
             transaction.commit()
 
@@ -252,7 +256,7 @@ class TestTransaction(unittest.TestCase):
             _random_gax_error=True)
         session = _Session(database)
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction.replace(TABLE_NAME, COLUMNS, VALUES)
 
         with self.assertRaises(GaxError):
@@ -284,12 +288,13 @@ class TestTransaction(unittest.TestCase):
             _commit_response=response)
         session = _Session(database)
         transaction = self._make_one(session)
-        transaction._id = self.TRANSACTION_ID
+        transaction._transaction_id = self.TRANSACTION_ID
         transaction.delete(TABLE_NAME, keyset)
 
         transaction.commit()
 
         self.assertEqual(transaction.committed, now)
+        self.assertIsNone(session._transaction)
 
         session_id, mutations, txn_id, options = api._committed
         self.assertEqual(session_id, session.name)
@@ -367,6 +372,8 @@ class _Database(object):
 
 
 class _Session(object):
+
+    _transaction = None
 
     def __init__(self, database=None, name=TestTransaction.SESSION_NAME):
         self._database = database

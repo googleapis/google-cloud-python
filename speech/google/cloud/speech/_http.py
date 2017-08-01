@@ -224,7 +224,7 @@ def _build_request_data(sample, language_code, max_alternatives=None,
     if profanity_filter is not None:
         config['profanityFilter'] = profanity_filter
     if speech_contexts:
-        config['speechContext'] = {'phrases': speech_contexts}
+        config['speechContexts'] = {'phrases': speech_contexts}
 
     data = {
         'audio': audio,
