@@ -115,6 +115,26 @@ class Test_PropertyMixin(unittest.TestCase):
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
+    def test_update(self):
+        connection = _Connection({'foo': 'Foo'})
+        client = _Client(connection)
+        derived = self._derivedClass('/path')()
+        # Make sure changes is non-empty, so we can observe a change.
+        BAR = object()
+        BAZ = object()
+        derived._properties = {'bar': BAR, 'baz': BAZ}
+        derived._changes = set(['bar'])  # Update sends 'baz' anyway.
+        derived.update(client=client)
+        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PUT')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['data'], {'bar': BAR, 'baz': BAZ})
+        # Make sure changes get reset by patch().
+        self.assertEqual(derived._changes, set())
+
 
 class Test__scalar_property(unittest.TestCase):
 
