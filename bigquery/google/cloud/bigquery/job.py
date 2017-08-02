@@ -965,6 +965,25 @@ class ExtractTableToStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader
     """
 
+    def _extract_statistics(self):
+        """Helper for properties derived from extract job statistics."""
+        statistics = self._properties.get('statistics', {})
+        return statistics.get('extract', {})
+
+    @property
+    def destination_uri_file_counts(self):
+        """Return file counts from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.extract.destinationUriFileCounts
+
+        :rtype: int or None
+        :returns: number of DML rows affectd by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._extract_statistics()
+        return query_stats.get('destinationUriFileCounts')
+
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
         if self.compression is not None:
