@@ -334,6 +334,11 @@ class _AsyncJob(google.cloud.future.polling.PollingFuture):
         # For Future interface
         self._set_future_result()
 
+    def _job_statistics(self):
+        """Helper for properties derived from job statistics."""
+        statistics = self._properties.get('statistics', {})
+        return statistics.get(self._JOB_TYPE, {})
+
     @classmethod
     def _get_resource_config(cls, resource):
         """Helper for :meth:`from_api_repr`
@@ -965,11 +970,6 @@ class ExtractTableToStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader
     """
 
-    def _extract_statistics(self):
-        """Helper for properties derived from extract job statistics."""
-        statistics = self._properties.get('statistics', {})
-        return statistics.get('extract', {})
-
     @property
     def destination_uri_file_counts(self):
         """Return file counts from job statistics, if present.
@@ -981,7 +981,7 @@ class ExtractTableToStorageJob(_AsyncJob):
         :returns: number of DML rows affectd by the job, or None if job is not
                   yet complete.
         """
-        query_stats = self._extract_statistics()
+        query_stats = self._job_statistics()
         return query_stats.get('destinationUriFileCounts')
 
     def _populate_config_resource(self, configuration):
@@ -1297,11 +1297,6 @@ class QueryJob(_AsyncJob):
         job._set_properties(resource)
         return job
 
-    def _query_statistics(self):
-        """Helper for properties derived from query statistics."""
-        statistics = self._properties.get('statistics', {})
-        return statistics.get('query', {})
-
     @property
     def query_plan(self):
         """Return query plan from job statistics, if present.
@@ -1313,7 +1308,7 @@ class QueryJob(_AsyncJob):
         :returns: mappings describing the query plan, or an empty list
                   if the query has not yet completed.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         plan_entries = query_stats.get('queryPlan', ())
         return [copy.deepcopy(entry) for entry in plan_entries]
 
@@ -1328,7 +1323,7 @@ class QueryJob(_AsyncJob):
         :returns: total bytes processed by the job, or None if job is not
                   yet complete.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         return query_stats.get('totalBytesProcessed')
 
     @property
@@ -1342,7 +1337,7 @@ class QueryJob(_AsyncJob):
         :returns: total bytes processed by the job, or None if job is not
                   yet complete.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         return query_stats.get('totalBytesBilled')
 
     @property
@@ -1356,7 +1351,7 @@ class QueryJob(_AsyncJob):
         :returns: billing tier used by the job, or None if job is not
                   yet complete.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         return query_stats.get('billingTier')
 
     @property
@@ -1370,7 +1365,7 @@ class QueryJob(_AsyncJob):
         :returns: whether the query results were returned from cache, or None
                   if job is not yet complete.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         return query_stats.get('cacheHit')
 
     @property
@@ -1386,7 +1381,7 @@ class QueryJob(_AsyncJob):
         """
         tables = []
         client = self._require_client(None)
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         clients_by_project = {client.project: client}
         datasets_by_project_name = {}
 
@@ -1420,7 +1415,7 @@ class QueryJob(_AsyncJob):
         :returns: fields describing the query's result set, or an empty list
                   if the query has not yet completed.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         return _parse_schema_resource(query_stats.get('schema', {}))
 
     @property
@@ -1434,7 +1429,7 @@ class QueryJob(_AsyncJob):
         :returns: number of DML rows affectd by the job, or None if job is not
                   yet complete.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         return query_stats.get('numDmlAffectedRows')
 
     @property
@@ -1448,7 +1443,7 @@ class QueryJob(_AsyncJob):
         :returns: mappings describing the undeclared parameters, or an empty
                   list if the query has not yet completed.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         undeclared = query_stats.get('undeclaredQueryParamters', ())
         return [copy.deepcopy(parameter) for parameter in undeclared]
 
@@ -1463,7 +1458,7 @@ class QueryJob(_AsyncJob):
         :returns: type of statement used by the job, or None if job is not
                   yet complete.
         """
-        query_stats = self._query_statistics()
+        query_stats = self._job_statistics()
         return query_stats.get('statementType')
 
     def query_results(self):
