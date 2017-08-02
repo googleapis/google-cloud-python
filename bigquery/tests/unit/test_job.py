@@ -1831,6 +1831,41 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['numDmlAffectedRows'] = num_rows
         self.assertEqual(job.num_dml_affected_rows, num_rows)
 
+    def test_undeclared_query_paramters(self):
+        undeclared = [{
+            "name": 'my_scalar',
+            "parameterType": {
+                "type": 'STRING',
+            },
+        }, {
+            "name": 'my_array',
+            "parameterType": {
+                "type": 'ARRAY',
+                "arrayType": 'INT64',
+            },
+        }, {
+            "name": 'my_struct',
+            "parameterType": {
+                "type": 'STRUCT',
+                "structTypes": [{
+                    "name": 'count',
+                    "type": 'INT64',
+                }],
+            },
+        }]
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertEqual(job.undeclared_query_paramters, [])
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.undeclared_query_paramters, [])
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.undeclared_query_paramters, [])
+
+        query_stats['undeclaredQueryParamters'] = undeclared
+        self.assertEqual(job.undeclared_query_paramters, undeclared)
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 

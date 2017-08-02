@@ -1418,6 +1418,21 @@ class QueryJob(_AsyncJob):
         query_stats = self._query_statistics()
         return query_stats.get('numDmlAffectedRows')
 
+    @property
+    def undeclared_query_paramters(self):
+        """Return undeclared query parameters from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.undeclaredQueryParamters
+
+        :rtype: list of dict
+        :returns: mappings describing the undeclared parameters, or an empty
+                  list if the query has not yet completed.
+        """
+        query_stats = self._query_statistics()
+        undeclared = query_stats.get('undeclaredQueryParamters', ())
+        return [copy.deepcopy(parameter) for parameter in undeclared]
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
