@@ -17,7 +17,6 @@
   monitoring/usage
   logging/usage
   storage/client
-  trace/index
   translate/usage
   vision/index
 
