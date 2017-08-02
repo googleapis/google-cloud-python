@@ -1354,6 +1354,42 @@ class QueryJob(_AsyncJob):
         query_stats = self._query_statistics()
         return query_stats.get('cacheHit')
 
+    @property
+    def referenced_tables(self):
+        """Return referenced tables from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.referencedTables
+
+        :rtype: list of dict
+        :returns: mappings describing the query plan, or an empty list
+                  if the query has not yet completed.
+        """
+        tables = []
+        client = self._require_client(None)
+        query_stats = self._query_statistics()
+        clients_by_project = {client.project: client}
+        datasets_by_project_name = {}
+
+        for table in query_stats.get('referencedTables', ()):
+
+            t_project = table['projectId']
+            t_client = clients_by_project.get(t_project)
+            if t_client is None:
+                t_client = client._clone(t_project)
+                clients_by_project[t_project] = t_client
+
+            ds_name = table['datasetId']
+            t_dataset = datasets_by_project_name.get((t_project, ds_name))
+            if t_dataset is None:
+                t_dataset = t_client.dataset(ds_name)
+                datasets_by_project_name[(t_project, ds_name)] = t_dataset
+
+            t_name = table['tableId']
+            tables.append(t_dataset.table(t_name))
+
+        return tables
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 

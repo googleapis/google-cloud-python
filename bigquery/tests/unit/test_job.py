@@ -42,7 +42,7 @@ class Test__error_result_to_exception(unittest.TestCase):
 class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
-    DS_NAME = 'datset_name'
+    DS_NAME = 'dataset_name'
     TABLE_NAME = 'table_name'
     JOB_NAME = 'job_name'
 
@@ -1724,6 +1724,48 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['cacheHit'] = True
         self.assertTrue(job.cache_hit)
 
+    def test_referenced_tables(self):
+        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.table import Table
+
+        referenced_tables = [{
+            'projectId': self.PROJECT,
+            'datasetId': 'dataset',
+            'tableId': 'table',
+        }, {
+
+            'projectId': 'other-project-123',
+            'datasetId': 'other-dataset',
+            'tableId': 'other-table',
+        }]
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertEqual(job.referenced_tables, [])
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.referenced_tables, [])
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.referenced_tables, [])
+
+        query_stats['referencedTables'] = referenced_tables
+
+        local, remote = job.referenced_tables
+
+        self.assertIsInstance(local, Table)
+        self.assertEqual(local.name, 'table')
+        self.assertIsInstance(local._dataset, Dataset)
+        self.assertEqual(local._dataset.name, 'dataset')
+        self.assertIs(local._dataset._client, client)
+
+        self.assertIsInstance(remote, Table)
+        self.assertEqual(remote.name, 'other-table')
+        self.assertIsInstance(remote._dataset, Dataset)
+        self.assertEqual(remote._dataset.name, 'other-dataset')
+        self.assertIsNot(remote._dataset._client, client)
+        self.assertIsInstance(remote._dataset._client, _Client)
+        self.assertEqual(remote._dataset._client.project, 'other-project-123')
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
@@ -2166,6 +2208,9 @@ class _Client(object):
     def __init__(self, project='project', connection=None):
         self.project = project
         self._connection = connection
+
+    def _clone(self, project):
+        return self.__class__(project, connection=self._connection)
 
     def dataset(self, name):
         from google.cloud.bigquery.dataset import Dataset
