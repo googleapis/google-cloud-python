@@ -15,9 +15,22 @@
 
 import unittest
 
-from google.cloud.spanner import __version__
+import mock
 
 from google.cloud._testing import _GAXBaseAPI
+
+from google.cloud.spanner import __version__
+
+
+def _make_credentials():
+    import google.auth.credentials
+
+    class _CredentialsWithScopes(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Scoped):
+        pass
+
+    return mock.Mock(spec=_CredentialsWithScopes)
 
 
 class _BaseTest(unittest.TestCase):
@@ -177,29 +190,32 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database.name, expected_name)
 
     def test_spanner_api_property(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import database as MUT
+        from google.cloud.spanner.database import SPANNER_DATA_SCOPE
 
+        expected_scopes = (SPANNER_DATA_SCOPE,)
         client = _Client()
+        credentials = client.credentials = _make_credentials()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        _client = object()
-        _clients = [_client]
+        patch = mock.patch('google.cloud.spanner.database.SpannerClient')
 
-        def _mock_spanner_client(*args, **kwargs):
-            self.assertIsInstance(args, tuple)
-            self.assertEqual(kwargs['lib_name'], 'gccl')
-            self.assertEqual(kwargs['lib_version'], __version__)
-            return _clients.pop(0)
-
-        with _Monkey(MUT, SpannerClient=_mock_spanner_client):
+        with patch as spanner_client:
             api = database.spanner_api
-            self.assertIs(api,  _client)
-            # API instance is cached
-            again = database.spanner_api
-            self.assertIs(again, api)
+
+        self.assertIs(api, spanner_client.return_value)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        spanner_client.assert_called_once_with(
+            lib_name='gccl',
+            lib_version=__version__,
+            credentials=credentials.with_scopes.return_value)
+
+        credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test___eq__(self):
         instance = _Instance(self.INSTANCE_NAME)
