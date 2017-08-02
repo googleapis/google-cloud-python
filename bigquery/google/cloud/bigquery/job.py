@@ -1278,6 +1278,11 @@ class QueryJob(_AsyncJob):
         job._set_properties(resource)
         return job
 
+    def _query_statistics(self):
+        """Helper for properties derived from query statistics."""
+        statistics = self._properties.get('statistics', {})
+        return statistics.get('query', {})
+
     @property
     def query_plan(self):
         """Return query plan from job statistics, if present.
@@ -1289,10 +1294,23 @@ class QueryJob(_AsyncJob):
         :returns: mappings describing the query plan, or an empty list
                   if the query has not yet completed.
         """
-        statistics = self._properties.get('statistics', {})
-        query_stats = statistics.get('query', {})
+        query_stats = self._query_statistics()
         plan_entries = query_stats.get('queryPlan', ())
         return [copy.deepcopy(entry) for entry in plan_entries]
+
+    @property
+    def total_bytes_processed(self):
+        """Return total bytes processed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesProcessed
+
+        :rtype: int or None
+        :returns: total bytes processed by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._query_statistics()
+        return query_stats.get('totalBytesProcessed')
 
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
