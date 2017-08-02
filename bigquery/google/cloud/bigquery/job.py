@@ -1390,6 +1390,20 @@ class QueryJob(_AsyncJob):
 
         return tables
 
+    @property
+    def num_dml_affected_rows(self):
+        """Return total bytes billed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.numDmlAffectedRows
+
+        :rtype: int or None
+        :returns: number of DML rows affectd by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._query_statistics()
+        return query_stats.get('numDmlAffectedRows')
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
