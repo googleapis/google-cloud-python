@@ -14,6 +14,7 @@
 
 """Define API Jobs."""
 
+import copy
 import threading
 
 import six
@@ -1276,6 +1277,22 @@ class QueryJob(_AsyncJob):
         job = cls(name, query, client=client)
         job._set_properties(resource)
         return job
+
+    @property
+    def query_plan(self):
+        """Return query plan from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.queryPlan
+
+        :rtype: list of dict
+        :returns: mappings describing the query plan, or an empty list
+                  if the query has not yet completed.
+        """
+        statistics = self._properties.get('statistics', {})
+        query_stats = statistics.get('query', {})
+        plan_entries = query_stats.get('queryPlan', ())
+        return [copy.deepcopy(entry) for entry in plan_entries]
 
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
