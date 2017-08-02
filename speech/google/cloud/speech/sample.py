@@ -179,7 +179,7 @@ class Sample(object):
         .. note::
 
             Streaming recognition requests are limited to 1 minute of audio.
-            See: https://cloud.google.com/speech/limits#content
+            See https://cloud.google.com/speech/limits#content
 
         Yields: Instance of
                 :class:`~google.cloud.speech.result.StreamingSpeechResult`

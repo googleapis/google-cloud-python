@@ -34,6 +34,10 @@ class _SnapshotBase(_SessionWrapper):
     :type session: :class:`~google.cloud.spanner.session.Session`
     :param session: the session used to perform the commit
     """
+    _multi_use = False
+    _transaction_id = None
+    _read_request_count = 0
+
     def _make_txn_selector(self):  # pylint: disable=redundant-returns-doc
         """Helper for :meth:`read` / :meth:`execute_sql`.
 
@@ -70,7 +74,16 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
+        :raises ValueError:
+            for reuse of single-use snapshots, or if a transaction ID is
+            already pending for multiple-use snapshots.
         """
+        if self._read_request_count > 0:
+            if not self._multi_use:
+                raise ValueError("Cannot re-use single-use snapshot.")
+            if self._transaction_id is None:
+                raise ValueError("Transaction ID pending.")
+
         database = self._session._database
         api = database.spanner_api
         options = _options_with_prefix(database.name)
@@ -81,7 +94,12 @@ class _SnapshotBase(_SessionWrapper):
             transaction=transaction, index=index, limit=limit,
             resume_token=resume_token, options=options)
 
-        return StreamedResultSet(iterator)
+        self._read_request_count += 1
+
+        if self._multi_use:
+            return StreamedResultSet(iterator, source=self)
+        else:
+            return StreamedResultSet(iterator)
 
     def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
                     resume_token=b''):
@@ -101,7 +119,7 @@ class _SnapshotBase(_SessionWrapper):
 
         :type query_mode:
             :class:`google.cloud.proto.spanner.v1.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See:
+        :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
         :type resume_token: bytes
@@ -109,7 +127,16 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
+        :raises ValueError:
+            for reuse of single-use snapshots, or if a transaction ID is
+            already pending for multiple-use snapshots.
         """
+        if self._read_request_count > 0:
+            if not self._multi_use:
+                raise ValueError("Cannot re-use single-use snapshot.")
+            if self._transaction_id is None:
+                raise ValueError("Transaction ID pending.")
+
         if params is not None:
             if param_types is None:
                 raise ValueError(
@@ -128,13 +155,18 @@ class _SnapshotBase(_SessionWrapper):
             transaction=transaction, params=params_pb, param_types=param_types,
             query_mode=query_mode, resume_token=resume_token, options=options)
 
-        return StreamedResultSet(iterator)
+        self._read_request_count += 1
+
+        if self._multi_use:
+            return StreamedResultSet(iterator, source=self)
+        else:
+            return StreamedResultSet(iterator)
 
 
 class Snapshot(_SnapshotBase):
     """Allow a set of reads / SQL statements with shared staleness.
 
-    See:
+    See
     https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
     If no options are passed, reads will use the ``strong`` model, reading
@@ -157,9 +189,16 @@ class Snapshot(_SnapshotBase):
     :type exact_staleness: :class:`datetime.timedelta`
     :param exact_staleness: Execute all reads at a timestamp that is
                             ``exact_staleness`` old.
+
+    :type multi_use: :class:`bool`
+    :param multi_use: If true, multipl :meth:`read` / :meth:`execute_sql`
+                      calls can be performed with the snapshot in the
+                      context of a read-only transaction, used to ensure
+                      isolation / consistency. Incompatible with
+                      ``max_staleness`` and ``min_read_timestamp``.
     """
     def __init__(self, session, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
+                 max_staleness=None, exact_staleness=None, multi_use=False):
         super(Snapshot, self).__init__(session)
         opts = [
             read_timestamp, min_read_timestamp, max_staleness, exact_staleness]
@@ -168,14 +207,24 @@ class Snapshot(_SnapshotBase):
         if len(flagged) > 1:
             raise ValueError("Supply zero or one options.")
 
+        if multi_use:
+            if min_read_timestamp is not None or max_staleness is not None:
+                raise ValueError(
+                    "'multi_use' is incompatible with "
+                    "'min_read_timestamp' / 'max_staleness'")
+
         self._strong = len(flagged) == 0
         self._read_timestamp = read_timestamp
         self._min_read_timestamp = min_read_timestamp
         self._max_staleness = max_staleness
         self._exact_staleness = exact_staleness
+        self._multi_use = multi_use
 
     def _make_txn_selector(self):
         """Helper for :meth:`read`."""
+        if self._transaction_id is not None:
+            return TransactionSelector(id=self._transaction_id)
+
         if self._read_timestamp:
             key = 'read_timestamp'
             value = _datetime_to_pb_timestamp(self._read_timestamp)
@@ -194,4 +243,34 @@ class Snapshot(_SnapshotBase):
 
         options = TransactionOptions(
             read_only=TransactionOptions.ReadOnly(**{key: value}))
-        return TransactionSelector(single_use=options)
+
+        if self._multi_use:
+            return TransactionSelector(begin=options)
+        else:
+            return TransactionSelector(single_use=options)
+
+    def begin(self):
+        """Begin a read-only transaction on the database.
+
+        :rtype: bytes
+        :returns: the ID for the newly-begun transaction.
+        :raises ValueError:
+            if the transaction is already begun, committed, or rolled back.
+        """
+        if not self._multi_use:
+            raise ValueError("Cannot call 'begin' single-use snapshots")
+
+        if self._transaction_id is not None:
+            raise ValueError("Read-only transaction already begun")
+
+        if self._read_request_count > 0:
+            raise ValueError("Read-only transaction already pending")
+
+        database = self._session._database
+        api = database.spanner_api
+        options = _options_with_prefix(database.name)
+        txn_selector = self._make_txn_selector()
+        response = api.begin_transaction(
+            self._session.name, txn_selector.begin, options=options)
+        self._transaction_id = response.id
+        return self._transaction_id

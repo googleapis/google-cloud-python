@@ -35,15 +35,19 @@ class TestCloudLoggingHandler(unittest.TestCase):
         self.assertEqual(handler.client, client)
 
     def test_emit(self):
+        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+
         client = _Client(self.PROJECT)
-        handler = self._make_one(client, transport=_Transport)
+        handler = self._make_one(client, transport=_Transport, resource=_GLOBAL_RESOURCE)
         logname = 'loggername'
         message = 'hello world'
         record = logging.LogRecord(logname, logging, None, None, message,
                                    None, None)
         handler.emit(record)
 
-        self.assertEqual(handler.transport.send_called_with, (record, message))
+        self.assertEqual(
+            handler.transport.send_called_with,
+            (record, message, _GLOBAL_RESOURCE, None))
 
 
 class TestSetupLogging(unittest.TestCase):
@@ -108,5 +112,5 @@ class _Transport(object):
     def __init__(self, client, name):
         pass
 
-    def send(self, record, message):
-        self.send_called_with = (record, message)
+    def send(self, record, message, resource, labels=None):
+        self.send_called_with = (record, message, resource, labels)

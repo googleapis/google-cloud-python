@@ -15,35 +15,43 @@
 """Define API Datasets."""
 
 import datetime
-import json
 import os
 
-import httplib2
 import six
 
+from google import resumable_media
+from google.resumable_media.requests import MultipartUpload
+from google.resumable_media.requests import ResumableUpload
+
+from google.cloud import exceptions
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _millis_from_datetime
-from google.cloud.exceptions import NotFound
-from google.cloud.exceptions import make_exception
-from google.cloud.streaming.exceptions import HttpError
-from google.cloud.streaming.http_wrapper import Request
-from google.cloud.streaming.http_wrapper import make_api_request
-from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
-from google.cloud.streaming.transfer import Upload
-from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery._helpers import _row_from_json
 from google.cloud.iterator import HTTPIterator
+from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
+from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'table.reload()'"
 _MARKER = object()
+_DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
+_BASE_UPLOAD_TEMPLATE = (
+    u'https://www.googleapis.com/upload/bigquery/v2/projects/'
+    u'{project}/jobs?uploadType=')
+_MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u'multipart'
+_RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u'resumable'
+_GENERIC_CONTENT_TYPE = u'*/*'
+_READ_LESS_THAN_SIZE = (
+    'Size {:d} was specified but the file-like object only had '
+    '{:d} bytes remaining.')
+_DEFAULT_NUM_RETRIES = 6
 
 
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
 
-    See:
+    See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
     :type name: str
@@ -192,7 +200,7 @@ class Table(object):
     def table_type(self):
         """The type of the table.
 
-        Possible values are "TABLE" or "VIEW".
+        Possible values are "TABLE", "VIEW", or "EXTERNAL".
 
         :rtype: str, or ``NoneType``
         :returns: the URL (None until set from the server).
@@ -363,12 +371,48 @@ class Table(object):
         """
         if not isinstance(value, six.string_types):
             raise ValueError("Pass a string")
-        self._properties['view'] = {'query': value}
+        if self._properties.get('view') is None:
+            self._properties['view'] = {}
+        self._properties['view']['query'] = value
 
     @view_query.deleter
     def view_query(self):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
+
+    @property
+    def view_use_legacy_sql(self):
+        """Specifies whether to execute the view with legacy or standard SQL.
+
+        If not set, None is returned. BigQuery's default mode is equivalent to
+        useLegacySql = True.
+
+        :rtype: bool, or ``NoneType``
+        :returns: The boolean for view.useLegacySql as set by the user, or
+                  None (the default).
+        """
+        view = self._properties.get('view')
+        if view is not None:
+            return view.get('useLegacySql')
+
+    @view_use_legacy_sql.setter
+    def view_use_legacy_sql(self, value):
+        """Update the view sub-property 'useLegacySql'.
+
+        This boolean specifies whether to execute the view with legacy SQL
+        (True) or standard SQL (False). The default, if not specified, is
+        'True'.
+
+        :type value: bool
+        :param value: The boolean for view.useLegacySql
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, bool):
+            raise ValueError("Pass a boolean")
+        if self._properties.get('view') is None:
+            self._properties['view'] = {}
+        self._properties['view']['useLegacySql'] = value
 
     def list_partitions(self, client=None):
         """List the partitions in a table.
@@ -427,7 +471,7 @@ class Table(object):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: httplib2.Response
+        :type api_response: dict
         :param api_response: response returned from an API call
         """
         self._properties.clear()
@@ -469,6 +513,8 @@ class Table(object):
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
+            if self.view_use_legacy_sql is not None:
+                view['useLegacySql'] = self.view_use_legacy_sql
 
         if self._schema:
             resource['schema'] = {
@@ -478,9 +524,9 @@ class Table(object):
         return resource
 
     def create(self, client=None):
-        """API call:  create the dataset via a PUT request
+        """API call:  create the table via a PUT request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -514,7 +560,7 @@ class Table(object):
         try:
             client._connection.api_request(method='GET', path=self.path,
                                            query_params={'fields': 'id'})
-        except NotFound:
+        except exceptions.NotFound:
             return False
         else:
             return True
@@ -630,7 +676,7 @@ class Table(object):
     def delete(self, client=None):
         """API call:  delete the table via a DELETE request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -644,7 +690,7 @@ class Table(object):
     def fetch_data(self, max_results=None, page_token=None, client=None):
         """API call:  fetch the table data via a GET request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list
 
         .. note::
@@ -673,6 +719,9 @@ class Table(object):
                   (this is distinct from the total number of rows in the
                   current page: ``iterator.page.num_items``).
         """
+        if len(self._schema) == 0:
+            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+
         client = self._require_client(client)
         path = '%s/data' % (self.path,)
         iterator = HTTPIterator(client=client, path=path,
@@ -693,7 +742,7 @@ class Table(object):
                     client=None):
         """API call:  insert table data via a POST request
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
         :type rows: list of tuples
@@ -715,7 +764,7 @@ class Table(object):
         :param template_suffix:
             (Optional) treat ``name`` as a template table and provide a suffix.
             BigQuery will create the table ``<name> + <template_suffix>`` based
-            on the schema of the template table. See:
+            on the schema of the template table. See
             https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -741,11 +790,9 @@ class Table(object):
             row_info = {}
 
             for field, value in zip(self._schema, row):
-                if field.field_type == 'TIMESTAMP':
-                    # BigQuery stores TIMESTAMP data internally as a
-                    # UNIX timestamp with microsecond precision.
-                    # Specifies the number of seconds since the epoch.
-                    value = _convert_timestamp(value)
+                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
+                if converter is not None:  # STRING doesn't need converting
+                    value = converter(value)
                 row_info[field.name] = value
 
             info = {'json': row_info}
@@ -775,15 +822,174 @@ class Table(object):
 
         return errors
 
-    @staticmethod
-    def _check_response_error(request, http_response):
-        """Helper for :meth:`upload_from_file`."""
-        info = http_response.info
-        status = int(info['status'])
-        if not 200 <= status < 300:
-            faux_response = httplib2.Response({'status': status})
-            raise make_exception(faux_response, http_response.content,
-                                 error_info=request.url)
+    def _get_transport(self, client):
+        """Return the client's transport.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :rtype transport:
+            :class:`~google.auth.transport.requests.AuthorizedSession`
+        :returns: The transport (with credentials) that will
+                  make authenticated requests.
+        """
+        return client._http
+
+    def _initiate_resumable_upload(self, client, stream,
+                                   metadata, num_retries):
+        """Initiate a resumable upload.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type metadata: dict
+        :param metadata: The metadata associated with the upload.
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
+        :rtype: tuple
+        :returns:
+            Pair of
+
+            * The :class:`~google.resumable_media.requests.ResumableUpload`
+              that was created
+            * The ``transport`` used to initiate the upload.
+        """
+        chunk_size = _DEFAULT_CHUNKSIZE
+        transport = self._get_transport(client)
+        headers = _get_upload_headers(client._connection.USER_AGENT)
+        upload_url = _RESUMABLE_URL_TEMPLATE.format(project=self.project)
+        upload = ResumableUpload(upload_url, chunk_size, headers=headers)
+
+        if num_retries is not None:
+            upload._retry_strategy = resumable_media.RetryStrategy(
+                max_retries=num_retries)
+
+        upload.initiate(
+            transport, stream, metadata, _GENERIC_CONTENT_TYPE,
+            stream_final=False)
+
+        return upload, transport
+
+    def _do_resumable_upload(self, client, stream, metadata, num_retries):
+        """Perform a resumable upload.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type metadata: dict
+        :param metadata: The metadata associated with the upload.
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
+        :rtype: :class:`~requests.Response`
+        :returns: The "200 OK" response object returned after the final chunk
+                  is uploaded.
+        """
+        upload, transport = self._initiate_resumable_upload(
+            client, stream, metadata, num_retries)
+
+        while not upload.finished:
+            response = upload.transmit_next_chunk(transport)
+
+        return response
+
+    def _do_multipart_upload(self, client, stream, metadata,
+                             size, num_retries):
+        """Perform a multipart upload.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type metadata: dict
+        :param metadata: The metadata associated with the upload.
+
+        :type size: int
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``stream``). If not provided, the upload will be
+                     concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
+        :rtype: :class:`~requests.Response`
+        :returns: The "200 OK" response object returned after the multipart
+                  upload request.
+        :raises: :exc:`ValueError` if the ``stream`` has fewer than ``size``
+                 bytes remaining.
+        """
+        data = stream.read(size)
+        if len(data) < size:
+            msg = _READ_LESS_THAN_SIZE.format(size, len(data))
+            raise ValueError(msg)
+
+        transport = self._get_transport(client)
+        headers = _get_upload_headers(client._connection.USER_AGENT)
+
+        upload_url = _MULTIPART_URL_TEMPLATE.format(project=self.project)
+        upload = MultipartUpload(upload_url, headers=headers)
+
+        if num_retries is not None:
+            upload._retry_strategy = resumable_media.RetryStrategy(
+                max_retries=num_retries)
+
+        response = upload.transmit(
+            transport, data, metadata, _GENERIC_CONTENT_TYPE)
+
+        return response
+
+    def _do_upload(self, client, stream, metadata, size, num_retries):
+        """Determine an upload strategy and then perform the upload.
+
+        If ``size`` is :data:`None`, then a resumable upload will be used,
+        otherwise the content and the metadata will be uploaded
+        in a single multipart upload request.
+
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: The client to use.
+
+        :type stream: IO[bytes]
+        :param stream: A bytes IO object open for reading.
+
+        :type metadata: dict
+        :param metadata: The metadata associated with the upload.
+
+        :type size: int
+        :param size: The number of bytes to be uploaded (which will be read
+                     from ``stream``). If not provided, the upload will be
+                     concluded once ``stream`` is exhausted (or :data:`None`).
+
+        :type num_retries: int
+        :param num_retries: Number of upload retries. (Deprecated: This
+                            argument will be removed in a future release.)
+
+        :rtype: dict
+        :returns: The parsed JSON from the "200 OK" response. This will be the
+                  **only** response in the multipart case and it will be the
+                  **final** response in the resumable case.
+        """
+        if size is None:
+            response = self._do_resumable_upload(
+                client, stream, metadata, num_retries)
+        else:
+            response = self._do_multipart_upload(
+                client, stream, metadata, size, num_retries)
+
+        return response.json()
 
     # pylint: disable=too-many-arguments,too-many-locals
     def upload_from_file(self,
@@ -791,7 +997,7 @@ class Table(object):
                          source_format,
                          rewind=False,
                          size=None,
-                         num_retries=6,
+                         num_retries=_DEFAULT_NUM_RETRIES,
                          allow_jagged_rows=None,
                          allow_quoted_newlines=None,
                          create_disposition=None,
@@ -802,12 +1008,9 @@ class Table(object):
                          quote_character=None,
                          skip_leading_rows=None,
                          write_disposition=None,
-                         client=None):
+                         client=None,
+                         job_name=None):
         """Upload the contents of this table from a file-like object.
-
-        The content type of the upload will either be
-        - The value passed in to the function (if any)
-        - ``text/csv``.
 
         :type file_obj: file
         :param file_obj: A file handle opened in binary mode for reading.
@@ -819,7 +1022,7 @@ class Table(object):
 
         :type rewind: bool
         :param rewind: If True, seek to the beginning of the file handle before
-                       writing the file to Cloud Storage.
+                       writing the file.
 
         :type size: int
         :param size: The number of bytes to read from the file handle.
@@ -870,12 +1073,16 @@ class Table(object):
         :param write_disposition: job configuration option; see
                                   :meth:`google.cloud.bigquery.job.LoadJob`.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to the ``client`` stored on the current dataset.
+        :type client: :class:`~google.cloud.bigquery.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current table.
 
-        :rtype: :class:`google.cloud.bigquery.jobs.LoadTableFromStorageJob`
+        :type job_name: str
+        :param job_name: Optional. The id of the job. Generated if not
+                         explicitly passed in.
+
+        :rtype: :class:`~google.cloud.bigquery.jobs.LoadTableFromStorageJob`
+
         :returns: the job instance used to load the data (e.g., for
                   querying status). Note that the job is already started:
                   do not call ``job.begin()``.
@@ -884,102 +1091,23 @@ class Table(object):
                  a file opened in text mode.
         """
         client = self._require_client(client)
-        connection = client._connection
-        content_type = 'application/octet-stream'
-
-        # Rewind the file if desired.
-        if rewind:
-            file_obj.seek(0, os.SEEK_SET)
-
-        mode = getattr(file_obj, 'mode', None)
-
-        if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
-            raise ValueError(
-                "Cannot upload files opened in text mode:  use "
-                "open(filename, mode='rb') or open(filename, mode='r+b')")
-
-        # Get the basic stats about the file.
-        total_bytes = size
-        if total_bytes is None:
-            if hasattr(file_obj, 'fileno'):
-                total_bytes = os.fstat(file_obj.fileno()).st_size
-            else:
-                raise ValueError('total bytes could not be determined. Please '
-                                 'pass an explicit size.')
-        headers = {
-            'Accept': 'application/json',
-            'Accept-Encoding': 'gzip, deflate',
-            'User-Agent': connection.USER_AGENT,
-            'content-type': 'application/json',
-        }
-
-        metadata = {
-            'configuration': {
-                'load': {
-                    'sourceFormat': source_format,
-                    'destinationTable': {
-                        'projectId': self._dataset.project,
-                        'datasetId': self._dataset.name,
-                        'tableId': self.name,
-                    }
-                }
-            }
-        }
-
-        if len(self._schema) > 0:
-            load_config = metadata['configuration']['load']
-            load_config['schema'] = {
-                'fields': _build_schema_resource(self._schema)
-            }
-
+        _maybe_rewind(file_obj, rewind=rewind)
+        _check_mode(file_obj)
+        metadata = _get_upload_metadata(
+            source_format, self._schema, self._dataset, self.name)
         _configure_job_metadata(metadata, allow_jagged_rows,
                                 allow_quoted_newlines, create_disposition,
                                 encoding, field_delimiter,
                                 ignore_unknown_values, max_bad_records,
                                 quote_character, skip_leading_rows,
-                                write_disposition)
+                                write_disposition, job_name)
 
-        upload = Upload(file_obj, content_type, total_bytes,
-                        auto_transfer=False)
-
-        url_builder = _UrlBuilder()
-        upload_config = _UploadConfig()
-
-        # Base URL may change once we know simple vs. resumable.
-        base_url = connection.API_BASE_URL + '/upload'
-        path = '/projects/%s/jobs' % (self._dataset.project,)
-        upload_url = connection.build_api_url(api_base_url=base_url, path=path)
-
-        # Use apitools 'Upload' facility.
-        request = Request(upload_url, 'POST', headers,
-                          body=json.dumps(metadata))
-
-        upload.configure_request(upload_config, request, url_builder)
-        query_params = url_builder.query_params
-        base_url = connection.API_BASE_URL + '/upload'
-        request.url = connection.build_api_url(api_base_url=base_url,
-                                               path=path,
-                                               query_params=query_params)
         try:
-            upload.initialize_upload(request, connection.http)
-        except HttpError as err_response:
-            faux_response = httplib2.Response(err_response.response)
-            raise make_exception(faux_response, err_response.content,
-                                 error_info=request.url)
-
-        if upload.strategy == RESUMABLE_UPLOAD:
-            http_response = upload.stream_file(use_chunks=True)
-        else:
-            http_response = make_api_request(connection.http, request,
-                                             retries=num_retries)
-
-        self._check_response_error(request, http_response)
-
-        response_content = http_response.content
-        if not isinstance(response_content,
-                          six.string_types):  # pragma: NO COVER  Python3
-            response_content = response_content.decode('utf-8')
-        return client.job_from_resource(json.loads(response_content))
+            created_json = self._do_upload(
+                client, file_obj, metadata, size, num_retries)
+            return client.job_from_resource(created_json)
+        except resumable_media.InvalidResponse as exc:
+            raise exceptions.from_http_response(exc.response)
     # pylint: enable=too-many-arguments,too-many-locals
 
 
@@ -993,7 +1121,8 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
                             max_bad_records,
                             quote_character,
                             skip_leading_rows,
-                            write_disposition):
+                            write_disposition,
+                            job_name):
     """Helper for :meth:`Table.upload_from_file`."""
     load_config = metadata['configuration']['load']
 
@@ -1027,6 +1156,9 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
     if write_disposition is not None:
         load_config['writeDisposition'] = write_disposition
 
+    if job_name is not None:
+        load_config['jobReference'] = {'jobId': job_name}
+
 
 def _parse_schema_resource(info):
     """Parse a resource fragment into a schema field.
@@ -1039,7 +1171,7 @@ def _parse_schema_resource(info):
                 present in ``info``.
     """
     if 'fields' not in info:
-        return None
+        return ()
 
     schema = []
     for r_field in info['fields']:
@@ -1069,72 +1201,94 @@ def _build_schema_resource(fields):
                 'mode': field.mode}
         if field.description is not None:
             info['description'] = field.description
-        if field.fields is not None:
+        if field.fields:
             info['fields'] = _build_schema_resource(field.fields)
         infos.append(info)
     return infos
-
-
-def _item_to_row(iterator, resource):
-    """Convert a JSON row to the native object.
-
-    .. note::
-
-        This assumes that the ``schema`` attribute has been
-        added to the iterator after being created, which
-        should be done by the caller.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a row.
-
-    :rtype: tuple
-    :returns: The next row in the page.
-    """
-    return _row_from_json(resource, iterator.schema)
-
-
-# pylint: disable=unused-argument
-def _rows_page_start(iterator, page, response):
-    """Grab total rows after a :class:`~google.cloud.iterator.Page` started.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.cloud.iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
-    """
-    total_rows = response.get('totalRows')
-    if total_rows is not None:
-        total_rows = int(total_rows)
-    iterator.total_rows = total_rows
 # pylint: enable=unused-argument
 
 
-class _UploadConfig(object):
-    """Faux message FBO apitools' 'configure_request'."""
-    accept = ['*/*']
-    max_size = None
-    resumable_multipart = True
-    resumable_path = u'/upload/bigquery/v2/projects/{project}/jobs'
-    simple_multipart = True
-    simple_path = u'/upload/bigquery/v2/projects/{project}/jobs'
+def _maybe_rewind(stream, rewind=False):
+    """Rewind the stream if desired.
+
+    :type stream: IO[bytes]
+    :param stream: A bytes IO object open for reading.
+
+    :type rewind: bool
+    :param rewind: Indicates if we should seek to the beginning of the stream.
+    """
+    if rewind:
+        stream.seek(0, os.SEEK_SET)
 
 
-class _UrlBuilder(object):
-    """Faux builder FBO apitools' 'configure_request'"""
-    def __init__(self):
-        self.query_params = {}
-        self._relative_path = ''
+def _check_mode(stream):
+    """Check that a stream was opened in read-binary mode.
+
+    :type stream: IO[bytes]
+    :param stream: A bytes IO object open for reading.
+
+    :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute
+             and is not among ``rb``, ``r+b`` or ``rb+``.
+    """
+    mode = getattr(stream, 'mode', None)
+
+    if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
+        raise ValueError(
+            "Cannot upload files opened in text mode:  use "
+            "open(filename, mode='rb') or open(filename, mode='r+b')")
 
 
-def _convert_timestamp(value):
-    """Helper for :meth:`Table.insert_data`."""
-    if isinstance(value, datetime.datetime):
-        value = _microseconds_from_datetime(value) * 1e-6
-    return value
+def _get_upload_headers(user_agent):
+    """Get the headers for an upload request.
+
+    :type user_agent: str
+    :param user_agent: The user-agent for requests.
+
+    :rtype: dict
+    :returns: The headers to be used for the request.
+    """
+    return {
+        'Accept': 'application/json',
+        'Accept-Encoding': 'gzip, deflate',
+        'User-Agent': user_agent,
+        'content-type': 'application/json',
+    }
+
+
+def _get_upload_metadata(source_format, schema, dataset, name):
+    """Get base metadata for creating a table.
+
+    :type source_format: str
+    :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
+                          job configuration option.
+
+    :type schema: list
+    :param schema: List of :class:`SchemaField` associated with a table.
+
+    :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`
+    :param dataset: A dataset which contains a table.
+
+    :type name: str
+    :param name: The name of the table.
+
+    :rtype: dict
+    :returns: The metadata dictionary.
+    """
+    load_config = {
+        'sourceFormat': source_format,
+        'destinationTable': {
+            'projectId': dataset.project,
+            'datasetId': dataset.name,
+            'tableId': name,
+        },
+    }
+    if schema:
+        load_config['schema'] = {
+            'fields': _build_schema_resource(schema),
+        }
+
+    return {
+        'configuration': {
+            'load': load_config,
+        },
+    }

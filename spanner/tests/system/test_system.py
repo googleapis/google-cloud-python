@@ -17,6 +17,8 @@ import math
 import operator
 import os
 import struct
+import threading
+import time
 import unittest
 
 from google.cloud.proto.spanner.v1.type_pb2 import ARRAY
@@ -33,6 +35,7 @@ from google.cloud._helpers import UTC
 from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.spanner._helpers import TimestampWithNanoseconds
 from google.cloud.spanner.client import Client
+from google.cloud.spanner.keyset import KeyRange
 from google.cloud.spanner.keyset import KeySet
 from google.cloud.spanner.pool import BurstyPool
 
@@ -86,6 +89,10 @@ def setUpModule():
     retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
+
+    # Defend against back-end returning configs for regions we aren't
+    # actually allowed to use.
+    configs = [config for config in configs if '-us-' in config.name]
 
     if len(configs) < 1:
         raise ValueError('List instance configs failed in module set up.')
@@ -323,6 +330,23 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         rows = list(self._db.execute_sql(self.SQL))
         self._check_row_data(rows)
 
+    def test_db_run_in_transaction_twice(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        def _unit_of_work(transaction, test):
+            transaction.insert_or_update(
+                test.TABLE, test.COLUMNS, test.ROW_DATA)
+
+        self._db.run_in_transaction(_unit_of_work, test=self)
+        self._db.run_in_transaction(_unit_of_work, test=self)
+
+        rows = list(self._db.execute_sql(self.SQL))
+        self._check_row_data(rows)
+
 
 class TestSessionAPI(unittest.TestCase, _TestData):
     ALL_TYPES_TABLE = 'all_types'
@@ -336,6 +360,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         'description',
         'exactly_hwhen',
     )
+    COUNTERS_TABLE = 'counters'
+    COUNTERS_COLUMNS = (
+        'name',
+        'value',
+    )
     SOME_DATE = datetime.date(2011, 1, 17)
     SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
     NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
@@ -343,10 +372,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     BYTES_1 = b'Ymlu'
     BYTES_2 = b'Ym9vdHM='
     ALL_TYPES_ROWDATA = (
+        ([], False, None, None, 0.0, None, None, None),
         ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
         ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
         ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
-        ([], False, None, None, float('-inf'), 207, None, None),
+        ([3, None, 9], False, None, None, float('-inf'), 207, None, None),
         ([], False, None, None, float('nan'), 1207, None, None),
         ([], False, None, None, OTHER_NAN, 2000, None, NANO_TIME),
     )
@@ -460,6 +490,31 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
+    def _transaction_read_then_raise(self, transaction):
+        rows = list(transaction.read(self.TABLE, self.COLUMNS, self.ALL))
+        self.assertEqual(len(rows), 0)
+        transaction.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
+        raise CustomException()
+
+    @RetryErrors(exception=GrpcRendezvous)
+    def test_transaction_read_and_insert_then_execption(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        with self.assertRaises(CustomException):
+            session.run_in_transaction(self._transaction_read_then_raise)
+
+        # Transaction was rolled back.
+        rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
+        self.assertEqual(rows, [])
+
     @RetryErrors(exception=GrpcRendezvous)
     def test_transaction_read_and_insert_or_update_then_commit(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -485,6 +540,87 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
+
+    def _transaction_concurrency_helper(self, unit_of_work, pkey):
+        INITIAL_VALUE = 123
+        NUM_THREADS = 3     # conforms to equivalent Java systest.
+
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.insert_or_update(
+                self.COUNTERS_TABLE,
+                self.COUNTERS_COLUMNS,
+                [[pkey, INITIAL_VALUE]])
+
+        # We don't want to run the threads' transactions in the current
+        # session, which would fail.
+        txn_sessions = []
+
+        for _ in range(NUM_THREADS):
+            txn_session = self._db.session()
+            txn_sessions.append(txn_session)
+            txn_session.create()
+            self.to_delete.append(txn_session)
+
+        threads = [
+            threading.Thread(
+                target=txn_session.run_in_transaction,
+                args=(unit_of_work, pkey))
+            for txn_session in txn_sessions]
+
+        for thread in threads:
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+        keyset = KeySet(keys=[(pkey,)])
+        rows = list(session.read(
+            self.COUNTERS_TABLE, self.COUNTERS_COLUMNS, keyset))
+        self.assertEqual(len(rows), 1)
+        _, value = rows[0]
+        self.assertEqual(value, INITIAL_VALUE + len(threads))
+
+    def _read_w_concurrent_update(self, transaction, pkey):
+        keyset = KeySet(keys=[(pkey,)])
+        rows = list(transaction.read(
+            self.COUNTERS_TABLE, self.COUNTERS_COLUMNS, keyset))
+        self.assertEqual(len(rows), 1)
+        pkey, value = rows[0]
+        transaction.update(
+            self.COUNTERS_TABLE,
+            self.COUNTERS_COLUMNS,
+            [[pkey, value + 1]])
+
+    def test_transaction_read_w_concurrent_updates(self):
+        PKEY = 'read_w_concurrent_updates'
+        self._transaction_concurrency_helper(
+            self._read_w_concurrent_update, PKEY)
+
+    def _query_w_concurrent_update(self, transaction, pkey):
+        SQL = 'SELECT * FROM counters WHERE name = @name'
+        rows = list(transaction.execute_sql(
+            SQL,
+            params={'name': pkey},
+            param_types={'name': Type(code=STRING)},
+        ))
+        self.assertEqual(len(rows), 1)
+        pkey, value = rows[0]
+        transaction.update(
+                self.COUNTERS_TABLE,
+                self.COUNTERS_COLUMNS,
+                [[pkey, value + 1]])
+
+    def test_transaction_query_w_concurrent_updates(self):
+        PKEY = 'query_w_concurrent_updates'
+        self._transaction_concurrency_helper(
+            self._query_w_concurrent_update, PKEY)
 
     @staticmethod
     def _row_data(max_index):
@@ -515,6 +651,92 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         committed = session.run_in_transaction(_unit_of_work, test=self)
 
         return session, committed
+
+    def test_snapshot_read_w_various_staleness(self):
+        from datetime import datetime
+        from google.cloud._helpers import UTC
+        ROW_COUNT = 400
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+
+        before_reads = datetime.utcnow().replace(tzinfo=UTC)
+
+        # Test w/ read timestamp
+        read_tx = session.snapshot(read_timestamp=committed)
+        rows = list(read_tx.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ min read timestamp
+        min_read_ts = session.snapshot(min_read_timestamp=committed)
+        rows = list(min_read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        staleness = datetime.utcnow().replace(tzinfo=UTC) - before_reads
+
+        # Test w/ max staleness
+        max_staleness = session.snapshot(max_staleness=staleness)
+        rows = list(max_staleness.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ exact staleness
+        exact_staleness = session.snapshot(exact_staleness=staleness)
+        rows = list(exact_staleness.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+        # Test w/ strong
+        strong = session.snapshot()
+        rows = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(rows, all_data_rows)
+
+    def test_multiuse_snapshot_read_isolation_strong(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        strong = session.snapshot(multi_use=True)
+
+        before = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(strong.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
+
+    def test_multiuse_snapshot_read_isolation_read_timestamp(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        read_ts = session.snapshot(read_timestamp=committed, multi_use=True)
+
+        before = list(read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
+
+    def test_multiuse_snapshot_read_isolation_exact_staleness(self):
+        ROW_COUNT = 40
+
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+
+        time.sleep(1)
+        delta = datetime.timedelta(microseconds=1000)
+
+        exact = session.snapshot(exact_staleness=delta, multi_use=True)
+
+        before = list(exact.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(exact.read(self.TABLE, self.COLUMNS, self.ALL))
+        self._check_row_data(after, all_data_rows)
 
     def test_read_w_manual_consume(self):
         ROW_COUNT = 4000
@@ -563,6 +785,32 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             [(row[0], row[2]) for row in self._row_data(ROW_COUNT)]))
         self._check_row_data(rows, expected)
 
+    def test_read_w_single_key(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+
+        snapshot = session.snapshot(read_timestamp=committed)
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, KeySet(keys=[(0,)])))
+
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        expected = [all_data_rows[0]]
+        self._check_row_data(rows, expected)
+
+    def test_read_w_multiple_keys(self):
+        ROW_COUNT = 40
+        indices = [0, 5, 17]
+        session, committed = self._set_up_table(ROW_COUNT)
+
+        snapshot = session.snapshot(read_timestamp=committed)
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS,
+            KeySet(keys=[(index,) for index in indices])))
+
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        expected = [row for row in all_data_rows if row[0] in indices]
+        self._check_row_data(rows, expected)
+
     def test_read_w_limit(self):
         ROW_COUNT = 4000
         LIMIT = 100
@@ -576,21 +824,40 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = all_data_rows[:LIMIT]
         self._check_row_data(rows, expected)
 
-    def test_read_w_range(self):
-        from google.cloud.spanner.keyset import KeyRange
+    def test_read_w_ranges(self):
         ROW_COUNT = 4000
-        START_CLOSED = 1000
-        END_OPEN = 2000
+        START = 1000
+        END = 2000
         session, committed = self._set_up_table(ROW_COUNT)
-        key_range = KeyRange(start_closed=[START_CLOSED], end_open=[END_OPEN])
-        keyset = KeySet(ranges=(key_range,))
+        snapshot = session.snapshot(read_timestamp=committed, multi_use=True)
+        all_data_rows = list(self._row_data(ROW_COUNT))
 
-        snapshot = session.snapshot(read_timestamp=committed)
+        closed_closed = KeyRange(start_closed=[START], end_closed=[END])
+        keyset = KeySet(ranges=(closed_closed,))
         rows = list(snapshot.read(
             self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START:END+1]
+        self._check_row_data(rows, expected)
 
-        all_data_rows = list(self._row_data(ROW_COUNT))
-        expected = all_data_rows[START_CLOSED:END_OPEN]
+        closed_open = KeyRange(start_closed=[START], end_open=[END])
+        keyset = KeySet(ranges=(closed_open,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START:END]
+        self._check_row_data(rows, expected)
+
+        open_open = KeyRange(start_open=[START], end_open=[END])
+        keyset = KeySet(ranges=(open_open,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START+1:END]
+        self._check_row_data(rows, expected)
+
+        open_closed = KeyRange(start_open=[START], end_closed=[END])
+        keyset = KeySet(ranges=(open_closed,))
+        rows = list(snapshot.read(
+            self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START+1:END+1]
         self._check_row_data(rows, expected)
 
     def test_execute_sql_w_manual_consume(self):
@@ -620,6 +887,42 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             sql, params=params, param_types=param_types))
         self._check_row_data(rows, expected=expected)
 
+    def test_multiuse_snapshot_execute_sql_isolation_strong(self):
+        ROW_COUNT = 40
+        SQL = 'SELECT * FROM {}'.format(self.TABLE)
+        session, committed = self._set_up_table(ROW_COUNT)
+        all_data_rows = list(self._row_data(ROW_COUNT))
+        strong = session.snapshot(multi_use=True)
+
+        before = list(strong.execute_sql(SQL))
+        self._check_row_data(before, all_data_rows)
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        after = list(strong.execute_sql(SQL))
+        self._check_row_data(after, all_data_rows)
+
+    def test_execute_sql_returning_array_of_struct(self):
+        SQL = (
+            "SELECT ARRAY(SELECT AS STRUCT C1, C2 "
+            "FROM (SELECT 'a' AS C1, 1 AS C2 "
+            "UNION ALL SELECT 'b' AS C1, 2 AS C2) "
+            "ORDER BY C1 ASC)"
+        )
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        snapshot = session.snapshot()
+        self._check_sql_results(
+            snapshot,
+            sql=SQL,
+            params=None,
+            param_types=None,
+            expected=[
+                [[['a', 1], ['b', 2]]],
+            ])
+
     def test_execute_sql_w_query_param(self):
         session = self._db.session()
         session.create()
@@ -632,7 +935,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 self.ALL_TYPES_COLUMNS,
                 self.ALL_TYPES_ROWDATA)
 
-        snapshot = session.snapshot(read_timestamp=batch.committed)
+        snapshot = session.snapshot(
+            read_timestamp=batch.committed, multi_use=True)
 
         # Cannot equality-test array values.  See below for a test w/
         # array of IDs.
@@ -668,7 +972,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             params={'lower': 0.0, 'upper': 1.0},
             param_types={
                 'lower': Type(code=FLOAT64), 'upper': Type(code=FLOAT64)},
-            expected=[(19,)],
+            expected=[(None,), (19,)],
         )
 
         # Find -inf
@@ -695,6 +999,14 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             params={'my_id': 19},
             param_types={'my_id': Type(code=INT64)},
             expected=[(u'dog',)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT description FROM all_types WHERE eye_d = @my_id',
+            params={'my_id': None},
+            param_types={'my_id': Type(code=INT64)},
+            expected=[],
         )
 
         self._check_sql_results(
@@ -777,6 +1089,10 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
     def test_four_meg(self):
         from tests.system.utils.streaming_utils import FOUR_MEG
         self._verify_two_columns(FOUR_MEG)
+
+
+class CustomException(Exception):
+    """Placeholder for any user-defined exception."""
 
 
 class _DatabaseDropper(object):

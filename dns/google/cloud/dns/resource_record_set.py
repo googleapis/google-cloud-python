@@ -20,7 +20,7 @@ class ResourceRecordSet(object):
 
     RRS are owned by a :class:`google.cloud.dns.zone.ManagedZone` instance.
 
-    See:
+    See
     https://cloud.google.com/dns/api/v1/resourceRecordSets
 
     :type name: str

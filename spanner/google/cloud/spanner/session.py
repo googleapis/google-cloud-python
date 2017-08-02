@@ -78,6 +78,7 @@ class Session(object):
 
         :rtype: str
         :returns: The session name.
+        :raises ValueError: if session is not yet created
         """
         if self._session_id is None:
             raise ValueError('No session ID set by back-end')
@@ -86,7 +87,7 @@ class Session(object):
     def create(self):
         """Create this session, bound to its database.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.CreateSession
 
         :raises: :exc:`ValueError` if :attr:`session_id` is already set.
@@ -101,11 +102,13 @@ class Session(object):
     def exists(self):
         """Test for the existence of this session.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession
 
         :rtype: bool
         :returns: True if the session exists on the back-end, else False.
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         if self._session_id is None:
             return False
@@ -123,10 +126,13 @@ class Session(object):
     def delete(self):
         """Delete this session.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession
 
-        :raises: :exc:`ValueError` if :attr:`session_id` is not already set.
+        :raises ValueError: if :attr:`session_id` is not already set.
+        :raises NotFound: if the session does not exist
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         if self._session_id is None:
             raise ValueError('Session ID not set by back-end')
@@ -139,43 +145,24 @@ class Session(object):
                 raise NotFound(self.name)
             raise
 
-    def snapshot(self, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
+    def snapshot(self, **kw):
         """Create a snapshot to perform a set of reads with shared staleness.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
-        If no options are passed, reads will use the ``strong`` model, reading
-        at a timestamp where all previously committed transactions are visible.
-
-        :type read_timestamp: :class:`datetime.datetime`
-        :param read_timestamp: Execute all reads at the given timestamp.
-
-        :type min_read_timestamp: :class:`datetime.datetime`
-        :param min_read_timestamp: Execute all reads at a
-                                   timestamp >= ``min_read_timestamp``.
-
-        :type max_staleness: :class:`datetime.timedelta`
-        :param max_staleness: Read data at a
-                              timestamp >= NOW - ``max_staleness`` seconds.
-
-        :type exact_staleness: :class:`datetime.timedelta`
-        :param exact_staleness: Execute all reads at a timestamp that is
-                                ``exact_staleness`` old.
+        :type kw: dict
+        :param kw: Passed through to
+                   :class:`~google.cloud.spanner.snapshot.Snapshot` ctor.
 
         :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`
         :returns: a snapshot bound to this session
-        :raises: :exc:`ValueError` if the session has not yet been created.
+        :raises ValueError: if the session has not yet been created.
         """
         if self._session_id is None:
             raise ValueError("Session has not been created.")
 
-        return Snapshot(self,
-                        read_timestamp=read_timestamp,
-                        min_read_timestamp=min_read_timestamp,
-                        max_staleness=max_staleness,
-                        exact_staleness=exact_staleness)
+        return Snapshot(self, **kw)
 
     def read(self, table, columns, keyset, index='', limit=0,
              resume_token=b''):
@@ -225,7 +212,7 @@ class Session(object):
 
         :type query_mode:
             :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See:
+        :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
         :type resume_token: bytes
@@ -242,7 +229,7 @@ class Session(object):
 
         :rtype: :class:`~google.cloud.spanner.batch.Batch`
         :returns: a batch bound to this session
-        :raises: :exc:`ValueError` if the session has not yet been created.
+        :raises ValueError: if the session has not yet been created.
         """
         if self._session_id is None:
             raise ValueError("Session has not been created.")
@@ -254,7 +241,7 @@ class Session(object):
 
         :rtype: :class:`~google.cloud.spanner.transaction.Transaction`
         :returns: a transaction bound to this session
-        :raises: :exc:`ValueError` if the session has not yet been created.
+        :raises ValueError: if the session has not yet been created.
         """
         if self._session_id is None:
             raise ValueError("Session has not been created.")
@@ -283,6 +270,8 @@ class Session(object):
 
         :rtype: :class:`datetime.datetime`
         :returns: timestamp of committed transaction
+        :raises Exception:
+            reraises any non-ABORT execptions raised by ``func``.
         """
         deadline = time.time() + kw.pop(
             'timeout_secs', DEFAULT_RETRY_TIMEOUT_SECS)
@@ -292,7 +281,7 @@ class Session(object):
                 txn = self.transaction()
             else:
                 txn = self._transaction
-            if txn._id is None:
+            if txn._transaction_id is None:
                 txn.begin()
             try:
                 func(txn, *args, **kw)
@@ -302,7 +291,6 @@ class Session(object):
                 continue
             except Exception:
                 txn.rollback()
-                del self._transaction
                 raise
 
             try:
@@ -311,7 +299,8 @@ class Session(object):
                 _delay_until_retry(exc, deadline)
                 del self._transaction
             else:
-                return txn.committed
+                committed = txn.committed
+                return committed
 
 
 # pylint: disable=misplaced-bare-raise

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 
 from setuptools import find_packages
@@ -20,6 +21,7 @@ from setuptools import setup
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
+
 with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
     README = file_obj.read()
 
@@ -27,7 +29,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
+    'author_email': 'googleapis-publisher@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -35,7 +37,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -50,19 +52,23 @@ SETUP_BASE = {
 }
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.24.0, < 0.25dev',
-    'grpcio >= 1.0.2, < 2.0dev',
-    'gapic-google-cloud-speech-v1 >= 0.15.3, < 0.16dev',
+    'google-cloud-core >= 0.25.0, < 0.26dev',
+    'google-gax >= 0.15.13, < 0.16dev',
+    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]
 
 setup(
     name='google-cloud-speech',
-    version='0.25.1',
+    version='0.27.1',
     description='Python Client for Google Cloud Speech',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
+        'google.cloud.gapic',
+        'google.cloud.gapic.speech',
+        'google.cloud.proto',
+        'google.cloud.proto.speech',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,

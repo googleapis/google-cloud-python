@@ -18,8 +18,6 @@ import re
 
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.cloud.proto.spanner.admin.database.v1 import (
-    spanner_database_admin_pb2 as admin_v1_pb2)
 from google.cloud.gapic.spanner.v1.spanner_client import SpannerClient
 from grpc import StatusCode
 import six
@@ -27,7 +25,6 @@ import six
 # pylint: disable=ungrouped-imports
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.operation import register_type
 from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.batch import Batch
@@ -43,10 +40,6 @@ _DATABASE_NAME_RE = re.compile(
     r'instances/(?P<instance_id>[a-z][-a-z0-9]*)/'
     r'databases/(?P<database_id>[a-z][a-z0-9_\-]*[a-z0-9])$'
     )
-
-register_type(admin_v1_pb2.Database)
-register_type(admin_v1_pb2.CreateDatabaseMetadata)
-register_type(admin_v1_pb2.UpdateDatabaseDdlMetadata)
 
 
 class Database(object):
@@ -106,9 +99,8 @@ class Database(object):
 
         :rtype: :class:`Database`
         :returns: The database parsed from the protobuf response.
-        :raises:
-            :class:`ValueError <exceptions.ValueError>` if the instance
-            name does not match the expected format
+        :raises ValueError:
+            if the instance name does not match the expected format
             or if the parsed project ID does not match the project ID
             on the instance's client, or if the parsed instance ID does
             not match the instance's ID.
@@ -150,7 +142,7 @@ class Database(object):
     def ddl_statements(self):
         """DDL Statements used to define database schema.
 
-        See:
+        See
         cloud.google.com/spanner/docs/data-definition-language
 
         :rtype: sequence of string
@@ -180,8 +172,15 @@ class Database(object):
 
         Inclues any configured schema assigned to :attr:`ddl_statements`.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase
+
+        :rtype: :class:`~google.cloud.future.operation.Operation`
+        :returns: a future used to poll the status of the create request
+        :raises Conflict: if the database already exists
+        :raises NotFound: if the instance owning the database does not exist
+        :raises GaxError:
+            for errors other than ``ALREADY_EXISTS`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -205,14 +204,18 @@ class Database(object):
                 ))
             raise
 
-        future.caller_metadata = {'request_type': 'CreateDatabase'}
         return future
 
     def exists(self):
         """Test whether this database exists.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
+
+        :rtype: bool
+        :returns: True if the database exists, else false.
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -230,8 +233,12 @@ class Database(object):
 
         Refresh any configured schema into :attr:`ddl_statements`.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
+
+        :raises NotFound: if the database does not exist
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -249,11 +256,14 @@ class Database(object):
 
         Apply any configured schema from :attr:`ddl_statements`.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
+        :raises NotFound: if the database does not exist
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         client = self._instance._client
         api = client.database_admin_api
@@ -267,13 +277,12 @@ class Database(object):
                 raise NotFound(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'UpdateDatabaseDdl'}
         return future
 
     def drop(self):
         """Drop this database.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase
         """
         api = self._instance._client.database_admin_api
@@ -343,7 +352,7 @@ class Database(object):
 
         :type query_mode:
             :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See:
+        :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
         :type resume_token: bytes
@@ -389,48 +398,24 @@ class Database(object):
         """
         return BatchCheckout(self)
 
-    def snapshot(self, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
+    def snapshot(self, **kw):
         """Return an object which wraps a snapshot.
 
         The wrapper *must* be used as a context manager, with the snapshot
         as the value returned by the wrapper.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
-        If no options are passed, reads will use the ``strong`` model, reading
-        at a timestamp where all previously committed transactions are visible.
-
-        :type read_timestamp: :class:`datetime.datetime`
-        :param read_timestamp: Execute all reads at the given timestamp.
-
-        :type min_read_timestamp: :class:`datetime.datetime`
-        :param min_read_timestamp: Execute all reads at a
-                                   timestamp >= ``min_read_timestamp``.
-
-        :type max_staleness: :class:`datetime.timedelta`
-        :param max_staleness: Read data at a
-                              timestamp >= NOW - ``max_staleness`` seconds.
-
-        :type exact_staleness: :class:`datetime.timedelta`
-        :param exact_staleness: Execute all reads at a timestamp that is
-                                ``exact_staleness`` old.
-
-        :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`
-        :returns: a snapshot bound to this session
-        :raises: :exc:`ValueError` if the session has not yet been created.
+        :type kw: dict
+        :param kw:
+            Passed through to
+            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
 
         :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`
         :returns: new wrapper
         """
-        return SnapshotCheckout(
-            self,
-            read_timestamp=read_timestamp,
-            min_read_timestamp=min_read_timestamp,
-            max_staleness=max_staleness,
-            exact_staleness=exact_staleness,
-        )
+        return SnapshotCheckout(self, **kw)
 
 
 class BatchCheckout(object):
@@ -476,40 +461,20 @@ class SnapshotCheckout(object):
     :type database: :class:`~google.cloud.spannder.database.Database`
     :param database: database to use
 
-    :type read_timestamp: :class:`datetime.datetime`
-    :param read_timestamp: Execute all reads at the given timestamp.
-
-    :type min_read_timestamp: :class:`datetime.datetime`
-    :param min_read_timestamp: Execute all reads at a
-                               timestamp >= ``min_read_timestamp``.
-
-    :type max_staleness: :class:`datetime.timedelta`
-    :param max_staleness: Read data at a
-                          timestamp >= NOW - ``max_staleness`` seconds.
-
-    :type exact_staleness: :class:`datetime.timedelta`
-    :param exact_staleness: Execute all reads at a timestamp that is
-                            ``exact_staleness`` old.
+    :type kw: dict
+    :param kw:
+        Passed through to
+        :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
     """
-    def __init__(self, database, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
+    def __init__(self, database, **kw):
         self._database = database
         self._session = None
-        self._read_timestamp = read_timestamp
-        self._min_read_timestamp = min_read_timestamp
-        self._max_staleness = max_staleness
-        self._exact_staleness = exact_staleness
+        self._kw = kw
 
     def __enter__(self):
         """Begin ``with`` block."""
         session = self._session = self._database._pool.get()
-        return Snapshot(
-            session,
-            read_timestamp=self._read_timestamp,
-            min_read_timestamp=self._min_read_timestamp,
-            max_staleness=self._max_staleness,
-            exact_staleness=self._exact_staleness,
-        )
+        return Snapshot(session, **self._kw)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """End ``with`` block."""
@@ -519,7 +484,7 @@ class SnapshotCheckout(object):
 def _check_ddl_statements(value):
     """Validate DDL Statements used to define database schema.
 
-    See:
+    See
     https://cloud.google.com/spanner/docs/data-definition-language
 
     :type value: list of string
@@ -527,6 +492,9 @@ def _check_ddl_statements(value):
 
     :rtype: tuple
     :returns: tuple of validated DDL statement strings.
+    :raises ValueError:
+        if elements in ``value`` are not strings, or if ``value`` contains
+        a ``CREATE DATABASE`` statement.
     """
     if not all(isinstance(line, six.string_types) for line in value):
         raise ValueError("Pass a list of strings")

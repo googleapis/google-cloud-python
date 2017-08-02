@@ -28,6 +28,7 @@ pip-log.txt
 .nox
 .tox
 .cache
+htmlcov
 
 # Translations
 *.mo
@@ -55,7 +56,8 @@ coverage.xml
 system_tests/local_test_setup
 
 # Make sure a generated file isn't accidentally committed.
-scripts/pylintrc_reduced
+pylintrc
+pylintrc.test
 
 # Directories used for creating generated PB2 files
 generated_python/

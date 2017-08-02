@@ -27,7 +27,7 @@ with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
 
 setup(
     author='Google Cloud Platform',
-    author_email='googleapis-packages@google.com',
+    author_email='googleapis-publisher@google.com',
     name='google-cloud-videointelligence',
     version='0.25.0',
     description='Python Client for Google Cloud Video Intelligence',

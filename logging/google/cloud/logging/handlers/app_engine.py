@@ -14,60 +14,77 @@
 
 """Logging handler for App Engine Flexible
 
-Logs to the well-known file that the fluentd sidecar container on App Engine
-Flexible is configured to read from and send to Stackdriver Logging.
-
-See the fluentd configuration here:
-
-https://github.com/GoogleCloudPlatform/appengine-sidecars-docker/tree/master/fluentd_logger
+Sends logs to the Stackdriver Logging API with the appropriate resource
+and labels for App Engine logs.
 """
 
-# This file is largely copied from:
-#  https://github.com/GoogleCloudPlatform/python-compat-runtime/blob/master
-# /appengine-vmruntime/vmruntime/cloud_logging.py
-
-import logging.handlers
 import os
 
-from google.cloud.logging.handlers._helpers import format_stackdriver_json
+from google.cloud.logging.handlers._helpers import get_trace_id
+from google.cloud.logging.handlers.handlers import CloudLoggingHandler
+from google.cloud.logging.handlers.transports import BackgroundThreadTransport
+from google.cloud.logging.resource import Resource
 
-_LOG_PATH_TEMPLATE = '/var/log/app_engine/app.{pid}.json'
-_MAX_LOG_BYTES = 128 * 1024 * 1024
-_LOG_FILE_COUNT = 3
+_DEFAULT_GAE_LOGGER_NAME = 'app'
+
+_GAE_PROJECT_ENV = 'GCLOUD_PROJECT'
+_GAE_SERVICE_ENV = 'GAE_SERVICE'
+_GAE_VERSION_ENV = 'GAE_VERSION'
+
+_TRACE_ID_LABEL = 'appengine.googleapis.com/trace_id'
 
 
-class AppEngineHandler(logging.handlers.RotatingFileHandler):
-    """A handler that writes to the App Engine fluentd Stackdriver log file.
+class AppEngineHandler(CloudLoggingHandler):
+    """A logging handler that sends App Engine-formatted logs to Stackdriver.
 
-    Writes to the file that the fluentd agent on App Engine Flexible is
-    configured to discover logs and send them to  Stackdriver Logging.
-    Log entries are wrapped in JSON and with appropriate metadata. The
-    process of converting the user's formatted logs into a JSON payload for
-    Stackdriver Logging consumption is implemented as part of the handler
-    itself, and not as a formatting step, so as not to interfere with
-    user-defined logging formats.
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The authenticated Google Cloud Logging client for this
+                   handler to use.
+
+    :type transport: :class:`type`
+    :param transport: The transport class. It should be a subclass
+                      of :class:`.Transport`. If unspecified,
+                      :class:`.BackgroundThreadTransport` will be used.
     """
 
-    def __init__(self):
-        """Construct the handler
+    def __init__(self, client,
+                 transport=BackgroundThreadTransport):
+        super(AppEngineHandler, self).__init__(
+            client,
+            name=_DEFAULT_GAE_LOGGER_NAME,
+            transport=transport,
+            resource=self.get_gae_resource(),
+            labels=self.get_gae_labels())
 
-        Large log entries will get mangled if multiple workers write to the
-        same file simultaneously, so we'll use the worker's PID to pick a log
-        filename.
+    def get_gae_resource(self):
+        """Return the GAE resource using the environment variables.
+
+        :rtype: :class:`~google.cloud.logging.resource.Resource`
+        :returns: Monitored resource for GAE.
         """
-        self.filename = _LOG_PATH_TEMPLATE.format(pid=os.getpid())
-        super(AppEngineHandler, self).__init__(self.filename,
-                                               maxBytes=_MAX_LOG_BYTES,
-                                               backupCount=_LOG_FILE_COUNT)
+        gae_resource = Resource(
+            type='gae_app',
+            labels={
+                'project_id': os.environ.get(_GAE_PROJECT_ENV),
+                'module_id': os.environ.get(_GAE_SERVICE_ENV),
+                'version_id': os.environ.get(_GAE_VERSION_ENV),
+            },
+        )
+        return gae_resource
 
-    def format(self, record):
-        """Format the specified record into the expected JSON structure.
+    def get_gae_labels(self):
+        """Return the labels for GAE app.
 
-        :type record: :class:`~logging.LogRecord`
-        :param record: the log record
+        If the trace ID can be detected, it will be included as a label.
+        Currently, no other labels are included.
 
-        :rtype: str
-        :returns: JSON str to be written to the log file
+        :rtype: dict
+        :returns: Labels for GAE app.
         """
-        message = super(AppEngineHandler, self).format(record)
-        return format_stackdriver_json(record, message)
+        gae_labels = {}
+
+        trace_id = get_trace_id()
+        if trace_id is not None:
+            gae_labels[_TRACE_ID_LABEL] = trace_id
+
+        return gae_labels

@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google Cloud Vision API package."""
+# -----------------------------------------------------------------------------
+# TRANSITION CODE
+# -----------------------------------------------------------------------------
+# The old Vision manual layer is now deprecated, but to allow
+# users the time to move from the manual layer to the mostly auto-generated
+# layer, they are both living side by side for a few months.
+#
+# Instantiating the old manual layer (`google.cloud.vision.Client`) will
+# issue a DeprecationWarning.
+#
+# When it comes time to remove the old layer, everything in this directory
+# should go away EXCEPT __init__.py, decorators.py, and helpers.py.
+# Additionally, the import and export of `Client` should be removed from this
+# file (along with this note), and the rest should be left intact.
+# -----------------------------------------------------------------------------
 
+from __future__ import absolute_import
 
 from pkg_resources import get_distribution
 __version__ = get_distribution('google-cloud-vision').version
 
 from google.cloud.vision.client import Client
+from google.cloud.vision_v1 import *  # noqa
 
 
-__all__ = ['__version__', 'Client']
+__all__ = (
+    # Common
+    '__version__',
+
+    # Manual Layer
+    'Client',
+
+    # GAPIC & Partial Manual Layer
+    'enums',
+    'ImageAnnotatorClient',
+    'types',
+)
