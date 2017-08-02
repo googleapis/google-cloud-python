@@ -1326,6 +1326,20 @@ class QueryJob(_AsyncJob):
         query_stats = self._query_statistics()
         return query_stats.get('totalBytesBilled')
 
+    @property
+    def billing_tier(self):
+        """Return billing tier from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.billingTier
+
+        :rtype: int or None
+        :returns: total bytes processed by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._query_statistics()
+        return query_stats.get('billingTier')
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
