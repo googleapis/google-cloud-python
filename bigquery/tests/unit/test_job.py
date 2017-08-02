@@ -1766,6 +1766,56 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsInstance(remote._dataset._client, _Client)
         self.assertEqual(remote._dataset._client.project, 'other-project-123')
 
+    def test_schema(self):
+        from google.cloud.bigquery.table import _parse_schema_resource
+
+        schema = {
+            'fields': [{
+                'name': 'full_name',
+                'type': 'STRING',
+                'mode': 'NULLABLE',
+                'description': 'DESCRIPTION'
+            }, {
+                'name': 'phone_number',
+                'type': 'STRING',
+                'mode': 'REPEATED',
+            }, {
+                'name': 'address',
+                'type': 'RECORD',
+                'mode': 'REPEATED',
+                'fields': [{
+                    'name': 'street_address',
+                    'type': 'STRING',
+                    'mode': 'NULLABLE',
+                }, {
+                    'name': 'city',
+                    'type': 'STRING',
+                    'mode': 'NULLABLE',
+                }, {
+                    'name': 'state',
+                    'type': 'STRING',
+                    'mode': 'NULLABLE',
+                }, {
+                    'name': 'zip',
+                    'type': 'STRING',
+                    'mode': 'NULLABLE',
+                }],
+            }],
+        }
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertEqual(job.schema, ())
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.schema, ())
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.schema, ())
+
+        query_stats['schema'] = schema
+
+        self.assertEqual(job.schema, _parse_schema_resource(schema))
+
     def test_num_dml_affected_rows(self):
         num_rows = 1234
         client = _Client(self.PROJECT)

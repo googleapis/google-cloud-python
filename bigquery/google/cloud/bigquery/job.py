@@ -1391,6 +1391,20 @@ class QueryJob(_AsyncJob):
         return tables
 
     @property
+    def schema(self):
+        """Return schema from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.schema
+
+        :rtype: list of :class:`~google.cloud.bigquery.schema.SchemaField
+        :returns: fields describing the query's result set, or an empty list
+                  if the query has not yet completed.
+        """
+        query_stats = self._query_statistics()
+        return _parse_schema_resource(query_stats.get('schema', {}))
+
+    @property
     def num_dml_affected_rows(self):
         """Return total bytes billed from job statistics, if present.
 
