@@ -1748,12 +1748,16 @@ class TestQueryJob(unittest.TestCase, _Base):
         referenced_tables = [{
             'projectId': self.PROJECT,
             'datasetId': 'dataset',
-            'tableId': 'table',
+            'tableId': 'local1',
+        }, {
+            'projectId': self.PROJECT,
+            'datasetId': 'dataset',
+            'tableId': 'local2',
         }, {
 
             'projectId': 'other-project-123',
             'datasetId': 'other-dataset',
-            'tableId': 'other-table',
+            'tableId': 'remote',
         }]
         client = _Client(self.PROJECT)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
@@ -1767,16 +1771,20 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         query_stats['referencedTables'] = referenced_tables
 
-        local, remote = job.referenced_tables
+        local1, local2, remote = job.referenced_tables
 
-        self.assertIsInstance(local, Table)
-        self.assertEqual(local.name, 'table')
-        self.assertIsInstance(local._dataset, Dataset)
-        self.assertEqual(local._dataset.name, 'dataset')
-        self.assertIs(local._dataset._client, client)
+        self.assertIsInstance(local1, Table)
+        self.assertEqual(local1.name, 'local1')
+        self.assertIsInstance(local1._dataset, Dataset)
+        self.assertEqual(local1._dataset.name, 'dataset')
+        self.assertIs(local1._dataset._client, client)
+
+        self.assertIsInstance(local2, Table)
+        self.assertEqual(local2.name, 'local2')
+        self.assertIs(local2._dataset, local1._dataset)
 
         self.assertIsInstance(remote, Table)
-        self.assertEqual(remote.name, 'other-table')
+        self.assertEqual(remote.name, 'remote')
         self.assertIsInstance(remote._dataset, Dataset)
         self.assertEqual(remote._dataset.name, 'other-dataset')
         self.assertIsNot(remote._dataset._client, client)
