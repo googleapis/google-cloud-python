@@ -1866,6 +1866,21 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['undeclaredQueryParamters'] = undeclared
         self.assertEqual(job.undeclared_query_paramters, undeclared)
 
+    def test_statement_type(self):
+        statement_type = 'SELECT'
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.statement_type)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.statement_type)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.statement_type)
+
+        query_stats['statementType'] = statement_type
+        self.assertEqual(job.statement_type, statement_type)
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 

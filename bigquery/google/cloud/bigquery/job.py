@@ -1433,6 +1433,20 @@ class QueryJob(_AsyncJob):
         undeclared = query_stats.get('undeclaredQueryParamters', ())
         return [copy.deepcopy(parameter) for parameter in undeclared]
 
+    @property
+    def statement_type(self):
+        """Return statement type from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.statementType
+
+        :rtype: str or None
+        :returns: type of statement used by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._query_statistics()
+        return query_stats.get('statementType')
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
