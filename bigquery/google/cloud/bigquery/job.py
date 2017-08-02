@@ -14,6 +14,7 @@
 
 """Define API Jobs."""
 
+import copy
 import threading
 
 import six
@@ -265,6 +266,11 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
             millis = statistics.get('endTime')
             if millis is not None:
                 return _datetime_from_microseconds(millis * 1000.0)
+
+    def _job_statistics(self):
+        """Helper for job-type specific statistics-based properties."""
+        statistics = self._properties.get('statistics', {})
+        return statistics.get(self._JOB_TYPE, {})
 
     @property
     def error_result(self):
@@ -1277,6 +1283,20 @@ class QueryJob(_AsyncJob):
         job = cls(name, query, client=client)
         job._set_properties(resource)
         return job
+
+    @property
+    def query_plan(self):
+        """Return query plan from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.queryPlan
+
+        :rtype: list of dict
+        :returns: mappings describing the query plan, or an empty list
+                  if the query has not yet completed.
+        """
+        plan_entries = self._job_statistics().get('queryPlan', ())
+        return [copy.deepcopy(entry) for entry in plan_entries]
 
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.

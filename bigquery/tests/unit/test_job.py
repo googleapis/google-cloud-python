@@ -1640,6 +1640,39 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertTrue(job.cancelled())
 
+    def test_query_plan(self):
+        plan_entries = [{
+            'name': 'NAME',
+            'id': 1234,
+            'waitRatioAvg': 2.71828,
+            'waitRatioMax': 3.14159,
+            'readRatioAvg': 1.41421,
+            'readRatioMax': 1.73205,
+            'computeRatioAvg': 0.69315,
+            'computeRatioMax': 1.09861,
+            'writeRatioAvg': 3.32193,
+            'writeRatioMax': 2.30258,
+            'recordsRead': 100,
+            'recordsWritten': 1,
+            'status': 'STATUS',
+            'steps': [{
+                'kind': 'KIND',
+                'substeps': ['SUBSTEP1', 'SUBSTEP2'],
+            }],
+        }]
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertEqual(job.query_plan, [])
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.query_plan, [])
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.query_plan, [])
+
+        query_stats['queryPlan'] = plan_entries
+        self.assertEqual(job.query_plan, plan_entries)
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
