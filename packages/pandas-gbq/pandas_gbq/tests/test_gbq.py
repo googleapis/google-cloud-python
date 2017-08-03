@@ -1033,6 +1033,17 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
                               private_key=_get_private_key_path())
         assert result['num_rows'][0] == test_size * 2
 
+    # This test is currently failing intermittently due to changes in the
+    # BigQuery backend. You can track the issue in the Google BigQuery issue
+    # tracker `here <https://issuetracker.google.com/issues/64329577>`__.
+    # Currently you need to stream data twice in order to successfully stream
+    # data when you delete and re-create a table with a different schema.
+    # Something to consider is that google-cloud-bigquery returns an array of
+    # streaming insert errors rather than raising an exception. In this
+    # scenario, a decision could be made by the user to check for streaming
+    # errors and retry as needed. See `Issue 75
+    # <https://github.com/pydata/pandas-gbq/issues/75>`__
+    @pytest.mark.xfail(reason="Delete/create table w/ different schema issue")
     def test_upload_data_if_table_exists_replace(self):
         test_id = "4"
         test_size = 10
