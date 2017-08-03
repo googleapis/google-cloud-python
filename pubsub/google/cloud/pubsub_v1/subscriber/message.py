@@ -74,7 +74,7 @@ class Message(object):
 
     def __repr__(self):
         # Get an abbreviated version of the data.
-        abbv_data = self._data
+        abbv_data = self._message.data
         if len(abbv_data) > 50:
             abbv_data = abbv_data[0:50] + b'...'
 
@@ -83,6 +83,7 @@ class Message(object):
         answer += '    data: {0!r}\n'.format(abbv_data)
         answer += '    attributes: {0!r}\n'.format(self.attributes)
         answer += '}'
+        return answer
 
     @property
     def attributes(self):
