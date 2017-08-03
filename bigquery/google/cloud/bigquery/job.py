@@ -1411,7 +1411,7 @@ class QueryJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.schema
 
-        :rtype: list of :class:`~google.cloud.bigquery.schema.SchemaField
+        :rtype: list of :class:`~google.cloud.bigquery.schema.SchemaField`
         :returns: fields describing the query's result set, or an empty list
                   if the query has not yet completed.
         """
