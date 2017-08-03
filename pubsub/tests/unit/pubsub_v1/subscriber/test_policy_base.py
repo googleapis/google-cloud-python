@@ -23,7 +23,7 @@ from google.cloud.pubsub_v1.subscriber.policy import thread
 
 def create_policy(flow_control=types.FlowControl()):
     client = subscriber.Client()
-    return thread.Policy(client, 'sub_name', flow_control=flow_control)
+    return thread.Policy(client, 'sub_name_d', flow_control=flow_control)
 
 
 def test_ack_deadline():
@@ -39,7 +39,7 @@ def test_get_initial_request():
     policy = create_policy()
     initial_request = policy.get_initial_request()
     assert isinstance(initial_request, types.StreamingPullRequest)
-    assert initial_request.subscription == 'sub_name'
+    assert initial_request.subscription == 'sub_name_d'
     assert initial_request.stream_ack_deadline_seconds == 10
 
 
@@ -56,7 +56,7 @@ def test_managed_ack_ids():
 
 def test_subscription():
     policy = create_policy()
-    assert policy.subscription == 'sub_name'
+    assert policy.subscription == 'sub_name_d'
 
 
 def test_ack():
@@ -86,7 +86,9 @@ def test_ack_paused():
     policy = create_policy()
     policy._paused = True
     policy._consumer.active = False
-    policy.ack('ack_id_string')
+    with mock.patch.object(policy, 'open') as open_:
+        policy.ack('ack_id_string')
+        open_.assert_called()
     assert 'ack_id_string' in policy._ack_on_resume
 
 

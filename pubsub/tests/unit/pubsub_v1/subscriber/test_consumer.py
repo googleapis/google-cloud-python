@@ -27,7 +27,7 @@ from google.cloud.pubsub_v1.subscriber.policy import thread
 
 def create_consumer():
     client = subscriber.Client()
-    subscription = client.subscribe('sub_name')
+    subscription = client.subscribe('sub_name_e')
     return consumer.Consumer(policy=subscription)
 
 
@@ -46,7 +46,7 @@ def test_request_generator_thread():
     # The first request that comes from the request generator thread
     # should always be the initial request.
     initial_request = next(generator)
-    assert initial_request.subscription == 'sub_name'
+    assert initial_request.subscription == 'sub_name_e'
     assert initial_request.stream_ack_deadline_seconds == 10
 
     # Subsequent requests correspond to items placed in the request queue.

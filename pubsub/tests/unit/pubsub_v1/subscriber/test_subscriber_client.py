@@ -25,7 +25,7 @@ def test_init():
 
 def test_subscribe():
     client = subscriber.Client()
-    subscription = client.subscribe('sub_name')
+    subscription = client.subscribe('sub_name_a')
     assert isinstance(subscription, thread.Policy)
 
 
@@ -33,6 +33,6 @@ def test_subscribe_with_callback():
     client = subscriber.Client()
     callback = mock.Mock()
     with mock.patch.object(thread.Policy, 'open') as open_:
-        subscription = client.subscribe('sub_name', callback)
+        subscription = client.subscribe('sub_name_b', callback)
         open_.assert_called_once_with(callback)
     assert isinstance(subscription, thread.Policy)
