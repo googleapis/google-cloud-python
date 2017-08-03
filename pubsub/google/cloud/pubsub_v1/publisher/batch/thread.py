@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 
+import logging
 import threading
 import time
 import uuid
@@ -167,10 +168,18 @@ class Batch(base.BaseBatch):
         # Begin the request to publish these messages.
         if len(self._messages) == 0:
             return
+
+        # Make the actual GRPC request.
+        # Log how long the underlying request takes.
+        start = time.time()
         response = self.client.api.publish(
             self._topic,
             self.messages,
         )
+        end = time.time()
+        logging.getLogger().debug('gRPC Publish took {sec} seconds.'.format(
+            sec=end - start,
+        ))
 
         # We got a response from Pub/Sub; denote that we are processing.
         self._status = 'processing results'
@@ -186,9 +195,9 @@ class Batch(base.BaseBatch):
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
         self._status = self.Status.SUCCESS
-        for message_id, fut in zip(response.message_ids, self._futures):
-            self.message_ids[hash(fut)] = message_id
-            fut._trigger()
+        for message_id, future in zip(response.message_ids, self._futures):
+            self.message_ids[hash(future)] = message_id
+            future._trigger()
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
