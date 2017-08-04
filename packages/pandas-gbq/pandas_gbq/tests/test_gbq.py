@@ -884,6 +884,19 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
                          private_key=_get_private_key_path(),
                          configuration=config)
 
+    def test_timeout_configuration(self):
+        sql_statement = 'SELECT 1'
+        config = {
+            'query': {
+                "timeoutMs": 1
+            }
+        }
+        # Test that QueryTimeout error raises
+        with pytest.raises(gbq.QueryTimeout):
+            gbq.read_gbq(sql_statement, project_id=_get_project_id(),
+                         private_key=_get_private_key_path(),
+                         configuration=config)
+
     def test_query_response_bytes(self):
         assert self.gbq_connector.sizeof_fmt(999) == "999.0 B"
         assert self.gbq_connector.sizeof_fmt(1024) == "1.0 KB"
