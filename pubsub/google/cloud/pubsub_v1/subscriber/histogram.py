@@ -34,8 +34,8 @@ class Histogram(object):
         """Instantiate the histogram.
 
         Args:
-            data (dict): The data strucure to be used to store the
-                underlying data. The default is an empty dictionary.
+            data (Mapping[str, int]): The data strucure to be used to store
+                the underlying data. The default is an empty dictionary.
                 This can be set to a dictionary-like object if required
                 (for example, if a special object is needed for
                 concurrency reasons).
@@ -129,8 +129,8 @@ class Histogram(object):
         """Return the value that is the Nth precentile in the histogram.
 
         Args:
-            percent (int|float): The precentile being sought. The default
-                consumer implementations use consistently use ``99``.
+            percent (Union[int, float]): The precentile being sought. The
+                default consumer implementations use consistently use ``99``.
 
         Returns:
             int: The value corresponding to the requested percentile.
