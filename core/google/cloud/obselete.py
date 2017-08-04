@@ -16,21 +16,22 @@ import pkg_resources
 import warnings
 
 
-def complain(package_name):
-    """Issue a warning if `package_name` is installed.
+def complain(distribution_name):
+    """Issue a warning if `distribution_name` is installed.
 
     In a future release, this method will be updated to raise ImportError
     rather than just send a warning.
 
     Args:
-        package_name (str): The name of the obselete package.
+        distribution_name (str): The name of the obselete distribution.
     """
     try:
-        pkg_resources.get_distribution(package_name)
+        pkg_resources.get_distribution(distribution_name)
         warnings.warn(
-            'The {pkg} package is now obselete. Please `pip uninstall {pkg}`. '
+            'The {pkg} distribution is now obselete. '
+            'Please `pip uninstall {pkg}`. '
             'In the future, this warning will become an ImportError.'.format(
-                pkg=package_name,
+                pkg=distribution_name,
             ),
             DeprecationWarning,
         )
