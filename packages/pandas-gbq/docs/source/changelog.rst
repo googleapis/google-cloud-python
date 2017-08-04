@@ -4,7 +4,7 @@ Changelog
 0.2.1 / 2017-??-??
 ------------------
 
-- :func:`read_gbq` now handles query configuration `query.timeoutMs` and stop waiting. (:issue:`76`)
+- :func:`read_gbq` now raises ``QueryTimeout`` if the request exceeds the ``query.timeoutMs`` value specified in the BigQuery configuration. (:issue:`76`)
 
 0.2.0 / 2017-07-24
 ------------------
