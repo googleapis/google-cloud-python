@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pkg_resources
 import warnings
+
+import pkg_resources
 
 
 def complain(distribution_name):
