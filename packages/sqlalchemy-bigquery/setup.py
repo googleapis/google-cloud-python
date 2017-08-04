@@ -15,7 +15,7 @@ setup(
     ],
     install_requires=[
         'sqlalchemy>=1.1.9',
-        'google-cloud==0.25.0'
+        'google-cloud>=0.25.0'
     ],
     entry_points={
         'sqlalchemy.dialects': [
