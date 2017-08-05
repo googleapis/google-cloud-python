@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Tables &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Tables &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -594,9 +594,6 @@ row.</p>
 <dt id="google.cloud.bigquery.table.Table.upload_from_file">
 <code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>source_format</em>, <em>rewind=False</em>, <em>size=None</em>, <em>num_retries=6</em>, <em>allow_jagged_rows=None</em>, <em>allow_quoted_newlines=None</em>, <em>create_disposition=None</em>, <em>encoding=None</em>, <em>field_delimiter=None</em>, <em>ignore_unknown_values=None</em>, <em>max_bad_records=None</em>, <em>quote_character=None</em>, <em>skip_leading_rows=None</em>, <em>write_disposition=None</em>, <em>client=None</em>, <em>job_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Table.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.upload_from_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of this table from a file-like object.</p>
-<p>The content type of the upload will either be
-- The value passed in to the function (if any)
-- <code class="docutils literal"><span class="pre">text/csv</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -607,7 +604,7 @@ row.</p>
 job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code></li>
 <li><strong>rewind</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, seek to the beginning of the file handle before
-writing the file to Cloud Storage.</li>
+writing the file.</li>
 <li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The number of bytes to read from the file handle.
 If not provided, we’ll try to guess the size using
 <a class="reference external" href="https://docs.python.org/3/library/os.html#os.fstat" title="(in Python v3.6)"><code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></a>. (If the file handle is not from the
@@ -633,15 +630,14 @@ filesystem this won’t be possible.)</li>
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
 <li><strong>write_disposition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>client</strong> (<a class="reference internal" href="../storage/client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</li>
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current table.</li>
 <li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional. The id of the job. Generated if not
 explicitly passed in.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.jobs.LoadTableFromStorageJob</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">LoadTableFromStorageJob</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the job instance used to load the data (e.g., for

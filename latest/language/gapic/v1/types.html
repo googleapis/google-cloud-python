@@ -1,0 +1,702 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Natural Language Client Types &#8212; google-cloud 3012b5e documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '3012b5e',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Natural Language Beta Client API" href="../v1beta2/api.html" />
+    <link rel="prev" title="Natural Language Client API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.language_v1.types">
+<span id="natural-language-client-types"></span><h1>Natural Language Client Types<a class="headerlink" href="#module-google.cloud.language_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnalyzeEntitiesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">AnalyzeEntitiesRequest</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeEntitiesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The entity analysis request message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeEntitiesRequest.document">
+<code class="descname">document</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeEntitiesRequest.document" title="Permalink to this definition">#</a></dt>
+<dd><p>Input document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeEntitiesRequest.encoding_type">
+<code class="descname">encoding_type</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeEntitiesRequest.encoding_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The encoding type used by the API to calculate offsets.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnalyzeEntitiesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">AnalyzeEntitiesResponse</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeEntitiesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The entity analysis response message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeEntitiesResponse.entities">
+<code class="descname">entities</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeEntitiesResponse.entities" title="Permalink to this definition">#</a></dt>
+<dd><p>The recognized entities in the input document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeEntitiesResponse.language">
+<code class="descname">language</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeEntitiesResponse.language" title="Permalink to this definition">#</a></dt>
+<dd><p>The language of the text, which will be the same as the
+language specified in the request or, if not specified, the
+automatically-detected language. See [Document.language][googl
+e.cloud.language.v1.Document.language] field for more details.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnalyzeSentimentRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">AnalyzeSentimentRequest</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSentimentRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The sentiment analysis request message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSentimentRequest.document">
+<code class="descname">document</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSentimentRequest.document" title="Permalink to this definition">#</a></dt>
+<dd><p>Input document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSentimentRequest.encoding_type">
+<code class="descname">encoding_type</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSentimentRequest.encoding_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The encoding type used by the API to calculate sentence
+offsets.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnalyzeSentimentResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">AnalyzeSentimentResponse</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSentimentResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The sentiment analysis response message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSentimentResponse.document_sentiment">
+<code class="descname">document_sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSentimentResponse.document_sentiment" title="Permalink to this definition">#</a></dt>
+<dd><p>The overall sentiment of the input document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSentimentResponse.language">
+<code class="descname">language</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSentimentResponse.language" title="Permalink to this definition">#</a></dt>
+<dd><p>The language of the text, which will be the same as the
+language specified in the request or, if not specified, the
+automatically-detected language. See [Document.language][googl
+e.cloud.language.v1.Document.language] field for more details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSentimentResponse.sentences">
+<code class="descname">sentences</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSentimentResponse.sentences" title="Permalink to this definition">#</a></dt>
+<dd><p>The sentiment for all the sentences in the document.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnalyzeSyntaxRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">AnalyzeSyntaxRequest</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSyntaxRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The syntax analysis request message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSyntaxRequest.document">
+<code class="descname">document</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSyntaxRequest.document" title="Permalink to this definition">#</a></dt>
+<dd><p>Input document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSyntaxRequest.encoding_type">
+<code class="descname">encoding_type</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSyntaxRequest.encoding_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The encoding type used by the API to calculate offsets.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnalyzeSyntaxResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">AnalyzeSyntaxResponse</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSyntaxResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The syntax analysis response message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSyntaxResponse.sentences">
+<code class="descname">sentences</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSyntaxResponse.sentences" title="Permalink to this definition">#</a></dt>
+<dd><p>Sentences in the input document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSyntaxResponse.tokens">
+<code class="descname">tokens</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSyntaxResponse.tokens" title="Permalink to this definition">#</a></dt>
+<dd><p>Tokens, along with their syntactic information, in the input
+document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnalyzeSyntaxResponse.language">
+<code class="descname">language</code><a class="headerlink" href="#google.cloud.language_v1.types.AnalyzeSyntaxResponse.language" title="Permalink to this definition">#</a></dt>
+<dd><p>The language of the text, which will be the same as the
+language specified in the request or, if not specified, the
+automatically-detected language. See [Document.language][googl
+e.cloud.language.v1.Document.language] field for more details.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">AnnotateTextRequest</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request message for the text annotation API, which can perform
+multiple analysis types (sentiment, entities, and syntax) in one call.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.extract_syntax">
+<code class="descname">extract_syntax</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.extract_syntax" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract syntax information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.extract_entities">
+<code class="descname">extract_entities</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.extract_entities" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract entities.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.extract_document_sentiment">
+<code class="descname">extract_document_sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.extract_document_sentiment" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract document-level sentiment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.document">
+<code class="descname">document</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.document" title="Permalink to this definition">#</a></dt>
+<dd><p>Input document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.features">
+<code class="descname">features</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.features" title="Permalink to this definition">#</a></dt>
+<dd><p>The enabled features.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.encoding_type">
+<code class="descname">encoding_type</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.encoding_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The encoding type used by the API to calculate offsets.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.Features">
+<em class="property">class </em><code class="descname">Features</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.Features" title="Permalink to this definition">#</a></dt>
+<dd><p>All available features for sentiment, syntax, and semantic analysis.
+Setting each one to true will enable that specific analysis for the
+input.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.AnnotateTextResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">AnnotateTextResponse</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The text annotations response message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextResponse.sentences">
+<code class="descname">sentences</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextResponse.sentences" title="Permalink to this definition">#</a></dt>
+<dd><p>Sentences in the input document. Populated if the user enables
+[AnnotateTextRequest.Features.extract_syntax][google.cloud.la
+nguage.v1.AnnotateTextRequest.Features.extract_syntax].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextResponse.tokens">
+<code class="descname">tokens</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextResponse.tokens" title="Permalink to this definition">#</a></dt>
+<dd><p>Tokens, along with their syntactic information, in the input
+document. Populated if the user enables [AnnotateTextRequest.F
+eatures.extract_syntax][google.cloud.language.v1.AnnotateText
+Request.Features.extract_syntax].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextResponse.entities">
+<code class="descname">entities</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextResponse.entities" title="Permalink to this definition">#</a></dt>
+<dd><p>Entities, along with their semantic information, in the input
+document. Populated if the user enables [AnnotateTextRequest.F
+eatures.extract_entities][google.cloud.language.v1.AnnotateTe
+xtRequest.Features.extract_entities].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextResponse.document_sentiment">
+<code class="descname">document_sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextResponse.document_sentiment" title="Permalink to this definition">#</a></dt>
+<dd><p>The overall sentiment for the document. Populated if the user
+enables [AnnotateTextRequest.Features.extract_document_senti
+ment][google.cloud.language.v1.AnnotateTextRequest.Features.ex
+tract_document_sentiment].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextResponse.language">
+<code class="descname">language</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextResponse.language" title="Permalink to this definition">#</a></dt>
+<dd><p>The language of the text, which will be the same as the
+language specified in the request or, if not specified, the
+automatically-detected language. See [Document.language][googl
+e.cloud.language.v1.Document.language] field for more details.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.DependencyEdge">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">DependencyEdge</code><a class="headerlink" href="#google.cloud.language_v1.types.DependencyEdge" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents dependency parse tree information for a token. (For more
+information on dependency labels, see
+<a class="reference external" href="http://www.aclweb.org/anthology/P13-2017">http://www.aclweb.org/anthology/P13-2017</a></p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.DependencyEdge.head_token_index">
+<code class="descname">head_token_index</code><a class="headerlink" href="#google.cloud.language_v1.types.DependencyEdge.head_token_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the head of this token in the dependency tree. This
+is the index of the token which has an arc going to this
+token. The index is the position of the token in the array of
+tokens returned by the API method. If this token is a root
+token, then the <code class="docutils literal"><span class="pre">head_token_index</span></code> is its own index.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.DependencyEdge.label">
+<code class="descname">label</code><a class="headerlink" href="#google.cloud.language_v1.types.DependencyEdge.label" title="Permalink to this definition">#</a></dt>
+<dd><p>The parse label for the token.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.Document">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">Document</code><a class="headerlink" href="#google.cloud.language_v1.types.Document" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the input to API methods.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Document.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.language_v1.types.Document.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. If the type is not set or is <code class="docutils literal"><span class="pre">TYPE_UNSPECIFIED</span></code>,
+returns an <code class="docutils literal"><span class="pre">INVALID_ARGUMENT</span></code> error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Document.source">
+<code class="descname">source</code><a class="headerlink" href="#google.cloud.language_v1.types.Document.source" title="Permalink to this definition">#</a></dt>
+<dd><p>The source of the document: a string containing the content or
+a Google Cloud Storage URI.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Document.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.language_v1.types.Document.content" title="Permalink to this definition">#</a></dt>
+<dd><p>The content of the input in string format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Document.gcs_content_uri">
+<code class="descname">gcs_content_uri</code><a class="headerlink" href="#google.cloud.language_v1.types.Document.gcs_content_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Cloud Storage URI where the file content is
+located. This URI must be of the form:
+gs://bucket_name/object_name. For more details, see
+https://cloud.google.com/storage/docs/reference-uris. NOTE:
+Cloud Storage object versioning is not supported.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Document.language">
+<code class="descname">language</code><a class="headerlink" href="#google.cloud.language_v1.types.Document.language" title="Permalink to this definition">#</a></dt>
+<dd><p>The language of the document (if not specified, the language
+is automatically detected). Both ISO and BCP-47 language codes
+are accepted. <a class="reference external" href="https://cloud.google.com/natural-language/docs/languages">Language Support</a>
+lists currently supported languages for each API method. If
+the language (either specified by the caller or automatically
+detected) is not supported by the called API method, an
+<code class="docutils literal"><span class="pre">INVALID_ARGUMENT</span></code> error is returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.Entity">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">Entity</code><a class="headerlink" href="#google.cloud.language_v1.types.Entity" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a phrase in the text that is a known entity, such as a
+person, an organization, or location. The API associates information,
+such as salience and mentions, with entities.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Entity.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.language_v1.types.Entity.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The representative name for the entity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Entity.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.language_v1.types.Entity.type" title="Permalink to this definition">#</a></dt>
+<dd><p>The entity type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Entity.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.language_v1.types.Entity.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata associated with the entity.  Currently, Wikipedia
+URLs and Knowledge Graph MIDs are provided, if available. The
+associated keys are “wikipedia_url” and “mid”, respectively.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Entity.salience">
+<code class="descname">salience</code><a class="headerlink" href="#google.cloud.language_v1.types.Entity.salience" title="Permalink to this definition">#</a></dt>
+<dd><p>The salience score associated with the entity in the [0, 1.0]
+range.  The salience score for an entity provides information
+about the importance or centrality of that entity to the
+entire document text. Scores closer to 0 are less salient,
+while scores closer to 1.0 are highly salient.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Entity.mentions">
+<code class="descname">mentions</code><a class="headerlink" href="#google.cloud.language_v1.types.Entity.mentions" title="Permalink to this definition">#</a></dt>
+<dd><p>The mentions of this entity in the input document. The API
+currently supports proper noun mentions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.EntityMention">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">EntityMention</code><a class="headerlink" href="#google.cloud.language_v1.types.EntityMention" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a mention for an entity in the text. Currently, proper noun
+mentions are supported.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.EntityMention.text">
+<code class="descname">text</code><a class="headerlink" href="#google.cloud.language_v1.types.EntityMention.text" title="Permalink to this definition">#</a></dt>
+<dd><p>The mention text.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.EntityMention.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.language_v1.types.EntityMention.type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the entity mention.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.PartOfSpeech">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">PartOfSpeech</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents part of speech information for a token. Parts of speech are
+as defined in
+<a class="reference external" href="http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf">http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf</a></p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.tag">
+<code class="descname">tag</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.tag" title="Permalink to this definition">#</a></dt>
+<dd><p>The part of speech tag.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.aspect">
+<code class="descname">aspect</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.aspect" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical aspect.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.case">
+<code class="descname">case</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.case" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical case.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.form">
+<code class="descname">form</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.form" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical form.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.gender">
+<code class="descname">gender</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.gender" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical gender.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.mood">
+<code class="descname">mood</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.mood" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical mood.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.number">
+<code class="descname">number</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.number" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.person">
+<code class="descname">person</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.person" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical person.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.proper">
+<code class="descname">proper</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.proper" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical properness.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.reciprocity">
+<code class="descname">reciprocity</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.reciprocity" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical reciprocity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.tense">
+<code class="descname">tense</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.tense" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical tense.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.PartOfSpeech.voice">
+<code class="descname">voice</code><a class="headerlink" href="#google.cloud.language_v1.types.PartOfSpeech.voice" title="Permalink to this definition">#</a></dt>
+<dd><p>The grammatical voice.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.Sentence">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">Sentence</code><a class="headerlink" href="#google.cloud.language_v1.types.Sentence" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a sentence in the input document.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Sentence.text">
+<code class="descname">text</code><a class="headerlink" href="#google.cloud.language_v1.types.Sentence.text" title="Permalink to this definition">#</a></dt>
+<dd><p>The sentence text.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Sentence.sentiment">
+<code class="descname">sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.Sentence.sentiment" title="Permalink to this definition">#</a></dt>
+<dd><p>For calls to [AnalyzeSentiment][] or if [AnnotateTextRequest.F
+eatures.extract_document_sentiment][google.cloud.language.v1
+.AnnotateTextRequest.Features.extract_document_sentiment] is
+set to true, this field will contain the sentiment for the
+sentence.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.Sentiment">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">Sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.Sentiment" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the feeling associated with the entire text or entities in
+the text.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Sentiment.magnitude">
+<code class="descname">magnitude</code><a class="headerlink" href="#google.cloud.language_v1.types.Sentiment.magnitude" title="Permalink to this definition">#</a></dt>
+<dd><p>A non-negative number in the [0, +inf) range, which represents
+the absolute magnitude of sentiment regardless of score
+(positive or negative).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Sentiment.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.language_v1.types.Sentiment.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Sentiment score between -1.0 (negative sentiment) and 1.0
+(positive sentiment).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.TextSpan">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">TextSpan</code><a class="headerlink" href="#google.cloud.language_v1.types.TextSpan" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents an output piece of text.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.TextSpan.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.language_v1.types.TextSpan.content" title="Permalink to this definition">#</a></dt>
+<dd><p>The content of the output text.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.TextSpan.begin_offset">
+<code class="descname">begin_offset</code><a class="headerlink" href="#google.cloud.language_v1.types.TextSpan.begin_offset" title="Permalink to this definition">#</a></dt>
+<dd><p>The API calculates the beginning offset of the content in the
+original document according to the
+[EncodingType][google.cloud.language.v1.EncodingType]
+specified in the API request.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.Token">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">Token</code><a class="headerlink" href="#google.cloud.language_v1.types.Token" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the smallest syntactic building block of the text.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Token.text">
+<code class="descname">text</code><a class="headerlink" href="#google.cloud.language_v1.types.Token.text" title="Permalink to this definition">#</a></dt>
+<dd><p>The token text.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Token.part_of_speech">
+<code class="descname">part_of_speech</code><a class="headerlink" href="#google.cloud.language_v1.types.Token.part_of_speech" title="Permalink to this definition">#</a></dt>
+<dd><p>Parts of speech tag for this token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Token.dependency_edge">
+<code class="descname">dependency_edge</code><a class="headerlink" href="#google.cloud.language_v1.types.Token.dependency_edge" title="Permalink to this definition">#</a></dt>
+<dd><p>Dependency tree parse for this token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.Token.lemma">
+<code class="descname">lemma</code><a class="headerlink" href="#google.cloud.language_v1.types.Token.lemma" title="Permalink to this definition">#</a></dt>
+<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/Lemma_%28morphology%29">Lemma</a> of
+the token.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../usage.html">Natural Language</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#authentication-and-configuration">Authentication and Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#documents">Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#analyze-entities">Analyze Entities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#analyze-sentiment">Analyze Sentiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#annotate-text">Annotate Text</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../usage.html#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../usage.html">Natural Language</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Natural Language Client API</a></li>
+      <li>Next: <a href="../v1beta2/api.html" title="next chapter">Natural Language Beta Client API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../../_sources/language/gapic/v1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

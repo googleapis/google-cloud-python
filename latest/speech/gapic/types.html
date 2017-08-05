@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Speech Client Types &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Speech Client Types &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -115,8 +115,16 @@ corresponding to sequential portions of audio.</p>
 <em class="property">class </em><code class="descclassname">google.cloud.speech_v1.types.</code><code class="descname">RecognitionAudio</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionAudio" title="Permalink to this definition">#</a></dt>
 <dd><p>Contains audio data in the encoding specified in the
 <code class="docutils literal"><span class="pre">RecognitionConfig</span></code>. Either <code class="docutils literal"><span class="pre">content</span></code> or <code class="docutils literal"><span class="pre">uri</span></code> must be supplied.
-Supplying both or neither returns [google.rpc.Code.INVALID_ARGUMENT][].
+Supplying both or neither returns
+[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
 See <a class="reference external" href="https://cloud.google.com/speech/limits#content">audio limits</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionAudio.audio_source">
+<code class="descname">audio_source</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionAudio.audio_source" title="Permalink to this definition">#</a></dt>
+<dd><p>The audio source, which is either inline content or a Google
+Cloud Storage uri.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.RecognitionAudio.content">
 <code class="descname">content</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionAudio.content" title="Permalink to this definition">#</a></dt>
@@ -133,8 +141,9 @@ representations use base64.</p>
 specified in <code class="docutils literal"><span class="pre">RecognitionConfig</span></code>. Currently, only Google
 Cloud Storage URIs are supported, which must be specified in
 the following format: <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code> (other
-URI formats return [google.rpc.Code.INVALID_ARGUMENT][]). For
-more information, see <a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Request URIs</a>.</p>
+URI formats return [google.rpc.Code.INVALID_ARGUMENT][google.
+rpc.Code.INVALID_ARGUMENT]). For more information, see
+<a class="reference external" href="https://cloud.google.com/storage/docs/reference-uris">Request URIs</a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -197,6 +206,15 @@ be filtered out.</p>
 <code class="descname">speech_contexts</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.speech_contexts" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Optional</em> A means to provide context to assist the speech
 recognition.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.RecognitionConfig.enable_word_time_offsets">
+<code class="descname">enable_word_time_offsets</code><a class="headerlink" href="#google.cloud.speech_v1.types.RecognitionConfig.enable_word_time_offsets" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Optional</em> If <code class="docutils literal"><span class="pre">true</span></code>, the top result includes a list of
+words and the start and end time offsets (timestamps) for
+those words. If <code class="docutils literal"><span class="pre">false</span></code>, no word-level time offset
+information is returned. The default is <code class="docutils literal"><span class="pre">false</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -273,9 +291,16 @@ higher number indicates an estimated greater likelihood that
 the recognized words are correct. This field is typically
 provided only for the top hypothesis, and only for
 <code class="docutils literal"><span class="pre">is_final=true</span></code> results. Clients should not rely on the
-<code class="docutils literal"><span class="pre">confidence</span></code> field as it is not guaranteed to be accurate,
-or even set, in any of the results. The default of 0.0 is a
-sentinel value indicating <code class="docutils literal"><span class="pre">confidence</span></code> was not set.</p>
+<code class="docutils literal"><span class="pre">confidence</span></code> field as it is not guaranteed to be accurate or
+consistent. The default of 0.0 is a sentinel value indicating
+<code class="docutils literal"><span class="pre">confidence</span></code> was not set.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.SpeechRecognitionAlternative.words">
+<code class="descname">words</code><a class="headerlink" href="#google.cloud.speech_v1.types.SpeechRecognitionAlternative.words" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Output-only</em> A list of word-specific information for each
+recognized word.</p>
 </dd></dl>
 
 </dd></dl>
@@ -288,7 +313,10 @@ sentinel value indicating <code class="docutils literal"><span class="pre">confi
 <dt id="google.cloud.speech_v1.types.SpeechRecognitionResult.alternatives">
 <code class="descname">alternatives</code><a class="headerlink" href="#google.cloud.speech_v1.types.SpeechRecognitionResult.alternatives" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Output-only</em> May contain one or more recognition hypotheses
-(up to the maximum specified in <code class="docutils literal"><span class="pre">max_alternatives</span></code>).</p>
+(up to the maximum specified in <code class="docutils literal"><span class="pre">max_alternatives</span></code>). These
+alternatives are ordered in terms of accuracy, with the top
+(first) alternative being the most probable, as ranked by the
+recognizer.</p>
 </dd></dl>
 
 </dd></dl>
@@ -380,6 +408,13 @@ first message must contain a <code class="docutils literal"><span class="pre">st
 contain <code class="docutils literal"><span class="pre">audio</span></code> data. All subsequent messages must contain <code class="docutils literal"><span class="pre">audio</span></code>
 data and must not contain a <code class="docutils literal"><span class="pre">streaming_config</span></code> message.</p>
 <dl class="attribute">
+<dt id="google.cloud.speech_v1.types.StreamingRecognizeRequest.streaming_request">
+<code class="descname">streaming_request</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognizeRequest.streaming_request" title="Permalink to this definition">#</a></dt>
+<dd><p>The streaming request, which is either a streaming config or
+audio content.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognizeRequest.streaming_config">
 <code class="descname">streaming_config</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognizeRequest.streaming_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Provides information to the recognizer that specifies how to
@@ -424,14 +459,13 @@ true }</li>
 <li>results { alternatives { transcript: ” that is” } stability: 0.9 }
 results { alternatives { transcript: ” the question” } stability:
 0.01 }</li>
-<li>speech_event_type: END_OF_SINGLE_UTTERANCE</li>
 <li>results { alternatives { transcript: ” that is the question”
 confidence: 0.98 } alternatives { transcript: ” that was the
 question” } is_final: true }</li>
 </ol>
 <p>Notes:</p>
 <ul class="simple">
-<li>Only two of the above responses #4 and #8 contain final results; they
+<li>Only two of the above responses #4 and #7 contain final results; they
 are indicated by <code class="docutils literal"><span class="pre">is_final:</span> <span class="pre">true</span></code>. Concatenating these together
 generates the full transcript: “to be or not to be that is the
 question”.</li>
@@ -448,8 +482,9 @@ only for illustrative purposes. Actual values may vary.</li>
 <dl class="attribute">
 <dt id="google.cloud.speech_v1.types.StreamingRecognizeResponse.error">
 <code class="descname">error</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognizeResponse.error" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Output-only</em> If set, returns a [google.rpc.Status][] message
-that specifies the error for the operation.</p>
+<dd><p><em>Output-only</em> If set, returns a
+[google.rpc.Status][google.rpc.Status] message that specifies
+the error for the operation.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -466,6 +501,41 @@ result (the newly settled portion), followed by zero or more
 <dt id="google.cloud.speech_v1.types.StreamingRecognizeResponse.speech_event_type">
 <code class="descname">speech_event_type</code><a class="headerlink" href="#google.cloud.speech_v1.types.StreamingRecognizeResponse.speech_event_type" title="Permalink to this definition">#</a></dt>
 <dd><p><em>Output-only</em> Indicates the type of speech event.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.speech_v1.types.WordInfo">
+<em class="property">class </em><code class="descclassname">google.cloud.speech_v1.types.</code><code class="descname">WordInfo</code><a class="headerlink" href="#google.cloud.speech_v1.types.WordInfo" title="Permalink to this definition">#</a></dt>
+<dd><p>Word-specific information for recognized words. Word information is only
+included in the response when certain request parameters are set, such
+as <code class="docutils literal"><span class="pre">enable_word_time_offsets</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.WordInfo.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.speech_v1.types.WordInfo.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Output-only</em> Time offset relative to the beginning of the
+audio, and corresponding to the start of the spoken word. This
+field is only set if <code class="docutils literal"><span class="pre">enable_word_time_offsets=true</span></code> and
+only in the top hypothesis. This is an experimental feature
+and the accuracy of the time offset can vary.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.WordInfo.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.speech_v1.types.WordInfo.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Output-only</em> Time offset relative to the beginning of the
+audio, and corresponding to the end of the spoken word. This
+field is only set if <code class="docutils literal"><span class="pre">enable_word_time_offsets=true</span></code> and
+only in the top hypothesis. This is an experimental feature
+and the accuracy of the time offset can vary.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech_v1.types.WordInfo.word">
+<code class="descname">word</code><a class="headerlink" href="#google.cloud.speech_v1.types.WordInfo.word" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Output-only</em> The word corresponding to this set of
+information.</p>
 </dd></dl>
 
 </dd></dl>

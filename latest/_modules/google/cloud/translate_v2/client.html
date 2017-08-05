@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.translate.client &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.translate_v2.client &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.translate.client</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.translate_v2.client</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -62,7 +62,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">BaseClient</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.translate._http</span> <span class="k">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">google.cloud.translate_v2._http</span> <span class="k">import</span> <span class="n">Connection</span>
 
 
 <span class="n">ENGLISH_ISO_639</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span>
@@ -75,7 +75,7 @@
 <span class="sd">&quot;&quot;&quot;Neural Machine Translation model.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate_v2.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
 <span class="sd">    :type target_language: str</span>
@@ -89,10 +89,10 @@
 <span class="sd">                        passed), falls back to the default inferred from the</span>
 <span class="sd">                        environment.</span>
 
-<span class="sd">    :type _http: :class:`~httplib2.Http`</span>
+<span class="sd">    :type _http: :class:`~requests.Session`</span>
 <span class="sd">    :param _http: (Optional) HTTP object to make requests. Can be any object</span>
 <span class="sd">                  that defines ``request()`` with the same interface as</span>
-<span class="sd">                  :meth:`~httplib2.Http.request`. If not passed, an</span>
+<span class="sd">                  :meth:`requests.Session.request`. If not passed, an</span>
 <span class="sd">                  ``_http`` object is created that is bound to the</span>
 <span class="sd">                  ``credentials`` for the current object.</span>
 <span class="sd">                  This parameter should be considered private, and could</span>
@@ -108,7 +108,7 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Client.get_languages"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate.client.Client.get_languages">[docs]</a>    <span class="k">def</span> <span class="nf">get_languages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.get_languages"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate_v2.client.Client.get_languages">[docs]</a>    <span class="k">def</span> <span class="nf">get_languages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get list of supported languages for translation.</span>
 
 <span class="sd">        Response</span>
@@ -137,7 +137,7 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/languages&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;languages&#39;</span><span class="p">,</span> <span class="p">())</span></div>
 
-<div class="viewcode-block" id="Client.detect_language"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate.client.Client.detect_language">[docs]</a>    <span class="k">def</span> <span class="nf">detect_language</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.detect_language"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate_v2.client.Client.detect_language">[docs]</a>    <span class="k">def</span> <span class="nf">detect_language</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect the language of a string or list of strings.</span>
 
 <span class="sd">        See https://cloud.google.com/translate/docs/detecting-language</span>
@@ -202,7 +202,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">detections</span></div>
 
-<div class="viewcode-block" id="Client.translate"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate.client.Client.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.translate"><a class="viewcode-back" href="../../../../translate/client.html#google.cloud.translate_v2.client.Client.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">source_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">customization_ids</span><span class="o">=</span><span class="p">(),</span>
                   <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Translate a string or list of strings.</span>
@@ -231,8 +231,8 @@
 <span class="sd">                                  in the query.</span>
 
 <span class="sd">        :type model: str</span>
-<span class="sd">        :param model: (Optional) The model used to translate the text. The</span>
-<span class="sd">                      only accepted values are :attr:`BASE` and :attr:`NMT`.</span>
+<span class="sd">        :param model: (Optional) The model used to translate the text, such</span>
+<span class="sd">                      as ``&#39;base&#39;`` or ``&#39;nmt&#39;``.</span>
 
 <span class="sd">        :rtype: str or list</span>
 <span class="sd">        :returns: A list of dictionaries for each queried value. Each</span>

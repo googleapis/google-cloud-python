@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Vision &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Vision &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,7 +24,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Vision Client API" href="gapic/api.html" />
+    <link rel="next" title="Vision Client API" href="gapic/v1/api.html" />
     <link rel="prev" title="Translation Client" href="../translate/client.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -67,16 +67,18 @@ variable is not present, the project ID from JSON file credentials is used.</p>
 this will be detected automatically.</p>
 </li>
 <li><p class="first">After configuring your environment, create a
-<code class="xref py py-class docutils literal"><span class="pre">Client</span></code>.</p>
+<a class="reference internal" href="gapic/v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient" title="google.cloud.vision_v1.ImageAnnotatorClient"><code class="xref py py-class docutils literal"><span class="pre">ImageAnnotatorClient</span></code></a>.</p>
 </li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">ImageAnnotatorClient</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly.</p>
+<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> explicitly.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">ImageAnnotatorClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -143,8 +145,8 @@ an empty list is returned. This behavior is similar with all detection types.</p
 <h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="gapic/api.html">Vision Client API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gapic/types.html">Vision Client Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1/api.html">Vision Client API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1/types.html">Vision Client Types</a></li>
 </ul>
 </div>
 </div>
@@ -219,7 +221,7 @@ an empty list is returned. This behavior is similar with all detection types.</p
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../translate/client.html" title="previous chapter">Translation Client</a></li>
-      <li>Next: <a href="gapic/api.html" title="next chapter">Vision Client API</a></li>
+      <li>Next: <a href="gapic/v1/api.html" title="next chapter">Vision Client API</a></li>
   </ul></li>
 </ul>
 </div>

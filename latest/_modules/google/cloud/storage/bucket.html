@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -586,6 +586,19 @@
 <span class="sd">        See http://www.w3.org/TR/cors/ and</span>
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
+<span class="sd">        .. note::</span>
+
+<span class="sd">           The getter for this property returns a list which contains</span>
+<span class="sd">           *copies* of the bucket&#39;s CORS policy mappings.  Mutating the list</span>
+<span class="sd">           or one of its dicts has no effect unless you then re-assign the</span>
+<span class="sd">           dict via the setter.  E.g.:</span>
+
+<span class="sd">           &gt;&gt;&gt; policies = bucket.cors</span>
+<span class="sd">           &gt;&gt;&gt; policies.append({&#39;origin&#39;: &#39;/foo&#39;, ...})</span>
+<span class="sd">           &gt;&gt;&gt; policies[1][&#39;maxAgeSeconds&#39;] = 3600</span>
+<span class="sd">           &gt;&gt;&gt; del policies[0]</span>
+<span class="sd">           &gt;&gt;&gt; bucket.cors = policies</span>
+
 <span class="sd">        :setter: Set CORS policies for this bucket.</span>
 <span class="sd">        :getter: Gets the CORS policies for this bucket.</span>
 
@@ -609,10 +622,21 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retrieve or set CORS policies configured for this bucket.</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve or set labels assigned to this bucket.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/buckets#labels</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           The getter for this property returns a dict which is a *copy*</span>
+<span class="sd">           of the bucket&#39;s labels.  Mutating that dict has no effect unless</span>
+<span class="sd">           you then re-assign the dict via the setter.  E.g.:</span>
+
+<span class="sd">           &gt;&gt;&gt; labels = bucket.labels</span>
+<span class="sd">           &gt;&gt;&gt; labels[&#39;new_key&#39;] = &#39;some-label&#39;</span>
+<span class="sd">           &gt;&gt;&gt; del labels[&#39;old_key&#39;]</span>
+<span class="sd">           &gt;&gt;&gt; bucket.labels = labels</span>
 
 <span class="sd">        :setter: Set labels for this bucket.</span>
 <span class="sd">        :getter: Gets the labels for this bucket.</span>
@@ -627,7 +651,7 @@
 
     <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set CORS policies configured for this bucket.</span>
+        <span class="sd">&quot;&quot;&quot;Set labels assigned to this bucket.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/buckets#labels</span>
@@ -668,6 +692,19 @@
 
 <span class="sd">        See https://cloud.google.com/storage/docs/lifecycle and</span>
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           The getter for this property returns a list which contains</span>
+<span class="sd">           *copies* of the bucket&#39;s lifecycle rules mappings.  Mutating the</span>
+<span class="sd">           list or one of its dicts has no effect unless you then re-assign</span>
+<span class="sd">           the dict via the setter.  E.g.:</span>
+
+<span class="sd">           &gt;&gt;&gt; rules = bucket.lifecycle_rules</span>
+<span class="sd">           &gt;&gt;&gt; rules.append({&#39;origin&#39;: &#39;/foo&#39;, ...})</span>
+<span class="sd">           &gt;&gt;&gt; rules[1][&#39;rule&#39;][&#39;action&#39;][&#39;type&#39;] = &#39;Delete&#39;</span>
+<span class="sd">           &gt;&gt;&gt; del rules[0]</span>
+<span class="sd">           &gt;&gt;&gt; bucket.lifecycle_rules = rules</span>
 
 <span class="sd">        :setter: Set lifestyle rules for this bucket.</span>
 <span class="sd">        :getter: Gets the lifestyle rules for this bucket.</span>

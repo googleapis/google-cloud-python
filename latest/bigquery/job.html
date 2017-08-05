@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Jobs &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Jobs &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -45,6 +45,22 @@
 <span id="jobs"></span><h1>Jobs<a class="headerlink" href="#module-google.cloud.bigquery.job" title="Permalink to this headline">#</a></h1>
 <p>Define API Jobs.</p>
 <dl class="class">
+<dt id="google.cloud.bigquery.job.AutoDetectSchema">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">AutoDetectSchema</code><span class="sig-paren">(</span><em>name</em>, <em>property_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#AutoDetectSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.AutoDetectSchema" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery._helpers._TypedProperty</span></code></p>
+<p>Typed Property for <code class="docutils literal"><span class="pre">autodetect</span></code> properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – on <code class="docutils literal"><span class="pre">set</span></code> operation if <code class="docutils literal"><span class="pre">instance.schema</span></code>
+is already defined.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.bigquery.job.Compression">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">Compression</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#Compression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.Compression" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery._helpers._EnumProperty</span></code></p>
@@ -71,6 +87,23 @@ for the dataset (which requires a project).</li>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.add_done_callback">
+<code class="descname">add_done_callback</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.add_done_callback" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a callback to be executed when the operation is complete.</p>
+<p>If the operation is not already complete, this will start a helper
+thread to poll for the status of the operation in the background.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>Callable</em><em>[</em><em>Future</em><em>]</em>) – The callback to execute when the operation
+is complete.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.bigquery.job.CopyJob.begin">
 <code class="descname">begin</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.begin" title="Permalink to this definition">#</a></dt>
@@ -105,6 +138,29 @@ for the dataset (which requires a project).</li>
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating that the cancel request was sent.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.cancelled">
+<code class="descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.cancelled" title="Permalink to this definition">#</a></dt>
+<dd><p>Check if the job has been cancelled.</p>
+<p>This always returns False. It’s not possible to check if a job was
+cancelled in the API. This method is here to satisfy the interface
+for <code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.Future</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">False</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -127,6 +183,22 @@ for the dataset (which requires a project).</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">datetime.datetime</span></code>, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the creation time (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.done">
+<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.done" title="Permalink to this definition">#</a></dt>
+<dd><p>Refresh the job and checks if it is complete.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the job is complete, False otherwise.</td>
 </tr>
 </tbody>
 </table>
@@ -191,6 +263,25 @@ for the dataset (which requires a project).</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the ETag (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.exception">
+<code class="descname">exception</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the exception from the operation, blocking if necessary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for the operation to complete.
+If None, wait indefinitely.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The operation’s error.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Optional[google.gax.GaxError]</td>
 </tr>
 </tbody>
 </table>
@@ -294,7 +385,7 @@ configuration for the dataset.</li>
 <dl class="method">
 <dt id="google.cloud.bigquery.job.CopyJob.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.reload" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  refresh job properties via a GET request</p>
+<dd><p>API call:  refresh job properties via a GET request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -307,6 +398,35 @@ configuration for the dataset.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.result">
+<code class="descname">result</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.result" title="Permalink to this definition">#</a></dt>
+<dd><p>Start the job and wait for it to complete and get the result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for job to complete before raising
+a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">_AsyncJob</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This instance.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> if the job
+failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
+given timeout.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.running">
+<code class="descname">running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.running" title="Permalink to this definition">#</a></dt>
+<dd><p>True if the operation is currently running.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -323,6 +443,18 @@ configuration for the dataset.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.set_exception">
+<code class="descname">set_exception</code><span class="sig-paren">(</span><em>exception</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.set_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the Future’s exception.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.CopyJob.set_result">
+<code class="descname">set_result</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.CopyJob.set_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the Future’s result.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -426,6 +558,23 @@ for the dataset (which requires a project).</li>
 </tbody>
 </table>
 <dl class="method">
+<dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.add_done_callback">
+<code class="descname">add_done_callback</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.add_done_callback" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a callback to be executed when the operation is complete.</p>
+<p>If the operation is not already complete, this will start a helper
+thread to poll for the status of the operation in the background.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>Callable</em><em>[</em><em>Future</em><em>]</em>) – The callback to execute when the operation
+is complete.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.begin">
 <code class="descname">begin</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.begin" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  begin the job via a POST request</p>
@@ -459,6 +608,29 @@ for the dataset (which requires a project).</li>
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating that the cancel request was sent.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.cancelled">
+<code class="descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.cancelled" title="Permalink to this definition">#</a></dt>
+<dd><p>Check if the job has been cancelled.</p>
+<p>This always returns False. It’s not possible to check if a job was
+cancelled in the API. This method is here to satisfy the interface
+for <code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.Future</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">False</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -491,6 +663,22 @@ for the dataset (which requires a project).</li>
 <code class="descname">destination_format</code><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.destination_format" title="Permalink to this definition">#</a></dt>
 <dd><p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.destinationFormat</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.done">
+<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.done" title="Permalink to this definition">#</a></dt>
+<dd><p>Refresh the job and checks if it is complete.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the job is complete, False otherwise.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -552,6 +740,25 @@ for the dataset (which requires a project).</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the ETag (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.exception">
+<code class="descname">exception</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the exception from the operation, blocking if necessary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for the operation to complete.
+If None, wait indefinitely.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The operation’s error.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Optional[google.gax.GaxError]</td>
 </tr>
 </tbody>
 </table>
@@ -669,7 +876,7 @@ configuration for the dataset.</li>
 <dl class="method">
 <dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.reload" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  refresh job properties via a GET request</p>
+<dd><p>API call:  refresh job properties via a GET request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -682,6 +889,35 @@ configuration for the dataset.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.result">
+<code class="descname">result</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.result" title="Permalink to this definition">#</a></dt>
+<dd><p>Start the job and wait for it to complete and get the result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for job to complete before raising
+a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">_AsyncJob</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This instance.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> if the job
+failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
+given timeout.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.running">
+<code class="descname">running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.running" title="Permalink to this definition">#</a></dt>
+<dd><p>True if the operation is currently running.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -698,6 +934,18 @@ configuration for the dataset.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.set_exception">
+<code class="descname">set_exception</code><span class="sig-paren">(</span><em>exception</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.set_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the Future’s exception.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.ExtractTableToStorageJob.set_result">
+<code class="descname">set_result</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.ExtractTableToStorageJob.set_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the Future’s result.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -772,6 +1020,23 @@ for the dataset (which requires a project).</li>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.add_done_callback">
+<code class="descname">add_done_callback</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.add_done_callback" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a callback to be executed when the operation is complete.</p>
+<p>If the operation is not already complete, this will start a helper
+thread to poll for the status of the operation in the background.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>Callable</em><em>[</em><em>Future</em><em>]</em>) – The callback to execute when the operation
+is complete.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.allow_jagged_rows">
 <code class="descname">allow_jagged_rows</code><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.allow_jagged_rows" title="Permalink to this definition">#</a></dt>
@@ -784,6 +1049,13 @@ for the dataset (which requires a project).</li>
 <code class="descname">allow_quoted_newlines</code><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.allow_quoted_newlines" title="Permalink to this definition">#</a></dt>
 <dd><p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.autodetect">
+<code class="descname">autodetect</code><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.autodetect" title="Permalink to this definition">#</a></dt>
+<dd><p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect</a></p>
 </dd></dl>
 
 <dl class="method">
@@ -820,6 +1092,29 @@ for the dataset (which requires a project).</li>
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating that the cancel request was sent.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.cancelled">
+<code class="descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.cancelled" title="Permalink to this definition">#</a></dt>
+<dd><p>Check if the job has been cancelled.</p>
+<p>This always returns False. It’s not possible to check if a job was
+cancelled in the API. This method is here to satisfy the interface
+for <code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.Future</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">False</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -842,6 +1137,22 @@ for the dataset (which requires a project).</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">datetime.datetime</span></code>, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the creation time (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.done">
+<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.done" title="Permalink to this definition">#</a></dt>
+<dd><p>Refresh the job and checks if it is complete.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the job is complete, False otherwise.</td>
 </tr>
 </tbody>
 </table>
@@ -913,6 +1224,25 @@ for the dataset (which requires a project).</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the ETag (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.exception">
+<code class="descname">exception</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the exception from the operation, blocking if necessary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for the operation to complete.
+If None, wait indefinitely.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The operation’s error.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Optional[google.gax.GaxError]</td>
 </tr>
 </tbody>
 </table>
@@ -1108,7 +1438,7 @@ configuration for the dataset.</li>
 <dl class="method">
 <dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.reload" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  refresh job properties via a GET request</p>
+<dd><p>API call:  refresh job properties via a GET request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1121,6 +1451,35 @@ configuration for the dataset.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.result">
+<code class="descname">result</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.result" title="Permalink to this definition">#</a></dt>
+<dd><p>Start the job and wait for it to complete and get the result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for job to complete before raising
+a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">_AsyncJob</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This instance.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> if the job
+failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
+given timeout.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.running">
+<code class="descname">running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.running" title="Permalink to this definition">#</a></dt>
+<dd><p>True if the operation is currently running.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1153,6 +1512,18 @@ configuration for the dataset.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.set_exception">
+<code class="descname">set_exception</code><span class="sig-paren">(</span><em>exception</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.set_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the Future’s exception.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.set_result">
+<code class="descname">set_result</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.set_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the Future’s result.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1251,6 +1622,23 @@ for the dataset (which requires a project).</li>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.add_done_callback">
+<code class="descname">add_done_callback</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.add_done_callback" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a callback to be executed when the operation is complete.</p>
+<p>If the operation is not already complete, this will start a helper
+thread to poll for the status of the operation in the background.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>Callable</em><em>[</em><em>Future</em><em>]</em>) – The callback to execute when the operation
+is complete.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.bigquery.job.QueryJob.allow_large_results">
 <code class="descname">allow_large_results</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.allow_large_results" title="Permalink to this definition">#</a></dt>
@@ -1292,6 +1680,29 @@ for the dataset (which requires a project).</li>
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating that the cancel request was sent.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.cancelled">
+<code class="descname">cancelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.cancelled" title="Permalink to this definition">#</a></dt>
+<dd><p>Check if the job has been cancelled.</p>
+<p>This always returns False. It’s not possible to check if a job was
+cancelled in the API. This method is here to satisfy the interface
+for <code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.Future</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">False</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -1331,6 +1742,22 @@ for the dataset (which requires a project).</li>
 <code class="descname">destination</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.destination" title="Permalink to this definition">#</a></dt>
 <dd><p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.done">
+<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.done" title="Permalink to this definition">#</a></dt>
+<dd><p>Refresh the job and checks if it is complete.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the job is complete, False otherwise.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -1399,6 +1826,25 @@ for the dataset (which requires a project).</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the ETag (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.exception">
+<code class="descname">exception</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the exception from the operation, blocking if necessary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for the operation to complete.
+If None, wait indefinitely.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The operation’s error.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Optional[google.gax.GaxError]</td>
 </tr>
 </tbody>
 </table>
@@ -1528,9 +1974,25 @@ configuration for the dataset.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.query_results">
+<code class="descname">query_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#QueryJob.query_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.query_results" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a QueryResults instance, bound to this job.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="query.html#google.cloud.bigquery.query.QueryResults" title="google.cloud.bigquery.query.QueryResults"><code class="xref py py-class docutils literal"><span class="pre">QueryResults</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">results instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJob.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.reload" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  refresh job properties via a GET request</p>
+<dd><p>API call:  refresh job properties via a GET request.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1546,19 +2008,32 @@ configuration for the dataset.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.bigquery.job.QueryJob.results">
-<code class="descname">results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#QueryJob.results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.results" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a QueryResults instance, bound to this job.</p>
+<dt id="google.cloud.bigquery.job.QueryJob.result">
+<code class="descname">result</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#QueryJob.result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.result" title="Permalink to this definition">#</a></dt>
+<dd><p>Start the job and wait for it to complete and get the result.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="query.html#google.cloud.bigquery.query.QueryResults" title="google.cloud.bigquery.query.QueryResults"><code class="xref py py-class docutils literal"><span class="pre">QueryResults</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for job to complete before raising
+a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">results instance</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="query.html#google.cloud.bigquery.query.QueryResults" title="google.cloud.bigquery.query.QueryResults"><code class="xref py py-class docutils literal"><span class="pre">QueryResults</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The query results.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> if the job
+failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
+given timeout.</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.running">
+<code class="descname">running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.running" title="Permalink to this definition">#</a></dt>
+<dd><p>True if the operation is currently running.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1575,6 +2050,18 @@ configuration for the dataset.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.set_exception">
+<code class="descname">set_exception</code><span class="sig-paren">(</span><em>exception</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.set_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the Future’s exception.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.set_result">
+<code class="descname">set_result</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.set_result" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the Future’s result.</p>
 </dd></dl>
 
 <dl class="attribute">

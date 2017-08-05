@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -56,8 +56,12 @@
 
 <span class="sd">&quot;&quot;&quot;Define API Jobs.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">import</span> <span class="nn">threading</span>
 
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">http_client</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
@@ -69,6 +73,67 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">UDFResourcesProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_EnumProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_TypedProperty</span>
+<span class="kn">import</span> <span class="nn">google.cloud.future.polling</span>
+
+<span class="n">_DONE_STATE</span> <span class="o">=</span> <span class="s1">&#39;DONE&#39;</span>
+<span class="n">_STOPPED_REASON</span> <span class="o">=</span> <span class="s1">&#39;stopped&#39;</span>
+
+<span class="n">_ERROR_REASON_TO_EXCEPTION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;accessDenied&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FORBIDDEN</span><span class="p">,</span>
+    <span class="s1">&#39;backendError&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+    <span class="s1">&#39;billingNotEnabled&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FORBIDDEN</span><span class="p">,</span>
+    <span class="s1">&#39;billingTierLimitExceeded&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+    <span class="s1">&#39;blocked&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FORBIDDEN</span><span class="p">,</span>
+    <span class="s1">&#39;duplicate&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">CONFLICT</span><span class="p">,</span>
+    <span class="s1">&#39;internalError&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+    <span class="s1">&#39;invalid&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+    <span class="s1">&#39;invalidQuery&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+    <span class="s1">&#39;notFound&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">,</span>
+    <span class="s1">&#39;notImplemented&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">NOT_IMPLEMENTED</span><span class="p">,</span>
+    <span class="s1">&#39;quotaExceeded&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FORBIDDEN</span><span class="p">,</span>
+    <span class="s1">&#39;rateLimitExceeded&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FORBIDDEN</span><span class="p">,</span>
+    <span class="s1">&#39;resourceInUse&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+    <span class="s1">&#39;resourcesExceeded&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+    <span class="s1">&#39;responseTooLarge&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">FORBIDDEN</span><span class="p">,</span>
+    <span class="s1">&#39;stopped&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span>
+    <span class="s1">&#39;tableUnavailable&#39;</span><span class="p">:</span> <span class="n">http_client</span><span class="o">.</span><span class="n">BAD_REQUEST</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_error_result_to_exception</span><span class="p">(</span><span class="n">error_result</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maps BigQuery error reasons to an exception.</span>
+
+<span class="sd">    The reasons and their matching HTTP status codes are documented on</span>
+<span class="sd">    the `troubleshooting errors`_ page.</span>
+
+<span class="sd">    .. _troubleshooting errors: https://cloud.google.com/bigquery\</span>
+<span class="sd">        /troubleshooting-errors</span>
+
+<span class="sd">    :type error_result: Mapping[str, str]</span>
+<span class="sd">    :param error_result: The error result from BigQuery.</span>
+
+<span class="sd">    :rtype google.cloud.exceptions.GoogleCloudError:</span>
+<span class="sd">    :returns: The mapped exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reason</span> <span class="o">=</span> <span class="n">error_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reason&#39;</span><span class="p">)</span>
+    <span class="n">status_code</span> <span class="o">=</span> <span class="n">_ERROR_REASON_TO_EXCEPTION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">reason</span><span class="p">,</span> <span class="n">http_client</span><span class="o">.</span><span class="n">INTERNAL_SERVER_ERROR</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_status</span><span class="p">(</span>
+        <span class="n">status_code</span><span class="p">,</span> <span class="n">error_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="n">errors</span><span class="o">=</span><span class="p">[</span><span class="n">error_result</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="AutoDetectSchema"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.AutoDetectSchema">[docs]</a><span class="k">class</span> <span class="nc">AutoDetectSchema</span><span class="p">(</span><span class="n">_TypedProperty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Typed Property for ``autodetect`` properties.</span>
+
+<span class="sd">    :raises ValueError: on ``set`` operation if ``instance.schema``</span>
+<span class="sd">                        is already defined.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A schema should not be already defined &#39;</span>
+                             <span class="s1">&#39;when using schema auto-detection&#39;</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_configuration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Compression"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.Compression">[docs]</a><span class="k">class</span> <span class="nc">Compression</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
@@ -124,16 +189,23 @@
     <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">WRITE_APPEND</span><span class="p">,</span> <span class="n">WRITE_TRUNCATE</span><span class="p">,</span> <span class="n">WRITE_EMPTY</span><span class="p">)</span></div>
 
 
-<span class="k">class</span> <span class="nc">_BaseJob</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for jobs.</span>
+<span class="k">class</span> <span class="nc">_AsyncJob</span><span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">future</span><span class="o">.</span><span class="n">polling</span><span class="o">.</span><span class="n">PollingFuture</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for asynchronous jobs.</span>
+
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param name: the name of the job</span>
 
 <span class="sd">    :type client: :class:`google.cloud.bigquery.client.Client`</span>
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_completion_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -158,21 +230,6 @@
         <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
         <span class="k">return</span> <span class="n">client</span>
-
-
-<span class="k">class</span> <span class="nc">_AsyncJob</span><span class="p">(</span><span class="n">_BaseJob</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for asynchronous jobs.</span>
-
-<span class="sd">    :type name: str</span>
-<span class="sd">    :param name: the name of the job</span>
-
-<span class="sd">    :type client: :class:`google.cloud.bigquery.client.Client`</span>
-<span class="sd">    :param client: A client which holds credentials and project configuration</span>
-<span class="sd">                   for the dataset (which requires a project).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">job_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -298,7 +355,7 @@
     <span class="k">def</span> <span class="nf">_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update properties from resource in body of ``api_response``</span>
 
-<span class="sd">        :type api_response: httplib2.Response</span>
+<span class="sd">        :type api_response: dict</span>
 <span class="sd">        :param api_response: response returned from an API call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cleaned</span> <span class="o">=</span> <span class="n">api_response</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -314,6 +371,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cleaned</span><span class="p">)</span>
+
+        <span class="c1"># For Future interface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_future_result</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_resource_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
@@ -387,7 +447,7 @@
             <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  refresh job properties via a GET request</span>
+        <span class="sd">&quot;&quot;&quot;API call:  refresh job properties via a GET request.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</span>
@@ -413,12 +473,85 @@
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current dataset.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: Boolean indicating that the cancel request was sent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/cancel&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;job&#39;</span><span class="p">])</span>
+        <span class="c1"># The Future interface requires that we return True if the *attempt*</span>
+        <span class="c1"># to cancel was successful.</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># The following methods implement the PollingFuture interface. Note that</span>
+    <span class="c1"># the methods above are from the pre-Future interface and are left for</span>
+    <span class="c1"># compatibility. The only &quot;overloaded&quot; method is :meth:`cancel`, which</span>
+    <span class="c1"># satisfies both interfaces.</span>
+
+    <span class="k">def</span> <span class="nf">_set_future_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the result or exception from the job if it is complete.&quot;&quot;&quot;</span>
+        <span class="c1"># This must be done in a lock to prevent the polling thread</span>
+        <span class="c1"># and main thread from both executing the completion logic</span>
+        <span class="c1"># at the same time.</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_completion_lock</span><span class="p">:</span>
+            <span class="c1"># If the operation isn&#39;t complete or if the result has already been</span>
+            <span class="c1"># set, do not call set_result/set_exception again.</span>
+            <span class="c1"># Note: self._result_set is set to True in set_result and</span>
+            <span class="c1"># set_exception, in case those methods are invoked directly.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">_DONE_STATE</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">exception</span> <span class="o">=</span> <span class="n">_error_result_to_exception</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_result</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Refresh the job and checks if it is complete.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: True if the job is complete, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Do not refresh is the state is already done, as the job will not</span>
+        <span class="c1"># change once complete.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">_DONE_STATE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">_DONE_STATE</span>
+
+    <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start the job and wait for it to complete and get the result.</span>
+
+<span class="sd">        :type timeout: int</span>
+<span class="sd">        :param timeout: How long to wait for job to complete before raising</span>
+<span class="sd">            a :class:`TimeoutError`.</span>
+
+<span class="sd">        :rtype: _AsyncJob</span>
+<span class="sd">        :returns: This instance.</span>
+
+<span class="sd">        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job</span>
+<span class="sd">            failed or  :class:`TimeoutError` if the job did not complete in the</span>
+<span class="sd">            given timeout.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if the job has been cancelled.</span>
+
+<span class="sd">        This always returns False. It&#39;s not possible to check if a job was</span>
+<span class="sd">        cancelled in the API. This method is here to satisfy the interface</span>
+<span class="sd">        for :class:`google.cloud.future.Future`.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;reason&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">_STOPPED_REASON</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">_LoadConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -428,6 +561,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_allow_jagged_rows</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_allow_quoted_newlines</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_autodetect</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_create_disposition</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_encoding</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_field_delimiter</span> <span class="o">=</span> <span class="kc">None</span>
@@ -467,9 +601,10 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">LoadTableFromStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span> <span class="o">=</span> <span class="n">source_uris</span>
-        <span class="c1"># Let the @property do validation.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">_LoadConfiguration</span><span class="p">()</span>
+        <span class="c1"># Let the @property do validation. This must occur after all other</span>
+        <span class="c1"># attributes have been set.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -487,12 +622,20 @@
 <span class="sd">        :type value: list of :class:`SchemaField`</span>
 <span class="sd">        :param value: fields describing the schema</span>
 
-<span class="sd">        :raises: TypeError if &#39;value&#39; is not a sequence, or ValueError if</span>
-<span class="sd">                 any item in the sequence is not a SchemaField</span>
+<span class="sd">        :raises TypeError: If ``value`is not a sequence.</span>
+<span class="sd">        :raises ValueError: If any item in the sequence is not</span>
+<span class="sd">                            a ``SchemaField``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema items must be fields&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema items must be fields&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autodetect</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Schema can not be set if `autodetect` property is True&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">input_file_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -548,6 +691,11 @@
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">autodetect</span> <span class="o">=</span> <span class="n">AutoDetectSchema</span><span class="p">(</span><span class="s1">&#39;autodetect&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">create_disposition</span> <span class="o">=</span> <span class="n">CreateDisposition</span><span class="p">(</span><span class="s1">&#39;create_disposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition</span>
@@ -599,6 +747,8 @@
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;allowJaggedRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_jagged_rows</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_quoted_newlines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;allowQuotedNewlines&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_quoted_newlines</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autodetect</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;autodetect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autodetect</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;createDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_disposition</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1169,14 +1319,32 @@
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span></div>
 
-<div class="viewcode-block" id="QueryJob.results"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.QueryJob.results">[docs]</a>    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryJob.query_results"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.QueryJob.query_results">[docs]</a>    <span class="k">def</span> <span class="nf">query_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a QueryResults instance, bound to this job.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`</span>
 <span class="sd">        :returns: results instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">QueryResults</span>
-        <span class="k">return</span> <span class="n">QueryResults</span><span class="o">.</span><span class="n">from_query_job</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">QueryResults</span><span class="o">.</span><span class="n">from_query_job</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QueryJob.result"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.QueryJob.result">[docs]</a>    <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start the job and wait for it to complete and get the result.</span>
+
+<span class="sd">        :type timeout: int</span>
+<span class="sd">        :param timeout: How long to wait for job to complete before raising</span>
+<span class="sd">            a :class:`TimeoutError`.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`</span>
+<span class="sd">        :returns: The query results.</span>
+
+<span class="sd">        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job</span>
+<span class="sd">            failed or  :class:`TimeoutError` if the job did not complete in the</span>
+<span class="sd">            given timeout.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="c1"># Return a QueryResults instance instead of returning the job.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_results</span><span class="p">()</span></div></div>
 </pre></div>
 
           </div>

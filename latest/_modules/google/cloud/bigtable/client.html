@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.client &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.bigtable.client &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -73,16 +73,13 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">from</span> <span class="nn">google.gax.utils</span> <span class="k">import</span> <span class="n">metrics</span>
 <span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">make_insecure_stub</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">make_secure_stub</span>
 <span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">DEFAULT_USER_AGENT</span>
-<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">_ClientFactoryMixin</span>
-<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">_ClientProjectMixin</span>
-<span class="kn">from</span> <span class="nn">google.cloud.credentials</span> <span class="k">import</span> <span class="n">get_credentials</span>
+<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">BIGTABLE_EMULATOR</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable</span> <span class="k">import</span> <span class="n">__version__</span>
@@ -208,13 +205,13 @@
             <span class="n">client</span><span class="o">.</span><span class="n">emulator_host</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../bigtable/client.html#google.cloud.bigtable.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">_ClientFactoryMixin</span><span class="p">,</span> <span class="n">_ClientProjectMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../bigtable/client.html#google.cloud.bigtable.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client for interacting with Google Cloud Bigtable API.</span>
 
 <span class="sd">    .. note::</span>
 
 <span class="sd">        Since the Cloud Bigtable API requires the gRPC transport, no</span>
-<span class="sd">        ``http`` argument is accepted by this class.</span>
+<span class="sd">        ``_http`` argument is accepted by this class.</span>
 
 <span class="sd">    :type project: :class:`str` or :func:`unicode &lt;unicode&gt;`</span>
 <span class="sd">    :param project: (Optional) The ID of the project which owns the</span>
@@ -251,31 +248,21 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">admin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">user_agent</span><span class="o">=</span><span class="n">DEFAULT_USER_AGENT</span><span class="p">):</span>
-        <span class="n">_ClientProjectMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">read_only</span> <span class="ow">and</span> <span class="n">admin</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A read-only client cannot also perform&#39;</span>
                              <span class="s1">&#39;administrative actions.&#39;</span><span class="p">)</span>
 
-        <span class="n">scopes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">read_only</span><span class="p">:</span>
-            <span class="n">scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">READ_ONLY_SCOPE</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DATA_SCOPE</span><span class="p">)</span>
-
+        <span class="c1"># NOTE: We set the scopes **before** calling the parent constructor.</span>
+        <span class="c1">#       It **may** use those scopes in ``with_scopes_if_required``.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">read_only</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">admin</span><span class="p">:</span>
-            <span class="n">scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ADMIN_SCOPE</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SCOPE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scopes</span><span class="p">()</span>
 
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">with_scopes_if_required</span><span class="p">(</span>
-            <span class="n">credentials</span><span class="p">,</span> <span class="n">scopes</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="c1"># NOTE: This API has no use for the _http argument, but sending it</span>
+        <span class="c1">#       will have no impact since the _http() @property only lazily</span>
+        <span class="c1">#       creates a working HTTP object.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">emulator_host</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">BIGTABLE_EMULATOR</span><span class="p">)</span>
 
@@ -285,6 +272,22 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="o">=</span> <span class="n">_make_instance_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="o">=</span> <span class="n">_make_operations_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="o">=</span> <span class="n">_make_table_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_scopes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the scopes corresponding to admin / read-only state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple[str, ...]: The tuple of scopes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
+            <span class="n">scopes</span> <span class="o">=</span> <span class="p">(</span><span class="n">READ_ONLY_SCOPE</span><span class="p">,)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scopes</span> <span class="o">=</span> <span class="p">(</span><span class="n">DATA_SCOPE</span><span class="p">,)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
+            <span class="n">scopes</span> <span class="o">+=</span> <span class="p">(</span><span class="n">ADMIN_SCOPE</span><span class="p">,)</span>
+
+        <span class="k">return</span> <span class="n">scopes</span>
 
 <div class="viewcode-block" id="Client.copy"><a class="viewcode-back" href="../../../../bigtable/client.html#google.cloud.bigtable.client.Client.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a copy of this client.</span>

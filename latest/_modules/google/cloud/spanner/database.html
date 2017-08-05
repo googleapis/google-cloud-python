@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.database &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.spanner.database &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -141,9 +141,8 @@
 
 <span class="sd">        :rtype: :class:`Database`</span>
 <span class="sd">        :returns: The database parsed from the protobuf response.</span>
-<span class="sd">        :raises:</span>
-<span class="sd">            :class:`ValueError &lt;exceptions.ValueError&gt;` if the instance</span>
-<span class="sd">            name does not match the expected format</span>
+<span class="sd">        :raises ValueError:</span>
+<span class="sd">            if the instance name does not match the expected format</span>
 <span class="sd">            or if the parsed project ID does not match the project ID</span>
 <span class="sd">            on the instance&#39;s client, or if the parsed instance ID does</span>
 <span class="sd">            not match the instance&#39;s ID.</span>
@@ -217,6 +216,13 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.future.operation.Operation`</span>
+<span class="sd">        :returns: a future used to poll the status of the create request</span>
+<span class="sd">        :raises Conflict: if the database already exists</span>
+<span class="sd">        :raises NotFound: if the instance owning the database does not exist</span>
+<span class="sd">        :raises GaxError:</span>
+<span class="sd">            for errors other than ``ALREADY_EXISTS`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">database_admin_api</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -247,6 +253,11 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: True if the database exists, else false.</span>
+<span class="sd">        :raises GaxError:</span>
+<span class="sd">            for errors other than ``NOT_FOUND`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">database_admin_api</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -266,6 +277,10 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL</span>
+
+<span class="sd">        :raises NotFound: if the database does not exist</span>
+<span class="sd">        :raises GaxError:</span>
+<span class="sd">            for errors other than ``NOT_FOUND`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">database_admin_api</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -288,6 +303,9 @@
 
 <span class="sd">        :rtype: :class:`google.cloud.future.operation.Operation`</span>
 <span class="sd">        :returns: an operation instance</span>
+<span class="sd">        :raises NotFound: if the database does not exist</span>
+<span class="sd">        :raises GaxError:</span>
+<span class="sd">            for errors other than ``NOT_FOUND`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">database_admin_api</span>
@@ -422,8 +440,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">BatchCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Database.snapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">max_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.snapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an object which wraps a snapshot.</span>
 
 <span class="sd">        The wrapper *must* be used as a context manager, with the snapshot</span>
@@ -432,38 +449,15 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</span>
 
-<span class="sd">        If no options are passed, reads will use the ``strong`` model, reading</span>
-<span class="sd">        at a timestamp where all previously committed transactions are visible.</span>
-
-<span class="sd">        :type read_timestamp: :class:`datetime.datetime`</span>
-<span class="sd">        :param read_timestamp: Execute all reads at the given timestamp.</span>
-
-<span class="sd">        :type min_read_timestamp: :class:`datetime.datetime`</span>
-<span class="sd">        :param min_read_timestamp: Execute all reads at a</span>
-<span class="sd">                                   timestamp &gt;= ``min_read_timestamp``.</span>
-
-<span class="sd">        :type max_staleness: :class:`datetime.timedelta`</span>
-<span class="sd">        :param max_staleness: Read data at a</span>
-<span class="sd">                              timestamp &gt;= NOW - ``max_staleness`` seconds.</span>
-
-<span class="sd">        :type exact_staleness: :class:`datetime.timedelta`</span>
-<span class="sd">        :param exact_staleness: Execute all reads at a timestamp that is</span>
-<span class="sd">                                ``exact_staleness`` old.</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`</span>
-<span class="sd">        :returns: a snapshot bound to this session</span>
-<span class="sd">        :raises: :exc:`ValueError` if the session has not yet been created.</span>
+<span class="sd">        :type kw: dict</span>
+<span class="sd">        :param kw:</span>
+<span class="sd">            Passed through to</span>
+<span class="sd">            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`</span>
 <span class="sd">        :returns: new wrapper</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">SnapshotCheckout</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">read_timestamp</span><span class="o">=</span><span class="n">read_timestamp</span><span class="p">,</span>
-            <span class="n">min_read_timestamp</span><span class="o">=</span><span class="n">min_read_timestamp</span><span class="p">,</span>
-            <span class="n">max_staleness</span><span class="o">=</span><span class="n">max_staleness</span><span class="p">,</span>
-            <span class="n">exact_staleness</span><span class="o">=</span><span class="n">exact_staleness</span><span class="p">,</span>
-        <span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">SnapshotCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="BatchCheckout"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.BatchCheckout">[docs]</a><span class="k">class</span> <span class="nc">BatchCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -509,40 +503,20 @@
 <span class="sd">    :type database: :class:`~google.cloud.spannder.database.Database`</span>
 <span class="sd">    :param database: database to use</span>
 
-<span class="sd">    :type read_timestamp: :class:`datetime.datetime`</span>
-<span class="sd">    :param read_timestamp: Execute all reads at the given timestamp.</span>
-
-<span class="sd">    :type min_read_timestamp: :class:`datetime.datetime`</span>
-<span class="sd">    :param min_read_timestamp: Execute all reads at a</span>
-<span class="sd">                               timestamp &gt;= ``min_read_timestamp``.</span>
-
-<span class="sd">    :type max_staleness: :class:`datetime.timedelta`</span>
-<span class="sd">    :param max_staleness: Read data at a</span>
-<span class="sd">                          timestamp &gt;= NOW - ``max_staleness`` seconds.</span>
-
-<span class="sd">    :type exact_staleness: :class:`datetime.timedelta`</span>
-<span class="sd">    :param exact_staleness: Execute all reads at a timestamp that is</span>
-<span class="sd">                            ``exact_staleness`` old.</span>
+<span class="sd">    :type kw: dict</span>
+<span class="sd">    :param kw:</span>
+<span class="sd">        Passed through to</span>
+<span class="sd">        :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">max_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read_timestamp</span> <span class="o">=</span> <span class="n">read_timestamp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_min_read_timestamp</span> <span class="o">=</span> <span class="n">min_read_timestamp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_max_staleness</span> <span class="o">=</span> <span class="n">max_staleness</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_exact_staleness</span> <span class="o">=</span> <span class="n">exact_staleness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kw</span> <span class="o">=</span> <span class="n">kw</span>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begin ``with`` block.&quot;&quot;&quot;</span>
         <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">Snapshot</span><span class="p">(</span>
-            <span class="n">session</span><span class="p">,</span>
-            <span class="n">read_timestamp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_timestamp</span><span class="p">,</span>
-            <span class="n">min_read_timestamp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_min_read_timestamp</span><span class="p">,</span>
-            <span class="n">max_staleness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_staleness</span><span class="p">,</span>
-            <span class="n">exact_staleness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_exact_staleness</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Snapshot</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_kw</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;End ``with`` block.&quot;&quot;&quot;</span>
@@ -560,6 +534,9 @@
 
 <span class="sd">    :rtype: tuple</span>
 <span class="sd">    :returns: tuple of validated DDL statement strings.</span>
+<span class="sd">    :raises ValueError:</span>
+<span class="sd">        if elements in ``value`` are not strings, or if ``value`` contains</span>
+<span class="sd">        a ``CREATE DATABASE`` statement.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a list of strings&quot;</span><span class="p">)</span>

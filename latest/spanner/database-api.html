@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Database API &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Database API &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -118,6 +118,25 @@ as the value returned by the wrapper.</p>
 <p>Inclues any configured schema assigned to <a class="reference internal" href="#google.cloud.spanner.database.Database.ddl_statements" title="google.cloud.spanner.database.Database.ddl_statements"><code class="xref py py-attr docutils literal"><span class="pre">ddl_statements</span></code></a>.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a future used to poll the status of the create request</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.Conflict" title="google.cloud.exceptions.Conflict"><strong>Conflict</strong></a> – if the database already exists</li>
+<li><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><strong>NotFound</strong></a> – if the instance owning the database does not exist</li>
+<li><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">ALREADY_EXISTS</span></code> returned from the call</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -183,6 +202,18 @@ back-end.</li>
 <dd><p>Test whether this database exists.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the database exists, else false.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
@@ -207,8 +238,7 @@ back-end.</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The database parsed from the protobuf response.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the instance
-name does not match the expected format
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if the instance name does not match the expected format
 or if the parsed project ID does not match the project ID
 on the instance’s client, or if the parsed instance ID does
 not match the instance’s ID.</p>
@@ -278,6 +308,18 @@ table’s primary key</li>
 <p>Refresh any configured schema into <a class="reference internal" href="#google.cloud.spanner.database.Database.ddl_statements" title="google.cloud.spanner.database.Database.ddl_statements"><code class="xref py py-attr docutils literal"><span class="pre">ddl_statements</span></code></a>.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><strong>NotFound</strong></a> – if the database does not exist</li>
+<li><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -327,43 +369,22 @@ override the default timeout.</li>
 
 <dl class="method">
 <dt id="google.cloud.spanner.database.Database.snapshot">
-<code class="descname">snapshot</code><span class="sig-paren">(</span><em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/database.html#Database.snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.snapshot" title="Permalink to this definition">#</a></dt>
+<code class="descname">snapshot</code><span class="sig-paren">(</span><em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/database.html#Database.snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.snapshot" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an object which wraps a snapshot.</p>
 <p>The wrapper <em>must</em> be used as a context manager, with the snapshot
 as the value returned by the wrapper.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</a></p>
-<p>If no options are passed, reads will use the <code class="docutils literal"><span class="pre">strong</span></code> model, reading
-at a timestamp where all previously committed transactions are visible.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at the given timestamp.</li>
-<li><strong>min_read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at a
-timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</li>
-<li><strong>max_staleness</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Read data at a
-timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_staleness</span></code> seconds.</li>
-<li><strong>exact_staleness</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Execute all reads at a timestamp that is
-<code class="docutils literal"><span class="pre">exact_staleness</span></code> old.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Passed through to
+<a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> constructor.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.database.SnapshotCheckout" title="google.cloud.spanner.database.SnapshotCheckout"><code class="xref py py-class docutils literal"><span class="pre">SnapshotCheckout</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a snapshot bound to this session</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the session has not yet been created.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.spanner.database.SnapshotCheckout" title="google.cloud.spanner.database.SnapshotCheckout"><code class="xref py py-class docutils literal"><span class="pre">SnapshotCheckout</span></code></a></p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">new wrapper</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">new wrapper</td>
 </tr>
 </tbody>
 </table>
@@ -386,9 +407,17 @@ timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_stale
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.operation.Operation</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.operation.Operation</span></code></p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an operation instance</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">an operation instance</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><strong>NotFound</strong></a> – if the database does not exist</li>
+<li><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -398,7 +427,7 @@ timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_stale
 
 <dl class="class">
 <dt id="google.cloud.spanner.database.SnapshotCheckout">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.database.</code><code class="descname">SnapshotCheckout</code><span class="sig-paren">(</span><em>database</em>, <em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/database.html#SnapshotCheckout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.SnapshotCheckout" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.spanner.database.</code><code class="descname">SnapshotCheckout</code><span class="sig-paren">(</span><em>database</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/database.html#SnapshotCheckout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.SnapshotCheckout" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Context manager for using a snapshot from a database.</p>
 <p>Inside the context manager, checks out a session from the database,
@@ -411,13 +440,8 @@ scope of the context manager.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>database</strong> (<code class="xref py py-class docutils literal"><span class="pre">Database</span></code>) – database to use</li>
-<li><strong>read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at the given timestamp.</li>
-<li><strong>min_read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at a
-timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</li>
-<li><strong>max_staleness</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Read data at a
-timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_staleness</span></code> seconds.</li>
-<li><strong>exact_staleness</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Execute all reads at a timestamp that is
-<code class="docutils literal"><span class="pre">exact_staleness</span></code> old.</li>
+<li><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Passed through to
+<a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> constructor.</li>
 </ul>
 </td>
 </tr>

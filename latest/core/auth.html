@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Authentication &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Authentication &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,7 +51,7 @@ authentication should “just work”.</p>
 </li>
 <li><p class="first"><strong>If you’re developing locally</strong>,
 the easiest way to authenticate is using the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ gcloud beta auth application-default login
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ gcloud auth application-default login
 </pre></div>
 </div>
 <p>Note that this command generates credentials for client libraries. To authenticate the CLI itself, use:</p>
@@ -93,7 +93,7 @@ Google <a class="reference external" href="https://developers.google.com/identit
 <span id="precedence"></span><h3>Credential Discovery Precedence<a class="headerlink" href="#credential-discovery-precedence" title="Permalink to this headline">#</a></h3>
 <p>When loading the <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>,
 the library will check for credentials in your environment by following the
-precedence outlined by <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.0.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
+precedence outlined by <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.0.2)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="explicit-credentials">
@@ -110,7 +110,7 @@ every time (rather than with the locally inferred credentials)</li>
 from different projects</li>
 </ul>
 <p>In these situations, you can create an explicit
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a> object suited to your environment.
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.2)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a> object suited to your environment.
 After creation, you can pass it directly to a <a class="reference internal" href="modules.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
@@ -122,7 +122,7 @@ After creation, you can pass it directly to a <a class="reference internal" href
 <div class="section" id="google-app-engine-environment">
 <h3>Google App Engine Environment<a class="headerlink" href="#google-app-engine-environment" title="Permalink to this headline">#</a></h3>
 <p>To create
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.app_engine.html#google.auth.app_engine.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.app_engine.html#google.auth.app_engine.Credentials" title="(in google-auth v1.0.2)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
 just for Google App Engine:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.auth</span> <span class="k">import</span> <span class="n">app_engine</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">app_engine</span><span class="o">.</span><span class="n">Credentials</span><span class="p">()</span>
@@ -132,7 +132,7 @@ just for Google App Engine:</p>
 <div class="section" id="google-compute-engine-environment">
 <h3>Google Compute Engine Environment<a class="headerlink" href="#google-compute-engine-environment" title="Permalink to this headline">#</a></h3>
 <p>To create
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.compute_engine.html#google.auth.compute_engine.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.compute_engine.html#google.auth.compute_engine.Credentials" title="(in google-auth v1.0.2)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
 just for Google Compute Engine:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.auth</span> <span class="k">import</span> <span class="n">compute_engine</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">compute_engine</span><span class="o">.</span><span class="n">Credentials</span><span class="p">()</span>
@@ -171,7 +171,7 @@ getting started with the <code class="docutils literal"><span class="pre">google
 </div>
 <p>The simplest way to use credentials from a user account is via
 Application Default Credentials using <code class="docutils literal"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>
-(as mentioned above) and <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.0.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>:</p>
+(as mentioned above) and <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.0.2)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">google.auth</span>
 
 <span class="n">credentials</span><span class="p">,</span> <span class="n">project</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default</span><span class="p">()</span>
@@ -184,11 +184,11 @@ with your user provided credentials.</p>
 <p>Advanced users of <a class="reference external" href="https://github.com/Google/oauth2client.">oauth2client</a> can also use custom flows to
 create credentials using <a class="reference external" href="https://developers.google.com/api-client-library/python/guide/aaa_oauth#flow_from_clientsecrets">client secrets</a> or using a
 <a class="reference external" href="https://developers.google.com/api-client-library/python/guide/aaa_oauth#OAuth2WebServerFlow">webserver flow</a>.
-After creation, <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials" title="(in oauth2client v4.1.2)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>
+After creation, <code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code>
 can be serialized with
-<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials.to_json" title="(in oauth2client v4.1.2)"><code class="xref py py-meth docutils literal"><span class="pre">to_json()</span></code></a>
+<code class="xref py py-meth docutils literal"><span class="pre">to_json()</span></code>
 and stored in a file and then and deserialized with
-<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials.from_json" title="(in oauth2client v4.1.2)"><code class="xref py py-meth docutils literal"><span class="pre">from_json()</span></code></a>. In order
+<code class="xref py py-meth docutils literal"><span class="pre">from_json()</span></code>. In order
 to use <code class="docutils literal"><span class="pre">oauth2client</span></code>’s credentials with this library, you’ll need to
 <a class="reference external" href="http://google-auth.readthedocs.io/en/stable/user-guide.html#user-credentials">convert them</a>.</p>
 </div>
@@ -301,41 +301,6 @@ you add the correct scopes for the APIs you want to access:</p>
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="advanced-customization">
-<h2>Advanced Customization<a class="headerlink" href="#advanced-customization" title="Permalink to this headline">#</a></h2>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>The developers of this library want to improve our HTTP handling to
-support more situations more easily, and use current tooling.</p>
-<p class="last">In order to allow this, this particular mechanism may have to be altered
-in a backwards-compatible way. Therefore, the following section should
-be considered “private API” that is subject to change.</p>
-</div>
-<p>The <code class="docutils literal"><span class="pre">google-cloud-python</span></code> library uses <a class="reference external" href="http://google-auth.readthedocs.io/en/stable/">google-auth</a> to sign
-requests and <code class="docutils literal"><span class="pre">httplib2</span></code> for sending requests.</p>
-<p>This is not a strict requirement:
-The <a class="reference internal" href="modules.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> constructor accepts an
-optional <code class="docutils literal"><span class="pre">_http</span></code> argument in place of a <code class="docutils literal"><span class="pre">credentials</span></code> object.
-If passed, all HTTP requests made by the client will use your
-custom HTTP object.</p>
-<p>In order for this to be possible,
-the <code class="docutils literal"><span class="pre">_http</span></code> object must do two things:</p>
-<ul class="simple">
-<li>Handle authentication on its own</li>
-<li>Define a method <code class="docutils literal"><span class="pre">request()</span></code> that can subsitute for
-<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">httplib2.Http.request()</span></code></a>.</li>
-</ul>
-<p>The entire signature from <code class="docutils literal"><span class="pre">httplib2</span></code> need not be implemented,
-we only use it as</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method_name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>For an example of such an implementation,
-a <code class="docutils literal"><span class="pre">google-cloud-python</span></code> user created a <a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues/908#issuecomment-110811556">custom HTTP class</a>
-using the <a class="reference external" href="http://www.python-requests.org/en/latest/">requests</a> library.</p>
-<p>We hope to enable using <a class="reference external" href="https://github.com/google/oauth2client/issues/128">custom HTTP libraries</a> with this library at
-some point.</p>
 </div>
 </div>
 

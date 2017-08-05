@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Buckets &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -187,6 +187,20 @@ Default: True.</li>
 <dt>See <a class="reference external" href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
 </dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The getter for this property returns a list which contains
+<em>copies</em> of the bucket’s CORS policy mappings.  Mutating the list
+or one of its dicts has no effect unless you then re-assign the
+dict via the setter.  E.g.:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">policies</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">cors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">policies</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;origin&#39;</span><span class="p">:</span> <span class="s1">&#39;/foo&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">policies</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;maxAgeSeconds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3600</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">policies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">cors</span> <span class="o">=</span> <span class="n">policies</span>
+</pre></div>
+</div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -575,9 +589,21 @@ set locally.</td>
 <dl class="attribute">
 <dt id="google.cloud.storage.bucket.Bucket.labels">
 <code class="descname">labels</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Retrieve or set CORS policies configured for this bucket.</p>
+<dd><p>Retrieve or set labels assigned to this bucket.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets#labels">https://cloud.google.com/storage/docs/json_api/v1/buckets#labels</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The getter for this property returns a dict which is a <em>copy</em>
+of the bucket’s labels.  Mutating that dict has no effect unless
+you then re-assign the dict via the setter.  E.g.:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">labels</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span><span class="p">[</span><span class="s1">&#39;new_key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;some-label&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">labels</span><span class="p">[</span><span class="s1">&#39;old_key&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+</pre></div>
+</div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -602,6 +628,20 @@ set locally.</td>
 <dt>See <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
 </dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The getter for this property returns a list which contains
+<em>copies</em> of the bucket’s lifecycle rules mappings.  Mutating the
+list or one of its dicts has no effect unless you then re-assign
+the dict via the setter.  E.g.:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rules</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">lifecycle_rules</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;origin&#39;</span><span class="p">:</span> <span class="s1">&#39;/foo&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rules</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;rule&#39;</span><span class="p">][</span><span class="s1">&#39;action&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Delete&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">rules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">lifecycle_rules</span> <span class="o">=</span> <span class="n">rules</span>
+</pre></div>
+</div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

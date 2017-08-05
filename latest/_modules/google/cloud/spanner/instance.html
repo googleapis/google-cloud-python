@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.instance &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.spanner.instance &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -151,11 +151,10 @@
 
 <span class="sd">        :rtype: :class:`Instance`</span>
 <span class="sd">        :returns: The instance parsed from the protobuf response.</span>
-<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the instance</span>
-<span class="sd">                 name does not match</span>
-<span class="sd">                 ``projects/{project}/instances/{instance_id}``</span>
-<span class="sd">                 or if the parsed project ID does not match the project ID</span>
-<span class="sd">                 on the client.</span>
+<span class="sd">        :raises ValueError:</span>
+<span class="sd">            if the instance name does not match</span>
+<span class="sd">            ``projects/{project}/instances/{instance_id}`` or if the parsed</span>
+<span class="sd">            project ID does not match the project ID on the client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">match</span> <span class="o">=</span> <span class="n">_INSTANCE_NAME_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">instance_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -243,6 +242,9 @@
 
 <span class="sd">        :rtype: :class:`google.cloud.future.operation.Operation`</span>
 <span class="sd">        :returns: an operation instance</span>
+<span class="sd">        :raises Conflict: if the instance already exists</span>
+<span class="sd">        :raises GaxError:</span>
+<span class="sd">            for errors other than ``ALREADY_EXISTS`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_api</span>
         <span class="n">instance_pb</span> <span class="o">=</span> <span class="n">admin_v1_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">(</span>
@@ -272,6 +274,11 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: True if the instance exists, else false</span>
+<span class="sd">        :raises GaxError:</span>
+<span class="sd">            for errors other than ``NOT_FOUND`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_api</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -290,6 +297,9 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig</span>
+
+<span class="sd">        :raises NotFound: if the instance does not exist</span>
+<span class="sd">        :raises GaxError: for other errors returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_api</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -323,6 +333,8 @@
 
 <span class="sd">        :rtype: :class:`google.cloud.future.operation.Operation`</span>
 <span class="sd">        :returns: an operation instance</span>
+<span class="sd">        :raises NotFound: if the instance does not exist</span>
+<span class="sd">        :raises GaxError: for other errors returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">instance_admin_api</span>
         <span class="n">instance_pb</span> <span class="o">=</span> <span class="n">admin_v1_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">(</span>

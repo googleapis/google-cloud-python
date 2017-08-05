@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.iterator &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.iterator &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -284,7 +284,8 @@
 <span class="sd">                          results per page while an items iterator will want</span>
 <span class="sd">                          to increment per item.</span>
 
-<span class="sd">        Yields :class:`Page` instances.</span>
+<span class="sd">        :rtype: :class:`Page`</span>
+<span class="sd">        :returns: pages</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_page</span><span class="p">()</span>
         <span class="k">while</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -429,6 +430,8 @@
 
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: The parsed JSON response of the next page&#39;s contents.</span>
+
+<span class="sd">        :raises ValueError: If the HTTP method is not ``GET`` or ``POST``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_query_params</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>

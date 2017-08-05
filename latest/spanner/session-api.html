@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Session API &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Session API &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -81,7 +81,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a batch bound to this session</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the session has not yet been created.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if the session has not yet been created.</td>
 </tr>
 </tbody>
 </table>
@@ -113,7 +113,12 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if <a class="reference internal" href="#google.cloud.spanner.session.Session.session_id" title="google.cloud.spanner.session.Session.session_id"><code class="xref py py-attr docutils literal"><span class="pre">session_id</span></code></a> is not already set.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <a class="reference internal" href="#google.cloud.spanner.session.Session.session_id" title="google.cloud.spanner.session.Session.session_id"><code class="xref py py-attr docutils literal"><span class="pre">session_id</span></code></a> is not already set.</li>
+<li><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><strong>NotFound</strong></a> – if the session does not exist</li>
+<li><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -164,6 +169,8 @@ back-end.</li>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the session exists on the back-end, else False.</td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -187,6 +194,8 @@ return value is not cached.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The session name.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if session is not yet created</td>
 </tr>
 </tbody>
 </table>
@@ -243,7 +252,10 @@ override the default timeout.</li>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">timestamp of committed transaction</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">timestamp of committed transaction</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><strong>Exception</strong></a> – reraises any non-ABORT execptions raised by <code class="docutils literal"><span class="pre">func</span></code>.</p>
 </td>
 </tr>
 </tbody>
@@ -258,35 +270,22 @@ override the default timeout.</li>
 
 <dl class="method">
 <dt id="google.cloud.spanner.session.Session.snapshot">
-<code class="descname">snapshot</code><span class="sig-paren">(</span><em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.snapshot" title="Permalink to this definition">#</a></dt>
+<code class="descname">snapshot</code><span class="sig-paren">(</span><em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.snapshot" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a snapshot to perform a set of reads with shared staleness.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</a></p>
-<p>If no options are passed, reads will use the <code class="docutils literal"><span class="pre">strong</span></code> model, reading
-at a timestamp where all previously committed transactions are visible.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at the given timestamp.</li>
-<li><strong>min_read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at a
-timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</li>
-<li><strong>max_staleness</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Read data at a
-timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_staleness</span></code> seconds.</li>
-<li><strong>exact_staleness</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Execute all reads at a timestamp that is
-<code class="docutils literal"><span class="pre">exact_staleness</span></code> old.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Passed through to
+<a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> ctor.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a snapshot bound to this session</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a snapshot bound to this session</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the session has not yet been created.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if the session has not yet been created.</td>
 </tr>
 </tbody>
 </table>
@@ -304,7 +303,7 @@ timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_stale
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a transaction bound to this session</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the session has not yet been created.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if the session has not yet been created.</td>
 </tr>
 </tbody>
 </table>
@@ -336,6 +335,14 @@ when needed.</td>
 </table>
 <p>Concrete implementations of this method may pre-fill the pool
 using the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.6)"><strong>NotImplementedError</strong></a> – abstract method</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -345,6 +352,14 @@ using the database.</p>
 <p>Concrete implementations of this method are allowed to raise an
 error to signal that the pool is full, or to block until it is
 not full.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.6)"><strong>NotImplementedError</strong></a> – abstract method</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -354,6 +369,14 @@ not full.</p>
 <p>Concrete implementations of this method are allowed to raise an
 error to signal that the pool is exhausted, or to block until a
 session is available.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.6)"><strong>NotImplementedError</strong></a> – abstract method</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -371,6 +394,14 @@ session is available.</p>
 <p>Concrete implementations of this method are allowed to raise an
 error to signal that the pool is full, or to block until it is
 not full.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.6)"><strong>NotImplementedError</strong></a> – abstract method</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

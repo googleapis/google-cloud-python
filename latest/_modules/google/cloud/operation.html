@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.operation &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.operation &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -92,7 +92,7 @@
 <span class="sd">    :param type_url: (Optional) URL naming the type. If not provided,</span>
 <span class="sd">                     infers the URL from the type descriptor.</span>
 
-<span class="sd">    :raises: ValueError if a registration already exists for the URL.</span>
+<span class="sd">    :raises ValueError: if a registration already exists for the URL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">type_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">type_url</span> <span class="o">=</span> <span class="n">_compute_type_url</span><span class="p">(</span><span class="n">klass</span><span class="p">)</span>
@@ -300,7 +300,7 @@
 
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: A boolean indicating if the current operation has completed.</span>
-<span class="sd">        :raises: :class:`~exceptions.ValueError` if the operation</span>
+<span class="sd">        :raises ValueError: if the operation</span>
 <span class="sd">                 has already completed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>

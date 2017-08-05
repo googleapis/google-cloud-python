@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.session &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.spanner.session &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -120,6 +120,7 @@
 
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The session name.</span>
+<span class="sd">        :raises ValueError: if session is not yet created</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No session ID set by back-end&#39;</span><span class="p">)</span>
@@ -148,6 +149,8 @@
 
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True if the session exists on the back-end, else False.</span>
+<span class="sd">        :raises GaxError:</span>
+<span class="sd">            for errors other than ``NOT_FOUND`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -168,7 +171,10 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession</span>
 
-<span class="sd">        :raises: :exc:`ValueError` if :attr:`session_id` is not already set.</span>
+<span class="sd">        :raises ValueError: if :attr:`session_id` is not already set.</span>
+<span class="sd">        :raises NotFound: if the session does not exist</span>
+<span class="sd">        :raises GaxError:</span>
+<span class="sd">            for errors other than ``NOT_FOUND`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Session ID not set by back-end&#39;</span><span class="p">)</span>
@@ -181,43 +187,24 @@
                 <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">raise</span></div>
 
-<div class="viewcode-block" id="Session.snapshot"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">max_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.snapshot"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a snapshot to perform a set of reads with shared staleness.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</span>
 
-<span class="sd">        If no options are passed, reads will use the ``strong`` model, reading</span>
-<span class="sd">        at a timestamp where all previously committed transactions are visible.</span>
-
-<span class="sd">        :type read_timestamp: :class:`datetime.datetime`</span>
-<span class="sd">        :param read_timestamp: Execute all reads at the given timestamp.</span>
-
-<span class="sd">        :type min_read_timestamp: :class:`datetime.datetime`</span>
-<span class="sd">        :param min_read_timestamp: Execute all reads at a</span>
-<span class="sd">                                   timestamp &gt;= ``min_read_timestamp``.</span>
-
-<span class="sd">        :type max_staleness: :class:`datetime.timedelta`</span>
-<span class="sd">        :param max_staleness: Read data at a</span>
-<span class="sd">                              timestamp &gt;= NOW - ``max_staleness`` seconds.</span>
-
-<span class="sd">        :type exact_staleness: :class:`datetime.timedelta`</span>
-<span class="sd">        :param exact_staleness: Execute all reads at a timestamp that is</span>
-<span class="sd">                                ``exact_staleness`` old.</span>
+<span class="sd">        :type kw: dict</span>
+<span class="sd">        :param kw: Passed through to</span>
+<span class="sd">                   :class:`~google.cloud.spanner.snapshot.Snapshot` ctor.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`</span>
 <span class="sd">        :returns: a snapshot bound to this session</span>
-<span class="sd">        :raises: :exc:`ValueError` if the session has not yet been created.</span>
+<span class="sd">        :raises ValueError: if the session has not yet been created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Session has not been created.&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">Snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                        <span class="n">read_timestamp</span><span class="o">=</span><span class="n">read_timestamp</span><span class="p">,</span>
-                        <span class="n">min_read_timestamp</span><span class="o">=</span><span class="n">min_read_timestamp</span><span class="p">,</span>
-                        <span class="n">max_staleness</span><span class="o">=</span><span class="n">max_staleness</span><span class="p">,</span>
-                        <span class="n">exact_staleness</span><span class="o">=</span><span class="n">exact_staleness</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Session.read"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
              <span class="n">resume_token</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
@@ -284,7 +271,7 @@
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner.batch.Batch`</span>
 <span class="sd">        :returns: a batch bound to this session</span>
-<span class="sd">        :raises: :exc:`ValueError` if the session has not yet been created.</span>
+<span class="sd">        :raises ValueError: if the session has not yet been created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Session has not been created.&quot;</span><span class="p">)</span>
@@ -296,7 +283,7 @@
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner.transaction.Transaction`</span>
 <span class="sd">        :returns: a transaction bound to this session</span>
-<span class="sd">        :raises: :exc:`ValueError` if the session has not yet been created.</span>
+<span class="sd">        :raises ValueError: if the session has not yet been created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Session has not been created.&quot;</span><span class="p">)</span>
@@ -325,6 +312,8 @@
 
 <span class="sd">        :rtype: :class:`datetime.datetime`</span>
 <span class="sd">        :returns: timestamp of committed transaction</span>
+<span class="sd">        :raises Exception:</span>
+<span class="sd">            reraises any non-ABORT execptions raised by ``func``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">deadline</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">+</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span>
             <span class="s1">&#39;timeout_secs&#39;</span><span class="p">,</span> <span class="n">DEFAULT_RETRY_TIMEOUT_SECS</span><span class="p">)</span>
@@ -334,7 +323,7 @@
                 <span class="n">txn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">txn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
-            <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">func</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
@@ -344,7 +333,6 @@
                 <span class="k">continue</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
-                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
                 <span class="k">raise</span>
 
             <span class="k">try</span><span class="p">:</span>
@@ -354,7 +342,6 @@
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">committed</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">committed</span>
-                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
                 <span class="k">return</span> <span class="n">committed</span></div></div>
 
 

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.client &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.client &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -60,13 +60,13 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">pickle</span> <span class="k">import</span> <span class="n">PicklingError</span>
 
-<span class="kn">import</span> <span class="nn">google.auth.credentials</span>
-<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
-<span class="kn">import</span> <span class="nn">google_auth_httplib2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">import</span> <span class="nn">google.auth</span>
+<span class="kn">import</span> <span class="nn">google.auth.credentials</span>
+<span class="kn">import</span> <span class="nn">google.auth.transport.requests</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_determine_default_project</span>
-<span class="kn">from</span> <span class="nn">google.cloud.credentials</span> <span class="k">import</span> <span class="n">get_credentials</span>
+<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
 
 
 <span class="n">_GOOGLE_AUTH_CREDENTIALS_HELP</span> <span class="o">=</span> <span class="p">(</span>
@@ -106,7 +106,7 @@
 
 <span class="sd">        :rtype: :class:`_ClientFactoryMixin`</span>
 <span class="sd">        :returns: The client created with the retrieved JSON credentials.</span>
-<span class="sd">        :raises: :class:`TypeError` if there is a conflict with the kwargs</span>
+<span class="sd">        :raises TypeError: if there is a conflict with the kwargs</span>
 <span class="sd">                 and the credentials created by the factory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
@@ -129,25 +129,12 @@
 <span class="sd">    Stores ``credentials`` and an HTTP object so that subclasses</span>
 <span class="sd">    can pass them along to a connection class.</span>
 
-<span class="sd">    If no value is passed in for ``_http``, a :class:`httplib2.Http` object</span>
+<span class="sd">    If no value is passed in for ``_http``, a :class:`requests.Session` object</span>
 <span class="sd">    will be created and authorized with the ``credentials``. If not, the</span>
 <span class="sd">    ``credentials`` and ``_http`` need not be related.</span>
 
 <span class="sd">    Callers and subclasses may seek to use the private key from</span>
 <span class="sd">    ``credentials`` to sign data.</span>
-
-<span class="sd">    A custom (non-``httplib2``) HTTP object must have a ``request`` method</span>
-<span class="sd">    which accepts the following arguments:</span>
-
-<span class="sd">    * ``uri``</span>
-<span class="sd">    * ``method``</span>
-<span class="sd">    * ``body``</span>
-<span class="sd">    * ``headers``</span>
-
-<span class="sd">    In addition, ``redirections`` and ``connection_type`` may be used.</span>
-
-<span class="sd">    A custom ``_http`` object will also need to be able to add a bearer token</span>
-<span class="sd">    to API requests and handle token refresh on 401 errors.</span>
 
 <span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
 <span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
@@ -155,10 +142,10 @@
 <span class="sd">                        passed), falls back to the default inferred from the</span>
 <span class="sd">                        environment.</span>
 
-<span class="sd">    :type _http: :class:`~httplib2.Http`</span>
+<span class="sd">    :type _http: :class:`~requests.Session`</span>
 <span class="sd">    :param _http: (Optional) HTTP object to make requests. Can be any object</span>
 <span class="sd">                  that defines ``request()`` with the same interface as</span>
-<span class="sd">                  :meth:`~httplib2.Http.request`. If not passed, an</span>
+<span class="sd">                  :meth:`requests.Session.request`. If not passed, an</span>
 <span class="sd">                  ``_http`` object is created that is bound to the</span>
 <span class="sd">                  ``credentials`` for the current object.</span>
 <span class="sd">                  This parameter should be considered private, and could</span>
@@ -177,7 +164,7 @@
                     <span class="n">credentials</span><span class="p">,</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">Credentials</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_GOOGLE_AUTH_CREDENTIALS_HELP</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_http</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
+            <span class="n">credentials</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">with_scopes_if_required</span><span class="p">(</span>
             <span class="n">credentials</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SCOPE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span> <span class="o">=</span> <span class="n">_http</span>
@@ -193,12 +180,13 @@
     <span class="k">def</span> <span class="nf">_http</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter for object used for HTTP transport.</span>
 
-<span class="sd">        :rtype: :class:`~httplib2.Http`</span>
+<span class="sd">        :rtype: :class:`~requests.Session`</span>
 <span class="sd">        :returns: An HTTP object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span> <span class="o">=</span> <span class="n">google_auth_httplib2</span><span class="o">.</span><span class="n">AuthorizedHttp</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">AuthorizedSession</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_internal</span></div>
 
 
@@ -246,10 +234,10 @@
 <span class="sd">                        passed), falls back to the default inferred from the</span>
 <span class="sd">                        environment.</span>
 
-<span class="sd">    :type _http: :class:`~httplib2.Http`</span>
+<span class="sd">    :type _http: :class:`~requests.Session`</span>
 <span class="sd">    :param _http: (Optional) HTTP object to make requests. Can be any object</span>
 <span class="sd">                  that defines ``request()`` with the same interface as</span>
-<span class="sd">                  :meth:`~httplib2.Http.request`. If not passed, an</span>
+<span class="sd">                  :meth:`~requests.Session.request`. If not passed, an</span>
 <span class="sd">                  ``_http`` object is created that is bound to the</span>
 <span class="sd">                  ``credentials`` for the current object.</span>
 <span class="sd">                  This parameter should be considered private, and could</span>

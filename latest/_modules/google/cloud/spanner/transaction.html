@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.transaction &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.spanner.transaction &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -69,11 +69,8 @@
     <span class="sd">&quot;&quot;&quot;Implement read-write transaction semantics for a session.&quot;&quot;&quot;</span>
     <span class="n">committed</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="sd">&quot;&quot;&quot;Timestamp at which the transaction was successfully committed.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rolled_back</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">_rolled_back</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">_multi_use</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_check_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`commit` et al.</span>
@@ -81,7 +78,7 @@
 <span class="sd">        :raises: :exc:`ValueError` if the object&#39;s state is invalid for making</span>
 <span class="sd">                 API requests.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transaction is not begun&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">committed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -98,17 +95,17 @@
 <span class="sd">        :returns: a selector configured for read-write transaction semantics.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_state</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">TransactionSelector</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TransactionSelector</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Transaction.begin"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner.transaction.Transaction.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begin a transaction on the database.</span>
 
 <span class="sd">        :rtype: bytes</span>
 <span class="sd">        :returns: the ID for the newly-begun transaction.</span>
-<span class="sd">        :raises: ValueError if the transaction is already begun, committed,</span>
-<span class="sd">                 or rolled back.</span>
+<span class="sd">        :raises ValueError:</span>
+<span class="sd">            if the transaction is already begun, committed, or rolled back.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transaction already begun&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">committed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -124,8 +121,8 @@
             <span class="n">read_write</span><span class="o">=</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadWrite</span><span class="p">())</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">txn_options</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">id</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span></div>
 
 <div class="viewcode-block" id="Transaction.rollback"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner.transaction.Transaction.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Roll back a transaction on the database.&quot;&quot;&quot;</span>
@@ -133,19 +130,20 @@
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">api</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rolled_back</span> <span class="o">=</span> <span class="kc">True</span></div>
+        <span class="n">api</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rolled_back</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_transaction</span></div>
 
 <div class="viewcode-block" id="Transaction.commit"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner.transaction.Transaction.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commit mutations to the database.</span>
 
 <span class="sd">        :rtype: datetime</span>
 <span class="sd">        :returns: timestamp of the committed changes.</span>
-<span class="sd">        :raises: :exc:`ValueError` if there are no mutations to commit.</span>
+<span class="sd">        :raises ValueError: if there are no mutations to commit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_state</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No mutations to commit&quot;</span><span class="p">)</span>
 
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
@@ -153,9 +151,10 @@
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutations</span><span class="p">,</span>
-            <span class="n">transaction_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">transaction_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">committed</span> <span class="o">=</span> <span class="n">_pb_timestamp_to_datetime</span><span class="p">(</span>
             <span class="n">response</span><span class="o">.</span><span class="n">commit_timestamp</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_transaction</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">committed</span></div>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

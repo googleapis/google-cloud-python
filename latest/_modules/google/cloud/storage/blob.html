@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -76,25 +76,23 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">httplib2</span>
 <span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="k">import</span> <span class="n">quote</span>
 
-<span class="kn">import</span> <span class="nn">google.auth.transport.requests</span>
 <span class="kn">from</span> <span class="nn">google</span> <span class="k">import</span> <span class="n">resumable_media</span>
 <span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ChunkedDownload</span>
 <span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">Download</span>
 <span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">MultipartUpload</span>
 <span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_bytes_to_unicode</span>
-<span class="kn">from</span> <span class="nn">google.cloud.credentials</span> <span class="k">import</span> <span class="n">generate_signed_url</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">Policy</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
+<span class="kn">from</span> <span class="nn">google.cloud.storage._signing</span> <span class="k">import</span> <span class="n">generate_signed_url</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">ObjectACL</span>
 
 
@@ -404,22 +402,20 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_make_transport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make an authenticated transport with a client&#39;s credentials.</span>
+    <span class="k">def</span> <span class="nf">_get_transport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the client&#39;s transport.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client`</span>
 <span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
+
 <span class="sd">        :rtype transport:</span>
 <span class="sd">            :class:`~google.auth.transport.requests.AuthorizedSession`</span>
 <span class="sd">        :returns: The transport (with credentials) that will</span>
 <span class="sd">                  make authenticated requests.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="c1"># Create a ``requests`` transport with the client&#39;s credentials.</span>
-        <span class="n">transport</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">AuthorizedSession</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">transport</span>
+        <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_http</span>
 
     <span class="k">def</span> <span class="nf">_get_download_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the download URL for the current blob.</span>
@@ -460,9 +456,8 @@
 <span class="sd">        :param headers: Optional headers to be sent with the request(s).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
-            <span class="n">file_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+            <span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+            <span class="n">download</span><span class="o">.</span><span class="n">consume</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">download</span> <span class="o">=</span> <span class="n">ChunkedDownload</span><span class="p">(</span>
                 <span class="n">download_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
@@ -505,12 +500,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_download_url</span><span class="p">()</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
-        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_do_download</span><span class="p">(</span><span class="n">transport</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">download_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">download_url</span><span class="p">)</span></div>
+            <span class="n">_raise_from_invalid_response</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
@@ -680,7 +675,7 @@
                 <span class="n">msg</span> <span class="o">=</span> <span class="n">_READ_LESS_THAN_SIZE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_upload_arguments</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
         <span class="n">headers</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span> <span class="o">=</span> <span class="n">info</span>
 
@@ -750,7 +745,7 @@
         <span class="k">if</span> <span class="n">chunk_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">chunk_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
 
-        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_upload_arguments</span><span class="p">(</span><span class="n">content_type</span><span class="p">)</span>
         <span class="n">headers</span><span class="p">,</span> <span class="n">object_metadata</span><span class="p">,</span> <span class="n">content_type</span> <span class="o">=</span> <span class="n">info</span>
         <span class="k">if</span> <span class="n">extra_headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1441,6 +1436,11 @@
 
 <span class="sd">        See https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
+<span class="sd">        :setter: Update arbitrary/application specific metadata for the</span>
+<span class="sd">                 object.</span>
+<span class="sd">        :getter: Retrieve arbitrary/application specific metadata for</span>
+<span class="sd">                 the object.</span>
+
 <span class="sd">        :rtype: dict or ``NoneType``</span>
 <span class="sd">        :returns: The metadata associated with the blob or ``None`` if the</span>
 <span class="sd">                  property is not set locally.</span>
@@ -1634,23 +1634,17 @@
         <span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_raise_from_invalid_response</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">error_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_raise_from_invalid_response</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Re-wrap and raise an ``InvalidResponse`` exception.</span>
 
 <span class="sd">    :type error: :exc:`google.resumable_media.InvalidResponse`</span>
 <span class="sd">    :param error: A caught exception from the ``google-resumable-media``</span>
 <span class="sd">                  library.</span>
 
-<span class="sd">    :type error_info: str</span>
-<span class="sd">    :param error_info: (Optional) Extra information about the failed request.</span>
-
 <span class="sd">    :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding</span>
 <span class="sd">             to the failed status code</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">response</span>
-    <span class="n">faux_response</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Response</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">})</span>
-    <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">faux_response</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
-                         <span class="n">error_info</span><span class="o">=</span><span class="n">error_info</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_response</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
 </pre></div>
 
           </div>

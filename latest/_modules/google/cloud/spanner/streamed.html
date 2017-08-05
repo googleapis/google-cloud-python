@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.streamed &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.spanner.streamed &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -74,8 +74,11 @@
 <span class="sd">        Iterator yielding</span>
 <span class="sd">        :class:`google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet`</span>
 <span class="sd">        instances.</span>
+
+<span class="sd">    :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`</span>
+<span class="sd">    :param source: Snapshot from which the result set was fetched.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_iterator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_iterator</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span> <span class="o">=</span> <span class="n">response_iterator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span> <span class="o">=</span> <span class="p">[]</span>             <span class="c1"># Fully-processed rows</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c1"># Counter for processed responses</span>
@@ -84,6 +87,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_resume_token</span> <span class="o">=</span> <span class="kc">None</span>   <span class="c1"># To resume from last received PRS</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_row</span> <span class="o">=</span> <span class="p">[]</span>      <span class="c1"># Accumulated values for incomplete row</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pending_chunk</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Incomplete value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">source</span>       <span class="c1"># Source snapshot</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -172,7 +176,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_resume_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">resume_token</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first response</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span>
+
+            <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source</span>
+            <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">source</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">transaction</span><span class="o">.</span><span class="n">id</span>
 
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;stats&#39;</span><span class="p">):</span>  <span class="c1"># last response</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">stats</span>
@@ -197,7 +205,7 @@
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">iter_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:],</span> <span class="p">()</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">iter_rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">iter_rows</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">consume_next</span><span class="p">()</span>  <span class="c1"># raises StopIteration</span>
                 <span class="n">iter_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:],</span> <span class="p">()</span>
             <span class="k">while</span> <span class="n">iter_rows</span><span class="p">:</span>

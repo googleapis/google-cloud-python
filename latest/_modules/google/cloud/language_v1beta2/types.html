@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.language.sentence &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.language_v1beta2.types &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -39,8 +39,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.language.sentence</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2017 Google Inc.</span>
+  <h1>Source code for google.cloud.language_v1beta2.types</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017, Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -54,60 +54,22 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Representation of Sentence objects.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.language.sentiment</span> <span class="k">import</span> <span class="n">Sentiment</span>
+<span class="kn">from</span> <span class="nn">google.cloud.proto.language.v1beta2</span> <span class="k">import</span> <span class="n">language_service_pb2</span>
+
+<span class="kn">from</span> <span class="nn">google.gax.utils.messages</span> <span class="k">import</span> <span class="n">get_messages</span>
 
 
-<div class="viewcode-block" id="Sentence"><a class="viewcode-back" href="../../../../language/responses.html#google.cloud.language.sentence.Sentence">[docs]</a><span class="k">class</span> <span class="nc">Sentence</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Google Cloud Natural Language API sentence object.</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">get_messages</span><span class="p">(</span><span class="n">language_service_pb2</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">message</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.language_v1beta2.types&#39;</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+    <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-<span class="sd">    .. _Sentence message: https://cloud.google.com/natural-language/reference\</span>
-<span class="sd">                          /rest/v1/documents/annotateText#Sentence</span>
 
-<span class="sd">    See `Sentence message`_.</span>
-
-<span class="sd">    :type content: str</span>
-<span class="sd">    :param content: The text that the sentence is composed of.</span>
-
-<span class="sd">    :type begin: int</span>
-<span class="sd">    :param begin: The beginning offset of the sentence in the original</span>
-<span class="sd">                  document according to the encoding type specified</span>
-<span class="sd">                  in the API request.</span>
-
-<span class="sd">    :type sentiment: :class:`~google.cloud.language.sentiment.Sentiment`</span>
-<span class="sd">    :param sentiment:</span>
-<span class="sd">        (Optional) For calls to</span>
-<span class="sd">        :meth:`~google.cloud.language.document.Document.annotate_text` where</span>
-<span class="sd">        ``include_sentiment`` is set to true, this field will contain the</span>
-<span class="sd">        sentiment for the sentence.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">sentiment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="n">begin</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sentiment</span> <span class="o">=</span> <span class="n">sentiment</span>
-
-<div class="viewcode-block" id="Sentence.from_api_repr"><a class="viewcode-back" href="../../../../language/responses.html#google.cloud.language.sentence.Sentence.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a sentence from the JSON API into a :class:`Sentence`.</span>
-
-<span class="sd">        :param payload: dict</span>
-<span class="sd">        :type payload: The value from the backend.</span>
-
-<span class="sd">        :rtype: :class:`Sentence`</span>
-<span class="sd">        :returns: The sentence parsed from the API representation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">text_span</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
-
-        <span class="c1"># The sentence may or may not have a sentiment; only attempt the</span>
-        <span class="c1"># typecast if one is present.</span>
-        <span class="n">sentiment</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sentiment&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">sentiment</span> <span class="o">=</span> <span class="n">Sentiment</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">])</span>
-
-        <span class="c1"># Return a Sentence object.</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">text_span</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">],</span> <span class="n">text_span</span><span class="p">[</span><span class="s1">&#39;beginOffset&#39;</span><span class="p">],</span>
-                   <span class="n">sentiment</span><span class="o">=</span><span class="n">sentiment</span><span class="p">)</span></div></div>
+<span class="n">__all__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
 </pre></div>
 
           </div>

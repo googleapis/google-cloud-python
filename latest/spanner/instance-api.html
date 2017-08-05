@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Instance API &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Instance API &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -116,9 +116,17 @@ To change them before creating, reset the values via</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.operation.Operation</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.operation.Operation</span></code></p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an operation instance</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">an operation instance</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.Conflict" title="google.cloud.exceptions.Conflict"><strong>Conflict</strong></a> – if the instance already exists</li>
+<li><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">ALREADY_EXISTS</span></code> returned from the call</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -174,6 +182,18 @@ All data in the databases will be permanently deleted.</li>
 <dd><p>Test whether this instance exists.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the instance exists, else false</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
@@ -196,11 +216,9 @@ All data in the databases will be permanently deleted.</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The instance parsed from the protobuf response.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the instance
-name does not match
-<code class="docutils literal"><span class="pre">projects/{project}/instances/{instance_id}</span></code>
-or if the parsed project ID does not match the project ID
-on the client.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if the instance name does not match
+<code class="docutils literal"><span class="pre">projects/{project}/instances/{instance_id}</span></code> or if the parsed
+project ID does not match the project ID on the client.</p>
 </td>
 </tr>
 </tbody>
@@ -264,6 +282,18 @@ but the return value is not cached.</p>
 <dd><p>Reload the metadata for this instance.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><strong>NotFound</strong></a> – if the instance does not exist</li>
+<li><strong>GaxError</strong> – for other errors returned from the call</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -287,9 +317,17 @@ before calling :meth:`update`.
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.operation.Operation</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.operation.Operation</span></code></p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an operation instance</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">an operation instance</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><strong>NotFound</strong></a> – if the instance does not exist</li>
+<li><strong>GaxError</strong> – for other errors returned from the call</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>

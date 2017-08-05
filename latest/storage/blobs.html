@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Blobs / Objects &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Blobs / Objects &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -495,7 +495,7 @@ type of the underlying blob/object.</li>
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob’s bucket.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.1.2)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
+<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) – (Optional) The OAuth2 credentials to use to sign
 the URL. Defaults to the credentials stored on the
 client used.</li>
@@ -631,6 +631,12 @@ not set locally.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Setter:</th><td class="field-body">Update arbitrary/application specific metadata for the
+object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Getter:</th><td class="field-body">Retrieve arbitrary/application specific metadata for
+the object.</td>
+</tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The metadata associated with the blob or <code class="docutils literal"><span class="pre">None</span></code> if the

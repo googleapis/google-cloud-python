@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Snapshot API &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Snapshot API &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -46,7 +46,7 @@
 <p>Model a set of read-only queries to a database as a snapshot.</p>
 <dl class="class">
 <dt id="google.cloud.spanner.snapshot.Snapshot">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.snapshot.</code><code class="descname">Snapshot</code><span class="sig-paren">(</span><em>session</em>, <em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/snapshot.html#Snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.snapshot.Snapshot" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.spanner.snapshot.</code><code class="descname">Snapshot</code><span class="sig-paren">(</span><em>session</em>, <em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em>, <em>multi_use=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/snapshot.html#Snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.snapshot.Snapshot" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.snapshot._SnapshotBase</span></code></p>
 <p>Allow a set of reads / SQL statements with shared staleness.</p>
 <p>See
@@ -66,11 +66,34 @@ timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timest
 timestamp &gt;= NOW - <code class="docutils literal"><span class="pre">max_staleness</span></code> seconds.</li>
 <li><strong>exact_staleness</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – Execute all reads at a timestamp that is
 <code class="docutils literal"><span class="pre">exact_staleness</span></code> old.</li>
+<li><strong>multi_use</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>) – If true, multipl <code class="xref py py-meth docutils literal"><span class="pre">read()</span></code> / <code class="xref py py-meth docutils literal"><span class="pre">execute_sql()</span></code>
+calls can be performed with the snapshot in the
+context of a read-only transaction, used to ensure
+isolation / consistency. Incompatible with
+<code class="docutils literal"><span class="pre">max_staleness</span></code> and <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.spanner.snapshot.Snapshot.begin">
+<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/snapshot.html#Snapshot.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.snapshot.Snapshot.begin" title="Permalink to this definition">#</a></dt>
+<dd><p>Begin a read-only transaction on the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)">bytes</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the ID for the newly-begun transaction.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if the transaction is already begun, committed, or rolled back.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>

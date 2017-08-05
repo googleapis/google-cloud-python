@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.language.sentiment &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.language_v1.types &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -39,8 +39,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.language.sentiment</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2016 Google Inc.</span>
+  <h1>Source code for google.cloud.language_v1.types</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017, Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -54,49 +54,22 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Definition for Google Cloud Natural Language API sentiment.</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="sd">Sentiment is the response to an ``analyzeSentiment`` request.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">google.cloud.proto.language.v1</span> <span class="k">import</span> <span class="n">language_service_pb2</span>
+
+<span class="kn">from</span> <span class="nn">google.gax.utils.messages</span> <span class="k">import</span> <span class="n">get_messages</span>
 
 
-<div class="viewcode-block" id="Sentiment"><a class="viewcode-back" href="../../../../language/responses.html#google.cloud.language.sentiment.Sentiment">[docs]</a><span class="k">class</span> <span class="nc">Sentiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Google Cloud Natural Language API sentiment object.</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">get_messages</span><span class="p">(</span><span class="n">language_service_pb2</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">message</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.language_v1.types&#39;</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+    <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-<span class="sd">    .. _Sentiment message: https://cloud.google.com/natural-language/\</span>
-<span class="sd">                           reference/rest/v1/Sentiment</span>
-<span class="sd">    .. _Sentiment basics: https://cloud.google.com/natural-language/\</span>
-<span class="sd">                          docs/basics#sentiment-analysis-values</span>
 
-<span class="sd">    See `Sentiment message`_ and `Sentiment basics`_.</span>
-
-<span class="sd">    :type score: float</span>
-<span class="sd">    :param score: Score of the sentiment in the ``[-1.0, 1.0]`` range.</span>
-<span class="sd">                     Larger numbers represent more positive sentiments.</span>
-
-<span class="sd">    :type magnitude: float</span>
-<span class="sd">    :param magnitude: A non-negative number in the ``[0, +inf)`` range, which</span>
-<span class="sd">                      represents the absolute magnitude of sentiment</span>
-<span class="sd">                      regardless of score (positive or negative).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">magnitude</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">=</span> <span class="n">score</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">=</span> <span class="n">magnitude</span>
-
-<div class="viewcode-block" id="Sentiment.from_api_repr"><a class="viewcode-back" href="../../../../language/responses.html#google.cloud.language.sentiment.Sentiment.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a Sentiment from the JSON API into a :class:`Sentiment`.</span>
-
-<span class="sd">        :param payload: dict</span>
-<span class="sd">        :type payload: The value from the backend.</span>
-
-<span class="sd">        :rtype: :class:`Sentiment`</span>
-<span class="sd">        :returns: The sentiment parsed from the API representation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">score</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">magnitude</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;magnitude&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">magnitude</span><span class="p">)</span></div></div>
+<span class="n">__all__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
 </pre></div>
 
           </div>

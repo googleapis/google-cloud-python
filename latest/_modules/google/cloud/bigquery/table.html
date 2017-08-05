@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,22 +57,18 @@
 <span class="sd">&quot;&quot;&quot;Define API Datasets.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">httplib2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">google</span> <span class="k">import</span> <span class="n">resumable_media</span>
+<span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">MultipartUpload</span>
+<span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_millis_from_datetime</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
-<span class="kn">from</span> <span class="nn">google.cloud.streaming.exceptions</span> <span class="k">import</span> <span class="n">HttpError</span>
-<span class="kn">from</span> <span class="nn">google.cloud.streaming.http_wrapper</span> <span class="k">import</span> <span class="n">Request</span>
-<span class="kn">from</span> <span class="nn">google.cloud.streaming.http_wrapper</span> <span class="k">import</span> <span class="n">make_api_request</span>
-<span class="kn">from</span> <span class="nn">google.cloud.streaming.transfer</span> <span class="k">import</span> <span class="n">RESUMABLE_UPLOAD</span>
-<span class="kn">from</span> <span class="nn">google.cloud.streaming.transfer</span> <span class="k">import</span> <span class="n">Upload</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_item_to_row</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_page_start</span>
@@ -81,6 +77,17 @@
 
 <span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;Table has no schema:  call &#39;table.reload()&#39;&quot;</span>
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="n">_DEFAULT_CHUNKSIZE</span> <span class="o">=</span> <span class="mi">1048576</span>  <span class="c1"># 1024 * 1024 B = 1 MB</span>
+<span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/bigquery/v2/projects/&#39;</span>
+    <span class="sa">u</span><span class="s1">&#39;</span><span class="si">{project}</span><span class="s1">/jobs?uploadType=&#39;</span><span class="p">)</span>
+<span class="n">_MULTIPART_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;multipart&#39;</span>
+<span class="n">_RESUMABLE_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;resumable&#39;</span>
+<span class="n">_GENERIC_CONTENT_TYPE</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;*/*&#39;</span>
+<span class="n">_READ_LESS_THAN_SIZE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;Size </span><span class="si">{:d}</span><span class="s1"> was specified but the file-like object only had &#39;</span>
+    <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> bytes remaining.&#39;</span><span class="p">)</span>
+<span class="n">_DEFAULT_NUM_RETRIES</span> <span class="o">=</span> <span class="mi">6</span>
 
 
 <div class="viewcode-block" id="Table"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table">[docs]</a><span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -506,7 +513,7 @@
     <span class="k">def</span> <span class="nf">_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update properties from resource in body of ``api_response``</span>
 
-<span class="sd">        :type api_response: httplib2.Response</span>
+<span class="sd">        :type api_response: dict</span>
 <span class="sd">        :param api_response: response returned from an API call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -595,7 +602,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
                                            <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;id&#39;</span><span class="p">})</span>
-        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span></div>
@@ -857,15 +864,174 @@
 
         <span class="k">return</span> <span class="n">errors</span></div>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_check_response_error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">http_response</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper for :meth:`upload_from_file`.&quot;&quot;&quot;</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="n">http_response</span><span class="o">.</span><span class="n">info</span>
-        <span class="n">status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">])</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
-            <span class="n">faux_response</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Response</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">})</span>
-            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">faux_response</span><span class="p">,</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
-                                 <span class="n">error_info</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_get_transport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the client&#39;s transport.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: The client to use.</span>
+
+<span class="sd">        :rtype transport:</span>
+<span class="sd">            :class:`~google.auth.transport.requests.AuthorizedSession`</span>
+<span class="sd">        :returns: The transport (with credentials) that will</span>
+<span class="sd">                  make authenticated requests.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_http</span>
+
+    <span class="k">def</span> <span class="nf">_initiate_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span>
+                                   <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initiate a resumable upload.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: The client to use.</span>
+
+<span class="sd">        :type stream: IO[bytes]</span>
+<span class="sd">        :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">        :type metadata: dict</span>
+<span class="sd">        :param metadata: The metadata associated with the upload.</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Pair of</span>
+
+<span class="sd">            * The :class:`~google.resumable_media.requests.ResumableUpload`</span>
+<span class="sd">              that was created</span>
+<span class="sd">            * The ``transport`` used to initiate the upload.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="n">_DEFAULT_CHUNKSIZE</span>
+        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">)</span>
+        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_RESUMABLE_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">upload</span> <span class="o">=</span> <span class="n">ResumableUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+
+        <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span>
+            <span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">_GENERIC_CONTENT_TYPE</span><span class="p">,</span>
+            <span class="n">stream_final</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span>
+
+    <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a resumable upload.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: The client to use.</span>
+
+<span class="sd">        :type stream: IO[bytes]</span>
+<span class="sd">        :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">        :type metadata: dict</span>
+<span class="sd">        :param metadata: The metadata associated with the upload.</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
+<span class="sd">        :rtype: :class:`~requests.Response`</span>
+<span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the final chunk</span>
+<span class="sd">                  is uploaded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">upload</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="k">def</span> <span class="nf">_do_multipart_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a multipart upload.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: The client to use.</span>
+
+<span class="sd">        :type stream: IO[bytes]</span>
+<span class="sd">        :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">        :type metadata: dict</span>
+<span class="sd">        :param metadata: The metadata associated with the upload.</span>
+
+<span class="sd">        :type size: int</span>
+<span class="sd">        :param size: The number of bytes to be uploaded (which will be read</span>
+<span class="sd">                     from ``stream``). If not provided, the upload will be</span>
+<span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
+<span class="sd">        :rtype: :class:`~requests.Response`</span>
+<span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the multipart</span>
+<span class="sd">                  upload request.</span>
+<span class="sd">        :raises: :exc:`ValueError` if the ``stream`` has fewer than ``size``</span>
+<span class="sd">                 bytes remaining.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_READ_LESS_THAN_SIZE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">)</span>
+
+        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_MULTIPART_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">upload</span> <span class="o">=</span> <span class="n">MultipartUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span>
+            <span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">_GENERIC_CONTENT_TYPE</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="k">def</span> <span class="nf">_do_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine an upload strategy and then perform the upload.</span>
+
+<span class="sd">        If ``size`` is :data:`None`, then a resumable upload will be used,</span>
+<span class="sd">        otherwise the content and the metadata will be uploaded</span>
+<span class="sd">        in a single multipart upload request.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: The client to use.</span>
+
+<span class="sd">        :type stream: IO[bytes]</span>
+<span class="sd">        :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">        :type metadata: dict</span>
+<span class="sd">        :param metadata: The metadata associated with the upload.</span>
+
+<span class="sd">        :type size: int</span>
+<span class="sd">        :param size: The number of bytes to be uploaded (which will be read</span>
+<span class="sd">                     from ``stream``). If not provided, the upload will be</span>
+<span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: The parsed JSON from the &quot;200 OK&quot; response. This will be the</span>
+<span class="sd">                  **only** response in the multipart case and it will be the</span>
+<span class="sd">                  **final** response in the resumable case.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_resumable_upload</span><span class="p">(</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_multipart_upload</span><span class="p">(</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
     <span class="c1"># pylint: disable=too-many-arguments,too-many-locals</span>
 <div class="viewcode-block" id="Table.upload_from_file"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -873,7 +1039,7 @@
                          <span class="n">source_format</span><span class="p">,</span>
                          <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                          <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                         <span class="n">num_retries</span><span class="o">=</span><span class="n">_DEFAULT_NUM_RETRIES</span><span class="p">,</span>
                          <span class="n">allow_jagged_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">allow_quoted_newlines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">create_disposition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -888,10 +1054,6 @@
                          <span class="n">job_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this table from a file-like object.</span>
 
-<span class="sd">        The content type of the upload will either be</span>
-<span class="sd">        - The value passed in to the function (if any)</span>
-<span class="sd">        - ``text/csv``.</span>
-
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle opened in binary mode for reading.</span>
 
@@ -902,7 +1064,7 @@
 
 <span class="sd">        :type rewind: bool</span>
 <span class="sd">        :param rewind: If True, seek to the beginning of the file handle before</span>
-<span class="sd">                       writing the file to Cloud Storage.</span>
+<span class="sd">                       writing the file.</span>
 
 <span class="sd">        :type size: int</span>
 <span class="sd">        :param size: The number of bytes to read from the file handle.</span>
@@ -953,16 +1115,16 @@
 <span class="sd">        :param write_disposition: job configuration option; see</span>
 <span class="sd">                                  :meth:`google.cloud.bigquery.job.LoadJob`.</span>
 
-<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to the ``client`` stored on the current dataset.</span>
+<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current table.</span>
 
 <span class="sd">        :type job_name: str</span>
 <span class="sd">        :param job_name: Optional. The id of the job. Generated if not</span>
 <span class="sd">                         explicitly passed in.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.jobs.LoadTableFromStorageJob`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.jobs.LoadTableFromStorageJob`</span>
+
 <span class="sd">        :returns: the job instance used to load the data (e.g., for</span>
 <span class="sd">                  querying status). Note that the job is already started:</span>
 <span class="sd">                  do not call ``job.begin()``.</span>
@@ -971,54 +1133,10 @@
 <span class="sd">                 a file opened in text mode.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span>
-        <span class="n">content_type</span> <span class="o">=</span> <span class="s1">&#39;application/octet-stream&#39;</span>
-
-        <span class="c1"># Rewind the file if desired.</span>
-        <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
-            <span class="n">file_obj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
-
-        <span class="n">mode</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">,</span> <span class="s1">&#39;r+b&#39;</span><span class="p">,</span> <span class="s1">&#39;rb+&#39;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot upload files opened in text mode:  use &quot;</span>
-                <span class="s2">&quot;open(filename, mode=&#39;rb&#39;) or open(filename, mode=&#39;r+b&#39;)&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Get the basic stats about the file.</span>
-        <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">size</span>
-        <span class="k">if</span> <span class="n">total_bytes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="s1">&#39;fileno&#39;</span><span class="p">):</span>
-                <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span><span class="o">.</span><span class="n">st_size</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;total bytes could not be determined. Please &#39;</span>
-                                 <span class="s1">&#39;pass an explicit size.&#39;</span><span class="p">)</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">,</span>
-            <span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
-
-        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;load&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s1">&#39;sourceFormat&#39;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">,</span>
-                    <span class="s1">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-                        <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                        <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">load_config</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="s1">&#39;load&#39;</span><span class="p">]</span>
-            <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
-            <span class="p">}</span>
-
+        <span class="n">_maybe_rewind</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="n">rewind</span><span class="p">)</span>
+        <span class="n">_check_mode</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_get_upload_metadata</span><span class="p">(</span>
+            <span class="n">source_format</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">_configure_job_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">allow_jagged_rows</span><span class="p">,</span>
                                 <span class="n">allow_quoted_newlines</span><span class="p">,</span> <span class="n">create_disposition</span><span class="p">,</span>
                                 <span class="n">encoding</span><span class="p">,</span> <span class="n">field_delimiter</span><span class="p">,</span>
@@ -1026,47 +1144,12 @@
                                 <span class="n">quote_character</span><span class="p">,</span> <span class="n">skip_leading_rows</span><span class="p">,</span>
                                 <span class="n">write_disposition</span><span class="p">,</span> <span class="n">job_name</span><span class="p">)</span>
 
-        <span class="n">upload</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
-                        <span class="n">auto_transfer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-        <span class="n">url_builder</span> <span class="o">=</span> <span class="n">_UrlBuilder</span><span class="p">()</span>
-        <span class="n">upload_config</span> <span class="o">=</span> <span class="n">_UploadConfig</span><span class="p">()</span>
-
-        <span class="c1"># Base URL may change once we know simple vs. resumable.</span>
-        <span class="n">base_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;/upload&#39;</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/jobs&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
-        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-
-        <span class="c1"># Use apitools &#39;Upload&#39; facility.</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span>
-                          <span class="n">body</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span>
-
-        <span class="n">upload</span><span class="o">.</span><span class="n">configure_request</span><span class="p">(</span><span class="n">upload_config</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_builder</span><span class="p">)</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="n">url_builder</span><span class="o">.</span><span class="n">query_params</span>
-        <span class="n">base_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;/upload&#39;</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
-                                               <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-                                               <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">upload</span><span class="o">.</span><span class="n">initialize_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">HttpError</span> <span class="k">as</span> <span class="n">err_response</span><span class="p">:</span>
-            <span class="n">faux_response</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span><span class="n">err_response</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">faux_response</span><span class="p">,</span> <span class="n">err_response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
-                                 <span class="n">error_info</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="n">RESUMABLE_UPLOAD</span><span class="p">:</span>
-            <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">stream_file</span><span class="p">(</span><span class="n">use_chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">http_response</span> <span class="o">=</span> <span class="n">make_api_request</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
-                                             <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_response_error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">http_response</span><span class="p">)</span>
-
-        <span class="n">response_content</span> <span class="o">=</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response_content</span><span class="p">,</span>
-                          <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>  <span class="c1"># pragma: NO COVER  Python3</span>
-            <span class="n">response_content</span> <span class="o">=</span> <span class="n">response_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_content</span><span class="p">))</span></div></div>
+            <span class="n">created_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_upload</span><span class="p">(</span>
+                <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">created_json</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_response</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">response</span><span class="p">)</span></div></div>
     <span class="c1"># pylint: enable=too-many-arguments,too-many-locals</span>
 
 
@@ -1164,23 +1247,93 @@
             <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
         <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">infos</span>
+<span class="c1"># pylint: enable=unused-argument</span>
 
 
-<span class="k">class</span> <span class="nc">_UploadConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Faux message FBO apitools&#39; &#39;configure_request&#39;.&quot;&quot;&quot;</span>
-    <span class="n">accept</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*/*&#39;</span><span class="p">]</span>
-    <span class="n">max_size</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">resumable_multipart</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">resumable_path</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;/upload/bigquery/v2/projects/</span><span class="si">{project}</span><span class="s1">/jobs&#39;</span>
-    <span class="n">simple_multipart</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">simple_path</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;/upload/bigquery/v2/projects/</span><span class="si">{project}</span><span class="s1">/jobs&#39;</span>
+<span class="k">def</span> <span class="nf">_maybe_rewind</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rewind the stream if desired.</span>
+
+<span class="sd">    :type stream: IO[bytes]</span>
+<span class="sd">    :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">    :type rewind: bool</span>
+<span class="sd">    :param rewind: Indicates if we should seek to the beginning of the stream.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">_UrlBuilder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Faux builder FBO apitools&#39; &#39;configure_request&#39;&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="k">def</span> <span class="nf">_check_mode</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check that a stream was opened in read-binary mode.</span>
+
+<span class="sd">    :type stream: IO[bytes]</span>
+<span class="sd">    :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">    :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute</span>
+<span class="sd">             and is not among ``rb``, ``r+b`` or ``rb+``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">,</span> <span class="s1">&#39;r+b&#39;</span><span class="p">,</span> <span class="s1">&#39;rb+&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cannot upload files opened in text mode:  use &quot;</span>
+            <span class="s2">&quot;open(filename, mode=&#39;rb&#39;) or open(filename, mode=&#39;r+b&#39;)&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_upload_headers</span><span class="p">(</span><span class="n">user_agent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the headers for an upload request.</span>
+
+<span class="sd">    :type user_agent: str</span>
+<span class="sd">    :param user_agent: The user-agent for requests.</span>
+
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :returns: The headers to be used for the request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">user_agent</span><span class="p">,</span>
+        <span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_get_upload_metadata</span><span class="p">(</span><span class="n">source_format</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get base metadata for creating a table.</span>
+
+<span class="sd">    :type source_format: str</span>
+<span class="sd">    :param source_format: one of &#39;CSV&#39; or &#39;NEWLINE_DELIMITED_JSON&#39;.</span>
+<span class="sd">                          job configuration option.</span>
+
+<span class="sd">    :type schema: list</span>
+<span class="sd">    :param schema: List of :class:`SchemaField` associated with a table.</span>
+
+<span class="sd">    :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">    :param dataset: A dataset which contains a table.</span>
+
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param name: The name of the table.</span>
+
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :returns: The metadata dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">load_config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;sourceFormat&#39;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">,</span>
+        <span class="s1">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">schema</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;load&#39;</span><span class="p">:</span> <span class="n">load_config</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
 </pre></div>
 
           </div>

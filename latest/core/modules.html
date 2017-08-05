@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Shared Core Modules &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Shared Core Modules &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -53,34 +53,23 @@
 <p>Client to bundle configuration needed for API requests.</p>
 <p>Stores <code class="docutils literal"><span class="pre">credentials</span></code> and an HTTP object so that subclasses
 can pass them along to a connection class.</p>
-<p>If no value is passed in for <code class="docutils literal"><span class="pre">_http</span></code>, a <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> object
+<p>If no value is passed in for <code class="docutils literal"><span class="pre">_http</span></code>, a <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.3)"><code class="xref py py-class docutils literal"><span class="pre">requests.Session</span></code></a> object
 will be created and authorized with the <code class="docutils literal"><span class="pre">credentials</span></code>. If not, the
 <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">_http</span></code> need not be related.</p>
 <p>Callers and subclasses may seek to use the private key from
 <code class="docutils literal"><span class="pre">credentials</span></code> to sign data.</p>
-<p>A custom (non-<code class="docutils literal"><span class="pre">httplib2</span></code>) HTTP object must have a <code class="docutils literal"><span class="pre">request</span></code> method
-which accepts the following arguments:</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">uri</span></code></li>
-<li><code class="docutils literal"><span class="pre">method</span></code></li>
-<li><code class="docutils literal"><span class="pre">body</span></code></li>
-<li><code class="docutils literal"><span class="pre">headers</span></code></li>
-</ul>
-<p>In addition, <code class="docutils literal"><span class="pre">redirections</span></code> and <code class="docutils literal"><span class="pre">connection_type</span></code> may be used.</p>
-<p>A custom <code class="docutils literal"><span class="pre">_http</span></code> object will also need to be able to add a bearer token
-to API requests and handle token refresh on 401 errors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.2)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.3)"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
-<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
+<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.18.3)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
@@ -123,7 +112,7 @@ from the Google APIs console).</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The client created with the retrieved JSON credentials.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code></a> if there is a conflict with the kwargs
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if there is a conflict with the kwargs
 and the credentials created by the factory.</p>
 </td>
 </tr>
@@ -146,13 +135,13 @@ and the credentials created by the factory.</p>
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the project which the client acts on behalf of. If not
 passed falls back to the default inferred from the
 environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.2)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
+<li><strong>_http</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.3)"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
 that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
-<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
+<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.18.3)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
 This parameter should be considered private, and could
@@ -192,7 +181,7 @@ from the Google APIs console).</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The client created with the retrieved JSON credentials.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code></a> if there is a conflict with the kwargs
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – if there is a conflict with the kwargs
 and the credentials created by the factory.</p>
 </td>
 </tr>
@@ -200,86 +189,6 @@ and the credentials created by the factory.</p>
 </table>
 </dd></dl>
 
-</dd></dl>
-
-</div>
-<div class="section" id="module-google.cloud.credentials">
-<span id="credentials-helpers"></span><h2>Credentials Helpers<a class="headerlink" href="#module-google.cloud.credentials" title="Permalink to this headline">#</a></h2>
-<p>A simple wrapper around the OAuth2 credentials library.</p>
-<dl class="function">
-<dt id="google.cloud.credentials.generate_signed_url">
-<code class="descclassname">google.cloud.credentials.</code><code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>credentials</em>, <em>resource</em>, <em>expiration</em>, <em>api_access_endpoint=''</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em>, <em>response_type=None</em>, <em>response_disposition=None</em>, <em>generation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/credentials.html#generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.credentials.generate_signed_url" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate signed URL to provide query-string auth’n to a resource.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Assumes <code class="docutils literal"><span class="pre">credentials</span></code> implements the
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a> interface. Also assumes
-<code class="docutils literal"><span class="pre">credentials</span></code> has a <code class="docutils literal"><span class="pre">service_account_email</span></code> property which
-identifies the credentials.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you are on Google Compute Engine, you can’t generate a signed URL.
-Follow <a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues/922">Issue 922</a> for updates on this. If you’d like to be able to
-generate a signed URL from GCE, you can use a standard service account
-from a JSON file rather than a GCE service account.</p>
-</div>
-<p>See headers <a class="reference external" href="https://cloud.google.com/storage/docs/reference-headers">reference</a> for more details on optional arguments.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a>) – Credentials object with an associated private key to
-sign text.</li>
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A pointer to a specific resource
-(typically, <code class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></code>).</li>
-<li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">long</span></code>, <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>,
-<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) – When the signed URL should expire.</li>
-<li><strong>api_access_endpoint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional URI base. Defaults to empty string.</li>
-<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The HTTP verb that will be used when requesting the URL.
-Defaults to <code class="docutils literal"><span class="pre">'GET'</span></code>.</li>
-<li><strong>content_md5</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The MD5 hash of the object referenced by
-<code class="docutils literal"><span class="pre">resource</span></code>.</li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The content type of the object referenced
-by <code class="docutils literal"><span class="pre">resource</span></code>.</li>
-<li><strong>response_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Content type of responses to requests for
-the signed URL. Used to over-ride the content type of
-the underlying resource.</li>
-<li><strong>response_disposition</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Content disposition of responses to
-requests for the signed URL.</li>
-<li><strong>generation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) A value that indicates which generation of
-the resource to fetch.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
-until expiration.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="google.cloud.credentials.get_credentials">
-<code class="descclassname">google.cloud.credentials.</code><code class="descname">get_credentials</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/credentials.html#get_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.credentials.get_credentials" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets credentials implicitly from the current environment.</p>
-<p>Uses <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.0.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Credentials</span></code></a>,</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new credentials instance corresponding to the implicit
-environment.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </div>
@@ -482,27 +391,52 @@ environment.</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="google.cloud.exceptions.make_exception">
-<code class="descclassname">google.cloud.exceptions.</code><code class="descname">make_exception</code><span class="sig-paren">(</span><em>response</em>, <em>content</em>, <em>error_info=None</em>, <em>use_json=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#make_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.make_exception" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory:  create exception based on HTTP response code.</p>
+<dt id="google.cloud.exceptions.from_http_response">
+<code class="descclassname">google.cloud.exceptions.</code><code class="descname">from_http_response</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#from_http_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.from_http_response" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> from a <a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.18.3)"><code class="xref py py-class docutils literal"><span class="pre">requests.Response</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.18.3)"><em>requests.Response</em></a>) – The HTTP response.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>An instance of the appropriate subclass of</dt>
+<dd><a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a>, with the message and errors populated
+from the response.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError">GoogleCloudError</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.exceptions.from_http_status">
+<code class="descclassname">google.cloud.exceptions.</code><code class="descname">from_http_status</code><span class="sig-paren">(</span><em>status_code</em>, <em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/exceptions.html#from_http_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.exceptions.from_http_status" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a <a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> from an HTTP status code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>response</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Response" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Response</span></code></a> or other HTTP response object) – A response object that defines a status code as the
-status attribute.</li>
-<li><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>dictionary</em>) – The body of the HTTP error response.</li>
-<li><strong>error_info</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional string giving extra information about the
-failed request.</li>
-<li><strong>use_json</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Flag indicating if <code class="docutils literal"><span class="pre">content</span></code> is expected to be JSON.</li>
+<li><strong>status_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The HTTP status code.</li>
+<li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The exception message.</li>
+<li><strong>errors</strong> (<em>Sequence</em><em>[</em><em>Any</em><em>]</em>) – A list of additional error information.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">instance of <a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a>, or a concrete subclass.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>An instance of the appropriate subclass of</dt>
+<dd><p class="first last"><a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a>.</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Exception specific to the error response.</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError">GoogleCloudError</a></p>
 </td>
 </tr>
 </tbody>

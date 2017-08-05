@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.snapshot &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.spanner.snapshot &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -76,6 +76,10 @@
 <span class="sd">    :type session: :class:`~google.cloud.spanner.session.Session`</span>
 <span class="sd">    :param session: the session used to perform the commit</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_multi_use</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">_transaction_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_read_request_count</span> <span class="o">=</span> <span class="mi">0</span>
+
     <span class="k">def</span> <span class="nf">_make_txn_selector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pylint: disable=redundant-returns-doc</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`read` / :meth:`execute_sql`.</span>
 
@@ -112,7 +116,16 @@
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`</span>
 <span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
+<span class="sd">        :raises ValueError:</span>
+<span class="sd">            for reuse of single-use snapshots, or if a transaction ID is</span>
+<span class="sd">            already pending for multiple-use snapshots.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_request_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_use</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot re-use single-use snapshot.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transaction ID pending.&quot;</span><span class="p">)</span>
+
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -123,7 +136,12 @@
             <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
             <span class="n">resume_token</span><span class="o">=</span><span class="n">resume_token</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">StreamedResultSet</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_request_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_use</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">StreamedResultSet</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">StreamedResultSet</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">resume_token</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
@@ -151,7 +169,16 @@
 
 <span class="sd">        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`</span>
 <span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
+<span class="sd">        :raises ValueError:</span>
+<span class="sd">            for reuse of single-use snapshots, or if a transaction ID is</span>
+<span class="sd">            already pending for multiple-use snapshots.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_request_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_use</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot re-use single-use snapshot.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transaction ID pending.&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">param_types</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -170,7 +197,12 @@
             <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params_pb</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="n">param_types</span><span class="p">,</span>
             <span class="n">query_mode</span><span class="o">=</span><span class="n">query_mode</span><span class="p">,</span> <span class="n">resume_token</span><span class="o">=</span><span class="n">resume_token</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">StreamedResultSet</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_request_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_use</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">StreamedResultSet</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">StreamedResultSet</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Snapshot"><a class="viewcode-back" href="../../../../spanner/snapshot-api.html#google.cloud.spanner.snapshot.Snapshot">[docs]</a><span class="k">class</span> <span class="nc">Snapshot</span><span class="p">(</span><span class="n">_SnapshotBase</span><span class="p">):</span>
@@ -199,9 +231,16 @@
 <span class="sd">    :type exact_staleness: :class:`datetime.timedelta`</span>
 <span class="sd">    :param exact_staleness: Execute all reads at a timestamp that is</span>
 <span class="sd">                            ``exact_staleness`` old.</span>
+
+<span class="sd">    :type multi_use: :class:`bool`</span>
+<span class="sd">    :param multi_use: If true, multipl :meth:`read` / :meth:`execute_sql`</span>
+<span class="sd">                      calls can be performed with the snapshot in the</span>
+<span class="sd">                      context of a read-only transaction, used to ensure</span>
+<span class="sd">                      isolation / consistency. Incompatible with</span>
+<span class="sd">                      ``max_staleness`` and ``min_read_timestamp``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_read_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">max_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">max_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact_staleness</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multi_use</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Snapshot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
         <span class="n">opts</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">read_timestamp</span><span class="p">,</span> <span class="n">min_read_timestamp</span><span class="p">,</span> <span class="n">max_staleness</span><span class="p">,</span> <span class="n">exact_staleness</span><span class="p">]</span>
@@ -210,14 +249,24 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">flagged</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Supply zero or one options.&quot;</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">multi_use</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">min_read_timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">max_staleness</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;multi_use&#39; is incompatible with &quot;</span>
+                    <span class="s2">&quot;&#39;min_read_timestamp&#39; / &#39;max_staleness&#39;&quot;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_strong</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">flagged</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_timestamp</span> <span class="o">=</span> <span class="n">read_timestamp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_min_read_timestamp</span> <span class="o">=</span> <span class="n">min_read_timestamp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_staleness</span> <span class="o">=</span> <span class="n">max_staleness</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exact_staleness</span> <span class="o">=</span> <span class="n">exact_staleness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_multi_use</span> <span class="o">=</span> <span class="n">multi_use</span>
 
     <span class="k">def</span> <span class="nf">_make_txn_selector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`read`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TransactionSelector</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_timestamp</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;read_timestamp&#39;</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">_datetime_to_pb_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_timestamp</span><span class="p">)</span>
@@ -236,7 +285,37 @@
 
         <span class="n">options</span> <span class="o">=</span> <span class="n">TransactionOptions</span><span class="p">(</span>
             <span class="n">read_only</span><span class="o">=</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadOnly</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="p">}))</span>
-        <span class="k">return</span> <span class="n">TransactionSelector</span><span class="p">(</span><span class="n">single_use</span><span class="o">=</span><span class="n">options</span><span class="p">)</span></div>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_use</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TransactionSelector</span><span class="p">(</span><span class="n">begin</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TransactionSelector</span><span class="p">(</span><span class="n">single_use</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Snapshot.begin"><a class="viewcode-back" href="../../../../spanner/snapshot-api.html#google.cloud.spanner.snapshot.Snapshot.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Begin a read-only transaction on the database.</span>
+
+<span class="sd">        :rtype: bytes</span>
+<span class="sd">        :returns: the ID for the newly-begun transaction.</span>
+<span class="sd">        :raises ValueError:</span>
+<span class="sd">            if the transaction is already begun, committed, or rolled back.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_use</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot call &#39;begin&#39; single-use snapshots&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Read-only transaction already begun&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_request_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Read-only transaction already pending&quot;</span><span class="p">)</span>
+
+        <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">txn_selector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_txn_selector</span><span class="p">()</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">txn_selector</span><span class="o">.</span><span class="n">begin</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span></div></div>
 </pre></div>
 
           </div>

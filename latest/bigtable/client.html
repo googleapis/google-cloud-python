@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Client &#8212; google-cloud 0.26.2 documentation</title>
+    <title>Client &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -64,13 +64,13 @@
 
 <dl class="class">
 <dt id="google.cloud.bigtable.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>read_only=False</em>, <em>admin=False</em>, <em>user_agent='gcloud-python/0.25.0'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientFactoryMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientProjectMixin</span></code></p>
+<em class="property">class </em><code class="descclassname">google.cloud.bigtable.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>read_only=False</em>, <em>admin=False</em>, <em>user_agent='gcloud-python/0.26.0'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.client.Client" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/modules.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
 <p>Client for interacting with Google Cloud Bigtable API.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Since the Cloud Bigtable API requires the gRPC transport, no
-<code class="docutils literal"><span class="pre">http</span></code> argument is accepted by this class.</p>
+<code class="docutils literal"><span class="pre">_http</span></code> argument is accepted by this class.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -80,7 +80,7 @@
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> or <code class="xref py py-func docutils literal"><span class="pre">unicode</span></code>) – (Optional) The ID of the project which owns the
 instances, tables and data. If not provided, will
 attempt to determine from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.0.2)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed, falls back to the default
 inferred from the environment.</li>
 <li><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Boolean indicating if the data scope should be
@@ -126,7 +126,7 @@ current state of any open connections with the Cloud Bigtable API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.1.2)"><code class="xref py py-class docutils literal"><span class="pre">OAuth2Credentials</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">OAuth2Credentials</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The credentials stored on the client.</td>
 </tr>

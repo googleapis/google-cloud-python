@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.pool &#8212; google-cloud 0.26.2 documentation</title>
+    <title>google.cloud.spanner.pool &#8212; google-cloud 3012b5e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '0.26.2',
+        VERSION:     '3012b5e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -81,6 +81,8 @@
 
 <span class="sd">        Concrete implementations of this method may pre-fill the pool</span>
 <span class="sd">        using the database.</span>
+
+<span class="sd">        :raises NotImplementedError: abstract method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
@@ -90,6 +92,8 @@
 <span class="sd">        Concrete implementations of this method are allowed to raise an</span>
 <span class="sd">        error to signal that the pool is exhausted, or to block until a</span>
 <span class="sd">        session is available.</span>
+
+<span class="sd">        :raises NotImplementedError: abstract method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
@@ -102,6 +106,8 @@
 <span class="sd">        Concrete implementations of this method are allowed to raise an</span>
 <span class="sd">        error to signal that the pool is full, or to block until it is</span>
 <span class="sd">        not full.</span>
+
+<span class="sd">        :raises NotImplementedError: abstract method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
@@ -111,6 +117,8 @@
 <span class="sd">        Concrete implementations of this method are allowed to raise an</span>
 <span class="sd">        error to signal that the pool is full, or to block until it is</span>
 <span class="sd">        not full.</span>
+
+<span class="sd">        :raises NotImplementedError: abstract method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
