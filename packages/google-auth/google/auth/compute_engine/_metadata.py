@@ -88,7 +88,7 @@ def get(request, path, root=_METADATA_ROOT, recursive=False):
         request (google.auth.transport.Request): A callable used to make
             HTTP requests.
         path (str): The resource to retrieve. For example,
-            ``'instance/service-accounts/defualt'``.
+            ``'instance/service-accounts/default'``.
         root (str): The full path to the metadata server root.
         recursive (bool): Whether to do a recursive query of metadata. See
             https://cloud.google.com/compute/docs/metadata#aggcontents for more
