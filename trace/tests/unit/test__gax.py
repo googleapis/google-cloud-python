@@ -16,8 +16,6 @@ import unittest
 
 import mock
 
-from google.cloud._testing import _GAXBaseAPI
-
 
 class _Base(object):
     project = 'PROJECT'

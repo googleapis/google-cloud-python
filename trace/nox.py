@@ -41,7 +41,7 @@ def unit_tests(session, python_version):
         '--cov-config=.coveragerc',
         '--cov-report=',
         '--cov-fail-under=97',
-        'tests/',
+        'tests/unit',
         *session.posargs
     )
 
