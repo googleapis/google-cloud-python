@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 289a961 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud c210494 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '289a961',
+        VERSION:     'c210494',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -139,37 +139,32 @@
 <div class="viewcode-block" id="Compression"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.Compression">[docs]</a><span class="k">class</span> <span class="nc">Compression</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``compression`` properties.&quot;&quot;&quot;</span>
     <span class="n">GZIP</span> <span class="o">=</span> <span class="s1">&#39;GZIP&#39;</span>
-    <span class="n">NONE</span> <span class="o">=</span> <span class="s1">&#39;NONE&#39;</span>
-    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">GZIP</span><span class="p">,</span> <span class="n">NONE</span><span class="p">)</span></div>
+    <span class="n">NONE</span> <span class="o">=</span> <span class="s1">&#39;NONE&#39;</span></div>
 
 
 <div class="viewcode-block" id="CreateDisposition"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.CreateDisposition">[docs]</a><span class="k">class</span> <span class="nc">CreateDisposition</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``create_disposition`` properties.&quot;&quot;&quot;</span>
     <span class="n">CREATE_IF_NEEDED</span> <span class="o">=</span> <span class="s1">&#39;CREATE_IF_NEEDED&#39;</span>
-    <span class="n">CREATE_NEVER</span> <span class="o">=</span> <span class="s1">&#39;CREATE_NEVER&#39;</span>
-    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">CREATE_IF_NEEDED</span><span class="p">,</span> <span class="n">CREATE_NEVER</span><span class="p">)</span></div>
+    <span class="n">CREATE_NEVER</span> <span class="o">=</span> <span class="s1">&#39;CREATE_NEVER&#39;</span></div>
 
 
 <div class="viewcode-block" id="DestinationFormat"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.DestinationFormat">[docs]</a><span class="k">class</span> <span class="nc">DestinationFormat</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``destination_format`` properties.&quot;&quot;&quot;</span>
     <span class="n">CSV</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
     <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
-    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span>
-    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">CSV</span><span class="p">,</span> <span class="n">NEWLINE_DELIMITED_JSON</span><span class="p">,</span> <span class="n">AVRO</span><span class="p">)</span></div>
+    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span></div>
 
 
 <div class="viewcode-block" id="Encoding"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.Encoding">[docs]</a><span class="k">class</span> <span class="nc">Encoding</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``encoding`` properties.&quot;&quot;&quot;</span>
     <span class="n">UTF_8</span> <span class="o">=</span> <span class="s1">&#39;UTF-8&#39;</span>
-    <span class="n">ISO_8559_1</span> <span class="o">=</span> <span class="s1">&#39;ISO-8559-1&#39;</span>
-    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">UTF_8</span><span class="p">,</span> <span class="n">ISO_8559_1</span><span class="p">)</span></div>
+    <span class="n">ISO_8559_1</span> <span class="o">=</span> <span class="s1">&#39;ISO-8559-1&#39;</span></div>
 
 
 <div class="viewcode-block" id="QueryPriority"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.QueryPriority">[docs]</a><span class="k">class</span> <span class="nc">QueryPriority</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``QueryJob.priority`` property.&quot;&quot;&quot;</span>
     <span class="n">INTERACTIVE</span> <span class="o">=</span> <span class="s1">&#39;INTERACTIVE&#39;</span>
-    <span class="n">BATCH</span> <span class="o">=</span> <span class="s1">&#39;BATCH&#39;</span>
-    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">INTERACTIVE</span><span class="p">,</span> <span class="n">BATCH</span><span class="p">)</span></div>
+    <span class="n">BATCH</span> <span class="o">=</span> <span class="s1">&#39;BATCH&#39;</span></div>
 
 
 <div class="viewcode-block" id="SourceFormat"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.SourceFormat">[docs]</a><span class="k">class</span> <span class="nc">SourceFormat</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
@@ -177,16 +172,14 @@
     <span class="n">CSV</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
     <span class="n">DATASTORE_BACKUP</span> <span class="o">=</span> <span class="s1">&#39;DATASTORE_BACKUP&#39;</span>
     <span class="n">NEWLINE_DELIMITED_JSON</span> <span class="o">=</span> <span class="s1">&#39;NEWLINE_DELIMITED_JSON&#39;</span>
-    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span>
-    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">CSV</span><span class="p">,</span> <span class="n">DATASTORE_BACKUP</span><span class="p">,</span> <span class="n">NEWLINE_DELIMITED_JSON</span><span class="p">,</span> <span class="n">AVRO</span><span class="p">)</span></div>
+    <span class="n">AVRO</span> <span class="o">=</span> <span class="s1">&#39;AVRO&#39;</span></div>
 
 
 <div class="viewcode-block" id="WriteDisposition"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.WriteDisposition">[docs]</a><span class="k">class</span> <span class="nc">WriteDisposition</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``write_disposition`` properties.&quot;&quot;&quot;</span>
     <span class="n">WRITE_APPEND</span> <span class="o">=</span> <span class="s1">&#39;WRITE_APPEND&#39;</span>
     <span class="n">WRITE_TRUNCATE</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
-    <span class="n">WRITE_EMPTY</span> <span class="o">=</span> <span class="s1">&#39;WRITE_EMPTY&#39;</span>
-    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">WRITE_APPEND</span><span class="p">,</span> <span class="n">WRITE_TRUNCATE</span><span class="p">,</span> <span class="n">WRITE_EMPTY</span><span class="p">)</span></div>
+    <span class="n">WRITE_EMPTY</span> <span class="o">=</span> <span class="s1">&#39;WRITE_EMPTY&#39;</span></div>
 
 
 <span class="k">class</span> <span class="nc">_AsyncJob</span><span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">future</span><span class="o">.</span><span class="n">polling</span><span class="o">.</span><span class="n">PollingFuture</span><span class="p">):</span>

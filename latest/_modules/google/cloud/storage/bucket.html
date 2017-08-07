@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 289a961 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud c210494 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '289a961',
+        VERSION:     'c210494',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -598,6 +598,7 @@
 <span class="sd">           &gt;&gt;&gt; policies[1][&#39;maxAgeSeconds&#39;] = 3600</span>
 <span class="sd">           &gt;&gt;&gt; del policies[0]</span>
 <span class="sd">           &gt;&gt;&gt; bucket.cors = policies</span>
+<span class="sd">           &gt;&gt;&gt; bucket.update()</span>
 
 <span class="sd">        :setter: Set CORS policies for this bucket.</span>
 <span class="sd">        :getter: Gets the CORS policies for this bucket.</span>
@@ -637,6 +638,7 @@
 <span class="sd">           &gt;&gt;&gt; labels[&#39;new_key&#39;] = &#39;some-label&#39;</span>
 <span class="sd">           &gt;&gt;&gt; del labels[&#39;old_key&#39;]</span>
 <span class="sd">           &gt;&gt;&gt; bucket.labels = labels</span>
+<span class="sd">           &gt;&gt;&gt; bucket.update()</span>
 
 <span class="sd">        :setter: Set labels for this bucket.</span>
 <span class="sd">        :getter: Gets the labels for this bucket.</span>
@@ -705,6 +707,7 @@
 <span class="sd">           &gt;&gt;&gt; rules[1][&#39;rule&#39;][&#39;action&#39;][&#39;type&#39;] = &#39;Delete&#39;</span>
 <span class="sd">           &gt;&gt;&gt; del rules[0]</span>
 <span class="sd">           &gt;&gt;&gt; bucket.lifecycle_rules = rules</span>
+<span class="sd">           &gt;&gt;&gt; bucket.update()</span>
 
 <span class="sd">        :setter: Set lifestyle rules for this bucket.</span>
 <span class="sd">        :getter: Gets the lifestyle rules for this bucket.</span>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud 289a961 documentation</title>
+    <title>Table &#8212; google-cloud c210494 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '289a961',
+        VERSION:     'c210494',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -240,7 +240,7 @@ chunk is never encountered.</p>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.table.Table.read_rows">
-<code class="descname">read_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.read_rows" title="Permalink to this definition">#</a></dt>
+<code class="descname">read_rows</code><span class="sig-paren">(</span><em>start_key=None</em>, <em>end_key=None</em>, <em>limit=None</em>, <em>filter_=None</em>, <em>end_inclusive=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.read_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.read_rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Read rows from this table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -259,6 +259,8 @@ all results.</li>
 <li><strong>filter</strong> (<a class="reference internal" href="row-filters.html#google.cloud.bigtable.row_filters.RowFilter" title="google.cloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) – (Optional) The filter to apply to the contents of the
 specified row(s). If unset, reads every column in
 each row.</li>
+<li><strong>end_inclusive</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Whether the <code class="docutils literal"><span class="pre">end_key</span></code> should be
+considered inclusive. The default is False (exclusive).</li>
 </ul>
 </td>
 </tr>

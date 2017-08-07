@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery._helpers &#8212; google-cloud 289a961 documentation</title>
+    <title>google.cloud.bigquery._helpers &#8212; google-cloud c210494 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '289a961',
+        VERSION:     'c210494',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -348,19 +348,9 @@
 <span class="k">class</span> <span class="nc">_EnumProperty</span><span class="p">(</span><span class="n">_ConfigurationProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Pseudo-enumeration class.</span>
 
-<span class="sd">    Subclasses must define ``ALLOWED`` as a class-level constant:  it must</span>
-<span class="sd">    be a sequence of strings.</span>
-
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name:  name of the property.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check that ``value`` is one of the allowed values.</span>
-
-<span class="sd">        :raises: ValueError if value is not allowed.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALLOWED</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pass one of: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ALLOWED</span><span class="p">))</span>
 
 
 <span class="k">class</span> <span class="nc">UDFResource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

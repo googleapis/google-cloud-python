@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.table &#8212; google-cloud 289a961 documentation</title>
+    <title>google.cloud.bigtable.table &#8212; google-cloud c210494 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '289a961',
+        VERSION:     'c210494',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -299,7 +299,7 @@
         <span class="k">return</span> <span class="n">rows_data</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="n">row_key</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Table.read_rows"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.read_rows">[docs]</a>    <span class="k">def</span> <span class="nf">read_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                  <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_inclusive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read rows from this table.</span>
 
 <span class="sd">        :type start_key: bytes</span>
@@ -322,13 +322,17 @@
 <span class="sd">                        specified row(s). If unset, reads every column in</span>
 <span class="sd">                        each row.</span>
 
+<span class="sd">        :type end_inclusive: bool</span>
+<span class="sd">        :param end_inclusive: (Optional) Whether the ``end_key`` should be</span>
+<span class="sd">                      considered inclusive. The default is False (exclusive).</span>
+
 <span class="sd">        :rtype: :class:`.PartialRowsData`</span>
 <span class="sd">        :returns: A :class:`.PartialRowsData` convenience wrapper for consuming</span>
 <span class="sd">                  the streamed results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">_create_row_request</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">start_key</span><span class="o">=</span><span class="n">start_key</span><span class="p">,</span> <span class="n">end_key</span><span class="o">=</span><span class="n">end_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span>
-            <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+            <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">end_inclusive</span><span class="o">=</span><span class="n">end_inclusive</span><span class="p">)</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="n">response_iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">ReadRows</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
         <span class="c1"># We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`</span>
@@ -402,7 +406,7 @@
 
 
 <span class="k">def</span> <span class="nf">_create_row_request</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">row_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                        <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_inclusive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a request to read rows in a table.</span>
 
 <span class="sd">    :type table_name: str</span>
@@ -430,6 +434,10 @@
 <span class="sd">                  rows&#39; worth of results. The default (zero) is to return</span>
 <span class="sd">                  all results.</span>
 
+<span class="sd">    :type end_inclusive: bool</span>
+<span class="sd">    :param end_inclusive: (Optional) Whether the ``end_key`` should be</span>
+<span class="sd">                  considered inclusive. The default is False (exclusive).</span>
+
 <span class="sd">    :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`</span>
 <span class="sd">    :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.</span>
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if both</span>
@@ -445,7 +453,10 @@
         <span class="k">if</span> <span class="n">start_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">range_kwargs</span><span class="p">[</span><span class="s1">&#39;start_key_closed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">start_key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">end_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">range_kwargs</span><span class="p">[</span><span class="s1">&#39;end_key_open&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">end_key</span><span class="p">)</span>
+            <span class="n">end_key_key</span> <span class="o">=</span> <span class="s1">&#39;end_key_open&#39;</span>
+            <span class="k">if</span> <span class="n">end_inclusive</span><span class="p">:</span>
+                <span class="n">end_key_key</span> <span class="o">=</span> <span class="s1">&#39;end_key_closed&#39;</span>
+            <span class="n">range_kwargs</span><span class="p">[</span><span class="n">end_key_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">end_key</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">request_kwargs</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
