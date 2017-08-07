@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pylint: disable=invalid-name
+# pylint recognizies all of these aliases as constants and thinks they have
+# invalid names.
+
 """Custom exceptions for :mod:`google.cloud` package."""
 
 # Avoid the grpc and google.cloud.grpc collision.
@@ -19,17 +23,13 @@ from __future__ import absolute_import
 
 from google.api.core import exceptions
 
-
 try:
     from grpc._channel import _Rendezvous
 except ImportError:  # pragma: NO COVER
     _Rendezvous = None
 
-
-# pylint: disable=invalid-name
 GrpcRendezvous = _Rendezvous
 """Exception class raised by gRPC stable."""
-# pylint: enable=invalid-name
 
 # Aliases to moved classes.
 GoogleCloudError = exceptions.GoogleAPICallError

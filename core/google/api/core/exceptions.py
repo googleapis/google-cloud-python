@@ -39,6 +39,7 @@ class GoogleAPIError(Exception):
 
 
 class _GoogleAPICallErrorMeta(type):
+    """Metaclass for registering GoogleAPICallError subclasses."""
     def __new__(mcs, name, bases, class_dict):
         cls = type.__new__(mcs, name, bases, class_dict)
         if cls.code is not None:
@@ -349,6 +350,14 @@ def from_http_response(response):
 
 
 def exception_class_for_grpc_status(status_code):
+    """Return the exception class for a specific :class:`grpc.StatusCode`.
+
+    Args:
+        status_code (grpc.StatusCode): The gRPC status code.
+
+    Returns:
+        type: the appropriate subclass of :class:`GoogleAPICallError`.
+    """
     return _GRPC_CODE_TO_EXCEPTION.get(status_code, GoogleAPICallError)
 
 
