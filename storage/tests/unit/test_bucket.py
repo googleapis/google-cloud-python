@@ -710,6 +710,43 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsNot(bucket._properties['labels'], LABELS)
         self.assertIn('labels', bucket._changes)
 
+        # Make sure that a update call correctly adds the labels.
+        client = mock.NonCallableMock(spec=('_connection',))
+        client._connection = mock.NonCallableMock(spec=('api_request',))
+        bucket.update(client=client)
+        client._connection.api_request.assert_called()
+        _, _, kwargs = client._connection.api_request.mock_calls[0]
+        self.assertEqual(len(kwargs['data']['labels']), 2)
+        self.assertEqual(kwargs['data']['labels']['color'], 'red')
+        self.assertEqual(kwargs['data']['labels']['flavor'], 'cherry')
+
+    def test_labels_setter_with_removal(self):
+        # Make sure the bucket labels look correct and follow the expected
+        # public structure.
+        bucket = self._make_one(name='name')
+        self.assertEqual(bucket.labels, {})
+        bucket.labels = {'color': 'red', 'flavor': 'cherry'}
+        self.assertEqual(bucket.labels, {'color': 'red', 'flavor': 'cherry'})
+        bucket.labels = {'color': 'red'}
+        self.assertEqual(bucket.labels, {'color': 'red'})
+
+        # Make sure that a patch call correctly removes the flavor label.
+        client = mock.NonCallableMock(spec=('_connection',))
+        client._connection = mock.NonCallableMock(spec=('api_request',))
+        bucket.patch(client=client)
+        client._connection.api_request.assert_called()
+        _, _, kwargs = client._connection.api_request.mock_calls[0]
+        self.assertEqual(len(kwargs['data']['labels']), 2)
+        self.assertEqual(kwargs['data']['labels']['color'], 'red')
+        self.assertIsNone(kwargs['data']['labels']['flavor'])
+
+        # A second patch call should be a no-op for labels.
+        client._connection.api_request.reset_mock()
+        bucket.patch(client=client)
+        client._connection.api_request.assert_called()
+        _, _, kwargs = client._connection.api_request.mock_calls[0]
+        self.assertNotIn('labels', kwargs['data'])
+
     def test_get_logging_w_prefix(self):
         NAME = 'name'
         LOG_BUCKET = 'logs'

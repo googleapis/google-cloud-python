@@ -115,6 +115,7 @@ class Bucket(_PropertyMixin):
         self._client = client
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
+        self._label_removals = set()
 
     def __repr__(self):
         return '<Bucket: %s>' % (self.name,)
@@ -198,6 +199,47 @@ class Bucket(_PropertyMixin):
             method='POST', path='/b', query_params=query_params,
             data=properties, _target_object=self)
         self._set_properties(api_response)
+
+    def patch(self, client=None):
+        """Sends all changed properties in a PATCH request.
+
+        Updates the ``_properties`` with the response from the backend.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current object.
+        """
+        # Special case: For buckets, it is possible that labels are being
+        # removed; this requires special handling.
+        if self._label_removals:
+            self._changes.add('labels')
+            self._properties.setdefault('labels', {})
+            for removed_label in self._label_removals:
+                self._properties['labels'][removed_label] = None
+
+        # Call the superclass method.
+        answer = super(Bucket, self).patch(client=client)
+
+        # Clear out the label removals.
+        # This comes after the superclass method to ensure that we hold on
+        # to the data in case of an error.
+        self._label_removals.clear()
+        return answer
+
+    def update(self, client=None):
+        """Sends all properties in a PUT request.
+
+        Updates the ``_properties`` with the response from the backend.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current object.
+        """
+        answer = super(Bucket, self).update(client=client)
+        self._label_removals.clear()
+        return answer
 
     @property
     def acl(self):
@@ -619,6 +661,15 @@ class Bucket(_PropertyMixin):
         :type mapping: :class:`dict`
         :param mapping: Name-value pairs (string->string) labelling the bucket.
         """
+        # If any labels have been expressly removed, we need to track this
+        # so that a future .patch() call can do the correct thing.
+        existing = set([k for k in self.labels.keys()])
+        incoming = set([k for k in mapping.keys()])
+        self._label_removals = self._label_removals.union(
+            existing.difference(incoming),
+        )
+
+        # Actually update the labels on the object.
         self._patch_property('labels', copy.deepcopy(mapping))
 
     @property
