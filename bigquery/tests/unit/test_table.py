@@ -1347,6 +1347,61 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_row_from_mapping_wo_schema(self):
+        from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
+        MAPPING = {'full_name': 'Phred Phlyntstone', 'age': 32}
+        client = _Client(project=self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
+
+        with self.assertRaises(ValueError) as exc:
+            table.row_from_mapping(MAPPING)
+
+        self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
+
+    def test_row_from_mapping_w_invalid_schema(self):
+        from google.cloud.bigquery.table import SchemaField
+        MAPPING = {
+            'full_name': 'Phred Phlyntstone',
+            'age': 32,
+            'colors': ['red', 'green'],
+            'bogus': 'WHATEVER',
+        }
+        client = _Client(project=self.PROJECT)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
+        bogus = SchemaField('joined', 'STRING', mode='BOGUS')
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age, colors, bogus])
+
+        with self.assertRaises(ValueError) as exc:
+            table.row_from_mapping(MAPPING)
+
+        self.assertIn('Unknown field mode: BOGUS', str(exc.exception))
+
+    def test_row_from_mapping_w_schema(self):
+        from google.cloud.bigquery.table import SchemaField
+        MAPPING = {
+            'full_name': 'Phred Phlyntstone',
+            'age': 32,
+            'colors': ['red', 'green'],
+            'extra': 'IGNORED',
+        }
+        client = _Client(project=self.PROJECT)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
+        joined = SchemaField('joined', 'STRING', mode='NULLABLE')
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age, colors, joined])
+
+        self.assertEqual(
+            table.row_from_mapping(MAPPING),
+            ('Phred Phlyntstone', 32, ['red', 'green'], None))
+
     def test_insert_data_wo_schema(self):
         from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
 
@@ -2055,7 +2110,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
         RESOURCE['schema']['fields'].append(
             {'name': 'phone',
              'type': 'RECORD',
-             'mode': 'REPEATABLE',
+             'mode': 'REPEATED',
              'fields': [{'name': 'type',
                          'type': 'STRING',
                          'mode': 'REQUIRED'},
@@ -2123,7 +2178,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         ph_type = SchemaField('type', 'STRING', 'REQUIRED')
         ph_num = SchemaField('number', 'STRING', 'REQUIRED')
-        phone = SchemaField('phone', 'RECORD', mode='REPEATABLE',
+        phone = SchemaField('phone', 'RECORD', mode='REPEATED',
                             fields=[ph_type, ph_num])
         resource = self._call_fut([full_name, phone])
         self.assertEqual(len(resource), 2)
@@ -2134,7 +2189,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         self.assertEqual(resource[1],
                          {'name': 'phone',
                           'type': 'RECORD',
-                          'mode': 'REPEATABLE',
+                          'mode': 'REPEATED',
                           'fields': [{'name': 'type',
                                       'type': 'STRING',
                                       'mode': 'REQUIRED'},
