@@ -67,6 +67,7 @@ setup(
     namespace_packages=[
         'google',
         'google.cloud',
+        'google.api',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
