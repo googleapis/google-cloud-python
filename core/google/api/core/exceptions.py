@@ -12,19 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Exceptions raised by Google API core & clients."""
+"""Exceptions raised by Google API core & clients.
+
+This module provides base classes for all errors raised by libraries based
+on :mod:`google.api.core`, including both HTTP and gRPC clients.
+"""
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
-
-import copy
 
 import six
 from six.moves import http_client
 
 try:
     import grpc
-except ImportError:
+except ImportError:  # pragma: NO COVER
     grpc = None
 
 # Lookup tables for mapping exceptions from HTTP and gRPC transports.
@@ -52,10 +54,20 @@ class _GoogleAPICallErrorMeta(type):
 @six.python_2_unicode_compatible
 @six.add_metaclass(_GoogleAPICallErrorMeta)
 class GoogleAPICallError(GoogleAPIError):
-    """Base class for exceptions raised by calling API methods."""
+    """Base class for exceptions raised by calling API methods.
+
+    Args:
+        message (str): The exception message.
+        errors (Sequence[Any]): An optional list of error details.
+        response (Union[requests.Request, grpc.Call]): The response or
+            gRPC call metadata.
+    """
 
     code = None
-    """int: The HTTP status code associated with this error.
+    """Optional[int]: The HTTP status code associated with this error.
+
+    This may be ``None`` if the exception does not have a direct mapping
+    to an HTTP error.
 
     See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
     """
@@ -67,15 +79,12 @@ class GoogleAPICallError(GoogleAPIError):
     This may be ``None`` if the exception does not match up to a gRPC error.
     """
 
-    def __init__(self, message, errors=()):
-        """
-        Args:
-            message (str): The exception message.
-            errors (Sequence[Any]): An optional list of error details.
-        """
+    def __init__(self, message, errors=(), response=None):
         super(GoogleAPICallError, self).__init__(message)
         self.message = message
+        """str: The exception message."""
         self._errors = errors
+        self._response = response
 
     def __str__(self):
         return '{} {}'.format(self.code, self.message)
@@ -87,7 +96,13 @@ class GoogleAPICallError(GoogleAPIError):
         Returns:
             Sequence[Any]: A list of additional error details.
         """
-        return [copy.deepcopy(error) for error in self._errors]
+        return list(self._errors)
+
+    @property
+    def response(self):
+        """Optional[Union[requests.Request, grpc.Call]]L The response or
+        gRPC call metadata."""
+        return self._response
 
 
 class Redirection(GoogleAPICallError):
@@ -110,9 +125,11 @@ class TemporaryRedirect(Redirection):
 
 
 class ResumeIncomplete(Redirection):
-    """Exception mapping a ``308 Resume Incomplete`` response."""
-    # Note: http_client.PERMANENT_REDIRECT is 308, but Google APIs differ
-    # in their use of this status code.
+    """Exception mapping a ``308 Resume Incomplete`` response.
+
+    .. note:: :ref:`http_client.PERMANENT_REDIRECT` is ``308``, but Google APIs
+        differ in their use of this status code.
+    """
     code = 308
 
 
@@ -208,13 +225,12 @@ class PreconditionFailed(ClientError):
 
 class RequestRangeNotSatisfiable(ClientError):
     """Exception mapping a ``416 Request Range Not Satisfiable`` response."""
-    # There is not a consistent http_client constant for this.
-    code = 416
+    code = http_client.REQUESTED_RANGE_NOT_SATISFIABLE
 
 
 class TooManyRequests(ClientError):
     """Exception mapping a ``429 Too Many Requests`` response."""
-    # There is not a consistent http_client constant for this.
+    # http_client does not define a constant for this in Python 2.
     code = 429
 
 
@@ -298,20 +314,21 @@ def exception_class_for_http_status(status_code):
     return _HTTP_CODE_TO_EXCEPTION.get(status_code, GoogleAPICallError)
 
 
-def from_http_status(status_code, message, errors=()):
+def from_http_status(status_code, message, **kwargs):
     """Create a :class:`GoogleAPICallError` from an HTTP status code.
 
     Args:
         status_code (int): The HTTP status code.
         message (str): The exception message.
-        errors (Sequence[Any]): A list of additional error information.
+        kwargs: Additional arguments passed to the :class:`GoogleAPICallError`
+            constructor.
 
     Returns:
         GoogleAPICallError: An instance of the appropriate subclass of
             :class:`GoogleAPICallError`.
     """
     error_class = exception_class_for_http_status(status_code)
-    error = error_class(message, errors)
+    error = error_class(message, **kwargs)
 
     if error.code is None:
         error.code = status_code
@@ -344,8 +361,7 @@ def from_http_response(response):
         error=error_message)
 
     exception = from_http_status(
-        response.status_code, message, errors=errors)
-    exception.response = response
+        response.status_code, message, errors=errors, response=response)
     return exception
 
 
@@ -361,20 +377,21 @@ def exception_class_for_grpc_status(status_code):
     return _GRPC_CODE_TO_EXCEPTION.get(status_code, GoogleAPICallError)
 
 
-def from_grpc_status(status_code, message, errors=()):
+def from_grpc_status(status_code, message, **kwargs):
     """Create a :class:`GoogleAPICallError` from a :class:`grpc.StatusCode`.
 
     Args:
         status_code (grpc.StatusCode): The gRPC status code.
         message (str): The exception message.
-        errors (Sequence[Any]): A list of additional error information.
+        kwargs: Additional arguments passed to the :class:`GoogleAPICallError`
+            constructor.
 
     Returns:
         GoogleAPICallError: An instance of the appropriate subclass of
             :class:`GoogleAPICallError`.
     """
     error_class = exception_class_for_grpc_status(status_code)
-    error = error_class(message, errors)
+    error = error_class(message, **kwargs)
 
     if error.grpc_status_code is None:
         error.grpc_status_code = status_code
@@ -394,6 +411,10 @@ def from_grpc_error(rpc_exc):
     """
     if isinstance(rpc_exc, grpc.Call):
         return from_grpc_status(
-            rpc_exc.code(), rpc_exc.details(), errors=(rpc_exc,))
+            rpc_exc.code(),
+            rpc_exc.details(),
+            errors=(rpc_exc,),
+            response=rpc_exc)
     else:
-        return GoogleAPICallError(str(rpc_exc), errors=(rpc_exc,))
+        return GoogleAPICallError(
+            str(rpc_exc), errors=(rpc_exc,), response=rpc_exc)

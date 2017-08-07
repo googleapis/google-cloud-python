@@ -15,6 +15,7 @@
 import json
 
 import grpc
+import mock
 import requests
 from six.moves import http_client
 
@@ -27,6 +28,7 @@ def test_create_google_cloud_error():
     assert str(exception) == '600 Testing'
     assert exception.message == 'Testing'
     assert exception.errors == []
+    assert exception.response is None
 
 
 def test_create_google_cloud_error_with_args():
@@ -37,11 +39,14 @@ def test_create_google_cloud_error_with_args():
         'message': 'Testing',
         'reason': 'test',
     }
-    exception = exceptions.GoogleAPICallError('Testing', [error])
+    response = mock.sentinel.response
+    exception = exceptions.GoogleAPICallError(
+        'Testing', [error], response=response)
     exception.code = 600
     assert str(exception) == '600 Testing'
     assert exception.message == 'Testing'
     assert exception.errors == [error]
+    assert exception.response == response
 
 
 def test_from_http_status():
@@ -52,16 +57,18 @@ def test_from_http_status():
     assert exception.errors == []
 
 
-def test_from_http_status_with_errors():
+def test_from_http_status_with_errors_and_response():
     message = 'message'
     errors = ['1', '2']
+    response = mock.sentinel.response
     exception = exceptions.from_http_status(
-        http_client.NOT_FOUND, message, errors=errors)
+        http_client.NOT_FOUND, message, errors=errors, response=response)
 
     assert isinstance(exception, exceptions.NotFound)
     assert exception.code == http_client.NOT_FOUND
     assert exception.message == message
     assert exception.errors == errors
+    assert exception.response == response
 
 
 def test_from_http_status_unknown_code():
@@ -140,15 +147,18 @@ def test_from_grpc_status():
     assert exception.errors == []
 
 
-def test_from_grpc_status_with_errors():
+def test_from_grpc_status_with_errors_and_response():
     message = 'message'
+    response = mock.sentinel.response
     errors = ['1', '2']
     exception = exceptions.from_grpc_status(
-        grpc.StatusCode.OUT_OF_RANGE, message, errors=errors)
+        grpc.StatusCode.OUT_OF_RANGE, message,
+        errors=errors, response=response)
 
     assert isinstance(exception, exceptions.OutOfRange)
     assert exception.message == message
     assert exception.errors == errors
+    assert exception.response == response
 
 
 def test_from_grpc_status_unknown_code():
@@ -157,3 +167,35 @@ def test_from_grpc_status_unknown_code():
         grpc.StatusCode.OK, message)
     assert exception.grpc_status_code == grpc.StatusCode.OK
     assert exception.message == message
+
+
+def test_from_grpc_error():
+    message = 'message'
+    error = mock.create_autospec(grpc.Call, instance=True)
+    error.code.return_value = grpc.StatusCode.INVALID_ARGUMENT
+    error.details.return_value = message
+
+    exception = exceptions.from_grpc_error(error)
+
+    assert isinstance(exception, exceptions.BadRequest)
+    assert isinstance(exception, exceptions.InvalidArgument)
+    assert exception.code == http_client.BAD_REQUEST
+    assert exception.grpc_status_code == grpc.StatusCode.INVALID_ARGUMENT
+    assert exception.message == message
+    assert exception.errors == [error]
+    assert exception.response == error
+
+
+def test_from_grpc_error_non_call():
+    message = 'message'
+    error = mock.create_autospec(grpc.RpcError, instance=True)
+    error.__str__.return_value = message
+
+    exception = exceptions.from_grpc_error(error)
+
+    assert isinstance(exception, exceptions.GoogleAPICallError)
+    assert exception.code is None
+    assert exception.grpc_status_code is None
+    assert exception.message == message
+    assert exception.errors == [error]
+    assert exception.response == error
