@@ -32,7 +32,6 @@ from google.cloud.bigtable.row_data import PartialRowData
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from test_utils.retry import RetryErrors
-from test_utils.retry import RetryResult
 from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
@@ -63,27 +62,6 @@ class Config(object):
     CLIENT = None
     INSTANCE = None
     IN_EMULATOR = False
-
-
-def _wait_until_complete(operation, max_attempts=5):
-    """Wait until an operation has completed.
-
-    :type operation: :class:`google.cloud.operation.Operation`
-    :param operation: Operation that has not completed.
-
-    :type max_attempts: int
-    :param max_attempts: (Optional) The maximum number of times to check if
-                         the operation has completed. Defaults to 5.
-
-    :rtype: bool
-    :returns: Boolean indicating if the operation is complete.
-    """
-
-    def _operation_complete(result):
-        return result
-
-    retry = RetryResult(_operation_complete, max_tries=max_attempts)
-    return retry(operation.poll)()
 
 
 def _retry_on_unavailable(exc):
@@ -117,8 +95,7 @@ def setUpModule():
 
         # After listing, create the test instance.
         created_op = Config.INSTANCE.create()
-        if not _wait_until_complete(created_op):
-            raise RuntimeError('Instance creation exceed 5 seconds.')
+        created_op.result(timeout=10)
 
 
 def tearDownModule():
@@ -166,7 +143,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        self.assertTrue(_wait_until_complete(operation))
+        operation.result(timeout=10)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
@@ -355,6 +332,33 @@ class TestDataAPI(unittest.TestCase):
         cell3 = Cell(CELL_VAL3, timestamp3)
         cell4 = Cell(CELL_VAL4, timestamp4)
         return cell1, cell2, cell3, cell4
+
+    def test_mutate_rows(self):
+        row1 = self._table.row(ROW_KEY)
+        row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+        row1.commit()
+        self.rows_to_delete.append(row1)
+        row2 = self._table.row(ROW_KEY_ALT)
+        row2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL2)
+        row2.commit()
+        self.rows_to_delete.append(row2)
+
+        # Change the contents
+        row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL3)
+        row2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL4)
+        rows = [row1, row2]
+        statuses = self._table.mutate_rows(rows)
+        result = [status.code for status in statuses]
+        expected_result = [0, 0]
+        self.assertEqual(result, expected_result)
+
+        # Check the contents
+        row1_data = self._table.read_row(ROW_KEY)
+        self.assertEqual(
+            row1_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL3)
+        row2_data = self._table.read_row(ROW_KEY_ALT)
+        self.assertEqual(
+            row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value, CELL_VAL4)
 
     def test_read_large_cell_limit(self):
         row = self._table.row(ROW_KEY)

@@ -186,7 +186,7 @@ class Image(object):
         """Detect a full document's text.
 
         :type language_hints: list
-        :param language_hints: (Optional) A list of BCP-47 language codes. See:
+        :param language_hints: (Optional) A list of BCP-47 language codes. See
                                https://cloud.google.com/vision/docs/languages
 
         :type limit: int

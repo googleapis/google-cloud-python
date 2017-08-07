@@ -17,7 +17,7 @@ import tempfile
 import time
 import unittest
 
-import httplib2
+import requests
 import six
 
 from google.cloud import exceptions
@@ -26,9 +26,6 @@ from google.cloud.storage._helpers import _base64_md5hash
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
-
-
-HTTP = httplib2.Http()
 
 
 def _bad_copy(bad_request):
@@ -116,6 +113,26 @@ class TestStorageBuckets(unittest.TestCase):
         created_buckets = [bucket for bucket in all_buckets
                            if bucket.name in buckets_to_create]
         self.assertEqual(len(created_buckets), len(buckets_to_create))
+
+    def test_bucket_update_labels(self):
+        bucket_name = 'update-labels' + unique_resource_id('-')
+        bucket = retry_429(Config.CLIENT.create_bucket)(bucket_name)
+        self.case_buckets_to_delete.append(bucket_name)
+        self.assertTrue(bucket.exists())
+
+        updated_labels = {'test-label': 'label-value'}
+        bucket.labels = updated_labels
+        bucket.update()
+        self.assertEqual(bucket.labels, updated_labels)
+
+        new_labels = {'another-label': 'another-value'}
+        bucket.labels = new_labels
+        bucket.update()
+        self.assertEqual(bucket.labels, new_labels)
+
+        bucket.labels = {}
+        bucket.update()
+        self.assertEqual(bucket.labels, {})
 
 
 class TestStorageFiles(unittest.TestCase):
@@ -426,9 +443,9 @@ class TestStorageSignURLs(TestStorageFiles):
         signed_url = blob.generate_signed_url(expiration, method='GET',
                                               client=Config.CLIENT)
 
-        response, content = HTTP.request(signed_url, method='GET')
-        self.assertEqual(response.status, 200)
-        self.assertEqual(content, self.LOCAL_FILE)
+        response = requests.get(signed_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, self.LOCAL_FILE)
 
     def test_create_signed_delete_url(self):
         blob = self.bucket.blob('LogoToSign.jpg')
@@ -437,9 +454,9 @@ class TestStorageSignURLs(TestStorageFiles):
                                                      method='DELETE',
                                                      client=Config.CLIENT)
 
-        response, content = HTTP.request(signed_delete_url, method='DELETE')
-        self.assertEqual(response.status, 204)
-        self.assertEqual(content, b'')
+        response = requests.request('DELETE', signed_delete_url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.content, b'')
 
         # Check that the blob has actually been deleted.
         self.assertFalse(blob.exists())

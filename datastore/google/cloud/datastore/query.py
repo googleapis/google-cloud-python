@@ -63,14 +63,15 @@ class Query(object):
         (Optional) key of the ancestor to which this query's results are
         restricted.
 
-    :type filters: sequence of (property_name, operator, value) tuples
-    :param filters: property filters applied by this query.
+    :type filters: tuple[str, str, str]
+    :param filters: Property filters applied by this query. The sequence
+        is ``(property_name, operator, value)``.
 
     :type projection: sequence of string
     :param projection:  fields returned as part of query results.
 
     :type order: sequence of string
-    :param order:  field names used to order query results. Prepend '-'
+    :param order:  field names used to order query results. Prepend ``-``
                    to a field name to sort it in descending order.
 
     :type distinct_on: sequence of string
@@ -198,8 +199,9 @@ class Query(object):
     def filters(self):
         """Filters set on the query.
 
-        :rtype: sequence of (property_name, operator, value) tuples.
-        :returns: The filters set on the query.
+        :rtype: tuple[str, str, str]
+        :returns: The filters set on the query. The sequence is
+            ``(property_name, operator, value)``.
         """
         return self._filters[:]
 

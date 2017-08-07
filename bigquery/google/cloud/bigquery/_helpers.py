@@ -306,19 +306,9 @@ class _TypedProperty(_ConfigurationProperty):
 class _EnumProperty(_ConfigurationProperty):
     """Pseudo-enumeration class.
 
-    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
-    be a sequence of strings.
-
     :type name: str
     :param name:  name of the property.
     """
-    def _validate(self, value):
-        """Check that ``value`` is one of the allowed values.
-
-        :raises: ValueError if value is not allowed.
-        """
-        if value not in self.ALLOWED:
-            raise ValueError('Pass one of: %s' ', '.join(self.ALLOWED))
 
 
 class UDFResource(object):
@@ -678,3 +668,44 @@ class QueryParametersProperty(object):
             raise ValueError(
                 "query parameters must be derived from AbstractQueryParameter")
         instance._query_parameters = tuple(value)
+
+
+def _item_to_row(iterator, resource):
+    """Convert a JSON row to the native object.
+
+    .. note::
+
+        This assumes that the ``schema`` attribute has been
+        added to the iterator after being created, which
+        should be done by the caller.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: An item to be converted to a row.
+
+    :rtype: tuple
+    :returns: The next row in the page.
+    """
+    return _row_from_json(resource, iterator.schema)
+
+
+# pylint: disable=unused-argument
+def _rows_page_start(iterator, page, response):
+    """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type page: :class:`~google.cloud.iterator.Page`
+    :param page: The page that was just created.
+
+    :type response: dict
+    :param response: The JSON API response for a page of rows in a table.
+    """
+    total_rows = response.get('totalRows')
+    if total_rows is not None:
+        total_rows = int(total_rows)
+    iterator.total_rows = total_rows
+# pylint: enable=unused-argument

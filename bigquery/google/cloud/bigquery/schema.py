@@ -26,27 +26,94 @@ class SchemaField(object):
                        'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD').
 
     :type mode: str
-    :param mode: the type of the field (one of 'NULLABLE', 'REQUIRED',
+    :param mode: the mode of the field (one of 'NULLABLE', 'REQUIRED',
                  or 'REPEATED').
 
     :type description: str
     :param description: optional description for the field.
 
-    :type fields: list of :class:`SchemaField`, or None
+    :type fields: tuple of :class:`SchemaField`
     :param fields: subfields (requires ``field_type`` of 'RECORD').
     """
-    def __init__(self, name, field_type, mode='NULLABLE', description=None,
-                 fields=None):
-        self.name = name
-        self.field_type = field_type
-        self.mode = mode
-        self.description = description
-        self.fields = fields
+    def __init__(self, name, field_type, mode='NULLABLE',
+                 description=None, fields=()):
+        self._name = name
+        self._field_type = field_type
+        self._mode = mode
+        self._description = description
+        self._fields = tuple(fields)
+
+    @property
+    def name(self):
+        """str: The name of the field."""
+        return self._name
+
+    @property
+    def field_type(self):
+        """str: The type of the field.
+
+        Will be one of 'STRING', 'INTEGER', 'FLOAT', 'BOOLEAN',
+        'TIMESTAMP' or 'RECORD'.
+        """
+        return self._field_type
+
+    @property
+    def mode(self):
+        """str: The mode of the field.
+
+        Will be one of 'NULLABLE', 'REQUIRED', or 'REPEATED'.
+        """
+        return self._mode
+
+    @property
+    def is_nullable(self):
+        """Check whether 'mode' is 'nullable'."""
+        return self._mode == 'NULLABLE'
+
+    @property
+    def description(self):
+        """Optional[str]: Description for the field."""
+        return self._description
+
+    @property
+    def fields(self):
+        """tuple: Subfields contained in this field.
+
+        If ``field_type`` is not 'RECORD', this property must be
+        empty / unset.
+        """
+        return self._fields
+
+    def _key(self):
+        """A tuple key that unique-ly describes this field.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            tuple: The contents of this :class:`SchemaField`.
+        """
+        return (
+            self._name,
+            self._field_type.lower(),
+            self._mode,
+            self._description,
+            self._fields,
+        )
 
     def __eq__(self, other):
-        return (
-            self.name == other.name and
-            self.field_type.lower() == other.field_type.lower() and
-            self.mode == other.mode and
-            self.description == other.description and
-            self.fields == other.fields)
+        if isinstance(other, SchemaField):
+            return self._key() == other._key()
+        else:
+            return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, SchemaField):
+            return self._key() != other._key()
+        else:
+            return NotImplemented
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def __repr__(self):
+        return 'SchemaField{}'.format(self._key())

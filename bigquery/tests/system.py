@@ -13,15 +13,20 @@
 # limitations under the License.
 
 import base64
+import csv
 import datetime
 import json
 import operator
 import os
 import time
 import unittest
+import uuid
+
+import six
 
 from google.cloud import bigquery
 from google.cloud._helpers import UTC
+from google.cloud.bigquery import dbapi
 from google.cloud.exceptions import Forbidden
 
 from test_utils.retry import RetryErrors
@@ -59,7 +64,7 @@ def _rate_limit_exceeded(forbidden):
 # We need to wait to stay within the rate limits.
 # The alternative outcome is a 403 Forbidden response from upstream, which
 # they return instead of the more appropriate 429.
-# See: https://cloud.google.com/bigquery/quota-policy
+# See https://cloud.google.com/bigquery/quota-policy
 retry_403 = RetryErrors(Forbidden, error_predicate=_rate_limit_exceeded)
 
 
@@ -70,10 +75,12 @@ class Config(object):
     global state.
     """
     CLIENT = None
+    CURSOR = None
 
 
 def setUpModule():
     Config.CLIENT = bigquery.Client()
+    Config.CURSOR = dbapi.connect(Config.CLIENT).cursor()
 
 
 class TestBigQuery(unittest.TestCase):
@@ -167,9 +174,9 @@ class TestBigQuery(unittest.TestCase):
             'newest' + unique_resource_id(),
         ]
         for dataset_name in datasets_to_create:
-            dataset = Config.CLIENT.dataset(dataset_name)
-            retry_403(dataset.create)()
-            self.to_delete.append(dataset)
+            created_dataset = Config.CLIENT.dataset(dataset_name)
+            retry_403(created_dataset.create)()
+            self.to_delete.append(created_dataset)
 
         # Retrieve the datasets.
         iterator = Config.CLIENT.list_datasets()
@@ -222,9 +229,9 @@ class TestBigQuery(unittest.TestCase):
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         for table_name in tables_to_create:
-            table = dataset.table(table_name, schema=[full_name, age])
-            table.create()
-            self.to_delete.insert(0, table)
+            created_table = dataset.table(table_name, schema=[full_name, age])
+            created_table.create()
+            self.to_delete.insert(0, created_table)
 
         # Retrieve the tables.
         iterator = dataset.list_tables()
@@ -286,8 +293,6 @@ class TestBigQuery(unittest.TestCase):
 
     @staticmethod
     def _fetch_single_page(table):
-        import six
-
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
         return list(page)
@@ -326,7 +331,7 @@ class TestBigQuery(unittest.TestCase):
 
         rows = ()
 
-        # Allow for "warm up" before rows visible.  See:
+        # Allow for "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryResult(_has_rows, max_tries=8)
@@ -337,7 +342,6 @@ class TestBigQuery(unittest.TestCase):
                          sorted(ROWS, key=by_age))
 
     def test_load_table_from_local_file_then_dump_table(self):
-        import csv
         from google.cloud._testing import _NamedTemporaryFile
 
         ROWS = [
@@ -375,9 +379,6 @@ class TestBigQuery(unittest.TestCase):
                     create_disposition='CREATE_NEVER',
                     write_disposition='WRITE_EMPTY',
                 )
-
-        def _job_done(instance):
-            return instance.state.lower() == 'done'
 
         # Retry until done.
         retry = RetryInstanceState(_job_done, max_tries=8)
@@ -417,9 +418,6 @@ class TestBigQuery(unittest.TestCase):
                 write_disposition='WRITE_TRUNCATE'
             )
 
-        def _job_done(instance):
-            return instance.state.lower() == 'done'
-
         # Retry until done.
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
@@ -434,7 +432,6 @@ class TestBigQuery(unittest.TestCase):
                          sorted(ROWS, key=by_wavelength))
 
     def test_load_table_from_storage_then_dump_table(self):
-        import csv
         from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.storage import Client as StorageClient
 
@@ -450,11 +447,11 @@ class TestBigQuery(unittest.TestCase):
         ]
         TABLE_NAME = 'test_table'
 
-        s_client = StorageClient()
+        storage_client = StorageClient()
 
         # In the **very** rare case the bucket name is reserved, this
         # fails with a ConnectionError.
-        bucket = s_client.create_bucket(BUCKET_NAME)
+        bucket = storage_client.create_bucket(BUCKET_NAME)
         self.to_delete.append(bucket)
 
         blob = bucket.blob(BLOB_NAME)
@@ -492,10 +489,7 @@ class TestBigQuery(unittest.TestCase):
 
         job.begin()
 
-        def _job_done(instance):
-            return instance.state in ('DONE', 'done')
-
-        # Allow for 90 seconds of "warm up" before rows visible.  See:
+        # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryInstanceState(_job_done, max_tries=8)
@@ -505,6 +499,75 @@ class TestBigQuery(unittest.TestCase):
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
+
+    def test_load_table_from_storage_w_autodetect_schema(self):
+        from google.cloud._testing import _NamedTemporaryFile
+        from google.cloud.storage import Client as StorageClient
+        from google.cloud.bigquery import SchemaField
+
+        local_id = unique_resource_id()
+        bucket_name = 'bq_load_test' + local_id
+        blob_name = 'person_ages.csv'
+        gs_url = 'gs://{}/{}'.format(bucket_name, blob_name)
+        rows = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ] * 100  # BigQuery internally uses the first 100 rows to detect schema
+        table_name = 'test_table'
+
+        storage_client = StorageClient()
+
+        # In the **very** rare case the bucket name is reserved, this
+        # fails with a ConnectionError.
+        bucket = storage_client.create_bucket(bucket_name)
+        self.to_delete.append(bucket)
+
+        blob = bucket.blob(blob_name)
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(('Full Name', 'Age'))
+                writer.writerows(rows)
+
+            with open(temp.name, 'rb') as csv_read:
+                blob.upload_from_file(csv_read, content_type='text/csv')
+
+        self.to_delete.insert(0, blob)
+
+        dataset = Config.CLIENT.dataset(
+            _make_dataset_name('load_gcs_then_dump'))
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        table = dataset.table(table_name)
+        self.to_delete.insert(0, table)
+
+        job = Config.CLIENT.load_table_from_storage(
+            'bq_load_storage_test_' + local_id, table, gs_url)
+        job.autodetect = True
+
+        job.begin()
+
+        # Allow for 90 seconds of "warm up" before rows visible.  See
+        # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
+        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
+
+        table.reload()
+        field_name = SchemaField(
+            u'Full_Name', u'string', u'NULLABLE', None, ())
+        field_age = SchemaField(u'Age', u'integer', u'NULLABLE', None, ())
+        self.assertEqual(table.schema, [field_name, field_age])
+
+        actual_rows = self._fetch_single_page(table)
+        by_age = operator.itemgetter(1)
+        self.assertEqual(
+            sorted(actual_rows, key=by_age), sorted(rows, key=by_age))
 
     def test_job_cancel(self):
         DATASET_NAME = _make_dataset_name('job_cancel')
@@ -528,9 +591,6 @@ class TestBigQuery(unittest.TestCase):
         job.begin()
         job.cancel()
 
-        def _job_done(instance):
-            return instance.state in ('DONE', 'done')
-
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
@@ -544,7 +604,7 @@ class TestBigQuery(unittest.TestCase):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
-        EXAMPLES = [
+        examples = [
             {
                 'sql': 'SELECT 1',
                 'expected': 1,
@@ -570,7 +630,7 @@ class TestBigQuery(unittest.TestCase):
                 'expected': zoned,
             },
         ]
-        for example in EXAMPLES:
+        for example in examples:
             query = Config.CLIENT.run_sync_query(example['sql'])
             query.use_legacy_sql = True
             query.run()
@@ -578,11 +638,11 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(len(query.rows[0]), 1)
             self.assertEqual(query.rows[0][0], example['expected'])
 
-    def test_sync_query_w_standard_sql_types(self):
+    def _generate_standard_sql_types_examples(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
-        EXAMPLES = [
+        return [
             {
                 'sql': 'SELECT 1',
                 'expected': 1,
@@ -659,13 +719,89 @@ class TestBigQuery(unittest.TestCase):
                 'expected': [{u'_field_1': [1, 2]}],
             },
         ]
-        for example in EXAMPLES:
+
+    def test_sync_query_w_standard_sql_types(self):
+        examples = self._generate_standard_sql_types_examples()
+        for example in examples:
             query = Config.CLIENT.run_sync_query(example['sql'])
             query.use_legacy_sql = False
             query.run()
             self.assertEqual(len(query.rows), 1)
             self.assertEqual(len(query.rows[0]), 1)
             self.assertEqual(query.rows[0][0], example['expected'])
+
+    def test_dbapi_w_standard_sql_types(self):
+        examples = self._generate_standard_sql_types_examples()
+        for example in examples:
+            Config.CURSOR.execute(example['sql'])
+            self.assertEqual(Config.CURSOR.rowcount, 1)
+            row = Config.CURSOR.fetchone()
+            self.assertEqual(len(row), 1)
+            self.assertEqual(row[0], example['expected'])
+            row = Config.CURSOR.fetchone()
+            self.assertIsNone(row)
+
+    def _load_table_for_dml(self, rows, dataset_name, table_name):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        dataset = Config.CLIENT.dataset(dataset_name)
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        greeting = bigquery.SchemaField(
+            'greeting', 'STRING', mode='NULLABLE')
+        table = dataset.table(table_name, schema=[greeting])
+        table.create()
+        self.to_delete.insert(0, table)
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(('Greeting',))
+                writer.writerows(rows)
+
+            with open(temp.name, 'rb') as csv_read:
+                job = table.upload_from_file(
+                    csv_read,
+                    source_format='CSV',
+                    skip_leading_rows=1,
+                    create_disposition='CREATE_NEVER',
+                    write_disposition='WRITE_EMPTY',
+                )
+
+        # Retry until done.
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
+        self._fetch_single_page(table)
+
+    def test_sync_query_w_dml(self):
+        dataset_name = _make_dataset_name('dml_tests')
+        table_name = 'test_table'
+        self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
+        query_template = """UPDATE {}.{}
+            SET greeting = 'Guten Tag'
+            WHERE greeting = 'Hello World'
+            """
+
+        query = Config.CLIENT.run_sync_query(
+            query_template.format(dataset_name, table_name))
+        query.use_legacy_sql = False
+        query.run()
+
+        self.assertEqual(query.num_dml_affected_rows, 1)
+
+    def test_dbapi_w_dml(self):
+        dataset_name = _make_dataset_name('dml_tests')
+        table_name = 'test_table'
+        self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
+        query_template = """UPDATE {}.{}
+            SET greeting = 'Guten Tag'
+            WHERE greeting = 'Hello World'
+            """
+
+        Config.CURSOR.execute(query_template.format(dataset_name, table_name))
+        self.assertEqual(Config.CURSOR.rowcount, 1)
+        self.assertIsNone(Config.CURSOR.fetchone())
 
     def test_sync_query_w_query_params(self):
         from google.cloud.bigquery._helpers import ArrayQueryParameter
@@ -729,7 +865,7 @@ class TestBigQuery(unittest.TestCase):
             name='friends', array_type='STRING',
             values=[phred_name, bharney_name])
         with_friends_param = StructQueryParameter(None, friends_param)
-        EXAMPLES = [
+        examples = [
             {
                 'sql': 'SELECT @question',
                 'expected': question,
@@ -809,7 +945,7 @@ class TestBigQuery(unittest.TestCase):
                 'query_parameters': [with_friends_param],
             },
         ]
-        for example in EXAMPLES:
+        for example in examples:
             query = Config.CLIENT.run_sync_query(
                 example['sql'],
                 query_parameters=example['query_parameters'])
@@ -819,6 +955,105 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(len(query.rows[0]), 1)
             self.assertEqual(query.rows[0][0], example['expected'])
 
+    def test_dbapi_w_query_parameters(self):
+        examples = [
+            {
+                'sql': 'SELECT %(boolval)s',
+                'expected': True,
+                'query_parameters': {
+                    'boolval': True,
+                },
+            },
+            {
+                'sql': 'SELECT %(a "very" weird `name`)s',
+                'expected': True,
+                'query_parameters': {
+                    'a "very" weird `name`': True,
+                },
+            },
+            {
+                'sql': 'SELECT %(select)s',
+                'expected': True,
+                'query_parameters': {
+                    'select': True,  # this name is a keyword
+                },
+            },
+            {
+                'sql': 'SELECT %s',
+                'expected': False,
+                'query_parameters': [False],
+            },
+            {
+                'sql': 'SELECT %(intval)s',
+                'expected': 123,
+                'query_parameters': {
+                    'intval': 123,
+                },
+            },
+            {
+                'sql': 'SELECT %s',
+                'expected': -123456789,
+                'query_parameters': [-123456789],
+            },
+            {
+                'sql': 'SELECT %(floatval)s',
+                'expected': 1.25,
+                'query_parameters': {
+                    'floatval': 1.25,
+                },
+            },
+            {
+                'sql': 'SELECT LOWER(%(strval)s)',
+                'query_parameters': {
+                    'strval': 'I Am A String',
+                },
+                'expected': 'i am a string',
+            },
+            {
+                'sql': 'SELECT DATE_SUB(%(dateval)s, INTERVAL 1 DAY)',
+                'query_parameters': {
+                    'dateval': datetime.date(2017, 4, 2),
+                },
+                'expected': datetime.date(2017, 4, 1),
+            },
+            {
+                'sql': 'SELECT TIME_ADD(%(timeval)s, INTERVAL 4 SECOND)',
+                'query_parameters': {
+                    'timeval': datetime.time(12, 34, 56),
+                },
+                'expected': datetime.time(12, 35, 0),
+            },
+            {
+                'sql': (
+                    'SELECT DATETIME_ADD(%(datetimeval)s, INTERVAL 53 SECOND)'
+                ),
+                'query_parameters': {
+                    'datetimeval': datetime.datetime(2012, 3, 4, 5, 6, 7),
+                },
+                'expected': datetime.datetime(2012, 3, 4, 5, 7, 0),
+            },
+            {
+                'sql': 'SELECT TIMESTAMP_TRUNC(%(zoned)s, MINUTE)',
+                'query_parameters': {
+                    'zoned': datetime.datetime(
+                        2012, 3, 4, 5, 6, 7, tzinfo=UTC),
+                },
+                'expected': datetime.datetime(2012, 3, 4, 5, 6, 0, tzinfo=UTC),
+            },
+        ]
+        for example in examples:
+            msg = 'sql: {} query_parameters: {}'.format(
+                example['sql'], example['query_parameters'])
+
+            Config.CURSOR.execute(example['sql'], example['query_parameters'])
+
+            self.assertEqual(Config.CURSOR.rowcount, 1, msg=msg)
+            row = Config.CURSOR.fetchone()
+            self.assertEqual(len(row), 1, msg=msg)
+            self.assertEqual(row[0], example['expected'], msg=msg)
+            row = Config.CURSOR.fetchone()
+            self.assertIsNone(row, msg=msg)
+
     def test_dump_table_w_public_data(self):
         PUBLIC = 'bigquery-public-data'
         DATASET_NAME = 'samples'
@@ -826,7 +1061,34 @@ class TestBigQuery(unittest.TestCase):
 
         dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
         table = dataset.table(TABLE_NAME)
+        # Reload table to get the schema before fetching the rows.
+        table.reload()
         self._fetch_single_page(table)
+
+    def test_large_query_w_public_data(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_NAME = 'samples'
+        TABLE_NAME = 'natality'
+        LIMIT = 1000
+        SQL = 'SELECT * from `{}.{}.{}` LIMIT {}'.format(
+            PUBLIC, DATASET_NAME, TABLE_NAME, LIMIT)
+
+        query = Config.CLIENT.run_sync_query(SQL)
+        query.use_legacy_sql = False
+        query.run()
+
+        iterator = query.fetch_data()
+        rows = list(iterator)
+        self.assertEqual(len(rows), LIMIT)
+
+    def test_async_query_future(self):
+        query_job = Config.CLIENT.run_async_query(
+            str(uuid.uuid4()), 'SELECT 1')
+        query_job.use_legacy_sql = False
+
+        iterator = query_job.result().fetch_data()
+        rows = list(iterator)
+        self.assertEqual(rows, [(1,)])
 
     def test_insert_nested_nested(self):
         # See #2951
@@ -932,3 +1194,7 @@ class TestBigQuery(unittest.TestCase):
             parts = time.strptime(expected[7], '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)              # FavoriteTime
+
+
+def _job_done(instance):
+    return instance.state.lower() == 'done'

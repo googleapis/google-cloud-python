@@ -14,7 +14,6 @@
 
 import unittest
 
-
 ANNOTATE_NAME = 'Moon'
 ANNOTATE_CONTENT = 'A cow jumped over the %s.' % (ANNOTATE_NAME,)
 ANNOTATE_SCORE = 1
@@ -29,7 +28,20 @@ def _make_token_json(name, part_of_speech, head, edge_label):
             'content': name,
             'beginOffset': -1,
         },
-        'partOfSpeech': {'tag': part_of_speech},
+        'partOfSpeech': {
+            'aspect': 'ASPECT_UNKNOWN',
+            'reciprocity': 'RECIPROCITY_UNKNOWN',
+            'case': 'NOMINATIVE',
+            'mood': 'MOOD_UNKNOWN',
+            'tag': part_of_speech,
+            'person': 'FIRST',
+            'number': 'SINGULAR',
+            'tense': 'TENSE_UNKNOWN',
+            'form': 'FORM_UNKNOWN',
+            'proper': 'PROPER_UNKNOWN',
+            'voice': 'VOICE_UNKNOWN',
+            'gender': 'GENDER_UNKNOWN',
+        },
         'dependencyEdge': {
             'headTokenIndex': head,
             'label': edge_label,
@@ -120,7 +132,6 @@ class TestEncoding(unittest.TestCase):
 
 
 class TestDocument(unittest.TestCase):
-
     @staticmethod
     def _get_target_class():
         from google.cloud.language.document import Document
@@ -424,12 +435,12 @@ class TestDocument(unittest.TestCase):
         client._connection.api_request.assert_called_once_with(
             path='analyzeSentiment', method='POST', data=expected)
 
-    def _verify_token(self, token, text_content, part_of_speech, lemma):
+    def _verify_token(self, token, text_content, part_of_speech_tag, lemma):
         from google.cloud.language.syntax import Token
 
         self.assertIsInstance(token, Token)
         self.assertEqual(token.text_content, text_content)
-        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.part_of_speech.tag, part_of_speech_tag)
         self.assertEqual(token.lemma, lemma)
 
     def test_analyze_syntax(self):
@@ -457,7 +468,18 @@ class TestDocument(unittest.TestCase):
                         'beginOffset': -1,
                     },
                     'partOfSpeech': {
+                        'aspect': 'ASPECT_UNKNOWN',
+                        'reciprocity': 'RECIPROCITY_UNKNOWN',
+                        'case': 'CASE_UNKNOWN',
+                        'mood': 'MOOD_UNKNOWN',
                         'tag': 'NOUN',
+                        'person': 'PERSON_UNKNOWN',
+                        'number': 'SINGULAR',
+                        'tense': 'TENSE_UNKNOWN',
+                        'form': 'FORM_UNKNOWN',
+                        'proper': 'PROPER',
+                        'voice': 'VOICE_UNKNOWN',
+                        'gender': 'GENDER_UNKNOWN'
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 0,
@@ -471,7 +493,18 @@ class TestDocument(unittest.TestCase):
                         'beginOffset': -1,
                     },
                     'partOfSpeech': {
+                        'aspect': 'ASPECT_UNKNOWN',
+                        'reciprocity': 'RECIPROCITY_UNKNOWN',
+                        'case': 'CASE_UNKNOWN',
+                        'mood': 'MOOD_UNKNOWN',
                         'tag': 'ADP',
+                        'person': 'PERSON_UNKNOWN',
+                        'number': 'NUMBER_UNKNOWN',
+                        'tense': 'TENSE_UNKNOWN',
+                        'form': 'FORM_UNKNOWN',
+                        'proper': 'PROPER_UNKNOWN',
+                        'voice': 'VOICE_UNKNOWN',
+                        'gender': 'GENDER_UNKNOWN'
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 0,
@@ -485,7 +518,18 @@ class TestDocument(unittest.TestCase):
                         'beginOffset': -1,
                     },
                     'partOfSpeech': {
+                        'aspect': 'ASPECT_UNKNOWN',
+                        'reciprocity': 'RECIPROCITY_UNKNOWN',
+                        'case': 'CASE_UNKNOWN',
+                        'mood': 'MOOD_UNKNOWN',
                         'tag': 'DET',
+                        'person': 'PERSON_UNKNOWN',
+                        'number': 'NUMBER_UNKNOWN',
+                        'tense': 'TENSE_UNKNOWN',
+                        'form': 'FORM_UNKNOWN',
+                        'proper': 'PROPER_UNKNOWN',
+                        'voice': 'VOICE_UNKNOWN',
+                        'gender': 'GENDER_UNKNOWN'
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 3,
@@ -499,7 +543,18 @@ class TestDocument(unittest.TestCase):
                         'beginOffset': -1,
                     },
                     'partOfSpeech': {
+                        'aspect': 'ASPECT_UNKNOWN',
+                        'reciprocity': 'RECIPROCITY_UNKNOWN',
+                        'case': 'CASE_UNKNOWN',
+                        'mood': 'MOOD_UNKNOWN',
                         'tag': 'NOUN',
+                        'person': 'PERSON_UNKNOWN',
+                        'number': 'SINGULAR',
+                        'tense': 'TENSE_UNKNOWN',
+                        'form': 'FORM_UNKNOWN',
+                        'proper': 'PROPER',
+                        'voice': 'VOICE_UNKNOWN',
+                        'gender': 'GENDER_UNKNOWN'
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 1,
@@ -553,7 +608,7 @@ class TestDocument(unittest.TestCase):
             self.assertIsInstance(token, Token)
             self.assertEqual(token.text_content, info[0])
             self.assertEqual(token.text_begin, -1)
-            self.assertEqual(token.part_of_speech, info[1])
+            self.assertEqual(token.part_of_speech.tag, info[1])
             self.assertEqual(token.edge_index, info[2])
             self.assertEqual(token.edge_label, info[3])
             self.assertEqual(token.lemma, info[0])

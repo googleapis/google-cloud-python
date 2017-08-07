@@ -28,7 +28,6 @@ from grpc import StatusCode
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
-from google.cloud.operation import register_type
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.database import Database
 from google.cloud.spanner.pool import BurstyPool
@@ -40,10 +39,6 @@ _INSTANCE_NAME_RE = re.compile(
     r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 
 DEFAULT_NODE_COUNT = 1
-
-register_type(admin_v1_pb2.Instance)
-register_type(admin_v1_pb2.CreateInstanceMetadata)
-register_type(admin_v1_pb2.UpdateInstanceMetadata)
 
 
 class Instance(object):
@@ -114,11 +109,10 @@ class Instance(object):
 
         :rtype: :class:`Instance`
         :returns: The instance parsed from the protobuf response.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the instance
-                 name does not match
-                 ``projects/{project}/instances/{instance_id}``
-                 or if the parsed project ID does not match the project ID
-                 on the client.
+        :raises ValueError:
+            if the instance name does not match
+            ``projects/{project}/instances/{instance_id}`` or if the parsed
+            project ID does not match the project ID on the client.
         """
         match = _INSTANCE_NAME_RE.match(instance_pb.name)
         if match is None:
@@ -188,7 +182,7 @@ class Instance(object):
     def create(self):
         """Create this instance.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance
 
         .. note::
@@ -204,8 +198,11 @@ class Instance(object):
 
            before calling :meth:`create`.
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
+        :raises Conflict: if the instance already exists
+        :raises GaxError:
+            for errors other than ``ALREADY_EXISTS`` returned from the call
         """
         api = self._client.instance_admin_api
         instance_pb = admin_v1_pb2.Instance(
@@ -228,14 +225,18 @@ class Instance(object):
                 raise Conflict(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'CreateInstance'}
         return future
 
     def exists(self):
         """Test whether this instance exists.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig
+
+        :rtype: bool
+        :returns: True if the instance exists, else false
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._client.instance_admin_api
         options = _options_with_prefix(self.name)
@@ -252,8 +253,11 @@ class Instance(object):
     def reload(self):
         """Reload the metadata for this instance.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig
+
+        :raises NotFound: if the instance does not exist
+        :raises GaxError: for other errors returned from the call
         """
         api = self._client.instance_admin_api
         options = _options_with_prefix(self.name)
@@ -270,7 +274,7 @@ class Instance(object):
     def update(self):
         """Update this instance.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance
 
         .. note::
@@ -285,8 +289,10 @@ class Instance(object):
 
             before calling :meth:`update`.
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.cloud.future.operation.Operation`
         :returns: an operation instance
+        :raises NotFound: if the instance does not exist
+        :raises GaxError: for other errors returned from the call
         """
         api = self._client.instance_admin_api
         instance_pb = admin_v1_pb2.Instance(
@@ -309,13 +315,12 @@ class Instance(object):
                 raise NotFound(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'UpdateInstance'}
         return future
 
     def delete(self):
         """Mark an instance and all of its databases for permanent deletion.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance
 
         Immediately upon completion of the request:
@@ -360,7 +365,7 @@ class Instance(object):
     def list_databases(self, page_size=None, page_token=None):
         """List databases for the instance.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases
 
         :type page_size: int

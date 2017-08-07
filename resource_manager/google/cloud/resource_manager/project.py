@@ -36,7 +36,7 @@ class Project(object):
         >>> project.labels['environment'] = 'production'
         >>> project.update()
 
-    See:
+    See
     https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects
 
     :type project_id: str
@@ -218,7 +218,7 @@ class Project(object):
     def delete(self, client=None, reload_data=False):
         """API call:  delete the project via a ``DELETE`` request.
 
-        See:
+        See
         https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete
 
         This actually changes the status (``lifecycleState``) from ``ACTIVE``

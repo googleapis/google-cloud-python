@@ -19,6 +19,7 @@ import os
 import unittest
 
 import mock
+import six
 from six.moves import http_client
 
 
@@ -55,7 +56,8 @@ class Test_Blob(unittest.TestCase):
         blob_name = b'wet \xe2\x9b\xb5'
         blob = self._make_one(blob_name, bucket=None)
         unicode_name = u'wet \N{sailboat}'
-        self.assertNotEqual(blob.name, blob_name)
+        self.assertNotIsInstance(blob.name, bytes)
+        self.assertIsInstance(blob.name, six.text_type)
         self.assertEqual(blob.name, unicode_name)
 
     def test_ctor_w_encryption_key(self):
@@ -325,14 +327,14 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob.exists())
         self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test__make_transport(self, fake_session_factory):
-        client = mock.Mock(spec=[u'_credentials'])
+    def test__get_transport(self):
+        client = mock.Mock(spec=[u'_credentials', '_http'])
+        client._http = mock.sentinel.transport
         blob = self._make_one(u'blob-name', bucket=None)
-        transport = blob._make_transport(client)
 
-        self.assertIs(transport, fake_session_factory.return_value)
-        fake_session_factory.assert_called_once_with(client._credentials)
+        transport = blob._get_transport(client)
+
+        self.assertIs(transport, mock.sentinel.transport)
 
     def test__get_download_url_with_media_link(self):
         blob_name = 'something.txt'
@@ -373,10 +375,23 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(download_url, expected_url)
 
     @staticmethod
-    def _mock_requests_response(status_code, headers, content=b''):
-        return mock.Mock(
-            content=content, headers=headers, status_code=status_code,
-            spec=['content', 'headers', 'status_code'])
+    def _mock_requests_response(
+            status_code, headers, content=b'', stream=False):
+        import requests
+
+        response = requests.Response()
+        response.status_code = status_code
+        response.headers.update(headers)
+        if stream:
+            response.raw = io.BytesIO(content)
+            response._content = False
+        else:
+            response.raw = None
+            response._content = content
+
+        response.request = requests.Request(
+            'POST', 'http://example.com').prepare()
+        return response
 
     def _mock_download_transport(self):
         fake_transport = mock.Mock(spec=['request'])
@@ -392,13 +407,10 @@ class Test_Blob(unittest.TestCase):
         fake_transport.request.side_effect = [chunk1_response, chunk2_response]
         return fake_transport
 
-    def _check_session_mocks(self, client, fake_session_factory,
+    def _check_session_mocks(self, client, transport,
                              expected_url, headers=None):
-        # Check that exactly one transport was created.
-        fake_session_factory.assert_called_once_with(client._credentials)
-        fake_transport = fake_session_factory.return_value
         # Check that the transport was called exactly twice.
-        self.assertEqual(fake_transport.request.call_count, 2)
+        self.assertEqual(transport.request.call_count, 2)
         if headers is None:
             headers = {}
         # NOTE: bytes=0-2 never shows up because the mock was called with
@@ -407,7 +419,7 @@ class Test_Blob(unittest.TestCase):
         headers['range'] = 'bytes=3-5'
         call = mock.call(
             'GET', expected_url, data=None, headers=headers)
-        self.assertEqual(fake_transport.request.mock_calls, [call, call])
+        self.assertEqual(transport.request.mock_calls, [call, call])
 
     def test__do_download_simple(self):
         blob_name = 'blob-name'
@@ -424,7 +436,9 @@ class Test_Blob(unittest.TestCase):
         transport.request.return_value = self._mock_requests_response(
             http_client.OK,
             {'content-length': '6', 'content-range': 'bytes 0-5/6'},
-            content=b'abcdef')
+            content=b'abcdef',
+            stream=True,
+        )
         file_obj = io.BytesIO()
         download_url = 'http://test.invalid'
         headers = {}
@@ -433,7 +447,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(file_obj.getvalue(), b'abcdef')
 
         transport.request.assert_called_once_with(
-            'GET', download_url, data=None, headers=headers)
+            'GET', download_url, data=None, headers=headers, stream=True)
 
     def test__do_download_chunked(self):
         blob_name = 'blob-name'
@@ -463,8 +477,7 @@ class Test_Blob(unittest.TestCase):
             'GET', download_url, data=None, headers=headers)
         self.assertEqual(transport.request.mock_calls, [call, call])
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_to_file_with_failure(self, fake_session_factory):
+    def test_download_to_file_with_failure(self):
         from google.cloud import exceptions
 
         blob_name = 'blob-name'
@@ -475,10 +488,8 @@ class Test_Blob(unittest.TestCase):
         }
         transport.request.return_value = self._mock_requests_response(
             http_client.NOT_FOUND, bad_response_headers, content=b'Not found')
-        fake_session_factory.return_value = transport
         # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(
-            _credentials=_make_credentials(), spec=['_credentials'])
+        client = mock.Mock(_http=transport, spec=[u'_http'])
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
         # Set the media link on the blob
@@ -489,19 +500,15 @@ class Test_Blob(unittest.TestCase):
             blob.download_to_file(file_obj)
 
         self.assertEqual(file_obj.tell(), 0)
-        # Check that exactly one transport was created.
-        fake_session_factory.assert_called_once_with(client._credentials)
         # Check that the transport was called once.
         transport.request.assert_called_once_with(
-            'GET', blob.media_link, data=None, headers={})
+            'GET', blob.media_link, data=None, headers={}, stream=True)
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_to_file_wo_media_link(self, fake_session_factory):
+    def test_download_to_file_wo_media_link(self):
         blob_name = 'blob-name'
-        fake_session_factory.return_value = self._mock_download_transport()
+        transport = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(
-            _credentials=_make_credentials(), spec=['_credentials'])
+        client = mock.Mock(_http=transport, spec=[u'_http'])
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
         # Modify the blob so there there will be 2 chunks of size 3.
@@ -517,16 +524,13 @@ class Test_Blob(unittest.TestCase):
         expected_url = (
             'https://www.googleapis.com/download/storage/v1/b/'
             'name/o/blob-name?alt=media')
-        self._check_session_mocks(client, fake_session_factory, expected_url)
+        self._check_session_mocks(client, transport, expected_url)
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def _download_to_file_helper(self, fake_session_factory, use_chunks=False):
+    def _download_to_file_helper(self, use_chunks=False):
         blob_name = 'blob-name'
-        fake_transport = self._mock_download_transport()
-        fake_session_factory.return_value = fake_transport
+        transport = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(
-            _credentials=_make_credentials(), spec=['_credentials'])
+        client = mock.Mock(_http=transport, spec=[u'_http'])
         bucket = _Bucket(client)
         media_link = 'http://example.com/media/'
         properties = {'mediaLink': media_link}
@@ -540,20 +544,20 @@ class Test_Blob(unittest.TestCase):
             single_chunk_response = self._mock_requests_response(
                 http_client.OK,
                 {'content-length': '6', 'content-range': 'bytes 0-5/6'},
-                content=b'abcdef')
-            fake_transport.request.side_effect = [single_chunk_response]
+                content=b'abcdef',
+                stream=True,
+            )
+            transport.request.side_effect = [single_chunk_response]
 
         file_obj = io.BytesIO()
         blob.download_to_file(file_obj)
         self.assertEqual(file_obj.getvalue(), b'abcdef')
 
         if use_chunks:
-            self._check_session_mocks(client, fake_session_factory, media_link)
+            self._check_session_mocks(client, transport, media_link)
         else:
-            # Check that exactly one transport was created.
-            fake_session_factory.assert_called_once_with(client._credentials)
-            fake_transport.request.assert_called_once_with(
-                'GET', media_link, data=None, headers={})
+            transport.request.assert_called_once_with(
+                'GET', media_link, data=None, headers={}, stream=True)
 
     def test_download_to_file_default(self):
         self._download_to_file_helper()
@@ -561,16 +565,15 @@ class Test_Blob(unittest.TestCase):
     def test_download_to_file_with_chunk_size(self):
         self._download_to_file_helper(use_chunks=True)
 
-    def _download_to_filename_helper(self, fake_session_factory, updated=None):
+    def _download_to_filename_helper(self, updated=None):
         import os
         import time
         from google.cloud._testing import _NamedTemporaryFile
 
         blob_name = 'blob-name'
-        fake_session_factory.return_value = self._mock_download_transport()
+        transport = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(
-            _credentials=_make_credentials(), spec=['_credentials'])
+        client = mock.Mock(_http=transport, spec=['_http'])
         bucket = _Bucket(client)
         media_link = 'http://example.com/media/'
         properties = {'mediaLink': media_link}
@@ -595,29 +598,24 @@ class Test_Blob(unittest.TestCase):
 
         self.assertEqual(wrote, b'abcdef')
 
-        self._check_session_mocks(client, fake_session_factory, media_link)
+        self._check_session_mocks(client, transport, media_link)
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_to_filename(self, fake_session_factory):
+    def test_download_to_filename(self):
         updated = '2014-12-06T13:13:50.690Z'
-        self._download_to_filename_helper(
-            fake_session_factory, updated=updated)
+        self._download_to_filename_helper(updated=updated)
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_to_filename_wo_updated(self, fake_session_factory):
-        self._download_to_filename_helper(fake_session_factory)
+    def test_download_to_filename_wo_updated(self):
+        self._download_to_filename_helper()
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_to_filename_w_key(self, fake_session_factory):
+    def test_download_to_filename_w_key(self):
         import os
         import time
         from google.cloud._testing import _NamedTemporaryFile
 
         blob_name = 'blob-name'
-        fake_session_factory.return_value = self._mock_download_transport()
+        transport = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(
-            _credentials=_make_credentials(), spec=['_credentials'])
+        client = mock.Mock(_http=transport, spec=['_http'])
         bucket = _Bucket(client)
         media_link = 'http://example.com/media/'
         properties = {'mediaLink': media_link,
@@ -647,15 +645,13 @@ class Test_Blob(unittest.TestCase):
             'X-Goog-Encryption-Key': header_key_value,
         }
         self._check_session_mocks(
-            client, fake_session_factory, media_link, headers=key_headers)
+            client, transport, media_link, headers=key_headers)
 
-    @mock.patch('google.auth.transport.requests.AuthorizedSession')
-    def test_download_as_string(self, fake_session_factory):
+    def test_download_as_string(self):
         blob_name = 'blob-name'
-        fake_session_factory.return_value = self._mock_download_transport()
+        transport = self._mock_download_transport()
         # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(
-            _credentials=_make_credentials(), spec=['_credentials'])
+        client = mock.Mock(_http=transport, spec=['_http'])
         bucket = _Bucket(client)
         media_link = 'http://example.com/media/'
         properties = {'mediaLink': media_link}
@@ -667,7 +663,7 @@ class Test_Blob(unittest.TestCase):
         fetched = blob.download_as_string()
         self.assertEqual(fetched, b'abcdef')
 
-        self._check_session_mocks(client, fake_session_factory, media_link)
+        self._check_session_mocks(client, transport, media_link)
 
     def test__get_content_type_explicit(self):
         blob = self._make_one(u'blob-name', bucket=None)
@@ -769,11 +765,10 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.chunk_size)
 
         # Create mocks to be checked for doing transport.
-        fake_transport = self._mock_transport(http_client.OK, {})
-        blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
+        transport = self._mock_transport(http_client.OK, {})
 
         # Create some mock arguments.
-        client = mock.sentinel.mock
+        client = mock.Mock(_http=transport, spec=['_http'])
         data = b'data here hear hier'
         stream = io.BytesIO(data)
         content_type = u'application/xml'
@@ -781,7 +776,7 @@ class Test_Blob(unittest.TestCase):
             client, stream, content_type, size, num_retries)
 
         # Check the mocks and the returned value.
-        self.assertIs(response, fake_transport.request.return_value)
+        self.assertIs(response, transport.request.return_value)
         if size is None:
             data_read = data
             self.assertEqual(stream.tell(), len(data))
@@ -789,7 +784,6 @@ class Test_Blob(unittest.TestCase):
             data_read = data[:size]
             self.assertEqual(stream.tell(), size)
 
-        blob._make_transport.assert_called_once_with(client)
         mock_get_boundary.assert_called_once_with()
 
         upload_url = (
@@ -805,7 +799,7 @@ class Test_Blob(unittest.TestCase):
             data_read +
             b'\r\n--==0==--')
         headers = {'content-type': b'multipart/related; boundary="==0=="'}
-        fake_transport.request.assert_called_once_with(
+        transport.request.assert_called_once_with(
             'POST', upload_url, data=payload, headers=headers)
 
     @mock.patch(u'google.resumable_media._upload.get_boundary',
@@ -858,12 +852,10 @@ class Test_Blob(unittest.TestCase):
         # Create mocks to be checked for doing transport.
         resumable_url = 'http://test.invalid?upload_id=hey-you'
         response_headers = {'location': resumable_url}
-        fake_transport = self._mock_transport(
-            http_client.OK, response_headers)
-        blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
+        transport = self._mock_transport(http_client.OK, response_headers)
 
         # Create some mock arguments and call the method under test.
-        client = mock.sentinel.mock
+        client = mock.Mock(_http=transport, spec=[u'_http'])
         data = b'hello hallo halo hi-low'
         stream = io.BytesIO(data)
         content_type = u'text/plain'
@@ -904,13 +896,12 @@ class Test_Blob(unittest.TestCase):
         else:
             self.assertIsNone(retry_strategy.max_cumulative_retry)
             self.assertEqual(retry_strategy.max_retries, num_retries)
-        self.assertIs(transport, fake_transport)
+        self.assertIs(transport, transport)
         # Make sure we never read from the stream.
         self.assertEqual(stream.tell(), 0)
 
         # Check the mocks.
         blob._get_writable_metadata.assert_called_once_with()
-        blob._make_transport.assert_called_once_with(client)
         payload = json.dumps(object_metadata).encode('utf-8')
         expected_headers = {
             'content-type': 'application/json; charset=UTF-8',
@@ -920,7 +911,7 @@ class Test_Blob(unittest.TestCase):
             expected_headers['x-upload-content-length'] = str(size)
         if extra_headers is not None:
             expected_headers.update(extra_headers)
-        fake_transport.request.assert_called_once_with(
+        transport.request.assert_called_once_with(
             'POST', upload_url, data=payload, headers=expected_headers)
 
     def test__initiate_resumable_upload_no_size(self):
@@ -952,7 +943,8 @@ class Test_Blob(unittest.TestCase):
             resumable_media.PERMANENT_REDIRECT, headers2)
         json_body = '{{"size": "{:d}"}}'.format(total_bytes)
         fake_response3 = self._mock_requests_response(
-            http_client.OK, headers3, content=json_body)
+            http_client.OK, headers3,
+            content=json_body.encode('utf-8'))
 
         responses = [fake_response1, fake_response2, fake_response3]
         fake_transport.request.side_effect = responses
@@ -1025,12 +1017,11 @@ class Test_Blob(unittest.TestCase):
         resumable_url = 'http://test.invalid?upload_id=and-then-there-was-1'
         headers1 = {'location': resumable_url}
         headers2 = {'range': 'bytes=0-{:d}'.format(blob.chunk_size - 1)}
-        fake_transport, responses = self._make_resumable_transport(
+        transport, responses = self._make_resumable_transport(
             headers1, headers2, {}, total_bytes)
-        blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
 
         # Create some mock arguments and call the method under test.
-        client = mock.sentinel.mock
+        client = mock.Mock(_http=transport, spec=['_http'])
         stream = io.BytesIO(data)
         content_type = u'text/html'
         response = blob._do_resumable_upload(
@@ -1041,14 +1032,13 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(stream.tell(), total_bytes)
 
         # Check the mocks.
-        blob._make_transport.assert_called_once_with(client)
         call0 = self._do_resumable_upload_call0(blob, content_type, size=size)
         call1 = self._do_resumable_upload_call1(
             blob, content_type, data, resumable_url, size=size)
         call2 = self._do_resumable_upload_call2(
             blob, content_type, data, resumable_url, total_bytes)
         self.assertEqual(
-            fake_transport.request.mock_calls, [call0, call1, call2])
+            transport.request.mock_calls, [call0, call1, call2])
 
     def test__do_resumable_upload_no_size(self):
         self._do_resumable_helper()
@@ -1156,19 +1146,23 @@ class Test_Blob(unittest.TestCase):
         assert stream.tell() == 0
 
     def test_upload_from_file_failure(self):
+        import requests
+
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = u'Someone is already in this spot.'
-        response = mock.Mock(
-            content=message, status_code=http_client.CONFLICT,
-            spec=[u'content', u'status_code'])
+        message = b'Someone is already in this spot.'
+        response = requests.Response()
+        response._content = message
+        response.status_code = http_client.CONFLICT
+        response.request = requests.Request(
+            'POST', 'http://example.com').prepare()
         side_effect = InvalidResponse(response)
 
         with self.assertRaises(exceptions.Conflict) as exc_info:
             self._upload_from_file_helper(side_effect=side_effect)
 
-        self.assertEqual(exc_info.exception.message, message)
+        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def _do_upload_mock_call_helper(self, blob, client, content_type, size):
@@ -1259,16 +1253,15 @@ class Test_Blob(unittest.TestCase):
         # Create mocks to be checked for doing transport.
         resumable_url = 'http://test.invalid?upload_id=clean-up-everybody'
         response_headers = {'location': resumable_url}
-        fake_transport = self._mock_transport(
+        transport = self._mock_transport(
             http_client.OK, response_headers)
-        blob._make_transport = mock.Mock(return_value=fake_transport, spec=[])
         if side_effect is not None:
-            fake_transport.request.side_effect = side_effect
+            transport.request.side_effect = side_effect
 
         # Create some mock arguments and call the method under test.
         content_type = u'text/plain'
         size = 10000
-        client = mock.sentinel.mock
+        client = mock.Mock(_http=transport, spec=[u'_http'])
         new_url = blob.create_resumable_upload_session(
             content_type=content_type, size=size,
             origin=origin, client=client)
@@ -1278,7 +1271,6 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.chunk_size, chunk_size)
 
         # Check the mocks.
-        blob._make_transport.assert_called_once_with(client)
         upload_url = (
             'https://www.googleapis.com/upload/storage/v1' +
             bucket.path +
@@ -1291,7 +1283,7 @@ class Test_Blob(unittest.TestCase):
         }
         if origin is not None:
             expected_headers['Origin'] = origin
-        fake_transport.request.assert_called_once_with(
+        transport.request.assert_called_once_with(
             'POST', upload_url, data=payload, headers=expected_headers)
 
     def test_create_resumable_upload_session(self):
@@ -1305,17 +1297,17 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        message = u'5-oh-3 woe is me.'
-        response = mock.Mock(
+        message = b'5-oh-3 woe is me.'
+        response = self._mock_requests_response(
             content=message, status_code=http_client.SERVICE_UNAVAILABLE,
-            spec=[u'content', u'status_code'])
+            headers={})
         side_effect = InvalidResponse(response)
 
         with self.assertRaises(exceptions.ServiceUnavailable) as exc_info:
             self._create_resumable_upload_session_helper(
                 side_effect=side_effect)
 
-        self.assertEqual(exc_info.exception.message, message)
+        self.assertIn(message.decode('utf-8'), exc_info.exception.message)
         self.assertEqual(exc_info.exception.errors, [])
 
     def test_get_iam_policy(self):
@@ -2222,12 +2214,16 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         return _raise_from_invalid_response(*args, **kwargs)
 
     def _helper(self, message, **kwargs):
+        import requests
+
         from google.resumable_media import InvalidResponse
         from google.cloud import exceptions
 
-        response = mock.Mock(
-            content=message, status_code=http_client.BAD_REQUEST,
-            spec=[u'content', u'status_code'])
+        response = requests.Response()
+        response.request = requests.Request(
+            'GET', 'http://example.com').prepare()
+        response.status_code = http_client.BAD_REQUEST
+        response._content = message
         error = InvalidResponse(response)
 
         with self.assertRaises(exceptions.BadRequest) as exc_info:
@@ -2236,18 +2232,11 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         return exc_info
 
     def test_default(self):
-        message = u'Failure'
+        message = b'Failure'
         exc_info = self._helper(message)
-        self.assertEqual(exc_info.exception.message, message)
-        self.assertEqual(exc_info.exception.errors, [])
-
-    def test_with_error_info(self):
-        message = u'Eeek bad.'
-        error_info = 'http://test.invalid'
-        exc_info = self._helper(message, error_info=error_info)
-
-        full_message = u'{} ({})'.format(message, error_info)
-        self.assertEqual(exc_info.exception.message, full_message)
+        message_str = message.decode('utf-8')
+        expected = 'GET http://example.com/: {}'.format(message_str)
+        self.assertEqual(exc_info.exception.message, expected)
         self.assertEqual(exc_info.exception.errors, [])
 
 

@@ -24,14 +24,17 @@ def docs(session):
     # Build docs against the latest version of Python, because we can.
     session.interpreter = 'python3.6'
 
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'docs'
+
     # Install Sphinx and also all of the google-cloud-* packages.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
-    session.install('sphinx', 'sphinx_rtd_theme')
+    session.install('Sphinx >= 1.6.2', 'sphinx_rtd_theme')
     session.install(
         'core/', 'bigquery/', 'bigtable/', 'datastore/', 'dns/', 'language/',
         'logging/', 'error_reporting/', 'monitoring/', 'pubsub/',
         'resource_manager/', 'runtimeconfig/', 'spanner/', 'speech/',
-        'storage/', 'translate/', 'vision/',
+        'storage/', 'trace/', 'translate/', 'vision/',
     )
     session.install('.')
 
@@ -43,6 +46,10 @@ def docs(session):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'setup'
+
     session.install('docutils', 'Pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')

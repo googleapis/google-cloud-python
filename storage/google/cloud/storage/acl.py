@@ -18,7 +18,7 @@
 an ACL object under the hood, and you can interact with that using
 :func:`google.cloud.storage.bucket.Bucket.acl`:
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
     :start-after: [START client_bucket_acl]
     :end-before: [END client_bucket_acl]
 
@@ -49,14 +49,14 @@ And you are able to ``grant`` and ``revoke`` the following roles:
 You can use any of these like any other factory method (these happen to
 be :class:`_ACLEntity` factories):
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
    :start-after: [START acl_user_settings]
    :end-before: [END acl_user_settings]
 
 After that, you can save any changes you make with the
 :func:`google.cloud.storage.acl.ACL.save` method:
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
    :start-after: [START acl_save]
    :end-before: [END acl_save]
 
@@ -64,14 +64,14 @@ You can alternatively save any existing :class:`google.cloud.storage.acl.ACL`
 object (whether it was created by a factory method or not) from a
 :class:`google.cloud.storage.bucket.Bucket`:
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
    :start-after: [START acl_save_bucket]
    :end-before: [END acl_save_bucket]
 
 To get the list of ``entity`` and ``role`` for each unique pair, the
 :class:`ACL` class is iterable:
 
-.. literalinclude:: storage_snippets.py
+.. literalinclude:: snippets.py
    :start-after: [START acl_print]
    :end-before: [END acl_print]
 
@@ -188,7 +188,7 @@ class ACL(object):
         'bucketOwnerRead',
         'bucketOwnerFullControl',
     ])
-    """See:
+    """See
     https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
     """
 

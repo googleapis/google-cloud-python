@@ -25,7 +25,7 @@ class Config(object):
 
     This consists of metadata and a hierarchy of variables.
 
-    See:
+    See
     https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs
 
     :type client: :class:`google.cloud.runtimeconfig.client.Client`
@@ -53,7 +53,7 @@ class Config(object):
     def description(self):
         """Description of the config object.
 
-        See:
+        See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs#resource-runtimeconfig
 
         :rtype: str, or ``NoneType``
@@ -128,7 +128,7 @@ class Config(object):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: httplib2.Response
+        :type api_response: dict
         :param api_response: response returned from an API call
         """
         self._properties.clear()
@@ -164,7 +164,7 @@ class Config(object):
 
         This method will reload the newest data for the config.
 
-        See:
+        See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs/get
 
         :type client: :class:`google.cloud.runtimeconfig.client.Client`
@@ -216,7 +216,7 @@ class Config(object):
 
         This only lists variable names, not the values.
 
-        See:
+        See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables/list
 
         :type page_size: int

@@ -40,10 +40,10 @@ class Client(BaseClient):
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type _http: :class:`~httplib2.Http`
+    :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
                   that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                  :meth:`requests.Session.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
@@ -125,7 +125,7 @@ class Client(BaseClient):
             >>> for project in client.list_projects(env_filter):
             ...     print(project.project_id)
 
-        See:
+        See
         https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/list
 
         Complete filtering example::
