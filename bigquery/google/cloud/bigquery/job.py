@@ -98,14 +98,12 @@ class Compression(_EnumProperty):
     """Pseudo-enum for ``compression`` properties."""
     GZIP = 'GZIP'
     NONE = 'NONE'
-    ALLOWED = (GZIP, NONE)
 
 
 class CreateDisposition(_EnumProperty):
     """Pseudo-enum for ``create_disposition`` properties."""
     CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
     CREATE_NEVER = 'CREATE_NEVER'
-    ALLOWED = (CREATE_IF_NEEDED, CREATE_NEVER)
 
 
 class DestinationFormat(_EnumProperty):
@@ -113,21 +111,18 @@ class DestinationFormat(_EnumProperty):
     CSV = 'CSV'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
     AVRO = 'AVRO'
-    ALLOWED = (CSV, NEWLINE_DELIMITED_JSON, AVRO)
 
 
 class Encoding(_EnumProperty):
     """Pseudo-enum for ``encoding`` properties."""
     UTF_8 = 'UTF-8'
     ISO_8559_1 = 'ISO-8559-1'
-    ALLOWED = (UTF_8, ISO_8559_1)
 
 
 class QueryPriority(_EnumProperty):
     """Pseudo-enum for ``QueryJob.priority`` property."""
     INTERACTIVE = 'INTERACTIVE'
     BATCH = 'BATCH'
-    ALLOWED = (INTERACTIVE, BATCH)
 
 
 class SourceFormat(_EnumProperty):
@@ -136,7 +131,6 @@ class SourceFormat(_EnumProperty):
     DATASTORE_BACKUP = 'DATASTORE_BACKUP'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
     AVRO = 'AVRO'
-    ALLOWED = (CSV, DATASTORE_BACKUP, NEWLINE_DELIMITED_JSON, AVRO)
 
 
 class WriteDisposition(_EnumProperty):
@@ -144,7 +138,6 @@ class WriteDisposition(_EnumProperty):
     WRITE_APPEND = 'WRITE_APPEND'
     WRITE_TRUNCATE = 'WRITE_TRUNCATE'
     WRITE_EMPTY = 'WRITE_EMPTY'
-    ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
 
 
 class _AsyncJob(google.cloud.future.polling.PollingFuture):
