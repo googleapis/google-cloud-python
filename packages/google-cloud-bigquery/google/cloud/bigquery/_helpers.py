@@ -306,19 +306,9 @@ class _TypedProperty(_ConfigurationProperty):
 class _EnumProperty(_ConfigurationProperty):
     """Pseudo-enumeration class.
 
-    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
-    be a sequence of strings.
-
     :type name: str
     :param name:  name of the property.
     """
-    def _validate(self, value):
-        """Check that ``value`` is one of the allowed values.
-
-        :raises: ValueError if value is not allowed.
-        """
-        if value not in self.ALLOWED:
-            raise ValueError('Pass one of: %s' % ', '.join(self.ALLOWED))
 
 
 class UDFResource(object):
