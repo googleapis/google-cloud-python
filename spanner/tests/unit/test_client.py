@@ -145,46 +145,56 @@ class TestClient(unittest.TestCase):
                              __version__)
 
     def test_instance_admin_api(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import client as MUT
+        from google.cloud.spanner import __version__
+        from google.cloud.spanner.client import SPANNER_ADMIN_SCOPE
 
-        creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds)
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
-        class _Client(object):
-            def __init__(self, *args, **kwargs):
-                self.args = args
-                self.kwargs = kwargs
+        patch = mock.patch('google.cloud.spanner.client.InstanceAdminClient')
 
-        with _Monkey(MUT, InstanceAdminClient=_Client):
+        with patch as instance_admin_client:
             api = client.instance_admin_api
 
-        self.assertTrue(isinstance(api, _Client))
+        self.assertIs(api, instance_admin_client.return_value)
+
+        # API instance is cached
         again = client.instance_admin_api
         self.assertIs(again, api)
-        self.assertEqual(api.kwargs['lib_name'], 'gccl')
-        self.assertIs(api.kwargs['credentials'], client.credentials)
+
+        instance_admin_client.assert_called_once_with(
+            lib_name='gccl',
+            lib_version=__version__,
+            credentials=credentials.with_scopes.return_value)
+
+        credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_database_admin_api(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import client as MUT
+        from google.cloud.spanner import __version__
+        from google.cloud.spanner.client import SPANNER_ADMIN_SCOPE
 
-        creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds)
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
-        class _Client(object):
-            def __init__(self, *args, **kwargs):
-                self.args = args
-                self.kwargs = kwargs
+        patch = mock.patch('google.cloud.spanner.client.DatabaseAdminClient')
 
-        with _Monkey(MUT, DatabaseAdminClient=_Client):
+        with patch as database_admin_client:
             api = client.database_admin_api
 
-        self.assertTrue(isinstance(api, _Client))
+        self.assertIs(api, database_admin_client.return_value)
+
+        # API instance is cached
         again = client.database_admin_api
         self.assertIs(again, api)
-        self.assertEqual(api.kwargs['lib_name'], 'gccl')
-        self.assertIs(api.kwargs['credentials'], client.credentials)
+
+        database_admin_client.assert_called_once_with(
+            lib_name='gccl',
+            lib_version=__version__,
+            credentials=credentials.with_scopes.return_value)
+
+        credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_copy(self):
         credentials = _make_credentials()
