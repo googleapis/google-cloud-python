@@ -861,11 +861,17 @@ class Test_get_next_chunk(object):
             u'Stream is already exhausted. There is no content remaining.')
 
     def test_exhausted_known_size_zero(self):
-        data = b''
-        stream = io.BytesIO(data)
-        stream.seek(len(data))
-        answer = _upload.get_next_chunk(stream, 1, len(data))
-        assert answer == (0, 0, b'', 'bytes */0')
+        stream = io.BytesIO(b'')
+        answer = _upload.get_next_chunk(stream, 1, 0)
+        assert answer == (0, b'', 'bytes */0')
+
+    def test_exhausted_known_size_zero_nonempty(self):
+        stream = io.BytesIO(b'not empty WAT!')
+        with pytest.raises(ValueError) as exc_info:
+            _upload.get_next_chunk(stream, 1, 0)
+
+        exc_info.match(
+            u'Stream specified as empty, but produced non-empty content.')
 
     def test_read_past_known_size(self):
         data = b'more content than we expected'
@@ -889,10 +895,10 @@ class Test_get_next_chunk(object):
         result1 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
         result2 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
         result3 = _upload.get_next_chunk(stream, chunk_size, total_bytes)
-        assert result0 == (0, 2, b'012', u'bytes 0-2/10')
-        assert result1 == (3, 5, b'345', u'bytes 3-5/10')
-        assert result2 == (6, 8, b'678', u'bytes 6-8/10')
-        assert result3 == (9, 9, b'9', u'bytes 9-9/10')
+        assert result0 == (0, b'012', u'bytes 0-2/10')
+        assert result1 == (3, b'345', u'bytes 3-5/10')
+        assert result2 == (6, b'678', u'bytes 6-8/10')
+        assert result3 == (9, b'9', u'bytes 9-9/10')
         assert stream.tell() == total_bytes
 
     def test_success_unknown_size(self):
@@ -902,8 +908,8 @@ class Test_get_next_chunk(object):
         # Splits into 4 chunks: abcdef, ghij
         result0 = _upload.get_next_chunk(stream, chunk_size, None)
         result1 = _upload.get_next_chunk(stream, chunk_size, None)
-        assert result0 == (0, chunk_size - 1, b'abcdef', u'bytes 0-5/*')
-        assert result1 == (chunk_size, len(data) - 1, b'ghij', u'bytes 6-9/10')
+        assert result0 == (0, b'abcdef', u'bytes 0-5/*')
+        assert result1 == (chunk_size, b'ghij', u'bytes 6-9/10')
         assert stream.tell() == len(data)
 
         # Do the same when the chunk size evenly divides len(data)
@@ -912,8 +918,8 @@ class Test_get_next_chunk(object):
         # Splits into 2 chunks: `data` and empty string
         result0 = _upload.get_next_chunk(stream, chunk_size, None)
         result1 = _upload.get_next_chunk(stream, chunk_size, None)
-        assert result0 == (0, len(data) - 1, data, u'bytes 0-9/*')
-        assert result1 == (len(data), len(data) - 1, b'', u'bytes */10')
+        assert result0 == (0, data, u'bytes 0-9/*')
+        assert result1 == (len(data), b'', u'bytes */10')
         assert stream.tell() == len(data)
 
 

@@ -526,7 +526,7 @@ class ResumableUpload(UploadBase):
                 u'This upload has not been initiated. Please call '
                 u'initiate() before beginning to transmit chunks.')
 
-        start_byte, end_byte, payload, content_range = get_next_chunk(
+        start_byte, payload, content_range = get_next_chunk(
             self._stream, self._chunk_size, self._total_bytes)
         if start_byte != self.bytes_uploaded:
             msg = _STREAM_ERROR_TEMPLATE.format(
@@ -784,14 +784,15 @@ def get_next_chunk(stream, chunk_size, total_bytes):
             in the ``stream``.
 
     Returns:
-        Tuple[int, int, bytes, str]: Quadruple of:
+        Tuple[int, bytes, str]: Triple of:
 
           * the start byte index
-          * the end byte index
           * the content in between the start and end bytes (inclusive)
           * content range header for the chunk (slice) that has been read
 
     Raises:
+        ValueError: If ``total_bytes == 0`` but ``stream.read()`` yields
+            non-empty content.
         ValueError: If there is no data left to consume. This corresponds
             exactly to the case ``end_byte < start_byte``, which can only
             occur if ``end_byte == start_byte - 1``.
@@ -807,8 +808,15 @@ def get_next_chunk(stream, chunk_size, total_bytes):
         if num_bytes_read < chunk_size:
             # We now **KNOW** the total number of bytes.
             total_bytes = end_byte + 1
+    elif total_bytes == 0:
+        # NOTE: We also expect ``start_byte == 0`` here but don't check
+        #       because ``_prepare_initiate_request()`` requires the
+        #       stream to be at the beginning.
+        if num_bytes_read != 0:
+            raise ValueError(
+                u'Stream specified as empty, but produced non-empty content.')
     else:
-        if num_bytes_read == 0 and total_bytes != 0:
+        if num_bytes_read == 0:
             raise ValueError(
                 u'Stream is already exhausted. There is no content remaining.')
 
@@ -817,7 +825,7 @@ def get_next_chunk(stream, chunk_size, total_bytes):
             raise ValueError(msg)
 
     content_range = get_content_range(start_byte, end_byte, total_bytes)
-    return start_byte, max([end_byte, 0]), payload, content_range
+    return start_byte, payload, content_range
 
 
 def get_content_range(start_byte, end_byte, total_bytes):
