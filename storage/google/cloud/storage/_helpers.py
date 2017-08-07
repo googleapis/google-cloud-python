@@ -126,6 +126,8 @@ class _PropertyMixin(object):
         self._properties = value
         # If the values are reset, the changes must as well.
         self._changes = set()
+        if hasattr(self, '_label_removals'):
+            self._label_removals.clear()
 
     def patch(self, client=None):
         """Sends all changed properties in a PATCH request.

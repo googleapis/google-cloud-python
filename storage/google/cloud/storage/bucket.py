@@ -219,27 +219,7 @@ class Bucket(_PropertyMixin):
                 self._properties['labels'][removed_label] = None
 
         # Call the superclass method.
-        answer = super(Bucket, self).patch(client=client)
-
-        # Clear out the label removals.
-        # This comes after the superclass method to ensure that we hold on
-        # to the data in case of an error.
-        self._label_removals.clear()
-        return answer
-
-    def update(self, client=None):
-        """Sends all properties in a PUT request.
-
-        Updates the ``_properties`` with the response from the backend.
-
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current object.
-        """
-        answer = super(Bucket, self).update(client=client)
-        self._label_removals.clear()
-        return answer
+        return super(Bucket, self).patch(client=client)
 
     @property
     def acl(self):

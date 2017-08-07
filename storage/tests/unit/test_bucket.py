@@ -710,16 +710,6 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsNot(bucket._properties['labels'], LABELS)
         self.assertIn('labels', bucket._changes)
 
-        # Make sure that a update call correctly adds the labels.
-        client = mock.NonCallableMock(spec=('_connection',))
-        client._connection = mock.NonCallableMock(spec=('api_request',))
-        bucket.update(client=client)
-        client._connection.api_request.assert_called()
-        _, _, kwargs = client._connection.api_request.mock_calls[0]
-        self.assertEqual(len(kwargs['data']['labels']), 2)
-        self.assertEqual(kwargs['data']['labels']['color'], 'red')
-        self.assertEqual(kwargs['data']['labels']['flavor'], 'cherry')
-
     def test_labels_setter_with_removal(self):
         # Make sure the bucket labels look correct and follow the expected
         # public structure.
