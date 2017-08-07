@@ -189,12 +189,9 @@ class TestDatabase(_BaseTest):
         expected_name = self.DATABASE_NAME
         self.assertEqual(database.name, expected_name)
 
-    def test_spanner_api_property(self):
-        from google.cloud.spanner.database import SPANNER_DATA_SCOPE
-
-        expected_scopes = (SPANNER_DATA_SCOPE,)
+    def test_spanner_api_property_w_scopeless_creds(self):
         client = _Client()
-        credentials = client.credentials = _make_credentials()
+        credentials = client.credentials = object()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
@@ -213,9 +210,51 @@ class TestDatabase(_BaseTest):
         spanner_client.assert_called_once_with(
             lib_name='gccl',
             lib_version=__version__,
-            credentials=credentials.with_scopes.return_value)
+            credentials=credentials)
 
-        credentials.with_scopes.assert_called_once_with(expected_scopes)
+    def test_spanner_api_w_scoped_creds(self):
+        import google.auth.credentials
+        from google.cloud.spanner.database import SPANNER_DATA_SCOPE
+
+        class _CredentialsWithScopes(
+                google.auth.credentials.Scoped):
+
+            def __init__(self, scopes=(), source=None):
+                self._scopes = scopes
+                self._source = source
+
+            def requires_scopes(self):
+                return True
+
+            def with_scopes(self, scopes):
+                return self.__class__(scopes, self)
+
+        expected_scopes = (SPANNER_DATA_SCOPE,)
+        client = _Client()
+        credentials = client.credentials = _CredentialsWithScopes()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        patch = mock.patch('google.cloud.spanner.database.SpannerClient')
+
+        with patch as spanner_client:
+            api = database.spanner_api
+
+        self.assertIs(api, spanner_client.return_value)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        self.assertEqual(len(spanner_client.call_args_list), 1)
+        called_args, called_kw = spanner_client.call_args
+        self.assertEqual(called_args, ())
+        self.assertEqual(called_kw['lib_name'], 'gccl')
+        self.assertEqual(called_kw['lib_version'], __version__)
+        scoped = called_kw['credentials']
+        self.assertEqual(scoped._scopes, expected_scopes)
+        self.assertIs(scoped._source, credentials)
 
     def test___eq__(self):
         instance = _Instance(self.INSTANCE_NAME)

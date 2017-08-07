@@ -158,13 +158,13 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
-            base_creds = self._instance._client.credentials
-            scoped = google.auth.credentials.with_scopes_if_required(
-                base_creds, (SPANNER_DATA_SCOPE,))
+            credentials = self._instance._client.credentials
+            if isinstance(credentials, google.auth.credentials.Scoped):
+                credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             self._spanner_api = SpannerClient(
                 lib_name='gccl',
                 lib_version=__version__,
-                credentials=scoped,
+                credentials=credentials,
             )
         return self._spanner_api
 
