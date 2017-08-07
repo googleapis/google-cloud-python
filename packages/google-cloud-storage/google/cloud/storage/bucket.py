@@ -556,6 +556,7 @@ class Bucket(_PropertyMixin):
            >>> policies[1]['maxAgeSeconds'] = 3600
            >>> del policies[0]
            >>> bucket.cors = policies
+           >>> bucket.update()
 
         :setter: Set CORS policies for this bucket.
         :getter: Gets the CORS policies for this bucket.
@@ -595,6 +596,7 @@ class Bucket(_PropertyMixin):
            >>> labels['new_key'] = 'some-label'
            >>> del labels['old_key']
            >>> bucket.labels = labels
+           >>> bucket.update()
 
         :setter: Set labels for this bucket.
         :getter: Gets the labels for this bucket.
@@ -663,6 +665,7 @@ class Bucket(_PropertyMixin):
            >>> rules[1]['rule']['action']['type'] = 'Delete'
            >>> del rules[0]
            >>> bucket.lifecycle_rules = rules
+           >>> bucket.update()
 
         :setter: Set lifestyle rules for this bucket.
         :getter: Gets the lifestyle rules for this bucket.
