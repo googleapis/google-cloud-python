@@ -54,7 +54,7 @@ REQUIREMENTS = [
     'googleapis-common-protos >= 1.3.4',
     'protobuf >= 3.0.0',
     'google-auth >= 0.4.0, < 2.0.0dev',
-    'requests >= 2.4.0, < 3.0.0dev',
+    'requests >= 2.18.0, < 3.0.0dev',
     'six',
     'tenacity >= 4.0.0, <5.0.0dev'
 ]
