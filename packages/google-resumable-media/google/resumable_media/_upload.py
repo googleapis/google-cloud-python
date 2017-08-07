@@ -808,7 +808,7 @@ def get_next_chunk(stream, chunk_size, total_bytes):
             # We now **KNOW** the total number of bytes.
             total_bytes = end_byte + 1
     else:
-        if num_bytes_read == 0:
+        if num_bytes_read == 0 and total_bytes != 0:
             raise ValueError(
                 u'Stream is already exhausted. There is no content remaining.')
 
@@ -817,7 +817,7 @@ def get_next_chunk(stream, chunk_size, total_bytes):
             raise ValueError(msg)
 
     content_range = get_content_range(start_byte, end_byte, total_bytes)
-    return start_byte, end_byte, payload, content_range
+    return start_byte, max([end_byte, 0]), payload, content_range
 
 
 def get_content_range(start_byte, end_byte, total_bytes):

@@ -860,6 +860,13 @@ class Test_get_next_chunk(object):
         exc_info.match(
             u'Stream is already exhausted. There is no content remaining.')
 
+    def test_exhausted_known_size_zero(self):
+        data = b''
+        stream = io.BytesIO(data)
+        stream.seek(len(data))
+        answer = _upload.get_next_chunk(stream, 1, len(data))
+        assert answer == (0, 0, b'', 'bytes */0')
+
     def test_read_past_known_size(self):
         data = b'more content than we expected'
         stream = io.BytesIO(data)
