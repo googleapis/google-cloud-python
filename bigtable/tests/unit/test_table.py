@@ -537,6 +537,7 @@ class TestTable(unittest.TestCase):
             'end_key': end_key,
             'filter_': filter_obj,
             'limit': limit,
+            'end_inclusive': False,
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
@@ -572,12 +573,12 @@ class TestTable(unittest.TestCase):
 class Test__create_row_request(unittest.TestCase):
 
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
-                  filter_=None, limit=None):
+                  filter_=None, limit=None, end_inclusive=False):
         from google.cloud.bigtable.table import _create_row_request
 
         return _create_row_request(
             table_name, row_key=row_key, start_key=start_key, end_key=end_key,
-            filter_=filter_, limit=limit)
+            filter_=filter_, limit=limit, end_inclusive=end_inclusive)
 
     def test_table_name_only(self):
         table_name = 'table_name'
@@ -625,6 +626,17 @@ class Test__create_row_request(unittest.TestCase):
         expected_result = _ReadRowsRequestPB(table_name=table_name)
         expected_result.rows.row_ranges.add(
             start_key_closed=start_key, end_key_open=end_key)
+        self.assertEqual(result, expected_result)
+
+    def test_row_range_both_keys_inclusive(self):
+        table_name = 'table_name'
+        start_key = b'start_key'
+        end_key = b'end_key'
+        result = self._call_fut(table_name, start_key=start_key,
+                                end_key=end_key, end_inclusive=True)
+        expected_result = _ReadRowsRequestPB(table_name=table_name)
+        expected_result.rows.row_ranges.add(
+            start_key_closed=start_key, end_key_closed=end_key)
         self.assertEqual(result, expected_result)
 
     def test_with_filter(self):
