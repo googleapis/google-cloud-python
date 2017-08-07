@@ -1,0 +1,4 @@
+include README.rst
+graft google
+graft unit_tests
+global-exclude *.pyc
