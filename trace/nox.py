@@ -14,6 +14,8 @@
 
 from __future__ import absolute_import
 
+import os
+
 import nox
 
 
@@ -41,7 +43,7 @@ def unit_tests(session, python_version):
         '--cov-config=.coveragerc',
         '--cov-report=',
         '--cov-fail-under=97',
-        'tests/',
+        os.path.join('tests', 'unit'),
         *session.posargs
     )
 
