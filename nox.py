@@ -29,7 +29,7 @@ def docs(session):
 
     # Install Sphinx and also all of the google-cloud-* packages.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
-    session.install('Sphinx >= 1.6.2', 'sphinx_rtd_theme')
+    session.install('Sphinx >= 1.6.2', 'sphinx-docstring-typing >= 0.0.2')
     session.install(
         'core/', 'bigquery/', 'bigtable/', 'datastore/', 'dns/', 'language/',
         'logging/', 'error_reporting/', 'monitoring/', 'pubsub/',
