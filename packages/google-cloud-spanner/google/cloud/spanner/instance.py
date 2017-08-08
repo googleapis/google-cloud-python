@@ -198,7 +198,7 @@ class Instance(object):
 
            before calling :meth:`create`.
 
-        :rtype: :class:`google.cloud.future.operation.Operation`
+        :rtype: :class:`google.api.core.operation.Operation`
         :returns: an operation instance
         :raises Conflict: if the instance already exists
         :raises GaxError:
@@ -289,7 +289,7 @@ class Instance(object):
 
             before calling :meth:`update`.
 
-        :rtype: :class:`google.cloud.future.operation.Operation`
+        :rtype: :class:`google.api.core.operation.Operation`
         :returns: an operation instance
         :raises NotFound: if the instance does not exist
         :raises GaxError: for other errors returned from the call
