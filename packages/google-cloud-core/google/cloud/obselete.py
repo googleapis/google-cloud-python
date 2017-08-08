@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Helpers for deprecated code and modules."""
+
 import warnings
 
 import pkg_resources
