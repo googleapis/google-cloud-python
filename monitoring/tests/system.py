@@ -202,14 +202,19 @@ class TestMonitoring(unittest.TestCase):
         retry_500(client.write_point)(metric, resource, VALUE)
 
         def _query_timeseries_with_retries():
-            MAX_RETRIES = 10
+            MAX_RETRIES = 6
 
             def _has_timeseries(result):
                 return len(list(result)) > 0
 
-            retry_result = RetryResult(_has_timeseries,
-                                       max_tries=MAX_RETRIES)(client.query)
-            return RetryErrors(BadRequest, max_tries=MAX_RETRIES)(retry_result)
+            retry_result = RetryResult(
+                _has_timeseries,
+                max_tries=MAX_RETRIES,
+                backoff=3)(client.query)
+            return RetryErrors(
+                BadRequest,
+                max_tries=MAX_RETRIES,
+                backoff=3)(retry_result)
 
         query = _query_timeseries_with_retries()(METRIC_TYPE, minutes=5)
         timeseries_list = list(query)
