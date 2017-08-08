@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestSchemaField(unittest.TestCase):
 
@@ -101,7 +103,7 @@ class TestSchemaField(unittest.TestCase):
         field = self._make_one('test', 'STRING')
         other = object()
         self.assertNotEqual(field, other)
-        self.assertIs(field.__eq__(other), NotImplemented)
+        self.assertEqual(field, mock.ANY)
 
     def test___eq___name_mismatch(self):
         field = self._make_one('test', 'STRING')
@@ -155,7 +157,7 @@ class TestSchemaField(unittest.TestCase):
         field = self._make_one('toast', 'INTEGER')
         other = object()
         self.assertNotEqual(field, other)
-        self.assertIs(field.__ne__(other), NotImplemented)
+        self.assertEqual(field, mock.ANY)
 
     def test___ne___same_value(self):
         field1 = self._make_one('test', 'TIMESTAMP', mode='REPEATED')
