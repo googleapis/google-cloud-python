@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 10466d1 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud fe757be documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '10466d1',
+        VERSION:     'fe757be',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -774,6 +774,35 @@
         <span class="c1"># Over-ride the key used to retrieve the next page token.</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">_NEXT_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;pageToken&#39;</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
+
+<div class="viewcode-block" id="Table.row_from_mapping"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.row_from_mapping">[docs]</a>    <span class="k">def</span> <span class="nf">row_from_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a mapping to a row tuple using the schema.</span>
+
+<span class="sd">        :type mapping: dict</span>
+<span class="sd">        :param mapping: Mapping of row data: must contain keys for all</span>
+<span class="sd">               required fields in the schema.  Keys which do not correspond</span>
+<span class="sd">               to a field in the schema are ignored.</span>
+
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        :returns: Tuple whose elements are ordered according to the table&#39;s</span>
+<span class="sd">                  schema.</span>
+<span class="sd">        :raises: ValueError if table&#39;s schema is not set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
+
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;REQUIRED&#39;</span><span class="p">:</span>
+                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;REPEATED&#39;</span><span class="p">:</span>
+                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">()))</span>
+            <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">:</span>
+                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Unknown field mode: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.insert_data"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.insert_data">[docs]</a>    <span class="k">def</span> <span class="nf">insert_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                     <span class="n">rows</span><span class="p">,</span>

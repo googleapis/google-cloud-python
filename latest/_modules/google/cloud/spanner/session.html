@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.session &#8212; google-cloud 10466d1 documentation</title>
+    <title>google.cloud.spanner.session &#8212; google-cloud fe757be documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '10466d1',
+        VERSION:     'fe757be',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -310,8 +310,9 @@
 <span class="sd">                   If passed, &quot;timeout_secs&quot; will be removed and used to</span>
 <span class="sd">                   override the default timeout.</span>
 
-<span class="sd">        :rtype: :class:`datetime.datetime`</span>
-<span class="sd">        :returns: timestamp of committed transaction</span>
+<span class="sd">        :rtype: Any</span>
+<span class="sd">        :returns: The return value of ``func``.</span>
+
 <span class="sd">        :raises Exception:</span>
 <span class="sd">            reraises any non-ABORT execptions raised by ``func``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -326,7 +327,7 @@
             <span class="k">if</span> <span class="n">txn</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">func</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+                <span class="n">return_value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                 <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
@@ -341,8 +342,7 @@
                 <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">committed</span> <span class="o">=</span> <span class="n">txn</span><span class="o">.</span><span class="n">committed</span>
-                <span class="k">return</span> <span class="n">committed</span></div></div>
+                <span class="k">return</span> <span class="n">return_value</span></div></div>
 
 
 <span class="c1"># pylint: disable=misplaced-bare-raise</span>
