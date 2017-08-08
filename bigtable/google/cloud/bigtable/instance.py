@@ -17,6 +17,7 @@
 
 import re
 
+from google.api.core import operation
 from google.cloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
 from google.cloud.bigtable._generated import (
@@ -26,7 +27,6 @@ from google.cloud.bigtable._generated import (
 from google.cloud.bigtable.cluster import Cluster
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.table import Table
-from google.cloud.future import operation
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
