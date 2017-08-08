@@ -9,7 +9,7 @@ common helpers (e.g. base ``Client`` classes) used by all of the
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/core/modules.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/core/modules.html
 
 Quick Start
 -----------
