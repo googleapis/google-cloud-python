@@ -268,8 +268,9 @@ class Session(object):
                    If passed, "timeout_secs" will be removed and used to
                    override the default timeout.
 
-        :rtype: :class:`datetime.datetime`
-        :returns: timestamp of committed transaction
+        :rtype: Any
+        :returns: The return value of ``func``.
+
         :raises Exception:
             reraises any non-ABORT execptions raised by ``func``.
         """
@@ -284,7 +285,7 @@ class Session(object):
             if txn._transaction_id is None:
                 txn.begin()
             try:
-                func(txn, *args, **kw)
+                return_value = func(txn, *args, **kw)
             except GaxError as exc:
                 _delay_until_retry(exc, deadline)
                 del self._transaction
@@ -299,8 +300,7 @@ class Session(object):
                 _delay_until_retry(exc, deadline)
                 del self._transaction
             else:
-                committed = txn.committed
-                return committed
+                return return_value
 
 
 # pylint: disable=misplaced-bare-raise
