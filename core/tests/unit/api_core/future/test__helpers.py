@@ -14,7 +14,7 @@
 
 import mock
 
-from google.cloud.future import _helpers
+from google.api.core.future import _helpers
 
 
 @mock.patch('threading.Thread', autospec=True)

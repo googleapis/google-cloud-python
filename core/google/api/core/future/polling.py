@@ -22,8 +22,8 @@ import operator
 import six
 import tenacity
 
-from google.cloud.future import _helpers
-from google.cloud.future import base
+from google.api.core.future import _helpers
+from google.api.core.future import base
 
 
 class PollingFuture(base.Future):
