@@ -22,7 +22,7 @@ from google.cloud._testing import _GAXBaseAPI
 from google.cloud.spanner import __version__
 
 
-def _make_credentials():
+def _make_credentials():  # pragma: NO COVER
     import google.auth.credentials
 
     class _CredentialsWithScopes(
@@ -223,7 +223,7 @@ class TestDatabase(_BaseTest):
                 self._scopes = scopes
                 self._source = source
 
-            def requires_scopes(self):
+            def requires_scopes(self): # pragma: NO COVER
                 return True
 
             def with_scopes(self, scopes):
