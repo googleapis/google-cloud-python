@@ -12,7 +12,7 @@ Google Cloud Python Client
 -  `Read The Docs Documentation`_
 
 .. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
+.. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
 The following client libraries have **GA** support:

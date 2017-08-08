@@ -9,7 +9,7 @@ Python Client for Stackdriver Logging
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/logging/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/logging/usage.html
 
 Quick Start
 -----------
@@ -54,7 +54,7 @@ Example of fetching entries:
 See the ``google-cloud-python`` API `logging documentation`_ to learn how to
 connect to Stackdriver Logging using this Client Library.
 
-.. _logging documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/logging/usage.html
+.. _logging documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/logging/usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg
    :target: https://pypi.org/project/google-cloud-logging/
