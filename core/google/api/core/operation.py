@@ -12,14 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Futures for long-running operations returned from Google Cloud APIs."""
+"""Futures for long-running operations returned from Google Cloud APIs.
+
+These futures can be used to synchronously wait for the result of a long-running
+operation using :meth:`Operation.result`:
+
+
+.. code-block:: python
+
+    operation = my_api_client.long_running_method()
+    result = operation.result()
+
+Or asynchronously using callbacks and :meth:`Operation.add_done_callback`:
+
+.. code-block:: python
+
+    operation = my_api_client.long_running_method()
+
+    def my_callback(future):
+        result = future.result()
+
+    operation.add_done_callback(my_callback)
+
+"""
 
 import functools
 import threading
 
+from google.api.core.future import polling
+from google.api.core import exceptions
 from google.cloud import _helpers
-from google.cloud import exceptions
-from google.cloud.future import polling
 from google.longrunning import operations_pb2
 from google.protobuf import json_format
 from google.rpc import code_pb2
@@ -85,12 +107,13 @@ class Operation(polling.PollingFuture):
                     self._result_type, self._operation.response)
                 self.set_result(response)
             elif self._operation.HasField('error'):
-                exception = exceptions.GoogleCloudError(
+                exception = exceptions.GoogleAPICallError(
                     self._operation.error.message,
-                    errors=(self._operation.error))
+                    errors=(self._operation.error),
+                    response=self._operation)
                 self.set_exception(exception)
             else:
-                exception = exceptions.GoogleCloudError(
+                exception = exceptions.GoogleAPICallError(
                     'Unexpected state: Long-running operation had neither '
                     'response nor error set.')
                 self.set_exception(exception)

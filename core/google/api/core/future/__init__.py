@@ -14,7 +14,7 @@
 
 """Futures for dealing with asynchronous operations."""
 
-from google.cloud.future.base import Future
+from google.api.core.future.base import Future
 
 __all__ = [
     'Future',
