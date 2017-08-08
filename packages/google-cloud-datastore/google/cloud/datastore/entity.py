@@ -129,8 +129,9 @@ class Entity(dict):
     def __init__(self, key=None, exclude_from_indexes=()):
         super(Entity, self).__init__()
         self.key = key
-        self._exclude_from_indexes = set(_ensure_tuple_or_list(
+        self.exclude_from_indexes = set(_ensure_tuple_or_list(
             'exclude_from_indexes', exclude_from_indexes))
+        """Names of fields which are *not* to be indexed for this entity."""
         # NOTE: This will be populated when parsing a protobuf in
         #       google.cloud.datastore.helpers.entity_from_protobuf.
         self._meanings = {}
@@ -148,7 +149,7 @@ class Entity(dict):
             return False
 
         return (self.key == other.key and
-                self._exclude_from_indexes == other._exclude_from_indexes and
+                self.exclude_from_indexes == other.exclude_from_indexes and
                 self._meanings == other._meanings and
                 super(Entity, self).__eq__(other))
 
@@ -175,15 +176,6 @@ class Entity(dict):
         """
         if self.key:
             return self.key.kind
-
-    @property
-    def exclude_from_indexes(self):
-        """Names of fields which are *not* to be indexed for this entity.
-
-        :rtype: sequence of field names
-        :returns: The set of fields excluded from indexes.
-        """
-        return frozenset(self._exclude_from_indexes)
 
     def __repr__(self):
         if self.key:
