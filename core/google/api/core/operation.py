@@ -14,8 +14,8 @@
 
 """Futures for long-running operations returned from Google Cloud APIs.
 
-These futures can be used to synchronously wait for the result of a long-running
-operation using :meth:`Operation.result`:
+These futures can be used to synchronously wait for the result of a
+long-running operation using :meth:`Operation.result`:
 
 
 .. code-block:: python
@@ -39,8 +39,8 @@ Or asynchronously using callbacks and :meth:`Operation.add_done_callback`:
 import functools
 import threading
 
-from google.api.core.future import polling
 from google.api.core import exceptions
+from google.api.core.future import polling
 from google.cloud import _helpers
 from google.longrunning import operations_pb2
 from google.protobuf import json_format
