@@ -328,9 +328,14 @@ class UDFResource(object):
         self.value = value
 
     def __eq__(self, other):
+        if not isinstance(other, UDFResource):
+            return NotImplemented
         return(
             self.udf_type == other.udf_type and
             self.value == other.value)
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class UDFResourcesProperty(object):

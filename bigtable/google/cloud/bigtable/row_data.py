@@ -58,13 +58,13 @@ class Cell(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.value == self.value and
                 other.timestamp == self.timestamp and
                 other.labels == self.labels)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
 
 class PartialCellData(object):
@@ -126,12 +126,12 @@ class PartialRowData(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other._row_key == self._row_key and
                 other._cells == self._cells)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def to_dict(self):
         """Convert the cells to a dictionary.
@@ -211,11 +211,11 @@ class PartialRowsData(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other._response_iterator == self._response_iterator
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     @property
     def state(self):

@@ -146,7 +146,7 @@ class Entity(dict):
         :returns: True if the entities compare equal, else False.
         """
         if not isinstance(other, Entity):
-            return False
+            return NotImplemented
 
         return (self.key == other.key and
                 self.exclude_from_indexes == other.exclude_from_indexes and
@@ -162,7 +162,7 @@ class Entity(dict):
         :rtype: bool
         :returns: False if the entities compare equal, else True.
         """
-        return not self.__eq__(other)
+        return not self == other
 
     @property
     def kind(self):

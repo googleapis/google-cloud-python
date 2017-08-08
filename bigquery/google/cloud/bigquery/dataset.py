@@ -76,10 +76,15 @@ class AccessGrant(object):
         self.entity_id = entity_id
 
     def __eq__(self, other):
+        if not isinstance(other, AccessGrant):
+            return NotImplemented
         return (
             self.role == other.role and
             self.entity_type == other.entity_type and
             self.entity_id == other.entity_id)
+
+    def __ne__(self, other):
+        return not self == other
 
     def __repr__(self):
         return '<AccessGrant: role=%s, %s=%s>' % (
