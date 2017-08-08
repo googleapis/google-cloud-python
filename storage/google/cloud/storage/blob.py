@@ -142,7 +142,8 @@ class Blob(_PropertyMixin):
        set as their 'storage_class'.
     """
 
-    def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
+    def __init__(self, name, bucket, chunk_size=1024 * 1024 * 10,
+                 encryption_key=None):
         name = _bytes_to_unicode(name)
         super(Blob, self).__init__(name=name)
 
