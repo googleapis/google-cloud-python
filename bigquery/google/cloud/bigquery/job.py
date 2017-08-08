@@ -19,6 +19,7 @@ import threading
 import six
 from six.moves import http_client
 
+import google.api.core.future.polling
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
@@ -31,7 +32,6 @@ from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
 from google.cloud.bigquery._helpers import _TypedProperty
-import google.cloud.future.polling
 
 _DONE_STATE = 'DONE'
 _STOPPED_REASON = 'stopped'
@@ -140,7 +140,7 @@ class WriteDisposition(_EnumProperty):
     WRITE_EMPTY = 'WRITE_EMPTY'
 
 
-class _AsyncJob(google.cloud.future.polling.PollingFuture):
+class _AsyncJob(google.api.core.future.polling.PollingFuture):
     """Base class for asynchronous jobs.
 
     :type name: str
@@ -496,7 +496,7 @@ class _AsyncJob(google.cloud.future.polling.PollingFuture):
 
         This always returns False. It's not possible to check if a job was
         cancelled in the API. This method is here to satisfy the interface
-        for :class:`google.cloud.future.Future`.
+        for :class:`google.api.core.future.Future`.
 
         :rtype: bool
         :returns: False
