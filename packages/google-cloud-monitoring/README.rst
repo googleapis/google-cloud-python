@@ -9,7 +9,7 @@ Python Client for Stackdriver Monitoring
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/monitoring/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/monitoring/usage.html
 
 Quick Start
 -----------
@@ -64,7 +64,7 @@ Display CPU utilization across your GCE instances during the last five minutes:
 See the ``google-cloud-python`` API `monitoring documentation`_ to learn how
 to connect to Stackdriver Monitoring using this Client Library.
 
-.. _monitoring documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/monitoring/usage.html
+.. _monitoring documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/monitoring/usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
