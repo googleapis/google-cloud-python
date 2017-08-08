@@ -35,6 +35,7 @@ def unit_tests(session, python_version):
         'pytest',
         'pytest-cov',
         'grpcio >= 1.0.2',
+        'google-gax >= 0.15, < 0.16.dev',
     )
     session.install('-e', '.')
 
