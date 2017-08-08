@@ -170,12 +170,12 @@ class Database(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.database_id == self.database_id and
                 other._instance == self._instance)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def create(self):
         """Create this database within its instance
