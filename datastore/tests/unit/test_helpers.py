@@ -149,12 +149,12 @@ class Test_entity_from_protobuf(unittest.TestCase):
         array_val_pb = _new_value_pb(entity_pb, 'baz')
         array_pb = array_val_pb.array_value.values
 
-        # unindexed_value_pb1 = array_pb.add()
-        # unindexed_value_pb1.integer_value = 10
+        unindexed_value_pb1 = array_pb.add()
+        unindexed_value_pb1.integer_value = 10
 
         entity = self._call_fut(entity_pb)
         entity_dict = dict(entity)
-        self.assertIsInstance(entity_dict['baz'], list)
+        self.assertEqual(entity_dict['baz'], [10])
 
     def test_entity_no_key(self):
         from google.cloud.proto.datastore.v1 import entity_pb2
