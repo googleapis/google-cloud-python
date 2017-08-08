@@ -142,12 +142,12 @@ class Table(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.table_id == self.table_id and
                 other._instance == self._instance)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def create(self, initial_split_keys=None, column_families=()):
         """Creates this table.

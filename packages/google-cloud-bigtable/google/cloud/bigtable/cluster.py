@@ -159,7 +159,7 @@ class Cluster(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         # NOTE: This does not compare the configuration values, such as
         #       the serve_nodes. Instead, it only compares
         #       identifying values instance, cluster ID and client. This is
@@ -170,7 +170,7 @@ class Cluster(object):
                 other._instance == self._instance)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def reload(self):
         """Reload the metadata for this cluster."""
