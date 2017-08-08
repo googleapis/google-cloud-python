@@ -9,7 +9,7 @@ Python Client for Google Cloud Pub / Sub
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/pubsub/usage.html
 
 Quick Start
 -----------
@@ -45,7 +45,7 @@ independently written applications.
 See the ``google-cloud-python`` API `Pub/Sub documentation`_ to learn how to connect
 to Cloud Pub/Sub using this Client Library.
 
-.. _Pub/Sub documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub/usage.html
+.. _Pub/Sub documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/pubsub/usage.html
 
 To get started with this API, you'll need to create
 
