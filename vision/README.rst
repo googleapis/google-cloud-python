@@ -9,7 +9,7 @@ Python Client for Google Cloud Vision
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/vision/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/vision/usage.html
 
 Quick Start
 -----------

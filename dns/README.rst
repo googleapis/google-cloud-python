@@ -9,7 +9,7 @@ Python Client for Google Cloud DNS
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/dns/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/dns/usage.html
 
 Quick Start
 -----------

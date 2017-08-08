@@ -9,7 +9,7 @@ Python Client for Google Cloud Storage
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage/client.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/storage/client.html
 
 Quick Start
 -----------
@@ -43,7 +43,7 @@ via direct download.
 See the ``google-cloud-python`` API `storage documentation`_ to learn how to
 connect to Cloud Storage using this Client Library.
 
-.. _storage documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage/client.html
+.. _storage documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/storage/client.html
 
 You need to create a Google Cloud Storage bucket to use this client library.
 Follow along with the `official Google Cloud Storage documentation`_ to learn
