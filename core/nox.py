@@ -43,6 +43,7 @@ def unit_tests(session, python_version):
         'py.test',
         '--quiet',
         '--cov=google.cloud',
+        '--cov=google.api.core',
         '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',
