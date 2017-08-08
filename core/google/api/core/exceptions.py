@@ -100,7 +100,7 @@ class GoogleAPICallError(GoogleAPIError):
 
     @property
     def response(self):
-        """Optional[Union[requests.Request, grpc.Call]]L The response or
+        """Optional[Union[requests.Request, grpc.Call]]: The response or
         gRPC call metadata."""
         return self._response
 
