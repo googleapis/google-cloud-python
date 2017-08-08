@@ -232,13 +232,13 @@ class TestInstance(unittest.TestCase):
 
     def test_create(self):
         import datetime
+        from google.api.core import operation
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from tests.unit._testing import _FakeStub
-        from google.cloud.future import operation
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         NOW = datetime.datetime.utcnow()
@@ -285,11 +285,11 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(kwargs, {})
 
     def test_create_w_explicit_serve_nodes(self):
+        from google.api.core import operation
         from google.longrunning import operations_pb2
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from tests.unit._testing import _FakeStub
-        from google.cloud.future import operation
 
         SERVE_NODES = 5
 
