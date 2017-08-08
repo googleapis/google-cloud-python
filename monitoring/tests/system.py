@@ -206,6 +206,7 @@ class TestMonitoring(unittest.TestCase):
 
             def _has_timeseries(result):
                 result_len = len(list(result))
+
                 if result_len > 0:
                     try:
                         query = client.query(METRIC_TYPE, minutes=5)
