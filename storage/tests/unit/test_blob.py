@@ -503,7 +503,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(file_obj.tell(), 0)
         # Check that the transport was called once.
         transport.request.assert_called_once_with(
-            'GET', blob.media_link, data=None, headers={'accept-encoding':'gzip'}), stream=True)
+            'GET', blob.media_link, data=None,
+            headers={'accept-encoding': 'gzip'}, stream=True)
 
     def test_download_to_file_wo_media_link(self):
         blob_name = 'blob-name'
@@ -558,7 +559,8 @@ class Test_Blob(unittest.TestCase):
             self._check_session_mocks(client, transport, media_link)
         else:
             transport.request.assert_called_once_with(
-                'GET', media_link, data=None, headers={'accept-encoding': 'gzip'}, stream=True)
+                'GET', media_link, data=None,
+                headers={'accept-encoding': 'gzip'}, stream=True)
 
     def test_download_to_file_default(self):
         self._download_to_file_helper()
@@ -623,7 +625,8 @@ class Test_Blob(unittest.TestCase):
                       'updated': '2014-12-06T13:13:50.690Z'}
         key = b'aa426195405adee2c8081bb9e7e74b19'
         blob = self._make_one(
-            blob_name, bucket=bucket, properties=properties, encryption_key=key)
+            blob_name, bucket=bucket, properties=properties,
+            encryption_key=key)
         # Modify the blob so there there will be 2 chunks of size 3.
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
@@ -644,7 +647,7 @@ class Test_Blob(unittest.TestCase):
             'X-Goog-Encryption-Key-Sha256': header_key_hash_value,
             'X-Goog-Encryption-Algorithm': 'AES256',
             'X-Goog-Encryption-Key': header_key_value,
-            'accept-encoding':'gzip'
+            'accept-encoding': 'gzip',
         }
         self._check_session_mocks(
             client, transport, media_link, headers=key_headers)
@@ -1411,8 +1414,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(len(sent['bindings']), len(BINDINGS))
         key = operator.itemgetter('role')
         for found, expected in zip(
-            sorted(sent['bindings'], key=key),
-            sorted(BINDINGS, key=key)):
+                sorted(sent['bindings'], key=key),
+                sorted(BINDINGS, key=key)):
             self.assertEqual(found['role'], expected['role'])
             self.assertEqual(
                 sorted(found['members']), sorted(expected['members']))
