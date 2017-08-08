@@ -51,13 +51,13 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.25.0, < 0.26dev',
+    'google-cloud-core >= 0.26.0, < 0.27dev',
     'google-gax>=0.15.7, <0.16dev',
 ]
 
 setup(
     name='google-cloud-bigtable',
-    version='0.25.0',
+    version='0.26.0',
     description='Python Client for Google Cloud Bigtable',
     long_description=README,
     namespace_packages=[

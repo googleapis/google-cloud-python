@@ -513,16 +513,16 @@ class TestSession(unittest.TestCase):
         def unit_of_work(txn, *args, **kw):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
+            return 42
 
-        committed = session.run_in_transaction(
+        return_value = session.run_in_transaction(
             unit_of_work, 'abc', some_arg='def')
 
-        self.assertEqual(committed, now)
         self.assertIsNone(session._transaction)
         self.assertEqual(len(called_with), 1)
         txn, args, kw = called_with[0]
         self.assertIsInstance(txn, Transaction)
-        self.assertEqual(txn.committed, committed)
+        self.assertEqual(return_value, 42)
         self.assertEqual(args, ('abc',))
         self.assertEqual(kw, {'some_arg': 'def'})
 
@@ -561,18 +561,15 @@ class TestSession(unittest.TestCase):
         def unit_of_work(txn, *args, **kw):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
+            return 'answer'
 
-        committed = session.run_in_transaction(
+        return_value = session.run_in_transaction(
             unit_of_work, 'abc', some_arg='def')
 
-        self.assertEqual(committed, now)
         self.assertEqual(len(called_with), 2)
         for index, (txn, args, kw) in enumerate(called_with):
             self.assertIsInstance(txn, Transaction)
-            if index == 1:
-                self.assertEqual(txn.committed, committed)
-            else:
-                self.assertIsNone(txn.committed)
+            self.assertEqual(return_value, 'answer')
             self.assertEqual(args, ('abc',))
             self.assertEqual(kw, {'some_arg': 'def'})
 
@@ -621,17 +618,15 @@ class TestSession(unittest.TestCase):
         time_module = _FauxTimeModule()
 
         with _Monkey(MUT, time=time_module):
-            committed = session.run_in_transaction(
-                unit_of_work, 'abc', some_arg='def')
+            session.run_in_transaction(unit_of_work, 'abc', some_arg='def')
 
         self.assertEqual(time_module._slept,
                          RETRY_SECONDS + RETRY_NANOS / 1.0e9)
-        self.assertEqual(committed, now)
         self.assertEqual(len(called_with), 2)
         for index, (txn, args, kw) in enumerate(called_with):
             self.assertIsInstance(txn, Transaction)
             if index == 1:
-                self.assertEqual(txn.committed, committed)
+                self.assertEqual(txn.committed, now)
             else:
                 self.assertIsNone(txn.committed)
             self.assertEqual(args, ('abc',))
@@ -688,9 +683,8 @@ class TestSession(unittest.TestCase):
         time_module = _FauxTimeModule()
 
         with _Monkey(MUT, time=time_module):
-            committed = session.run_in_transaction(unit_of_work)
+            session.run_in_transaction(unit_of_work)
 
-        self.assertEqual(committed, now)
         self.assertEqual(time_module._slept,
                          RETRY_SECONDS + RETRY_NANOS / 1.0e9)
         self.assertEqual(len(called_with), 2)

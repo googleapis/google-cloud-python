@@ -348,7 +348,8 @@ class TestPubsub(unittest.TestCase):
 
         # There is no GET method for snapshot, so check existence using
         # list
-        after_snapshots = _consume_snapshots(Config.CLIENT)
+        retry = RetryResult(lambda result: result, max_tries=4)
+        after_snapshots = retry(_consume_snapshots)(Config.CLIENT)
         self.assertEqual(len(before_snapshots) + 1, len(after_snapshots))
 
         def full_name(obj):

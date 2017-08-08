@@ -16,6 +16,7 @@
 
 import re
 
+import google.auth.credentials
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.cloud.gapic.spanner.v1.spanner_client import SpannerClient
@@ -33,6 +34,9 @@ from google.cloud.spanner.pool import BurstyPool
 from google.cloud.spanner.snapshot import Snapshot
 from google.cloud.spanner.pool import SessionCheckout
 # pylint: enable=ungrouped-imports
+
+
+SPANNER_DATA_SCOPE = 'https://www.googleapis.com/auth/spanner.data'
 
 
 _DATABASE_NAME_RE = re.compile(
@@ -154,8 +158,14 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
+            credentials = self._instance._client.credentials
+            if isinstance(credentials, google.auth.credentials.Scoped):
+                credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             self._spanner_api = SpannerClient(
-                lib_name='gccl', lib_version=__version__)
+                lib_name='gccl',
+                lib_version=__version__,
+                credentials=credentials,
+            )
         return self._spanner_api
 
     def __eq__(self, other):

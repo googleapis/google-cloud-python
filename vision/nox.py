@@ -35,10 +35,16 @@ def unit_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet',
-        '--cov=google.cloud.vision', '--cov=google.cloud.vision_v1',
-        '--cov-append', '--cov-config=.coveragerc', '--cov-report=',
-        'tests/',
+    session.run(
+        'py.test',
+        '--quiet',
+        '--cov=google.cloud.vision',
+        '--cov=google.cloud.vision_v1',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        'tests',
+        *session.posargs
     )
 
 
@@ -63,7 +69,12 @@ def system_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run(
+        'py.test',
+        '--quiet',
+        os.path.join('tests', 'system.py'),
+        *session.posargs
+    )
 
 
 @nox.session
@@ -84,7 +95,12 @@ def system_tests_manual_layer(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet', 'tests/system_old.py')
+    session.run(
+        'py.test',
+        '--quiet',
+        os.path.join('tests', 'system_old.py'),
+        *session.posargs
+    )
 
 
 @nox.session

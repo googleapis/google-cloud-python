@@ -733,6 +733,35 @@ class Table(object):
         iterator._NEXT_TOKEN = 'pageToken'
         return iterator
 
+    def row_from_mapping(self, mapping):
+        """Convert a mapping to a row tuple using the schema.
+
+        :type mapping: dict
+        :param mapping: Mapping of row data: must contain keys for all
+               required fields in the schema.  Keys which do not correspond
+               to a field in the schema are ignored.
+
+        :rtype: tuple
+        :returns: Tuple whose elements are ordered according to the table's
+                  schema.
+        :raises: ValueError if table's schema is not set
+        """
+        if len(self._schema) == 0:
+            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+
+        row = []
+        for field in self.schema:
+            if field.mode == 'REQUIRED':
+                row.append(mapping[field.name])
+            elif field.mode == 'REPEATED':
+                row.append(mapping.get(field.name, ()))
+            elif field.mode == 'NULLABLE':
+                row.append(mapping.get(field.name))
+            else:
+                raise ValueError(
+                    "Unknown field mode: {}".format(field.mode))
+        return tuple(row)
+
     def insert_data(self,
                     rows,
                     row_ids=None,
