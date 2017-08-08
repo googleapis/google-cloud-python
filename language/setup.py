@@ -52,7 +52,7 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.26.0, < 0.27dev',
-    'google-gax >= 0.15.13, < 0.16dev',
+    'google-gax >= 0.15.14, < 0.16dev',
     'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]
 EXTRAS_REQUIRE = {
