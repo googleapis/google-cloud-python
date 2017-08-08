@@ -454,7 +454,7 @@ class GeoPoint(object):
         :returns: True if the points compare equal, else False.
         """
         if not isinstance(other, GeoPoint):
-            return False
+            return NotImplemented
 
         return (self.latitude == other.latitude and
                 self.longitude == other.longitude)
@@ -465,4 +465,4 @@ class GeoPoint(object):
         :rtype: bool
         :returns: False if the points compare equal, else True.
         """
-        return not self.__eq__(other)
+        return not self == other
