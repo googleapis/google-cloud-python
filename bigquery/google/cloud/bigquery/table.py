@@ -1045,9 +1045,10 @@ class Table(object):
         :param file_obj: A file handle opened in binary mode for reading.
 
         :type source_format: str
-        :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
-                              job configuration option; see
-                              :meth:`google.cloud.bigquery.job.LoadJob`
+        :param source_format: Any supported format. The full list of supported
+            formats is documented under the
+            ``configuration.extract.destinationFormat`` property on this page:
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs
 
         :type rewind: bool
         :param rewind: If True, seek to the beginning of the file handle before
