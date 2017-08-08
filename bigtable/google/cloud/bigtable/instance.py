@@ -180,7 +180,7 @@ class Instance(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         # NOTE: This does not compare the configuration values, such as
         #       the display_name. Instead, it only compares
         #       identifying values instance ID and client. This is
@@ -191,7 +191,7 @@ class Instance(object):
                 other._client == self._client)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def reload(self):
         """Reload the metadata for this instance."""
