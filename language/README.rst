@@ -9,7 +9,7 @@ Python Client for Google Cloud Natural Language
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/language/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/language/usage.html
 
 Quick Start
 -----------

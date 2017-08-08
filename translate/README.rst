@@ -9,7 +9,7 @@ Python Client for Google Cloud Translation
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/translate/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/translate/usage.html
 
 Quick Start
 -----------

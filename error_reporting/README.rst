@@ -9,7 +9,7 @@ Python Client for Stackdriver Error Reporting
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/error-reporting/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/error-reporting/usage.html
 
 Quick Start
 -----------
