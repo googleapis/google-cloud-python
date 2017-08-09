@@ -1868,7 +1868,8 @@ class TestTableUpload(object):
             'quote_character': '"',
             'skip_leading_rows': 1,
             'write_disposition': 'WRITE_APPEND',
-            'job_name': 'oddjob'
+            'job_name': 'oddjob',
+            'null_marker': r'\N',
         }
 
         expected_config = {
@@ -1878,7 +1879,7 @@ class TestTableUpload(object):
                     'destinationTable': {
                         'projectId': table._dataset._client.project,
                         'datasetId': table.dataset_name,
-                        'tableId': table.name
+                        'tableId': table.name,
                     },
                     'allowJaggedRows': config_args['allow_jagged_rows'],
                     'allowQuotedNewlines':
@@ -1892,9 +1893,10 @@ class TestTableUpload(object):
                     'quote': config_args['quote_character'],
                     'skipLeadingRows': config_args['skip_leading_rows'],
                     'writeDisposition': config_args['write_disposition'],
-                    'jobReference': {'jobId': config_args['job_name']}
-                }
-            }
+                    'jobReference': {'jobId': config_args['job_name']},
+                    'nullMarker': config_args['null_marker'],
+                },
+            },
         }
 
         do_upload_patch = self._make_do_upload_patch(
