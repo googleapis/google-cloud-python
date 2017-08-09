@@ -19,10 +19,10 @@ import copy
 import functools
 import os
 
+from google.api.core import page_iterator
 from google.cloud import _http
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.environment_vars import PUBSUB_EMULATOR
-from google.cloud.iterator import HTTPIterator
 
 from google.cloud.pubsub import __version__
 from google.cloud.pubsub._helpers import subscription_name_from_path
@@ -140,9 +140,13 @@ class _PublisherAPI(object):
             extra_params['pageSize'] = page_size
         path = '/projects/%s/topics' % (project,)
 
-        return HTTPIterator(
-            client=self._client, path=path, item_to_value=_item_to_topic,
-            items_key='topics', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_topic,
+            items_key='topics',
+            page_token=page_token,
             extra_params=extra_params)
 
     def topic_create(self, topic_path):
@@ -237,11 +241,14 @@ class _PublisherAPI(object):
             extra_params['pageSize'] = page_size
         path = '/%s/subscriptions' % (topic.full_name,)
 
-        iterator = HTTPIterator(
-            client=self._client, path=path,
+        iterator = page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
             item_to_value=_item_to_subscription_for_topic,
             items_key='subscriptions',
-            page_token=page_token, extra_params=extra_params)
+            page_token=page_token,
+            extra_params=extra_params)
         iterator.topic = topic
         return iterator
 
@@ -291,9 +298,13 @@ class _SubscriberAPI(object):
         topics = {}
         item_to_value = functools.partial(
             _item_to_sub_for_client, topics=topics)
-        return HTTPIterator(
-            client=self._client, path=path, item_to_value=item_to_value,
-            items_key='subscriptions', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=item_to_value,
+            items_key='subscriptions',
+            page_token=page_token,
             extra_params=extra_params)
 
     def subscription_create(self, subscription_path, topic_path,
@@ -551,9 +562,13 @@ class _SubscriberAPI(object):
         topics = {}
         item_to_value = functools.partial(
             _item_to_snapshot_for_client, topics=topics)
-        return HTTPIterator(
-            client=self._client, path=path, item_to_value=item_to_value,
-            items_key='snapshots', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=item_to_value,
+            items_key='snapshots',
+            page_token=page_token,
             extra_params=extra_params)
 
     def snapshot_create(self, snapshot_path, subscription_path):
