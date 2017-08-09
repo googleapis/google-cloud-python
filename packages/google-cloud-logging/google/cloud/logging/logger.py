@@ -344,7 +344,7 @@ class Logger(object):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
                   accessible to the current logger.
         """
