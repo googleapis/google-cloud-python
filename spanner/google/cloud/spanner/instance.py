@@ -374,7 +374,7 @@ class Instance(object):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.spanner.database.Database`
             resources within the current instance.
@@ -393,7 +393,7 @@ class Instance(object):
 def _item_to_database(iterator, database_pb):
     """Convert a database protobuf to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type database_pb: :class:`~google.spanner.admin.database.v1.Database`

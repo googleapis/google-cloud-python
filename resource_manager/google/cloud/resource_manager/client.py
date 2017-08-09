@@ -151,7 +151,7 @@ class Client(BaseClient):
                           single page. If not passed, defaults to a value set
                           by the API.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of all
                   :class:`~google.cloud.resource_manager.project.Project`.
                   that the current user has access to.
@@ -176,7 +176,7 @@ class Client(BaseClient):
 def _item_to_project(iterator, resource):
     """Convert a JSON project to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict

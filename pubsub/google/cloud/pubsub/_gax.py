@@ -78,7 +78,7 @@ class _PublisherAPI(object):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
                   accessible to the current API.
         """
@@ -205,7 +205,7 @@ class _PublisherAPI(object):
                            If not passed, the API will return the first page
                            of subscriptions.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.pubsub.subscription.Subscription`
                   accessible to the current API.
@@ -261,7 +261,7 @@ class _SubscriberAPI(object):
                            If not passed, the API will return the first page
                            of subscriptions.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.pubsub.subscription.Subscription`
                   accessible to the current API.
@@ -544,7 +544,7 @@ class _SubscriberAPI(object):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`
                   accessible to the current API.
         """
@@ -712,7 +712,7 @@ def make_gax_subscriber_api(credentials=None, host=None):
 def _item_to_topic(iterator, resource):
     """Convert a protobuf topic to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: :class:`.pubsub_pb2.Topic`
@@ -728,7 +728,7 @@ def _item_to_topic(iterator, resource):
 def _item_to_subscription_for_topic(iterator, subscription_path):
     """Convert a subscription name to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type subscription_path: str
@@ -749,12 +749,12 @@ def _item_to_sub_for_client(iterator, sub_pb, topics):
 
        This method does not have the correct signature to be used as
        the ``item_to_value`` argument to
-       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       :class:`~google.api.core.page_iterator.Iterator`. It is intended to be
        patched with a mutable topics argument that can be updated
        on subsequent calls. For an example, see how the method is
        used above in :meth:`_SubscriberAPI.list_subscriptions`.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type sub_pb: :class:`.pubsub_pb2.Subscription`
@@ -779,12 +779,12 @@ def _item_to_snapshot_for_client(iterator, snapshot_pb, topics):
 
        This method does not have the correct signature to be used as
        the ``item_to_value`` argument to
-       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       :class:`~google.api.core.page_iterator.Iterator`. It is intended to be
        patched with a mutable topics argument that can be updated
        on subsequent calls. For an example, see how the method is
        used above in :meth:`_SubscriberAPI.list_snapshots`.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type sub_pb: :class:`.pubsub_pb2.Snapshot`

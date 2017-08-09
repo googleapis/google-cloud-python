@@ -85,7 +85,7 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            zones.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.dns.zone.ManagedZone`
                   belonging to this project.
         """
@@ -125,7 +125,7 @@ class Client(ClientWithProject):
 def _item_to_zone(iterator, resource):
     """Convert a JSON managed zone to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict

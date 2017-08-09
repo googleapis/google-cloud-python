@@ -571,7 +571,7 @@ def _pb_from_query(query):
 def _item_to_entity(iterator, entity_pb):
     """Convert a raw protobuf entity to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type entity_pb:
