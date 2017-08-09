@@ -19,6 +19,8 @@ import threading
 import time
 import uuid
 
+from google import gax
+
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher.batch import base
@@ -175,6 +177,10 @@ class Batch(base.BaseBatch):
         response = self.client.api.publish(
             self._topic,
             self.messages,
+            options=gax.CallOptions(**{
+                'grpc.max_message_length': 20 * (1024 ** 2) + 1,
+                'grpc.max_receive_message_length': 20 * (1024 ** 2) + 1,
+            }),
         )
         end = time.time()
         logging.getLogger().debug('gRPC Publish took {sec} seconds.'.format(
