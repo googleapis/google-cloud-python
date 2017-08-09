@@ -381,6 +381,7 @@ class TestBigQuery(unittest.TestCase):
                 )
 
         # Retry until done.
+        job.result()
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
@@ -419,6 +420,7 @@ class TestBigQuery(unittest.TestCase):
             )
 
         # Retry until done.
+        job.result()
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
@@ -770,6 +772,7 @@ class TestBigQuery(unittest.TestCase):
                 )
 
         # Retry until done.
+        job.result()
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
         self._fetch_single_page(table)
@@ -799,7 +802,9 @@ class TestBigQuery(unittest.TestCase):
             WHERE greeting = 'Hello World'
             """
 
-        Config.CURSOR.execute(query_template.format(dataset_name, table_name))
+        Config.CURSOR.execute(
+            query_template.format(dataset_name, table_name),
+            job_id='test_dbapi_w_dml_{}'.format(str(uuid.uuid4())))
         self.assertEqual(Config.CURSOR.rowcount, 1)
         self.assertIsNone(Config.CURSOR.fetchone())
 
