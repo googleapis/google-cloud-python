@@ -14,10 +14,10 @@
 
 """Create / interact with Google Cloud RuntimeConfig configs."""
 
+from google.api.core import page_iterator
 from google.cloud.exceptions import NotFound
 from google.cloud.runtimeconfig._helpers import config_name_from_full_name
 from google.cloud.runtimeconfig.variable import Variable
-from google.cloud.iterator import HTTPIterator
 
 
 class Config(object):
@@ -232,16 +232,21 @@ class Config(object):
             (Optional) The client to use.  If not passed, falls back to the
             ``client`` stored on the current config.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.runtimeconfig.variable.Variable`
             belonging to this project.
         """
         path = '%s/variables' % (self.path,)
-        iterator = HTTPIterator(
-            client=self._require_client(client), path=path,
-            item_to_value=_item_to_variable, items_key='variables',
-            page_token=page_token, max_results=page_size)
+        client = self._require_client(client)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_variable,
+            items_key='variables',
+            page_token=page_token,
+            max_results=page_size)
         iterator._MAX_RESULTS = 'pageSize'
         iterator.config = self
         return iterator
@@ -250,7 +255,7 @@ class Config(object):
 def _item_to_variable(iterator, resource):
     """Convert a JSON variable to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict
