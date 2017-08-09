@@ -154,7 +154,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
                   accessible to the current API.
         """
@@ -183,7 +183,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.pubsub.subscription.Subscription`
                   accessible to the current client.
@@ -210,7 +210,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`
                   accessible to the current API.
         """

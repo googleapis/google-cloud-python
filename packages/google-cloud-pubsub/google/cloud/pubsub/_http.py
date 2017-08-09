@@ -19,10 +19,10 @@ import copy
 import functools
 import os
 
+from google.api.core import page_iterator
 from google.cloud import _http
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.environment_vars import PUBSUB_EMULATOR
-from google.cloud.iterator import HTTPIterator
 
 from google.cloud.pubsub import __version__
 from google.cloud.pubsub._helpers import subscription_name_from_path
@@ -131,7 +131,7 @@ class _PublisherAPI(object):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
                   accessible to the current client.
         """
@@ -140,9 +140,13 @@ class _PublisherAPI(object):
             extra_params['pageSize'] = page_size
         path = '/projects/%s/topics' % (project,)
 
-        return HTTPIterator(
-            client=self._client, path=path, item_to_value=_item_to_topic,
-            items_key='topics', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_topic,
+            items_key='topics',
+            page_token=page_token,
             extra_params=extra_params)
 
     def topic_create(self, topic_path):
@@ -237,11 +241,14 @@ class _PublisherAPI(object):
             extra_params['pageSize'] = page_size
         path = '/%s/subscriptions' % (topic.full_name,)
 
-        iterator = HTTPIterator(
-            client=self._client, path=path,
+        iterator = page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
             item_to_value=_item_to_subscription_for_topic,
             items_key='subscriptions',
-            page_token=page_token, extra_params=extra_params)
+            page_token=page_token,
+            extra_params=extra_params)
         iterator.topic = topic
         return iterator
 
@@ -275,7 +282,7 @@ class _SubscriberAPI(object):
                            If not passed, the API will return the first page
                            of subscriptions.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.pubsub.subscription.Subscription`
                   accessible to the current API.
@@ -291,9 +298,13 @@ class _SubscriberAPI(object):
         topics = {}
         item_to_value = functools.partial(
             _item_to_sub_for_client, topics=topics)
-        return HTTPIterator(
-            client=self._client, path=path, item_to_value=item_to_value,
-            items_key='subscriptions', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=item_to_value,
+            items_key='subscriptions',
+            page_token=page_token,
             extra_params=extra_params)
 
     def subscription_create(self, subscription_path, topic_path,
@@ -536,7 +547,7 @@ class _SubscriberAPI(object):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`
                   accessible to the current API.
         """
@@ -551,9 +562,13 @@ class _SubscriberAPI(object):
         topics = {}
         item_to_value = functools.partial(
             _item_to_snapshot_for_client, topics=topics)
-        return HTTPIterator(
-            client=self._client, path=path, item_to_value=item_to_value,
-            items_key='snapshots', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=item_to_value,
+            items_key='snapshots',
+            page_token=page_token,
             extra_params=extra_params)
 
     def snapshot_create(self, snapshot_path, subscription_path):
@@ -695,7 +710,7 @@ def _transform_messages_base64(messages, transform, key=None):
 def _item_to_topic(iterator, resource):
     """Convert a JSON topic to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -710,7 +725,7 @@ def _item_to_topic(iterator, resource):
 def _item_to_subscription_for_topic(iterator, subscription_path):
     """Convert a subscription name to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type subscription_path: str
@@ -731,12 +746,12 @@ def _item_to_sub_for_client(iterator, resource, topics):
 
        This method does not have the correct signature to be used as
        the ``item_to_value`` argument to
-       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       :class:`~google.api.core.page_iterator.Iterator`. It is intended to be
        patched with a mutable topics argument that can be updated
        on subsequent calls. For an example, see how the method is
        used above in :meth:`_SubscriberAPI.list_subscriptions`.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -760,12 +775,12 @@ def _item_to_snapshot_for_client(iterator, resource, topics):
 
        This method does not have the correct signature to be used as
        the ``item_to_value`` argument to
-       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       :class:`~google.api.core.page_iterator.Iterator`. It is intended to be
        patched with a mutable topics argument that can be updated
        on subsequent calls. For an example, see how the method is
        used above in :meth:`_SubscriberAPI.list_snapshots`.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
