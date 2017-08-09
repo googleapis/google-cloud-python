@@ -14,7 +14,7 @@
 
 """Client for interacting with the Google BigQuery API."""
 
-
+from google.api.core import page_iterator
 from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
@@ -23,7 +23,6 @@ from google.cloud.bigquery.job import ExtractTableToStorageJob
 from google.cloud.bigquery.job import LoadTableFromStorageJob
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.query import QueryResults
-from google.cloud.iterator import HTTPIterator
 
 
 class Project(object):
@@ -102,9 +101,13 @@ class Client(ClientWithProject):
         :returns: Iterator of :class:`~google.cloud.bigquery.client.Project`
                   accessible to the current client.
         """
-        return HTTPIterator(
-            client=self, path='/projects', item_to_value=_item_to_project,
-            items_key='projects', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path='/projects',
+            item_to_value=_item_to_project,
+            items_key='projects',
+            page_token=page_token,
             max_results=max_results)
 
     def list_datasets(self, include_all=False, max_results=None,
@@ -134,10 +137,15 @@ class Client(ClientWithProject):
         if include_all:
             extra_params['all'] = True
         path = '/projects/%s/datasets' % (self.project,)
-        return HTTPIterator(
-            client=self, path=path, item_to_value=_item_to_dataset,
-            items_key='datasets', page_token=page_token,
-            max_results=max_results, extra_params=extra_params)
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_dataset,
+            items_key='datasets',
+            page_token=page_token,
+            max_results=max_results,
+            extra_params=extra_params)
 
     def dataset(self, dataset_name, project=None):
         """Construct a dataset bound to this client.
@@ -219,10 +227,15 @@ class Client(ClientWithProject):
             extra_params['stateFilter'] = state_filter
 
         path = '/projects/%s/jobs' % (self.project,)
-        return HTTPIterator(
-            client=self, path=path, item_to_value=_item_to_job,
-            items_key='jobs', page_token=page_token,
-            max_results=max_results, extra_params=extra_params)
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_job,
+            items_key='jobs',
+            page_token=page_token,
+            max_results=max_results,
+            extra_params=extra_params)
 
     def load_table_from_storage(self, job_name, destination, *source_uris):
         """Construct a job for loading data into a table from CloudStorage.

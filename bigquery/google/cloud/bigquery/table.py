@@ -23,10 +23,10 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+from google.api.core import page_iterator
 from google.cloud import exceptions
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
-from google.cloud.iterator import HTTPIterator
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
@@ -724,10 +724,15 @@ class Table(object):
 
         client = self._require_client(client)
         path = '%s/data' % (self.path,)
-        iterator = HTTPIterator(client=client, path=path,
-                                item_to_value=_item_to_row, items_key='rows',
-                                page_token=page_token, max_results=max_results,
-                                page_start=_rows_page_start)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_row,
+            items_key='rows',
+            page_token=page_token,
+            max_results=max_results,
+            page_start=_rows_page_start)
         iterator.schema = self._schema
         # Over-ride the key used to retrieve the next page token.
         iterator._NEXT_TOKEN = 'pageToken'
