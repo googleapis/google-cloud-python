@@ -16,6 +16,7 @@
 
 import re
 
+from google.api.core import page_iterator
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
@@ -27,7 +28,6 @@ from grpc import StatusCode
 # pylint: disable=ungrouped-imports
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import GAXIterator
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.database import Database
 from google.cloud.spanner.pool import BurstyPool
@@ -384,7 +384,8 @@ class Instance(object):
         options = _options_with_prefix(self.name, page_token=page_token)
         page_iter = self._client.database_admin_api.list_databases(
             self.name, page_size=page_size, options=options)
-        iterator = GAXIterator(self._client, page_iter, _item_to_database)
+        iterator = page_iterator._GAXIterator(
+            self._client, page_iter, _item_to_database)
         iterator.instance = self
         return iterator
 
