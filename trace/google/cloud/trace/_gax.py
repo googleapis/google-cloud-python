@@ -14,13 +14,13 @@
 
 """GAX Wrapper for interacting with the Stackdriver Trace API."""
 
+from google.api.core import page_iterator
 from google.cloud.gapic.trace.v1 import trace_service_client
 from google.cloud.proto.devtools.cloudtrace.v1 import trace_pb2
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
-from google.cloud.iterator import GAXIterator
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
 
@@ -147,7 +147,8 @@ class _TraceAPI(object):
             order_by=order_by,
             options=options)
         item_to_value = _item_to_mapping
-        return GAXIterator(self.client, page_iter, item_to_value)
+        return page_iterator._GAXIterator(
+            self.client, page_iter, item_to_value)
 
 
 def _parse_trace_pb(trace_pb):
