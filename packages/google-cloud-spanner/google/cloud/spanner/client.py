@@ -24,6 +24,7 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner.database.Database`
 """
 
+from google.api.core import page_iterator
 from google.gax import INITIAL_PAGE
 # pylint: disable=line-too-long
 from google.cloud.gapic.spanner_admin_database.v1.database_admin_client import (  # noqa
@@ -34,7 +35,6 @@ from google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client import (
 
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import ClientWithProject
-from google.cloud.iterator import GAXIterator
 from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
@@ -194,7 +194,7 @@ class Client(ClientWithProject):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
             Iterator of
             :class:`~google.cloud.spanner.instance.InstanceConfig`
@@ -207,7 +207,8 @@ class Client(ClientWithProject):
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instance_configs(
             path, page_size=page_size, options=options)
-        return GAXIterator(self, page_iter, _item_to_instance_config)
+        return page_iterator._GAXIterator(
+            self, page_iter, _item_to_instance_config)
 
     def instance(self, instance_id,
                  configuration_name=None,
@@ -257,7 +258,7 @@ class Client(ClientWithProject):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.spanner.instance.Instance`
             resources within the client's project.
@@ -269,14 +270,15 @@ class Client(ClientWithProject):
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instances(
             path, filter_=filter_, page_size=page_size, options=options)
-        return GAXIterator(self, page_iter, _item_to_instance)
+        return page_iterator._GAXIterator(
+            self, page_iter, _item_to_instance)
 
 
 def _item_to_instance_config(
         iterator, config_pb):  # pylint: disable=unused-argument
     """Convert an instance config protobuf to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type config_pb:
@@ -292,7 +294,7 @@ def _item_to_instance_config(
 def _item_to_instance(iterator, instance_pb):
     """Convert an instance protobuf to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`
