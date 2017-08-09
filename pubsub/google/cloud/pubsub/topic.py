@@ -330,7 +330,7 @@ class Topic(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.pubsub.subscription.Subscription`
                   accessible to the current topic.
