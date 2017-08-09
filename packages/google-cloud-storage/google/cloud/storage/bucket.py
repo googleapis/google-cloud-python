@@ -22,12 +22,12 @@ import json
 import google.auth.credentials
 import six
 
+from google.api.core import page_iterator
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.iam import Policy
-from google.cloud.iterator import HTTPIterator
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _validate_name
@@ -40,7 +40,7 @@ from google.cloud.storage.blob import _get_encryption_headers
 def _blobs_page_start(iterator, page, response):
     """Grab prefixes after a :class:`~google.cloud.iterator.Page` started.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type page: :class:`~google.cloud.iterator.Page`
@@ -61,7 +61,7 @@ def _item_to_blob(iterator, item):
         This assumes that the ``bucket`` attribute has been
         added to the iterator after being created.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type item: dict
@@ -316,7 +316,7 @@ class Bucket(_PropertyMixin):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
@@ -338,10 +338,15 @@ class Bucket(_PropertyMixin):
 
         client = self._require_client(client)
         path = self.path + '/o'
-        iterator = HTTPIterator(
-            client=client, path=path, item_to_value=_item_to_blob,
-            page_token=page_token, max_results=max_results,
-            extra_params=extra_params, page_start=_blobs_page_start)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_blob,
+            page_token=page_token,
+            max_results=max_results,
+            extra_params=extra_params,
+            page_start=_blobs_page_start)
         iterator.bucket = self
         iterator.prefixes = set()
         return iterator
