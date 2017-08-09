@@ -142,6 +142,21 @@ class Image(object):
         images = ((self, features),)
         return self._detect_annotation(images)
 
+    def detect_all(self, limit=10):
+        """Detect multiple feature types.
+
+        :type limit: int
+        :param limit: The number of faces to try and detect.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+        """
+
+        features = [Feature(x, limit) for x in FeatureTypes.__dict__.keys() if x[:1] != '_']
+        annotations = self.detect(features)
+        return annotations[0]
+
     def detect_crop_hints(self, aspect_ratios=None, limit=10):
         """Detect crop hints in image.
 
