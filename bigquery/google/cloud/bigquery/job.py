@@ -518,6 +518,7 @@ class _LoadConfiguration(object):
     _field_delimiter = None
     _ignore_unknown_values = None
     _max_bad_records = None
+    _null_marker = None
     _quote_character = None
     _skip_leading_rows = None
     _source_format = None
@@ -672,6 +673,11 @@ class LoadTableFromStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
     """
 
+    null_marker = _TypedProperty('null_marker', six.string_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker
+    """
+
     quote_character = _TypedProperty('quote_character', six.string_types)
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
@@ -710,6 +716,8 @@ class LoadTableFromStorageJob(_AsyncJob):
             configuration['ignoreUnknownValues'] = self.ignore_unknown_values
         if self.max_bad_records is not None:
             configuration['maxBadRecords'] = self.max_bad_records
+        if self.null_marker is not None:
+            configuration['nullMarker'] = self.null_marker
         if self.quote_character is not None:
             configuration['quote'] = self.quote_character
         if self.skip_leading_rows is not None:
