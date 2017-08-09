@@ -350,6 +350,7 @@ class TestPubsub(unittest.TestCase):
         # list
         def retry_predicate(result):
             return len(result) > len(before_snapshots)
+            
         retry = RetryResult(retry_predicate, max_tries=5)
         after_snapshots = retry(_consume_snapshots)(Config.CLIENT)
         self.assertEqual(len(before_snapshots) + 1, len(after_snapshots))
