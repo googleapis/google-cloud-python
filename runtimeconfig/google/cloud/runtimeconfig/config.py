@@ -14,10 +14,10 @@
 
 """Create / interact with Google Cloud RuntimeConfig configs."""
 
+from google.api.core import page_iterator
 from google.cloud.exceptions import NotFound
 from google.cloud.runtimeconfig._helpers import config_name_from_full_name
 from google.cloud.runtimeconfig.variable import Variable
-from google.cloud.iterator import HTTPIterator
 
 
 class Config(object):
@@ -238,10 +238,15 @@ class Config(object):
             belonging to this project.
         """
         path = '%s/variables' % (self.path,)
-        iterator = HTTPIterator(
-            client=self._require_client(client), path=path,
-            item_to_value=_item_to_variable, items_key='variables',
-            page_token=page_token, max_results=page_size)
+        client = self._require_client(client)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_variable,
+            items_key='variables',
+            page_token=page_token,
+            max_results=page_size)
         iterator._MAX_RESULTS = 'pageSize'
         iterator.config = self
         return iterator
